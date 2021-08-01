@@ -1,6 +1,5 @@
 % !TEX TS-program = xelatex
-\documentclass[twoside]{article}
-
+\documentclass{article}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
@@ -10,9 +9,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot{}
-\fancyfoot[C]{\thepage}
-\fancyhead[OL]{\nouppercase\leftmark}    
-\fancyhead[ER]{\rightmark}
+\fancyhead[L]{\nouppercase\leftmark}    
+\fancyhead[R]{\thepage}    
 \setlength{\headheight}{52pt}
 \setcounter{tocdepth}{1}
 \DeclareMathOperator{\sech}{sech}
@@ -25,7 +23,12 @@
 \begin{document}
 \maketitle
 \section{Introduction}
-This is an attempt to obtain solutions of the Hubbard model (groundstate wavefunction and ground state energy) using the solutions of the simpler single-impurity Anderson model (SIAM) (the models will be defined later). Broadly speaking, the method involves first solving the SIAM using a unitary renormalisation group approach, to get the ground state wavefunction and energy eigenvalue, and then combining these wavefunctions in a symmetrized fashion to get the wavefunction for the Hubbard model lattice. It is quite similar to dynamical mean-field theory (DMFT) in essence, but differs in practice. The similar part is the involvement of an impurity-solver. The difference, however, lies in the following points:
+This is an attempt to obtain solutions of the Hubbard model (groundstate wavefunction and ground state energy) using the solutions of the simpler single-impurity Anderson model (SIAM). The models are defined using the Hamiltonians
+\begin{equation}\begin{aligned}
+H_\text{hubb} &= -t^H\sum_{\sigma,\left<i,j \right>}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right) + U^H\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu^H \sum_{i\sigma}\hat n_{i\sigma}\\
+	H_\text{siam} &= -t^A\sum_{\sigma,\left<i,j \right>\atop{i \neq d \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right) + \epsilon_d^A \sum_\sigma\hat n_{d\sigma} + U^A \hat n_{d \uparrow} \hat n_{d \downarrow} - \mu^A \sum_{i\neq d,\sigma}\hat n_{i\sigma}
+\end{aligned}\end{equation}
+Broadly speaking, the method involves first solving the SIAM using a unitary renormalisation group approach, to get the ground state wavefunction and energy eigenvalue, and then combining these wavefunctions in a symmetrized fashion to get the wavefunction for the Hubbard model lattice. It is quite similar to dynamical mean-field theory (DMFT) in essence, but differs in practice. The similar part is the involvement of an impurity-solver. The difference, however, lies in the following points:
 \begin{itemize}
 	\item While DMFT primarily works with Green's functions and self-energies, this method involves Hamiltonians and wavefunctions.
 	\item The impurity-solver in DMFT provides an impurity Green's function (which is then equated with the local Green's function of the bath), while the impurity-solver in this method actually provides a wavefunction.
@@ -33,4 +36,30 @@ This is an attempt to obtain solutions of the Hubbard model (groundstate wavefun
 \end{itemize}
 The meaning of each of these statements will become clearer when we describe the method in more detail.
 
+\section{Philosophy of the method}
+The method is closely tied to the auxiliary system approach described in \cite{martin_2016}. We can view the full Hamiltonian as a sum of two component Hamiltonians \(H_1, H_2\) connected via the interaction term \(H_{12}\).
+\begin{equation}\begin{aligned}
+	H = \begin{pmatrix} H_1 && H_{12} \\ H_{12}^* && H_2 \end{pmatrix} = H_1 \ket{1}\bra{1} + H_2\ket{2}\bra{2} + H_{12}\ket{1}\bra{2} + H_{12}^*\ket{2}\bra{1}
+\end{aligned}\end{equation}
+where \(\ket{1(2)}\) actually represents a sum over all basis kets of the subsystem 1(2). As an example, we can split the the Hubbard model Hamiltonian between a particular site \(i = p\) and the rest of the lattice as follows:
+\begin{equation}\begin{aligned}
+	H_\text{hubb} &= \overbrace{U^H\hat n_{p \uparrow} \hat n_{p \downarrow} - \mu^H \sum_\sigma \hat n_{p \sigma}}^{H_1} \\
+		      &+ \underbrace{U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} -t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right)}_{H_2}\\
+		      & -\underbrace{t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)}_{H_{12} + H_{12}^*}\\
+\end{aligned}\end{equation}
+The Green's function of the full Hamiltonian can also be split in a similar fashion:
+\begin{equation}\begin{aligned}
+	G(\omega) = \begin{pmatrix} G_1 && G_{12} \\ G_{12}^* && G_2 \end{pmatrix} 
+\end{aligned}\end{equation}
+The subsystem 1 is usually taken to be the "smaller system", and consequently, subsystem 2 represents the "bath". The smaller system is typically chosen such that its eigenstates are known exactly. Progress is then made by choosing a simpler version of the bath \(H_2\) and a simpler form also for its coupling \(H_{12}\) with the smaller system. This combination of the smaller system and the simpler bath is then called the \textit{auxiliary system}. A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{12}\).
+
+
+The algorithm of DMFT then involves starting with some local self-energy of the bath, \(\Sigma(\omega)\), and using an impurity solver to calculate the impurity Green's function in the presence of this self-energy. This impurity Green's function is then used to calculate the impurity self-energy \(\Sigma_d(\omega)\), and the self-energy of the bath is then set equal to this impurity self-energy: \(\Sigma(\omega) = \Sigma_d(\omega)\), because we expect, on grounds of the lattice symmetry, that the impurity is the same as any other site in the bath. This is said to be the self-consistency step, because the bath self-energy is completely determined only at the end. With this updated bath self-energy, one then repeats the entire process until there is no further change in the bath self-energy at the self-consistency step.
+
+
+The present method intends to calculate the quantities in a different fashion. We start with a SIAM (possibly with a correlated bath having a non-trivial self-energy), and solve it using the unitary renormalisation group approach to get to a fixed-point Hamiltonian. At the fixed-point, assuming the couplings are much larger compared to the kinetic energy, we can approximate the Hamiltonian by a zero-mode of the kinetic energy part, which leads to a two-site Anderson molecule Hamiltonian. Such a model is exactly solvable. Armed with such a groundstate, we will then create the wavefunction of the entire Hubbard Hamiltonian by combining them according to a prescription which is guided by the symmetries of the problem. The impurity electron will be read off as an arbitrary site, \(p\), of the lattice, while the zero-mode site becomes the site that is nearest to it. There are also integrals of motion that come out of the URG, they make up the rest of the sites in the lattice. We will first demonstrate this explicitly for the Hubbard dimer. Then we will show how we can create a full Hubbard Hamiltonian by joining Anderson molecule Hamiltonians, and this should hopefully be a step towards getting a general prescription for generating wavefunctions for the full lattice (not just dimers).
+
+
+\bibliographystyle{unsrt}
+\bibliography{notes}
 \end{document}

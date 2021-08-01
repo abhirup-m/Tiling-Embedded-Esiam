@@ -1,5 +1,5 @@
 % !TEX TS-program = xelatex
-\documentclass[twoside]{report}
+\documentclass[twoside]{article}
 
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,geometry}
 \usepackage[T1]{fontenc}
@@ -21,10 +21,16 @@
 \allowdisplaybreaks
 
 \title{Generating Hubbard Model Solutions from Anderson Impurity Model Solutions}
-\author{Abhirup Mukherjee\\Dr. Siddhartha Lal}
+\author{Abhirup Mukherjee, Dr. Siddhartha Lal}
 \begin{document}
 \maketitle
-
-hi
+\section{Introduction}
+This is an attempt to obtain solutions of the Hubbard model (groundstate wavefunction and ground state energy) using the solutions of the simpler single-impurity Anderson model (SIAM) (the models will be defined later). Broadly speaking, the method involves first solving the SIAM using a unitary renormalisation group approach, to get the ground state wavefunction and energy eigenvalue, and then combining these wavefunctions in a symmetrized fashion to get the wavefunction for the Hubbard model lattice. It is quite similar to dynamical mean-field theory (DMFT) in essence, but differs in practice. The similar part is the involvement of an impurity-solver. The difference, however, lies in the following points:
+\begin{itemize}
+	\item While DMFT primarily works with Green's functions and self-energies, this method involves Hamiltonians and wavefunctions.
+	\item The impurity-solver in DMFT provides an impurity Green's function (which is then equated with the local Green's function of the bath), while the impurity-solver in this method actually provides a wavefunction.
+	\item The final step of DMFT is the self-consistency equation, where the impurity and bath-local quantities are set equal. This ensures all sites, along with the impurity site, have the same self-energy, something which is required on grounds of  translational invariance. The present method, however, brings about the translational invariance in a different way. It symmetrizes the wavefunctions and Hamiltonians itself, such that all quantites then derived from the Hamiltonian or wavefunction are then guaranteed to have the symmetry.
+\end{itemize}
+The meaning of each of these statements will become clearer when we describe the method in more detail.
 
 \end{document}

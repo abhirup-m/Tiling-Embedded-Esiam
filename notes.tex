@@ -116,11 +116,11 @@ For each site \(i\) out of the \(N\) sites (having nearest neighbours \(\{i_j, j
 
 The local Hamiltonians look like
 \begin{equation}\begin{aligned}
-	H^H_{i,i_j} = -t^A\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{i_j\sigma} + \text{h.c.}\right) + U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+	H^A_{i,i_j} = -t^A\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{i_j\sigma} + \text{h.c.}\right) + U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
 \end{aligned}\end{equation}
 We havent transformed the Anderson parameters \(U^A, t^A\) to the Hubbard parameters yet. The sum of all local Hamiltonians for a particular site \(i\) then gives the total Hamiltonian for that site:
 \begin{equation}\begin{aligned}
-	H^H_{i} = \sum_{j\in\left[1,w\right]}H^H_{i,i_j} = \sum_{\sigma\atop{j \in \text{N.N. of }i}}-t^A\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+	H^A_{i} = \sum_{j\in\left[1,w\right]}H^H_{i,i_j} = \sum_{\sigma\atop{j \in \text{N.N. of }i}}-t^A\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
 \end{aligned}\end{equation}
 If we now sum over all the lattice sites and take the average of all the Hamiltonians (\(Nw\) in number), we get
 \begin{equation}\begin{aligned}
@@ -132,7 +132,7 @@ The factor of 2 in front of \(t^A\) appears because each nearest neighbour pair 
 \end{aligned}\end{equation}
 For the dimer versions, we had \(N=2, w=1\) and if we substitute these values into the transformations we recover the transformations we had discovered that worked for the dimer. The Hubbard Hamiltonian can thus be obtained from the Anderson dimer using the following equation
 \begin{equation}\begin{aligned}
-	H^H = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
+	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
 In terms of the Green's function, this equation becomes
 \begin{equation}\begin{aligned}
@@ -143,7 +143,7 @@ where $G_H$ and $G_A$ are the Hubbard and SIAM Green's functions:
 \begin{equation}\begin{aligned}
 	G_H(\omega) = \frac{1}{\omega - H_H}, && G_A(\omega) = \frac{1}{\omega - H_A}
 \end{aligned}\end{equation}
-Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, it can be pulled out along with a factor of $ \frac{1}{Nw}Nw = 1$, allowing it to cancel the $\omega$ on the LHS. The equation then simplifies to
+Since the two $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. Each will come with a factor which is just the total number of nearest neighbour pairs, which is $ \frac{Nw}{2}$. This allows them to cancel the $\omega$ on the LHS. The equation then simplifies to
 \begin{equation}\begin{aligned}
 	\label{green_eq_final}
 	{G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\tilde G_A^{-1}(\omega, i, j) + \tilde G_A^{-1}(\omega, j, i)\right]
@@ -152,10 +152,16 @@ where $\tilde G_A^{-1}(\omega, i, j) = \omega - \tilde H^A(i, j)$, and $H^A(i, j
 \begin{equation}\begin{aligned}
 	\tilde H^A(i, j) = -\frac{Nw}{2}t^H\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + N U^H\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
 \end{aligned}\end{equation}
-$\tilde H^A(i, j)$ is nothing but the Anderson molecule Hamiltonian, but with the impurity replaced by the $i^\text{th}$ site and the zero-mode replaced by the $j^\text{th}$ site. It is important to note that $\tilde G_A^{-1}(\omega, i, j)$ only scatters between the sites $i,j$. If we now take the matrix element of eq.~\ref{green_eq_final} between two \textit{distint} sites $i,j$, then only those terms will survive on the right hand side that involve both $i$ and $j$. In other words, the only nearest-neighbour pair that will survive is $\left( i,j \right) $.
+$\tilde H^A(i, j)$ is nothing but the Anderson molecule Hamiltonian, but with the impurity replaced by the $i^\text{th}$ site and the zero-mode replaced by the $j^\text{th}$ site. It is important to note that $\tilde G_A^{-1}(\omega, i, j)$ only scatters between the sites $i,j$.
+
+
+We will now calculate the single-particle site diagonal and site offdiagonal Green's functions. First lets consider the diagonal Green's function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Each such pair will have two terms, one with $i$ as the impurity and another with $i$ as the zero-mode. For the term that has $i$ as the impurity, the Green's function would then represent the impurity-diagonal Green's function $(G_{dd}^\sigma)$ of the zero-mode SIAM, while for the other term, the Green's function would represent the bath-diagonal or the zero-mode diagonal Green's function $(G_{zz}^\sigma)$.
 \begin{equation}\begin{aligned}
-	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\bra{i\sigma}\left[\tilde G_A^{-1}(\omega, i, j) + \tilde G_A^{-1}(\omega, j, i)\right]\ket{j\sigma}\\
-							  &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]
+\end{aligned}\end{equation}
+Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Grnee's function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
+\begin{equation}\begin{aligned}
+	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
 \end{aligned}\end{equation}
 
 

@@ -132,12 +132,12 @@ The factor of 2 in front of \(t^A\) appears because each nearest neighbour pair 
 \end{aligned}\end{equation}
 For the dimer versions, we had \(N=2, w=1\) and if we substitute these values into the transformations we recover the transformations we had discovered that worked for the dimer. The Hubbard Hamiltonian can thus be obtained from the Anderson dimer using the following equation
 \begin{equation}\begin{aligned}
-	H^H = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}H^A\left(t^A \to \frac{Nw}{2}t^H, U^A \to N U^H, d \to i, z \to j\right)
+	H^H = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
 In terms of the Green's function, this equation becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
-	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}\left(\omega - {G_A}^{-1}(\omega)\right) \left(t^A \to \frac{Nw}{2}t^H, U^A \to N U^H, d \to i, z \to j\right)
+	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\left(\omega - {G_A}^{-1}(\omega)\right)\left(d, z \to i,j\right) + \left(\omega - {G_A}^{-1}(\omega)\right)\left(d,z \to j,i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
 where $G_H$ and $G_A$ are the Hubbard and SIAM Green's functions:
 \begin{equation}\begin{aligned}
@@ -145,20 +145,18 @@ where $G_H$ and $G_A$ are the Hubbard and SIAM Green's functions:
 \end{aligned}\end{equation}
 Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, it can be pulled out along with a factor of $ \frac{1}{Nw}Nw = 1$, allowing it to cancel the $\omega$ on the LHS. The equation then simplifies to
 \begin{equation}\begin{aligned}
-	{G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}{G_{i, j}}^{-1}(\omega) 
+	\label{green_eq_final}
+	{G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\tilde G_A^{-1}(\omega, i, j) + \tilde G_A^{-1}(\omega, j, i)\right]
 \end{aligned}\end{equation}
-where $G_{i, j}^{-1} = \omega - H^A_{i, j}$, and $H^A_{i, j}$ is defined as
+where $\tilde G_A^{-1}(\omega, i, j) = \omega - \tilde H^A(i, j)$, and $H^A(i, j)$ is defined as
 \begin{equation}\begin{aligned}
-	H^A_{i, j} = -\frac{Nw}{2}t^H\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + N U^H\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+	\tilde H^A(i, j) = -\frac{Nw}{2}t^H\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + N U^H\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
 \end{aligned}\end{equation}
-
-
-
-
-
-
-
-
+$\tilde H^A(i, j)$ is nothing but the Anderson molecule Hamiltonian, but with the impurity replaced by the $i^\text{th}$ site and the zero-mode replaced by the $j^\text{th}$ site. It is important to note that $\tilde G_A^{-1}(\omega, i, j)$ only scatters between the sites $i,j$. If we now take the matrix element of eq.~\ref{green_eq_final} between two \textit{distint} sites $i,j$, then only those terms will survive on the right hand side that involve both $i$ and $j$. In other words, the only nearest-neighbour pair that will survive is $\left( i,j \right) $.
+\begin{equation}\begin{aligned}
+	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\bra{i\sigma}\left[\tilde G_A^{-1}(\omega, i, j) + \tilde G_A^{-1}(\omega, j, i)\right]\ket{j\sigma}\\
+							  &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+\end{aligned}\end{equation}
 
 
 \bibliographystyle{unsrt}

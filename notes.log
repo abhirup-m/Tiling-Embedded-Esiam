@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  1 AUG 2021 22:28
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  2 AUG 2021 10:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -668,15 +668,15 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 [5] (./notes.bbl) [6] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: C8B2351ED57C792BFC531232BBED8469;1117.
+(rerunfilecheck)             Checksum: 7329806C084AEC8F6F1FFC21A1632EF3;1117.
  ) 
 Here is how much of TeX's memory you used:
- 21833 strings out of 476919
- 386213 string characters out of 5827674
+ 21834 strings out of 476919
+ 386223 string characters out of 5827674
  696160 words of memory out of 5000000
- 41452 multiletter control sequences out of 15000+600000
+ 41453 multiletter control sequences out of 15000+600000
  437289 words of font info for 70 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,18n,89p,1349b,372s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (6 pages, 33488 bytes).
+Output written on notes.xdv (6 pages, 35872 bytes).

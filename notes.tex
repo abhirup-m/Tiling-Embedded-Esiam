@@ -134,6 +134,25 @@ For the dimer versions, we had \(N=2, w=1\) and if we substitute these values in
 \begin{equation}\begin{aligned}
 	H^H = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}H^A\left(t^A \to \frac{Nw}{2}t^H, U^A \to N U^H, d \to i, z \to j\right)
 \end{aligned}\end{equation}
+In terms of the Green's function, this equation becomes
+\begin{equation}\begin{aligned}
+	\label{green_eq}
+	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}\left(\omega - {G_A}^{-1}(\omega)\right) \left(t^A \to \frac{Nw}{2}t^H, U^A \to N U^H, d \to i, z \to j\right)
+\end{aligned}\end{equation}
+where $G_H$ and $G_A$ are the Hubbard and SIAM Green's functions:
+\begin{equation}\begin{aligned}
+	G_H(\omega) = \frac{1}{\omega - H_H}, && G_A(\omega) = \frac{1}{\omega - H_A}
+\end{aligned}\end{equation}
+Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, it can be pulled out along with a factor of $ \frac{1}{Nw}Nw = 1$, allowing it to cancel the $\omega$ on the LHS. The equation then simplifies to
+\begin{equation}\begin{aligned}
+	{G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{i=1}^N\sum_{j\in\text{N.N. of }i}{G_{i, j}}^{-1}(\omega) 
+\end{aligned}\end{equation}
+where $G_{i, j}^{-1} = \omega - H^A_{i, j}$, and $H^A_{i, j}$ is defined as
+\begin{equation}\begin{aligned}
+	H^A_{i, j} = -\frac{Nw}{2}t^H\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + N U^H\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+\end{aligned}\end{equation}
+
+
 
 
 

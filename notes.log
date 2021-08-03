@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  2 AUG 2021 19:17
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  4 AUG 2021 00:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -666,17 +666,22 @@ Overfull \hbox (1.03053pt too wide) detected at line 107
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 110.
 
-[5] [6] (./notes.bbl) [7] (./notes.aux)
+[5] [6]
+Overfull \hbox (24.46416pt too wide) in paragraph at lines 172--186
+ [][] 
+ []
+
+(./notes.bbl) [7] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 86C9E2F2262702399997757D4AA7AFFD;1118.
+(rerunfilecheck)             Checksum: 7885572F48EEF26417A24E384F503EE7;1120.
  ) 
 Here is how much of TeX's memory you used:
- 21835 strings out of 476919
- 386239 string characters out of 5827674
- 696160 words of memory out of 5000000
- 41454 multiletter control sequences out of 15000+600000
- 437289 words of font info for 70 fonts, out of 8000000 for 9000
+ 21842 strings out of 476919
+ 386359 string characters out of 5827674
+ 696158 words of memory out of 5000000
+ 41461 multiletter control sequences out of 15000+600000
+ 440287 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,18n,89p,1349b,372s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (7 pages, 40064 bytes).
+Output written on notes.xdv (7 pages, 43904 bytes).

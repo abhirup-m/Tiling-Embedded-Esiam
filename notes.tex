@@ -98,7 +98,7 @@ The wavefunctions for the \(N=2\) sector can also be connected through these tra
 \begin{equation}\begin{aligned}
 	\ket{\Psi^H_\text{GS}} &= 4t^H\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + \left[\Delta\left( U^H, t^H \right) - U^H\right]{\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
 	\ket{\Psi^A_\text{GS}} &= 4t^A\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + \left[\Delta\left( \frac{1}{2}U^A, t^A \right) - \frac{1}{2}U^A\right]{\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
-	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right),\quad E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right), \quad\Delta(x,y) \equiv \sqrt{x^2 + y^2}\\
+	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right),\quad E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right), \quad\Delta(x,y) \equiv \sqrt{x^2 + 16y^2}\\
 \end{aligned}\end{equation}
 From the forms of the wavefunctions and eigenenergies, we can immediately write down
 \begin{equation}\begin{aligned}
@@ -159,10 +159,31 @@ We will now calculate the single-particle site diagonal and site offdiagonal Gre
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Grnee's function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
+Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
 \end{aligned}\end{equation}
+
+\section*{Appendix}
+\subsection{Spectrum of the Anderson molecule}
+Here we tabulate the eigenstates and eigenvalues of the Hamiltonian in eq.~\ref{and_dimer}.
+\begin{table}[htpb]
+	\centering
+	\begin{tabular}{|c|c|c|}
+	\hline
+	eigenstate & symbol & eigenvalue\\
+	\hline
+	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U}{4}\)\\
+	\(-\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,0} \pm \frac{1}{\sqrt{2\Delta}}\ket{0, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U}{4}\)\\
+	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U}{4}\)\\
+	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U}{4}\)\\
+	\(-\frac{4t}{\sqrt{2\Delta(\frac{1}{2}U,t)\left( \Delta(\frac{1}{2}U,t) \pm \frac{1}{2}U\right)}}\frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\right) \pm \sqrt{\frac{1}{2} \pm \frac{1}{2}\frac{U/2}{\Delta(\frac{U}{2},t)}}\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0, 2}\right)\) & \(\ket{\pm}\) & \(\pm\frac{1}{2}\Delta(\frac{U}{2},t)\)\\
+	\(\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,2} \pm \frac{1}{\sqrt{2\Delta}}\ket{2, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U}{4}\)\\
+	\hline
+	\end{tabular}
+\end{table}	
 
 
 \bibliographystyle{unsrt}

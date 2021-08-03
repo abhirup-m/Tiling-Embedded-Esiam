@@ -96,9 +96,13 @@ Note that we expect most of these "rules" to be specific for the dimer, and ther
 
 The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^H_\text{GS}} &= 4t^H\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + \left[\Delta\left( U^H, t^H \right) - U^H\right]{\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
-	\ket{\Psi^A_\text{GS}} &= 4t^A\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + \left[\Delta\left( \frac{1}{2}U^A, t^A \right) - \frac{1}{2}U^A\right]{\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
-	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right),\quad E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right), \quad\Delta(x,y) \equiv \sqrt{x^2 + y^2}\\
+	\ket{\Psi^H_\text{GS}} &= a_1(t^H, U^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + a_2(t^H, U^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
+	\ket{\Psi^A_\text{GS}} &= a_1(t^A, \frac{1}{2}U^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + a_2(t^A, \frac{1}{2}U^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
+	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
+\end{aligned}\end{equation}
+where 
+\begin{equation}\begin{aligned}
+	a_1(x,y) \equiv \frac{4x}{\sqrt{2\Delta(x,y)\left( \Delta(x,y) - y \right) }}, && a_2(x,y) \equiv \sqrt{\frac{\Delta(x,y) - y}{2\Delta(x,y)}}, &&\Delta(x,y) \equiv \sqrt{x^2 + y^2}\\
 \end{aligned}\end{equation}
 From the forms of the wavefunctions and eigenenergies, we can immediately write down
 \begin{equation}\begin{aligned}
@@ -162,6 +166,61 @@ We will now calculate the single-particle site diagonal and site offdiagonal Gre
 Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Grnee's function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+\end{aligned}\end{equation}
+
+\section*{Appendix}
+\subsection*{Particle-Hole symmetric Hubbard dimer spectrum}
+Here we document the entire spectrum of the Hamiltonian eq.~\ref{hubb_dimer}.
+\begin{table}[htpb]
+	\centering
+	\begin{tabular}{|c|c|c|}
+	\hline
+	Wavefunction & Symbol & Eigenvalue \\
+	\hline
+	$\ket{0,0}$ & $\ket{0}$ & \( \frac{U}{2}\)\\
+	$ \frac{1}{\sqrt 2}\left(\ket{\sigma,0} \pm \ket{0,\sigma}\right)$ & $\ket{0\sigma_\pm}$ & \(\mp t\)\\
+	$\ket{\sigma,\sigma}$ & $\ket{\sigma\sigma}$ & \( -\frac{U}{2}\)\\
+	$ \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} + \ket{\downarrow,\uparrow}\right)$ & $\ket{ST}$ & \( -\frac{U}{2}\)\\
+	$ \frac{1}{\sqrt 2}\left(\ket{2,0} - \ket{0,2}\right)$ & $\ket{CS}$ & \( \frac{U}{2}\)\\
+	$a_1(t,U) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) \pm a_2(t,U)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{\pm}$ & \(\pm \frac{1}{2}\Delta(t, U)\)\\
+	$ \frac{1}{\sqrt 2}\left(\ket{\sigma,2} \pm \ket{2,\sigma}\right)$ & $\ket{2\sigma_\pm}$ & \(\pm t\)\\
+	$\ket{2,2}$ & $\ket{4}$ & \( \frac{U}{2}\)\\
+\hline
+	\end{tabular}
+	\caption{Spectrum of Hubbard dimer at half-filling}
+	\label{hubb_dim_spectrum}
+\end{table}
+\subsection*{Local Green's function for the Hubbard dimer}
+From the spectral representation, we have the following expression for the local Green's function at the $i^\text{th}$:
+\begin{equation}\begin{aligned}
+	G_{i i}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
+\end{aligned}\end{equation}
+$m,n$ sum over the exact eigenstates. $E_m, E_n$ are the corresponding energies. We are interested in teh $T \to 0$ Green's function. In that limit, all exponentials except that for the ground state $E_{gs}$ will die out. The exponential inside the summation will then cancel the exponential in the partition function.
+\begin{equation}\begin{aligned}
+	G_{i i}^\sigma(\omega, T \to 0) &= \sum_{n}\left[||\bra{GS}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
+					&= \sum_{n}\left[||\bra{n}c^\dagger_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
+\end{aligned}\end{equation}
+
+The ground state $\ket{GS}$ is just the state $\ket{-}$ in the table \ref{hubb_dim_spectrum}. We will choose to look at $\sigma = \uparrow`$. Then,
+\begin{equation}\begin{aligned}
+	c_{1\uparrow}\ket{-} &= \frac{a_1}{\sqrt 2}\ket{0, \downarrow} + \frac{a_2}{\sqrt 2}\ket{\downarrow,0}\\
+	c^\dagger_{1\uparrow}\ket{-} &= -\frac{a_1}{\sqrt 2}\ket{2, \uparrow} + \frac{a_2}{\sqrt 2}\ket{\uparrow,2}\\
+\end{aligned}\end{equation}
+The set of states $\ket{n}$ that give non-zero inner product $\ket{GS}$ are therefore
+\begin{equation}\begin{aligned}
+	\left\{ \ket{n} \right\} &= \ket{0\downarrow_\pm}\\
+	||\bra{n}c_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left( a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \pm 2a_1a_2\right) 	\\
+	\left\{ E_n \right\} &= \mp t
+\end{aligned}\end{equation}
+for the first inner product, and
+\begin{equation}\begin{aligned}
+	\left\{\ket{n}\right\} &= \ket{2\uparrow_\pm}\\
+	||\bra{n}c^\dagger_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left( a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \pm 2a_1a_2\right)\\
+	\left\{ E_n \right\} &= \pm t
+\end{aligned}\end{equation}
+for the second. The Greens function is therefore
+\begin{equation}\begin{aligned}
+	G_{i i}^\sigma(\omega, T \to 0) &= \frac{1}{2}\left[\frac{1}{\omega + E_{GS} + t} + \frac{1}{\omega + E_{GS} - t}\right]
 \end{aligned}\end{equation}
 
 

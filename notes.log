@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  2 AUG 2021 19:17
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  3 AUG 2021 19:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -656,27 +656,26 @@ Overfull \hbox (10.50092pt too wide) in paragraph at lines 62--62
 |[]\T1/lmr/bx/n/14.4 Solution of the Hub-bard dimer us-ing the An-der-son molecule| 
  []
 
-[3]
-Overfull \hbox (1.03053pt too wide) detected at line 107
+[3] [4]
+Overfull \hbox (1.03053pt too wide) detected at line 111
 [][][]
  []
 
-[4]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 110.
+(hyperref)                removing `math shift' on input line 114.
 
-[5] [6] (./notes.bbl) [7] (./notes.aux)
+[5] [6] [7] (./notes.bbl) [8] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 86C9E2F2262702399997757D4AA7AFFD;1118.
+(rerunfilecheck)             Checksum: 95CB475B0B342AF71ABF966C27B543DE;1118.
  ) 
 Here is how much of TeX's memory you used:
- 21835 strings out of 476919
- 386239 string characters out of 5827674
- 696160 words of memory out of 5000000
- 41454 multiletter control sequences out of 15000+600000
- 437289 words of font info for 70 fonts, out of 8000000 for 9000
+ 21843 strings out of 476919
+ 386380 string characters out of 5827674
+ 695206 words of memory out of 5000000
+ 41462 multiletter control sequences out of 15000+600000
+ 440287 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,18n,89p,1349b,372s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (7 pages, 40064 bytes).
+Output written on notes.xdv (8 pages, 48644 bytes).

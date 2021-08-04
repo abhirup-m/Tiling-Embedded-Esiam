@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  4 AUG 2021 18:44
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  5 AUG 2021 00:25
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -664,20 +664,20 @@ See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 273.
+(caption)                particular \caption on input line 274.
 See the caption package documentation for explanation.
 
 [9] [10] (./notes.bbl) [11] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 275788AB64FBE78E369A073A557F29D7;1421.
+(rerunfilecheck)             Checksum: F0CAF7E3962AB1BA4AD2FA9B55A89BBF;1421.
  ) 
 Here is how much of TeX's memory you used:
  21844 strings out of 476919
  386442 string characters out of 5827674
- 704703 words of memory out of 5000000
+ 704701 words of memory out of 5000000
  41465 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,18n,89p,1312b,364s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (11 pages, 69204 bytes).
+Output written on notes.xdv (11 pages, 72968 bytes).

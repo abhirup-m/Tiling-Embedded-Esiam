@@ -1,11 +1,11 @@
 % !TEX TS-program = xelatex
 \documentclass[12pt]{article}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
-\usepackage[margin=0.5in,bottom=0.8in]{geometry}
+\usepackage[margin=0.5in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
 \usepackage[stable]{footmisc}
-\renewcommand{\arraystretch}{2}
+\renewcommand{\arraystretch}{1.9}
 \setlength\delimitershortfall{-2pt}
 \pagestyle{fancy}
 \fancyhf{}
@@ -31,8 +31,8 @@ H_\text{hubb} &= -t^H\sum_{\sigma,\left<i,j \right>}\left(c^\dagger_{i\sigma} c_
 \end{aligned}\end{equation}
 Broadly speaking, the method involves first solving the SIAM using a unitary renormalisation group approach, to get the ground state wavefunction and energy eigenvalue, and then combining these wavefunctions in a symmetrized fashion to get the wavefunction for the Hubbard model lattice. It is quite similar to dynamical mean-field theory (DMFT) in essence, but differs in practice. The similar part is the involvement of an impurity-solver. The difference, however, lies in the following points:
 \begin{itemize}
-	\item While DMFT primarily works with Green's functions and self-energies, this method involves Hamiltonians and wavefunctions.
-	\item The impurity-solver in DMFT provides an impurity Green's function (which is then equated with the local Green's function of the bath), while the impurity-solver in this method actually provides a wavefunction.
+	\item While DMFT primarily works with Greens functions and self-energies, this method involves Hamiltonians and wavefunctions.
+	\item The impurity-solver in DMFT provides an impurity Greens function (which is then equated with the local Greens function of the bath), while the impurity-solver in this method actually provides a wavefunction.
 	\item The final step of DMFT is the self-consistency equation, where the impurity and bath-local quantities are set equal. This ensures all sites, along with the impurity site, have the same self-energy, something which is required on grounds of  translational invariance. The present method, however, brings about the translational invariance in a different way. It symmetrizes the wavefunctions and Hamiltonians itself, such that all quantites then derived from the Hamiltonian or wavefunction are then guaranteed to have the symmetry.
 \end{itemize}
 The meaning of each of these statements will become clearer when we describe the method in more detail.
@@ -48,14 +48,14 @@ where \(\ket{1(2)}\) actually represents a sum over all basis kets of the subsys
 		      &+ \underbrace{U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} -t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right)}_{H_2}\\
 		      & -\underbrace{t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)}_{H_{12} + H_{12}^*}\\
 \end{aligned}\end{equation}
-The Green's function of the full Hamiltonian can also be split in a similar fashion:
+The Greens function of the full Hamiltonian can also be split in a similar fashion:
 \begin{equation}\begin{aligned}
 	G(\omega) = \begin{pmatrix} G_1 && G_{12} \\ G_{12}^* && G_2 \end{pmatrix} 
 \end{aligned}\end{equation}
 The subsystem 1 is usually taken to be the "smaller system", and consequently, subsystem 2 represents the "bath". The smaller system is typically chosen such that its eigenstates are known exactly. Progress is then made by choosing a simpler version of the bath \(H_2\) and a simpler form also for its coupling \(H_{12}\) with the smaller system. This combination of the smaller system and the simpler bath is then called the \textit{auxiliary system}. A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{12}\).
 
 
-The algorithm of DMFT then involves starting with some local self-energy of the bath, \(\Sigma(\omega)\), and using an impurity solver to calculate the impurity Green's function in the presence of this self-energy. This impurity Green's function is then used to calculate the impurity self-energy \(\Sigma_d(\omega)\), and the self-energy of the bath is then set equal to this impurity self-energy: \(\Sigma(\omega) = \Sigma_d(\omega)\), because we expect, on grounds of the lattice symmetry, that the impurity is the same as any other site in the bath. This is said to be the self-consistency step, because the bath self-energy is completely determined only at the end. With this updated bath self-energy, one then repeats the entire process until there is no further change in the bath self-energy at the self-consistency step.
+The algorithm of DMFT then involves starting with some local self-energy of the bath, \(\Sigma(\omega)\), and using an impurity solver to calculate the impurity Greens function in the presence of this self-energy. This impurity Greens function is then used to calculate the impurity self-energy \(\Sigma_d(\omega)\), and the self-energy of the bath is then set equal to this impurity self-energy: \(\Sigma(\omega) = \Sigma_d(\omega)\), because we expect, on grounds of the lattice symmetry, that the impurity is the same as any other site in the bath. This is said to be the self-consistency step, because the bath self-energy is completely determined only at the end. With this updated bath self-energy, one then repeats the entire process until there is no further change in the bath self-energy at the self-consistency step.
 
 
 The present method intends to calculate the quantities in a different fashion. We start with a SIAM (possibly with a correlated bath having a non-trivial self-energy), and solve it using the unitary renormalisation group approach to get to a fixed-point Hamiltonian. At the fixed-point, assuming the couplings are much larger compared to the kinetic energy, we can approximate the Hamiltonian by a zero-mode of the kinetic energy part, which leads to a two-site Anderson molecule Hamiltonian. Such a model is exactly solvable. Armed with such a groundstate, we will then create the wavefunction of the entire Hubbard Hamiltonian by combining them according to a prescription which is guided by the symmetries of the problem. The impurity electron will be read off as an arbitrary site, \(p\), of the lattice, while the zero-mode site becomes the site that is nearest to it. There are also integrals of motion that come out of the URG, they make up the rest of the sites in the lattice. We will first demonstrate this explicitly for the Hubbard dimer. Then we will show how we can create a full Hubbard Hamiltonian by joining Anderson molecule Hamiltonians, and this should hopefully be a step towards getting a general prescription for generating wavefunctions for the full lattice (not just dimers).
@@ -142,12 +142,12 @@ For the dimer versions, we had \(N=2, w=1\) and if we substitute these values in
 	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
 \section{Computing Greens functions and related quantities}
-In terms of the Green's function, equation \ref{H_tiled} becomes
+In terms of the Greens function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
 	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\left(\omega - {G_A}^{-1}(\omega)\right)\left(d, z \to i,j\right) + \left(\omega - {G_A}^{-1}(\omega)\right)\left(d,z \to j,i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
-where $G_H$ and $G_A$ are the Hubbard and SIAM Green's functions:
+where $G_H$ and $G_A$ are the Hubbard and SIAM Greens functions:
 \begin{equation}\begin{aligned}
 	G_H(\omega) = \frac{1}{\omega - H_H}, && G_A(\omega) = \frac{1}{\omega - H_A}
 \end{aligned}\end{equation}
@@ -163,15 +163,15 @@ where $\tilde G_A^{-1}(\omega, i, j) = \omega - \tilde H^A(i, j)$, and $H^A(i, j
 $\tilde H^A(i, j)$ is nothing but the Anderson molecule Hamiltonian, but with the impurity replaced by the $i^\text{th}$ site and the zero-mode replaced by the $j^\text{th}$ site. It is important to note that $\tilde G_A^{-1}(\omega, i, j)$ only scatters between the sites $i,j$.
 
 
-We will now calculate the single-particle site diagonal and site offdiagonal Green's functions. First lets consider the diagonal Green's function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Each such pair will have two terms, one with $i$ as the impurity and another with $i$ as the zero-mode. For the term that has $i$ as the impurity, the Green's function would then represent the impurity-diagonal Green's function $(G_{dd}^\sigma)$ of the zero-mode SIAM, while for the other term, the Green's function would represent the bath-diagonal or the zero-mode diagonal Green's function $(G_{zz}^\sigma)$.
+We will now calculate the single-particle site diagonal and site offdiagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Each such pair will have two terms, one with $i$ as the impurity and another with $i$ as the zero-mode. For the term that has $i$ as the impurity, the Greens function would then represent the impurity-diagonal Greens function $(G_{dd}^\sigma)$ of the zero-mode SIAM, while for the other term, the Greens function would represent the bath-diagonal or the zero-mode diagonal Greens function $(G_{zz}^\sigma)$.
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
+Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Greens functions:
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
 \end{aligned}\end{equation}
-Since the only real-space interaction is that between the nearest neighbours, there are no further real space Green's functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. For brevity, we therefore label them $g_0$ and $g_1$ respectively. 
+Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. For brevity, we therefore label them $g_0$ and $g_1$ respectively. 
 \begin{equation}\begin{aligned}
 	g_0 &\equiv \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]\\
 	g_1 &\equiv \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
@@ -272,12 +272,12 @@ The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)
 	\end{tabular}
 	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
 \end{center}
-\subsection*{Local Green's function for the Hubbard dimer}
-From the spectral representation, we have the following expression for the local Green's function at the $i^\text{th}$:
+\subsection*{Local Greens function for the Hubbard dimer}
+From the spectral representation, we have the following expression for the local Greens function at the $i^\text{th}$:
 \begin{equation}\begin{aligned}
 	G_{i i}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
 \end{aligned}\end{equation}
-$m,n$ sum over the exact eigenstates. $E_m, E_n$ are the corresponding energies. We are interested in teh $T \to 0$ Green's function. In that limit, all exponentials except that for the ground state $E_{gs}$ will die out. The exponential inside the summation will then cancel the exponential in the partition function.
+$m,n$ sum over the exact eigenstates. $E_m, E_n$ are the corresponding energies. We are interested in teh $T \to 0$ Greens function. In that limit, all exponentials except that for the ground state $E_{gs}$ will die out. The exponential inside the summation will then cancel the exponential in the partition function.
 \begin{equation}\begin{aligned}
 	G_{i i}^\sigma(\omega, T \to 0) &= \sum_{n}\left[||\bra{GS}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
 					&= \sum_{n}\left[||\bra{n}c^\dagger_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
@@ -308,6 +308,14 @@ The site local spectral can now be calculated:
 \begin{equation}\begin{aligned}
 	A(i\uparrow, \omega) &= - \frac{1}{\pi}\text{Im }G_{i i}^\uparrow(\omega)\\
 			     &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right] + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]
+\end{aligned}\end{equation}
+
+\subsection*{Greens functions for Anderson molecule}
+\begin{equation}\begin{aligned}
+	G_{dd}^\uparrow(\omega) &= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{d\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{d\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
+	G_{zz}^\uparrow(\omega)&= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{z\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{z\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
+	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{GS} - E_n}\right]\\
+	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right]\\
 \end{aligned}\end{equation}
 
 

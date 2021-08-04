@@ -1,6 +1,7 @@
 % !TEX TS-program = xelatex
-\documentclass{article}
-\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,geometry}
+\documentclass[12pt]{article}
+\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
+\usepackage[margin=0.5in,bottom=0.8in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
 \usepackage[stable]{footmisc}
@@ -96,15 +97,15 @@ Note that we expect most of these "rules" to be specific for the dimer, and ther
 
 The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^H_\text{GS}} &= a_1(-U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) - a_2(-U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
-	\ket{\Psi^A_\text{GS}} &= a_1(-\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) - a_2(-\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
+	\ket{\Psi^H_\text{GS}} &= a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) - a_2(U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
+	\ket{\Psi^A_\text{GS}} &= a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) - a_2(\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
 	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
 \end{aligned}\end{equation}
 where 
 \begin{equation}\begin{aligned}
-	a_1(U,t) \equiv \frac{-4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) + U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) + U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
+	a_1(U,t) \equiv \frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) - U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) - U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
 \end{aligned}\end{equation}
-$a_1,a_2$ satisfy $a_1(-U,t) = -a_2(U,t)$.
+$a_1,a_2$ satisfy $a_1(-U,t) = -a_2(U,t)$ and $a_1(U,t)a_2(U,t)= \frac{2t}{\Delta(U,t)}$.
 From the forms of the wavefunctions and eigenenergies, we can immediately write down
 \begin{equation}\begin{aligned}
 	\ket{\Psi^H_\text{GS}} &= \frac{1}{2}\left[\ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 1, z \to 2\right) + \ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 2, z \to 1\right)\right]\\
@@ -172,9 +173,8 @@ Now we come to the off-diagonal Green's function for the nearest neighbour sites
 \newpage
 \section*{Appendix}
 \subsection*{Spectra of Hubbard dimer and Anderson molecule}
-Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
-\begin{table}[htpb!]
-	\centering
+%Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
+\begin{center}
 	\begin{tabular}{|c|c|c|}
 	\hline
 	eigenstate & symbol & eigenvalue \\
@@ -184,29 +184,32 @@ Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \r
 	$\ket{\sigma,\sigma}$ & $\ket{\sigma\sigma}$ & \( -\frac{U^H}{2}\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} + \ket{\downarrow,\uparrow}\right)$ & $\ket{ST}$ & \( -\frac{U^H}{2}\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{2,0} - \ket{0,2}\right)$ & $\ket{CS}$ & \( \frac{U^H}{2}\)\\
-	$a_1(\pm U^H, t^H) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) \pm a_2(\pm U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{\pm}$ & \(\pm \frac{1}{2}\Delta(U^H, t^H)\)\\
+	$a_1(U^H, t^H) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_2(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{-}$ & \(-\frac{1}{2}\Delta(U^H, t^H)\)\\
+	$-a_2(U^H, t^H) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{+}$ & \(\frac{1}{2}\Delta(U^H, t^H)\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{\sigma,2} \pm \ket{2,\sigma}\right)$ & $\ket{2\sigma_\pm}$ & \(\pm t^H\)\\
 	$\ket{2,2}$ & $\ket{4}$ & \( \frac{U^H}{2}\)\\
 \hline
 	\end{tabular}
-	\caption{Spectrum of Hubbard dimer at half-filling}
+	\captionof{table}{Spectrum of Hubbard dimer at half-filling}
 	\label{hubb_dim_spectrum}
 	\begin{tabular}{|c|c|c|}
 	\hline
 	eigenstate & symbol & eigenvalue\\
 	\hline
 	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U^A}{4}\)\\
-	\(a_1\left(\pm U^A, t^A\right)\ket{\sigma,0} \pm a_2\left(\pm U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U^A, t^A)\)\\
+	\(a_1\left(U^A, t^A\right)\ket{\sigma,0} + a_2\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_-}\) & \(-\frac{1}{4}\Delta(U^A, t^A)\)\\
+	\(-a_2\left(U^A, t^A\right)\ket{\sigma,0} + a_1\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_+}\) & \(\frac{1}{4}\Delta(U^A, t^A)\)\\
 	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U^A}{4}\)\\
 	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U^A}{4}\)\\
 	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U^A}{4}\)\\
-	\(a_1\left(\pm \frac{U^A}{2}, t^A\right) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\right) \pm a_2\left(\pm \frac{U^A}{2}, t^A\right) \frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0, 2}\right)\) & \(\ket{\pm}\) & \(\pm\frac{1}{2}\Delta(\frac{U^A}{2}, t^A)\)\\
+	$a_1( \frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_2( \frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{-}$ & \(-\frac{1}{2}\Delta( \frac{1}{2}U^A, t^A)\)\\
+	$-a_2(\frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{+}$ & \(\frac{1}{2}\Delta(\frac{1}{2}U^A, t^A)\)\\
 	\(-a_1\left(\pm U^A, t^A\right)\ket{\sigma,2} \pm a_2\left(\pm U^A, t^A\right)\ket{2, \sigma}\) & \(\ket{2\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U^A, t^A)\)\\
 	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U^A}{4}\)\\
 	\hline
 	\end{tabular}
-	\caption{Spectrum of Anderson molecule at particle-hole symmetry}
-\end{table}	
+	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
+\end{center}
 \subsection*{Local Green's function for the Hubbard dimer}
 From the spectral representation, we have the following expression for the local Green's function at the $i^\text{th}$:
 \begin{equation}\begin{aligned}
@@ -220,24 +223,24 @@ $m,n$ sum over the exact eigenstates. $E_m, E_n$ are the corresponding energies.
 
 The ground state $\ket{GS}$ is just the state $\ket{-}$ in the table \ref{hubb_dim_spectrum}. We will choose to look at $\sigma = \uparrow`$. Then,
 \begin{equation}\begin{aligned}
-	c_{1\uparrow}\ket{-} &= \frac{a_1}{\sqrt 2}\ket{0, \downarrow} - \frac{a_2}{\sqrt 2}\ket{\downarrow,0}\\
-	c^\dagger_{1\uparrow}\ket{-} &= -\frac{a_1}{\sqrt 2}\ket{2, \uparrow} - \frac{a_2}{\sqrt 2}\ket{\uparrow,2}\\
+	c_{1\uparrow}\ket{-} &= \frac{a_1}{\sqrt 2}\ket{0, \downarrow} + \frac{a_2}{\sqrt 2}\ket{\downarrow,0}\\
+	c^\dagger_{1\uparrow}\ket{-} &= -\frac{a_1}{\sqrt 2}\ket{2, \uparrow} + \frac{a_2}{\sqrt 2}\ket{\uparrow,2}\\
 \end{aligned}\end{equation}
 The set of states $\ket{n}$ that give non-zero inner product $\ket{GS}$ are therefore
 \begin{equation}\begin{aligned}
 	\left\{ \ket{n} \right\} &= \ket{0\downarrow_\pm}\\
-	||\bra{n}c_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left(-a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \mp 2a_1a_2\right)\\
+	||\bra{n}c_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left(a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \pm 2a_1a_2\right)\\
 	\left\{ E_n \right\} &= \mp t
 \end{aligned}\end{equation}
 for the first inner product, and
 \begin{equation}\begin{aligned}
 	\left\{\ket{n}\right\} &= \ket{2\uparrow_\pm}\\
-	||\bra{n}c^\dagger_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left( a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \pm 2a_1a_2\right)\\
+	||\bra{n}c^\dagger_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left( a_2 \mp a_1 \right)^2 = \frac{1}{4}\left(1 \mp 2a_1a_2\right)\\
 	\left\{ E_n \right\} &= \pm t
 \end{aligned}\end{equation}
 for the second. The Greens function is therefore
 \begin{equation}\begin{aligned}
-	G_{i i}^\uparrow(\omega, T \to 0) &= \frac{\omega}{2}\left[\frac{1 + 2a_1(-U^H, t^H)a_2(-U^H, t^H)}{\omega^2 - \left(E_{GS} + t\right)^2} + \frac{1 - 2a_1(-U^H, t^H)a_2(-U^H, t^H)}{\omega^2 - \left(E_{GS} - t\right)^2}\right]
+	G_{i i}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2}
 \end{aligned}\end{equation}
 
 

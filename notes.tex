@@ -96,13 +96,13 @@ Note that we expect most of these "rules" to be specific for the dimer, and ther
 
 The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^H_\text{GS}} &= a_1(t^H, U^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + a_2(t^H, U^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
-	\ket{\Psi^A_\text{GS}} &= a_1(t^A, \frac{1}{2}U^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + a_2(t^A, \frac{1}{2}U^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
+	\ket{\Psi^H_\text{GS}} &= a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + a_2(U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
+	\ket{\Psi^A_\text{GS}} &= a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + a_2(\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
 	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
 \end{aligned}\end{equation}
 where 
 \begin{equation}\begin{aligned}
-	a_1(x,y) \equiv \frac{4x}{\sqrt{2\Delta(x,y)\left( \Delta(x,y) - y \right) }}, && a_2(x,y) \equiv \sqrt{\frac{\Delta(x,y) - y}{2\Delta(x,y)}}, &&\Delta(x,y) \equiv \sqrt{x^2 + y^2}\\
+	a_1(U,t) \equiv \frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) - U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) - U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
 \end{aligned}\end{equation}
 From the forms of the wavefunctions and eigenenergies, we can immediately write down
 \begin{equation}\begin{aligned}
@@ -163,19 +163,20 @@ We will now calculate the single-particle site diagonal and site offdiagonal Gre
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Grnee's function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
+Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
 \end{aligned}\end{equation}
 
+\newpage
 \section*{Appendix}
-\subsection*{Particle-Hole symmetric Hubbard dimer spectrum}
-Here we document the entire spectrum of the Hamiltonian eq.~\ref{hubb_dimer}.
-\begin{table}[htpb]
+\subsection*{Spectra of Hubbard dimer and Anderson molecule}
+Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
+\begin{table}[htpb!]
 	\centering
 	\begin{tabular}{|c|c|c|}
 	\hline
-	Wavefunction & Symbol & Eigenvalue \\
+	eigenstate & symbol & eigenvalue \\
 	\hline
 	$\ket{0,0}$ & $\ket{0}$ & \( \frac{U}{2}\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{\sigma,0} \pm \ket{0,\sigma}\right)$ & $\ket{0\sigma_\pm}$ & \(\mp t\)\\
@@ -189,7 +190,24 @@ Here we document the entire spectrum of the Hamiltonian eq.~\ref{hubb_dimer}.
 	\end{tabular}
 	\caption{Spectrum of Hubbard dimer at half-filling}
 	\label{hubb_dim_spectrum}
-\end{table}
+
+
+	\begin{tabular}{|c|c|c|}
+	\hline
+	eigenstate & symbol & eigenvalue\\
+	\hline
+	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U}{4}\)\\
+	\(-\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,0} \pm \frac{1}{\sqrt{2\Delta}}\ket{0, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U}{4}\)\\
+	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U}{4}\)\\
+	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U}{4}\)\\
+	\(-\frac{4t}{\sqrt{2\Delta(\frac{1}{2}U,t)\left( \Delta(\frac{1}{2}U,t) \pm \frac{1}{2}U\right)}}\frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\right) \pm \sqrt{\frac{1}{2} \pm \frac{1}{2}\frac{U/2}{\Delta(\frac{U}{2},t)}}\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0, 2}\right)\) & \(\ket{\pm}\) & \(\pm\frac{1}{2}\Delta(\frac{U}{2},t)\)\\
+	\(\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,2} \pm \frac{1}{\sqrt{2\Delta}}\ket{2, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U}{4}\)\\
+	\hline
+	\end{tabular}
+	\caption{Spectrum of Anderson molecule at particle-hole symmetry}
+\end{table}	
 \subsection*{Local Green's function for the Hubbard dimer}
 From the spectral representation, we have the following expression for the local Green's function at the $i^\text{th}$:
 \begin{equation}\begin{aligned}
@@ -222,6 +240,7 @@ for the second. The Greens function is therefore
 \begin{equation}\begin{aligned}
 	G_{i i}^\sigma(\omega, T \to 0) &= \frac{1}{2}\left[\frac{1}{\omega + E_{GS} + t} + \frac{1}{\omega + E_{GS} - t}\right]
 \end{aligned}\end{equation}
+
 
 
 \bibliographystyle{unsrt}

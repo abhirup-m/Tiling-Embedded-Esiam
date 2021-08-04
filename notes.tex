@@ -138,9 +138,11 @@ The factor of 2 in front of \(t^A\) appears because each nearest neighbour pair 
 \end{aligned}\end{equation}
 For the dimer versions, we had \(N=2, w=1\) and if we substitute these values into the transformations we recover the transformations we had discovered that worked for the dimer. The Hubbard Hamiltonian can thus be obtained from the Anderson dimer using the following equation
 \begin{equation}\begin{aligned}
+	\label{H_tiled}
 	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
-In terms of the Green's function, this equation becomes
+\section{Computing Greens functions and related quantities}
+In terms of the Green's function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
 	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\left(\omega - {G_A}^{-1}(\omega)\right)\left(d, z \to i,j\right) + \left(\omega - {G_A}^{-1}(\omega)\right)\left(d,z \to j,i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
@@ -167,8 +169,68 @@ We will now calculate the single-particle site diagonal and site offdiagonal Gre
 \end{aligned}\end{equation}
 Now we come to the off-diagonal Green's function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Green's functions:
 \begin{equation}\begin{aligned}
-	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,j\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
 \end{aligned}\end{equation}
+Since the only real-space interaction is that between the nearest neighbours, there are no further real space Green's functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. For brevity, we therefore label them $g_0$ and $g_1$ respectively. 
+\begin{equation}\begin{aligned}
+	g_0 &\equiv \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]\\
+	g_1 &\equiv \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+\end{aligned}\end{equation}
+
+\begin{equation}\begin{aligned}
+	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\
+		\left(G^{-1}\right)_{10} & \left(G^{-1}\right)_{11} & \left(G^{-1}\right)_{12} & ... & ...\\
+		... & \left(G^{-1}\right)_{21} & \left(G^{-1}\right)_{22} & \left(G^{-1}\right)_{23} & ... \\
+		    &&.&&\\
+		    &&.&&\\
+		    &&.&&\\
+\end{pmatrix} = \begin{pmatrix} g_0 & g_1 & ... & ... & g_1\\
+		g_1 & g_0 & g_1 & ... & ...\\
+		... & g_1 & g_0 & g_1 & ... \\
+		    &&...&&\\
+		    &&...&&\\
+\end{pmatrix} 
+\end{aligned}\end{equation}
+It can be written in the operator form as
+\begin{equation}\begin{aligned}
+	G_H^{-1}(\omega) = g_0\sum_{i=1}^N\ket{i}\bra{i} + g_1\sum_{\left<i,j \right>}^N\left( \ket{i}\bra{j} + \text{h.c.}\right)
+\end{aligned}\end{equation}
+We can Fourier transform the real space basis kets $\ket{i} \equiv \ket{\vec r_i}$ into momentum space:
+\begin{equation}\begin{aligned}
+	\ket{i} &= \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\vec k}\\
+	\sum_i \ket{i}\bra{i} &= \frac{1}{N}\sum_i \sum_{\vec k, \vec q} e^{i \left(\vec{k} - \vec q\right)\cdot\vec{r_i}}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\sum_{\vec k, \vec q} N \delta\left(\vec{k} - \vec q\right)\ket{\vec k}\bra{\vec q} = \sum_{\vec k=\vec k_1}^{\vec k_N} \ket{\vec k}\bra{\vec k}\\
+\sum_{\left<i,j \right>} \ket{i}\bra{j} &= \frac{1}{N}\sum_{\left<i,j \right>} \sum_{\vec k, \vec q} e^{i \left(\vec{k}\cdot \vec r_i - \vec q\cdot \vec r_j\right)}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\sum_{i=1}^N e^{i \left(\vec{k} - \vec q\right)\cdot \vec r_i}\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec k, \vec q} e^{-i\vec q\cdot a_i\hat e_i}\ket{\vec k}\bra{\vec q}\\
+					&=\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec q} e^{-i\vec q\cdot \vec e_i}\ket{\vec q}\bra{\vec q} = \sum_{\vec q} \left(\sum_{i_1}^{D}e^{-ia_iq_i}\right)\ket{\vec q}\bra{\vec q}
+\end{aligned}\end{equation}
+$\hat e_i$ are the primitive lattice unit vectors for the general $d-$dimensional lattice. $q_i$ are the projections of $\vec q$ along those vectors. $a_i$ are the lattice spacings along each primitive vector. Adding the Hermitian conjugate simply extracts the real part:
+\begin{equation}\begin{aligned}
+	\sum_i \ket{i}\bra{i} =\sum_{\vec q} \underbrace{\sum_{i_1}^{D}2\cos\left(a_iq_i\right)}_{\equiv \xi_{\vec q}}\ket{\vec q}\bra{\vec q}
+\end{aligned}\end{equation}
+The inverse Greens function thus becomes diagonal in momentum space
+\begin{equation}\begin{aligned}
+G_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)\ket{\vec k}\bra{\vec k} = \begin{pmatrix} g_0 + g_1\xi_{\vec k_1} &&& \\
+	& g_0 + g_1\xi_{\vec k_2} && \\
+	&& g_0 + g_1\xi_{\vec k_3} & \\
+	...&...&...&\\
+	\end{pmatrix} 
+\end{aligned}\end{equation}
+The matrix is of course written in momentum space. Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix trivially by replacing the diagonal elements with their reciprocals.
+\begin{equation}\begin{aligned}
+	G_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&& \\
+	& \left(g_0 + g_1\xi_{\vec k_2}\right)^{-1} && \\
+	&& \left(g_0 + g_1\xi_{\vec k_3}\right)^{-1} & \\
+	...&...&...&\\
+	\end{pmatrix} 
+\end{aligned}\end{equation}
+The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$.
+\begin{equation}\begin{aligned}
+	G_H(\vec k, \omega) &= g_0 + g_1 \xi_{\vec k}\\
+			    &= \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right] + \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]\xi_{\vec k}
+\end{aligned}\end{equation}
+
+
+
+
 
 \newpage
 \section*{Appendix}

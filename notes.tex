@@ -96,13 +96,13 @@ Note that we expect most of these "rules" to be specific for the dimer, and ther
 
 The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^H_\text{GS}} &= a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) + a_2(U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
-	\ket{\Psi^A_\text{GS}} &= a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) + a_2(\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
+	\ket{\Psi^H_\text{GS}} &= a_1(-U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) - a_2(-U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
+	\ket{\Psi^A_\text{GS}} &= a_1(-\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) - a_2(-\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
 	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
 \end{aligned}\end{equation}
 where 
 \begin{equation}\begin{aligned}
-	a_1(U,t) \equiv \frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) - U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) - U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
+	a_1(U,t) \equiv \frac{-4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) + U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) + U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
 \end{aligned}\end{equation}
 From the forms of the wavefunctions and eigenenergies, we can immediately write down
 \begin{equation}\begin{aligned}
@@ -183,7 +183,7 @@ Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \r
 	$\ket{\sigma,\sigma}$ & $\ket{\sigma\sigma}$ & \( -\frac{U}{2}\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} + \ket{\downarrow,\uparrow}\right)$ & $\ket{ST}$ & \( -\frac{U}{2}\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{2,0} - \ket{0,2}\right)$ & $\ket{CS}$ & \( \frac{U}{2}\)\\
-	$a_1(t,U) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) \pm a_2(t,U)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{\pm}$ & \(\pm \frac{1}{2}\Delta(t, U)\)\\
+	$a_1(U, t) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) \pm a_2(U, t)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{\pm}$ & \(\pm \frac{1}{2}\Delta(t, U)\)\\
 	$ \frac{1}{\sqrt 2}\left(\ket{\sigma,2} \pm \ket{2,\sigma}\right)$ & $\ket{2\sigma_\pm}$ & \(\pm t\)\\
 	$\ket{2,2}$ & $\ket{4}$ & \( \frac{U}{2}\)\\
 \hline
@@ -197,12 +197,12 @@ Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \r
 	eigenstate & symbol & eigenvalue\\
 	\hline
 	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U}{4}\)\\
-	\(-\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,0} \pm \frac{1}{\sqrt{2\Delta}}\ket{0, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(-a_1\left(\pm U, t\right)\ket{\sigma,0} \pm a_2\left(\pm U, t\right)\ket{0, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
 	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U}{4}\)\\
 	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U}{4}\)\\
 	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U}{4}\)\\
-	\(-\frac{4t}{\sqrt{2\Delta(\frac{1}{2}U,t)\left( \Delta(\frac{1}{2}U,t) \pm \frac{1}{2}U\right)}}\frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\right) \pm \sqrt{\frac{1}{2} \pm \frac{1}{2}\frac{U/2}{\Delta(\frac{U}{2},t)}}\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0, 2}\right)\) & \(\ket{\pm}\) & \(\pm\frac{1}{2}\Delta(\frac{U}{2},t)\)\\
-	\(\frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) \pm U\right)}}\ket{\sigma,2} \pm \frac{1}{\sqrt{2\Delta}}\ket{2, \sigma}\) & \(\ket{0\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
+	\(a_1\left(\pm \frac{U}{2}, t\right) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\right) \pm a_2\left(\pm \frac{U}{2}, t\right) \frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0, 2}\right)\) & \(\ket{\pm}\) & \(\pm\frac{1}{2}\Delta(\frac{U}{2},t)\)\\
+	\(a_1\left(\pm U, t\right)\ket{\sigma,2} \pm a_2\left(\pm U, t\right)\ket{2, \sigma}\) & \(\ket{2\sigma_\pm}\) & \(\pm\frac{1}{4}\Delta(U,t)\)\\
 	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U}{4}\)\\
 	\hline
 	\end{tabular}

@@ -1,18 +1,18 @@
 % !TEX TS-program = xelatex
 \documentclass[12pt]{article}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=0.5in,bottom=0.6in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
 \usepackage[stable]{footmisc}
 \renewcommand{\arraystretch}{1.9}
 \setlength\delimitershortfall{-2pt}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot{}
-\fancyhead[L]{\nouppercase\leftmark}    
-\fancyhead[R]{\thepage}    
-\setlength{\headheight}{52pt}
+%\pagestyle{fancy}
+%\fancyhf{}
+%\fancyfoot{}
+%\fancyhead[L]{\nouppercase\leftmark}    
+%\fancyhead[R]{\thepage}    
+%\setlength{\headheight}{52pt}
 \setcounter{tocdepth}{1}
 \DeclareMathOperator{\sech}{sech}
 \raggedbottom
@@ -233,8 +233,7 @@ The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)
 
 
 \newpage
-\section*{Appendix}
-\subsection*{Spectra of Hubbard dimer and Anderson molecule}
+\section*{Appendix: Spectra of Hubbard dimer and Anderson molecule}
 %Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
 \begin{center}
 	\begin{tabular}{|c|c|c|}
@@ -273,7 +272,7 @@ The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)
 	\end{tabular}
 	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
 \end{center}
-\subsection*{Local Greens function for the Hubbard dimer}
+\section*{Appendix: Local Greens function for the Hubbard dimer}
 From the spectral representation, we have the following expression for the local Greens function at the $i^\text{th}$:
 \begin{equation}\begin{aligned}
 	G_{i i}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
@@ -311,23 +310,43 @@ The site local spectral can now be calculated:
 			     &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right] + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]
 \end{aligned}\end{equation}
 
-\subsection*{Greens functions for Anderson molecule}
+\section*{Appendix: Greens functions for Anderson molecule}
 \begin{equation}\begin{aligned}
 	G_{dd}^\uparrow(\omega) &= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{d\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{d\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
 	G_{zz}^\uparrow(\omega)&= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{z\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{z\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
-	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{GS} - E_n}\right]\\
-	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right]\\
+	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{n} - E_{GS}}\right]\\
+	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right] = \left\{G_{dz}^\uparrow(\omega)\right\}^\dagger\\
 \end{aligned}\end{equation}
-The diagonal Green's functions are
+We proceed exactly as before. With the following shorthand notations,
 \begin{equation}\begin{aligned}
-	G_{d d}^\uparrow(\omega) &= \left[a_1(U^A, t^A)a_2\left(\frac{1}{2}U^A, t^A\right) + a_2(U^A, t^A)a_1\left(\frac{1}{2}U^A, t^A\right)\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right) - \frac{1}{2}\Delta\left( U^A, t^A \right)\right]^2 } \\
-				 &+\left[a_1(U^A, t^A)a_1\left(\frac{1}{2}U^A, t^A\right) - a_2(U^A, t^A)a_2\left(\frac{1}{2}U^A, t^A\right)\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right) + \frac{1}{2}\Delta\left( U^A, t^A \right)\right]^2 }
+	a_{1,2} &\equiv a_{1,2}\left(U^A, t^A\right), &&\tilde a_{1,2} \equiv a_{1,2}\left(\frac{1}{2}U^A, t^A\right) \\
+	\Delta &\equiv \Delta\left(U^A, t^A\right), &&\tilde \Delta \equiv \Delta\left(\frac{1}{2}U^A, t^A\right)\\
+	C_z^\pm &\equiv a_1 \tilde a_1 \pm a_2 \tilde a_2, &&C_x^\pm \equiv a_1 \tilde a_2 \pm a_2 \tilde a_1
 \end{aligned}\end{equation}
 \begin{equation}\begin{aligned}
-	G_{z z}^\uparrow(\omega) &= \left[a_1(U^A, t^A)a_1\left(\frac{1}{2}U^A, t^A\right) + a_2(U^A, t^A)a_2\left(\frac{1}{2}U^A, t^A\right)\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right) - \frac{1}{2}\Delta\left( U^A, t^A \right)\right]^2 } \\
-				 &+\left[a_1(U^A, t^A)a_2\left(\frac{1}{2}U^A, t^A\right) - a_2(U^A, t^A)a_1\left(\frac{1}{2}U^A, t^A\right)\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right) + \frac{1}{2}\Delta\left( U^A, t^A \right)\right]^2 }
+	E_{\pm} \equiv E(\ket{2\sigma_\pm}) - E(\ket{-}) = E(\ket{0\sigma_\pm}) - E(\ket{-}) = \frac{1}{2}\tilde\Delta \pm \frac{1}{4}\Delta\\
 \end{aligned}\end{equation}
-
+the diagonal Green's functions are
+\begin{equation}\begin{aligned}
+	G_{d d}^\uparrow(\omega) &= \left[a_1\tilde a_2 + a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_1 - a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
+				 &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	G_{z z}^\uparrow(\omega) &= \left[a_1\tilde a_1 + a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_2 - a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
+				 &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
+\end{aligned}\end{equation}
+and the off-diagonal Greens functions are
+\begin{equation}\begin{aligned}
+	G_{dz}^\uparrow(\omega) &= \left(a_1 \tilde a_1 + a_2 \tilde a_2\right) \left(a_1 \tilde a_2 + a_2 \tilde a_1\right) \frac{\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta}{\omega^2 - \left(\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta\right)^2} - \left(a_1 \tilde a_1 - a_2 \tilde a_2\right) \left(a_1 \tilde a_2 - a_2 \tilde a_1\right) \frac{\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta}{\omega^2  - \left(\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right)^2}\\
+				&= -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}\\
+G_{zd}^\uparrow(\omega) &= {G_{dz}^\uparrow(\omega)}^\dagger = G_{dz}^\uparrow(\omega)
+\end{aligned}\end{equation}
+To summarize, the four Green's real space Greens functions, in the compact notation, of the Anderson molecule are
+\begin{equation}\begin{aligned}
+	G_{dd}^\uparrow(\omega) &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
+	G_{zz}^\uparrow(\omega) &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
+	G_{dz}^\uparrow(\omega) &= G_{zd}^\uparrow(\omega) = -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}
+\end{aligned}\end{equation}
 
 \bibliographystyle{unsrt}
 \bibliography{notes}

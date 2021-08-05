@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  5 AUG 2021 11:18
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  5 AUG 2021 15:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -656,28 +656,28 @@ Package amsmath Warning: Foreign command \atop;
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 116.
 
-[5] [6] [7] [8]
+[5] [6] [7] [8] [9]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 254.
+(caption)                particular \caption on input line 271.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 273.
+(caption)                particular \caption on input line 290.
 See the caption package documentation for explanation.
 
-[9] [10] [11] (./notes.bbl) [12] (./notes.aux)
+[10] [11] [12] (./notes.bbl) [13] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: E35A6295B0C61F06B8C82B060F478765;1421.
+(rerunfilecheck)             Checksum: C1687EEAA3045EB6BBC2974BC95ED15D;1586.
  ) 
 Here is how much of TeX's memory you used:
- 21843 strings out of 476919
- 386426 string characters out of 5827674
- 703761 words of memory out of 5000000
- 41464 multiletter control sequences out of 15000+600000
+ 21845 strings out of 476919
+ 386455 string characters out of 5827674
+ 704010 words of memory out of 5000000
+ 41466 multiletter control sequences out of 15000+600000
  438231 words of font info for 73 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  86i,18n,89p,1312b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (12 pages, 75836 bytes).
+Output written on notes.xdv (13 pages, 80244 bytes).

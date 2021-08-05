@@ -224,14 +224,31 @@ The matrix is of course written in momentum space. Since $G_H^{-1}(\omega)$ is d
 \end{aligned}\end{equation}
 The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$.
 \begin{equation}\begin{aligned}
-	G_H(\vec k, \omega) &= g_0 + g_1 \xi_{\vec k}\\
-			    &= \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right] + \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]\xi_{\vec k}
+	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
+			    &= \left\{\frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right] + \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]\xi_{\vec k}\right\}^{-1}
 \end{aligned}\end{equation}
 
-
-
-
-
+\section{Why this does not work}
+Armed with the expression for the momentum space Greens function, one can compute the real space local Green's function by summing over the momenta:
+\begin{equation}\begin{aligned}
+	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+\end{aligned}\end{equation}
+For the Hubbard dimer, the set of momenta are $0, \frac{\pi}{a}$, so
+\begin{equation}\begin{aligned}
+	\xi_{\vec k} = 2, -2
+\end{aligned}\end{equation}
+Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expressed as
+\begin{equation}\begin{aligned}
+	G_H(\vec r = 0, \omega) = \frac{1}{2}\left[\frac{1}{g_0 + 2g_1} + \frac{1}{g_0 - 2g_1}\right]  = \frac{g_0}{g_0^2 - 4g_1^2}
+\end{aligned}\end{equation}
+$g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Anderson molecule. The inverse of a $2\times 2$ matrix is
+\begin{equation}\begin{aligned}
+	G_A^{-1} = \frac{1}{\text{Det }G_A}\begin{pmatrix} \left(G_A\right)_{zz} &  -\left(G_A\right)_{zd} \\ -\left(G_A\right)_{zd} & \left(G_A\right)_{dd}\end{pmatrix} \implies \begin{cases}
+		g_0 = \frac{1}{2} \frac{1}{\text{Det }G_A}\left[\left(G_A\right)_{zz} + \left(G_A\right)_{dd}\right] \\
+		g_1 = -\frac{1}{\text{Det }G_A}\left(G_A\right)_{zd} \\
+	\end{cases}
+\end{aligned}\end{equation}
+The matrix elements of $G_A$ are calculated in the appendix. The actual real space local Greens function for the Hubbard dimer is also shown there. By comparing the Greens functions (for eg., eqs.~\ref{dimer_local_G} and \ref{mole_local_G}), one can see that the structures of the denominators are different. This is because of the fact that the eigenvalues for $n=1$ or $n=3$ of the Hubbard dimer are different from that for the Anderson molecule. This indicates that we need to change the auxiliary system (SIAM with non-interacting zero mode).
 \newpage
 \section*{Appendix: Spectra of Hubbard dimer and Anderson molecule}
 %Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
@@ -302,6 +319,7 @@ for the first inner product, and
 \end{aligned}\end{equation}
 for the second. The Greens function is therefore
 \begin{equation}\begin{aligned}
+	\label{dimer_local_G}
 	G_{i i}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2}
 \end{aligned}\end{equation}
 The site local spectral can now be calculated:
@@ -328,6 +346,7 @@ We proceed exactly as before. With the following shorthand notations,
 \end{aligned}\end{equation}
 the diagonal Green's functions are
 \begin{equation}\begin{aligned}
+	\label{mole_local_G}
 	G_{d d}^\uparrow(\omega) &= \left[a_1\tilde a_2 + a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_1 - a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
 				 &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
 \end{aligned}\end{equation}

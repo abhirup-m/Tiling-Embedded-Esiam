@@ -241,6 +241,30 @@ The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)
 	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
 			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
 \end{aligned}\end{equation}
+Armed with the expression for the momentum space Greens function, one can compute the real space local Green's function by summing over the momenta:
+\begin{equation}\begin{aligned}
+	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+\end{aligned}\end{equation}
+For the Hubbard dimer, the set of momenta are $0, \frac{\pi}{a}$, so
+\begin{equation}\begin{aligned}
+	\xi_{\vec k} = 2, -2
+\end{aligned}\end{equation}
+Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expressed as
+\begin{equation}\begin{aligned}
+	G_H(\vec r = 0, \omega) = \frac{1}{2}\left[\frac{1}{g_0 + 2g_1} + \frac{1}{g_0 - 2g_1}\right]  = \frac{g_0}{g_0^2 - 4g_1^2}
+\end{aligned}\end{equation}
+$g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Hubbard dimer. The inverse of a $2\times 2$ matrix is
+\begin{equation}\begin{aligned}
+	G_D^{-1} = \frac{1}{\text{Det }G_D}\begin{pmatrix} \left(G_D\right)_{00} &  -\left(G_D\right)_{01} \\ -\left(G_D\right)_{01} & \left(G_D\right)_{00}\end{pmatrix} \implies \begin{cases}
+		g_0 = \frac{2}{2} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00} \\
+		\\
+		g_1 = -\frac{2}{2\times 1}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} \\
+	\end{cases}
+\end{aligned}\end{equation}
+Substituting these values into the expression gives
+\begin{equation}\begin{aligned}
+	G_H(\vec r = 0, \omega) = \text{Det }G_D\frac{g_0}{g_0^2 - 4g_1^2}
+\end{aligned}\end{equation}
 
 \newpage
 \section*{Appendix: Spectra of Hubbard dimer and Anderson molecule}

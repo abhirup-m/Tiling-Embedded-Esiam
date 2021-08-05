@@ -1,0 +1,30 @@
+
+%\section{Why this does not work}
+%Armed with the expression for the momentum space Greens function, one can compute the real space local Green's function by summing over the momenta:
+%\begin{equation}\begin{aligned}
+%	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+%\end{aligned}\end{equation}
+%For the Hubbard dimer, the set of momenta are $0, \frac{\pi}{a}$, so
+%\begin{equation}\begin{aligned}
+%	\xi_{\vec k} = 2, -2
+%\end{aligned}\end{equation}
+%Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expressed as
+%\begin{equation}\begin{aligned}
+%	G_H(\vec r = 0, \omega) = \frac{1}{2}\left[\frac{1}{g_0 + 2g_1} + \frac{1}{g_0 - 2g_1}\right]  = \frac{g_0}{g_0^2 - 4g_1^2}
+%\end{aligned}\end{equation}
+%$g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Anderson molecule. The inverse of a $2\times 2$ matrix is
+%\begin{equation}\begin{aligned}
+%	G_A^{-1} = \frac{1}{\text{Det }G_A}\begin{pmatrix} \left(G_A\right)_{zz} &  -\left(G_A\right)_{zd} \\ -\left(G_A\right)_{zd} & \left(G_A\right)_{dd}\end{pmatrix} \implies \begin{cases}
+%		g_0 = \frac{1}{2} \frac{1}{\text{Det }G_A}\left[\left(G_A\right)_{zz} + \left(G_A\right)_{dd}\right] \\
+%		g_1 = -\frac{1}{\text{Det }G_A}\left(G_A\right)_{zd} \\
+%	\end{cases}
+%\end{aligned}\end{equation}
+%The matrix elements of $G_A$ are calculated in the appendix. The actual real space local Greens function for the Hubbard dimer is also shown there. By comparing the Greens functions (for eg., eqs.~\ref{dimer_local_G} and \ref{mole_local_G}), one can see that the structures of the denominators are different. This is because of the fact that the eigenvalues for $n=1$ or $n=3$ of the Hubbard dimer are different from that for the Anderson molecule. This indicates that we need to change the auxiliary system (SIAM with non-interacting zero mode).
+%\section{Changing the auxiliary system}
+%In the previous approach, we realized that the reason for the inequality of the Greens functions was because of the dissimilarity of the $n=1,3$ subspaces of the Anderson molecule as compared to the Hubbard dimer. This similarity is in general because of the lack of any correlation on the zero mode site of the Anderson molecule. To rectify this, we start with an Anderson model (bare model, not effective theory) that has a correlated bath which hybridizes with the impurity. This is ensured by assuming a self-energy $\Sigma(\vec k, \omega)$ for the conduction bath.
+%\\\\
+%Upon doing URG analysis on this auxiliary system, we will again end up with a low energy effective theory which now, crucially, has a correlated cloud of electrons that interact with the impurity. When we will take the zero mode of this momentum space correlation, we will end up with a real space local correlation on the zero mode. This local correlation on the zero mode can be represented at the level of the Hamiltonian by a new term $u \hat n_{z \uparrow} \hat n_{z \downarrow}$, $z$ being, as usual, the label for the zero mode site, and $u$ the correlation energy cost for the zero mode site. The full fixed point (zero mode) Hamiltonian would look like
+%\begin{equation}\begin{aligned}
+%	H^A = -t^A\sum_\sigma\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A \hat \tau_{d \uparrow} \tau_{d \downarrow} + u^A\hat \tau_{z \uparrow} \tau_{z \downarrow}
+%\end{aligned}\end{equation}
+%This is a generalized Anderson molecule, one that has correlations on both sites. One can now, in principle, choose a suitable $\Sigma(\vec k,\omega)$ and perform the URG such that at the fixed point we have $U^A = u^A$. For this condition, the spectrum of the fixed point Hamiltonian will match that of the Hubbard dimer completely. This match provides a much better chance of matching physical quantities for the general Hubbard model.

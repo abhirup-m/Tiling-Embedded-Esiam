@@ -136,47 +136,61 @@ The factor of 2 in front of \(t^A\) appears because each nearest neighbour pair 
 \begin{equation}\begin{aligned}
 	\frac{2}{Nw}t^A \to t^H, && \frac{1}{N}U^A \to U^H
 \end{aligned}\end{equation}
-For the dimer versions, we had \(N=2, w=1\) and if we substitute these values into the transformations we recover the transformations we had discovered that worked for the dimer. The Hubbard Hamiltonian can thus be obtained from the Anderson dimer using the following equation
+For the dimer versions, we had \(N=2, w=1\) and if we substitute these values into the transformations we recover the transformations we had discovered that worked for the dimer. The Hubbard Hamiltonian can thus be obtained from the Anderson molecule using the following equation:
 \begin{equation}\begin{aligned}
-	\label{H_tiled}
 	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
+The combination that is being summed over,
+\begin{equation}\begin{aligned}
+	H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right)
+\end{aligned}\end{equation}
+is actually a Hubbard dimer Hamiltonian.
+\begin{equation}\begin{aligned}
+	&H^D(U^D, t^D) \equiv -t^D\sum_\sigma\left( c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.} \right) + U^D\left( \tau_{0 \uparrow}\tau_{0 \downarrow} + \tau_{1 \uparrow}\tau_{1 \downarrow}\right)\\
+	&H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right) = -2t^A\sum_\sigma\left( c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.} \right) + U^A\left( \tau_{i \uparrow}\tau_{i \downarrow} + \tau_{i \uparrow}\tau_{i \downarrow}\right)\\
+	\implies &H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right) = H^D(0 \to i, 1 \to j, t^D \to 2t^A, U^D \to U^A)
+\end{aligned}\end{equation}
+The tiling can thus be actually done in terms of Hubbard dimers:
+\begin{equation}\begin{aligned}
+	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^D\left(1 \to i, 2 \to j\right)\right]_{t^D \to Nwt^H \atop{U^A \to N U^H}}
+\end{aligned}\end{equation}
+For reasons that will become apparent later, we will scale the internal Hubbard dimer by half, pulling out a two:
+\begin{equation}\begin{aligned}
+	\label{H_tiled}
+	H^H\left(t^H, U^H\right)  = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[H^D\left(1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}}
+\end{aligned}\end{equation}
+
+
 \section{Computing Greens functions and related quantities}
 In terms of the Greens function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
-	\omega - {G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\left(\omega - {G_A}^{-1}(\omega)\right)\left(d, z \to i,j\right) + \left(\omega - {G_A}^{-1}(\omega)\right)\left(d,z \to j,i\right)\right]_{t^A \to \frac{Nw}{2}t^H \atop{U^A \to N U^H}}
+	\omega - {G_H}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[\omega - G_D^{-1}\left(1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}}
 \end{aligned}\end{equation}
-where $G_H$ and $G_A$ are the Hubbard and SIAM Greens functions:
+where $G_H$ and $G_A$ are the Greens functions for the full Hubbard and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
-	G_H(\omega) = \frac{1}{\omega - H_H}, && G_A(\omega) = \frac{1}{\omega - H_A}
+	G_H(\omega) = \frac{1}{\omega - H^H}, && G_D(\omega) = \frac{1}{\omega - H^D}
 \end{aligned}\end{equation}
-Since the two $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. Each will come with a factor which is just the total number of nearest neighbour pairs, which is $ \frac{Nw}{2}$. This allows them to cancel the $\omega$ on the LHS. The equation then simplifies to
+Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
 \begin{equation}\begin{aligned}
 	\label{green_eq_final}
-	{G_H}^{-1}(\omega) = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[\tilde G_A^{-1}(\omega, i, j) + \tilde G_A^{-1}(\omega, j, i)\right]
+{G_H}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[G_D^{-1}\left(\omega, 1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}} = \frac{2}{Nw}\sum_{\left<i,j\right>}G_D^{-1}\left(\omega, i, j, t^D = \frac{1}{2}Nwt^H, U^D = \frac{1}{2}N U^H\right)
 \end{aligned}\end{equation}
-where $\tilde G_A^{-1}(\omega, i, j) = \omega - \tilde H^A(i, j)$, and $H^A(i, j)$ is defined as
+where $G_D^{-1}(i,j,t^D,U^D)$ is the Greens function (matrix) of the Hubbard dimer Hamiltonian with $i, j$ as the two sites. Henceforth, we will supress the transformation rules in the arguments of the Greens function and assume they have been applied. For the record, the transformations are
 \begin{equation}\begin{aligned}
-	\tilde H^A(i, j) = -\frac{Nw}{2}t^H\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + N U^H\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+	t^D &= \frac{1}{2}Nwt^H\\
+	U^D &= \frac{1}{2}N U^H
 \end{aligned}\end{equation}
-$\tilde H^A(i, j)$ is nothing but the Anderson molecule Hamiltonian, but with the impurity replaced by the $i^\text{th}$ site and the zero-mode replaced by the $j^\text{th}$ site. It is important to note that $\tilde G_A^{-1}(\omega, i, j)$ only scatters between the sites $i,j$.
-
-
-We will now calculate the single-particle site diagonal and site offdiagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Each such pair will have two terms, one with $i$ as the impurity and another with $i$ as the zero-mode. For the term that has $i$ as the impurity, the Greens function would then represent the impurity-diagonal Greens function $(G_{dd}^\sigma)$ of the zero-mode SIAM, while for the other term, the Greens function would represent the bath-diagonal or the zero-mode diagonal Greens function $(G_{zz}^\sigma)$.
+\\\\
+We will now calculate the single-particle site diagonal and site offdiagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[G_D^{-1}(\omega)\right]_{00\sigma}$. The entire thing is thus $w$ times this local Greens function.
 \begin{equation}\begin{aligned}
-	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]
+	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{00\sigma}\times w = \frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} \equiv g_0
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. The two terms for this nearest neighbour pair will be one for impurity as $i$ and the other for impurity as $j$. The Greens function will thus be the impurity-zero mode and zero mode-impurity Greens functions:
+Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01\sigma}$.
 \begin{equation}\begin{aligned}
-	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
+	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma} \equiv g_1
 \end{aligned}\end{equation}
-Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. For brevity, we therefore label them $g_0$ and $g_1$ respectively. 
-\begin{equation}\begin{aligned}
-	g_0 &\equiv \frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right]\\
-	g_1 &\equiv \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]
-\end{aligned}\end{equation}
-
+Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. 
 \begin{equation}\begin{aligned}
 	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\
 		\left(G^{-1}\right)_{10} & \left(G^{-1}\right)_{11} & \left(G^{-1}\right)_{12} & ... & ...\\
@@ -225,30 +239,9 @@ The matrix is of course written in momentum space. Since $G_H^{-1}(\omega)$ is d
 The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$.
 \begin{equation}\begin{aligned}
 	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
-			    &= \left\{\frac{1}{N}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-d\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-z\sigma}\right] + \frac{1}{Nw}\left[\left(\tilde G_{A}^{-1}(\omega)\right)_{d\sigma-z\sigma} + \left(\tilde G_{A}^{-1}(\omega)\right)_{z\sigma-d\sigma}\right]\xi_{\vec k}\right\}^{-1}
+			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
 \end{aligned}\end{equation}
 
-\section{Why this does not work}
-Armed with the expression for the momentum space Greens function, one can compute the real space local Green's function by summing over the momenta:
-\begin{equation}\begin{aligned}
-	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
-\end{aligned}\end{equation}
-For the Hubbard dimer, the set of momenta are $0, \frac{\pi}{a}$, so
-\begin{equation}\begin{aligned}
-	\xi_{\vec k} = 2, -2
-\end{aligned}\end{equation}
-Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expressed as
-\begin{equation}\begin{aligned}
-	G_H(\vec r = 0, \omega) = \frac{1}{2}\left[\frac{1}{g_0 + 2g_1} + \frac{1}{g_0 - 2g_1}\right]  = \frac{g_0}{g_0^2 - 4g_1^2}
-\end{aligned}\end{equation}
-$g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Anderson molecule. The inverse of a $2\times 2$ matrix is
-\begin{equation}\begin{aligned}
-	G_A^{-1} = \frac{1}{\text{Det }G_A}\begin{pmatrix} \left(G_A\right)_{zz} &  -\left(G_A\right)_{zd} \\ -\left(G_A\right)_{zd} & \left(G_A\right)_{dd}\end{pmatrix} \implies \begin{cases}
-		g_0 = \frac{1}{2} \frac{1}{\text{Det }G_A}\left[\left(G_A\right)_{zz} + \left(G_A\right)_{dd}\right] \\
-		g_1 = -\frac{1}{\text{Det }G_A}\left(G_A\right)_{zd} \\
-	\end{cases}
-\end{aligned}\end{equation}
-The matrix elements of $G_A$ are calculated in the appendix. The actual real space local Greens function for the Hubbard dimer is also shown there. By comparing the Greens functions (for eg., eqs.~\ref{dimer_local_G} and \ref{mole_local_G}), one can see that the structures of the denominators are different. This is because of the fact that the eigenvalues for $n=1$ or $n=3$ of the Hubbard dimer are different from that for the Anderson molecule. This indicates that we need to change the auxiliary system (SIAM with non-interacting zero mode).
 \newpage
 \section*{Appendix: Spectra of Hubbard dimer and Anderson molecule}
 %Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.

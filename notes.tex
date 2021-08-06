@@ -1,6 +1,7 @@
 % !TEX TS-program = xelatex
 \documentclass[12pt]{article}
-\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
+%\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
+\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
 \usepackage[margin=0.5in,bottom=0.6in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
@@ -51,7 +52,14 @@ The subsystem 1 is usually taken to be the "smaller system", and consequently, s
 The algorithm of DMFT then involves starting with some local self-energy of the bath, \(\Sigma(\omega)\), and using an impurity solver to calculate the impurity Greens function in the presence of this self-energy. This impurity Greens function is then used to calculate the impurity self-energy \(\Sigma_d(\omega)\), and the self-energy of the bath is then set equal to this impurity self-energy: \(\Sigma(\omega) = \Sigma_d(\omega)\), because we expect, on grounds of the lattice symmetry, that the impurity is the same as any other site in the bath. This is said to be the self-consistency step, because the bath self-energy is completely determined only at the end. With this updated bath self-energy, one then repeats the entire process until there is no further change in the bath self-energy at the self-consistency step.
 
 
-The present method intends to calculate the quantities in a different fashion. We start with a SIAM (possibly with a correlated bath having a non-trivial self-energy), and solve it using the unitary renormalisation group approach to get to a fixed-point Hamiltonian. At the fixed-point, assuming the couplings are much larger compared to the kinetic energy, we can approximate the Hamiltonian by a zero-mode of the kinetic energy part, which leads to a two-site Anderson molecule Hamiltonian. Such a model is exactly solvable. Armed with such a groundstate, we will then create the wavefunction of the entire Hubbard Hamiltonian by combining them according to a prescription which is guided by the symmetries of the problem. The impurity electron will be read off as an arbitrary site, \(p\), of the lattice, while the zero-mode site becomes the site that is nearest to it. There are also integrals of motion that come out of the URG, they make up the rest of the sites in the lattice. We will first demonstrate this explicitly for the Hubbard dimer. Then we will show how we can create a full Hubbard Hamiltonian by joining Anderson molecule Hamiltonians, and this should hopefully be a step towards getting a general prescription for generating wavefunctions for the full lattice (not just dimers).
+The present method intends to calculate the quantities in a different fashion. We start with a SIAM (possibly with a correlated bath having a non-trivial self-energy), and solve it using the unitary renormalisation group approach to get to a fixed-point Hamiltonian. At the fixed-point, assuming the couplings are much larger compared to the kinetic energy, we can approximate the Hamiltonian by a zero-mode of the kinetic energy part, which leads to a two-site Anderson molecule Hamiltonian (shown in fig.~\ref{and_mol}). Such a model is exactly solvable. Armed with such a groundstate, we will then create the wavefunction of the entire Hubbard Hamiltonian by combining them according to a prescription which is guided by the symmetries of the problem. The impurity electron will be read off as an arbitrary site, \(p\), of the lattice, while the zero-mode site becomes the site that is nearest to it. There are also integrals of motion that come out of the URG, they make up the rest of the sites in the lattice. We will first demonstrate this explicitly for the Hubbard dimer. Then we will show how we can create a full Hubbard Hamiltonian by joining Anderson molecule Hamiltonians, and this should hopefully be a step towards getting a general prescription for generating wavefunctions for the full lattice (not just dimers).
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{./gen_siam.png}
+	\caption{Anderson molecule schematic version. It consists of two sites, impurity(blue) and zero mode(green). The impurity site has onsite repulsion, and their is inter-site hopping.}
+	\label{and_mol}
+\end{figure}
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 The Hubbard dimer and Anderson molecules (zero-mode) are defined by the following respective Hamiltonians:
@@ -106,7 +114,7 @@ From the forms of the wavefunctions and eigenenergies, we can immediately write 
 \end{aligned}\end{equation}
 This shows that the rules laid out before work for the Hamiltonians, as well as the wavefunctions and energy eigenvalues of the \(N=2,0,4\) sector. These sectors specifically work because it is only in these sectors can we ensure that \(n_d = n_z\), which is required for the Hubbard Hamiltonian because \(n_1 = n_2\). In the other sectors (\(N=1,3\)), the impurity site and the zero-mode sites have to be singly-occupied in some part, and since the impurity site incurs a single-occupation cost of \(-\frac{U^H}{2}\) which is not borne by the zero-mode site, there is an intrinsic dissimilarity between the two sites of the Anderson molecule in this regime. This dissimilarity does not exist for the Hubbard model, so we cannot hope to connect the two models in this regime.
 
-\section{Creating General \(N-\)site Hubbard Hamiltonian from Anderson molecule}
+\section{Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers: tiling the lattice with Anderson molecules}
 We will follow the strategy outlined in the previous section. For concreteness, we will consider a lattice of \(N\) lattice sites and \(w\) nearest neighbours for each site. Note that a uniform number of nearest neighbours means that there is perfect translational invariance on the lattice, which means there cannot be any edge sites. This is achieved by applying periodic boundary conditions on the edges of the lattice. A square 2d lattice is thus placed on a torus.
 
 
@@ -143,10 +151,16 @@ is actually a Hubbard dimer Hamiltonian.
 	&H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right) = -2t^A\sum_\sigma\left( c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.} \right) + U^A\left( \tau_{i \uparrow}\tau_{i \downarrow} + \tau_{i \uparrow}\tau_{i \downarrow}\right)\\
 	\implies &H^A\left(d \to i, z \to j\right) + H^A\left(d \to j, z \to i\right) = H^D(0 \to i, 1 \to j, t^D \to 2t^A, U^D \to U^A)
 \end{aligned}\end{equation}
-The tiling can thus be actually done in terms of Hubbard dimers:
+The tiling can thus be actually done in terms of Hubbard dimers (shown in fig.~\ref{hubb-dim}):
 \begin{equation}\begin{aligned}
 	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^D\left(1 \to i, 2 \to j\right)\right]_{t^D \to Nwt^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
+\begin{figure}[htpb!]
+	\centering
+	\includegraphics[width=0.6\textwidth]{./hubb_dim.png}
+	\caption{Hubbard dimer schematic version. It again consists of two sites, like the Anderson molecule, but now both sites have onsite repulsion, and their is again inter-site hopping.}
+	\label{hubb-dim}
+\end{figure}
 Since the total number of nearest neighbour pairs is $\frac{Nw}{2}$, we want the prefactor to be the same. We will scale the internal Hubbard dimer by half, pulling out a two:
 \begin{equation}\begin{aligned}
 	\label{H_tiled}
@@ -154,13 +168,13 @@ Since the total number of nearest neighbour pairs is $\frac{Nw}{2}$, we want the
 \end{aligned}\end{equation}
 From this representation of the full Hubbard model, it is clear that symmetrizing the Anderson molecules by translating them throughout the lattice has restored translational invariance, and generated correlations on all sites (as compared to just on the impurity site). This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
 
-\section{Computing Greens functions and related quantities}
+\section{Computing single particle Greens functions and related quantities}
 In terms of the Greens function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
 	\omega - {G_H}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[\omega - G_D^{-1}\left(1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}}
 \end{aligned}\end{equation}
-where $G_H$ and $G_A$ are the Greens functions for the full Hubbard and the Hubbard dimer respectively:
+where $G_H$ and $G_D$ are the Greens functions for the full Hubbard and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
 	G_H(\omega) = \frac{1}{\omega - H^H}, && G_D(\omega) = \frac{1}{\omega - H^D}
 \end{aligned}\end{equation}
@@ -181,6 +195,7 @@ We will now calculate the single-particle site diagonal and site offdiagonal Gre
 \end{aligned}\end{equation}
 Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01\sigma}$.
 \begin{equation}\begin{aligned}
+\label{nn_gf}
 	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma} \equiv g_1
 \end{aligned}\end{equation}
 \begin{figure}[htpb!]
@@ -191,8 +206,7 @@ Now we come to the off-diagonal Greens function for the nearest neighbour sites 
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
 	\label{fig:}
 \end{figure}
-\\\\
-Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. 
+Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. Furthermore, all expressions below are for a particular spin $\sigma$; from the spin rotational symmetry of the Hubbard Hamiltonian, the same expressions are obtained for the opposite spin.
 \begin{equation}\begin{aligned}
 	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\
 		\left(G^{-1}\right)_{10} & \left(G^{-1}\right)_{11} & \left(G^{-1}\right)_{12} & ... & ...\\
@@ -222,6 +236,11 @@ $\hat e_i$ are the primitive lattice unit vectors for the general $d-$dimensiona
 \begin{equation}\begin{aligned}
 	\sum_{\left<i,j \right>} \ket{i}\bra{j} + \text{h.c.} =\sum_{\vec q} \underbrace{\sum_{i_1}^{D}\cos\left(a_iq_i\right)}_{\equiv \xi_{\vec q}}\ket{\vec q}\bra{\vec q}
 \end{aligned}\end{equation}
+On a 2D square lattice, for instance, we obtain
+\begin{eqnarray}
+\xi_{\vec{q}} &=& 2(\cos q_{x}a_{x} + \cos q_{y}a_{y})\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}}~,\nonumber\\
+\epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~.\label{2dsquaretb}
+\end{eqnarray}
 The inverse Greens function thus becomes diagonal in momentum space
 \begin{equation}\begin{aligned}
 G_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)\ket{\vec k}\bra{\vec k} = \begin{pmatrix} g_0 + g_1\xi_{\vec k_1} &&& \\
@@ -230,7 +249,15 @@ G_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}
 	...&...&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
-The matrix is of course written in momentum space. Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix trivially by replacing the diagonal elements with their reciprocals.
+The matrix is of course written in momentum space, and diagonal. Using Dyson's equation for the self-energy $\Sigma = G_{0}^{-1} - G^{-1}$ (where the matrix $G_{0,H}^{-1} (\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N} (\omega -\epsilon_{k})\ket{\vec k}\bra{\vec k}=\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega +t^{H}\xi_{k})\ket{\vec k}\bra{\vec k} $ is the inverse Greens function for the appropriate non-interacting tight-binding system), we obtain the self-energy matrix as
+\begin{eqnarray}
+\Sigma_{H} (\omega) &=& G_{0,H}^{-1} - G_{H}^{-1}~,\nonumber\\
+&=&\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}})\ket{\vec k}\bra{\vec k} = \sum_{\vec k=\vec k_1}^{\vec k_N} \Sigma_{H} (\vec{k},\omega) \ket{\vec k}\bra{\vec k}~,\nonumber\\
+\Sigma_{H} (\vec{k},\omega) &=& \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}~.
+\end{eqnarray}
+Thus, we can use eqs.\eqref{2dsquaretb},\eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
+\par\noindent
+Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix trivially by replacing the diagonal elements with their reciprocals.
 \begin{equation}\begin{aligned}
 	G_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&& \\
 	& \left(g_0 + g_1\xi_{\vec k_2}\right)^{-1} && \\
@@ -238,16 +265,27 @@ The matrix is of course written in momentum space. Since $G_H^{-1}(\omega)$ is d
 	...&...&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
-The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$.
+The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$
 \begin{equation}\begin{aligned}
 	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
 			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
 \end{aligned}\end{equation}
-Armed with the expression for the momentum space Greens function, one can compute the real space local Green's function by summing over the momenta:
+The real-space Greens function, $G_{H}(\vec{r},\omega)$, can now be obtained by Fourier transforming $G_H(\vec k, \omega)$ 
+\begin{equation}
+G_H(\vec r, \omega) = \frac{1}{N}\sum_{\vec k} e^{i\vec{k}.\vec{r}}G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}~.
+\end{equation}
+Thus, we can now compute the real space local Green's function $G_H(\vec r = 0, \omega)$ by summing over the momenta:
 \begin{equation}\begin{aligned}
 	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
 \end{aligned}\end{equation}
-We now wish to calculate \(G_H(\vec r = 0, \omega)\) (hence test this expression) for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are $0, \frac{\pi}{a}$, so
+We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
+\begin{eqnarray}
+A_{H}(\vec{k},\omega) &=& -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{1}{\pi} \textrm{Im}\left[ (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right]~,\nonumber\\
+A_{H}(\vec{r}=0,\omega) &=& -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{N\pi} \textrm{Im}\left[\sum_{\vec{k}} (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right] = ~-\frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)~.
+\end{eqnarray}
+We can again use eqs.\eqref{2dsquaretb},\eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
+\par\noindent
+The simplest test involves calculating \(G_H(\vec r = 0, \omega)\) for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are $0, \frac{\pi}{a}$, so
 \begin{equation}\begin{aligned}
 	\xi_{\vec k} = 1, -1
 \end{aligned}\end{equation}
@@ -258,17 +296,25 @@ Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expres
 $g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Hubbard dimer. The inverse of a $2\times 2$ matrix is
 \begin{equation}\begin{aligned}
 	G_D^{-1} = \frac{1}{\text{Det }G_D}\begin{pmatrix} \left(G_D\right)_{00} &  -\left(G_D\right)_{01} \\ -\left(G_D\right)_{01} & \left(G_D\right)_{00}\end{pmatrix} \implies \begin{cases}
-		g_0 = \frac{2}{2} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00} \\
+		g_0\equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00} \\
 		\\
-		g_1 = -\frac{2}{2\times 1}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} \\
+		g_1\equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} \\
 	\end{cases}
 \end{aligned}\end{equation}
-Substituting these values into the expression gives
+Using the expressions for $(G_{D})_{00}$ and $(G_{D})_{01}$ shown in the appendix, we can obtain $g_{0}$ and $g_{1}$ very generally. For the Hubbard dimer, we substitute $N=2, w=1$ into the expressions for $g_{0}$ and $g_{1}$ to obtain
 \begin{equation}\begin{aligned}
 	G_H(\vec r = 0, \omega) = \text{Det }G_D\frac{\left(G_D\right)_{00}}{\left(G_D\right)_{00}^2 - \left(G_D\right)_{01}^2} = \text{Det }G_D\frac{\left(G_D\right)_{00}}{\text{Det }G_D} = \left(G_D\right)_{00}
 \end{aligned}\end{equation}
 This is the correct result, because the full Hubbard model in this case was simply the Hubbard dimer, so \(G_H(\vec r = 0, \omega)\) should just be \(\left(G_D\right)_{00}\). Although this is a trivial example (we matched the Hubbard dimer with another Hubbard dimer), this atleast tells us that this algorithm for calculating the real space local Greens function from the inverse Greens function matrix elements is sensible.
-
+\par\noindent
+Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{local_gf},\eqref{nn_gf} where $(G^{H})^{-1}$ matrix has no $k$ dependence as $(G^{H})^{-1}_{ij}\propto 1/w \to 0$ as $w\to\infty$. Thus, in the self-energy 
+\begin{eqnarray}
+\Sigma_{H} (\vec{k},\omega) &=& \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}\nonumber\\
+&\to & \lim_{w\to\infty} \omega - {g}_{0} + t^{H}\xi_{\vec{k}}~,
+\end{eqnarray}
+We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
+\par\noindent
+While we have provided expressions for the single particle Greens functions of the $N$-site Hubbard model from their equivalent single particle Greens functions of the Hubbard dimer, we expect that eq.\eqref{green_eq_final} holds quite generally for the two-particle Greens function sector as well. We will provide these expressions at a later point in time. 
 \newpage
 \section*{Appendix: Spectra of Hubbard dimer and Anderson molecule}
 %Here we document the spectra of the Hamiltonians in eqs.~\ref{hubb_dimer} and \ref{and_dimer}.
@@ -310,13 +356,13 @@ This is the correct result, because the full Hubbard model in this case was simp
 	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
 \end{center}
 \section*{Appendix: Local Greens function for the Hubbard dimer}
-From the spectral representation, we have the following expression for the local Greens function at the $i^\text{th}$:
+From the spectral representation, we have the following expression for the local Greens function for the Hubbard dimer at site $0$:
 \begin{equation}\begin{aligned}
-	G_{i i}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
+	G_{D,00}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
 \end{aligned}\end{equation}
 $m,n$ sum over the exact eigenstates. $E_m, E_n$ are the corresponding energies. We are interested in teh $T \to 0$ Greens function. In that limit, all exponentials except that for the ground state $E_{gs}$ will die out. The exponential inside the summation will then cancel the exponential in the partition function.
 \begin{equation}\begin{aligned}
-	G_{i i}^\sigma(\omega, T \to 0) &= \sum_{n}\left[||\bra{GS}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
+	G_{D,00}^\sigma(\omega, T \to 0) &= \sum_{n}\left[||\bra{GS}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
 					&= \sum_{n}\left[||\bra{n}c^\dagger_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{GS}||^2\frac{1}{\omega + E_n - E_{GS}}\right]\\
 \end{aligned}\end{equation}
 
@@ -340,52 +386,62 @@ for the first inner product, and
 for the second. The Greens function is therefore
 \begin{equation}\begin{aligned}
 	\label{dimer_local_G}
-	G_{i i}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2}
+	G_{D,00}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2} = G_{D,00}^\downarrow(\omega, T \to 0)~.
 \end{aligned}\end{equation}
-The site local spectral can now be calculated:
+In the atomic limit $(t=0)$, the Greens function simplifies to
 \begin{equation}\begin{aligned}
-	A(i\uparrow, \omega) &= - \frac{1}{\pi}\text{Im }G_{i i}^\uparrow(\omega)\\
-			     &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right] + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]
+	G_{D,00}^\uparrow(\omega, T \to 0) \bigg\vert_\text{atomic} = \frac{\omega}{\omega^2 - \frac{1}{4}U^2}
 \end{aligned}\end{equation}
-
-\section*{Appendix: Greens functions for Anderson molecule}
-\begin{equation}\begin{aligned}
-	G_{dd}^\uparrow(\omega) &= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{d\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{d\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
-	G_{zz}^\uparrow(\omega)&= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{z\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{z\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
-	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{n} - E_{GS}}\right]\\
-	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right] = \left\{G_{dz}^\uparrow(\omega)\right\}^\dagger\\
-\end{aligned}\end{equation}
-We proceed exactly as before. With the following shorthand notations,
-\begin{equation}\begin{aligned}
-	a_{1,2} &\equiv a_{1,2}\left(U^A, t^A\right), &&\tilde a_{1,2} \equiv a_{1,2}\left(\frac{1}{2}U^A, t^A\right) \\
-	\Delta &\equiv \Delta\left(U^A, t^A\right), &&\tilde \Delta \equiv \Delta\left(\frac{1}{2}U^A, t^A\right)\\
-	C_z^\pm &\equiv a_1 \tilde a_1 \pm a_2 \tilde a_2, &&C_x^\pm \equiv a_1 \tilde a_2 \pm a_2 \tilde a_1
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-	E_{\pm} \equiv E(\ket{2\sigma_\pm}) - E(\ket{-}) = E(\ket{0\sigma_\pm}) - E(\ket{-}) = \frac{1}{2}\tilde\Delta \pm \frac{1}{4}\Delta\\
-\end{aligned}\end{equation}
-the diagonal Green's functions are
-\begin{equation}\begin{aligned}
-	\label{mole_local_G}
-	G_{d d}^\uparrow(\omega) &= \left[a_1\tilde a_2 + a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_1 - a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
-				 &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-	G_{z z}^\uparrow(\omega) &= \left[a_1\tilde a_1 + a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_2 - a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
-				 &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
-\end{aligned}\end{equation}
-and the off-diagonal Greens functions are
-\begin{equation}\begin{aligned}
-	G_{dz}^\uparrow(\omega) &= \left(a_1 \tilde a_1 + a_2 \tilde a_2\right) \left(a_1 \tilde a_2 + a_2 \tilde a_1\right) \frac{\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta}{\omega^2 - \left(\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta\right)^2} - \left(a_1 \tilde a_1 - a_2 \tilde a_2\right) \left(a_1 \tilde a_2 - a_2 \tilde a_1\right) \frac{\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta}{\omega^2  - \left(\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right)^2}\\
-				&= -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}\\
-G_{zd}^\uparrow(\omega) &= {G_{dz}^\uparrow(\omega)}^\dagger = G_{dz}^\uparrow(\omega)
-\end{aligned}\end{equation}
-To summarize, the four Green's real space Greens functions, in the compact notation, of the Anderson molecule are
-\begin{equation}\begin{aligned}
-	G_{dd}^\uparrow(\omega) &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
-	G_{zz}^\uparrow(\omega) &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
-	G_{dz}^\uparrow(\omega) &= G_{zd}^\uparrow(\omega) = -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}
-\end{aligned}\end{equation}
+The site local spectral function can now be calculated:
+\begin{eqnarray}
+A(0\uparrow, \omega) &=& - \frac{1}{\pi}\text{Im }G_{D,00}^\uparrow(\omega)\nonumber\\
+			     &=& \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right]\nonumber\\ 
+			     &&+ \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]\\ 
+			     &=& A(0\downarrow, \omega)~.\nonumber
+\end{eqnarray}
+Finally, the inter-site Greens function for the Hubbard dimer is given by
+\begin{equation}
+\label{dimer_intersite_G}
+	G_{D,01}^\uparrow(\omega, T \to 0) = \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{t}{(\omega +\frac{\Delta}{2})^2 - t^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{t}{(\omega -\frac{\Delta}{2})^2 - t^2} = G_{D,01}^\downarrow(\omega, T \to 0)~.
+\end{equation}
+%\section*{Appendix: Greens functions for Anderson molecule}
+%\begin{equation}\begin{aligned}
+%	G_{dd}^\uparrow(\omega) &= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{d\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{d\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
+%	G_{zz}^\uparrow(\omega)&= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{z\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{z\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
+%	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{n} - E_{GS}}\right]\\
+%	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right] = \left\{G_{dz}^\uparrow(\omega)\right\}^\dagger\\
+%\end{aligned}\end{equation}
+%We proceed exactly as before. With the following shorthand notations,
+%\begin{equation}\begin{aligned}
+%	a_{1,2} &\equiv a_{1,2}\left(U^A, t^A\right), &&\tilde a_{1,2} \equiv a_{1,2}\left(\frac{1}{2}U^A, t^A\right) \\
+%	\Delta &\equiv \Delta\left(U^A, t^A\right), &&\tilde \Delta \equiv \Delta\left(\frac{1}{2}U^A, t^A\right)\\
+%	C_z^\pm &\equiv a_1 \tilde a_1 \pm a_2 \tilde a_2, &&C_x^\pm \equiv a_1 \tilde a_2 \pm a_2 \tilde a_1
+%\end{aligned}\end{equation}
+%\begin{equation}\begin{aligned}
+%	E_{\pm} \equiv E(\ket{2\sigma_\pm}) - E(\ket{-}) = E(\ket{0\sigma_\pm}) - E(\ket{-}) = \frac{1}{2}\tilde\Delta \pm \frac{1}{4}\Delta\\
+%\end{aligned}\end{equation}
+%the diagonal Green's functions are
+%\begin{equation}\begin{aligned}
+%	\label{mole_local_G}
+%	G_{d d}^\uparrow(\omega) &= \left[a_1\tilde a_2 + a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_1 - a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
+%				 &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
+%\end{aligned}\end{equation}
+%\begin{equation}\begin{aligned}
+%	G_{z z}^\uparrow(\omega) &= \left[a_1\tilde a_1 + a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_2 - a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
+%				 &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
+%\end{aligned}\end{equation}
+%and the off-diagonal Greens functions are
+%\begin{equation}\begin{aligned}
+%	G_{dz}^\uparrow(\omega) &= \left(a_1 \tilde a_1 + a_2 \tilde a_2\right) \left(a_1 \tilde a_2 + a_2 \tilde a_1\right) \frac{\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta}{\omega^2 - \left(\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta\right)^2} - \left(a_1 \tilde a_1 - a_2 \tilde a_2\right) \left(a_1 \tilde a_2 - a_2 \tilde a_1\right) \frac{\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta}{\omega^2  - \left(\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right)^2}\\
+%				&= -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}\\
+%G_{zd}^\uparrow(\omega) &= {G_{dz}^\uparrow(\omega)}^\dagger = G_{dz}^\uparrow(\omega)
+%\end{aligned}\end{equation}
+%To summarize, the four Green's real space Greens functions, in the compact notation, of the Anderson molecule are
+%\begin{equation}\begin{aligned}
+%	G_{dd}^\uparrow(\omega) &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
+%	G_{zz}^\uparrow(\omega) &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
+%	G_{dz}^\uparrow(\omega) &= G_{zd}^\uparrow(\omega) = -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}
+%\end{aligned}\end{equation}
 
 \bibliographystyle{unsrt}
 \bibliography{notes}

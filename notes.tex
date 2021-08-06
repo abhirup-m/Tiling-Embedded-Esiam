@@ -4,15 +4,8 @@
 \usepackage[margin=0.5in,bottom=0.6in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks,pdfusetitle]{hyperref}
-\usepackage[stable]{footmisc}
 \renewcommand{\arraystretch}{1.9}
 \setlength\delimitershortfall{-2pt}
-%\pagestyle{fancy}
-%\fancyhf{}
-%\fancyfoot{}
-%\fancyhead[L]{\nouppercase\leftmark}    
-%\fancyhead[R]{\thepage}    
-%\setlength{\headheight}{52pt}
 \setcounter{tocdepth}{1}
 \DeclareMathOperator{\sech}{sech}
 \raggedbottom
@@ -154,12 +147,12 @@ The tiling can thus be actually done in terms of Hubbard dimers:
 \begin{equation}\begin{aligned}
 	H^H\left(t^H, U^H\right)  = \frac{1}{Nw}\sum_{\left<i,j\right>}\left[H^D\left(1 \to i, 2 \to j\right)\right]_{t^D \to Nwt^H \atop{U^A \to N U^H}}
 \end{aligned}\end{equation}
-For reasons that will become apparent later, we will scale the internal Hubbard dimer by half, pulling out a two:
+Since the total number of nearest neighbour pairs is $\frac{Nw}{2}$, we want the prefactor to be the same. We will scale the internal Hubbard dimer by half, pulling out a two:
 \begin{equation}\begin{aligned}
 	\label{H_tiled}
 	H^H\left(t^H, U^H\right)  = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[H^D\left(1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}}
 \end{aligned}\end{equation}
-
+From this representation of the full Hubbard model, it is clear that symmetrizing the Anderson molecules by translating them throughout the lattice has restored translational invariance, and generated correlations on all sites (as compared to just on the impurity site). This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
 
 \section{Computing Greens functions and related quantities}
 In terms of the Greens function, equation \ref{H_tiled} becomes
@@ -183,12 +176,22 @@ where $G_D^{-1}(i,j,t^D,U^D)$ is the Greens function (matrix) of the Hubbard dim
 \end{aligned}\end{equation}
 We will now calculate the single-particle site diagonal and site offdiagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[G_D^{-1}(\omega)\right]_{00\sigma}$. The entire thing is thus $w$ times this local Greens function.
 \begin{equation}\begin{aligned}
+	\label{local_gf}
 	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{00\sigma}\times w = \frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} \equiv g_0
 \end{aligned}\end{equation}
 Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01\sigma}$.
 \begin{equation}\begin{aligned}
 	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma} \equiv g_1
 \end{aligned}\end{equation}
+\begin{figure}[htpb!]
+	\centering
+	\hspace*{\fill}
+	\includegraphics[width=0.7\textwidth]{./lattice.png}
+	\hspace*{\fill}
+	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
+	\label{fig:}
+\end{figure}
+\\\\
 Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. 
 \begin{equation}\begin{aligned}
 	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\

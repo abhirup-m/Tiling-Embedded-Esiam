@@ -268,22 +268,24 @@ Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix tri
 The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$
 \begin{equation}\begin{aligned}
 	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
-			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
+			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
+			    &= \frac{N}{2}\left\{\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
 \end{aligned}\end{equation}
 The real-space Greens function, $G_{H}(\vec{r},\omega)$, can now be obtained by Fourier transforming $G_H(\vec k, \omega)$ 
-\begin{equation}
-G_H(\vec r, \omega) = \frac{1}{N}\sum_{\vec k} e^{i\vec{k}.\vec{r}}G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}~.
-\end{equation}
+\begin{equation}\begin{aligned}
+	G_H(\vec r, \omega) = \frac{1}{\sqrt N}\sum_{\vec k} e^{i\vec{k}.\vec{r}}G_H(\vec k, \omega) &= \frac{1}{\sqrt N}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
+												     &= \frac{\sqrt N}{2}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left\{\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
+\end{aligned}\end{equation}
 Thus, we can now compute the real space local Green's function $G_H(\vec r = 0, \omega)$ by summing over the momenta:
 \begin{equation}\begin{aligned}
-	G_H(\vec r = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+	G_H(\vec r = 0, \omega) = \frac{1}{\sqrt N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{\sqrt N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
 \end{aligned}\end{equation}
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
-\begin{eqnarray}
-A_{H}(\vec{k},\omega) &=& -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{1}{\pi} \textrm{Im}\left[ (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right]~,\nonumber\\
-A_{H}(\vec{r}=0,\omega) &=& -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{N\pi} \textrm{Im}\left[\sum_{\vec{k}} (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right] = ~-\frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)~.
-\end{eqnarray}
-We can again use eqs.\eqref{2dsquaretb},\eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
+\begin{equation}\begin{aligned}
+A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{1}{\pi} \textrm{Im}\left[ (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right]\\
+A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{\sqrt N\pi} \textrm{Im}\left[\sum_{\vec{k}} (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right] = -\frac{1}{\sqrt N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
+\end{aligned}\end{equation}
+We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
 \par\noindent
 The simplest test involves calculating \(G_H(\vec r = 0, \omega)\) for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are $0, \frac{\pi}{a}$, so
 \begin{equation}\begin{aligned}

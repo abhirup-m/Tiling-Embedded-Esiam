@@ -168,7 +168,8 @@ Since the total number of nearest neighbour pairs is $\frac{Nw}{2}$, we want the
 \end{aligned}\end{equation}
 From this representation of the full Hubbard model, it is clear that symmetrizing the Anderson molecules by translating them throughout the lattice has restored translational invariance, and generated correlations on all sites (as compared to just on the impurity site). This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
 
-\section{Computing single particle Greens functions and related quantities}
+\section{Formal expressions for single particle Greens functions and other related many-body quantites}
+\subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
 In terms of the Greens function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
@@ -204,8 +205,8 @@ Now we come to the off-diagonal Greens function for the nearest neighbour sites 
 	\includegraphics[width=0.7\textwidth]{./lattice.png}
 	\hspace*{\fill}
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
-	\label{fig:}
 \end{figure}
+\subsection{Constructing full Greens function matrix from the inverse matrix via Fourier transformation to \(k-\)space}
 Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. Furthermore, all expressions below are for a particular spin $\sigma$; from the spin rotational symmetry of the Hubbard Hamiltonian, the same expressions are obtained for the opposite spin.
 \begin{equation}\begin{aligned}
 	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\
@@ -226,12 +227,12 @@ It can be written in the operator form as
 	G_H^{-1}(\omega) = g_0\sum_{i=1}^N\ket{i}\bra{i} + g_1\sum_{\left<i,j \right>}^N\left( \ket{i}\bra{j} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 We can Fourier transform the real space basis kets $\ket{i} \equiv \ket{\vec r_i}$ into momentum space:
-\begin{equation}\begin{aligned}
-	\ket{i} &= \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\vec k}\\
+\begin{flalign*}
+	\ket{i} &= \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\vec k} \Leftrightarrow \ket{k} = \frac{1}{\sqrt N}\sum_{\vec i} e^{-i \vec{k}\cdot\vec{r_i}}\ket{\vec r_i} \\
 	\sum_i \ket{i}\bra{i} &= \frac{1}{N}\sum_i \sum_{\vec k, \vec q} e^{i \left(\vec{k} - \vec q\right)\cdot\vec{r_i}}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\sum_{\vec k, \vec q} N \delta\left(\vec{k} - \vec q\right)\ket{\vec k}\bra{\vec q} = \sum_{\vec k=\vec k_1}^{\vec k_N} \ket{\vec k}\bra{\vec k}\\
 	\sum_{\left<i,j \right>} \ket{i}\bra{j} &= \frac{1}{N}\sum_{\left<i,j \right>} \sum_{\vec k, \vec q} e^{i \left(\vec{k}\cdot \vec r_i - \vec q\cdot \vec r_j\right)}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\frac{1}{2}\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec k, \vec q} e^{-i\vec q\cdot a_i\hat e_i}\ket{\vec k}\bra{\vec q}\sum_{i=1}^N e^{i \left(\vec{k} - \vec q\right)\cdot \vec r_i} & \left[\sum_{\left<i,j \right>} = \frac{1}{2}\sum_i \sum_{j \in \text{NN of i}}\right] \\
 					&=\frac{1}{2}\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec q} e^{-i\vec q\cdot \vec e_i}\ket{\vec q}\bra{\vec q} = \frac{1}{2}\sum_{\vec q} \left(\sum_{i_1}^{D}e^{-ia_iq_i}\right)\ket{\vec q}\bra{\vec q}
-\end{aligned}\end{equation}
+\end{flalign*}
 $\hat e_i$ are the primitive lattice unit vectors for the general $d-$dimensional lattice. $q_i$ are the projections of $\vec q$ along those vectors. $a_i$ are the lattice spacings along each primitive vector. Adding the Hermitian conjugate simply extracts the real part:
 \begin{equation}\begin{aligned}
 	\sum_{\left<i,j \right>} \ket{i}\bra{j} + \text{h.c.} =\sum_{\vec q} \underbrace{\sum_{i_1}^{D}\cos\left(a_iq_i\right)}_{\equiv \xi_{\vec q}}\ket{\vec q}\bra{\vec q}
@@ -249,20 +250,27 @@ G_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}
 	...&...&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
-The matrix is of course written in momentum space, and diagonal. Using Dyson's equation for the self-energy $\Sigma = G_{0}^{-1} - G^{-1}$ (where the matrix $G_{0,H}^{-1} (\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N} (\omega -\epsilon_{k})\ket{\vec k}\bra{\vec k}=\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega +t^{H}\xi_{k})\ket{\vec k}\bra{\vec k} $ is the inverse Greens function for the appropriate non-interacting tight-binding system), we obtain the self-energy matrix as
+The matrix entries are written in momentum space, and the matrix is diagonal in this basis.
+\subsection{Calculation of self energy matrix from the Dyson equation}
+Using Dyson's equation for the self-energy $\Sigma = G_{0}^{-1} - G^{-1}$ (where the matrix $G_{0,H}^{-1} (\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N} (\omega -\epsilon_{k})\ket{\vec k}\bra{\vec k}=\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega +t^{H}\xi_{k})\ket{\vec k}\bra{\vec k} $ is the inverse Greens function for the appropriate non-interacting tight-binding system), we obtain the self-energy matrix as
 \begin{eqnarray}
 \Sigma_{H} (\omega) &=& G_{0,H}^{-1} - G_{H}^{-1}~,\nonumber\\
-&=&\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}})\ket{\vec k}\bra{\vec k} = \sum_{\vec k=\vec k_1}^{\vec k_N} \Sigma_{H} (\vec{k},\omega) \ket{\vec k}\bra{\vec k}~,\nonumber\\
-\Sigma_{H} (\vec{k},\omega) &=& \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}~.
+&=&\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}})\ket{\vec k}\bra{\vec k}
 \end{eqnarray}
-Thus, we can use eqs.\eqref{2dsquaretb},\eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
-\par\noindent
+This is the full self energy matrix. One can get both real space and momentum space self energies by taking appropriate matrix elements. For instance, the self-energy in momentum space is
+\begin{equation}\begin{aligned}
+	\label{selfenergy}
+	\Sigma_{H} (\vec{k},\omega) \equiv \bra{\vec k} \Sigma_H (\omega) \ket{\vec k} = \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}~.
+\end{aligned}\end{equation}
+Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
+\subsection{Obtaining real space Greens functions from the full matrix}
 Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix trivially by replacing the diagonal elements with their reciprocals.
 \begin{equation}\begin{aligned}
-	G_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&& \\
-	& \left(g_0 + g_1\xi_{\vec k_2}\right)^{-1} && \\
-	&& \left(g_0 + g_1\xi_{\vec k_3}\right)^{-1} & \\
-	...&...&...&\\
+	\label{k-space-gf}
+	G_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&&&\\
+	& \left(g_0 + g_1\xi_{\vec k_2}\right)^{-1} &&&\\
+	&& \left(g_0 + g_1\xi_{\vec k_3}\right)^{-1} &&\\
+		...&&&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
 The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$
@@ -271,14 +279,21 @@ The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)
 			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
 			    &= \frac{N}{2}\left\{\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
 \end{aligned}\end{equation}
-The real-space Greens function, $G_{H}(\vec{r},\omega)$, can now be obtained by Fourier transforming $G_H(\vec k, \omega)$ 
+The real-space Greens functions can now be obtained by taking matrix elements of the full Greens function matrix in eq.~\ref{k-space-gf}:
 \begin{equation}\begin{aligned}
-	G_H(\vec r, \omega) = \frac{1}{\sqrt N}\sum_{\vec k} e^{i\vec{k}.\vec{r}}G_H(\vec k, \omega) &= \frac{1}{\sqrt N}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
-												     &= \frac{\sqrt N}{2}\sum_{\vec k}e^{i\vec{k}.\vec{r}}\left\{\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}
+	G_H(\vec r_i, \vec  r_j, \omega) \equiv \bra{\vec r_i} G_H(\omega) \ket{\vec r_j} = \sum_{\vec k} G_H(\vec k, \omega)  \left<\vec r_i | \vec k\right>\left<\vec k | \vec r_j\right>
 \end{aligned}\end{equation}
-Thus, we can now compute the real space local Green's function $G_H(\vec r = 0, \omega)$ by summing over the momenta:
+From the definition of the Fourier transforms mentioned previously, we can write
 \begin{equation}\begin{aligned}
-	G_H(\vec r = 0, \omega) = \frac{1}{\sqrt N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{\sqrt N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+	\left<\vec r_i | \vec k\right> = \frac{1}{\sqrt N}\sum_{\vec r} e^{- \vec{k}\cdot\vec{r}} \left<\vec r_i | \vec r \right> = \frac{1}{\sqrt N}e^{- \vec{k}\cdot\vec{r_i}}
+\end{aligned}\end{equation}
+Substituting this gives
+\begin{equation}\begin{aligned}
+	G_H(\vec r_i, \vec  r_j, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega)  e^{\vec{k}\cdot\left(\vec r_j - \vec{r_i}\right)} \equiv G_H(\vec r_j - \vec  r_i, \omega)
+\end{aligned}\end{equation}
+The final expression brings out the fact that the Greens function for excitations between \(\vec r_i\) and \(\vec r_j\) depends only on the relative position \(\vec r_j - \vec r_i\), not on their absolute positions. This is expected on grounds of translational invariance. By choosing \(\vec r_i = \vec r_j\), we can obtain the real space \textit{local} Greens function:
+\begin{equation}\begin{aligned}
+	\left(G_H\right)_{ii}(\omega) \equiv G_H(\vec r_j - \vec  r_i = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
 \end{aligned}\end{equation}
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
@@ -286,29 +301,37 @@ A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\f
 A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{\sqrt N\pi} \textrm{Im}\left[\sum_{\vec{k}} (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right] = -\frac{1}{\sqrt N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
 \end{aligned}\end{equation}
 We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
-\par\noindent
-The simplest test involves calculating \(G_H(\vec r = 0, \omega)\) for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are $0, \frac{\pi}{a}$, so
+\subsection{Obtaining \(g_0\) and \(g_1\)}
+These two quantities are expressed in terms of matrix elements of the inverse Greens function \(G_D^{-1}\) of the Hubbard dimer. Since \(G_D\) is a \(2\times 2\) matrix, it is easy to invert:
 \begin{equation}\begin{aligned}
-	\xi_{\vec k} = 1, -1
+	G_D &= \begin{pmatrix} \left(G_D\right)_{00} &  \left(G_D\right)_{01} \\ \left(G_D\right)_{01} & \left(G_D\right)_{00}\end{pmatrix} \\
+	\implies G_D^{-1} &= \frac{1}{\text{Det }G_D}\begin{pmatrix} \left(G_D\right)_{00} &  -\left(G_D\right)_{01} \\ -\left(G_D\right)_{01} & \left(G_D\right)_{00}\end{pmatrix}\\
+		 \implies g_0 &\equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00},\\
+		 g_1 &\equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} 
+\end{aligned}\end{equation}
+Using the expressions for $(G_{D})_{00}$ and $(G_{D})_{01}$ shown in the appendix, we can obtain $g_{0}$ and $g_{1}$ very generally. 
+
+\section{Analytic consistency checks}
+\subsection{Single-particle Greens function and self energy for the Hubbard dimer}
+The simplest test involves calculating \(G_H(\vec r = 0, \omega)\) for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are \(\left\{ \vec k_n \right\} = 0, \frac{\pi}{a}\), so
+\begin{equation}\begin{aligned}
+	\left\{\xi_{\vec k}\right\} = 1, -1
 \end{aligned}\end{equation}
 Therefore, the Greens function at $\vec r=0$ for the Hubbard dimer can be expressed as
 \begin{equation}\begin{aligned}
 	G_H(\vec r = 0, \omega) = \frac{1}{2}\left[\frac{1}{g_0 + g_1} + \frac{1}{g_0 - g_1}\right]  = \frac{g_0}{g_0^2 - g_1^2}
 \end{aligned}\end{equation}
-$g_{0,1}$ are expressed in terms of the elements of the inverse Greens function matrix of the Hubbard dimer. The inverse of a $2\times 2$ matrix is
+For the Hubbard dimer, we substitute $N=2, w=1$ into the expressions for $g_{0}$ and $g_{1}$ to obtain
 \begin{equation}\begin{aligned}
-	G_D^{-1} = \frac{1}{\text{Det }G_D}\begin{pmatrix} \left(G_D\right)_{00} &  -\left(G_D\right)_{01} \\ -\left(G_D\right)_{01} & \left(G_D\right)_{00}\end{pmatrix} \implies \begin{cases}
-		g_0\equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00} \\
-		\\
-		g_1\equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} \\
-	\end{cases}
+	&g_0 = \frac{1}{\text{Det }G_D}\left( G_D \right)_{00}, &g_1 = -\frac{1}{\text{Det }G_D}\left( G_D \right)_{01}
 \end{aligned}\end{equation}
-Using the expressions for $(G_{D})_{00}$ and $(G_{D})_{01}$ shown in the appendix, we can obtain $g_{0}$ and $g_{1}$ very generally. For the Hubbard dimer, we substitute $N=2, w=1$ into the expressions for $g_{0}$ and $g_{1}$ to obtain
+The Greens function at the zeroth site then becomes
 \begin{equation}\begin{aligned}
 	G_H(\vec r = 0, \omega) = \text{Det }G_D\frac{\left(G_D\right)_{00}}{\left(G_D\right)_{00}^2 - \left(G_D\right)_{01}^2} = \text{Det }G_D\frac{\left(G_D\right)_{00}}{\text{Det }G_D} = \left(G_D\right)_{00}
 \end{aligned}\end{equation}
-This is the correct result, because the full Hubbard model in this case was simply the Hubbard dimer, so \(G_H(\vec r = 0, \omega)\) should just be \(\left(G_D\right)_{00}\). Although this is a trivial example (we matched the Hubbard dimer with another Hubbard dimer), this atleast tells us that this algorithm for calculating the real space local Greens function from the inverse Greens function matrix elements is sensible.
-\par\noindent
+This is the expected result. Because the full Hubbard model in this case was simply the Hubbard dimer, \(G_H(\vec r = 0, \omega)\) should just be \(\left(G_D\right)_{00}\). Although this is a trivial example (we matched the Hubbard dimer with another Hubbard dimer), this atleast tells us that this algorithm for calculating the real space local Greens function from the inverse Greens function matrix elements is sensible.
+
+\subsection{On the Bethe lattice}
 Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{local_gf},\eqref{nn_gf} where $(G^{H})^{-1}$ matrix has no $k$ dependence as $(G^{H})^{-1}_{ij}\propto 1/w \to 0$ as $w\to\infty$. Thus, in the self-energy 
 \begin{eqnarray}
 \Sigma_{H} (\vec{k},\omega) &=& \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}\nonumber\\
@@ -394,7 +417,20 @@ In the atomic limit $(t=0)$, the Greens function simplifies to
 \begin{equation}\begin{aligned}
 	G_{D,00}^\uparrow(\omega, T \to 0) \bigg\vert_\text{atomic} = \frac{\omega}{\omega^2 - \frac{1}{4}U^2}
 \end{aligned}\end{equation}
-The site local spectral function can now be calculated:
+In the atomic limit, the singly-occupied state has zero energy:
+\begin{equation}\begin{aligned}
+	E_1(t=0) = \bra{1,0}\left(U \tau_{0 \uparrow}\tau_{0 \downarrow} + U \tau_{1 \uparrow}\tau_{1 \downarrow}\right) \ket{1,0} = 0
+\end{aligned}\end{equation}
+We can write the atomic limit Greens function in terms of this energy and the self energy:
+\begin{equation}\begin{aligned}
+	G_{D,00}^\uparrow(\omega, T \to 0) \bigg\vert_\text{atomic} = \frac{1}{\omega - E_1(t=0) - \Sigma(t=0)} = \frac{1}{\omega - 0 -\frac{U^2}{4\omega}}
+\end{aligned}\end{equation}
+The self energy in the atomic limit can be read off as 
+\begin{equation}\begin{aligned}
+	\label{dimer_selfenergy}
+\Sigma(t=0) = \frac{U^2}{4\omega}
+\end{aligned}\end{equation}
+The site local spectral function can also be calculated from the local Greens function:
 \begin{eqnarray}
 A(0\uparrow, \omega) &=& - \frac{1}{\pi}\text{Im }G_{D,00}^\uparrow(\omega)\nonumber\\
 			     &=& \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right]\nonumber\\ 

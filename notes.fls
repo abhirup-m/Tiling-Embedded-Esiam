@@ -766,6 +766,7 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT ./hubb_dim.png
 INPUT ./hubb_dim.png
 INPUT ./hubb_dim.png
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT ./lattice.png
 INPUT ./lattice.png
 INPUT ./lattice.png

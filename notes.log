@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  7 AUG 2021 10:13
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  7 AUG 2021 15:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -465,39 +465,39 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 File: ./hubb_dim.png Graphic file (type bmp)
 <./hubb_dim.png>
  [6]
-Overfull \hbox (8.11143pt too wide) detected at line 185
+Overfull \hbox (8.11143pt too wide) detected at line 186
 [][][]
  []
 
 File: ./lattice.png Graphic file (type bmp)
 <./lattice.png>
 [7]
-Overfull \hbox (5.929pt too wide) detected at line 234
-[][][]
+Overfull \hbox (5.929pt too wide) detected at line 235
+[]
  []
 
-[8] [9] [10] [11]
+[8] [9] [10] [11] [12]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 339.
+(caption)                particular \caption on input line 362.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 358.
+(caption)                particular \caption on input line 381.
 See the caption package documentation for explanation.
 
-[12] [13] (./notes.bbl) [14] (./notes.aux)
+[13] [14] (./notes.bbl) [15] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: D499A3A9C11553CA188218088B200D58;1730.
+(rerunfilecheck)             Checksum: CD142CA07C5361874F3EF8833A4786E6;2066.
  ) 
 Here is how much of TeX's memory you used:
- 11927 strings out of 476919
- 176325 string characters out of 5827674
- 507668 words of memory out of 5000000
- 31745 multiletter control sequences out of 15000+600000
- 438231 words of font info for 73 fonts, out of 8000000 for 9000
+ 11933 strings out of 476919
+ 176430 string characters out of 5827674
+ 508202 words of memory out of 5000000
+ 31751 multiletter control sequences out of 15000+600000
+ 441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  71i,18n,77p,1361b,361s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (14 pages, 85136 bytes).
+Output written on notes.xdv (15 pages, 90660 bytes).

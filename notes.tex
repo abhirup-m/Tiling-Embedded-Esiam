@@ -402,13 +402,13 @@ The set of states $\ket{n}$ that give non-zero inner product $\ket{GS}$ are ther
 	||\bra{n}c_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left(a_2 \pm a_1 \right)^2 = \frac{1}{4}\left(1 \pm 2a_1a_2\right)\\
 	\left\{ E_n \right\} &= \mp t
 \end{aligned}\end{equation}
-for the first inner product, and
+for the second inner product, and
 \begin{equation}\begin{aligned}
 	\left\{\ket{n}\right\} &= \ket{2\uparrow_\pm}\\
 	||\bra{n}c^\dagger_{\uparrow\sigma}\ket{GS}||^2 &= \frac{1}{4}\left( a_2 \mp a_1 \right)^2 = \frac{1}{4}\left(1 \mp 2a_1a_2\right)\\
 	\left\{ E_n \right\} &= \pm t
 \end{aligned}\end{equation}
-for the second. The Greens function is therefore
+for the first. The Greens function is therefore
 \begin{equation}\begin{aligned}
 	\label{dimer_local_G}
 	G_{D,00}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2} = G_{D,00}^\downarrow(\omega, T \to 0)~.
@@ -433,8 +433,8 @@ The self energy in the atomic limit can be read off as
 The site local spectral function can also be calculated from the local Greens function:
 \begin{eqnarray}
 A(0\uparrow, \omega) &=& - \frac{1}{\pi}\text{Im }G_{D,00}^\uparrow(\omega)\nonumber\\
-			     &=& \left( \frac{1}{2} + \frac{2t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right]\nonumber\\ 
-			     &&+ \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]\\ 
+			     &=& \left( \frac{1}{4} - \frac{t}{\Delta} \right)\left[\delta(\omega - \frac{1}{2}\Delta - t) + \delta(\omega + \frac{1}{2}\Delta + t)\right]\nonumber\\ 
+			     &&+ \left( \frac{1}{4} + \frac{t}{\Delta} \right) \left[\delta(\omega - \frac{1}{2}\Delta + t) + \delta(\omega + \frac{1}{2}\Delta - t)\right]\\ 
 			     &=& A(0\downarrow, \omega)~.\nonumber
 \end{eqnarray}
 Finally, the inter-site Greens function for the Hubbard dimer is given by

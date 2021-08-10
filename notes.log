@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  9 AUG 2021 16:45
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  10 AUG 2021 20:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -216,6 +216,12 @@ Package: titlesec 2019/10/16 v2.13 Sectioning titles
 \titlewidth=\dimen181
 \titlewidthlast=\dimen182
 \titlewidthfirst=\dimen183
+) (/usr/share/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+ (/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: xetex.def on input line 147.
 ) (/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
  (/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty
@@ -369,7 +375,8 @@ LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 18.
- (/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
+
+(/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 18.
@@ -445,59 +452,71 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 20.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) [1
+
+]
 
 Package amsmath Warning: Foreign command \atop;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 24.
+(amsmath)                 on input line 42.
 
-[1
-
-] [2]
+File: ./cluster-bath.png Graphic file (type bmp)
+<./cluster-bath.png>
 File: ./gen_siam.png Graphic file (type bmp)
 <./gen_siam.png>
- [3] [4]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 117.
-
-[5]
+[2] [3]
 File: ./hubb_dim.png Graphic file (type bmp)
 <./hubb_dim.png>
- [6]
-Overfull \hbox (8.11143pt too wide) detected at line 186
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 155.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--161
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--161
+
+ []
+
+[4] [5]
+Overfull \hbox (8.11143pt too wide) detected at line 216
 [][][]
  []
 
+[6]
 File: ./lattice.png Graphic file (type bmp)
 <./lattice.png>
-[7]
-Overfull \hbox (5.929pt too wide) detected at line 235
+ [7]
+Overfull \hbox (5.929pt too wide) detected at line 265
 []
  []
 
 [8] [9] [10] [11] [12]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 362.
+(caption)                particular \caption on input line 392.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 381.
+(caption)                particular \caption on input line 411.
 See the caption package documentation for explanation.
 
 [13] [14] (./notes.bbl) [15] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: CD142CA07C5361874F3EF8833A4786E6;2066.
+(rerunfilecheck)             Checksum: 3D69A295DD0AFE1082BEC18025560952;1476.
  ) 
 Here is how much of TeX's memory you used:
- 11933 strings out of 476919
- 176430 string characters out of 5827674
- 508202 words of memory out of 5000000
- 31751 multiletter control sequences out of 15000+600000
- 441229 words of font info for 74 fonts, out of 8000000 for 9000
+ 11988 strings out of 476919
+ 177310 string characters out of 5827674
+ 512000 words of memory out of 5000000
+ 31801 multiletter control sequences out of 15000+600000
+ 444227 words of font info for 75 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,1361b,361s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,1274b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (15 pages, 90584 bytes).
+Output written on notes.xdv (15 pages, 86428 bytes).

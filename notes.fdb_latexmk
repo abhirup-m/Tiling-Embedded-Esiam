@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1628484421 "notes.aux" "notes.bbl" "notes" 1628507757
+["bibtex notes"] 1628606676 "notes.aux" "notes.bbl" "notes" 1628606710
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1628507756 6490 dd0515b6ceb71a4e1b072cd82728045d "xelatex"
+  "notes.aux" 1628606709 7577 ad7e3214bff5ceba388fd1d22023414b "xelatex"
   "notes.bib" 1627878500 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
   "notes.blg"
   "notes.bbl"
-["xdvipdfmx"] 1628507756 "notes.xdv" "notes.pdf" "notes" 1628507757
-  "notes.xdv" 1628507756 90584 4c466d88d668443ab4f06d0a3e37632d "xelatex"
+["xdvipdfmx"] 1628606709 "notes.xdv" "notes.pdf" "notes" 1628606710
+  "notes.xdv" 1628606709 86428 52040525a3a8d573bb2cd25b8fb34362 "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1628507756 "notes.tex" "notes.xdv" "notes" 1628507757
+["xelatex"] 1628606709 "notes.tex" "notes.xdv" "notes" 1628606710
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -79,8 +79,10 @@
   "/usr/share/texmf-dist/tex/latex/enumitem/enumitem.sty" 1621766596 51697 f8f08183cd2080d9d18a41432d651dfb ""
   "/usr/share/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty" 1617738065 17086 7ed8cbc4d361ec87392817e0dd4f65ec ""
   "/usr/share/texmf-dist/tex/latex/geometry/geometry.sty" 1617738065 41601 9cf6c5257b1bc7af01a58859749dd37a ""
+  "/usr/share/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1617738065 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/share/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1617738065 1224 978390e9c2234eab29404bc21b268d1e ""
   "/usr/share/texmf-dist/tex/latex/graphics-def/xetex.def" 1617738065 15263 06bfc49e20bdfcb827e011063ecb4ae6 ""
+  "/usr/share/texmf-dist/tex/latex/graphics/color.sty" 1617738065 7102 5b27b7e61091c6128cd6300e21704e4b ""
   "/usr/share/texmf-dist/tex/latex/graphics/graphics.sty" 1617738065 18272 a8c6a275b34ab6717ceeb8fa04b104e2 ""
   "/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty" 1617738065 7919 20fdfdd783821971c55bc8ee918cbe63 ""
   "/usr/share/texmf-dist/tex/latex/graphics/keyval.sty" 1617738065 2590 e3b24ff953e5b58d924f163d25380312 ""
@@ -107,15 +109,16 @@
   "/usr/share/texmf-dist/tex/latex/wrapfig/wrapfig.sty" 1621766596 26220 3701aebf80ccdef248c0c20dd062fea9 ""
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1627447396 5486154 5e105109c0224c5b55112f9ae96c6a07 ""
-  "gen_siam.png" 1628254887 32335 649ab6e4b57693ab4a029df5130cf30e ""
-  "hubb_dim.png" 1628484323 30162 19a7925ec03dbafc217916e5cadb01cc ""
+  "cluster-bath.png" 1628576061 17153 82546c76fe9bb56aa4a0bd931362ee51 ""
+  "gen_siam.png" 1628574735 34370 448d1f1734840e1e16e905d6c521e86e ""
+  "hubb_dim.png" 1628578544 30401 3350fc8e5121e458b5be80f80385f71f ""
   "lattice.png" 1628226938 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1628507756 6490 dd0515b6ceb71a4e1b072cd82728045d "xelatex"
-  "notes.bbl" 1628484421 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1628507756 2066 cd142ca07c5361874f3ef8833a4786e6 "xelatex"
-  "notes.tex" 1628507754 49392 d636a7afbafe12d86f60b2f6eecf4463 ""
+  "notes.aux" 1628606709 7577 ad7e3214bff5ceba388fd1d22023414b "xelatex"
+  "notes.bbl" 1628606676 247 f7aa475eb71bf6473319427cddc00a20 "bibtex notes"
+  "notes.out" 1628606709 1476 3d69a295dd0afe1082bec18025560952 "xelatex"
+  "notes.tex" 1628606708 53859 2d675ae300ef16d8f88c43574ccf1393 ""
   (generated)
-  "notes.aux"
-  "notes.xdv"
-  "notes.out"
   "notes.log"
+  "notes.aux"
+  "notes.out"
+  "notes.xdv"

@@ -24,6 +24,9 @@ H_\text{hubb} &= -t^H\sum_{\sigma,\left<i,j \right>}\left(c^\dagger_{i\sigma} c_
 H_\text{siam} &= \sum_{k\sigma}\left[\epsilon_k + \Sigma(k,\omega)\right]\hat n_{k\sigma} + \epsilon_d^A \sum_\sigma\hat n_{d\sigma} + U^A \hat n_{d \uparrow} \hat n_{d \downarrow} + U_b \sum_{kk^\prime}\hat n_k \hat n_{k^\prime} - \mu^A \sum_{i\neq d,\sigma}\hat n_{i\sigma} 
 	\label{hams}
 \end{align}
+\\\\
+{\textbf{\color{red}{[CHECK]That $U_b$ does not actually give a zero mode, rather it gives an $N^2$ type piece.}}
+\\\\
 Broadly speaking, the method involves first solving the SIAM using a unitary renormalisation group approach, to get the low energy effective theory, and then combining the low energy Hamiltonians in a symmetrized fashion to get the Hamiltonian for the Hubbard model lattice. It is reminescent of dynamical mean-field theory (DMFT) - both involve an impurity-solver that solves an auxiliary system. The difference, however, lies in the following points:
 \begin{itemize}
 	\item While DMFT primarily works with Greens functions and self-energies, this method involves Hamiltonians. The impurity-solver in DMFT provides an impurity Greens function (which is then equated with the local Greens function of the bath), while the impurity-solver in this method actually provides a low energy Hamiltonian.
@@ -78,7 +81,7 @@ This Hubbard dimer is shown in fig.~\ref{hubb-dim}.
 	\caption{Hubbard dimer schematic version. It again consists of two sites, like the Anderson molecule, but now both sites have onsite repulsion, and their is again inter-site hopping.}
 	\label{hubb-dim}
 \end{figure}
-The next step is to combine these Hubbard dimers into a full Hubbard model, $H_\text{symm}$. Along the way, we have made two approximations:
+The next step is to combine these Hubbard dimers into a full Hubbard model, $\tilde H$. Along the way, we have made two approximations:
 \begin{itemize}
 	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{hams}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. If it is exact, then the equation
 \begin{equation}\begin{aligned}
@@ -86,70 +89,72 @@ The next step is to combine these Hubbard dimers into a full Hubbard model, $H_\
 	H^H = H^A
 \end{aligned}\end{equation}
 holds.
-	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $U_A H^A U_A^\dagger$. At this point, we extract a zero mode of this Hamiltonian to obtain the Hubbard dimer Hamiltonian: $H^D = \left(U_A H^A U_A^\dagger\right)_z$, and this constitutes the second approximations we make. We tile this Hubbard dimer Hamiltonian to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $H_\text{symm}$. If we assume that the tiling perfectly rectifies the approximation made while taking the zero mode, then we can write
+	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $U_A H^A U_A^\dagger$. At this point, we extract a zero mode of this Hamiltonian to obtain the Hubbard dimer Hamiltonian: $H^D = \left(U_A H^A U_A^\dagger\right)_z$, and this constitutes the second approximations we make. We tile this Hubbard dimer Hamiltonian to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $\tilde H$. If we assume that the tiling perfectly rectifies the approximation made while taking the zero mode, then we can write
 \begin{equation}\begin{aligned}
 	\label{app2}
-	H_\text{symm} = U_A H^A U_A^\dagger
+	\tilde H = U_A H^A U_A^\dagger
 \end{aligned}\end{equation}
 \end{itemize}
 Combining the two eqs.~\ref{app1},\ref{app2}, we can say that
 \begin{equation}\begin{aligned}
-	H_\text{symm} = U_A H^H U_A^\dagger
+	\tilde H = U_A H^H U_A^\dagger
 \end{aligned}\end{equation}
 which would mean that the final Hamiltonian is unitarily connected to the bare Hubbard model, but is actually made of Hubbard dimers and is hence more amenable to calculations. This of course depends on how good the approximations are and strictly speaking need to be verified.
 
-%\section{Solution of the Hubbard dimer using the Anderson molecule}
-%The Hubbard dimer and Anderson molecules (zero-mode) are defined by the following respective Hamiltonians:
-%\begin{equation}\begin{aligned}
-%	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat n_{i \uparrow}\hat n_{i \downarrow} - \mu^H \sum_{\sigma, i=1,2}\hat n_{i\sigma}\\
-%	H^A &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + \epsilon_d^A \sum_{\sigma}\hat n_{d\sigma} + U^A\hat n_{d \uparrow}\hat n_{d \downarrow}
-%\end{aligned}\end{equation}
-%In the first Hamiltonian, the indices \(i=1,2\) refer to the two lattice sites that constitute the dimer. In the second Hamiltonian, the subscript \(d\) indicates the impurity site, while the subscript \(z\) indicates the zero-mode site. First, we will assume that the Hubbard dimer is at half-filling (\(\frac{1}{2}U^H = \mu^H\)):
-%\begin{equation}\begin{aligned}
-%	\label{hubb_dimer}
-%	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \left(\frac{1}{2}U^H- \mu^H\right) \sum_{\sigma, i=1,2}\hat n_{i\sigma} + \text{constant}\\
-%	    &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
-%\end{aligned}\end{equation}
-%Since the Hubbard Hamiltonian is at half-filling, we will also place the impurity at half-filling by setting \(\epsilon_d^A = -\frac{1}{2}U^A\):
-%\begin{equation}\begin{aligned}
-%	\label{and_dimer}
-%	H^A &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + \left(\epsilon_d^A + \frac{1}{2}U^A\right) \sum_{\sigma}\hat \tau_{d\sigma} + U^A\hat \tau_{d \uparrow}\hat \tau_{d \downarrow} + \text{constant}\\
-%	    &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A\hat \tau_{d \uparrow}\hat \tau_{d \downarrow}
-%\end{aligned}\end{equation}
-%The first step is to recreate the Hubbard dimer Hamiltonian eq.~\ref{hubb_dimer} using the Anderson molecule Hamiltonian eq.~\ref{and_dimer}:
-%\begin{equation}\begin{aligned}
-%	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\\
-%	    &= \frac{1}{2}\left[-t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + t^H\sum_{\sigma}\left(c^\dagger_{2\sigma}c_{1\sigma} + \text{h.c.}\right)\right] + \frac{1}{2} 2U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\\
-%	    &= \frac{1}{2}\left[-t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right)\bigg\vert_{z \to 2, d \to 1\atop{t^A \to t^H}} + t^A\sum_{\sigma}\left(c^\dagger_{2\sigma}c_{1\sigma} + \text{h.c.}\right)\bigg\vert_{d \to 2,z \to 1\atop{t^A \to t^H}} \right] \\
-%	    &+ \frac{1}{2} \left(U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\bigg\vert_{d \to 1\atop{U^A \to 2U^H}} + U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\bigg\vert_{d \to 2\atop{U^A \to 2U^H}}\right)\\
-%	    &=\frac{1}{2}\left[H^A\left(t^A \to t^H, U^A \to 2U^H, d \to 1, z \to 2\right) + H^A\left(t^A \to t^H, U^A \to 2U^H, d \to 2, z \to 1\right)\right]
-%\end{aligned}\end{equation}
-%The conclusion we can draw from this is that the Hubbard dimer Hamiltonian can be obtained from the Anderson dimer Hamiltonian in the following fashion:
-%\begin{itemize}
-%	\item The essential idea is that we have to create a local Hubbard Hamiltonian for each site of the Hubbard lattice by replacing the impurity label \(d\) in the Anderson dimer with the label of the particular site. So if there are two sites, we will get two local Hamiltonians obtained by replacing \(d\) with 1 and 2 respectively. For each local Hamiltonian, the zero-mode label \(z\) is replaced by the site that is nearest to the one that \(d\) is being replaced by. So, if \(d \to 1(2)\), then \(z \to 2(1)\).
-%	\item This, however, is not the only change that we must make, in order to get the local Hamiltonian for a particular site. Along with \(d\) and \(z\), we must also make the transformations \(t^A \to t^H, U^A \to 2U^H\).
-%	\item Finally, once we have the local Hamiltonians for sites 1 and 2, we average them to get the total Hubbard Hamiltonian.
-%\end{itemize}
-%Note that we expect most of these "rules" to be specific for the dimer, and there will be generalizations to most of them for a general \(N-\)site Hubbard Hamiltonian.
-%
-%
-%The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
-%\begin{equation}\begin{aligned}
-%	\ket{\Psi^H_\text{GS}} &= a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) - a_2(U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
-%	\ket{\Psi^A_\text{GS}} &= a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) - a_2(\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
-%	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
-%\end{aligned}\end{equation}
-%where 
-%\begin{equation}\begin{aligned}
-%	a_1(U,t) \equiv \frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) - U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) - U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
-%\end{aligned}\end{equation}
-%$a_1,a_2$ satisfy $a_1(-U,t) = -a_2(U,t)$ and $a_1(U,t)a_2(U,t)= \frac{2t}{\Delta(U,t)}$.
-%From the forms of the wavefunctions and eigenenergies, we can immediately write down
-%\begin{equation}\begin{aligned}
-%	\ket{\Psi^H_\text{GS}} &= \frac{1}{2}\left[\ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 1, z \to 2\right) + \ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 2, z \to 1\right)\right]\\
-%	E^H_\text{GS} &= E^A_\text{GS}\left(t^A, U^A \to t^H, 2U^H\right)
-%\end{aligned}\end{equation}
-%This shows that the rules laid out before work for the Hamiltonians, as well as the wavefunctions and energy eigenvalues of the \(N=2,0,4\) sector. These sectors specifically work because it is only in these sectors can we ensure that \(n_d = n_z\), which is required for the Hubbard Hamiltonian because \(n_1 = n_2\). In the other sectors (\(N=1,3\)), the impurity site and the zero-mode sites have to be singly-occupied in some part, and since the impurity site incurs a single-occupation cost of \(-\frac{U^H}{2}\) which is not borne by the zero-mode site, there is an intrinsic dissimilarity between the two sites of the Anderson molecule in this regime. This dissimilarity does not exist for the Hubbard model, so we cannot hope to connect the two models in this regime.
+\section{Solution of the Hubbard dimer using the Anderson molecule}
+This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.
+\\\\
+The Hubbard dimer and Anderson molecules (zero-mode) are defined by the following respective Hamiltonians:
+\begin{equation}\begin{aligned}
+	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat n_{i \uparrow}\hat n_{i \downarrow} - \mu^H \sum_{\sigma, i=1,2}\hat n_{i\sigma}\\
+	H^A &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + \epsilon_d^A \sum_{\sigma}\hat n_{d\sigma} + U^A\hat n_{d \uparrow}\hat n_{d \downarrow}
+\end{aligned}\end{equation}
+In the first Hamiltonian, the indices \(i=1,2\) refer to the two lattice sites that constitute the dimer. In the second Hamiltonian, the subscript \(d\) indicates the impurity site, while the subscript \(z\) indicates the zero-mode site. First, we will assume that the Hubbard dimer is at half-filling (\(\frac{1}{2}U^H = \mu^H\)):
+\begin{equation}\begin{aligned}
+	\label{hubb_dimer}
+	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \left(\frac{1}{2}U^H- \mu^H\right) \sum_{\sigma, i=1,2}\hat n_{i\sigma} + \text{constant}\\
+	    &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}
+\end{aligned}\end{equation}
+Since the Hubbard Hamiltonian is at half-filling, we will also place the impurity at half-filling by setting \(\epsilon_d^A = -\frac{1}{2}U^A\):
+\begin{equation}\begin{aligned}
+	\label{and_dimer}
+	H^A &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + \left(\epsilon_d^A + \frac{1}{2}U^A\right) \sum_{\sigma}\hat \tau_{d\sigma} + U^A\hat \tau_{d \uparrow}\hat \tau_{d \downarrow} + \text{constant}\\
+	    &= -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A\hat \tau_{d \uparrow}\hat \tau_{d \downarrow}
+\end{aligned}\end{equation}
+The first step is to recreate the Hubbard dimer Hamiltonian eq.~\ref{hubb_dimer} using the Anderson molecule Hamiltonian eq.~\ref{and_dimer}:
+\begin{equation}\begin{aligned}
+	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\\
+	    &= \frac{1}{2}\left[-t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + t^H\sum_{\sigma}\left(c^\dagger_{2\sigma}c_{1\sigma} + \text{h.c.}\right)\right] + \frac{1}{2} 2U^H\sum_{i=1,2}\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\\
+	    &= \frac{1}{2}\left[-t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right)\bigg\vert_{z \to 2, d \to 1\atop{t^A \to t^H}} + t^A\sum_{\sigma}\left(c^\dagger_{2\sigma}c_{1\sigma} + \text{h.c.}\right)\bigg\vert_{d \to 2,z \to 1\atop{t^A \to t^H}} \right] \\
+	    &+ \frac{1}{2} \left(U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\bigg\vert_{d \to 1\atop{U^A \to 2U^H}} + U^A\hat \tau_{i \uparrow}\hat \tau_{i \downarrow}\bigg\vert_{d \to 2\atop{U^A \to 2U^H}}\right)\\
+	    &=\frac{1}{2}\left[H^A\left(t^A \to t^H, U^A \to 2U^H, d \to 1, z \to 2\right) + H^A\left(t^A \to t^H, U^A \to 2U^H, d \to 2, z \to 1\right)\right]
+\end{aligned}\end{equation}
+The conclusion we can draw from this is that the Hubbard dimer Hamiltonian can be obtained from the Anderson dimer Hamiltonian in the following fashion:
+\begin{itemize}
+	\item The essential idea is that we have to create a local Hubbard Hamiltonian for each site of the Hubbard lattice by replacing the impurity label \(d\) in the Anderson dimer with the label of the particular site. So if there are two sites, we will get two local Hamiltonians obtained by replacing \(d\) with 1 and 2 respectively. For each local Hamiltonian, the zero-mode label \(z\) is replaced by the site that is nearest to the one that \(d\) is being replaced by. So, if \(d \to 1(2)\), then \(z \to 2(1)\).
+	\item This, however, is not the only change that we must make, in order to get the local Hamiltonian for a particular site. Along with \(d\) and \(z\), we must also make the transformations \(t^A \to t^H, U^A \to 2U^H\).
+	\item Finally, once we have the local Hamiltonians for sites 1 and 2, we average them to get the total Hubbard Hamiltonian.
+\end{itemize}
+Note that we expect most of these "rules" to be specific for the dimer, and there will be generalizations to most of them for a general \(N-\)site Hubbard Hamiltonian.
+
+
+The wavefunctions for the \(N=2\) sector can also be connected through these transformations. Since both the Hamiltonians are analytically solvable, we can write down their groundstate wavefunctions \cite{pavarini}:
+\begin{equation}\begin{aligned}
+	\ket{\Psi^H_\text{GS}} &= a_1(U^H, t^H)\frac{1}{\sqrt 2}\left(\ket{\uparrow_1, \downarrow_2} - \ket{\downarrow_1, \uparrow_2}\right) - a_2(U^H,t^H){\sqrt 2}\left(\ket{\uparrow_1\downarrow_1, } - \ket{,\uparrow_2\downarrow_2}\right)\\
+	\ket{\Psi^A_\text{GS}} &= a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{\uparrow_d, \downarrow_z} - \ket{\downarrow_d, \uparrow_z}\right) - a_2(\frac{1}{2}U^A,t^A){\sqrt 2}\left(\ket{\uparrow_d\downarrow_d, } - \ket{,\uparrow_z\downarrow_z}\right)\\
+	E^H_\text{GS} &=  -\frac{1}{2}\Delta\left( U^H, t^H \right), E^A_\text{GS} =  -\frac{1}{2}\Delta\left( \frac{1}{2}U^A, t^A \right)
+\end{aligned}\end{equation}
+where 
+\begin{equation}\begin{aligned}
+	a_1(U,t) \equiv \frac{4t}{\sqrt{2\Delta(U,t)\left( \Delta(U,t) - U \right) }}, && a_2(U,t) \equiv \sqrt{\frac{\Delta(U,t) - U}{2\Delta(U,t)}}, &&\Delta(U,t) \equiv \sqrt{U^2 + 16t^2}\\
+\end{aligned}\end{equation}
+$a_1,a_2$ satisfy $a_1(-U,t) = -a_2(U,t)$ and $a_1(U,t)a_2(U,t)= \frac{2t}{\Delta(U,t)}$.
+From the forms of the wavefunctions and eigenenergies, we can immediately write down
+\begin{equation}\begin{aligned}
+	\ket{\Psi^H_\text{GS}} &= \frac{1}{2}\left[\ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 1, z \to 2\right) + \ket{\Psi^A_\text{GS}}\left(t^A, U^A \to t^H, 2U^H, d \to 2, z \to 1\right)\right]\\
+	E^H_\text{GS} &= E^A_\text{GS}\left(t^A, U^A \to t^H, 2U^H\right)
+\end{aligned}\end{equation}
+This shows that the rules laid out before work for the Hamiltonians, as well as the wavefunctions and energy eigenvalues of the \(N=2,0,4\) sector. These sectors specifically work because it is only in these sectors can we ensure that \(n_d = n_z\), which is required for the Hubbard Hamiltonian because \(n_1 = n_2\). In the other sectors (\(N=1,3\)), the impurity site and the zero-mode sites have to be singly-occupied in some part, and since the impurity site incurs a single-occupation cost of \(-\frac{U^H}{2}\) which is not borne by the zero-mode site, there is an intrinsic dissimilarity between the two sites of the Anderson molecule in this regime. This dissimilarity does not exist for the Hubbard model, so we cannot hope to connect the two models in this regime. Going forward, we will switch to using Hubbard dimers as the smallest tiling unit for a general Hubbard model.
 
 %\section{Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers: tiling the lattice with Anderson molecules}
 \section{Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}
@@ -167,7 +172,7 @@ We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameter
 \end{aligned}\end{equation}
 If we now sum over all the lattice sites and take the average of all the Hamiltonians (\(Nw\) in number), we get
 \begin{equation}\begin{aligned}
-	H_\text{symm} &= \frac{1}{Nw}\sum_{i=1}^N H^D_{i} \\
+	\tilde H &= \frac{1}{Nw}\sum_{i=1}^N H^D_{i} \\
 		      &= \frac{1}{Nw}\left[\sum_{\sigma i=1}^N\sum_{j \in \text{NN of }j}-t^D\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^D\sum_{i=1}^N \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\sum_{i=1}^N\sum_{j \in \text{N.N. of }i}\hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right] \\
 		      &= \frac{1}{Nw}\left[-t^D 2\sum_{\sigma \left<ij\right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + 2 U^D\sum_{\left<ij\right>} \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + 2 U^D\sum_{\left<ij\right>} \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right]\\
 		      &= \frac{2}{Nw}\sum_{\left<ij\right>}\left[-t^D \sum_\sigma \left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + U^D\left(\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right)\right]\\
@@ -177,57 +182,73 @@ There we used the identity
 \begin{equation}\begin{aligned}
 	\sum_{i=1}^N\sum_{j \in \text{NN of }j} = 2\sum_{\left<ij\right>}
 \end{aligned}\end{equation}
-The sum $\left<ij\right>$ is over all nearest-neighbour pairs. So $H_\text{symm}$ can thus be written as
+The sum $\left<ij\right>$ is over all nearest-neighbour pairs. So $\tilde H$ can thus be written as
 \begin{equation}\begin{aligned}
 	\label{H_tiled}
-	H_\text{symm} = - \frac{2t^D}{Nw}\sum_{\sigma \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+	\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
 \end{aligned}\end{equation}
 The conclusion is that on tiling the Hubbard dimer Hamiltonians into all the nearest neighbour pairs, we end up with a new Hubbard model Hamiltonian with "renormalised parameters"
 \begin{equation}\begin{aligned}
 	\tilde t = \frac{2t^D}{Nw}, \tilde U = \frac{2U^D}{N}
 \end{aligned}\end{equation}
+It is clear that symmetrizing the Anderson molecules by translating them throughout the lattice has restored translational invariance, and generated correlations on all sites (as compared to just on the impurity site). %This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
+\\\\
 The claim made in a previous section was that this Hamiltonian is very close to the unitarily transformed Hubbard Hamiltonian:
 \begin{equation}\begin{aligned}
-	\frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D) \color{red}{\simeq U_S H^H U_S^\dagger}
+	\frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D) \simeq  \mathcal{U}_A H^H  \mathcal{U}_A^\dagger
 \end{aligned}\end{equation}
-It is clear that symmetrizing the Anderson molecules by translating them throughout the lattice has restored translational invariance, and generated correlations on all sites (as compared to just on the impurity site). %This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
+$\mathcal{U}_A$ is the total unitary transformation that completes the URG starting from the bare cluster+bath Anderson model up to the fixed-point Hamiltonian. 
 
 \section{Formal expressions for single particle Greens functions and other related many-body quantites}
 \subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
-If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $H_\text{symm}$ is $\ket{\tilde 0} = U_S\ket{0}$. The advantage of $H_\text{symm}$ being unitarily connected to $H^H$ is that they will have the same single-particle Greens functions.
+If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $\tilde H$ is $\ket{\tilde 0} =  \mathcal{U}_A\ket{0}$. The advantage of $\tilde H$ being unitarily connected to $H^H$ is that they will have the same single-particle Greens functions.
 \begin{equation}\begin{aligned}
-	\left(G_H\right)_{ij}(t) \equiv -i\theta(t)\bra{0}\left\{c_i,c^\dagger_j \right\}\ket{0} &= -i\theta(t)\bra{0}U_S^\dagger\left\{ U_S c_i U_S^\dagger U_S c^\dagger_j U_S^\dagger + U_S c^\dagger_j U_S^\dagger U_S c_i U_S^\dagger\right\}U_S\ket{0}\\
-												 &=-i\theta(t)\bra{\tilde 0}\left\{\tilde c_i \tilde c^\dagger_j + \tilde c^\dagger_j \tilde c_i \right\}\ket{\tilde 0}
+	\left(G_H\right)^\sigma_{ij}(t) \equiv -i\theta(t)\bra{0}\left\{c_{i\sigma},c^\dagger_{j\sigma} \right\}\ket{0} &= -i\theta(t)\bra{0} \mathcal{U}_A^\dagger\left\{  \mathcal{U}_A c_{i\sigma}  \mathcal{U}_A^\dagger  \mathcal{U}_A c^\dagger_{j\sigma}  \mathcal{U}_A^\dagger +  \mathcal{U}_A c^\dagger_{j\sigma}  \mathcal{U}_A^\dagger  \mathcal{U}_A c_{i\sigma}  \mathcal{U}_A^\dagger\right\} \mathcal{U}_A\ket{0}\\
+															&=-i\theta(t)\bra{\tilde 0}\left\{\tilde c_{i\sigma} \tilde c^\dagger_{j\sigma} + \tilde c^\dagger_{j\sigma} \tilde c_{i\sigma} \right\}\ket{\tilde 0}\\
+															&= \left(\tilde G\right)_{\tilde {i\sigma} \tilde {j\sigma}}(t)
 \end{aligned}\end{equation}
-This says that the Greens function of the bare Hubbard model $H^H$ for excitations $c_i,c^\dagger_j$ on top of its ground state $\ket{0}$ is exactly equal to the Greens function of the renormalised Hamiltonian $H_\text{symm}$ for renormalised excitations $\tilde c_i \equiv U_S c_i U_S^\dagger, \tilde c_j^\dagger \equiv U_S c^\dagger_j U_S^\dagger$ on top of its renormalised ground state $\ket{\tilde 0} = U_S \ket{0}$.
-In terms of the Greens function, equation \ref{H_tiled} becomes
+This says that the Greens function $G_H$ of the bare Hubbard model $H^H$ for excitations $\ket{{j\sigma}} \equiv c^\dagger_{j\sigma}\ket{0}$ on top of its ground state $\ket{0}$ is exactly equal to the Greens function $\tilde G$ of the renormalised Hamiltonian $\tilde H$ for renormalised excitations $\ket{\tilde {j\sigma}} \equiv \tilde c^\dagger_{j\sigma}\ket{\tilde 0} \equiv  \mathcal{U}_A c^\dagger_i  \mathcal{U}_A^\dagger  \mathcal{U}_A\ket{0} =  \mathcal{U}_A\ket{{j\sigma}}$ on top of its renormalised ground state $\ket{\tilde 0} =  \mathcal{U}_A \ket{0}$. This means,
+\begin{equation}\begin{aligned}
+	\bra{{i\sigma}}G_H\ket{{j\sigma}} = \bra{\tilde {i\sigma}}\tilde G\ket{\tilde {j\sigma}}
+\end{aligned}\end{equation}
+This same unitary connection also allows us to equate the inverse Greens functions:
+\begin{equation}\begin{aligned}
+	\left[\left(G_H\right)^{-1}\right]^\sigma_{ij} = \bra{i\sigma}\omega - H^H\ket{j\sigma} = \bra{i\sigma} \mathcal{U}_A^\dagger\left(\omega -  \mathcal{U}_A H^H  \mathcal{U}_A^\dagger\right)  \mathcal{U}_A\ket{j\sigma} = \bra{\tilde i\sigma}\left(\omega - \tilde H\right)\ket{\tilde j\sigma} = \left[\left(\tilde G\right)^{-1}\right]^\sigma_{\tilde i,\tilde j}
+\end{aligned}\end{equation}
+We will now see how we can use the Hubbard dimer expansion to get simple expressions for the inverse Greens functions of $\tilde H$, and hence $H^H$.
+\\\\
+In terms of the inverse Greens function, equation \ref{H_tiled} becomes
 \begin{equation}\begin{aligned}
 	\label{green_eq}
-	\omega - {G_H}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[\omega - G_D^{-1}\left(1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}}
+	\omega - \left(\tilde G\right)^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[\omega - G_D^{-1}\left(i, j\right)\right]
 \end{aligned}\end{equation}
-where $G_H$ and $G_D$ are the Greens functions for the full Hubbard and the Hubbard dimer respectively:
+where $\tilde G$ and $G_D$ are the Greens functions for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
-	G_H(\omega) = \frac{1}{\omega - H^H}, && G_D(\omega) = \frac{1}{\omega - H^D}
+	\tilde G(\omega) = \frac{1}{\omega - \tilde H}, && G_D(\omega) = \frac{1}{\omega - H^D}
 \end{aligned}\end{equation}
 Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
 \begin{equation}\begin{aligned}
 	\label{green_eq_final}
-{G_H}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\left[G_D^{-1}\left(\omega, 1 \to i, 2 \to j\right)\right]_{t^D \to \frac{1}{2}Nwt^H \atop{U^D \to \frac{1}{2}N U^H}} = \frac{2}{Nw}\sum_{\left<i,j\right>}G_D^{-1}\left(\omega, i, j, t^D = \frac{1}{2}Nwt^H, U^D = \frac{1}{2}N U^H\right)
+	\left(\tilde G\right)^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}G_D^{-1}\left(\omega, i, j\right)
 \end{aligned}\end{equation}
-where $G_D^{-1}(i,j,t^D,U^D)$ is the Greens function (matrix) of the Hubbard dimer Hamiltonian with $i, j$ as the two sites. Henceforth, we will supress the transformation rules in the arguments of the Greens function and assume they have been applied. For the record, the transformations are
+where $G_D^{-1}(i,j,t^D,U^D)$ is the Greens function (matrix) of the Hubbard dimer Hamiltonian with $i, j$ as the two sites.
+\\\\
+We will now calculate the single-particle site-diagonal and site-off-diagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. We will extract this using the definition
 \begin{equation}\begin{aligned}
-	t^D &= \frac{1}{2}Nwt^H\\
-	U^D &= \frac{1}{2}N U^H
+	\left[\tilde G(\omega)^{-1}\right]^\sigma_{\tilde i \tilde i} = \bra{\tilde i\sigma}\tilde G(\omega)^{-1}\ket{\tilde i\sigma} = \bra{ i\sigma} G_H(\omega)^{-1}\ket{ i\sigma} = \left[G_H(\omega)^{-1}\right]^\sigma_{ii}
 \end{aligned}\end{equation}
-We will now calculate the single-particle site diagonal and site offdiagonal Greens functions. First lets consider the diagonal Greens function at $i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[G_D^{-1}(\omega)\right]_{00\sigma}$. The entire thing is thus $w$ times this local Greens function.
+\\\\
+{\textbf{\color{red}{[CHECK]How should we connect the Hubbard dimers wavefunctions with the renormalised ground state $\ket{\tilde 0}$? If we use just the latter, then the RHS will not be the dimer's greens functions. If we use just the former, then the LHS will not be the Greens functions of $\tilde H$, and hence not of $H^H$}.}}
+\\\\
+The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $i$ in one of the indices. There will be $w$ such terms, because $i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[G_D^{-1}(\omega)\right]_{00\sigma}$. The entire thing is thus $w$ times this local Greens function.
 \begin{equation}\begin{aligned}
 	\label{local_gf}
-	\left(G_{H}^{-1}(\omega)\right)_{i\sigma,i\sigma} = \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{00\sigma}\times w = \frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} \equiv g_0
+	\left(G_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]^\sigma_{00}\times w = \frac{2}{N}\left[G_{D}^{-1}(\omega)\right]^\sigma_{00} \equiv g_0
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01\sigma}$.
+Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01}^\sigma$.
 \begin{equation}\begin{aligned}
 \label{nn_gf}
-	\left(G_{H}^{-1}(\omega)\right)_{\left<i,j \right>\sigma} &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma} \equiv g_1
+	\left(G_{H}^{-1}(\omega)\right)_{ij}^\sigma &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01}^\sigma \equiv g_1
 \end{aligned}\end{equation}
 \begin{figure}[htpb!]
 	\centering
@@ -472,44 +493,6 @@ Finally, the inter-site Greens function for the Hubbard dimer is given by
 \label{dimer_intersite_G}
 	G_{D,01}^\uparrow(\omega, T \to 0) = \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{t}{(\omega +\frac{\Delta}{2})^2 - t^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{t}{(\omega -\frac{\Delta}{2})^2 - t^2} = G_{D,01}^\downarrow(\omega, T \to 0)~.
 \end{equation}
-%\section*{Appendix: Greens functions for Anderson molecule}
-%\begin{equation}\begin{aligned}
-%	G_{dd}^\uparrow(\omega) &= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{d\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{d\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
-%	G_{zz}^\uparrow(\omega)&= \sum_{n}\left[\frac{||\bra{n}c^\dagger_{z\uparrow}\ket{GS}||^2}{\omega + E_{GS} - E_n} + \frac{||\bra{n}c_{z\uparrow}\ket{GS}||^2}{\omega + E_n - E_{GS}}\right]\\
-%	G_{dz}^\uparrow(\omega)	&= \sum_{n}\left[\frac{\left<GS|c_{d\uparrow} | n \right>\left<n |c^\dagger_{z \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{d\uparrow} | GS\right>\left<GS |c^\dagger_{z \uparrow} |n\right>}{\omega + E_{n} - E_{GS}}\right]\\
-%	G_{zd}^\uparrow(\omega) &= \sum_{n}\left[\frac{\left<GS|c_{z \uparrow} | n \right>\left<n |c^\dagger_{d \uparrow} |GS\right>}{\omega + E_{GS} - E_n} + \frac{\left<n|c_{z \uparrow} | GS\right>\left<GS |c^\dagger_{d \uparrow} | n\right>}{\omega + E_{n} - E_{GS}}\right] = \left\{G_{dz}^\uparrow(\omega)\right\}^\dagger\\
-%\end{aligned}\end{equation}
-%We proceed exactly as before. With the following shorthand notations,
-%\begin{equation}\begin{aligned}
-%	a_{1,2} &\equiv a_{1,2}\left(U^A, t^A\right), &&\tilde a_{1,2} \equiv a_{1,2}\left(\frac{1}{2}U^A, t^A\right) \\
-%	\Delta &\equiv \Delta\left(U^A, t^A\right), &&\tilde \Delta \equiv \Delta\left(\frac{1}{2}U^A, t^A\right)\\
-%	C_z^\pm &\equiv a_1 \tilde a_1 \pm a_2 \tilde a_2, &&C_x^\pm \equiv a_1 \tilde a_2 \pm a_2 \tilde a_1
-%\end{aligned}\end{equation}
-%\begin{equation}\begin{aligned}
-%	E_{\pm} \equiv E(\ket{2\sigma_\pm}) - E(\ket{-}) = E(\ket{0\sigma_\pm}) - E(\ket{-}) = \frac{1}{2}\tilde\Delta \pm \frac{1}{4}\Delta\\
-%\end{aligned}\end{equation}
-%the diagonal Green's functions are
-%\begin{equation}\begin{aligned}
-%	\label{mole_local_G}
-%	G_{d d}^\uparrow(\omega) &= \left[a_1\tilde a_2 + a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_1 - a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
-%				 &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
-%\end{aligned}\end{equation}
-%\begin{equation}\begin{aligned}
-%	G_{z z}^\uparrow(\omega) &= \left[a_1\tilde a_1 + a_2\tilde a_2\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta - \frac{1}{4}\Delta\right]^2 } +\left[a_1\tilde a_2 - a_2\tilde a_1\right]^2\frac{\omega}{\omega^2 - \left[\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right]^2 }\\
-%				 &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }
-%\end{aligned}\end{equation}
-%and the off-diagonal Greens functions are
-%\begin{equation}\begin{aligned}
-%	G_{dz}^\uparrow(\omega) &= \left(a_1 \tilde a_1 + a_2 \tilde a_2\right) \left(a_1 \tilde a_2 + a_2 \tilde a_1\right) \frac{\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta}{\omega^2 - \left(\frac{1}{4}\Delta - \frac{1}{2}\tilde\Delta\right)^2} - \left(a_1 \tilde a_1 - a_2 \tilde a_2\right) \left(a_1 \tilde a_2 - a_2 \tilde a_1\right) \frac{\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta}{\omega^2  - \left(\frac{1}{2}\tilde\Delta + \frac{1}{4}\Delta\right)^2}\\
-%				&= -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}\\
-%G_{zd}^\uparrow(\omega) &= {G_{dz}^\uparrow(\omega)}^\dagger = G_{dz}^\uparrow(\omega)
-%\end{aligned}\end{equation}
-%To summarize, the four Green's real space Greens functions, in the compact notation, of the Anderson molecule are
-%\begin{equation}\begin{aligned}
-%	G_{dd}^\uparrow(\omega) &= {C_x^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_z^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
-%	G_{zz}^\uparrow(\omega) &= {C_z^+}^2\frac{\omega}{\omega^2 - E_{-}^2 } +{C_x^-}^2\frac{\omega}{\omega^2 - E_{+}^2 }\\
-%	G_{dz}^\uparrow(\omega) &= G_{zd}^\uparrow(\omega) = -C_z^+ C_x^+ \frac{E_{-}}{\omega^2 - E_{-}^2} - C_z^- C_x^- \frac{E_{+}}{\omega^2  - E_{+}^2}
-%\end{aligned}\end{equation}
 
 \bibliographystyle{unsrt}
 \bibliography{notes}

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  10 AUG 2021 20:15
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  11 AUG 2021 10:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -452,13 +452,23 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 20.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+Underfull \hbox (badness 10000) in paragraph at lines 26--32
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--32
+
+ []
+
+[1
 
 ]
 
 Package amsmath Warning: Foreign command \atop;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 42.
+(amsmath)                 on input line 45.
 
 File: ./cluster-bath.png Graphic file (type bmp)
 <./cluster-bath.png>
@@ -468,55 +478,83 @@ File: ./gen_siam.png Graphic file (type bmp)
 File: ./hubb_dim.png Graphic file (type bmp)
 <./hubb_dim.png>
 
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 155.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 156--161
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 156--161
+Underfull \hbox (badness 10000) in paragraph at lines 105--108
 
  []
 
 [4] [5]
-Overfull \hbox (8.11143pt too wide) detected at line 216
-[][][]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 160.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--166
+
  []
 
-[6]
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--166
+
+ []
+
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 193--197
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 217--221
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 233--237
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--244
+
+ []
+
 File: ./lattice.png Graphic file (type bmp)
 <./lattice.png>
- [7]
-Overfull \hbox (5.929pt too wide) detected at line 265
+[9]
+Overfull \hbox (5.929pt too wide) detected at line 286
 []
  []
 
-[8] [9] [10] [11] [12]
+[10] [11] [12] [13] [14]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 392.
+(caption)                particular \caption on input line 413.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 411.
+(caption)                particular \caption on input line 432.
 See the caption package documentation for explanation.
 
-[13] [14] (./notes.bbl) [15] (./notes.aux)
+[15] [16] (./notes.bbl) [17] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 3D69A295DD0AFE1082BEC18025560952;1476.
- ) 
+(rerunfilecheck)             Checksum: FCE6FA7229D7A854F8A813D0AD6A4905;1828.
+ )
+(\end occurred inside a group at level 1)
+
+### simple group (level 1) entered at line 28 ({)
+### bottom level 
 Here is how much of TeX's memory you used:
- 11988 strings out of 476919
- 177310 string characters out of 5827674
- 512000 words of memory out of 5000000
- 31801 multiletter control sequences out of 15000+600000
+ 11991 strings out of 476919
+ 177343 string characters out of 5827674
+ 509576 words of memory out of 5000000
+ 31804 multiletter control sequences out of 15000+600000
  444227 words of font info for 75 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,1274b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,1274b,506s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (15 pages, 86428 bytes).
+Output written on notes.xdv (17 pages, 103076 bytes).

@@ -766,13 +766,13 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ts1-lmr12.tfm
 OUTPUT notes.xdv
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm
 INPUT ./cluster-bath.png
 INPUT ./cluster-bath.png
 INPUT ./cluster-bath.png
-INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT ./gen_siam.png
 INPUT ./gen_siam.png
 INPUT ./gen_siam.png

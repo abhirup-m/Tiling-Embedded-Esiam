@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  11 AUG 2021 20:21
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  12 AUG 2021 14:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -541,15 +541,23 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 408.
 
-[15] [16]
+[15]
+File: ./dimer_dispersion.png Graphic file (type bmp)
+<./dimer_dispersion.png>
+
+Underfull \hbox (badness 10000) in paragraph at lines 421--429
+
+ []
+
+[16]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 443.
+(caption)                particular \caption on input line 450.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 462.
+(caption)                particular \caption on input line 469.
 See the caption package documentation for explanation.
 
 [17] [18] (./notes.bbl) [19] (./notes.aux)
@@ -557,12 +565,12 @@ Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: 7CB25FE1BD39F95966DFCABA876EDDB4;2051.
  ) 
 Here is how much of TeX's memory you used:
- 11990 strings out of 476919
- 177340 string characters out of 5827674
- 510838 words of memory out of 5000000
- 31803 multiletter control sequences out of 15000+600000
+ 11997 strings out of 476919
+ 177500 string characters out of 5827674
+ 510906 words of memory out of 5000000
+ 31809 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,1081b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,984b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (19 pages, 113604 bytes).
+Output written on notes.xdv (19 pages, 116556 bytes).

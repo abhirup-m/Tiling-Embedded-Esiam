@@ -788,6 +788,9 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT ./lattice.png
 INPUT ./lattice.png
 INPUT ./lattice.png
+INPUT ./dimer_dispersion.png
+INPUT ./dimer_dispersion.png
+INPUT ./dimer_dispersion.png
 INPUT ./notes.bbl
 INPUT notes.bbl
 INPUT ./notes.bbl

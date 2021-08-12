@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1628772601 "notes.aux" "notes.bbl" "notes" 1628772603
+["bibtex notes"] 0 "notes.aux" "notes.bbl" "notes" 1628773227
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1628772601 8571 a5e2f85647bfce99ab5b5a27790da2c4 "xelatex"
+  "notes.aux" 1628773226 8571 a5e2f85647bfce99ab5b5a27790da2c4 "xelatex"
   "notes.bib" 1627878500 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["xdvipdfmx"] 1628772601 "notes.xdv" "notes.pdf" "notes" 1628772603
-  "notes.xdv" 1628772601 121000 5abff604dfe957387b189ef159f9ecca "xelatex"
+["xdvipdfmx"] 1628773226 "notes.xdv" "notes.pdf" "notes" 1628773227
+  "notes.xdv" 1628773226 121228 7a04f0150976d26e45fccca5377863ff "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1628772601 "notes.tex" "notes.xdv" "notes" 1628772603
+["xelatex"] 1628773226 "notes.tex" "notes.xdv" "notes" 1628773227
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -110,16 +110,16 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1627447396 5486154 5e105109c0224c5b55112f9ae96c6a07 ""
   "cluster-bath.png" 1628576061 17153 82546c76fe9bb56aa4a0bd931362ee51 ""
-  "dimer_dispersion.png" 1628759879 115183 262311eb635f2582254cff22dff25c1f ""
+  "dimer_dispersion.png" 1628773222 44338 57d6c926187327ce0915b222f3489ad6 ""
   "gen_siam.png" 1628574735 34370 448d1f1734840e1e16e905d6c521e86e ""
   "hubb_dim.png" 1628578544 30401 3350fc8e5121e458b5be80f80385f71f ""
   "lattice.png" 1628226938 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1628772601 8571 a5e2f85647bfce99ab5b5a27790da2c4 "xelatex"
+  "notes.aux" 1628773226 8571 a5e2f85647bfce99ab5b5a27790da2c4 "xelatex"
   "notes.bbl" 1628772601 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1628772601 2157 4709aafa40858048bf36b5ef7a04963b "xelatex"
-  "notes.tex" 1628772599 63348 b1ab8a72dc0e42ed198abc434ea6d489 ""
+  "notes.out" 1628773226 2157 4709aafa40858048bf36b5ef7a04963b "xelatex"
+  "notes.tex" 1628773225 63340 e94272e8c221f8ea33fefd3bbf60f4b6 ""
   (generated)
-  "notes.xdv"
   "notes.out"
+  "notes.xdv"
   "notes.log"
   "notes.aux"

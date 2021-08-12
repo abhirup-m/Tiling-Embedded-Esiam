@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  12 AUG 2021 18:20
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  12 AUG 2021 18:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -560,12 +560,12 @@ Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: 4709AAFA40858048BF36B5EF7A04963B;2157.
  ) 
 Here is how much of TeX's memory you used:
- 11997 strings out of 476919
- 177500 string characters out of 5827674
+ 11999 strings out of 476919
+ 177546 string characters out of 5827674
  511036 words of memory out of 5000000
- 31809 multiletter control sequences out of 15000+600000
+ 31811 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2055b,440s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2051b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (20 pages, 121000 bytes).
+Output written on notes.xdv (20 pages, 121228 bytes).

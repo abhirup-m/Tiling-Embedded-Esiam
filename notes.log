@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  13 AUG 2021 19:58
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  14 AUG 2021 11:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -544,19 +544,19 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 File: ./dimer_dispersion.png Graphic file (type bmp)
 <./dimer_dispersion.png>
  [16]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 445--446
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 455--456
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
 [17]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 468.
+(caption)                particular \caption on input line 478.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 487.
+(caption)                particular \caption on input line 497.
 See the caption package documentation for explanation.
 
 [18] [19] (./notes.bbl) [20] (./notes.aux)
@@ -572,4 +572,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  71i,18n,77p,2051b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (20 pages, 124940 bytes).
+Output written on notes.xdv (20 pages, 126420 bytes).

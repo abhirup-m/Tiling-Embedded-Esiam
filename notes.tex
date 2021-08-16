@@ -1,12 +1,10 @@
 % !TEX TS-program = xelatex
 \documentclass[12pt]{article}
-%\usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,tcolorbox,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,color}
 \usepackage[margin=0.5in,bottom=0.6in]{geometry}
 \usepackage[T1]{fontenc}
-%\usepackage[hidelinks,pdfusetitle]{hyperref}
 \usepackage[pdfusetitle]{hyperref}
-\renewcommand{\arraystretch}{1.9}
+\renewcommand{\arraystretch}{2}
 \setlength\delimitershortfall{-2pt}
 \setcounter{tocdepth}{1}
 \DeclareMathOperator{\sech}{sech}
@@ -221,56 +219,58 @@ As for the on-site repulsion $U^H$, we will constrain the RG flows such that the
 \[U^D \equiv (U^A)* = U_b = N \times U^H\]
 \section{Formal expressions for single particle Greens functions and other related many-body quantites}
 \subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
-If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $\tilde H$ is $\ket{\tilde 0} =  \mathcal{U}\ket{0}$. The advantage of $\tilde H$ being connected to $H^H$ through unitary (or atleast similarity) transformations is that they will have the same single-particle Greens functions
+%If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $\tilde H$ is $\ket{\tilde 0} =  \mathcal{U}\ket{0}$. The advantage of $\tilde H$ being connected to $H^H$ through unitary (or atleast similarity) transformations is that they will have the same single-particle Greens functions
+%\begin{equation}\begin{aligned}
+%	\left(G_H\right)^\sigma_{\nu \nu^\prime}(t) \equiv -i\theta(t)\bra{0}\left\{c_{\nu},c^\dagger_{\nu^\prime} \right\}\ket{0} &= -i\theta(t)\bra{0} \mathcal{U}^{-1}\left\{  \mathcal{U} c_{\nu}  \mathcal{U}^{-1}  \mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1} +  \mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}  \mathcal{U} c_{\nu}  \mathcal{U}^{-1}\right\} \mathcal{U}\ket{0}\\
+%															&=-i\theta(t)\bra{\tilde 0}\left\{\tilde c_{\nu} \tilde c^\dagger_{\nu^\prime} + \tilde c^\dagger_{\nu^\prime} \tilde c_{\nu} \right\}\ket{\tilde 0}\\
+%															&= \left(\tilde G\right)_{\tilde {\nu} \tilde {\nu^\prime}}(t)~.
+%\end{aligned}\end{equation}
+%This says that the Greens function $G_H$ of the bare Hubbard model $H^H$ for propagation of excitations (on top of its ground state $\ket{0}$) starting from $\ket{\nu^\prime} \equiv c^\dagger_{\nu^\prime}\ket{0}$ and ending at $\ket{\nu} \equiv c^\dagger_{\nu}\ket{0}$ is exactly equal to the Greens function $\tilde G$ of the renormalised Hamiltonian $\tilde H$ for propagation of the renormalised excitations (on top of its renormalised ground state $\ket{\tilde 0} =  \mathcal{U} \ket{0}$) starting from $\ket{\tilde {\nu^\prime}} \equiv \tilde c^\dagger_{\nu^\prime}\ket{\tilde 0} \equiv  \left(\mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{0} =  \mathcal{U}\ket{{\nu^\prime}}$ and ending at $\ket{\tilde \nu} \equiv \tilde c^\dagger_{\nu}\ket{\tilde 0}$. This means,
+%\begin{equation}\begin{aligned}
+%	\bra{\nu}G_H\ket{{\nu^\prime}} = \bra{\tilde {\nu}}\tilde G\ket{\tilde {\nu^\prime}}
+%\end{aligned}\end{equation}
+Since the two Hamiltonians $H^H$ and $\tilde H$ are connected via a similarity transformation $\mathcal{U}$, their ground states are also connected by the same transformation: $\ket{\tilde 0} = \mathcal{U}\ket{0}$. This means that matrix elements of the type in eq.~\ref{G_mat_el} will also be connected. The matrix elements are of the inverse Greebs function operator defined in eq.~\ref{inv_G_func}:
+ \begin{equation}\begin{aligned}
+	 \mathcal{G}(\omega, H) = \frac{1}{\omega - (H - E_\text{GS})}
+ \end{aligned}\end{equation}
+Its easy to see that the matrix elements of the original and renormalised versions of this operator, between the original and renormalised states, are equal:
 \begin{equation}\begin{aligned}
-	\left(G_H\right)^\sigma_{ij}(t) \equiv -i\theta(t)\bra{0}\left\{c_{i\sigma},c^\dagger_{j\sigma} \right\}\ket{0} &= -i\theta(t)\bra{0} \mathcal{U}^{-1}\left\{  \mathcal{U} c_{i\sigma}  \mathcal{U}^{-1}  \mathcal{U} c^\dagger_{j\sigma}  \mathcal{U}^{-1} +  \mathcal{U} c^\dagger_{j\sigma}  \mathcal{U}^{-1}  \mathcal{U} c_{i\sigma}  \mathcal{U}^{-1}\right\} \mathcal{U}\ket{0}\\
-															&=-i\theta(t)\bra{\tilde 0}\left\{\tilde c_{i\sigma} \tilde c^\dagger_{j\sigma} + \tilde c^\dagger_{j\sigma} \tilde c_{i\sigma} \right\}\ket{\tilde 0}\\
-															&= \left(\tilde G\right)_{\tilde {i\sigma} \tilde {j\sigma}}(t)~.
+	\left[\mathcal{G}_H^{-1}\right]_{\nu \nu^\prime} = \bra{\nu}\omega - H^H + E_\text{GS}\ket{\nu^\prime} = \bra{\nu} \mathcal{U}^{-1}\left(\omega -  \mathcal{U} H^H  \mathcal{U}^{-1} + E_\text{GS}\right)  \mathcal{U}\ket{\nu^\prime} = \bra{\tilde \nu}\left(\omega - \tilde H + E_\text{GS}\right)\ket{\tilde \nu^\prime}\\
+	= \left[\mathcal{\tilde G}^{-1}\right]_{\tilde \nu,\tilde \nu^\prime}
 \end{aligned}\end{equation}
-This says that the Greens function $G_H$ of the bare Hubbard model $H^H$ for excitations $\ket{{j\sigma}} \equiv c^\dagger_{j\sigma}\ket{0}$ on top of its ground state $\ket{0}$ is exactly equal to the Greens function $\tilde G$ of the renormalised Hamiltonian $\tilde H$ for renormalised excitations $\ket{\tilde {j\sigma}} \equiv \tilde c^\dagger_{j\sigma}\ket{\tilde 0} \equiv  \left(\mathcal{U} c^\dagger_i  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{0} =  \mathcal{U}\ket{{j\sigma}}$ on top of its renormalised ground state $\ket{\tilde 0} =  \mathcal{U} \ket{0}$. This means,
+where we have defined the renormalised excitation $\ket{\tilde {\nu^\prime}} \equiv \tilde c^\dagger_{\nu^\prime}\ket{\tilde 0} \equiv  \left(\mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{0} =  \mathcal{U}\ket{{\nu^\prime}}$. importance of these equalities is that we can calculate these matrix elements for $\tilde H$, which will be equal to those of $H^H$, and once we have the matrix elements of $\mathcal{G}$, we can use them to obtain the single-particle Greens functions using eq.~\ref{G_mat_el}. More specifically, to calculate the real space single-particle Greens function between the lattice sites $i$ and $j$, both with spin $\sigma$, we will use the relation:
 \begin{equation}\begin{aligned}
-	\bra{{i\sigma}}G_H\ket{{j\sigma}} = \bra{\tilde {i\sigma}}\tilde G\ket{\tilde {j\sigma}}
+	G( i\sigma,  j\sigma, \omega) = \bra{ i\sigma} \mathcal{G}(\omega, H) \ket{ j\sigma} - \bra{\overline{i\sigma}} \mathcal{G}(-\omega, H) \ket{\overline {j\sigma}} = \mathcal{G}(\omega, H)_{ i\sigma, j\sigma} - \mathcal{G}(-\omega, H)_{\overline{i\sigma}, \overline {j\sigma}}
 \end{aligned}\end{equation}
-This same unitary connection also allows us to equate the inverse Greens functions:
-\begin{equation}\begin{aligned}
-	\left[\left(G_H\right)^{-1}\right]^\sigma_{ij} = \bra{i\sigma}\omega - H^H\ket{j\sigma} = \bra{i\sigma} \mathcal{U}^{-1}\left(\omega -  \mathcal{U} H^H  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{j\sigma} = \bra{\tilde i\sigma}\left(\omega - \tilde H\right)\ket{\tilde j\sigma} = \left[\left(\tilde G\right)^{-1}\right]^\sigma_{\tilde i,\tilde j}
-\end{aligned}\end{equation}
-We will now see how we can use the Hubbard dimer expansion to get simple expressions for the inverse Greens functions of $\tilde H$, and hence $H^H$.
+where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{0}$ and $\ket{\overline{i\sigma}}=c_{i\sigma}\ket{0}$. We can see from the relation that we will need two types of matrix elements, one that propagates a particle excitation $\left( \ket{i\sigma} \right) $ and the one that propagates a hole excitation $\ket{\overline{i\sigma}}$.
 \\\\
-Equation \ref{H_tiled} can be rewritten in terms of inverse Greens functions. However, before proceeding, we should note that even though eq.~\ref{H_tiled} used the indices $i,$, the correct indices are actually $\tilde i, \tilde j$, in light of the fact that operators get renormalised as $c_i \to \tilde c_i\equiv Uc_i$. With this in mind, we can write
+To this end, we rewrite eq.~\ref{H_tiled} in terms of inverse Greens function operators for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
+\begin{equation}\begin{aligned}
+	\mathcal{\tilde G}(\omega) = \frac{1}{\omega - \tilde H}, && \mathcal{G}_D(\omega) = \frac{1}{\omega - H^D}
+\end{aligned}\end{equation}
+\textit{It has been assumed that the Hamiltonians have been normal ordered such that the ground state energy is 0.} Then, these are the same operators that appear in the appendix. However, before proceeding, we should note that even though eq.~\ref{H_tiled} used the indices $i,$, the correct indices are actually $\tilde i, \tilde j$, in light of the fact that operators get renormalised as $c_i \to \tilde c_i\equiv Uc_i$. With this in mind, we can write
 \begin{equation}\begin{aligned}
 	\label{green_eq}
-	\omega - \left(\tilde G\right)^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<\tilde i, \tilde j\right>}\left[\omega - G_D^{-1}\left(\tilde i, \tilde j\right)\right]
+	\omega - \mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<\tilde i, \tilde j\right>}\left[\omega - \mathcal{G}_D^{-1}\left(\tilde i, \tilde j\right)\right]
 \end{aligned}\end{equation}
-where $\tilde G$ and $G_D$ are the Greens functions for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
-\begin{equation}\begin{aligned}
-	\tilde G(\omega) = \frac{1}{\omega - \tilde H}, && G_D(\omega) = \frac{1}{\omega - H^D}
-\end{aligned}\end{equation}
-Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
+where $\mathcal{G}_D^{-1}(\tilde i,\tilde j)$ is the Greens function inverse matrix of the Hubbard dimer Hamiltonian with $\tilde i, \tilde j$ as the two sites. Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
 \begin{equation}\begin{aligned}
 	\label{green_eq_final}
-	\left(\tilde G\right)^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}G_D^{-1}\left(\omega, \tilde i, \tilde j\right)
+	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right)
 \end{aligned}\end{equation}
-where $G_D^{-1}(\tilde i,\tilde j,t^D,U^D)$ is the Greens function (matrix) of the Hubbard dimer Hamiltonian with $\tilde i, \tilde j$ as the two sites.
-\\\\
-We will now calculate the single-particle site-diagonal and site-off-diagonal Greens functions. First lets consider the diagonal Greens function at $\tilde i^\text{th}$ site. We will extract this using the definition
-\begin{equation}\begin{aligned}
-	\left[\tilde G(\omega)^{-1}\right]^\sigma_{\tilde i \tilde i} = \bra{\tilde i\sigma}\tilde G(\omega)^{-1}\ket{\tilde i\sigma} = \bra{ i\sigma} G_H(\omega)^{-1}\ket{ i\sigma} = \left[G_H(\omega)^{-1}\right]^\sigma_{ii}
-\end{aligned}\end{equation}
-This means that we will take the matrix element of eq.~\ref{green_eq_final} between the excitations above the exact ground state of $\tilde H$, which is $\ket{\tilde i}$. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $\tilde i$ in one of the indices. There will be $w$ such terms, because $\tilde i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[G_D^{-1}(\omega)\right]_{00}^{\sigma}$. The entire thing is thus $w$ times this local Greens function.
-\begin{equation}\begin{aligned}
+We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element is calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
+First lets consider the diagonal matrix element at $\tilde i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $\tilde i$ in one of the indices. There will be $w$ such terms, because $\tilde i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. So we will represent the real space local inverse Greens function as $\left[\mathcal{G}_D^{-1}(\omega)\right]_{00}^{\sigma}$. The entire thing is thus $w$ times this local Greens function.
+\begin{gather}
 	\label{local_gf}
-	\left(G_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]^\sigma_{00}\times w = \frac{2}{N}\left[G_{D}^{-1}(\omega)\right]^\sigma_{00} \equiv g_0
-\end{aligned}\end{equation}
-Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$.We will extract this using the definition
-\begin{equation}\begin{aligned}
-	\left[\tilde G(\omega)^{-1}\right]^\sigma_{\tilde i \tilde j} = \bra{\tilde i\sigma}\tilde G(\omega)^{-1}\ket{\tilde j\sigma} = \bra{ i\sigma} G_H(\omega)^{-1}\ket{j\sigma} = \left[G_H(\omega)^{-1}\right]^\sigma_{ij}
-\end{aligned}\end{equation}
-We will again take the matrix element of eq.~\ref{green_eq_final} between the excitations above the exact ground state of $\tilde H$. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[G_D^{-1}(\omega)\right]_{01}^\sigma$.
-\begin{equation}\begin{aligned}
+	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00}\times w = \frac{2}{N}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} \equiv g_0\\
+	\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} = \bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{0}
+\end{gather}
+Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$.We will extract this using the definition. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. We call this Greens function $\left[\mathcal{G}_D^{-1}(\omega)\right]_{01}^\sigma$.
+\begin{gather}
 \label{nn_gf}
-	\left(G_{H}^{-1}(\omega)\right)_{ij}^\sigma &= \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01}^\sigma \equiv g_1
-\end{aligned}\end{equation}
+\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(\omega)\right]_{01}^\sigma \equiv g_1\\
+	\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{01} = \bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{0}
+\end{gather}
 \begin{figure}[htpb!]
 	\centering
 	\hspace*{\fill}
@@ -278,29 +278,47 @@ We will again take the matrix element of eq.~\ref{green_eq_final} between the ex
 	\hspace*{\fill}
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
 \end{figure}
-\subsection{Constructing full Greens function matrix from the inverse matrix via Fourier transformation to \(k-\)space}
-Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions, and the matrix $G^{-1}$ is tridiagonal in real space. Because of translational invariance, we know that $\left(G_H^{-1}\right)_{ii}$ and $\left(G_H^{-1}\right)_{ij}$ are independent of $i,j$. Furthermore, all expressions below are for a particular spin $\sigma$; from the spin rotational symmetry of the Hubbard Hamiltonian, the same expressions are obtained for the opposite spin.
+The matrix elements for hole propagation are obtained similarly:
 \begin{equation}\begin{aligned}
-	G^{-1}_H(\omega) = \begin{pmatrix} \left(G^{-1}\right)_{00} & \left(G^{-1}\right)_{01} & ... & ... & \left(G^{-1}\right)_{0N}\\
-		\left(G^{-1}\right)_{10} & \left(G^{-1}\right)_{11} & \left(G^{-1}\right)_{12} & ... & ...\\
-		... & \left(G^{-1}\right)_{21} & \left(G^{-1}\right)_{22} & \left(G^{-1}\right)_{23} & ... \\
-		    &&.&&\\
-		    &&.&&\\
+	&\left(\mathcal{G}_{H}^{-1}(-\omega)\right)_{\overline{ii}}^\sigma = \frac{2}{N}\left[\mathcal{G}_{D}^{-1}(-\omega)\right]^\sigma_{\overline{00}} \equiv \overline{g_0}, &&&\left[\mathcal{G}_{D}^{-1}(-\omega)\right]^\sigma_{\overline{00}} = \bra{0}c^\dagger_{0\sigma}\mathcal{G}_{D}^{-1}(-\omega)c_{0\sigma}\ket{0}\\
+	&\left(\mathcal{G}_{H}^{-1}(-\omega)\right)_{\overline{ij}}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(-\omega)\right]_{\overline{01}}^\sigma \equiv \overline{g_1}, &&&\left[\mathcal{G}_{D}^{-1}(-\omega)\right]^\sigma_{\overline{01}} = \bra{0}c^\dagger_{0\sigma}\mathcal{G}_{D}^{-1}(-\omega)c_{1\sigma}\ket{0}
+\end{aligned}\end{equation}
+
+
+\subsection{Constructing full Greens function matrix from the inverse matrix via Fourier transformation to \(k-\)space}
+Since the only real-space interaction is that between the nearest neighbours, there are no further real space Greens functions. Because of translational invariance, we know that $\left(\mathcal{G}_H^{-1}\right)_{ii}$ and $\left(\mathcal{G}_H^{-1}\right)_{ij}$ are independent of $i,j$. Furthermore, all expressions below are for a particular spin $\sigma$; from the spin rotational symmetry of the Hubbard Hamiltonian, the same expressions are obtained for the opposite spin. We will now recreate the entire matrix $\mathcal{G_H}^{-1}$ using the matrix elements we calculated previously. Since the two sets $\left\{ \ket{i\sigma} \right\}$ and $\left\{ \ket{\overline{i\sigma}}\right\}$ are orthogonal, we will create separate matrix for the two sets.
+\begin{equation}\begin{aligned}
+	\mathcal{G}^{-1}_H(\omega) = \begin{pmatrix} \left(\mathcal{G}^{-1}\right)_{00} & \left(\mathcal{G}^{-1}\right)_{01} & ... & ... & \left(\mathcal{G}^{-1}\right)_{0N}\\
+		\left(\mathcal{G}^{-1}\right)_{10} & \left(\mathcal{G}^{-1}\right)_{11} & \left(\mathcal{G}^{-1}\right)_{12} & ... & ...\\
+		... & \left(\mathcal{G}^{-1}\right)_{21} & \left(\mathcal{G}^{-1}\right)_{22} & \left(\mathcal{G}^{-1}\right)_{23} & ... \\
 		    &&.&&\\
 \end{pmatrix} = \begin{pmatrix} g_0 & g_1 & ... & ... & g_1\\
 		g_1 & g_0 & g_1 & ... & ...\\
 		... & g_1 & g_0 & g_1 & ... \\
 		    &&...&&\\
+\end{pmatrix}\\
+		\overline{\mathcal{G}^{-1}_H}(-\omega) = \begin{pmatrix} \left(\mathcal{G}^{-1}\right)_{\overline{00}} & \left(\mathcal{G}^{-1}\right)_{\overline{01}} & ... & ... & \left(\mathcal{G}^{-1}\right)_{\overline{0N}}\\
+			\left(\mathcal{G}^{-1}\right)_{\overline{10}} & \left(\mathcal{G}^{-1}\right)_{\overline{11}} & \left(\mathcal{G}^{-1}\right)_{\overline{12}} & ... & ...\\
+			... & \left(\mathcal{G}^{-1}\right)_{\overline{21}} & \left(\mathcal{G}^{-1}\right)_{\overline{22}} & \left(\mathcal{G}^{-1}\right)_{\overline{23}} & ... \\
+		    &&.&&\\
+			\end{pmatrix} = \begin{pmatrix} \overline{g_0} & \overline{g_1} & ... & ... & \overline{g_1}\\
+			\overline{g_1} & \overline{g_0} & \overline{g_1} & ... & ...\\
+			... & \overline{g_1} & \overline{g_0} & \overline{g_1} & ... \\
 		    &&...&&\\
 \end{pmatrix} 
 \end{aligned}\end{equation}
-It can be written in the operator form as
+Both the matrices can be written in the operator form of a tight-binding Hamiltonian:
 \begin{equation}\begin{aligned}
-	G_H^{-1}(\omega) = g_0\sum_{i=1}^N\ket{i}\bra{i} + g_1\sum_{\left<i,j \right>}^N\left( \ket{i}\bra{j} + \text{h.c.}\right)
+	\mathcal{G}_H^{-1}(\omega) = g_0\sum_{i=1}^N\ket{i}\bra{i} + g_1\sum_{\left<i,j \right>}^N\left( \ket{i}\bra{j} + \text{h.c.}\right)\\
+	\overline{\mathcal{G}_H^{-1}}(-\omega) = \overline{g_0}\sum_{\overline i=1}^N\ket{\overline i}\bra{\overline i} + \overline{g_1}\sum_{\left<\overline i,\overline j \right>}^N\left( \ket{\overline i}\bra{\overline j} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 We can Fourier transform the real space basis kets $\ket{i} \equiv \ket{\vec r_i}$ into momentum space:
 \begin{flalign*}
-	\ket{i} &= \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\vec k} \Leftrightarrow \ket{k} = \frac{1}{\sqrt N}\sum_{\vec i} e^{-i \vec{k}\cdot\vec{r_i}}\ket{\vec r_i} \\
+	\ket{\vec r_i} &\equiv c^\dagger_{\vec r_i\sigma}\ket{0} = \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}c^\dagger_{k\sigma}\ket{0} \equiv \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\vec k} \Leftrightarrow \ket{k} = \frac{1}{\sqrt N}\sum_{\vec i} e^{-i \vec{k}\cdot\vec{r_i}}\ket{\vec r_i} \\
+	\ket{\overline{\vec r_i}} &\equiv c_{\vec r_i\sigma}\ket{0} = \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}c_{k\sigma}\ket{0} \equiv \frac{1}{\sqrt N}\sum_{\vec k=\vec k_1}^{\vec k_N} e^{i \vec{k}\cdot\vec{r_i}}\ket{\overline{\vec k}} \Leftrightarrow \ket{\overline{\vec k}} = \frac{1}{\sqrt N}\sum_{\vec i} e^{-i \vec{k}\cdot\vec{r_i}}\ket{\overline{\vec r_i}}
+\end{flalign*}
+We will now Fourier transform the matrix $\mathcal{G}_H^{-1}(\omega)$ to momentum space. In doing so, we will diagonalize the matrix.
+\begin{flalign*}
 	\sum_i \ket{i}\bra{i} &= \frac{1}{N}\sum_i \sum_{\vec k, \vec q} e^{i \left(\vec{k} - \vec q\right)\cdot\vec{r_i}}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\sum_{\vec k, \vec q} N \delta\left(\vec{k} - \vec q\right)\ket{\vec k}\bra{\vec q} = \sum_{\vec k=\vec k_1}^{\vec k_N} \ket{\vec k}\bra{\vec k}\\
 	\sum_{\left<i,j \right>} \ket{i}\bra{j} &= \frac{1}{N}\sum_{\left<i,j \right>} \sum_{\vec k, \vec q} e^{i \left(\vec{k}\cdot \vec r_i - \vec q\cdot \vec r_j\right)}\ket{\vec k}\bra{\vec q} = \frac{1}{N}\frac{1}{2}\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec k, \vec q} e^{-i\vec q\cdot a_i\hat e_i}\ket{\vec k}\bra{\vec q}\sum_{i=1}^N e^{i \left(\vec{k} - \vec q\right)\cdot \vec r_i} & \left[\sum_{\left<i,j \right>} = \frac{1}{2}\sum_i \sum_{j \in \text{NN of i}}\right] \\
 					&=\frac{1}{2}\sum_{\hat e_i = \hat e_1}^{\hat e_D}\sum_{\vec q} e^{-i\vec q\cdot \vec e_i}\ket{\vec q}\bra{\vec q} = \frac{1}{2}\sum_{\vec q} \left(\sum_{i_1}^{D}e^{-ia_iq_i}\right)\ket{\vec q}\bra{\vec q}
@@ -316,13 +334,21 @@ On a 2D square lattice, for instance, we obtain
 \end{eqnarray}
 The inverse Greens function thus becomes diagonal in momentum space
 \begin{equation}\begin{aligned}
-G_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)\ket{\vec k}\bra{\vec k} = \begin{pmatrix} g_0 + g_1\xi_{\vec k_1} &&& \\
+	\mathcal{G}_H^{-1}(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)\ket{\vec k}\bra{\vec k} = \begin{pmatrix} g_0 + g_1\xi_{\vec k_1} &&& \\
 	& g_0 + g_1\xi_{\vec k_2} && \\
 	&& g_0 + g_1\xi_{\vec k_3} & \\
 	...&...&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
-The matrix entries are written in momentum space, and the matrix is diagonal in this basis.
+The matrix entries are written in momentum space, and the matrix is diagonal in this basis. The other matrix can also be diagonalized similarly:
+\begin{equation}\begin{aligned}
+	\overline{\mathcal{G}_H^{-1}}(-\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)\ket{\overline{\vec k}}\bra{\overline{\vec k}} = \begin{pmatrix} \overline{g_0} + \overline{g_1}\xi_{\vec k_1} &&& \\
+	& \overline{g_0} + \overline{g_1}\xi_{\vec k_2} && \\
+	&& \overline{g_0} + \overline{g_1}\xi_{\vec k_3} & \\
+	...&...&...&\\
+	\end{pmatrix} 
+\end{aligned}\end{equation}
+
 \subsection{Calculation of self energy matrix from the Dyson equation}
 Using Dyson's equation for the self-energy $\Sigma = G_{0}^{-1} - G^{-1}$ (where the matrix $G_{0,H}^{-1} (\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N} (\omega -\epsilon_{k})\ket{\vec k}\bra{\vec k}=\sum_{\vec k=\vec k_1}^{\vec k_N} (\omega +t^{H}\xi_{k})\ket{\vec k}\bra{\vec k} $ is the inverse Greens function for the appropriate non-interacting tight-binding system), we obtain the self-energy matrix as
 \begin{eqnarray}
@@ -336,41 +362,44 @@ This is the full self energy matrix. One can get both real space and momentum sp
 \end{aligned}\end{equation}
 Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 \subsection{Obtaining real space Greens functions from the full matrix}
-Since $G_H^{-1}(\omega)$ is diagonal in this basis, we can invert the matrix trivially by replacing the diagonal elements with their reciprocals.
+Since ${\mathcal{G}_H^{-1}}(\omega)$ and $\overline{\mathcal{G}_H^{-1}}(\omega)$ are diagonal in momentum space, we can invert these matrices trivially by replacing the diagonal elements with their reciprocals.
 \begin{equation}\begin{aligned}
 	\label{k-space-gf}
-	G_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&&&\\
+	\mathcal{G}_H(\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\ket{\vec k}\bra{\vec k} = \begin{pmatrix} \left(g_0 + g_1\xi_{\vec k_1}\right)^{-1} &&&&\\
 	& \left(g_0 + g_1\xi_{\vec k_2}\right)^{-1} &&&\\
 	&& \left(g_0 + g_1\xi_{\vec k_3}\right)^{-1} &&\\
 		...&&&...&\\
+	\end{pmatrix} \\
+		\overline{\mathcal{G}_H}(-\omega) = \sum_{\vec k=\vec k_1}^{\vec k_N}\left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)^{-1}\ket{\overline{\vec k}}\bra{\overline{\vec k}} = \begin{pmatrix} \left(\overline{g_0} + \overline{g_1}\xi_{\vec k_1}\right)^{-1} &&&&\\
+	& \left(\overline{g_0} + \overline{g_1}\xi_{\vec k_2}\right)^{-1} &&&\\
+	&& \left(\overline{g_0} + \overline{g_1}\xi_{\vec k_3}\right)^{-1} &&\\
+		...&&&...&\\
 	\end{pmatrix} 
 \end{aligned}\end{equation}
-The diagonal elements of $G_H$ in momentum space are simply $G_H(\vec k, \omega)$
+The diagonal elements of $\mathcal{G}_H$ in momentum space are:
 \begin{equation}\begin{aligned}
-	G_H(\vec k, \omega) &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
+	\mathcal{G}(\omega, H^H)_{\vec k, \vec k} &= \left(g_0 + g_1 \xi_{\vec k}\right)^{-1}\\
 			    &= \left\{\frac{2}{N}\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{2}{Nw}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
-			    &= \frac{N}{2}\left\{\left[G_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[G_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
+			    &= \frac{N}{2}\left\{\left[\mathcal{G}_{D}^{-1}(\omega)\right]_{00\sigma} + \frac{1}{w}\left[\mathcal{G}_{D}^{-1}(\omega)\right]_{01\sigma}\xi_{\vec k}\right\}^{-1}\\
+	\mathcal{G}(-\omega, H^H)_{\overline{\vec k}, \overline{\vec k}} &= \left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)^{-1}\\
+									&= \frac{N}{2}\left\{\left[\mathcal{G}_{D}^{-1}(-\omega)\right]_{\overline{00}\sigma} + \frac{1}{w}\left[\mathcal{G}_{D}^{-1}(-\omega)\right]_{\overline{01}\sigma}\xi_{\vec k}\right\}^{-1}\\
 \end{aligned}\end{equation}
-The real-space Greens functions can now be obtained by taking matrix elements of the full Greens function matrix in eq.~\ref{k-space-gf}:
+\textit{The single-particle momentum space Greens function can now be written down}, following eq.~\ref{G_mat_el}:
 \begin{equation}\begin{aligned}
-	G_H(\vec r_i, \vec  r_j, \omega) \equiv \bra{\vec r_i} G_H(\omega) \ket{\vec r_j} = \sum_{\vec k} G_H(\vec k, \omega)  \left<\vec r_i | \vec k\right>\left<\vec k | \vec r_j\right>
+	G_H(\vec k, \omega) = \mathcal{G}(\omega, H^H)_{\vec k, \vec k} - \mathcal{G}(-\omega, H^H)_{\overline{\vec k}, \overline{\vec k}} = \left(g_0 + g_1 \xi_{\vec k}\right)^{-1} - \left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)^{-1}
 \end{aligned}\end{equation}
-From the definition of the Fourier transforms mentioned previously, we can write
+The real-space Greens functions can now be obtained by Fourier transforming $G_H(\vec k, \omega)$:
 \begin{equation}\begin{aligned}
-	\left<\vec r_i | \vec k\right> = \frac{1}{\sqrt N}\sum_{\vec r} e^{- \vec{k}\cdot\vec{r}} \left<\vec r_i | \vec r \right> = \frac{1}{\sqrt N}e^{- \vec{k}\cdot\vec{r_i}}
+	G_H(\vec r_i - \vec  r_j, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega)  e^{\vec{k}\cdot\left(\vec r_j - \vec{r_i}\right)} \equiv G_H(\vec r_j - \vec  r_i, \omega)
 \end{aligned}\end{equation}
-Substituting this gives
+The Greens function for excitations between \(\vec r_i\) and \(\vec r_j\) depends only on the relative position \(\vec r_j - \vec r_i\), not on their absolute positions. This is expected on grounds of translational invariance. By choosing \(\vec r_i = \vec r_j\), we can obtain the real space \textit{local} Greens function:
 \begin{equation}\begin{aligned}
-	G_H(\vec r_i, \vec  r_j, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega)  e^{\vec{k}\cdot\left(\vec r_j - \vec{r_i}\right)} \equiv G_H(\vec r_j - \vec  r_i, \omega)
-\end{aligned}\end{equation}
-The final expression brings out the fact that the Greens function for excitations between \(\vec r_i\) and \(\vec r_j\) depends only on the relative position \(\vec r_j - \vec r_i\), not on their absolute positions. This is expected on grounds of translational invariance. By choosing \(\vec r_i = \vec r_j\), we can obtain the real space \textit{local} Greens function:
-\begin{equation}\begin{aligned}
-	\left(G_H\right)_{ii}(\omega) \equiv G_H(\vec r_j - \vec  r_i = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(g_0 + g_1 \xi_{\vec k}\right)^{-1}
+	\left(G_H\right)_{ii}(\omega) \equiv G_H(\vec r_j - \vec  r_i = 0, \omega) = \frac{1}{N}\sum_{\vec k} G_H(\vec k, \omega) = \frac{1}{N}\sum_{\vec k}\left(\frac{1}{g_0 + g_1 \xi_{\vec k}} - \frac{1}{\overline{g_0} + \overline{g_1} \xi_{\vec k}}\right)
 \end{aligned}\end{equation}
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{1}{\pi} \textrm{Im}\left[ (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right]\\
-A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{N\pi} \textrm{Im}\left[\sum_{\vec{k}} (g_{0} + g_{1}\xi_{\vec{k}})^{-1}\right] = -\frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
+A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{1}{\pi} \textrm{Im}\left[\left(g_0 + g_1 \xi_{\vec k}\right)^{-1} - \left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)^{-1}\right]\\
+A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = -\frac{1}{N\pi} \textrm{Im}\sum_{\vec{k}}\left[\left(g_0 + g_1 \xi_{\vec k}\right)^{-1} - \left(\overline{g_0} + \overline{g_1} \xi_{\vec k}\right)^{-1}\right] = \frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
 \end{aligned}\end{equation}
 We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
 \subsection{Obtaining \(g_0\) and \(g_1\)}
@@ -477,24 +506,24 @@ By systematically increasing the number of momentum states in the bath dispersio
 	\end{tabular}
 	\captionof{table}{Spectrum of Hubbard dimer at half-filling}
 	\label{hubb_dim_spectrum}
-	\begin{tabular}{|c|c|c|}
-	\hline
-	eigenstate & symbol & eigenvalue\\
-	\hline
-	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U^A}{4}\)\\
-	\(a_1\left(U^A, t^A\right)\ket{\sigma,0} + a_2\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_-}\) & \(-\frac{1}{4}\Delta(U^A, t^A)\)\\
-	\(-a_2\left(U^A, t^A\right)\ket{\sigma,0} + a_1\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_+}\) & \(\frac{1}{4}\Delta(U^A, t^A)\)\\
-	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U^A}{4}\)\\
-	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U^A}{4}\)\\
-	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U^A}{4}\)\\
-	$a_1( \frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_2( \frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{-}$ & \(-\frac{1}{2}\Delta( \frac{1}{2}U^A, t^A)\)\\
-	$-a_2(\frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{+}$ & \(\frac{1}{2}\Delta(\frac{1}{2}U^A, t^A)\)\\
-	\(a_1\left(U^A, t^A\right)\ket{\sigma,2} - a_2\left(U^A, t^A\right)\ket{2, \sigma}\) & \(\ket{2\sigma_-}\) & \(-\frac{1}{4}\Delta(U^A, t^A)\)\\
-	\(a_2\left(U^A, t^A\right)\ket{\sigma,2} + a_1\left(U^A, t^A\right)\ket{2, \sigma}\) & \(\ket{2\sigma_+}\) & \(\frac{1}{4}\Delta(U^A, t^A)\)\\
-	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U^A}{4}\)\\
-	\hline
-	\end{tabular}
-	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
+%	\begin{tabular}{|c|c|c|}
+%	\hline
+%	eigenstate & symbol & eigenvalue\\
+%	\hline
+%	\(\ket{0,0}\) & \(\ket{0}\) & \(\frac{U^A}{4}\)\\
+%	\(a_1\left(U^A, t^A\right)\ket{\sigma,0} + a_2\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_-}\) & \(-\frac{1}{4}\Delta(U^A, t^A)\)\\
+%	\(-a_2\left(U^A, t^A\right)\ket{\sigma,0} + a_1\left(U^A, t^A\right)\ket{0, \sigma}\) & \(\ket{0\sigma_+}\) & \(\frac{1}{4}\Delta(U^A, t^A)\)\\
+%	\(\ket{\sigma,\sigma}\) & \(\ket{\sigma\sigma}\) & \(-\frac{U^A}{4}\)\\
+%	\(\frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} + \ket{\downarrow, \uparrow}\right)\) & \(\ket{ST}\) & \(-\frac{U^A}{4}\)\\
+%	\(\frac{1}{\sqrt 2}\left(\ket{2, 0} - \ket{0, 2}\right)\) & \(\ket{CS}\) & \(\frac{U^A}{4}\)\\
+%	$a_1( \frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_2( \frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{-}$ & \(-\frac{1}{2}\Delta( \frac{1}{2}U^A, t^A)\)\\
+%	$-a_2(\frac{1}{2}U^A, t^A) \frac{1}{\sqrt 2}\left(\ket{\uparrow,\downarrow} - \ket{\downarrow,\uparrow}\right) + a_1(\frac{1}{2}U^A, t^A)\frac{1}{\sqrt 2}\left(\ket{2,0} + \ket{0,2}\right)$ & $\ket{+}$ & \(\frac{1}{2}\Delta(\frac{1}{2}U^A, t^A)\)\\
+%	\(a_1\left(U^A, t^A\right)\ket{\sigma,2} - a_2\left(U^A, t^A\right)\ket{2, \sigma}\) & \(\ket{2\sigma_-}\) & \(-\frac{1}{4}\Delta(U^A, t^A)\)\\
+%	\(a_2\left(U^A, t^A\right)\ket{\sigma,2} + a_1\left(U^A, t^A\right)\ket{2, \sigma}\) & \(\ket{2\sigma_+}\) & \(\frac{1}{4}\Delta(U^A, t^A)\)\\
+%	\(\ket{2,2}\) & \(\ket{4}\) & \(\frac{U^A}{4}\)\\
+%	\hline
+%	\end{tabular}
+%	\captionof{table}{Spectrum of Anderson molecule at particle-hole symmetry}
 \end{center}
 \section*{Appendix: Local Greens function for the Hubbard dimer}
 From the spectral representation, we have the following expression for the local Greens function for the Hubbard dimer at site $0$:
@@ -563,6 +592,38 @@ Once we have calculated the diagonal and off-diagonal matrix elements of the Gre
 		 g_0 \equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00}, g_1 \equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} 
  \end{aligned}\end{equation}
 
+ \section{Appendix: Relation between single-particle Greens function and the Greens function operator}
+ The single-particle Greens function is defined as the solution of the equation:
+ \begin{equation}\begin{aligned}
+	 \left(i\partial_t - H(\vec r)\right)G(\vec r,\vec r^\prime, t) = \delta(\vec r - \vec r^\prime)
+ \end{aligned}\end{equation}
+ and is given by the expression
+ \begin{equation}\begin{aligned}
+	 G(\vec r,\vec r^\prime, t) = -i \theta(t) \left< \left\{ c(\vec r, t) c^\dagger(\vec r^\prime, 0)\right\} \right>
+ \end{aligned}\end{equation}
+ This solution can be written in the Lehmann representation  and at $T=0$ as
+ \begin{equation}\begin{aligned}
+	 G(\vec r \sigma, \vec r^\prime \sigma, \omega) = \sum_{n}\left[\frac{\bra{GS}c({\vec r,\sigma})\ket{n}\bra{n}c^\dagger(\vec r^\prime,\sigma)\ket{GS}}{\omega + E_{GS} - E_n} + \frac{\bra{GS}c^\dagger(\vec r^\prime,\sigma)\ket{n}\bra{n}c({\vec r,\sigma})\ket{GS}}{\omega + E_n - E_{GS}}\right]
+ \end{aligned}\end{equation}
+ The sum is over the exact eigenstates of the Hamiltonian. In what follows, we will represent $\vec r,\sigma \equiv \nu$ and $\vec r^\prime,\sigma \equiv \nu^\prime$.
+ \begin{equation}\begin{aligned}
+	 G(\nu, \nu^\prime, \omega) &= \sum_{n}\left[\frac{\bra{GS}c(\nu)\ket{n}\bra{n}c^\dagger(\nu^\prime)\ket{GS}}{\omega + E_{GS} - E_n} + \frac{\bra{GS}c^\dagger(\nu^\prime)\ket{n}\bra{n}c(\nu)\ket{GS}}{\omega + E_n - E_{GS}}\right]\\
+							&= \bra{GS}c(\nu)\frac{1}{\omega + E_{GS} - H}c^\dagger(\nu^\prime)\ket{GS} + \bra{GS}c^\dagger(\nu^\prime)\frac{1}{\omega + H - E_{GS}}c(\nu)\ket{GS}\\
+ \end{aligned}\end{equation}
+ If we now define a Greens function operator
+ \begin{equation}\begin{aligned}
+	 \label{inv_G_func}
+	 \mathcal{G}(\omega, H) = \frac{1}{\omega - (H - E_\text{GS})}
+ \end{aligned}\end{equation}
+ we can write the single-particle Greens function as a sum of the matrix elements of this operator:
+ \begin{equation}\begin{aligned}
+	 \label{G_mat_el}
+	 G(\nu, \nu^\prime, \omega) = \bra{\nu} \mathcal{G}(\omega, H) \ket{\nu^\prime} - \bra{\overline\nu} \mathcal{G}(-\omega, H) \ket{\overline\nu^\prime} = \mathcal{G}(\omega, H)_{\nu,\nu^\prime} - \mathcal{G}(-\omega, H)_{\overline\nu, \overline\nu^\prime}
+ \end{aligned}\end{equation}
+ where we have defined the states $\ket{\nu} \equiv c^\dagger(\nu)\ket{GS}$ and $\ket{\overline\nu} \equiv c(\nu)\ket{GS}$
+ 
+ 
+ 
 
 \bibliographystyle{unsrt}
 \bibliography{notes}

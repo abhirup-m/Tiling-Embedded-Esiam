@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  17 AUG 2021 09:43
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  17 AUG 2021 19:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -504,67 +504,67 @@ Underfull \hbox (badness 10000) in paragraph at lines 244--248
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 260--263
+Underfull \hbox (badness 10000) in paragraph at lines 262--265
 
  []
 
 File: ./lattice.png Graphic file (type bmp)
 <./lattice.png>
 [10] [11]
-Overfull \hbox (5.929pt too wide) detected at line 325
+Overfull \hbox (5.929pt too wide) detected at line 328
 []
  []
 
 [12] [13] [14] [15]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 442.
+(hyperref)                removing `math shift' on input line 474.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 442.
+(hyperref)                removing `subscript' on input line 474.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 442.
+(hyperref)                removing `math shift' on input line 474.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 442.
+(hyperref)                removing `math shift' on input line 474.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 442.
+(hyperref)                removing `subscript' on input line 474.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 442.
+(hyperref)                removing `math shift' on input line 474.
 
 [16]
 File: ./dimer_dispersion.png Graphic file (type bmp)
 <./dimer_dispersion.png>
  [17]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 484--485
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 517--518
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
 [18]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 507.
+(caption)                particular \caption on input line 540.
 See the caption package documentation for explanation.
 
-[19] [20] (./notes.bbl) [21] (./notes.aux)
+[19] [20] (./notes.bbl [21]) [22] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 44CE031CA612BCB47E820573B58EF84F;2157.
+(rerunfilecheck)             Checksum: C52403A39DEE17A03043FFDF7515B382;2157.
  ) 
 Here is how much of TeX's memory you used:
- 12001 strings out of 476919
- 177568 string characters out of 5827674
- 511170 words of memory out of 5000000
- 31813 multiletter control sequences out of 15000+600000
+ 12007 strings out of 476919
+ 177615 string characters out of 5827674
+ 511702 words of memory out of 5000000
+ 31819 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2051b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2051b,466s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (21 pages, 134784 bytes).
+Output written on notes.xdv (22 pages, 137684 bytes).

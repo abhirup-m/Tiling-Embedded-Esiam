@@ -556,7 +556,7 @@ for the second inner product, and
 for the first. The Greens function is therefore
 \begin{equation}\begin{aligned}
 	\label{dimer_local_G}
-	G_{D,00}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} - t\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(\frac{\Delta}{2} + t\right) ^2} = G_{D,00}^\downarrow(\omega, T \to 0)~.
+	G_{D,00}^\uparrow(\omega, T \to 0) &= \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(t - \frac{\Delta}{2}\right) ^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{\omega}{\omega^2 - \left(t + \frac{\Delta}{2}\right) ^2} = G_{D,00}^\downarrow(\omega, T \to 0)~.
 \end{aligned}\end{equation}
 In the atomic limit $(t=0)$, the Greens function simplifies to
 \begin{equation}\begin{aligned}
@@ -585,12 +585,17 @@ A(0\uparrow, \omega) &=& - \frac{1}{\pi}\text{Im }G_{D,00}^\uparrow(\omega)\nonu
 Finally, the inter-site Greens function for the Hubbard dimer is given by
 \begin{equation}
 \label{dimer_intersite_G}
-	G_{D,01}^\uparrow(\omega, T \to 0) = \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{t}{(\omega +\frac{\Delta}{2})^2 - t^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{t}{(\omega -\frac{\Delta}{2})^2 - t^2} = G_{D,01}^\downarrow(\omega, T \to 0)~.
+G_{D,01}^\uparrow(\omega, T \to 0) = \left( \frac{1}{2} + \frac{2t}{\Delta} \right) \frac{t - \frac{\Delta}{2}}{\omega^2 - \left(t - \frac{\Delta}{2}\right)^2} + \left( \frac{1}{2} - \frac{2t}{\Delta} \right) \frac{t + \frac{\Delta}{2}}{\omega^2 - \left(t + \frac{\Delta}{2}\right)^2} = G_{D,01}^\downarrow(\omega, T \to 0)~.
 \end{equation}
-Once we have calculated the diagonal and off-diagonal matrix elements of the Greens function, we can compute the parameters $g_0$ and $g_1$:
+% Once we have calculated the diagonal and off-diagonal matrix elements of the Greens function, we can compute the parameters $g_0$ and $g_1$:
+% \begin{equation}\begin{aligned}
+%		 g_0 \equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00}, g_1 \equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} 
+% \end{aligned}\end{equation}
+Using the diagonal and off-diagonal real space Greens functions, we can now compute the momentum-space Greens functions. The two momentum states are $ka = 0, \pi$. By Fourier transforming, these two Greens functions can be written as
 \begin{equation}\begin{aligned}
-		 g_0 \equiv\frac{2}{N} (G^{-1}_{D})_{00} = \frac{2}{N} \frac{1}{\text{Det }G_D}\left(G_D\right)_{00}, g_1 \equiv\frac{2}{Nw} (G^{-1}_{D})_{00} = -\frac{2}{Nw}\frac{1}{\text{Det }G_D}\left(G_D\right)_{01} 
- \end{aligned}\end{equation}
+	G(k=0, \sigma) = \sum_r e^{ikr} G(r, \sigma) = G(r=0, \sigma) + G(r=a, \sigma) = \frac{1/2 + 2t/\Delta}{\omega -t + \Delta/2} + \frac{1/2 - 2t/\Delta}{\omega - t - \Delta/2}\\
+	G(k=\pi, \sigma) = \sum_r e^{ikr} G(r, \sigma) = G(r=0, \sigma) - G(r=a, \sigma) = \frac{1/2 + 2t/\Delta}{\omega + t - \Delta/2} + \frac{1/2 - 2t/\Delta}{\omega + t + \Delta/2}\\
+\end{aligned}\end{equation}
 
  \section*{Appendix: Relation between single-particle Greens function and the Greens function operator}
  The single-particle Greens function is defined as the solution of the equation:

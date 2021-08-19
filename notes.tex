@@ -360,7 +360,7 @@ The first summation produces a factor of $N$, while the second summation can be 
 	\label{k_Gf}
 	G_H (\vec k, \omega) &\simeq G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\\
 			     &= G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn} \xi_{\vec k}\\
-			     &= \frac{2}{N}\sum_n\left[|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}} + \frac{\xi_{\vec{k}}}{w}\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\right]
+			     &= \frac{2}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -376,7 +376,7 @@ where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
 \\\\
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{2}{N\pi} \textrm{Im}\sum_n\left[|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}} + \frac{\xi_{\vec{k}}}{w}\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\right]\\
+	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{2}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
 A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = \frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
 \end{aligned}\end{equation}
 We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
@@ -508,8 +508,43 @@ The simplest test involves choosing $H^H = H^D$ and then calculating the momentu
 Substituting this into eq.~\ref{k_Gf} gives
 \begin{equation}\begin{aligned}
 	\label{Gk_dim}
-	G(k=0,\uparrow) = \frac{2}{N}\sum_n\left[|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}} + \frac{\xi_{\vec{k}}}{w}\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\right]
+	G(k=0,\uparrow) = \sum_n\left[\left(|C^0_{n}|^2 + {C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + {C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
 \end{aligned}\end{equation}
+The expansion in terms of the exact eigenstates takes the form:
+\begin{equation}\begin{aligned}
+	c^\dagger_{0 \uparrow}\ket{\tilde 0} = x\ket{3+ \uparrow} + y\ket{3- \uparrow}, && c^\dagger_{1 \uparrow}\ket{\tilde 0} = x\ket{3+ \uparrow} - y\ket{3- \uparrow}\\
+	c_{0 \uparrow}\ket{\tilde 0} = y\ket{1+ \downarrow} + x\ket{1- \downarrow}, && c_{1 \uparrow}\ket{\tilde 0} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
+\end{aligned}\end{equation}
+where $\ket{(3,1)\pm (\uparrow, \downarrow)}$ are the $N=(3,1), S^z = (+\frac{1}{2}, -\frac{1}{2})$ eigenstates of even $(+)$ and odd \((-)\) parity:
+\begin{equation}\begin{aligned}
+	H^D\ket{3\pm \uparrow} = \pm t \ket{3\pm \uparrow}\\
+	H^D\ket{1\pm \downarrow} = \mp t \ket{1\pm \downarrow}\\
+\end{aligned}\end{equation}
+and \(x = \frac{a_2 - a_1}{2}, y = \frac{a_2 + a_1}{2}\). The orthogonal basis is therefore
+\begin{equation}\begin{aligned}
+	\left\{ \ket{n} \right\} = \ket{3+ \uparrow}, \ket{3- \uparrow}\\
+	\left\{ \ket{\overline n} \right\} = \ket{1+ \downarrow}, \ket{1- \downarrow}
+\end{aligned}\end{equation}
+The coefficients can thus be determined:
+\begin{gather*}
+	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde 0} = x, y\\
+	C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde 0} = x, -y\\
+	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde 0} = y, x\\
+	\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde 0} = y, -x\\
+	g_\pm = \bra{3 \pm \uparrow}\left( \omega + E_{GS} - H^D\right) \ket{3 \pm \uparrow} = \omega + E_{GS} \mp t\\
+	\overline{g_\pm} = \bra{1 \pm \downarrow}\left(-\omega + E_{GS} - H^D\right) \ket{1 \pm \downarrow} = -\omega + E_{GS} \pm t\\
+\end{gather*}
+We can see that $|C^0_-|^2 + {C^0_-}^* C^1_- = y^2 - y^2 = 0$ and $|\overline C^0_-|^2 + {\overline C^0_-}^* \overline C^1_- = x^2 - x^2 = 0$. So we do not need to consider those terms. With this preparation, we can now calculate the Greens function:
+\begin{equation}\begin{aligned}
+	G(k=0, \omega) = \left(|C^0_{+}|^2 + {C^0_{+}}^* C^1_{+} \right)\frac{1}{g_+} - \left(|\overline C^0_{+}|^2 + {C^0_{+}}^* \overline C^1_{+}\right)\frac{1}{\overline{g_+}} = \frac{2x^2}{\omega + E_{GS} - t} - \frac{2y^2}{-\omega + E_{GS} + t}
+\end{aligned}\end{equation}
+The final step is to recognize that $2x^2 = \frac{a_1^2 + a_2^2 -2a_1a_2}{2} = \frac{1}{2} - \frac{2t}{\Delta}$, $2y^2 = \frac{a_1^2 + a_2^2 + 2a_1a_2}{2} = \frac{1}{2} + \frac{2t}{\Delta}$ and $E_{GS} = -\frac{\Delta}{2}$. Then,
+\begin{equation}\begin{aligned}
+	G(k=0, \omega) = \frac{\frac{1}{2} - \frac{2t}{\Delta}}{\omega - \frac{\Delta}{2} - t} - \frac{\frac{1}{2} + \frac{2t}{\Delta}}{-\omega - \frac{\Delta}{2} + t} = \frac{\frac{1}{2} - \frac{2t}{\Delta}}{\omega - \frac{\Delta}{2} - t} + \frac{\frac{1}{2} + \frac{2t}{\Delta}}{\omega + \frac{\Delta}{2} - t}
+\end{aligned}\end{equation}
+
+
+
 % We will now calculate the matrix elements $g_0$ and $g_1$ from the Hubbard dimer Hamiltonian. Those two parameters are defined as
 % \begin{equation}\begin{aligned}
 % 	g_0 \equiv \frac{2}{N}\bra{\text{GS}}c_{0\uparrow}\left(\omega + E_\text{GS} - H^D\right)c^\dagger_{0\uparrow}\ket{\text{GS}}\\
@@ -822,7 +857,7 @@ Using the diagonal and off-diagonal real space Greens functions, we can now comp
 \section{Appendix: Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac{1}{2}$ eigenstates}
 The excited state $c^\dagger_{0\uparrow}\ket{\text{GS}}$ can actually be written in terms of the $N=3$, $S^z = + \frac{1}{2}$ eigenstates $\ket{3\pm\uparrow}$ defined in table \ref{hubb_dim_spectrum}.
 \begin{equation}\begin{aligned}
-	\ket{\pm} = \frac{1}{\sqrt 2}\left(\ket{\uparrow, 2} \pm \ket{2, \uparrow}\right), && H^D \ket{\pm} = \pm t\ket{\pm}
+	\ket{3\pm \uparrow} = \frac{1}{\sqrt 2}\left(\ket{\uparrow, 2} \pm \ket{2, \uparrow}\right), && H^D \ket{3\pm \uparrow} = \pm t\ket{3\pm \uparrow}
 \end{aligned}\end{equation}
 In terms of these eigenstates, we can write
 \begin{equation}\begin{aligned}
@@ -830,20 +865,30 @@ In terms of these eigenstates, we can write
 	&= c^\dagger_{0\uparrow}\left[a_1 \ket{SS} + a_2 \ket{CT}\right] \\
 	&= a_2 \frac{1}{\sqrt 2}\ket{\uparrow,2} - a_1 \frac{1}{\sqrt 2}\ket{2, \uparrow}\\
 	&= \left(x + y\right) \frac{1}{\sqrt 2}\ket{\uparrow,2} + \left(x - y\right) \frac{1}{\sqrt 2}\ket{2, \uparrow}\\
-	&=x\ket{+} + y\ket{-}
+	&=x\ket{3+ \uparrow} + y\ket{3- \uparrow}
 \end{aligned}\end{equation}
-where $x + y \equiv a_2$ and $x-y \equiv -a_1$. Similarly, for the other excitation, we can write
+where $x + y \equiv a_2$ and $x-y \equiv -a_1$. Similarly, for the other site excitation, we can write
 \begin{equation}\begin{aligned}
 	c^\dagger_{1\uparrow}\ket{\text{GS}} 
 	&= c^\dagger_{1\uparrow}\left[a_1 \ket{SS} + a_2 \ket{CT}\right] \\
 	&= a_2 \frac{1}{\sqrt 2}\ket{2, \uparrow} - a_1 \frac{1}{\sqrt 2}\ket{\uparrow, 2}\\
 	&=  \left(x + y\right) \frac{1}{\sqrt 2}\ket{2, \uparrow} + \left(x - y\right) \frac{1}{\sqrt 2}\ket{\uparrow, 2}\\
-	&=x\ket{+} - y\ket{-}
+	&=x\ket{3+ \uparrow} - y\ket{3- \uparrow}
 \end{aligned}\end{equation}
 Solving for $x$ and $y$ gives
 \begin{equation}\begin{aligned}
 	x = \frac{a_2 - a_1}{2}, && y = \frac{a_2 + a_1}{2}
 \end{aligned}\end{equation}
+Similarly, we can also write the single-hole excitation $c_{0 \uparrow}\ket{GS}$ in terms of the $N=1, S^z = -\frac{1}{2}$ eigenstates, $\ket{1\pm \downarrow}$:
+\begin{equation}\begin{aligned}
+	\ket{1\pm \downarrow} = \frac{1}{\sqrt 2}\left(\ket{\downarrow, 0} \pm \ket{0, \downarrow}\right), && H^D \ket{1\pm \downarrow} = \mp t\ket{1\pm \downarrow}
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	c_{0 \uparrow}\ket{GS} = a_1 \frac{1}{\sqrt 2}\ket{0, \downarrow} + a_2 \frac{1}{\sqrt 2}\ket{\downarrow, 0} = y\ket{1+ \downarrow} + x\ket{1- \downarrow}\\
+	c_{1 \uparrow}\ket{GS} = a_1 \frac{1}{\sqrt 2}\ket{\downarrow, 0} + a_2 \frac{1}{\sqrt 2}\ket{0, \downarrow} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
+\end{aligned}\end{equation}
+
+
 
 \section{Appendix: Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}
 \begin{equation}\begin{aligned}

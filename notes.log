@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  19 AUG 2021 10:19
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  19 AUG 2021 20:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -504,110 +504,111 @@ Underfull \hbox (badness 10000) in paragraph at lines 244--248
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 262--265
+Underfull \hbox (badness 10000) in paragraph at lines 262--271
 
  []
 
+[10]
 File: ./lattice.png Graphic file (type bmp)
 <./lattice.png>
-[10] [11]
-Overfull \hbox (5.929pt too wide) detected at line 328
-[]
- []
 
-[12] [13] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 469--472
+Underfull \hbox (badness 10000) in paragraph at lines 297--308
 
  []
 
-[16]
+[11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 374--378
+
+ []
+
+[13]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 535.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 535.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 535.
+(hyperref)                removing `math shift' on input line 627.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 535.
+(hyperref)                removing `subscript' on input line 627.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 535.
+(hyperref)                removing `math shift' on input line 627.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 535.
+(hyperref)                removing `math shift' on input line 627.
 
-[17]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 627.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 627.
+
+[14]
 File: ./dimer_dispersion.png Graphic file (type bmp)
 <./dimer_dispersion.png>
- [18]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 578--579
+ [15] [16]
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 670--671
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
-[19]
+[17]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 601.
+(caption)                particular \caption on input line 693.
 See the caption package documentation for explanation.
 
-[20] [21]
+[18] [19]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 730.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 730.
+(hyperref)                removing `math shift' on input line 822.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 730.
+(hyperref)                removing `superscript' on input line 822.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 730.
+(hyperref)                removing `\begingroup' on input line 822.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 730.
+(hyperref)                removing `\endgroup' on input line 822.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 730.
-
-[22]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 756.
+(hyperref)                removing `\@@over' on input line 822.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 756.
+(hyperref)                removing `math shift' on input line 822.
+
+[20]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 848.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 756.
+(hyperref)                removing `superscript' on input line 848.
 
-(./notes.bbl) [23] (./notes.aux)
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 848.
+
+(./notes.bbl) [21] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: 6420444127E73E0971E3CEA60B59C50A;3314.
  ) 
 Here is how much of TeX's memory you used:
- 12007 strings out of 476919
- 177615 string characters out of 5827674
- 512900 words of memory out of 5000000
- 31819 multiletter control sequences out of 15000+600000
+ 12005 strings out of 476919
+ 177594 string characters out of 5827674
+ 509716 words of memory out of 5000000
+ 31817 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2051b,473s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2051b,545s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (23 pages, 151588 bytes).
+Output written on notes.xdv (21 pages, 131316 bytes).

@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1629428997 "notes.aux" "notes.bbl" "notes" 1629429166
+["bibtex notes"] 1629432903 "notes.aux" "notes.bbl" "notes" 1629432990
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1629429164 8795 2474da17e93debb31badffb128bfcbde "xelatex"
-  "notes.bib" 1627832566 17657 16f628992411e70fde9b2f22e87e66bc ""
+  "notes.aux" 1629432989 8914 cec433cd8a501d0f021849c0dbb959c7 "xelatex"
+  "notes.bib" 1627878500 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["xdvipdfmx"] 1629429164 "notes.xdv" "notes.pdf" "notes" 1629429166
-  "notes.xdv" 1629429164 141596 c05398c90ba4f42d982b1626ec3aa74a "xelatex"
+["xdvipdfmx"] 1629432989 "notes.xdv" "notes.pdf" "notes" 1629432990
+  "notes.xdv" 1629432989 142880 5c3bdbac85fb4eaf5be8be9630b2eedb "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1629429163 "notes.tex" "notes.xdv" "notes" 1629429166
+["xelatex"] 1629432989 "notes.tex" "notes.xdv" "notes" 1629432990
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -108,18 +108,18 @@
   "/usr/share/texmf-dist/tex/latex/url/url.sty" 1617738065 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/share/texmf-dist/tex/latex/wrapfig/wrapfig.sty" 1621766596 26220 3701aebf80ccdef248c0c20dd062fea9 ""
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
-  "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1626341056 5486151 4114a5cefe9f27ef84d5fb8b60c07458 ""
-  "cluster-bath.png" 1628787541 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
-  "dimer_dispersion.png" 1628787376 44338 57d6c926187327ce0915b222f3489ad6 ""
-  "gen_siam.png" 1628787376 34370 448d1f1734840e1e16e905d6c521e86e ""
-  "hubb_dim.png" 1628787376 30401 3350fc8e5121e458b5be80f80385f71f ""
-  "lattice.png" 1628310760 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1629429164 8795 2474da17e93debb31badffb128bfcbde "xelatex"
-  "notes.bbl" 1629428997 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1629429164 3314 6420444127e73e0971e3cea60b59c50a "xelatex"
-  "notes.tex" 1629429163 103329 9d87982fcc2f28b37d72de0c1831dbc1 ""
+  "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1627447396 5486154 5e105109c0224c5b55112f9ae96c6a07 ""
+  "cluster-bath.png" 1629087734 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
+  "dimer_dispersion.png" 1628773222 44338 57d6c926187327ce0915b222f3489ad6 ""
+  "gen_siam.png" 1628574735 34370 448d1f1734840e1e16e905d6c521e86e ""
+  "hubb_dim.png" 1628578544 30401 3350fc8e5121e458b5be80f80385f71f ""
+  "lattice.png" 1628226938 107086 46242fc73c1f7c3028f9840e435651db ""
+  "notes.aux" 1629432989 8914 cec433cd8a501d0f021849c0dbb959c7 "xelatex"
+  "notes.bbl" 1629432903 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
+  "notes.out" 1629432989 3435 08e92ab7ad175688681c6d5c1272a10d "xelatex"
+  "notes.tex" 1629432988 103864 a306e64d99514e7af6211ee5c92dbcfd ""
   (generated)
-  "notes.log"
-  "notes.out"
   "notes.xdv"
   "notes.aux"
+  "notes.out"
+  "notes.log"

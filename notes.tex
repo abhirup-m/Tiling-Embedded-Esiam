@@ -229,7 +229,7 @@ As for the on-site repulsion $U^H$, we will constrain the RG flows such that the
 %\begin{equation}\begin{aligned}
 %	\bra{\nu}G_H\ket{{\nu^\prime}} = \bra{\tilde {\nu}}\tilde G\ket{\tilde {\nu^\prime}}
 %\end{aligned}\end{equation}
-Since the two Hamiltonians $H^H$ and $\tilde H$ are connected via a similarity transformation $\mathcal{U}$, their ground states are also connected by the same transformation: $\ket{\tilde 0} = \mathcal{U}\ket{0}$. This means that matrix elements of the type in eq.~\ref{G_mat_el} will also be connected. The matrix elements are of the inverse Greebs function operator defined in eq.~\ref{inv_G_func}:
+Since the two Hamiltonians $H^H$ and $\tilde H$ are connected via a similarity transformation $\mathcal{U}$, their ground states are also connected by the same transformation. That is, if the ground states are $\ket{\Phi_0}$ and $\ket{\tilde{\Phi_0}}$ respectively, then $\ket{\tilde{\Phi_0}} = \mathcal{U}\ket{\Phi_0}$. This means that matrix elements of the type in eq.~\ref{G_mat_el} will also be connected. The matrix elements are of the inverse Greebs function operator defined in eq.~\ref{inv_G_func}:
  \begin{equation}\begin{aligned}
 	 \mathcal{G}(\omega, H) = \frac{1}{\omega - (H - E_\text{GS})}
  \end{aligned}\end{equation}
@@ -238,11 +238,11 @@ Its easy to see that the matrix elements of the original and renormalised versio
 	\left[\mathcal{G}_H^{-1}\right]_{\nu \nu^\prime} = \bra{\nu}\omega - H^H + E_\text{GS}\ket{\nu^\prime} = \bra{\nu} \mathcal{U}^{-1}\left(\omega -  \mathcal{U} H^H  \mathcal{U}^{-1} + E_\text{GS}\right)  \mathcal{U}\ket{\nu^\prime} = \bra{\tilde \nu}\left(\omega - \tilde H + E_\text{GS}\right)\ket{\tilde \nu^\prime}\\
 	= \left[\mathcal{\tilde G}^{-1}\right]_{\tilde \nu,\tilde \nu^\prime}
 \end{aligned}\end{equation}
-where we have defined the renormalised excitation $\ket{\tilde {\nu^\prime}} \equiv \tilde c^\dagger_{\nu^\prime}\ket{\tilde 0} \equiv  \left(\mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{0} =  \mathcal{U}\ket{{\nu^\prime}}$. importance of these equalities is that we can calculate these matrix elements for $\tilde H$, which will be equal to those of $H^H$, and once we have the matrix elements of $\mathcal{G}$, we can use them to obtain the single-particle Greens functions using eq.~\ref{G_mat_el}. More specifically, to calculate the real space single-particle Greens function between the lattice sites $i$ and $j$, both with spin $\sigma$, we will use the relation:
+where we have defined the renormalised excitation $\ket{\tilde {\nu^\prime}} \equiv \tilde c^\dagger_{\nu^\prime}\ket{\tilde \Phi_0} \equiv  \left(\mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{\Phi_0} =  \mathcal{U}\ket{{\nu^\prime}}$. These equalities are important because they allows us to calculate these matrix elements for $\tilde H$ and then equate them to those of $H^H$, and once we have the matrix elements of $\mathcal{G}$, we can use them to obtain the single-particle Greens functions using eq.~\ref{G_mat_el}. More specifically, to calculate the real space single-particle Greens function between the lattice sites $i$ and $j$, both with spin $\sigma$, we will use the relation:
 \begin{equation}\begin{aligned}
 	G(i\sigma, j\sigma, \omega) = \bra{ i\sigma} \mathcal{G}(\omega, H) \ket{ j\sigma} - \bra{\overline{i\sigma}} \mathcal{G}(-\omega, H) \ket{\overline {j\sigma}} = \mathcal{G}(\omega, H)_{ i\sigma, j\sigma} - \mathcal{G}(-\omega, H)_{\overline{i\sigma}, \overline {j\sigma}}
 \end{aligned}\end{equation}
-where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{0}$ and $\ket{\overline{i\sigma}}=c_{i\sigma}\ket{0}$. We can see from the relation that we will need two types of matrix elements, one that propagates a particle excitation $\left( \ket{i\sigma} \right) $ and the one that propagates a hole excitation $\ket{\overline{i\sigma}}$.
+where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{\Phi_0}$ and $\ket{\overline{i\sigma}}=c_{i\sigma}\ket{\Phi_0}$. We can see from the relation that we will need two types of matrix elements, one that propagates a particle excitation $\left( \ket{i\sigma} \right) $ and the one that propagates a hole excitation $\ket{\overline{i\sigma}}$.
 \\\\
 To this end, we rewrite eq.~\ref{H_tiled} in terms of inverse Greens function operators for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
@@ -260,31 +260,31 @@ where $\mathcal{G}_D^{-1}(\tilde i,\tilde j)$ is the Greens function inverse mat
 	\label{green_eq_final}
 	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right)
 \end{aligned}\end{equation}
-We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element is calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
+We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element is calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{\Phi_0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
 First lets consider the diagonal matrix element at $\tilde i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $\tilde i$ in one of the indices. There will be $w$ such terms, because $\tilde i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. %So we will represent the real space local inverse Greens function as $\left[\mathcal{G}_D^{-1}(\omega)\right]_{00}^{\sigma}$.
 The entire thing is thus $w$ times this local Greens function.
 % \begin{gather}
 % 	\label{local_gf}
 % 	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00}\times w = \frac{2}{N}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} \equiv g_0\\
-% 	\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} = \bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{0}
+% 	\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} = \bra{\Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\Phi_0}
 % \end{gather}
 \begin{gather}
 	\label{local_gf}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{0}\times w = \frac{2}{N}\bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{0}
+	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}\times w = \frac{2}{N}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}
 \end{gather}
-We can expand the state $c^\dagger_{0\sigma}\ket{0}$ and $c^\dagger_{1\sigma}\ket{0}$ in terms of a complete set of orthogonal states:
+We can expand the state $c^\dagger_{0\sigma}\ket{\tilde \Phi_0}$ and $c^\dagger_{1\sigma}\ket{\tilde \Phi_0}$ in terms of a complete set of orthogonal states:
 \begin{equation}\begin{aligned}
-	c^\dagger_{0\sigma}\ket{0} = \sum_n C^0_n \ket{n}, && c^\dagger_{1\sigma}\ket{0} = \sum_n C^1_n \ket{n}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
+	c^\dagger_{0\sigma}\ket{\tilde \Phi_0} = \sum_n C^0_n \ket{n}, && c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \sum_n C^1_n \ket{n}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
 \end{aligned}\end{equation}
 where $C^{0}$ and $C^{1}$ are coefficients of the linear superposition defined by
 \begin{equation}
-C^{0}_{n} = \bra{n} c^\dagger_{0\sigma}\ket{0}~,~ C^{1}_{n} = \bra{n} c^\dagger_{1\sigma}\ket{0}~.
+C^{0}_{n} = \bra{n} c^\dagger_{0\sigma}\ket{\tilde \Phi_0}~,~ C^{1}_{n} = \bra{n} c^\dagger_{1\sigma}\ket{\tilde \Phi_0}~.
 \end{equation}
 Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. One simple way of choosing the orthogonal basis $\left\{ \ket{n} \right\}$ is to take them from the eigenstates of a system comprising a Hubbard dimer and a conduction bath, decoupled from each other. The set of eigenstates that have the total number of particles equal to $N+1$ will then form the basis in question. Since the dimer is decoupled from the bath, the total wavefunction will be a direct product of a Hubbard dimer wavefunction and a bath wavefunction.
 \begin{equation}\begin{aligned}
 	\ket{m,\alpha,\beta} = \Phi^D_{m,\alpha} \otimes \Psi^B_{N-m+1, \beta}
 \end{aligned}\end{equation}
-$\alpha$ is an internal quantum number of the Hubbard dimer while $\beta$ is that for the bath. The subscripts $m$ and $N-m+1$ label the total number of particles in each part of the wavefunction. These two labels have to add to $N+1$. Our choice of the $\ket{n}$ is motivated by noting that the effective auxiliary model we are invoking here is that of a Hubbard dimer connected to a bath via single-particle hybridisation; the eigenstates of the isolated dimer and bath subsystems then act as the natural choices of the orthogonal bases in which to expand the wavefunction for the single-particle excitation of the interacting system $c^\dagger_{0\sigma}\ket{0}$. Further, while the eigenstates ($\Phi^D_{m,\alpha}$) of the Hubbard dimer are known analytically, we can safely assume the eigenstates of the bath ($\Psi^B_{N-m+1, \beta}$) to be a simple direct product of various single-particle Fock states in $k$-space. We then compute the matrix element of eq.\eqref{local_gf} for site $i$ and its immediate neighbours (i.e., a given realisation of a auxiliary model). Then, using translation invariance, we demand that this matrix element is independent of the site index $i$. The correctness of this auxiliary model approach hinges on how close the state $\ket{\tilde{0}}$ is to the 2-site local nature of the exact ground state of the target model (here the Hubbard model on a given lattice). Further improvement can be made by improving (i) the state $\ket{\tilde{0}}$ for the present auxiliary model (involving a Hubbard dimer), or (ii) choosing a better auxiliary model with an ``impurity" system that has more sites than two (i.e., a Bethe-Peierls improvement of the dimer auxiliary model).
+$\alpha$ is an internal quantum number of the Hubbard dimer while $\beta$ is that for the bath. The subscripts $m$ and $N-m+1$ label the total number of particles in each part of the wavefunction. These two labels have to add to $N+1$. Our choice of the $\ket{n}$ is motivated by noting that the effective auxiliary model we are invoking here is that of a Hubbard dimer connected to a bath via single-particle hybridisation; the eigenstates of the isolated dimer and bath subsystems then act as the natural choices of the orthogonal bases in which to expand the wavefunction for the single-particle excitation of the interacting system $c^\dagger_{0\sigma}\ket{\tilde \Phi_0}$. Further, while the eigenstates ($\Phi^D_{m,\alpha}$) of the Hubbard dimer are known analytically, we can safely assume the eigenstates of the bath ($\Psi^B_{N-m+1, \beta}$) to be a simple direct product of various single-particle Fock states in $k$-space. We then compute the matrix element of eq.\eqref{local_gf} for site $i$ and its immediate neighbours (i.e., a given realisation of a auxiliary model). Then, using translation invariance, we demand that this matrix element is independent of the site index $i$. The correctness of this auxiliary model approach hinges on how close the state $\ket{\tilde{\Phi_0}}$ is to the 2-site local nature of the exact ground state of the target model (here the Hubbard model on a given lattice). Further improvement can be made by improving (i) the state $\ket{\tilde{\Phi_0}}$ for the present auxiliary model (involving a Hubbard dimer), or (ii) choosing a better auxiliary model with an ``impurity" system that has more sites than two (i.e., a Bethe-Peierls improvement of the dimer auxiliary model).
 \\\\
 Using this expansion, the matrix element of $\mathcal{G}$ can be written as
 \begin{equation}\begin{aligned}
@@ -297,9 +297,9 @@ Since the Hubbard dimer of the ket $\ket{n}$ is an actual eigenstate, $\mathcal{
 Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$.We will extract this using the definition. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. %We call this Greens function $\left[\mathcal{G}_D^{-1}(\omega)\right]_{01}^\sigma$.
 \begin{gather}
 \label{nn_gf}
-\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{0} = \frac{2}{Nw}\sum_{n} \left(C^0_{n}\right)^* C^1_{n} \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn} 
+\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \frac{2}{Nw}\sum_{n} \left(C^0_{n}\right)^* C^1_{n} \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn} 
 %\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(\omega)\right]_{01}^\sigma \equiv g_1\\
-	%\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{01} = \bra{0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{0}
+	%\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{01} = \bra{\Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{\Phi_0}
 \end{gather}
 For convenience, we define $g_n = \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn}$.
 \begin{figure}[htpb!]
@@ -310,9 +310,9 @@ For convenience, we define $g_n = \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn}
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
 \end{figure}
 \\\\
-The matrix elements for hole propagation are obtained similarly. Here the relavant excitations are $\ket{\overline{i\sigma}} \equiv c_{i\sigma}\ket{0}$, at frequency $-\omega$. To expand these states, we choose the eigenstates with $N-1$ total particles as the orthonormal basis:
+The matrix elements for hole propagation are obtained similarly. Here the relavant excitations are $\ket{\overline{i\sigma}} \equiv c_{i\sigma}\ket{\tilde \Phi_0}$, at frequency $-\omega$. To expand these states, we choose the eigenstates with $N-1$ total particles as the orthonormal basis:
 \begin{equation}\begin{aligned}
-	c_{0\sigma}\ket{0} = \sum_n \overline C^0_n \ket{\overline{n}}, && c_{1\sigma}\ket{0} = \sum_n \overline C^1_n \ket{\overline{n}}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
+	c_{0\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^0_n \ket{\overline{n}}, && c_{1\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^1_n \ket{\overline{n}}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
 \end{aligned}\end{equation}
 and the counterpart for $g_n$, here, is
 \begin{equation}\begin{aligned}
@@ -338,7 +338,7 @@ The matrix elements $\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma$ and 
 \end{aligned}\end{equation}
 The spectral weights remain unchanged; only the matrix element changes from $A_{nm}$ to $(A^{-1})_{nm}$. Inverting the matrix $\mathcal{G}_D$ is actually simple because it is diagonal in the chosen basis:
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_D\right)_{nn} = \begin{pmatrix} g_{0} && 0 && &..& 0\\ 0 && g_{1} && && \\ &&..&& .. &&  \\ 0 &&&&&& g_{M} \end{pmatrix} \implies \left(\mathcal{G}_D\right)_{nn} = \begin{pmatrix} \frac{1}{g_0} & 0 & \\ 0 & \frac{1}{g_1} & \\ && ... & \\ &&& \frac{1}{g_M}\end{pmatrix}
+	\left(\mathcal{G}^{-1}_D\right)_{nn} = \begin{pmatrix} g_{0} && 0 && &..& 0\\ 0 && g_{1} && && \\ &&..&& .. &&  \\ 0 &&&&&& g_{M} \end{pmatrix} \implies \left(\mathcal{G}_D\right)_{nn} = \begin{pmatrix} \frac{1}{g_{0}} && 0 && &..& 0\\ 0 && \frac{1}{g_{1}} && && \\ &&..&& .. &&  \\ 0 &&&&&& \frac{1}{g_{M}} \end{pmatrix}
 \end{aligned}\end{equation}
 This allows us to write
 \begin{equation}\begin{aligned}
@@ -467,7 +467,7 @@ With the knowledge of the momentum-space Greens function $G_H(\vec k, \omega)$, 
 \end{aligned}\end{equation}
 where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_H(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_H(\vec k,\omega) = \omega +t^{H}\xi_{k} - \frac{N}{2}\left\{\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1}
+	\Sigma_H(\vec k,\omega) = \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1}
 \end{aligned}\end{equation}
 
 Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
@@ -527,8 +527,8 @@ Substituting this into eq.~\ref{k_Gf} gives
 \end{aligned}\end{equation}
 The expansion in terms of the exact eigenstates takes the form:
 \begin{equation}\begin{aligned}
-	c^\dagger_{0 \uparrow}\ket{\tilde 0} = x\ket{3+ \uparrow} + y\ket{3- \uparrow}, && c^\dagger_{1 \uparrow}\ket{\tilde 0} = x\ket{3+ \uparrow} - y\ket{3- \uparrow}\\
-	c_{0 \uparrow}\ket{\tilde 0} = y\ket{1+ \downarrow} + x\ket{1- \downarrow}, && c_{1 \uparrow}\ket{\tilde 0} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
+	c^\dagger_{0 \uparrow}\ket{\tilde \Phi_0} = x\ket{3+ \uparrow} + y\ket{3- \uparrow}, && c^\dagger_{1 \uparrow}\ket{\tilde \Phi_0} = x\ket{3+ \uparrow} - y\ket{3- \uparrow}\\
+	c_{0 \uparrow}\ket{\tilde \Phi_0} = y\ket{1+ \downarrow} + x\ket{1- \downarrow}, && c_{1 \uparrow}\ket{\tilde \Phi_0} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
 \end{aligned}\end{equation}
 where $\ket{(3,1)\pm (\uparrow, \downarrow)}$ are the $N=(3,1), S^z = (+\frac{1}{2}, -\frac{1}{2})$ eigenstates of even $(+)$ and odd \((-)\) parity:
 \begin{equation}\begin{aligned}
@@ -542,10 +542,10 @@ and \(x = \frac{a_2 - a_1}{2}, y = \frac{a_2 + a_1}{2}\). The orthogonal basis i
 \end{aligned}\end{equation}
 The coefficients can thus be determined:
 \begin{gather*}
-	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde 0} = x, y\\
-	C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde 0} = x, -y\\
-	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde 0} = y, x\\
-	\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde 0} = y, -x\\
+	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde \Phi_0} = x, y\\
+	C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde \Phi_0} = x, -y\\
+	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde \Phi_0} = y, x\\
+	\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde \Phi_0} = y, -x\\
 	g_\pm = \bra{3 \pm \uparrow}\left( \omega + E_{GS} - H^D\right) \ket{3 \pm \uparrow} = \omega + E_{GS} \mp t\\
 	\overline{g_\pm} = \bra{1 \pm \downarrow}\left(-\omega + E_{GS} - H^D\right) \ket{1 \pm \downarrow} = -\omega + E_{GS} \pm t\\
 \end{gather*}
@@ -674,12 +674,12 @@ Another test involves considering the case of infinite number of nearest neighbo
 \end{eqnarray}
 We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
 
-\section{Calculating $g_0$ and $g_1$ in practice}
-The expressions for $g_0$ and $g_1$, as mentioned above, involve taking matrix elements of the Hubbard dimer Hamiltonian against the exact wavefunctions of the full Hubbard model.
+\section{Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}
+The expressions for $C^{0,1}_n$ and $\overline C^{0,1}_n$, as mentioned above, involve taking the projection of the exact ground state of the full Hubbard model, $\ket{\tilde \Phi_0}$, against the chosen orthogonal basis $\ket{n}$.
 \begin{enumerate}
 	\item Since the full Hubbard model ground state wavefunctions are not readily available, one can, as the simplest approximation, assume the ground state has the form
 	\begin{equation}\begin{aligned}
-		\ket{\tilde 0} = \sum_{\left<\tilde i \tilde j \right>}\ket{\Phi^D_{\tilde i\tilde j}}\otimes\ket{\Psi_{\hat{\tilde i}, \hat {\tilde j}}}\label{guess}
+		\ket{\tilde \Phi_0} = \sum_{\left<\tilde i \tilde j \right>}\ket{\Phi^D_{\tilde i\tilde j}}\otimes\ket{\Psi_{\hat{\tilde i}, \hat {\tilde j}}}\label{guess}
 	\end{aligned}\end{equation}
 	$\ket{\Phi^D_{ij}}$ would be the ground state of the Hubbard dimer with $i,j$ creating the two sites of the dimer, while $\ket{\Psi_{\hat i, \hat j}}$ would be the wavefunction involving the rest of the sites. This of course assumes that the two sets $(i,j)$ and $(a,b,...,h,k,...)$ are not entangled, and is not true in general. With this assumption, $g_0$ and $g_1$ become related to the inverse Greens functions of the Hubbard dimer. Such a choice of the wavefunction is motivated by the fact that in the auxiliary system we chose, the bath had only a diagonal interaction; there was no off-diagonal two particle scattering term. It is further enforced when we extract the zero mode of the entire bath (i.e., we keep just the zeroth site). The zeroth site, along with the impurity, then forms the $\ket{\Phi}$ part of the wavefunction. This will allow for analytic insight, but at the cost of accuracy as discussed above.
 	\item Another way of approaching the problem is to obtain the ground state wavefunction of a Hubbard model numerically for several values of $U^H$ and $t^H$, and then computing the matrix elements of $H^D$ against this wavefunction to obtain a family of $(g_0,  g_1)$. This brings the numerical accuracy for a given finite-sized lattice realisation of the Hubbard model. However, this also means we lose any analytical insight into the structure of $g_0$ and $g_1$. 

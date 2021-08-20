@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  20 AUG 2021 08:42
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  20 AUG 2021 09:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -533,6 +533,10 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 677.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `subscript' on input line 677.
 
 
@@ -542,6 +546,14 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 677.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@@overline' on input line 677.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 677.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
@@ -605,15 +617,15 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 (./notes.bbl [22]) [23] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 6420444127E73E0971E3CEA60B59C50A;3314.
+(rerunfilecheck)             Checksum: 08E92AB7AD175688681C6D5C1272A10D;3435.
  ) 
 Here is how much of TeX's memory you used:
  12004 strings out of 476919
  177582 string characters out of 5827674
- 507548 words of memory out of 5000000
+ 508730 words of memory out of 5000000
  31816 multiletter control sequences out of 15000+600000
  441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2051b,545s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2069b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (23 pages, 141596 bytes).
+Output written on notes.xdv (23 pages, 142880 bytes).

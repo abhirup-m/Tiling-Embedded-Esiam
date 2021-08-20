@@ -342,10 +342,12 @@ The spectral weights remain unchanged; only the matrix element changes from $A_{
 \end{aligned}\end{equation}
 This allows us to write
 \begin{equation}\begin{aligned}
+	\label{G_mat_loc}
 	\left(\mathcal{G}_{H}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{n} |C^0_{n}|^2 \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ii}}^\sigma = \frac{2}{N}\sum_{n} |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}
 \end{aligned}\end{equation}
 and
 \begin{equation}\begin{aligned}
+	\label{G_mat_nn}
 	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\sum_{n} {C^0_{n}}^* C^1_{n} \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ij}}^\sigma = \frac{2}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}
 \end{aligned}\end{equation}
 These two expressions can be used to obtain an expression for the real space local and nearest-neighbour Greens functions:
@@ -366,7 +368,7 @@ The first summation produces a factor of $N$, while the second summation can be 
 	\label{k_Gf}
 	G_H (\vec k, \omega) &\simeq G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\\
 			     &= G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn} \xi_{\vec k}\\
-			     &= \frac{2}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
+			     &= \frac{2}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -382,7 +384,7 @@ where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
 \\\\
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{2}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
+	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{2}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
 A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = \frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
 \end{aligned}\end{equation}
 We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
@@ -467,7 +469,7 @@ With the knowledge of the momentum-space Greens function $G_H(\vec k, \omega)$, 
 \end{aligned}\end{equation}
 where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_H(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_H(\vec k,\omega) = \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1}
+	\Sigma_H(\vec k,\omega) = \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1}
 \end{aligned}\end{equation}
 
 Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
@@ -667,11 +669,17 @@ The final step is to recognize that $2x^2 = \frac{a_1^2 + a_2^2 -2a_1a_2}{2} = \
 %This is the expected result. Because the full Hubbard model in this case was simply the Hubbard dimer, \(G_H(\vec r = 0, \omega)\) should just be \(\left(G_D\right)_{00}\). Although this is a trivial example (we matched the Hubbard dimer with another Hubbard dimer), this atleast tells us that this algorithm for calculating the real space local Greens function from the inverse Greens function matrix elements is sensible.
 
 \subsection{On the Bethe lattice}
-Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{local_gf},\eqref{nn_gf} where $(G^{H})^{-1}$ matrix has no $k$ dependence as $(G^{H})^{-1}_{ij}\propto 1/w \to 0$ as $w\to\infty$. Thus, in the self-energy 
-\begin{eqnarray}
-\Sigma_{H} (\vec{k},\omega) &=& \omega - g_{0} + (t^{H} - g_{1})\xi_{\vec{k}}\nonumber\\
-&\to & \lim_{w\to\infty} \omega - {g}_{0} + t^{H}\xi_{\vec{k}}~,
-\end{eqnarray}
+Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{G_mat_nn}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma \to 0
+\end{aligned}\end{equation}
+There we used the fact since at half-filling on an $SU(2)$ symmetric mode, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\tilde \Phi_0} = \sum_n C^i_n \ket{n}$ to be constrained to $\sum_n |C_n^i|^2 = \frac{1}{2}$, such that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H}$ matrix has no $k$ dependence. 
+\\\\
+In this limit, the self-energy also simplifies:
+\begin{equation}\begin{aligned}
+	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) &= \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n \lim_{w \to \infty}\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1} \\
+						   &=\omega +t^{H}\xi_{\vec k} - \frac{N}{2}\frac{1}{\sum_n \left[ \frac{|C^0_{n}|^2}{g_n} - \frac{|\overline C^0_{n}|^2}{\overline{g_n}}\right]}
+\end{aligned}\end{equation}
 We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
 
 \section{Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}

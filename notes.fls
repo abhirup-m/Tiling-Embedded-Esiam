@@ -794,6 +794,9 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT ./dimer_dispersion.png
 INPUT ./dimer_dispersion.png
 INPUT ./dimer_dispersion.png
+INPUT ./dimer-peaks.png
+INPUT ./dimer-peaks.png
+INPUT ./dimer-peaks.png
 INPUT ./notes.bbl
 INPUT notes.bbl
 INPUT ./notes.bbl

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  20 AUG 2021 13:36
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  20 AUG 2021 15:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -617,58 +617,61 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 See the caption package documentation for explanation.
 
 [20] [21]
-Overfull \hbox (5.91971pt too wide) in paragraph at lines 914--914
+File: ./dimer-peaks.png Graphic file (type bmp)
+<./dimer-peaks.png>
+ [22]
+Overfull \hbox (5.91971pt too wide) in paragraph at lines 930--930
 |[]\T1/lmr/bx/n/17.28 Appendix: Writ-ing single-particle ex-ci-ta-tions of ground state
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 914.
+(hyperref)                removing `math shift' on input line 930.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 914.
+(hyperref)                removing `superscript' on input line 930.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 914.
+(hyperref)                removing `\begingroup' on input line 930.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 914.
+(hyperref)                removing `\endgroup' on input line 930.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 914.
+(hyperref)                removing `\@@over' on input line 930.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 914.
+(hyperref)                removing `math shift' on input line 930.
 
-[22]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 950.
-
+[23]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 950.
+(hyperref)                removing `math shift' on input line 966.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 950.
+(hyperref)                removing `superscript' on input line 966.
 
-(./notes.bbl [23]) [24] (./notes.aux)
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 966.
+
+(./notes.bbl) [24] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: F0EAC4A304F078862CC4A4283E72A0D6;3806.
  ) 
 Here is how much of TeX's memory you used:
- 12011 strings out of 476919
- 177649 string characters out of 5827674
+ 12017 strings out of 476919
+ 177761 string characters out of 5827674
  512311 words of memory out of 5000000
- 31821 multiletter control sequences out of 15000+600000
+ 31826 multiletter control sequences out of 15000+600000
  441874 words of font info for 77 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2051b,470s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2051b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (24 pages, 152296 bytes).
+Output written on notes.xdv (24 pages, 154772 bytes).

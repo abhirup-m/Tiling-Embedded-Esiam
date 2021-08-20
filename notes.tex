@@ -876,6 +876,22 @@ Using the diagonal and off-diagonal real space Greens functions, we can now comp
 	G(k=\pi, \sigma) = \sum_r e^{ikr} G(r, \sigma) = G(r=0, \sigma) - G(r=a, \sigma) = \frac{1/2 + 2t/\Delta}{\omega + t - \Delta/2} + \frac{1/2 - 2t/\Delta}{\omega + t + \Delta/2}\\
 \end{aligned}\end{equation}
 
+\section*{Appendix; Contributions of various excitations to the site local spectral function}
+The site local spectral function is
+\begin{equation}\begin{aligned}
+	A(0\uparrow, \omega) = \left( \frac{1}{4} - \frac{t}{\Delta} \right)\left[\delta(\omega - \frac{\Delta}{2} - t) + \delta(\omega + \frac{\Delta}{2} + t)\right]\nonumber + \left( \frac{1}{4} + \frac{t}{\Delta} \right) \left[\delta(\omega - \frac{\Delta}{2} + t) + \delta(\omega + \frac{\Delta}{2} - t)\right]
+\end{aligned}\end{equation}
+If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \downarrow}$ and those of $N=3, S^z = \frac{1}{2}$ sector are $\ket{3 \pm \uparrow}$, this spectral function originates from the expression:
+\begin{equation}\begin{aligned}
+	A(0\uparrow, \omega) =& \braket{1 \downarrow_- | c_{0 \uparrow} | \text{GS}} \delta\left(\omega + \frac{\Delta}{2} + t\right) + \braket{2 \uparrow_+ | c^\dagger_{0 \uparrow} | \text{GS}}\delta\left(\omega - \frac{\Delta}{2} - t\right) \\
+			      &+ \braket{1 \downarrow_+ | c_{0 \uparrow} | \text{GS}}\delta\left(\omega + \frac{\Delta}{2} - t\right) + \braket{2 \uparrow_- | c^\dagger_{0 \uparrow} | \text{GS}}\delta(\omega - \frac{\Delta}{2} + t)
+\end{aligned}\end{equation}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./dimer-peaks.png}
+	\caption{Position, weight and nature of each of the peaks in the Hubbard dimer site local spectral function}
+\end{figure}
+
 \section*{Appendix: Relation between single-particle Greens function and the Greens function operator $(T=0)$}
  The single-particle Greens function is defined as the solution of the equation:
  \begin{equation}\begin{aligned}

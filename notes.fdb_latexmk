@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1629442927 "notes.aux" "notes.bbl" "notes" 1629443019
+["bibtex notes"] 1629442927 "notes.aux" "notes.bbl" "notes" 1629446819
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1629443018 9343 81ebc66373b290c5ccd9c355e553b34e "xelatex"
+  "notes.aux" 1629446817 9343 81ebc66373b290c5ccd9c355e553b34e "xelatex"
   "notes.bib" 1627878500 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
-  "notes.blg"
   "notes.bbl"
-["xdvipdfmx"] 1629443018 "notes.xdv" "notes.pdf" "notes" 1629443019
-  "notes.xdv" 1629443018 152148 468590ff5bc39945f6644bcfe5c49fdc "xelatex"
+  "notes.blg"
+["xdvipdfmx"] 1629446817 "notes.xdv" "notes.pdf" "notes" 1629446819
+  "notes.xdv" 1629446817 152296 a0bf7f726024dfb4b0d64ce91a5e8256 "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1629443018 "notes.tex" "notes.xdv" "notes" 1629443019
+["xelatex"] 1629446817 "notes.tex" "notes.xdv" "notes" 1629446819
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -116,12 +116,12 @@
   "gen_siam.png" 1628574735 34370 448d1f1734840e1e16e905d6c521e86e ""
   "hubb_dim.png" 1628578544 30401 3350fc8e5121e458b5be80f80385f71f ""
   "lattice.png" 1628226938 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1629443018 9343 81ebc66373b290c5ccd9c355e553b34e "xelatex"
+  "notes.aux" 1629446817 9343 81ebc66373b290c5ccd9c355e553b34e "xelatex"
   "notes.bbl" 1629442927 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1629443018 3806 f0eac4a304f078862cc4a4283e72a0d6 "xelatex"
-  "notes.tex" 1629443017 109073 9c622f5c4bcfe5384648dc60dffea052 ""
+  "notes.out" 1629446817 3806 f0eac4a304f078862cc4a4283e72a0d6 "xelatex"
+  "notes.tex" 1629446817 109133 8ae13b113c3a3702e5b1b49fe67d33d6 ""
   (generated)
-  "notes.log"
-  "notes.out"
   "notes.aux"
+  "notes.out"
   "notes.xdv"
+  "notes.log"

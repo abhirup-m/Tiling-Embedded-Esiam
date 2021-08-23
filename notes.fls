@@ -1,4 +1,4 @@
-PWD /home/abhirup/work/SIAM-to-Hubbard
+PWD /home/kirito/storage/work/siam_to_hubbard
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/xetex/xelatex.fmt
 INPUT notes.tex
@@ -778,6 +778,9 @@ INPUT ./figures//gen_siam.png
 INPUT ./figures//hubb_dim.png
 INPUT ./figures//hubb_dim.png
 INPUT ./figures//hubb_dim.png
+INPUT ./figures//dimer_bath.png
+INPUT ./figures//dimer_bath.png
+INPUT ./figures//dimer_bath.png
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm

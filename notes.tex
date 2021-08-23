@@ -75,7 +75,13 @@ To obtain a comparatively simple but physically well-motivated auxiliary model, 
 	% H^A_\text{corr} = -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A\tau_{d \uparrow}\tau_{d \downarrow} + U^A_z\tau_{z \uparrow}\tau_{z \downarrow}
 	\underbrace{U^A\tau_{0 \uparrow}\tau_{0 \downarrow} + U^A\tau_{1 \uparrow}\tau_{1 \downarrow}}_\text{imp. \& zero-mode isolated} - \underbrace{t^A\sum_{\sigma}\left(c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.}\right)}_\text{0-1 coupling} - \underbrace{t^A\sum_{j \in \atop{\text{NN of 1}}}\left(c^\dagger_{1\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{1 \& eff. bath coupling} - \underbrace{t^A \sum_{\left<ij \right>}^{\text{eff.} \atop{\text{bath}}}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{eff. bath isolated}
 \end{aligned}\end{equation}
-This Hamiltonian is, however, explicitly asymmetric between the sites 0 and 1 (the effective bath couples only to 1). To rectify that, we will symmetrize the coupling between the effective bath and the sites 0 and 1, by exchanging the sites 0 and 1. The resultant Hamiltonian is
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{gen_siam.png}
+	\caption{Correlated asymmetric Anderson molecule schematic version. It consists of an impurity site (blue) hybridising with a bath (ring) by hopping into and out of the zeroth site (pink). The other sites (green) form the rest of the bath. Just the impurity site and the zeroth site have onsite repulsion.}
+	\label{and_mol}
+\end{figure}
+This Hamiltonian is depicted in fig.~\ref{and_mol}. Such a Hamiltonian is, however, explicitly asymmetric between the sites 0 and 1 (the effective bath couples only to 1). To rectify that, we will symmetrize the coupling between the effective bath and the sites 0 and 1, by exchanging the sites 0 and 1. The resultant Hamiltonian is
 \begin{equation}\begin{aligned}
 	\underbrace{U^A\tau_{0 \uparrow}\tau_{0 \downarrow} + U^A\tau_{1 \uparrow}\tau_{1 \downarrow} - t^A\sum_{\sigma}\left(c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.}\right)}_\text{2-site Hubbard model} +\underbrace{- t^A\sum_{j \in \atop{\text{NN of 1}}}\left(c^\dagger_{1\sigma}c_{j\sigma} + \text{h.c.}\right)- t^A\sum_{j \in \atop{\text{NN of 0}}}\left(c^\dagger_{0\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{dimer \& eff. bath coupling} \\
 	- \underbrace{t^A \sum_{\left<ij \right>}^{\text{eff.} \atop{\text{bath}}}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{eff. bath isolated}
@@ -89,26 +95,25 @@ This single site will act as the zeroth site of the effective bath, and it means
 \begin{equation}\begin{aligned}
 	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
-\(H^D(0,1)\) is the Hubbard dimer Hamiltonian:
+\(H^D(0,1)\) is the Hubbard dimer Hamiltonian (shown in fig.~\ref{hubb-dim}):
 \begin{equation}\begin{aligned}
 	\label{dimer_ham}
 	H^D(0,1) \equiv -t^D\sum_\sigma\left( c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.} \right) + U^D\left( \tau_{0 \uparrow}\tau_{0 \downarrow} + \tau_{1 \uparrow}\tau_{1 \downarrow}\right)
 \end{aligned}\end{equation}
-This Hubbard dimer is shown in fig.~\ref{hubb-dim}.
-\\\\
-We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. We will then create the the entire Hubbard Hamiltonian by combining the members of this family of Hamiltonians according to a prescription which is guided by the symmetries of the problem.
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.6\textwidth]{gen_siam.png}
-	\caption{Correlated asymmetric Anderson molecule schematic version. It consists of two sites, impurity(blue) and zero mode(green). The impurity site has onsite repulsion, and their is inter-site hopping.}
-	\label{and_mol}
-\end{figure}
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.6\textwidth]{hubb_dim.png}
+	\includegraphics[width=0.4\textwidth]{hubb_dim.png}
 	\caption{Hubbard dimer schematic version. It again consists of two sites, like the Anderson molecule, but now both sites have onsite repulsion, and their is again inter-site hopping.}
 	\label{hubb-dim}
 \end{figure}
+This entire procedure is depicted in fig.~\ref{dimer-bath}.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{dimer_bath.png}
+	\caption{The process of symmetrizing the Rg fixed point Hamiltonian and then creating a dimer+bath Hamiltonian.}
+	\label{dimer-bath}
+\end{figure}
+We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. We will then create the the entire Hubbard Hamiltonian by combining the members of this family of Hamiltonians according to a prescription which is guided by the symmetries of the problem.
 \par\noindent
 However, we first specify the two approximations made along the entire journey from the original Hubbard model to the reconstructed one:
 \begin{itemize}

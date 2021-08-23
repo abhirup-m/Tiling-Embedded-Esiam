@@ -2,6 +2,7 @@
 \documentclass[12pt]{article}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,color}
 \usepackage[margin=0.5in,bottom=0.6in]{geometry}
+\graphicspath{{./figures/}}
 \usepackage[T1]{fontenc}
 \usepackage[pdfusetitle]{hyperref}
 \renewcommand{\arraystretch}{2}
@@ -52,7 +53,7 @@ A typical auxiliary system for the Hubbard model would be the SIAM, where the im
 Such a construction is shown in fig.~\ref{cluster-bath}.
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./cluster-bath.png}
+	\includegraphics[width=0.8\textwidth]{cluster-bath.png}
 	\caption{\textit{Left}: Full Hubbard model lattice with onsite repulsion $U^H$ on all sites and hopping between nearest neighbour sites with strength $t^H$. \textit{Right}: Extraction of the auxiliary (cluster+bath) system from the full lattice. The central site on left becomes the impurity site (red) on the right (with an onsite repulsion $\epsilon_d$), while the rest of the $N-1$ sites on the left form a conduction bath (green circles) (with dispersion $\epsilon_k$ and correlation modelled by the self-energy $\Sigma_k(\omega)$) that hybridizes with the impurity through the coupling $V$.}
 	\label{cluster-bath}
 \end{figure}
@@ -64,40 +65,55 @@ The algorithm of DMFT then involves starting with some local self-energy of the 
 The present method intends to calculate the quantities in a different fashion.
 We start with a SIAM (with a correlated bath having a non-trivial self-energy), and solve it using the unitary renormalisation group approach to get to a fixed-point Hamiltonian.
 The fixed point Hamiltonian will in general involve the impurity site (with renormalised parameters $\epsilon_d^*, U^*$) interacting with a smaller number of momentum states.
-Assuming the impurity-bath couplings are much larger than the dispersion of the bath, we can approximate the conduction bath part by a zero-mode of the kinetic energy part. The zero mode is defined as $c_0 = \frac{1}{\sqrt N}\sum_k c_k$, so it is just the zeroth site. 
-What this means is that all the momentum states will then collapse to a single site (which we call the zero mode site, and represents the origin of the lattice). We will also pick out the zeroth site part of the onsite correlation part, and replace that with a single correlation coupling $U^A_z$.
-Such a model, shown in fig.~\ref{and_mol} is exactly solvable.
-\begin{equation}\begin{aligned}
-	H^A_\text{corr} = -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A\tau_{d \uparrow}\tau_{d \downarrow} + U^A_z\tau_{z \uparrow}\tau_{z \downarrow}
-\end{aligned}\end{equation}
-The motivation for extracting the zero mode is that it leads to a very simple effective Hamiltonian (the asymmetric Anderson molecule) without losing much of the low energy physics.
+% Assuming the impurity-bath couplings are much larger than the dispersion of the bath, we can approximate the conduction bath part by a zero-mode of the kinetic energy part. The zero mode is defined as $c_0 = \frac{1}{\sqrt N}\sum_k c_k$, so it is just the zeroth site. 
+% What this means is that all the momentum states will then collapse to a single site (which we call the zero mode site, and represents the origin of the lattice). We will also pick out the zeroth site part of the onsite correlation part, and replace that with a single correlation coupling $U^A_z$.
+% Such a model, shown in fig.~\ref{and_mol} is exactly solvable.
+At this point, we will assume that we have a Hubbard model in mind that has motivated a correlated SIAM as the auxiliary system, and we have performed renormalisation group analysis on this auxiliary system to get down to an effective Hamiltonian. We will also assume that the parameters of the auxiliary system have been chosen such that in the effective Hamiltonian, the impurity and zero mode have the same onsite repulsion: $U^A = U^A_z$ (this is required for translational invariance).
 \\\\
-We will then create the the entire Hubbard Hamiltonian by combining the zero-mode Hamiltonians according to a prescription which is guided by the symmetries of the problem.
-The impurity electron will be read off as an arbitrary site, \(p\), of the lattice, while the zero-mode site becomes the site that is nearest to it.
-We will first demonstrate this explicitly for the Hubbard dimer.
-Then we will show how we can create a full Hubbard Hamiltonian by joining Anderson molecule Hamiltonians.
+To obtain a comparatively simple but physically well-motivated auxiliary model, we identify $\sum_k c_k = \sqrt N c_0$; \(c_0\) is the operator for the zeroth site (the site nearest to the impurity). We will call the set of all \(N-2\) sites apart from the impurity and this zeroth site as the "effective bath". The fixed point Hamiltonian can be separated into these parts: an isolated impurity part, an isolated zeroth site part, an isolated effective bath part, hopping between impurity and the zeroth site and hopping between the zeroth site and the effective bath. \textit{As a simplification, we will ignore the correlation term \((U)\) on the effective bath}. In preparation of a symmetrization procedure, we will relabel the impurity site as 0, and the zeroth site as 1. With all these steps, the Hamiltonian takes the form:
+\begin{equation}\begin{aligned}
+	% H^A_\text{corr} = -t^A\sum_{\sigma}\left(c^\dagger_{d\sigma}c_{z\sigma} + \text{h.c.}\right) + U^A\tau_{d \uparrow}\tau_{d \downarrow} + U^A_z\tau_{z \uparrow}\tau_{z \downarrow}
+	\underbrace{U^A\tau_{0 \uparrow}\tau_{0 \downarrow} + U^A\tau_{1 \uparrow}\tau_{1 \downarrow}}_\text{imp. \& zero-mode isolated} - \underbrace{t^A\sum_{\sigma}\left(c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.}\right)}_\text{0-1 coupling} - \underbrace{t^A\sum_{j \in \atop{\text{NN of 1}}}\left(c^\dagger_{1\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{1 \& eff. bath coupling} - \underbrace{t^A \sum_{\left<ij \right>}^{\text{eff.} \atop{\text{bath}}}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{eff. bath isolated}
+\end{aligned}\end{equation}
+This Hamiltonian is, however, explicitly asymmetric between the sites 0 and 1 (the effective bath couples only to 1). To rectify that, we will symmetrize the coupling between the effective bath and the sites 0 and 1, by exchanging the sites 0 and 1. The resultant Hamiltonian is
+\begin{equation}\begin{aligned}
+	\underbrace{U^A\tau_{0 \uparrow}\tau_{0 \downarrow} + U^A\tau_{1 \uparrow}\tau_{1 \downarrow} - t^A\sum_{\sigma}\left(c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.}\right)}_\text{2-site Hubbard model} +\underbrace{- t^A\sum_{j \in \atop{\text{NN of 1}}}\left(c^\dagger_{1\sigma}c_{j\sigma} + \text{h.c.}\right)- t^A\sum_{j \in \atop{\text{NN of 0}}}\left(c^\dagger_{0\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{dimer \& eff. bath coupling} \\
+	- \underbrace{t^A \sum_{\left<ij \right>}^{\text{eff.} \atop{\text{bath}}}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{eff. bath isolated}
+\end{aligned}\end{equation}
+% The motivation for extracting the zero mode is that it leads to a very simple effective Hamiltonian (the asymmetric Anderson molecule) without losing much of the low energy physics.
+To further simplify this Hamiltonian, \textit{we will combine the nearest neighbour sites of \(1\) and \(0\) into a single site}.
+\begin{equation}\begin{aligned}
+	\sum_{\vec k}^\text{eff. bath} = c_z \equiv \left(\sum_{j \in \atop{\text{NN of 1}}} + \sum_{j \in \atop{\text{NN of 0}}}\right)c_{j}
+\end{aligned}\end{equation}
+This single site will act as the zeroth site of the effective bath, and it means that both sites of the Hubbard dimer hybridizes with the effective through just a single site. With this assumption, the Hamiltonian for "a Hubbard dimer hopping into an effective bath" takes the simple form
+\begin{equation}\begin{aligned}
+	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+\end{aligned}\end{equation}
+\(H^D(0,1)\) is the Hubbard dimer Hamiltonian:
+\begin{equation}\begin{aligned}
+	\label{dimer_ham}
+	H^D(0,1) \equiv -t^D\sum_\sigma\left( c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.} \right) + U^D\left( \tau_{0 \uparrow}\tau_{0 \downarrow} + \tau_{1 \uparrow}\tau_{1 \downarrow}\right)
+\end{aligned}\end{equation}
+This Hubbard dimer is shown in fig.~\ref{hubb-dim}.
+\\\\
+We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. We will then create the the entire Hubbard Hamiltonian by combining the members of this family of Hamiltonians according to a prescription which is guided by the symmetries of the problem.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.6\textwidth]{./gen_siam.png}
+	\includegraphics[width=0.6\textwidth]{gen_siam.png}
 	\caption{Correlated asymmetric Anderson molecule schematic version. It consists of two sites, impurity(blue) and zero mode(green). The impurity site has onsite repulsion, and their is inter-site hopping.}
 	\label{and_mol}
 \end{figure}
-At this point, we will assume that we have a Hubbard model in mind that has motivated a correlated SIAM as the auxiliary system, and we have performed renormalisation group analysis on this auxiliary system to get down to an effective Hamiltonian. We will also assume that the parameters of the auxiliary system have been chosen such that in the effective Hamiltonian, the impurity and zero mode have the same onsite repulsion: $U^A = U^A_z$ (this is required for translational invariance). What this all means is that the RG analysis of the auxiliary model (appropriately chosen to model the bare Hubbard Hamiltonian) has led to a stable fixed point theory effective Hamiltonian described by a Hubbard dimer 
-\begin{equation}\begin{aligned}
-	H^D(U^D, t^D) \equiv -t^D\sum_\sigma\left( c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.} \right) + U^D\left( \tau_{0 \uparrow}\tau_{0 \downarrow} + \tau_{1 \uparrow}\tau_{1 \downarrow}\right)
-\end{aligned}\end{equation}
-This Hubbard dimer is shown in fig.~\ref{hubb-dim}.
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.6\textwidth]{./hubb_dim.png}
+	\includegraphics[width=0.6\textwidth]{hubb_dim.png}
 	\caption{Hubbard dimer schematic version. It again consists of two sites, like the Anderson molecule, but now both sites have onsite repulsion, and their is again inter-site hopping.}
 	\label{hubb-dim}
 \end{figure}
 \par\noindent
-The next step is to restore the lost translational invariance of the full system. We intend to do this by recreating a full Hubbard model, $\tilde H$, through the iterative real-space translation of the Hubbard dimer effective Hamiltonian obtained above. We will describe this process in detail below. However, we first specify the two approximations made along the entire journey from the original Hubbard model to the reconstructed one:
+However, we first specify the two approximations made along the entire journey from the original Hubbard model to the reconstructed one:
 \begin{itemize}
 	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{clus_bath_siam}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. As discussed before, the very choice of th cluster and bath spoil the translational invariance of the parent model.
-	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. At this point, we extract a zero mode of this Hamiltonian to obtain the Hubbard dimer Hamiltonian: $H^D = Z\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right] Z^{-1}$, where $Z$ defines the projection operator that extracts the zero mode from the effective stable fixed Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. This constitutes the second approximations we make. This approximation further reduces the symmetry, because we have dropped all other lattice sites and kept just the zeroth lattice site (i.e., the site to which the impurity is coupled through single electron hybridisation).
+	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. At this point, we go from the fixed point Hamiltonian to the dimer+bath Hamiltonian: $H^D = Z\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right] Z^{-1}$. This constitutes the second approximations we make. This constitutes the second approximations we make.
 \end{itemize}
 We now tile the real-space lattice with this Hubbard dimer Hamiltonian to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $\tilde H = T\left[ H^{D} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the dimer Hamiltonian to span the target real-space lattice. We quote the final form of $\tilde H$ here to explain what the tiling means, but the explanation is given in a later section.
 \begin{equation}\begin{aligned}
@@ -171,19 +187,18 @@ This shows that the rules laid out before work for the Hamiltonians, as well as 
 \section{Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}
 We will follow the strategy outlined in the previous section. For concreteness, we will consider a lattice of \(N\) lattice sites and \(w\) nearest neighbours for each site. Note that a uniform number of nearest neighbours means that there is perfect translational invariance on the lattice, which means there cannot be any edge sites. This is achieved by applying periodic boundary conditions on the edges of the lattice. A square 2d lattice is thus placed on a 2-torus.
 \\\\
-For each site \(i\) out of the \(N\) sites (having nearest neighbours \(\{i_j, j\in\left[1,w\right]\}\)), we will create \(w\) local Hamiltonians \(\{H^H_{i,i_j}, i\in \left[1,N\right], j \in \left[1,w\right]  \}\) out of the Hubbard dimer Hamiltonians, by setting the impurity index \(d\) to \(i\) and the zero-mode index \(z\) to \(i_j\). We will also need to suitably transform the Hamiltonian parameters \(U^A, t^A\), but we will figure those out as we go along. All \(N\) sites will then produce \(Nw\) local Hamiltonians in total, and the general Hubbard Hamiltonian should be the average of these local Hamiltonians. 
+For each nearest-neighbour pair \(i,j\), we will create a local Hamiltonian \(H^D_{i,j}\) from the Hamiltonian of the Hubbard dimer with bath (we will interpret the effective bath as the remaining \(N-2\) sites of the lattice, apart from \(i,j\)). We will need to suitably transform the Hamiltonian parameters \(U^D, t^D\), but we will figure those out as we go along. Since the number of nearest neighbour pairs is \(\frac{Nw}{2}\), the general Hubbard Hamiltonian should be the average of these local Hamiltonians. 
 \\\\
 The local Hamiltonians look like
 \begin{equation}\begin{aligned}
-	H^D_{i,i_j} = -t^D\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{i_j\sigma} + \text{h.c.}\right) + U^D\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\hat \tau_{i_j \uparrow}\hat \tau_{i_j \downarrow}
+	H^D_{i,j} = H^D(i, j) -t^A\sum_{k \in \text{NN of i}}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.}\right)-t^A\sum_{k \in \text{NN of j}}\left(c^\dagger_{j\sigma}c_{k\sigma} + \text{h.c.}\right) - t^A\sum_{\left<k,q\right> \neq i,j}\left(c^\dagger_{j\sigma}c_{k\sigma} + \text{h.c.}\right)
 \end{aligned}\end{equation}
-We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameters yet. The sum of all local Hamiltonians for a particular site \(i\) then gives the total Hamiltonian for that site:
+\(H^D(0 \to i, 1 \to j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. Note that this local Hamiltonian actually has all the hoppings of the full Hubbard model, but the correlation is present just on the sites \(i,j\). We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameters yet.
+\\\\
+If we now sum over all the nearest-neighbour pairs and take the average of all the Hamiltonians (\(\frac{1}{2}Nw\) in number), we get
 \begin{equation}\begin{aligned}
-	H^D_{i} = \sum_{j\in\left[1,w\right]}H^D_{i,i_j} = \sum_{\sigma\atop{j \in \text{N.N. of }i}}-t^D\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^D\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\sum_{j \in \text{N.N. of }i}\hat \tau_{j \uparrow}\hat \tau_{j \downarrow}
-\end{aligned}\end{equation}
-If we now sum over all the lattice sites and take the average of all the Hamiltonians (\(Nw\) in number), we get
-\begin{equation}\begin{aligned}
-	\tilde H &= \frac{1}{Nw}\sum_{i=1}^N H^D_{i} \\
+	\tilde H &= \frac{2}{Nw}\sum_{\left<ij \right>}^N H^D_{i,j} \\
+		 &= -t^A\sum_{\left<ij\right>}\left( c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.} \right) + \frac{2}{N}\sum_i U \tau_{i \uparrow}\tau_{i \downarrow}\\
 		      &= \frac{1}{Nw}\left[\sum_{\sigma, i=1}^N\sum_{j \in \text{NN of }j}-t^D\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^D\sum_{i=1}^N \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\sum_{i=1}^N\sum_{j \in \text{N.N. of }i}\hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right] \\
 		      &= \frac{1}{Nw}\left[-t^D 2\sum_{\sigma, \left<ij\right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + 2 U^D\sum_{\left<ij\right>} \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + 2 U^D\sum_{\left<ij\right>} \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right]\\
 		      &= \frac{2}{Nw}\sum_{\left<ij\right>}\left[-t^D \sum_\sigma \left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + U^D\left(\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right)\right]\\
@@ -305,7 +320,7 @@ For convenience, we define $g_n = \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn}
 \begin{figure}[htpb!]
 	\centering
 	\hspace*{\fill}
-	\includegraphics[width=0.7\textwidth]{./lattice.png}
+	\includegraphics[width=0.7\textwidth]{lattice.png}
 	\hspace*{\fill}
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
 \end{figure}
@@ -563,7 +578,7 @@ The expressions for $C^{0,1}_n$ and $\overline C^{0,1}_n$, as mentioned above, i
 \end{aligned}\end{equation}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.2\textwidth]{./dimer_dispersion.png}
+	\includegraphics[width=0.2\textwidth]{dimer_dispersion.png}
 	\caption{Hubbard dimer with dispersion that connects to both sites}
 \end{figure}
 \par\noindent
@@ -888,7 +903,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 \end{aligned}\end{equation}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.9\textwidth]{./dimer-peaks.png}
+	\includegraphics[width=0.9\textwidth]{dimer-peaks.png}
 	\caption{Position, weight and nature of each of the peaks in the Hubbard dimer site local spectral function}
 \end{figure}
 

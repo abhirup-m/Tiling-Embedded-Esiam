@@ -116,9 +116,10 @@ This entire procedure is depicted in fig.~\ref{dimer-bath}.
 \end{figure}
 We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. The next step in the programme is to tile the real-space lattice with this dimer+bath Hamiltonian \(\tilde H_D\) to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $\tilde H = T\left[ \tilde H^{D} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the dimer Hamiltonian to span the target real-space lattice. We quote the final form of $\tilde H$ here to explain what the tiling means, but the explanation is given in a later section.
 \begin{equation}\begin{aligned}
-	\color{red}{\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)}
+	\tilde H &= \frac{2}{Nw}\sum_{\left<ij\right>}\frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}}\tilde H^D((0,1,z) \to (i, j, l))\\
+		 &= \frac{2}{N}U^D\sum_{i} \tau_{i \uparrow}\tau_{i \downarrow} - \frac{2}{Nw}\left(1 + \frac{Nw}{2}\right)t^D\sum_{\left<ij\right>}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)
 \end{aligned}\end{equation}
-What that means is that we have placed the Hubbard dimer at all nearest neighbour pairs to reconstruct a new Hubbard model. If we assume that the tiling mostly rectifies the explicit symmetry-breaking made while choosing the auxiliary system as well as dropping the correlation on the bath sites, we can write
+What that means is that we have placed the Hubbard dimer+bath system at all nearest neighbour pairs to reconstruct a new Hubbard model. If we assume that the tiling mostly rectifies the explicit symmetry-breaking made while choosing the auxiliary system as well as dropping the correlation on the bath sites, we can write
 \begin{equation}\begin{aligned}
 	\label{app2}
 	\tilde H = \mathcal{U} H^H \mathcal{U}^{-1} = TZ\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right]Z^{-1} T^{-1}~,
@@ -195,7 +196,7 @@ For each nearest-neighbour pair \(i,j\), we will create a local Hamiltonian \(H^
 \\\\
 We recall the dimer+bath Hamiltonian here, since we are going to create the full Hamiltonian by combining various realizations of that Hamiltonian:
 \begin{equation}\begin{aligned}
-	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+	\tilde H^D = H^D(0,1) - t^D \left(c^\dagger_{0\sigma}c_{z\sigma} + c^\dagger_{1\sigma}c_{z\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
 We now choose a particular nearest neighbour pair from the full lattice, say \((i,j\), and one site that is nearest neighbour to this pair, call that \(l\). We will first create a "local" Hamiltonian, where one particular nearest neighbour pair \((i,j)\) makes up the dimer sites of the Hamiltonian, while the rest \(N-2\) sites of the lattice make up the effective bath and the site \(l\) forms the zeroth site of the bath.
 \begin{equation}\begin{aligned}
@@ -256,12 +257,10 @@ It is thus apparent that translating the Hubbard dimers throughout the lattice h
 % \begin{equation}\begin{aligned}
 % 	\mathcal{U} = T Z \mathcal{U}_{A}~.
 % \end{aligned}\end{equation}
-\textcolor{red}{
 With some knowledge of the RG procedure, one can even write down the relation between the Hubbard dimer couplings $t^D, U^D$ and the parent Hubbard model parameters $t^H, U^H$. We have seen previously in another work that in the absence of any explicit spin or charge isospin exchange couplings, the impurity-bath hybridisation coupling $t^A$ does not flow under the RG. In going from the Hubbard model to the auxiliary model, we replace the non-local operator $c_i$ with the local operator $c_d$. If we define the normalization of the Fourier transform such that both spaces have $\frac{1}{\sqrt N}$, then the auxiliary model coupling can be written as $t^A = \sqrt N t^H$. When we write the fixed-point hopping purely in terms of zero mode, another such factor appears: $\sum_k c_k = \sqrt N c_0$, such that $t^D = \sqrt N (t^A)*$. Combining these, we get
 \[ t^D = \sqrt N \times (t^A)^* = \sqrt N \times t^A = N \times t^H \]
 As for the on-site repulsion $U^H$, we will constrain the RG flows such that the fixed-point value of the impurity ons-te repulsion $U^A$ is identical to that of the on-site repulsion of the bath, $U_b$. A sensible choice for the bath on-site repulsion is simply $U^H\times N$. The factor of $N$ maintains the extensivity of the bath correlation term. We can therefore write
 \[U^D \equiv (U^A)* = U_b = N \times U^H\]
-}
 \section{Formal expressions for single particle Greens functions and other related many-body quantites}
 \subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
 %If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $\tilde H$ is $\ket{\tilde 0} =  \mathcal{U}\ket{0}$. The advantage of $\tilde H$ being connected to $H^H$ through unitary (or atleast similarity) transformations is that they will have the same single-particle Greens functions
@@ -333,8 +332,7 @@ where $C^{0}$ and $C^{1}$ are coefficients of the linear superposition defined b
 \begin{equation}
 C^{0}_{n} = \bra{n} c^\dagger_{0\sigma}\ket{\tilde \Phi_0}~,~ C^{1}_{n} = \bra{n} c^\dagger_{1\sigma}\ket{\tilde \Phi_0}~.
 \end{equation}
-Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. In light of the Greens function we have in between te states, we choose the orthogonal set to be formed by the eigenstates of the dim
-er+bath Hamiltonian.
+Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. In light of the Greens function we have in between te states, we choose the orthogonal set to be formed by the eigenstates of the dimer+bath Hamiltonian.
 % One simple way of choosing the orthogonal basis $\left\{ \ket{n} \right\}$ is to take them from the eigenstates of a system comprising a Hubbard dimer and a conduction bath, decoupled from each other. The dimer will of course have 2 sites, which means the conduction bath will have $N-2$ sites, or $N-2$ momentum states. The set of eigenstates that have the total number of particles (combining the dimer and the bath) equal to $N+1$ will then form the basis in question. Since the dimer is decoupled from the bath, the total wavefunction will be a direct product of a Hubbard dimer wavefunction and a bath wavefunction.
 % \begin{equation}\begin{aligned}
 % 	\ket{m,\alpha,\beta} = \Phi^D_{m,\alpha} \otimes \Psi^B_{N-m+1, \beta}
@@ -793,7 +791,7 @@ In this limit, the self-energy also simplifies:
 \end{aligned}\end{equation}
 We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
 
-
+\section{Numerical Results for a bath with two momentum modes}
 
 \section{Future goals}
 \begin{enumerate}

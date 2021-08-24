@@ -89,12 +89,12 @@ This Hamiltonian is depicted in fig.~\ref{and_mol}. Such a Hamiltonian is, howev
 % The motivation for extracting the zero mode is that it leads to a very simple effective Hamiltonian (the asymmetric Anderson molecule) without losing much of the low energy physics.
 To further simplify this Hamiltonian, \textit{we will combine the nearest neighbour sites of \(1\) and \(0\) into a single site}.
 \begin{equation}\begin{aligned}
-	\sum_{\vec k}^\text{eff. bath} = c_z \equiv \left(\sum_{j \in \atop{\text{NN of 1}}} + \sum_{j \in \atop{\text{NN of 0}}}\right)c_{j}
+	c_z \equiv \left(\sum_{j \in \atop{\text{NN of 1}}} + \sum_{j \in \atop{\text{NN of 0}}}\right)c_{j}
 \end{aligned}\end{equation}
 This single site will act as the zeroth site of the effective bath, and it means that both sites of the Hubbard dimer hybridizes with the effective through just a single site. With this assumption, the Hamiltonian for "a Hubbard dimer hopping into an effective bath" takes the simple form
 \begin{equation}\begin{aligned}
 	\label{dimer_p_bat}
-	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{1\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+	\tilde H^D = H^D(0,1) - t^D \sum_{\sigma}\left(c^\dagger_{0\sigma}c_{z\sigma} + c^\dagger_{1\sigma}c_{z\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
 \(H^D(0,1)\) is the Hubbard dimer Hamiltonian (shown in fig.~\ref{hubb-dim}):
 \begin{equation}\begin{aligned}
@@ -197,49 +197,71 @@ We recall the dimer+bath Hamiltonian here, since we are going to create the full
 \begin{equation}\begin{aligned}
 	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
-We will first create a "local" Hamiltonian, where one particular nearest neighbour pair \((i,j)\) makes up the dimer sites of the Hamiltonian, while the rest \(N-2\) sites of the lattice make up the effective bath. The zero-mode site of the effective bath is mapped to one of the nearest-neighbours of \(i\) or \(j\)
+We now choose a particular nearest neighbour pair from the full lattice, say \((i,j\), and one site that is nearest neighbour to this pair, call that \(l\). We will first create a "local" Hamiltonian, where one particular nearest neighbour pair \((i,j)\) makes up the dimer sites of the Hamiltonian, while the rest \(N-2\) sites of the lattice make up the effective bath and the site \(l\) forms the zeroth site of the bath.
 \begin{equation}\begin{aligned}
-	\tilde H^D_(i,j) = H^D(i, j) - t^D \sum_{\vec k}^\text{eff. bath (i,j)}\left(c^\dagger_{i\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath (i,j)}\epsilon_{\vec k}\hat n_{\vec k}
+	\label{Hdjl}
+	\tilde H^D(i, j, l) \equiv \tilde H^D(0\to i, 1\to j, z \to l) = H^D(i, j) - t^D \sum_{\sigma}\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\\
 \end{aligned}\end{equation}
-\(H^D(0 \to i, 1 \to j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. Note that this local Hamiltonian actually has all the hoppings of the full Hubbard model, but the correlation is present just on the sites \(i,j\). We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameters yet.
-\\\\
-If we now sum over all the nearest-neighbour pairs and take the average of all the Hamiltonians (\(\frac{1}{2}Nw\) in number), we get
+\(H^D(i, j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. This is not the total local Hamiltonian for the nearest neighbour pair \((i,j\), because it has just one nearest neighbour of the dimer, namely \(l\). To get the full thing, we need to \textit{average} over all the nearest neighbours of the pair \(i,j\), \(2(w-1)\) in number. What we mean by nearest neighbours of the dimer pair \((i,j)\) is made clear in \ref{dimer-nn}.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.3\textwidth]{dimer-nn.png}
+	\caption{Blue circles indicate the dimer sites (enclosed by dotted circle). Green circles are the sites that are nearest neighbour to the dimer and the ones that are being summed over under the index \(l\). Orange circles are sites that are \textit{not} nearest neighbour to the dimer.}
+	\label{dimer-nn}
+\end{figure}
+
+The total  Hamiltonian for a particular dimer pair \((i,j)\) then looks like:
 \begin{equation}\begin{aligned}
-	\tilde H &= \frac{2}{Nw}\sum_{\left<ij \right>}^N H^D_{i,j} \\
-		 &= -t^A\sum_{\left<ij\right>}\left( c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.} \right) + \frac{2}{N}\sum_i U \tau_{i \uparrow}\tau_{i \downarrow}\\
-		      &= \frac{1}{Nw}\left[\sum_{\sigma, i=1}^N\sum_{j \in \text{NN of }j}-t^D\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^D\sum_{i=1}^N \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\sum_{i=1}^N\sum_{j \in \text{N.N. of }i}\hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right] \\
-		      &= \frac{1}{Nw}\left[-t^D 2\sum_{\sigma, \left<ij\right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + 2 U^D\sum_{\left<ij\right>} \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + 2 U^D\sum_{\left<ij\right>} \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right]\\
-		      &= \frac{2}{Nw}\sum_{\left<ij\right>}\left[-t^D \sum_\sigma \left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + U^D\left(\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right)\right]\\
-		      &= \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+	\tilde H^D(i, j) &= \frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}} \left[H^D(i, j) - t^D \sum_{\sigma}\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\right]\\
+			 &= H^D(i, j) + \frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}}\left[- t^D \sum_\sigma\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k,\sigma}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\right]
 \end{aligned}\end{equation}
-There we used the identity
-\begin{equation}\begin{aligned}
-	\sum_{i=1}^N\sum_{j \in \text{NN of }j} = 2\sum_{\left<ij\right>}
-\end{aligned}\end{equation}
-The sum $\left<ij\right>$ is over all nearest-neighbour pairs. Thus, $\tilde H$ can be written as
+We now translate this Hamiltonian over all nearest neighbour pairs on the lattice, and take the average:
 \begin{equation}\begin{aligned}
 	\label{H_tiled}
-	\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma, \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+	\tilde H = \frac{2}{Nw}\sum_{\left<ij\right>}\frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}}\tilde H^D(i, j, l) = \frac{2}{N}U^D\sum_{i} \tau_{i \uparrow}\tau_{i \downarrow} - \frac{2}{Nw}\left(1 + \frac{Nw}{2}\right)t^D\sum_{\left<ij\right>}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)
 \end{aligned}\end{equation}
-The conclusion is that on tiling the Hubbard dimer Hamiltonians into all the nearest neighbour pairs, we end up with a new Hubbard model Hamiltonian with "renormalised parameters" given by
+% Note that this local Hamiltonian actually has all the hoppings of the full Hubbard model, but the correlation is present just on the sites \(i,j\). We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameters yet.
+% \\\\
+% If we now sum over all the nearest-neighbour pairs and take the average of all the Hamiltonians (\(\frac{1}{2}Nw\) in number), we get
+% \begin{equation}\begin{aligned}
+% 	\tilde H &= \frac{2}{Nw}\sum_{\left<ij \right>}^N H^D_{i,j} \\
+% 		 &= -t^A\sum_{\left<ij\right>}\left( c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.} \right) + \frac{2}{N}\sum_i U \tau_{i \uparrow}\tau_{i \downarrow}\\
+% 		 &= \frac{1}{Nw}\left[\sum_{\sigma, i=1}^N\sum_{j \in \text{NN of }j}-t^D\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + w U^D\sum_{i=1}^N \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + U^D\sum_{i=1}^N\sum_{j \in \text{N.N. of }i}\hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right]\\
+% 		      &= \frac{1}{Nw}\left[-t^D 2\sum_{\sigma, \left<ij\right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + 2 U^D\sum_{\left<ij\right>} \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + 2 U^D\sum_{\left<ij\right>} \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right]\\
+% 		      &= \frac{2}{Nw}\sum_{\left<ij\right>}\left[-t^D \sum_\sigma \left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + U^D\left(\hat \tau_{i \uparrow}\hat \tau_{i \downarrow} + \hat \tau_{j \uparrow}\hat \tau_{j \downarrow}\right)\right]\\
+% 		      &= \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+% \end{aligned}\end{equation}
+% There we used the identity
+% \begin{equation}\begin{aligned}
+% 	\sum_{i=1}^N\sum_{j \in \text{NN of }j} = 2\sum_{\left<ij\right>}
+% \end{aligned}\end{equation}
+The sum $\left<ij\right>$ is over all nearest-neighbour pairs. 
+% Thus, $\tilde H$ can be written as
+% \begin{equation}\begin{aligned}
+% 	\label{H_tiled}
+% 	\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma, \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+% \end{aligned}\end{equation}
+The conclusion is that on tiling the Hubbard dimer+bath Hamiltonians into all the nearest neighbour pairs, we end up with a new Hubbard model Hamiltonian with "renormalised parameters" given by
 \begin{equation}\begin{aligned}
-	\tilde t = \frac{2t^D}{Nw}~~,~~ \tilde U = \frac{2U^D}{N}~.
+	\tilde t = \frac{2}{Nw}(1 + \frac{Nw}{2})t^D, &&\tilde U = \frac{2}{N}U^D
 \end{aligned}\end{equation}
 It is thus apparent that translating the Hubbard dimers throughout the lattice has restored translational invariance, and generated correlations on all sites. 
 %(as compared to just on the impurity site). %This also takes care of the problem that the spectrum of the Anderson molecule and Hubbard dimer are different for the $N=1$ or $N=3$ sectors: By translating the Anderson molecule suitably, we have recovered the correct spectrum in all sectors.
-\\\\
-The claim made in a previous section was that this Hamiltonian is very close to a similarity transformed Hubbard Hamiltonian:
-\begin{equation}\begin{aligned}
-	\tilde{H} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D) \equiv  \mathcal{U} H^H  \mathcal{U}^{-1}~,
-\end{aligned}\end{equation}
-where $\mathcal{U}$ is in general distinct from the unitary transformation that completes the URG starting from the bare cluster+bath Anderson model up to the fixed-point Hamiltonian. As shown earlier, $U$ transformation that involves three steps: the URG transformations $\mathcal{U}_A$, the extracting of the zero mode $Z$ and the tiling procedure outline in this section, $T$
-\begin{equation}\begin{aligned}
-	\mathcal{U} = T Z \mathcal{U}_{A}~.
-\end{aligned}\end{equation}
+% \\\\
+% The claim made in a previous section was that this Hamiltonian is very close to a similarity transformed Hubbard Hamiltonian:
+% \begin{equation}\begin{aligned}
+% 	\tilde{H} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D) \equiv  \mathcal{U} H^H  \mathcal{U}^{-1}~,
+% \end{aligned}\end{equation}
+% where $\mathcal{U}$ is in general distinct from the unitary transformation that completes the URG starting from the bare cluster+bath Anderson model up to the fixed-point Hamiltonian. As shown earlier, $U$ transformation that involves three steps: the URG transformations $\mathcal{U}_A$, the extracting of the zero mode $Z$ and the tiling procedure outline in this section, $T$
+% \begin{equation}\begin{aligned}
+% 	\mathcal{U} = T Z \mathcal{U}_{A}~.
+% \end{aligned}\end{equation}
+\textcolor{red}{
 With some knowledge of the RG procedure, one can even write down the relation between the Hubbard dimer couplings $t^D, U^D$ and the parent Hubbard model parameters $t^H, U^H$. We have seen previously in another work that in the absence of any explicit spin or charge isospin exchange couplings, the impurity-bath hybridisation coupling $t^A$ does not flow under the RG. In going from the Hubbard model to the auxiliary model, we replace the non-local operator $c_i$ with the local operator $c_d$. If we define the normalization of the Fourier transform such that both spaces have $\frac{1}{\sqrt N}$, then the auxiliary model coupling can be written as $t^A = \sqrt N t^H$. When we write the fixed-point hopping purely in terms of zero mode, another such factor appears: $\sum_k c_k = \sqrt N c_0$, such that $t^D = \sqrt N (t^A)*$. Combining these, we get
 \[ t^D = \sqrt N \times (t^A)^* = \sqrt N \times t^A = N \times t^H \]
 As for the on-site repulsion $U^H$, we will constrain the RG flows such that the fixed-point value of the impurity ons-te repulsion $U^A$ is identical to that of the on-site repulsion of the bath, $U_b$. A sensible choice for the bath on-site repulsion is simply $U^H\times N$. The factor of $N$ maintains the extensivity of the bath correlation term. We can therefore write
 \[U^D \equiv (U^A)* = U_b = N \times U^H\]
+}
 \section{Formal expressions for single particle Greens functions and other related many-body quantites}
 \subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
 %If the groundstate wavefunction of $H^H$ is $\ket{0}$, then the groundstate wavefunction of $\tilde H$ is $\ket{\tilde 0} =  \mathcal{U}\ket{0}$. The advantage of $\tilde H$ being connected to $H^H$ through unitary (or atleast similarity) transformations is that they will have the same single-particle Greens functions
@@ -270,32 +292,40 @@ where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{\Phi_0}$ and $\ket{\overline{i\sigm
 To this end, we rewrite eq.~\ref{H_tiled} in terms of inverse Greens function operators for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
 	\label{Gd_op}
-	\mathcal{\tilde G}(\omega) = \frac{1}{\omega - \left(\tilde H - E_\text{GS}\right)}, && \mathcal{G}_D(\omega) = \frac{1}{\omega - \left(H^D - E_\text{GS}\right)}
+	\mathcal{\tilde G}(\omega) = \frac{1}{\omega - \left(\tilde H - E_\text{GS}\right)}, && \mathcal{G}_D(\omega) = \frac{1}{\omega - \left(\tilde H^D(i,j,l) - E_\text{GS}\right)}
 \end{aligned}\end{equation}
 %\textit{It has been assumed that the Hamiltonians have been normal ordered such that the ground state energy is 0.} Then, these are the same operators that appear in the appendix.
 These are the same operators that appear in the appendix. However, before proceeding, we should note that even though eq.~\ref{H_tiled} used the indices $i,$, the correct indices are actually $\tilde i, \tilde j$, in light of the fact that operators get renormalised as $c_i \to \tilde c_i\equiv Uc_i$. With this in mind, we can write
 \begin{equation}\begin{aligned}
 	\label{green_eq}
-	\omega - \mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<\tilde i, \tilde j\right>}\left[\omega - \mathcal{G}_D^{-1}\left(\tilde i, \tilde j\right)\right]
+	\omega - \mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<\tilde i, \tilde j\right>} \frac{1}{2(w-1)} \sum_{l \in \text{NN of j}}\left[\omega - \mathcal{G}_D^{-1}\left(\tilde i, \tilde j, \tilde l\right)\right]
 \end{aligned}\end{equation}
-where $\mathcal{G}_D^{-1}(\tilde i,\tilde j)$ is the Greens function inverse matrix of the Hubbard dimer Hamiltonian with $\tilde i, \tilde j$ as the two sites. Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
+where $\mathcal{G}_D^{-1}(\tilde i,\tilde j, \tilde l)$ is the Greens function inverse matrix of the Hubbard dimer+bath Hamiltonian with $\tilde i, \tilde j$ as the two sites and \(\tilde l\) as the zero mode of the bath, eq.~\ref{Hdjl}, or equivalently, eq.~\ref{dimer_p_bat}. Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
+\begin{equation}\begin{aligned}
+	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\frac{1}{2(w-1)}\sum_{l \in \text{NN of j}}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j, \tilde l\right)
+\end{aligned}\end{equation}
+Because of translational invariance, all values of \(l\) should give the same Greens function, and we can simplify this to
 \begin{equation}\begin{aligned}
 	\label{green_eq_final}
-	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right)
+	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\frac{1}{2(w-1)}\times 2(w-1)\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right) = \frac{2}{Nw}\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right)
 \end{aligned}\end{equation}
-We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element is calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{\Phi_0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
-First lets consider the diagonal matrix element at $\tilde i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have $\tilde i$ in one of the indices. There will be $w$ such terms, because $\tilde i$ has $w$ nearest neighbours. Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer. Each term will be a real space local Greens function, and because of translational invariance, it will be the same on both sites. %So we will represent the real space local inverse Greens function as $\left[\mathcal{G}_D^{-1}(\omega)\right]_{00}^{\sigma}$.
-The entire thing is thus $w$ times this local Greens function.
+We dropped the index \(\tilde l\) on \(\mathcal{G}_D^{-1}\) to mean that any particular choice of \(\tilde l\) will do. We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element will be calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{\Phi_0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
+First lets consider the diagonal matrix element at $\tilde i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have the index $\tilde i$ on the dimer. There are $w$ terms that have the index \(\tilde i\) on the dimer corresponding to the $w$ nearest neighbours of \(\tilde i\). Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer+bath Hamiltonian. Each term will be a real space local Greens function, and because of translational invariance, it will be the same for all choices of the nearest neighbour of \(\tilde i\). %So we will represent the real space local inverse Greens function as $\left[\mathcal{G}_D^{-1}(\omega)\right]_{00}^{\sigma}$.
 % \begin{gather}
 % 	\label{local_gf}
 % 	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00}\times w = \frac{2}{N}\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} \equiv g_0\\
 % 	\left[\mathcal{G}_{D}^{-1}(\omega)\right]^\sigma_{00} = \bra{\Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\Phi_0}
 % \end{gather}
 \begin{gather}
-	\label{local_gf}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}\times w = \frac{2}{N}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}
+	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\sum_{j \in \text{NN of i}}\bra{\tilde \Phi_0}c_{i\sigma}\mathcal{G}_{D}^{-1}(\omega, \tilde i, \tilde j)c^\dagger_{i\sigma}\ket{\tilde \Phi_0} = \frac{2}{N}\bra{\tilde \Phi_0}c_{i\sigma}\mathcal{G}_{D}^{-1}(\omega, \tilde i)c^\dagger_{i\sigma}\ket{\tilde \Phi_0}
 \end{gather}
-We can expand the state $c^\dagger_{0\sigma}\ket{\tilde \Phi_0}$ and $c^\dagger_{1\sigma}\ket{\tilde \Phi_0}$ in terms of a complete set of orthogonal states:
+Once we have stripped away the \(j,l\) dependence, we can view the RHS as simply the matrix element of the dimer-bath Hamiltonian eq.~\ref{dimer_p_bat} between the local states of the site zero of the bath:
+\begin{gather}
+	\label{local_gf}
+	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}
+\end{gather}
+Just to make it explicit, we repeat once more that \(\mathcal{G}_{D}^{-1}(\omega)\) is the inverse Greens function operator of the Hamiltonian in eq.~\ref{dimer_p_bat}.
+We can expand the state $c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$ in terms of a complete set of orthogonal states:
 \begin{equation}\begin{aligned}
 	c^\dagger_{0\sigma}\ket{\tilde \Phi_0} = \sum_n C^0_n \ket{n}, && c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \sum_n C^1_n \ket{n}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
 \end{aligned}\end{equation}
@@ -303,21 +333,23 @@ where $C^{0}$ and $C^{1}$ are coefficients of the linear superposition defined b
 \begin{equation}
 C^{0}_{n} = \bra{n} c^\dagger_{0\sigma}\ket{\tilde \Phi_0}~,~ C^{1}_{n} = \bra{n} c^\dagger_{1\sigma}\ket{\tilde \Phi_0}~.
 \end{equation}
-Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. One simple way of choosing the orthogonal basis $\left\{ \ket{n} \right\}$ is to take them from the eigenstates of a system comprising a Hubbard dimer and a conduction bath, decoupled from each other. The dimer will of course have 2 sites, which means the conduction bath will have $N-2$ sites, or $N-2$ momentum states. The set of eigenstates that have the total number of particles (combining the dimer and the bath) equal to $N+1$ will then form the basis in question. Since the dimer is decoupled from the bath, the total wavefunction will be a direct product of a Hubbard dimer wavefunction and a bath wavefunction.
-\begin{equation}\begin{aligned}
-	\ket{m,\alpha,\beta} = \Phi^D_{m,\alpha} \otimes \Psi^B_{N-m+1, \beta}
-\end{aligned}\end{equation}
-$\alpha$ is an internal quantum number of the Hubbard dimer while $\beta$ is that for the bath. The subscripts $m$ and $N-m+1$ label the total number of particles in each part of the wavefunction. These two labels have to add to $N+1$. Our choice of the $\ket{n}$ is motivated by noting that the effective auxiliary model we are invoking here is that of a Hubbard dimer connected to a bath via single-particle hybridisation; the eigenstates of the isolated dimer and bath subsystems then act as the natural choices of the orthogonal bases in which to expand the wavefunction for the single-particle excitation of the interacting system $c^\dagger_{0\sigma}\ket{\tilde \Phi_0}$. Further, while the eigenstates ($\Phi^D_{m,\alpha}$) of the Hubbard dimer are known analytically, we can safely assume the eigenstates of the bath ($\Psi^B_{N-m+1, \beta}$) to be a simple direct product of various single-particle Fock states in $k$-space. We then compute the matrix element of eq.\eqref{local_gf} for site $i$ and its immediate neighbours (i.e., a given realisation of a auxiliary model). Then, using translation invariance, we demand that this matrix element is independent of the site index $i$. The correctness of this auxiliary model approach hinges on how close the state $\ket{\tilde{\Phi_0}}$ is to the 2-site local nature of the exact ground state of the target model (here the Hubbard model on a given lattice). Further improvement can be made by improving (i) the state $\ket{\tilde{\Phi_0}}$ for the present auxiliary model (involving a Hubbard dimer), or (ii) choosing a better auxiliary model with an ``impurity" system that has more sites than two (i.e., a Bethe-Peierls improvement of the dimer auxiliary model).
-\\\\
+Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. In light of the Greens function we have in between te states, we choose the orthogonal set to be formed by the eigenstates of the dim
+er+bath Hamiltonian.
+% One simple way of choosing the orthogonal basis $\left\{ \ket{n} \right\}$ is to take them from the eigenstates of a system comprising a Hubbard dimer and a conduction bath, decoupled from each other. The dimer will of course have 2 sites, which means the conduction bath will have $N-2$ sites, or $N-2$ momentum states. The set of eigenstates that have the total number of particles (combining the dimer and the bath) equal to $N+1$ will then form the basis in question. Since the dimer is decoupled from the bath, the total wavefunction will be a direct product of a Hubbard dimer wavefunction and a bath wavefunction.
+% \begin{equation}\begin{aligned}
+% 	\ket{m,\alpha,\beta} = \Phi^D_{m,\alpha} \otimes \Psi^B_{N-m+1, \beta}
+% \end{aligned}\end{equation}
+% $\alpha$ is an internal quantum number of the Hubbard dimer while $\beta$ is that for the bath. The subscripts $m$ and $N-m+1$ label the total number of particles in each part of the wavefunction. These two labels have to add to $N+1$. Our choice of the $\ket{n}$ is motivated by noting that the effective auxiliary model we are invoking here is that of a Hubbard dimer connected to a bath via single-particle hybridisation; the eigenstates of the isolated dimer and bath subsystems then act as the natural choices of the orthogonal bases in which to expand the wavefunction for the single-particle excitation of the interacting system $c^\dagger_{0\sigma}\ket{\tilde \Phi_0}$. Further, while the eigenstates ($\Phi^D_{m,\alpha}$) of the Hubbard dimer are known analytically, we can safely assume the eigenstates of the bath ($\Psi^B_{N-m+1, \beta}$) to be a simple direct product of various single-particle Fock states in $k$-space. We then compute the matrix element of eq.\eqref{local_gf} for site $i$ and its immediate neighbours (i.e., a given realisation of a auxiliary model). Then, using translation invariance, we demand that this matrix element is independent of the site index $i$. The correctness of this auxiliary model approach hinges on how close the state $\ket{\tilde{\Phi_0}}$ is to the 2-site local nature of the exact ground state of the target model (here the Hubbard model on a given lattice). Further improvement can be made by improving (i) the state $\ket{\tilde{\Phi_0}}$ for the present auxiliary model (involving a Hubbard dimer), or (ii) choosing a better auxiliary model with an ``impurity" system that has more sites than two (i.e., a Bethe-Peierls improvement of the dimer auxiliary model).
+% \\\\
 Using this expansion, the matrix element of $\mathcal{G}$ can be written as
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{nn^\prime} \left(C^0_{n^\prime}\right)^*\bra{n^\prime}\mathcal{G}_{D}^{-1}(\omega)\ket{n} C^0_{n}
 \end{aligned}\end{equation}
-Since the Hubbard dimer of the ket $\ket{n}$ is an actual eigenstate, $\mathcal{G}_{D}^{-1}(\omega)$ will be diagonal in that basis:
+Since $\ket{n}$ is an actual eigenstate of the Hamiltonian that defines \(\mathcal{G}_{D}^{-1}(\omega)\), $\mathcal{G}_{D}^{-1}(\omega)$ will be diagonal in that basis:
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{n} |C^0_{n}|^2 \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{n n} 
 \end{aligned}\end{equation}
-Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$.We will extract this using the definition. This will receive contribution from only one nearest neighbour pair in the summation of the RHS of eq.~\ref{green_eq_final}, namely that of $\left(i,j\right)$. This will not be a diagonal Greens function. Instead, it involves two nearest neighbour sites. %We call this Greens function $\left[\mathcal{G}_D^{-1}(\omega)\right]_{01}^\sigma$.
+Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only that dimer+bath Hamiltonian that has \(i,j\) as the dimer sites. This will not be a real space diagonal Greens function. Instead, it involves two nearest neighbour sites. %We call this Greens function $\left[\mathcal{G}_D^{-1}(\omega)\right]_{01}^\sigma$.
 \begin{gather}
 \label{nn_gf}
 \left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \frac{2}{Nw}\sum_{n} \left(C^0_{n}\right)^* C^1_{n} \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn} 
@@ -366,17 +398,17 @@ The spectral weights remain unchanged; only the matrix element changes from $A_{
 This allows us to write
 \begin{equation}\begin{aligned}
 	\label{G_mat_loc}
-	\left(\mathcal{G}_{H}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{n} |C^0_{n}|^2 \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ii}}^\sigma = \frac{2}{N}\sum_{n} |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}
+	\left(\mathcal{G}_{H}(\omega)\right)_{ii}^\sigma = \frac{4(w-1)}{N}\sum_{n} |C^0_{n}|^2 \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ii}}^\sigma = \frac{4(w-1)}{N}\sum_{n} |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}
 \end{aligned}\end{equation}
 and
 \begin{equation}\begin{aligned}
 	\label{G_mat_nn}
-	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\sum_{n} {C^0_{n}}^* C^1_{n} \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ij}}^\sigma = \frac{2}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}
+	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{4(w-1)}{Nw}\sum_{n} {C^0_{n}}^* C^1_{n} \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ij}}^\sigma = \frac{4(w-1)}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}
 \end{aligned}\end{equation}
 These two expressions can be used to obtain an expression for the real space local and nearest-neighbour Greens functions:
 \begin{equation}\begin{aligned}
-	G_H(\omega)_\text{loc} &= \left(\mathcal{G}_H(\omega)\right)_{ii} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ii}} = \frac{2}{N}\sum_n\left(|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}\right)\\
-	G_H(\omega)_\text{nn} &= \left(\mathcal{G}_H(\omega)\right)_{ij} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ji}} = \frac{2}{Nw}\sum_n\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\\
+	G_H(\omega)_\text{loc} &= \left(\mathcal{G}_H(\omega)\right)_{ii} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ii}} = \frac{4(w-1)}{N}\sum_n\left(|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}\right)\\
+	G_H(\omega)_\text{nn} &= \left(\mathcal{G}_H(\omega)\right)_{ij} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ji}} = \frac{4(w-1)}{Nw}\sum_n\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\\
 \end{aligned}\end{equation}
 The momentum space Greens function can be expressed as a Fourier transform of the real space Greens functions:
 \begin{equation}\begin{aligned}
@@ -391,7 +423,7 @@ The first summation produces a factor of $N$, while the second summation can be 
 	\label{k_Gf}
 	G_H (\vec k, \omega) &\simeq G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\\
 			     &= G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn} \xi_{\vec k}\\
-			     &= \frac{2}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
+			     &= \frac{4(w-1)}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -407,7 +439,7 @@ where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
 \\\\
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{2}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
+	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{4(w-1)}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
 A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = \frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
 \end{aligned}\end{equation}
 We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
@@ -539,36 +571,36 @@ Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to o
 % \end{aligned}\end{equation}
 % We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
 
-\section{Some comments on writing down the orthonormal basis $\left\{ \ket{n} \right\}$}
-As mentioned previously, for a parent model of $N$ sites, the orthonormal basis is constructed out of those eigenstates of a decoupled dimer+bath system that have total number of particles equal to $\mathcal{N}_\text{tot} = \mathcal{N}_\text{dim} + \mathcal{N}_\text{bath} = N+1$. The condition on the total number is necessary because that is also the total particile number of the state we are expanding $(c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$. The dimer will have 2 sites, while the rest $N-2$ sites go into the bath.
-\\\\
-If we are solving the trivial example of $H^H = H^D$ (that is, if we take the Hubbard dimer itself as the full Hubbard model that we are trying to solve), the bath is non-existant. The entire set of $\ket{n}$ for expanding $c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$ is then made up by the $\mathcal{N} = N + 1 = 3, S^z = \frac{1}{2}\sigma$ eigenstates of $H^D$. There are two of those; these two make up the entire orthonormal basis in which we can expand the single-particle excitaions:
-\begin{equation}\begin{aligned}
-	\left\{ \ket{n} \right\} = \ket{3 \pm \sigma}
-\end{aligned}\end{equation}
-Similarly, for expanding the hole excitaions $c_{i\sigma}\ket{\tilde \Phi_0}$, we will instead choose the $\mathcal{N} = N - 1 = 1, S^z = -\frac{1}{2}\sigma$ eigenstates of $H^D$. There are again two of those:
-\begin{equation}\begin{aligned}
-	\left\{ \ket{\overline n} \right\} = \ket{1 \pm -\sigma}
-\end{aligned}\end{equation}
-\\\\
-For a more general $N(>2)$-site model, there will be a bath of $N-2$ momentum states. These momentum states are labelled as $k_1, k_2, ..., k_{N-2}$. Let us designate the set of eigenstates of the Hubbard dimer as \(\left\{ \ket{\Phi^D_i} \right\} \) and those of the bath as \(\left\{ \ket{\Psi^B_{j, \nu^j}} \right\} \). Since the bath is non-interacting, those eigenstates can be written down easily:
-\begin{equation}\begin{aligned}
-	\left\{ \ket{\Psi^B_{j, \nu^j}} \right\} = \begin{cases} &  j \in [0, 2N-4]\\[-10pt]
-	\otimes_{i=1}^j\hat n_{\nu^j_i} = 1:\\[-10pt]
-& \nu^j \in \text{all subsets of length $j$ of the set $\left[k_1 \uparrow, k_1 \downarrow, k_2 \uparrow, ..., k_{N-2} \uparrow, k_{N-2} \downarrow\right]$} \end{cases}
-\end{aligned}\end{equation}
-$j$ defines the number of occupied states in a particular eigenstate of the conduction bath. The string $\nu^j$ runs over all possible set of quantum numbers of a particular length $j$. For example, if we have 3 momentum states in the bath $k_1, k_2, k_3$, then $\nu^2$ would take the values
-\begin{equation}\begin{aligned}
-	\left\{\nu^2\right\} = \left(k_1 \uparrow, k_1 \downarrow\right),\left(k_1 \uparrow, k_2 \uparrow\right),\left(k_1 \uparrow, k_2 \downarrow\right),\left(k_1 \uparrow, k_3 \uparrow\right),\left(k_1 \uparrow, k_3 \downarrow\right),\left(k_1 \downarrow, k_2 \uparrow\right),\left(k_1 \downarrow, k_2 \downarrow\right),\\
-	\left(k_1 \downarrow, k_3 \uparrow\right),\left(k_1 \downarrow, k_3 \downarrow\right),\left(k_2 \uparrow, k_2 \downarrow\right),\left(k_2 \uparrow, k_3 \uparrow\right),\left(k_2 \uparrow, k_3 \downarrow\right),\left(k_2 \downarrow, k_3 \uparrow\right),\left(k_2 \downarrow, k_3 \downarrow\right),\\
-\left(k_3 \uparrow, k_3 \downarrow\right)
-\end{aligned}\end{equation}
-The $j=0$ case means the bath is empty.
-The general complete set of orthonormal kets is given by
-\begin{equation}\begin{aligned}
-	\left\{ \ket{n} \right\} = \sum_{i=1}^{16}\sum_{j=0}^{N-2}\sum_{\nu^j}\ket{\Phi^D_i}\otimes \ket{\Psi^B_{j, \nu^j}}
-\end{aligned}\end{equation}
-The first twp sums are unconstrained. The index $i$ runs through all 16 eigenstates of the Hubbard dimer, the index $j$ runs through all the possible total number of particles the eigenstate of the bath can have. For each value of $j$, the string $\nu^j$ runs through all possible combinations of length $j$ from the complete set of quantum numbers $\left\{ k\sigma \right\} $.
+% \section{Some comments on writing down the orthonormal basis $\left\{ \ket{n} \right\}$}
+% As mentioned previously, for a parent model of $N$ sites, the orthonormal basis is constructed out of those eigenstates of a decoupled dimer+bath system that have total number of particles equal to $\mathcal{N}_\text{tot} = \mathcal{N}_\text{dim} + \mathcal{N}_\text{bath} = N+1$. The condition on the total number is necessary because that is also the total particile number of the state we are expanding $(c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$. The dimer will have 2 sites, while the rest $N-2$ sites go into the bath.
+% \\\\
+% If we are solving the trivial example of $H^H = H^D$ (that is, if we take the Hubbard dimer itself as the full Hubbard model that we are trying to solve), the bath is non-existant. The entire set of $\ket{n}$ for expanding $c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$ is then made up by the $\mathcal{N} = N + 1 = 3, S^z = \frac{1}{2}\sigma$ eigenstates of $H^D$. There are two of those; these two make up the entire orthonormal basis in which we can expand the single-particle excitaions:
+% \begin{equation}\begin{aligned}
+% 	\left\{ \ket{n} \right\} = \ket{3 \pm \sigma}
+% \end{aligned}\end{equation}
+% Similarly, for expanding the hole excitaions $c_{i\sigma}\ket{\tilde \Phi_0}$, we will instead choose the $\mathcal{N} = N - 1 = 1, S^z = -\frac{1}{2}\sigma$ eigenstates of $H^D$. There are again two of those:
+% \begin{equation}\begin{aligned}
+% 	\left\{ \ket{\overline n} \right\} = \ket{1 \pm -\sigma}
+% \end{aligned}\end{equation}
+% \\\\
+% For a more general $N(>2)$-site model, there will be a bath of $N-2$ momentum states. These momentum states are labelled as $k_1, k_2, ..., k_{N-2}$. Let us designate the set of eigenstates of the Hubbard dimer as \(\left\{ \ket{\Phi^D_i} \right\} \) and those of the bath as \(\left\{ \ket{\Psi^B_{j, \nu^j}} \right\} \). Since the bath is non-interacting, those eigenstates can be written down easily:
+% \begin{equation}\begin{aligned}
+% 	\left\{ \ket{\Psi^B_{j, \nu^j}} \right\} = \begin{cases} &  j \in [0, 2N-4]\\[-10pt]
+% 	\otimes_{i=1}^j\hat n_{\nu^j_i} = 1:\\[-10pt]
+% & \nu^j \in \text{all subsets of length $j$ of the set $\left[k_1 \uparrow, k_1 \downarrow, k_2 \uparrow, ..., k_{N-2} \uparrow, k_{N-2} \downarrow\right]$} \end{cases}
+% \end{aligned}\end{equation}
+% $j$ defines the number of occupied states in a particular eigenstate of the conduction bath. The string $\nu^j$ runs over all possible set of quantum numbers of a particular length $j$. For example, if we have 3 momentum states in the bath $k_1, k_2, k_3$, then $\nu^2$ would take the values
+% \begin{equation}\begin{aligned}
+% 	\left\{\nu^2\right\} = \left(k_1 \uparrow, k_1 \downarrow\right),\left(k_1 \uparrow, k_2 \uparrow\right),\left(k_1 \uparrow, k_2 \downarrow\right),\left(k_1 \uparrow, k_3 \uparrow\right),\left(k_1 \uparrow, k_3 \downarrow\right),\left(k_1 \downarrow, k_2 \uparrow\right),\left(k_1 \downarrow, k_2 \downarrow\right),\\
+% 	\left(k_1 \downarrow, k_3 \uparrow\right),\left(k_1 \downarrow, k_3 \downarrow\right),\left(k_2 \uparrow, k_2 \downarrow\right),\left(k_2 \uparrow, k_3 \uparrow\right),\left(k_2 \uparrow, k_3 \downarrow\right),\left(k_2 \downarrow, k_3 \uparrow\right),\left(k_2 \downarrow, k_3 \downarrow\right),\\
+% \left(k_3 \uparrow, k_3 \downarrow\right)
+% \end{aligned}\end{equation}
+% The $j=0$ case means the bath is empty.
+% The general complete set of orthonormal kets is given by
+% \begin{equation}\begin{aligned}
+% 	\left\{ \ket{n} \right\} = \sum_{i=1}^{16}\sum_{j=0}^{N-2}\sum_{\nu^j}\ket{\Phi^D_i}\otimes \ket{\Psi^B_{j, \nu^j}}
+% \end{aligned}\end{equation}
+% The first twp sums are unconstrained. The index $i$ runs through all 16 eigenstates of the Hubbard dimer, the index $j$ runs through all the possible total number of particles the eigenstate of the bath can have. For each value of $j$, the string $\nu^j$ runs through all possible combinations of length $j$ from the complete set of quantum numbers $\left\{ k\sigma \right\} $.
 		
 \section{Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}
 The expressions for $C^{0,1}_n$ and $\overline C^{0,1}_n$, as mentioned above, involve taking the projection of the exact ground state of the full Hubbard model, $\ket{\tilde \Phi_0}$, against the chosen orthogonal basis $\ket{n}$.

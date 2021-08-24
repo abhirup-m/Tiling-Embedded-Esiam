@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  24 AUG 2021 08:32
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.28)  24 AUG 2021 12:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -500,188 +500,143 @@ Underfull \hbox (badness 10000) in paragraph at lines 192--197
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 203--207
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 227--232
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 267--271
+File: ./figures//dimer-nn.png Graphic file (type bmp)
+<./figures//dimer-nn.png>
+ [9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 289--293
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 285--294
+Underfull \hbox (badness 10000) in paragraph at lines 311--319
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 309--313
-
- []
-
-[12]
 File: ./figures//lattice.png Graphic file (type bmp)
 <./figures//lattice.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 326--337
+Underfull \hbox (badness 10000) in paragraph at lines 358--369
 
  []
 
-[13] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 405--409
+[12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 437--441
 
+ []
+
+[14]
+Overfull \hbox (8.97122pt too wide) detected at line 444
+[][][]
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 542.
+(hyperref)                removing `math shift' on input line 605.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\left' on input line 542.
+(hyperref)                removing `superscript' on input line 605.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\mathinner' on input line 542.
+(hyperref)                removing `subscript' on input line 605.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\rangle' on input line 542.
+(hyperref)                removing `math shift' on input line 605.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\right' on input line 542.
+(hyperref)                removing `math shift' on input line 605.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 542.
+(hyperref)                removing `\@@overline' on input line 605.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 543--546
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 605.
 
- []
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 605.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 605.
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 552--555
-
- []
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@overline' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 573.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 573.
-
-[16]
 File: ./figures//dimer_dispersion.png Graphic file (type bmp)
 <./figures//dimer_dispersion.png>
- [17] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 754--758
+ [16] [17]
+Underfull \hbox (badness 10000) in paragraph at lines 786--790
 
  []
 
-[19]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 785--786
+[18]
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 817--818
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
-[20]
+[19]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 808.
+(caption)                particular \caption on input line 840.
 See the caption package documentation for explanation.
 
-[21] [22]
+[20] [21]
 File: ./figures//dimer-peaks.png Graphic file (type bmp)
 <./figures//dimer-peaks.png>
- [23]
-Overfull \hbox (5.91971pt too wide) in paragraph at lines 953--953
-|[]\T1/lmr/bx/n/17.28 Appendix: Writ-ing single-particle ex-ci-ta-tions of ground state
- []
+ [22]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 985.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 953.
+(hyperref)                removing `superscript' on input line 985.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 953.
+(hyperref)                removing `\begingroup' on input line 985.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 953.
+(hyperref)                removing `\endgroup' on input line 985.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 953.
+(hyperref)                removing `\@@over' on input line 985.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 953.
+(hyperref)                removing `math shift' on input line 985.
+
+[23]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1021.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 953.
-
-[24]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 989.
+(hyperref)                removing `superscript' on input line 1021.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 989.
+(hyperref)                removing `math shift' on input line 1021.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 989.
-
-(./notes.bbl) [25] (./notes.aux)
+(./notes.bbl) [24] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: F0EAC4A304F078862CC4A4283E72A0D6;3806.
+(rerunfilecheck)             Checksum: 90A2D93F33AB26D559B638A24C6002D6;3435.
  ) 
 Here is how much of TeX's memory you used:
- 12028 strings out of 476919
- 178250 string characters out of 5827674
- 513963 words of memory out of 5000000
- 31834 multiletter control sequences out of 15000+600000
- 441874 words of font info for 77 fonts, out of 8000000 for 9000
+ 12031 strings out of 476919
+ 178359 string characters out of 5827674
+ 511965 words of memory out of 5000000
+ 31838 multiletter control sequences out of 15000+600000
+ 441229 words of font info for 74 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 71i,18n,77p,2069b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,77p,2051b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (25 pages, 160140 bytes).
+Output written on notes.xdv (24 pages, 151724 bytes).

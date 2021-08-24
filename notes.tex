@@ -93,7 +93,8 @@ To further simplify this Hamiltonian, \textit{we will combine the nearest neighb
 \end{aligned}\end{equation}
 This single site will act as the zeroth site of the effective bath, and it means that both sites of the Hubbard dimer hybridizes with the effective through just a single site. With this assumption, the Hamiltonian for "a Hubbard dimer hopping into an effective bath" takes the simple form
 \begin{equation}\begin{aligned}
-	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+	\label{dimer_p_bat}
+	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{1\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
 \(H^D(0,1)\) is the Hubbard dimer Hamiltonian (shown in fig.~\ref{hubb-dim}):
 \begin{equation}\begin{aligned}
@@ -109,29 +110,27 @@ This single site will act as the zeroth site of the effective bath, and it means
 This entire procedure is depicted in fig.~\ref{dimer-bath}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.8\textwidth]{dimer_bath.png}
-	\caption{The process of symmetrizing the Rg fixed point Hamiltonian and then creating a dimer+bath Hamiltonian.}
-	\label{dimer-bath}
+	\includegraphics[width=0.3\textwidth]{dimer_bath.png}
+	\caption{The process of symmetrizing the Rg fixed point Hamiltonian and then creating a dimer+bath Hamiltonian. We first add the asymmetric Hamiltonians to get a symmetrized Hamiltonian. In the symmetrized Hamiltonian, the dimer has \(w\) entry points into the bath, \(w\) being the coordination number of the lattice. We then merge these \(w\) lattice sites (enclosed in the black box) into a single lattice site.}
+	\label{dimer-bath} 
 \end{figure}
-We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. We will then create the the entire Hubbard Hamiltonian by combining the members of this family of Hamiltonians according to a prescription which is guided by the symmetries of the problem.
-\par\noindent
-However, we first specify the two approximations made along the entire journey from the original Hubbard model to the reconstructed one:
-\begin{itemize}
-	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{clus_bath_siam}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. As discussed before, the very choice of th cluster and bath spoil the translational invariance of the parent model.
-	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. At this point, we go from the fixed point Hamiltonian to the dimer+bath Hamiltonian: $H^D = Z\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right] Z^{-1}$. This constitutes the second approximations we make. This constitutes the second approximations we make.
-\end{itemize}
-We now tile the real-space lattice with this Hubbard dimer Hamiltonian to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $\tilde H = T\left[ H^{D} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the dimer Hamiltonian to span the target real-space lattice. We quote the final form of $\tilde H$ here to explain what the tiling means, but the explanation is given in a later section.
+We  can thus obtain a family of Hamiltonians \(\tilde H^D(i,j)\) obtained by setting \(0\) and \(1\) by setting the two sites of the dimer to any nearest-neighbour \(i,j\) on the lattice and the effective bath to the rest \(N-2\) sites of the lattice. The next step in the programme is to tile the real-space lattice with this dimer+bath Hamiltonian \(\tilde H_D\) to restore translational invariance (shown in a later section), and obtain a new Hubbard Hamiltonian, $\tilde H = T\left[ \tilde H^{D} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the dimer Hamiltonian to span the target real-space lattice. We quote the final form of $\tilde H$ here to explain what the tiling means, but the explanation is given in a later section.
 \begin{equation}\begin{aligned}
-	\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)
+	\color{red}{\tilde H = - \frac{2t^D}{Nw}\sum_{\sigma \left<ij \right>}\left(c^\dagger_{\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{2U^D}{N}\sum_i \hat \tau_{i \uparrow}\hat \tau_{i \downarrow} = \frac{2}{Nw}\sum_{\left<ij \right>} H^D(i,j,t^D, U^D)}
 \end{aligned}\end{equation}
-What that means is that we have placed the Hubbard dimer at all nearest neighbour pairs to reconstruct a new Hubbard model. If we assume that the tiling mostly rectifies the explicit symmetry-breaking made while choosing the auxiliary system as well as taking the zero mode, we can write
+What that means is that we have placed the Hubbard dimer at all nearest neighbour pairs to reconstruct a new Hubbard model. If we assume that the tiling mostly rectifies the explicit symmetry-breaking made while choosing the auxiliary system as well as dropping the correlation on the bath sites, we can write
 \begin{equation}\begin{aligned}
 	\label{app2}
 	\tilde H = \mathcal{U} H^H \mathcal{U}^{-1} = TZ\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right]Z^{-1} T^{-1}~,
 \end{aligned}\end{equation}
 where $\mathcal{U} = TZ\mathcal{U}_{A}$ is some transformation that is either a unitary, or, at the very least, a similarity transformation that maps from the original to the reconstructed Hubbard Hamiltonian. 
-%The content of the above equation is that we expect the final tiled translationally invariant new (renormalised) Hubbard Hamiltonian to be connected to the bare parent Hubbard model through some unitary/similarity transformation $\mathcal{U}$.
-The existence of $U$ is contingent on how good the approximations are, and strictly speaking needs to be verified.
+The existence of $U$ is contingent on how good the approximations are.
+\\\\
+We mention the two approximations made along the entire journey from the original Hubbard model to the reconstructed one here.
+\begin{itemize}
+	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{clus_bath_siam}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. As discussed before, the very choice of th cluster and bath spoil the translational invariance of the parent model.
+	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. At this point, we go from the fixed point Hamiltonian to the dimer+bath Hamiltonian in eq.~\ref{dimer_p_bat}. If we represent this transformation from the fixed point Hamiltonian to the Hamiltonian in eq.~\ref{dimer_p_bat} by an operator \(Z\), we can write $H^D = Z\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right] Z^{-1}$. This constitutes the second approximation we make.
+\end{itemize}
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.
@@ -194,9 +193,13 @@ We will follow the strategy outlined in the previous section. For concreteness, 
 \\\\
 For each nearest-neighbour pair \(i,j\), we will create a local Hamiltonian \(H^D_{i,j}\) from the Hamiltonian of the Hubbard dimer with bath (we will interpret the effective bath as the remaining \(N-2\) sites of the lattice, apart from \(i,j\)). We will need to suitably transform the Hamiltonian parameters \(U^D, t^D\), but we will figure those out as we go along. Since the number of nearest neighbour pairs is \(\frac{Nw}{2}\), the general Hubbard Hamiltonian should be the average of these local Hamiltonians. 
 \\\\
-The local Hamiltonians look like
+We recall the dimer+bath Hamiltonian here, since we are going to create the full Hamiltonian by combining various realizations of that Hamiltonian:
 \begin{equation}\begin{aligned}
-	H^D_{i,j} = H^D(i, j) -t^A\sum_{k \in \text{NN of i}}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.}\right)-t^A\sum_{k \in \text{NN of j}}\left(c^\dagger_{j\sigma}c_{k\sigma} + \text{h.c.}\right) - t^A\sum_{\left<k,q\right> \neq i,j}\left(c^\dagger_{j\sigma}c_{k\sigma} + \text{h.c.}\right)
+	\tilde H^D = H^D(0,1) - t^D \sum_{\vec k}^\text{eff. bath}\left(c^\dagger_{0\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+\end{aligned}\end{equation}
+We will first create a "local" Hamiltonian, where one particular nearest neighbour pair \((i,j)\) makes up the dimer sites of the Hamiltonian, while the rest \(N-2\) sites of the lattice make up the effective bath. The zero-mode site of the effective bath is mapped to one of the nearest-neighbours of \(i\) or \(j\)
+\begin{equation}\begin{aligned}
+	\tilde H^D_(i,j) = H^D(i, j) - t^D \sum_{\vec k}^\text{eff. bath (i,j)}\left(c^\dagger_{i\sigma}c_{\vec k,\sigma} + c^\dagger_{0\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath (i,j)}\epsilon_{\vec k}\hat n_{\vec k}
 \end{aligned}\end{equation}
 \(H^D(0 \to i, 1 \to j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. Note that this local Hamiltonian actually has all the hoppings of the full Hubbard model, but the correlation is present just on the sites \(i,j\). We havent transformed the dimer parameters \(U^D, t^D\) to the Hubbard parameters yet.
 \\\\

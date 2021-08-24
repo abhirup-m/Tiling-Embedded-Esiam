@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  24 AUG 2021 00:08
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  24 AUG 2021 08:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -475,212 +475,213 @@ File: ./figures//hubb_dim.png Graphic file (type bmp)
 File: ./figures//dimer_bath.png Graphic file (type bmp)
 <./figures//dimer_bath.png>
  [4] [5]
-Overfull \hbox (15.6301pt too wide) in paragraph at lines 121--122
-\T1/lmr/m/n/12 point, we go from the fixed point Hamil-to-nian to the dimer+bath Hamil-to-nian: $\OML/cmm/m/it/12 H[] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 Z [] Z[]$\T1/lmr/m/n/12 .
+Underfull \hbox (badness 10000) in paragraph at lines 125--131
+
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--140
+Underfull \hbox (badness 10000) in paragraph at lines 136--139
 
  []
 
 [6] [7]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 192.
+(hyperref)                removing `math shift' on input line 191.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--198
+Underfull \hbox (badness 10000) in paragraph at lines 192--197
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 193--198
+Underfull \hbox (badness 10000) in paragraph at lines 192--197
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 200--204
+Underfull \hbox (badness 10000) in paragraph at lines 203--207
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 227--232
+
+ []
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 267--271
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--229
-
- []
-
-[9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 264--268
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 282--291
+Underfull \hbox (badness 10000) in paragraph at lines 285--294
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 306--310
+Underfull \hbox (badness 10000) in paragraph at lines 309--313
 
  []
 
+[12]
 File: ./figures//lattice.png Graphic file (type bmp)
 <./figures//lattice.png>
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--334
+Underfull \hbox (badness 10000) in paragraph at lines 326--337
 
  []
 
-[12] [13] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 402--406
+[13] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 405--409
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 539.
+(hyperref)                removing `math shift' on input line 542.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\left' on input line 539.
+(hyperref)                removing `\left' on input line 542.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\mathinner' on input line 539.
+(hyperref)                removing `\mathinner' on input line 542.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\rangle' on input line 539.
+(hyperref)                removing `\rangle' on input line 542.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\right' on input line 539.
+(hyperref)                removing `\right' on input line 542.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 539.
+(hyperref)                removing `math shift' on input line 542.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 540--543
+Underfull \hbox (badness 10000) in paragraph at lines 543--546
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 549--552
+Underfull \hbox (badness 10000) in paragraph at lines 552--555
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 570.
+(hyperref)                removing `math shift' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 570.
+(hyperref)                removing `superscript' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 570.
+(hyperref)                removing `subscript' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 570.
+(hyperref)                removing `math shift' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 570.
+(hyperref)                removing `math shift' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@overline' on input line 570.
+(hyperref)                removing `\@@overline' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 570.
+(hyperref)                removing `superscript' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 570.
+(hyperref)                removing `subscript' on input line 573.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 570.
+(hyperref)                removing `math shift' on input line 573.
 
 [16]
 File: ./figures//dimer_dispersion.png Graphic file (type bmp)
 <./figures//dimer_dispersion.png>
  [17] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 751--755
+Underfull \hbox (badness 10000) in paragraph at lines 754--758
 
  []
 
 [19]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 782--783
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 785--786
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
 [20]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 805.
+(caption)                particular \caption on input line 808.
 See the caption package documentation for explanation.
 
 [21] [22]
 File: ./figures//dimer-peaks.png Graphic file (type bmp)
 <./figures//dimer-peaks.png>
  [23]
-Overfull \hbox (5.91971pt too wide) in paragraph at lines 950--950
+Overfull \hbox (5.91971pt too wide) in paragraph at lines 953--953
 |[]\T1/lmr/bx/n/17.28 Appendix: Writ-ing single-particle ex-ci-ta-tions of ground state
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 950.
+(hyperref)                removing `math shift' on input line 953.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 950.
+(hyperref)                removing `superscript' on input line 953.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 950.
+(hyperref)                removing `\begingroup' on input line 953.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 950.
+(hyperref)                removing `\endgroup' on input line 953.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 950.
+(hyperref)                removing `\@@over' on input line 953.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 950.
+(hyperref)                removing `math shift' on input line 953.
 
 [24]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 986.
+(hyperref)                removing `math shift' on input line 989.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 986.
+(hyperref)                removing `superscript' on input line 989.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 986.
+(hyperref)                removing `math shift' on input line 989.
 
 (./notes.bbl) [25] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: F0EAC4A304F078862CC4A4283E72A0D6;3806.
  ) 
 Here is how much of TeX's memory you used:
- 12027 strings out of 476919
- 178237 string characters out of 5827674
- 513614 words of memory out of 5000000
- 31833 multiletter control sequences out of 15000+600000
+ 12028 strings out of 476919
+ 178250 string characters out of 5827674
+ 513963 words of memory out of 5000000
+ 31834 multiletter control sequences out of 15000+600000
  441874 words of font info for 77 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  71i,18n,77p,2069b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (25 pages, 158628 bytes).
+Output written on notes.xdv (25 pages, 160140 bytes).

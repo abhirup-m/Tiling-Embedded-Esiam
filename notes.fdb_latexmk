@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1629743756 "notes.aux" "notes.bbl" "notes" 1629743813
+["bibtex notes"] 1629773972 "notes.aux" "notes.bbl" "notes" 1629774176
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1629743809 10238 d755e76049cc0ad34259d68724e9ec1d "xelatex"
+  "notes.aux" 1629774171 10919 46a9e628f6f93c47b08a36134e08db37 "xelatex"
   "notes.bib" 1627832566 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["xdvipdfmx"] 1629743809 "notes.xdv" "notes.pdf" "notes" 1629743813
-  "notes.xdv" 1629743809 158628 7b0ad28cb9a3fda0e00dfaa6439c7e31 "xelatex"
+["xdvipdfmx"] 1629774171 "notes.xdv" "notes.pdf" "notes" 1629774176
+  "notes.xdv" 1629774171 160140 b55fcbb8207a4851c8f183dac75e3bb8 "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1629743808 "notes.tex" "notes.xdv" "notes" 1629743813
+["xelatex"] 1629774170 "notes.tex" "notes.xdv" "notes" 1629774176
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -113,17 +113,17 @@
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1626341056 5486151 4114a5cefe9f27ef84d5fb8b60c07458 ""
   "figures//cluster-bath.png" 1628787541 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
   "figures//dimer-peaks.png" 1629524193 198405 cae42fb0aca5b12616094cb7af792c6a ""
-  "figures//dimer_bath.png" 1629743700 373371 dbf1de1ad500f36f39bade0857b12203 ""
+  "figures//dimer_bath.png" 1629773257 404177 07d74ba03314f08e1f347c49254f143d ""
   "figures//dimer_dispersion.png" 1628787376 44338 57d6c926187327ce0915b222f3489ad6 ""
   "figures//gen_siam.png" 1629742086 31538 556dc6a0223b13187dcabe1068b702c5 ""
   "figures//hubb_dim.png" 1628787376 30401 3350fc8e5121e458b5be80f80385f71f ""
   "figures//lattice.png" 1628310760 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1629743809 10238 d755e76049cc0ad34259d68724e9ec1d "xelatex"
-  "notes.bbl" 1629743756 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1629743809 3806 f0eac4a304f078862cc4a4283e72a0d6 "xelatex"
-  "notes.tex" 1629743807 113402 227161f944f18ff96b7655631d489376 ""
+  "notes.aux" 1629774171 10919 46a9e628f6f93c47b08a36134e08db37 "xelatex"
+  "notes.bbl" 1629773972 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
+  "notes.out" 1629774171 3806 f0eac4a304f078862cc4a4283e72a0d6 "xelatex"
+  "notes.tex" 1629774169 114001 b51002525d36fad8a6a86e224e76f752 ""
   (generated)
-  "notes.out"
   "notes.xdv"
+  "notes.out"
   "notes.aux"
   "notes.log"

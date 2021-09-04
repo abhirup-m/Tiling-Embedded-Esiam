@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1629799317 "notes.aux" "notes.bbl" "notes" 1629799473
+["bibtex notes"] 1629799317 "notes.aux" "notes.bbl" "notes" 1630730421
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1629799467 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
-  "notes.bib" 1627878500 17657 16f628992411e70fde9b2f22e87e66bc ""
+  "notes.aux" 1630730415 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
+  "notes.bib" 1627832566 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
-  "notes.blg"
   "notes.bbl"
-["xdvipdfmx"] 1629799468 "notes.xdv" "notes.pdf" "notes" 1629799473
-  "notes.xdv" 1629799467 152260 ab86d80f92330bb29c496b40e38335e7 "xelatex"
+  "notes.blg"
+["xdvipdfmx"] 1630730415 "notes.xdv" "notes.pdf" "notes" 1630730421
+  "notes.xdv" 1630730415 152268 9395702ea438860af52f314df44d5c2a "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1629799467 "notes.tex" "notes.xdv" "notes" 1629799473
+["xelatex"] 1630730414 "notes.tex" "notes.xdv" "notes" 1630730421
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -108,21 +108,21 @@
   "/usr/share/texmf-dist/tex/latex/url/url.sty" 1617738065 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/share/texmf-dist/tex/latex/wrapfig/wrapfig.sty" 1621766596 26220 3701aebf80ccdef248c0c20dd062fea9 ""
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
-  "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1627447396 5486154 5e105109c0224c5b55112f9ae96c6a07 ""
-  "figures//cluster-bath.png" 1629690512 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
-  "figures//dimer-nn.png" 1629785821 18476 8f162fc61acde9fc5570c4ea409907ce ""
-  "figures//dimer-peaks.png" 1629690512 198405 cae42fb0aca5b12616094cb7af792c6a ""
-  "figures//dimer_bath.png" 1629777963 404177 07d74ba03314f08e1f347c49254f143d ""
-  "figures//dimer_dispersion.png" 1629690512 44338 57d6c926187327ce0915b222f3489ad6 ""
-  "figures//gen_siam.png" 1629777963 31538 556dc6a0223b13187dcabe1068b702c5 ""
-  "figures//hubb_dim.png" 1629690512 30401 3350fc8e5121e458b5be80f80385f71f ""
-  "figures//lattice.png" 1629690512 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1629799467 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
-  "notes.bbl" 1629799317 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1629799467 3764 eafdb0dcea9fb0a1c36b276f5c21fce2 "xelatex"
-  "notes.tex" 1629799466 117961 491148f2a9ef0240f73fc65e3311972e ""
+  "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1626341056 5486151 4114a5cefe9f27ef84d5fb8b60c07458 ""
+  "figures//cluster-bath.png" 1628787541 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
+  "figures//dimer-nn.png" 1629823522 18476 8f162fc61acde9fc5570c4ea409907ce ""
+  "figures//dimer-peaks.png" 1629524193 198405 cae42fb0aca5b12616094cb7af792c6a ""
+  "figures//dimer_bath.png" 1629773257 404177 07d74ba03314f08e1f347c49254f143d ""
+  "figures//dimer_dispersion.png" 1628787376 44338 57d6c926187327ce0915b222f3489ad6 ""
+  "figures//gen_siam.png" 1629742086 31538 556dc6a0223b13187dcabe1068b702c5 ""
+  "figures//hubb_dim.png" 1628787376 30401 3350fc8e5121e458b5be80f80385f71f ""
+  "figures//lattice.png" 1628310760 107086 46242fc73c1f7c3028f9840e435651db ""
+  "notes.aux" 1630730415 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
+  "notes.bbl" 1629773972 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
+  "notes.out" 1630730415 3764 eafdb0dcea9fb0a1c36b276f5c21fce2 "xelatex"
+  "notes.tex" 1630730412 117961 491148f2a9ef0240f73fc65e3311972e ""
   (generated)
-  "notes.aux"
   "notes.out"
-  "notes.log"
   "notes.xdv"
+  "notes.aux"
+  "notes.log"

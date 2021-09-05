@@ -789,9 +789,9 @@ INPUT ./figures//dimer_bath.png
 INPUT ./siam_specfunc_all.pdf
 INPUT ./siam_specfunc_all.pdf
 INPUT ./siam_specfunc_all.pdf
-INPUT ./fwhm_vs_U_hrk_fit.pdf
-INPUT ./fwhm_vs_U_hrk_fit.pdf
-INPUT ./fwhm_vs_U_hrk_fit.pdf
+INPUT ./width_vs_U_simple_fit.pdf
+INPUT ./width_vs_U_simple_fit.pdf
+INPUT ./width_vs_U_simple_fit.pdf
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm

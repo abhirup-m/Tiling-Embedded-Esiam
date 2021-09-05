@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  4 SEP 2021 18:25
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021/Arch Linux) (preloaded format=xelatex 2021.7.15)  5 SEP 2021 16:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -486,8 +486,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--134
 
 File: ./siam_specfunc_all.pdf Graphic file (type pdf)
 <use ./siam_specfunc_all.pdf>
-File: ./fwhm_vs_U_hrk_fit.pdf Graphic file (type pdf)
-<use ./fwhm_vs_U_hrk_fit.pdf>
+File: ./width_vs_U_simple_fit.pdf Graphic file (type pdf)
+<use ./width_vs_U_simple_fit.pdf>
 
 Underfull \hbox (badness 10000) in paragraph at lines 142--160
 
@@ -599,72 +599,72 @@ Underfull \hbox (badness 10000) in paragraph at lines 818--822
  []
 
 [21]
-Overfull \hbox (9.68541pt too wide) in paragraph at lines 849--850
+Overfull \hbox (9.68541pt too wide) in paragraph at lines 847--848
 []\T1/lmr/m/n/12 Hubbard-Heisenberg model, by start-ing from a gen-er-al-ized An-der-son molecule (An-der-son molecule
  []
 
 [22]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 872.
+(caption)                particular \caption on input line 870.
 See the caption package documentation for explanation.
 
 [23] [24]
 File: ./figures//dimer-peaks.png Graphic file (type bmp)
 <./figures//dimer-peaks.png>
  [25]
-Overfull \hbox (5.91971pt too wide) in paragraph at lines 1017--1017
+Overfull \hbox (5.91971pt too wide) in paragraph at lines 1015--1015
 |[]\T1/lmr/bx/n/17.28 Appendix: Writ-ing single-particle ex-ci-ta-tions of ground state
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1017.
+(hyperref)                removing `math shift' on input line 1015.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 1017.
+(hyperref)                removing `superscript' on input line 1015.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 1017.
+(hyperref)                removing `\begingroup' on input line 1015.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 1017.
+(hyperref)                removing `\endgroup' on input line 1015.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 1017.
+(hyperref)                removing `\@@over' on input line 1015.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1017.
+(hyperref)                removing `math shift' on input line 1015.
 
 [26]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1053.
+(hyperref)                removing `math shift' on input line 1051.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 1053.
+(hyperref)                removing `superscript' on input line 1051.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1053.
+(hyperref)                removing `math shift' on input line 1051.
 
 (./notes.bbl) [27] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: C79F9227A2A5D35473129D4F1C7D1405;4436.
+(rerunfilecheck)             Checksum: F6A868E2E867C971C800A3B10EA3B147;4107.
  ) 
 Here is how much of TeX's memory you used:
  12052 strings out of 476919
- 178774 string characters out of 5827674
- 514554 words of memory out of 5000000
+ 178798 string characters out of 5827674
+ 514205 words of memory out of 5000000
  31853 multiletter control sequences out of 15000+600000
  444227 words of font info for 75 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  71i,18n,77p,2051b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on notes.xdv (27 pages, 164508 bytes).
+Output written on notes.xdv (27 pages, 163896 bytes).

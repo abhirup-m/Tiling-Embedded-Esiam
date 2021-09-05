@@ -13,8 +13,7 @@
 \contentsline {section}{\numberline {9}Analytic consistency checks}{20}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Single-particle Greens function and self energy for the Hubbard dimer}{20}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}On the Bethe lattice}{21}{subsection.9.2}%
-\contentsline {section}{\numberline {10}Numerical Results for a bath with two momentum modes}{21}{section.10}%
-\contentsline {section}{\numberline {11}Future goals}{21}{section.11}%
-\contentsline {section}{\numberline {12}Appendix: Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac {1}{2}$ eigenstates}{26}{section.12}%
-\contentsline {section}{\numberline {13}Appendix: Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}{27}{section.13}%
-\contentsline {section}{References}{27}{equation.13.2}%
+\contentsline {section}{\numberline {10}Future goals}{21}{section.10}%
+\contentsline {section}{\numberline {11}Appendix: Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac {1}{2}$ eigenstates}{26}{section.11}%
+\contentsline {section}{\numberline {12}Appendix: Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}{27}{section.12}%
+\contentsline {section}{References}{27}{equation.12.2}%

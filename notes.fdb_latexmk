@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex notes"] 1629799317 "notes.aux" "notes.bbl" "notes" 1630730421
+["bibtex notes"] 1630759753 "notes.aux" "notes.bbl" "notes" 1630760157
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1630730415 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
+  "notes.aux" 1630760151 13490 9bc4a1534b10e519e5f79249125de041 "xelatex"
   "notes.bib" 1627832566 17657 16f628992411e70fde9b2f22e87e66bc ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["xdvipdfmx"] 1630730415 "notes.xdv" "notes.pdf" "notes" 1630730421
-  "notes.xdv" 1630730415 152268 9395702ea438860af52f314df44d5c2a "xelatex"
+["xdvipdfmx"] 1630760151 "notes.xdv" "notes.pdf" "notes" 1630760157
+  "notes.xdv" 1630760151 164508 22ae69910a394d2c4a6fe3ec7dc96334 "xelatex"
   (generated)
   "notes.pdf"
-["xelatex"] 1630730414 "notes.tex" "notes.xdv" "notes" 1630730421
+["xelatex"] 1630760147 "notes.tex" "notes.xdv" "notes" 1630760157
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1617738065 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1617738065 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1617738065 1004 54797486969f23fa377b128694d548df ""
@@ -117,12 +117,16 @@
   "figures//gen_siam.png" 1629742086 31538 556dc6a0223b13187dcabe1068b702c5 ""
   "figures//hubb_dim.png" 1628787376 30401 3350fc8e5121e458b5be80f80385f71f ""
   "figures//lattice.png" 1628310760 107086 46242fc73c1f7c3028f9840e435651db ""
-  "notes.aux" 1630730415 11723 10ed1aedd77ca9fe558c6ed9d15ce3fd "xelatex"
-  "notes.bbl" 1629773972 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1630730415 3764 eafdb0dcea9fb0a1c36b276f5c21fce2 "xelatex"
-  "notes.tex" 1630730412 117961 491148f2a9ef0240f73fc65e3311972e ""
+  "fwhm_vs_U_hrk_fit.pdf" 1630748685 158110 0e4e90352fcd220f3ea391f3273767cd ""
+  "notes.aux" 1630760151 13490 9bc4a1534b10e519e5f79249125de041 "xelatex"
+  "notes.bbl" 1630759753 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
+  "notes.out" 1630760151 4436 c79f9227a2a5d35473129d4f1c7d1405 "xelatex"
+  "notes.tex" 1630760146 123138 a457c9e1031f1459f68a77dcbb14e63c ""
+  "notes.toc" 1630760151 2237 b7b35b40aeca4325f64b1332b38cdc2b "xelatex"
+  "siam_specfunc_all.pdf" 1630729743 146355 70cd4c51a3e624c6667d621f19d3f926 ""
   (generated)
   "notes.out"
-  "notes.xdv"
   "notes.aux"
   "notes.log"
+  "notes.toc"
+  "notes.xdv"

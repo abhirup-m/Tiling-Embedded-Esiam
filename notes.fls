@@ -746,6 +746,10 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr17.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
+INPUT ./notes.toc
+INPUT notes.toc
+INPUT notes.toc
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
@@ -764,10 +768,11 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
+OUTPUT notes.toc
+OUTPUT notes.xdv
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ts1-lmr12.tfm
-OUTPUT notes.xdv
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/ec-lmri12.tfm
 INPUT ./figures//cluster-bath.png
 INPUT ./figures//cluster-bath.png
@@ -781,6 +786,12 @@ INPUT ./figures//hubb_dim.png
 INPUT ./figures//dimer_bath.png
 INPUT ./figures//dimer_bath.png
 INPUT ./figures//dimer_bath.png
+INPUT ./siam_specfunc_all.pdf
+INPUT ./siam_specfunc_all.pdf
+INPUT ./siam_specfunc_all.pdf
+INPUT ./fwhm_vs_U_hrk_fit.pdf
+INPUT ./fwhm_vs_U_hrk_fit.pdf
+INPUT ./fwhm_vs_U_hrk_fit.pdf
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm

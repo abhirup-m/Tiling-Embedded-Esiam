@@ -17,6 +17,8 @@
 \author{Abhirup Mukherjee, Dr. Siddhartha Lal}
 \begin{document}
 \maketitle
+\tableofcontents
+\newpage
 \section{Introduction}
 This is an attempt to obtain various quantities like Greens functions, self-energies, spectral functions and (if possible) energies and wavefunctions of the Hubbard model, using a cluster-bath approach. The cluster-bath system is taken to be a single-impurity Anderson model with a correlated bath. The correlation will be brought about in two ways: a self-energy $\Sigma(k,\omega)$ of the bath, and a double occupancy repulsion cost $U_b$. The Hubbard and the correlated single-impurity Anderson models are defined using the Hamiltonians
 \begin{align}
@@ -132,6 +134,38 @@ We mention the two approximations made along the entire journey from the origina
 	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{clus_bath_siam}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. As discussed before, the very choice of th cluster and bath spoil the translational invariance of the parent model.
 	\item We then perform a unitary RG on $H^A$. This leads to a fixed-point Hamiltonian $\mathcal{U}_A H^A \mathcal{U}_A^\dagger$. At this point, we go from the fixed point Hamiltonian to the dimer+bath Hamiltonian in eq.~\ref{dimer_p_bat}. If we represent this transformation from the fixed point Hamiltonian to the Hamiltonian in eq.~\ref{dimer_p_bat} by an operator \(Z\), we can write $H^D = Z\left[\mathcal{U}_A H^A \mathcal{U}_A^\dagger \right] Z^{-1}$. This constitutes the second approximation we make.
 \end{itemize}
+
+\section{Spectral function of the single-impurity Anderson model}
+To get a better look at what we are getting into and what we should expect going forward, we first calculate the spectral function of the smaller single-impurity Anderson model that is obtained as the low-energy Hamiltonian of an URG analysis of the full SIAM. This ow energy effective Hamiltonian is
+\begin{equation}\begin{aligned}
+	\epsilon_d \hat n_d + U\hat n_{d \uparrow} \hat n_{d \downarrow} + v \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + \sum_{k \in \left[-\Lambda^*, \Lambda^*\right], \sigma}\epsilon_k \hat n_{k\sigma}
+\end{aligned}\end{equation}
+All the impurity couplings are fixed point values, and the momentum states of the bath now run over a reduced bandwidth. The subscript \(d\) indicates that the operator is that of the impurity, while the subscript \(0\) indicates it is of the zeroth site of the bath: \(c_0 = \frac{1}{\sqrt N}\sum_k c_k\). The spectral function of the SIAM is already known from other methods like the numerical renormalization group. For small values of \(U\), the spectral function consists of just the central quasiparticle excitation peak. At larger values of \(U\), we see the emergence of the two Hubbard side bands while the spectral weight at the centre decreases. We also calculated the spectral function of the low energy theory sing exact diagonalization. The plots are shown in fig.~\ref{siam_spec_func}.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.9\textwidth]{./siam_specfunc_all.pdf}
+	\caption{Spectral function of the effective SIAM Hamiltonian for various values of \(\frac{U}{\Delta}\). \(\Delta\) is defined by the height of the central peak in the non-interacting model \(U=0\). The inset shows a zoom-in of the final spectral function \(\left( \frac{U}{\Delta} = 19.71 \right)\) near \(\omega = 0\).}
+	\label{siam_spec_func}
+\end{figure}
+\\\\
+Because we kept only a discrete bath of 4 momentum states, \textit{we had to artificially enforce the constancy of the height of the central peak.} To convert the delta functions into a continuous spectrum, we  The central peak (or equivalently, the central pole in the impurity Greens function) does not vanish even for exhorbitantly large values of \(\frac{U}{\Delta}\), implying that there is no stable local moment phase in the SIAM (a local moment phase would involve a gap at zero frequency in the impurity spectral function). Formally, the local moment phase will be stable only at \(U \to \infty\) or \(v^* = 0\).
+\\\\
+We also checked how the width of the central peak varies with increasing \(U\). The behaviour is shown in fig.~\ref{fwhm}. The width was also fitted against a function, as shown in the plot.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{./fwhm_vs_U_hrk_fit.pdf}
+	\caption{The decay of the full width at half maximum (FWHM) of the central peak, with increasing \(\frac{U}{\Delta}\). The behaviour satisfies a function of the form shown in the legend.}
+	\label{fwhm}
+\end{figure}
+
+\section{Spectral function of a correlated SIAM}
+Since the SIAM cannot show a transition from a metallic (Fermi liquid) phase to a local moment phase, we next consider the slightly more correlated version where the zeroth site (which the impurity couples to) now has a Hubbard repulsion.
+\begin{equation}\begin{aligned}
+	\epsilon_d \hat n_d + U\hat n_{d \uparrow} \hat n_{d \downarrow} + U_b\hat n_{0 \uparrow} \hat n_{0 \downarrow} + v \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + \sum_{k \in \left[-\Lambda^*, \Lambda^*\right], \sigma}\epsilon_k \hat n_{k\sigma}
+\end{aligned}\end{equation}
+In such a model, if the impurity is to hybridize with the bath, it has to hop onto the zeroth site, but that site now has a double-occupancy cost. As a result, this new physics makes it harder for the impurity electron to delocalise, and suggests that there might be a metal-insulator transition at some critical value of the impurity \(U\), and this critical value should itself be a function of \(U_b\). This model therefore provides a tool for showing the changes in the phase diagram of the SIAM. Without any correlation in the bath, the SIAM has just one stable fixed point, the strong-coupling one. Starting up a correlation on the zero mode allows us to examine how this scenario might change if we have a correlated bath. One can also draw a comparison to DMFT and argue that such a model is similar to that stage of DMFT when the process has gone through a few steps of self-consistency enforcement and the bath itself has started to become correlated.
+\\\\
+Apart from its importance as a standalone problem, this correlated SIAM also sets the stage for a fully-symmetrized auxiliary model, the Hubbard dimer in a bath. In other words, by taking a symmetric combination of the correlated SIAM Hamiltonians (the symmetrization is done by exchanging the impurity and bath zero mode sites), one can obtain the Hamiltonian of a dimer hybridising with a bath, as shown in eq.~\ref{dimer_p_bat}. Such a symmetrised Hamiltonian should presumably correspond to a DMFT final-stage Hamiltonian, because the impurity and bath zero mode sites are now completely symmetric.
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.

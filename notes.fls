@@ -1,4 +1,4 @@
-PWD /home/kirito/storage/work/siam_to_hubbard
+PWD /home/abhirup/work/SIAM-to-Hubbard
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/xetex/xelatex.fmt
 INPUT notes.tex

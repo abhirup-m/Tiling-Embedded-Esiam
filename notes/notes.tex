@@ -1,8 +1,7 @@
-% !TEX TS-program = xelatex
-\documentclass[12pt]{article}
+\documentclass{article}
 \usepackage{amsthm,amsmath,amssymb,braket,graphicx,enumitem,booktabs,multirow,booktabs,wrapfig,cancel,caption,fancyhdr,relsize,textpos,booktabs,tocbibind,titlesec,color}
 \usepackage[margin=0.5in,bottom=0.6in]{geometry}
-\graphicspath{{./figures/}}
+\graphicspath{{../figures/}}
 \usepackage[T1]{fontenc}
 \usepackage[pdfusetitle]{hyperref}
 \renewcommand{\arraystretch}{2}
@@ -143,7 +142,7 @@ To get a better look at what we are getting into and what we should expect going
 All the impurity couplings are fixed point values, and the momentum states of the bath now run over a reduced bandwidth. The subscript \(d\) indicates that the operator is that of the impurity, while the subscript \(0\) indicates it is of the zeroth site of the bath: \(c_0 = \frac{1}{\sqrt N}\sum_k c_k\). The spectral function of the SIAM is already known from other methods like the numerical renormalization group. For small values of \(U\), the spectral function consists of just the central quasiparticle excitation peak. At larger values of \(U\), we see the emergence of the two Hubbard side bands while the spectral weight at the centre decreases. We also calculated the spectral function of the low energy theory sing exact diagonalization. The plots are shown in fig.~\ref{siam_spec_func}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.9\textwidth]{./siam_specfunc_all.pdf}
+	\includegraphics[width=\textwidth]{./siam_specfunc_all.pdf}
 	\caption{Spectral function of the effective SIAM Hamiltonian for various values of \(\frac{U}{\Delta}\). \(\Delta\) is defined by the height of the central peak in the non-interacting model \(U=0\). The inset shows a zoom-in of the final spectral function \(\left( \frac{U}{\Delta} = 19.71 \right)\) near \(\omega = 0\).}
 	\label{siam_spec_func}
 \end{figure}

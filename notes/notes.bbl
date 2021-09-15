@@ -5,6 +5,16 @@ Lucia~Reining Richard M.~Martin and David~M. Ceperley.
 \newblock {\em Interacting Electrons-Theory and Computational Approaches}.
 \newblock Cambridge University Press, 2016.
 
+\bibitem{Langreth}
+David~C. Langreth.
+\newblock Friedel sum rule for anderson's model of localized impurity states.
+\newblock {\em Phys. Rev.}, 150:516--518, Oct 1966.
+
+\bibitem{bulla_costi_nrg}
+Ralf Bulla, Theo~A. Costi, and Thomas Pruschke.
+\newblock Numerical renormalization group method for quantum impurity systems.
+\newblock {\em Rev. Mod. Phys.}, 80:395--450, Apr 2008.
+
 \bibitem{pavarini}
 Eva Pavarini.
 \newblock Dynamical mean-field theory for materials, September 2019.

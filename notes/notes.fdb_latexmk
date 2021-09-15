@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex notes"] 1631694745 "notes.aux" "notes.bbl" "notes" 1631694750
+["bibtex notes"] 1631695731 "notes.aux" "notes.bbl" "notes" 1631695736
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1631694750 13371 ec1c35f6cb0a60c68ced2ad0a8475a5e "pdflatex"
-  "notes.bib" 1631335005 17657 16f628992411e70fde9b2f22e87e66bc ""
+  "notes.aux" 1631695735 13469 3065c1d305f840a44880221e86da783e "pdflatex"
+  "notes.bib" 1631695551 18061 69174d411c6e2aef5032e86933695756 ""
   (generated)
-  "notes.blg"
   "notes.bbl"
-["pdflatex"] 1631694746 "notes.tex" "notes.pdf" "notes" 1631694750
+  "notes.blg"
+["pdflatex"] 1631695731 "notes.tex" "notes.pdf" "notes" 1631695736
   "../figures//./siam_specfunc_all.pdf" 1631694647 106360 b15bf3a2366f257ec7390e9e8dab1ae2 ""
   "../figures//./width_vs_U_simple_fit.pdf" 1631335005 124100 5142512f8bd5bd126655bd1566c0acd3 ""
   "../figures//cluster-bath.png" 1628787541 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
@@ -146,14 +146,14 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1626341072 5040116 bcb7f02849a1aaf755d92a15beaab845 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1626341037 2812676 187b2d2480b2facd75855dade8f88671 ""
-  "notes.aux" 1631694750 13371 ec1c35f6cb0a60c68ced2ad0a8475a5e "pdflatex"
-  "notes.bbl" 1631694746 350 5810c7ea5746a46d0ec1b91ab448ace7 "bibtex notes"
-  "notes.out" 1631694750 4107 f6a868e2e867c971c800a3b10ea3b147 "pdflatex"
-  "notes.tex" 1631694741 123105 95af607fd1d09ee6ead7fcd6d7fcd81b ""
-  "notes.toc" 1631694750 2126 a618d9e9de579a1909198dd3f86e1e83 "pdflatex"
+  "notes.aux" 1631695735 13469 3065c1d305f840a44880221e86da783e "pdflatex"
+  "notes.bbl" 1631695731 729 fe98abad39ad66d17948da6444cf335d "bibtex notes"
+  "notes.out" 1631695735 4107 f6a868e2e867c971c800a3b10ea3b147 "pdflatex"
+  "notes.tex" 1631695727 123906 a51268ecfdf09698745b257dc708631d ""
+  "notes.toc" 1631695735 2126 a618d9e9de579a1909198dd3f86e1e83 "pdflatex"
   (generated)
-  "notes.log"
-  "notes.pdf"
   "notes.aux"
   "notes.toc"
   "notes.out"
+  "notes.log"
+  "notes.pdf"

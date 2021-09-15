@@ -147,12 +147,22 @@ All the impurity couplings are fixed point values, and the momentum states of th
 	\label{siam_spec_func}
 \end{figure}
 \\\\
-Because we kept only a discrete bath of 4 momentum states, \textit{we had to artificially enforce the constancy of the height of the central peak.} To convert the delta functions into a continuous spectrum, we  The central peak (or equivalently, the central pole in the impurity Greens function) does not vanish even for exhorbitantly large values of \(\frac{U}{\Delta}\), implying that there is no stable local moment phase in the SIAM (a local moment phase would involve a gap at zero frequency in the impurity spectral function). Formally, the local moment phase will be stable only at \(U \to \infty\) or \(v^* = 0\).
+Because we kept only a discrete bath of 4 momentum states, \textit{we had to artificially enforce the constancy of the height of the central peak, using \cite{Langreth}.} To convert the discrete sum of delta functions into a continuous spectrum, we broadened them using a Gaussian. Following \cite{bulla_costi_nrg}, we replace the delta-functions at \(\pm x_n \equiv \pm(E_n - E_0)\) by normalised Gaussian functions
+\begin{equation}\begin{aligned}
+	\delta(\omega \pm x_n) \to \frac{1}{\eta_n\sqrt \pi}e^{-\left(\frac{\omega \pm x_n}{\eta_n}\right)^2}
+\end{aligned}\end{equation}
+The parameter \(\eta_n\) determines the height and width of the Gaussian, and is chosen such that the higher energy poles are broader than the lower energy ones.
+\begin{equation}\begin{aligned}
+	\eta_n = 2\Delta + \frac{1}{2}|x_n| 
+\end{aligned}\end{equation}
+where \(\Delta = \frac{V^2}{t}\) is the relevant energy scale of the non-interacting problem and \(t\) is the tight-binding hopping parameter of the conduction bath.
+\\\\
+The central peak (or equivalently, the central pole in the impurity Greens function) does not vanish even for exhorbitantly large values of \(\frac{U}{\Delta}\), implying that there is no stable local moment phase in the SIAM (a local moment phase would involve a gap at zero frequency in the impurity spectral function). Formally, the local moment phase will be stable only at \(U \to \infty\) or \(v^* = 0\).
 \\\\
 We also checked how the width of the central peak varies with increasing \(U\). The behaviour is shown in fig.~\ref{fwhm}. The width was also fitted against a function, as shown in the plot.
-\begin{figure}[htpb]
+\begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.6\textwidth]{./width_vs_U_simple_fit.pdf}
+	\includegraphics[width=0.5\textwidth]{./width_vs_U_simple_fit.pdf}
 	\caption{The decay of the full width at half maximum (FWHM) of the central peak, with increasing \(\frac{U}{\Delta}\). The behaviour satisfies a function of the form shown in the legend.}
 	\label{fwhm}
 \end{figure}

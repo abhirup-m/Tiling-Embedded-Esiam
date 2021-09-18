@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.7.15)  15 SEP 2021 14:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.7.15)  15 SEP 2021 15:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -506,18 +506,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 141--151
 
  []
 
-<../figures//./width_vs_U_simple_fit.pdf, id=152, 620.91678pt x 494.11824pt>
+<../figures//./width_vs_U_simple_fit.pdf, id=152, 633.38579pt x 502.89786pt>
 File: ../figures//./width_vs_U_simple_fit.pdf Graphic file (type pdf)
 <use ../figures//./width_vs_U_simple_fit.pdf>
 Package pdftex.def Info: ../figures//./width_vs_U_simple_fit.pdf  used on input line 165.
-(pdftex.def)             Requested size: 271.0125pt x 215.67104pt.
+(pdftex.def)             Requested size: 298.1154pt x 236.69966pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--169
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--169
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
 
  []
 
@@ -525,161 +525,161 @@ Underfull \hbox (badness 10000) in paragraph at lines 157--169
 
 pdfTeX warning: pdflatex (file ../figures//./width_vs_U_simple_fit.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >]
-Underfull \hbox (badness 10000) in paragraph at lines 174--178
+Underfull \hbox (badness 10000) in paragraph at lines 175--179
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 180--183
+Underfull \hbox (badness 10000) in paragraph at lines 181--184
 
  []
 
 [8]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 235.
+(hyperref)                removing `math shift' on input line 236.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--241
+Underfull \hbox (badness 10000) in paragraph at lines 237--242
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--241
+Underfull \hbox (badness 10000) in paragraph at lines 237--242
 
  []
 
 [9]
-<../figures//dimer-nn.png, id=229, 383.93437pt x 504.38437pt>
+<../figures//dimer-nn.png, id=234, 383.93437pt x 504.38437pt>
 File: ../figures//dimer-nn.png Graphic file (type png)
 <use ../figures//dimer-nn.png>
-Package pdftex.def Info: ../figures//dimer-nn.png  used on input line 252.
+Package pdftex.def Info: ../figures//dimer-nn.png  used on input line 253.
 (pdftex.def)             Requested size: 162.60915pt x 213.62552pt.
  [10 <../figures//dimer-nn.png>] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 331--335
+Underfull \hbox (badness 10000) in paragraph at lines 332--336
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 353--361
+Underfull \hbox (badness 10000) in paragraph at lines 354--362
 
  []
 
 [12]
-<../figures//lattice.png, id=275, 670.4247pt x 305.2203pt>
+<../figures//lattice.png, id=280, 670.4247pt x 305.2203pt>
 File: ../figures//lattice.png Graphic file (type png)
 <use ../figures//lattice.png>
-Package pdftex.def Info: ../figures//lattice.png  used on input line 404.
+Package pdftex.def Info: ../figures//lattice.png  used on input line 405.
 (pdftex.def)             Requested size: 379.41585pt x 172.73854pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 399--410
+Underfull \hbox (badness 10000) in paragraph at lines 400--411
 
  []
 
 [13 <../figures//lattice.png>] [14]
-Underfull \hbox (badness 10000) in paragraph at lines 478--482
+Underfull \hbox (badness 10000) in paragraph at lines 479--483
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 646.
+(hyperref)                removing `math shift' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 646.
+(hyperref)                removing `superscript' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 646.
+(hyperref)                removing `subscript' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 646.
+(hyperref)                removing `math shift' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 646.
+(hyperref)                removing `math shift' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@overline' on input line 646.
+(hyperref)                removing `\@@overline' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 646.
+(hyperref)                removing `superscript' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 646.
+(hyperref)                removing `subscript' on input line 647.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 646.
+(hyperref)                removing `math shift' on input line 647.
 
 [15]
-<../figures//dimer_dispersion.png, id=324, 517.18219pt x 517.18219pt>
+<../figures//dimer_dispersion.png, id=329, 517.18219pt x 517.18219pt>
 File: ../figures//dimer_dispersion.png Graphic file (type png)
 <use ../figures//dimer_dispersion.png>
-Package pdftex.def Info: ../figures//dimer_dispersion.png  used on input line 662.
+Package pdftex.def Info: ../figures//dimer_dispersion.png  used on input line 663.
 (pdftex.def)             Requested size: 108.40334pt x 108.39839pt.
  [16 <../figures//dimer_dispersion.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 827--831
+Underfull \hbox (badness 10000) in paragraph at lines 828--832
 
  []
 
 [17] [18]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 879.
+(caption)                particular \caption on input line 880.
 See the caption package documentation for explanation.
 
 [19]
-<../figures//dimer-peaks.png, id=385, 929.1513pt x 522.0303pt>
+<../figures//dimer-peaks.png, id=390, 929.1513pt x 522.0303pt>
 File: ../figures//dimer-peaks.png Graphic file (type png)
 <use ../figures//dimer-peaks.png>
-Package pdftex.def Info: ../figures//dimer-peaks.png  used on input line 985.
+Package pdftex.def Info: ../figures//dimer-peaks.png  used on input line 986.
 (pdftex.def)             Requested size: 487.8192pt x 274.07797pt.
  [20pdfTeX warning (ext4): destination with the same identifier (name{equation.10.14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.993  \end{aligned}\end{equation}
+l.994  \end{aligned}\end{equation}
                                   ] [21 <../figures//dimer-peaks.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1024.
+(hyperref)                removing `math shift' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 1024.
+(hyperref)                removing `superscript' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\begingroup' on input line 1024.
+(hyperref)                removing `\begingroup' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\endgroup' on input line 1024.
+(hyperref)                removing `\endgroup' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@over' on input line 1024.
+(hyperref)                removing `\@@over' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1024.
+(hyperref)                removing `math shift' on input line 1025.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1060.
+(hyperref)                removing `math shift' on input line 1061.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 1060.
+(hyperref)                removing `superscript' on input line 1061.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1060.
+(hyperref)                removing `math shift' on input line 1061.
 
 (./notes.bbl [22]) [23] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
@@ -694,10 +694,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  71i,18n,74p,2051b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on notes.pdf (23 pages, 1297553 bytes).
+Output written on notes.pdf (23 pages, 1318309 bytes).
 PDF statistics:
- 538 PDF objects out of 1000 (max. 8388607)
- 464 compressed objects within 5 object streams
+ 542 PDF objects out of 1000 (max. 8388607)
+ 468 compressed objects within 5 object streams
  169 named destinations out of 1000 (max. 500000)
  163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.7.15)  15 SEP 2021 15:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.7.15)  23 SEP 2021 11:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -496,21 +496,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 127--133
 
  []
 
-<../figures//./siam_specfunc_all.pdf, id=148, 1198.60236pt x 577.03813pt>
+<../figures//./siam_specfunc_all.pdf, id=148, 966.62706pt x 624.55005pt>
 File: ../figures//./siam_specfunc_all.pdf Graphic file (type pdf)
 <use ../figures//./siam_specfunc_all.pdf>
 Package pdftex.def Info: ../figures//./siam_specfunc_all.pdf  used on input line 145.
-(pdftex.def)             Requested size: 542.02501pt x 260.95027pt.
+(pdftex.def)             Requested size: 542.02501pt x 350.23166pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 141--151
 
  []
 
-<../figures//./width_vs_U_simple_fit.pdf, id=152, 633.38579pt x 502.89786pt>
+<../figures//./width_vs_U_simple_fit.pdf, id=152, 952.3485pt x 603.24597pt>
 File: ../figures//./width_vs_U_simple_fit.pdf Graphic file (type pdf)
 <use ../figures//./width_vs_U_simple_fit.pdf>
 Package pdftex.def Info: ../figures//./width_vs_U_simple_fit.pdf  used on input line 165.
-(pdftex.def)             Requested size: 298.1154pt x 236.69966pt.
+(pdftex.def)             Requested size: 298.1154pt x 188.82686pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 157--170
 
@@ -521,10 +521,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 157--170
 
  []
 
-[6] [7 <../figures//./siam_specfunc_all.pdf> <../figures//./width_vs_U_simple_fit.pdf
-
-pdfTeX warning: pdflatex (file ../figures//./width_vs_U_simple_fit.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->]
+[6] [7 <../figures//./siam_specfunc_all.pdf>]
 Underfull \hbox (badness 10000) in paragraph at lines 175--179
 
  []
@@ -534,7 +531,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 181--184
 
  []
 
-[8]
+[8 <../figures//./width_vs_U_simple_fit.pdf>] [9]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 236.
@@ -549,13 +546,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 237--242
 
  []
 
-[9]
-<../figures//dimer-nn.png, id=234, 383.93437pt x 504.38437pt>
+<../figures//dimer-nn.png, id=236, 383.93437pt x 504.38437pt>
 File: ../figures//dimer-nn.png Graphic file (type png)
 <use ../figures//dimer-nn.png>
 Package pdftex.def Info: ../figures//dimer-nn.png  used on input line 253.
 (pdftex.def)             Requested size: 162.60915pt x 213.62552pt.
- [10 <../figures//dimer-nn.png>] [11]
+[10] [11 <../figures//dimer-nn.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 332--336
 
  []
@@ -566,7 +562,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 354--362
  []
 
 [12]
-<../figures//lattice.png, id=280, 670.4247pt x 305.2203pt>
+<../figures//lattice.png, id=283, 670.4247pt x 305.2203pt>
 File: ../figures//lattice.png Graphic file (type png)
 <use ../figures//lattice.png>
 Package pdftex.def Info: ../figures//lattice.png  used on input line 405.
@@ -576,7 +572,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 400--411
 
  []
 
-[13 <../figures//lattice.png>] [14]
+[13] [14 <../figures//lattice.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 479--483
 
  []
@@ -618,33 +614,33 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 647.
 
 [15]
-<../figures//dimer_dispersion.png, id=329, 517.18219pt x 517.18219pt>
+<../figures//dimer_dispersion.png, id=333, 517.18219pt x 517.18219pt>
 File: ../figures//dimer_dispersion.png Graphic file (type png)
 <use ../figures//dimer_dispersion.png>
 Package pdftex.def Info: ../figures//dimer_dispersion.png  used on input line 663.
 (pdftex.def)             Requested size: 108.40334pt x 108.39839pt.
- [16 <../figures//dimer_dispersion.png>]
+ [16 <../figures//dimer_dispersion.png>] [17]
 Underfull \hbox (badness 10000) in paragraph at lines 828--832
 
  []
 
-[17] [18]
+[18] [19]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 880.
 See the caption package documentation for explanation.
 
-[19]
-<../figures//dimer-peaks.png, id=390, 929.1513pt x 522.0303pt>
+[20]
+<../figures//dimer-peaks.png, id=400, 929.1513pt x 522.0303pt>
 File: ../figures//dimer-peaks.png Graphic file (type png)
 <use ../figures//dimer-peaks.png>
 Package pdftex.def Info: ../figures//dimer-peaks.png  used on input line 986.
 (pdftex.def)             Requested size: 487.8192pt x 274.07797pt.
- [20pdfTeX warning (ext4): destination with the same identifier (name{equation.10.14}) has been already used, duplicate ignored
+ [21pdfTeX warning (ext4): destination with the same identifier (name{equation.10.14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.994  \end{aligned}\end{equation}
-                                  ] [21 <../figures//dimer-peaks.png>]
+                                  ] [22 <../figures//dimer-peaks.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1025.
@@ -681,23 +677,23 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1061.
 
-(./notes.bbl [22]) [23] (./notes.aux)
+(./notes.bbl [23]) [24] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
 (rerunfilecheck)             Checksum: F6A868E2E867C971C800A3B10EA3B147;4107.
  ) 
 Here is how much of TeX's memory you used:
- 12387 strings out of 478994
- 181605 string characters out of 5864751
- 515249 words of memory out of 5000000
+ 12388 strings out of 478994
+ 181612 string characters out of 5864751
+ 509249 words of memory out of 5000000
  29500 multiletter control sequences out of 15000+600000
  419264 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 71i,18n,74p,2051b,475s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,18n,74p,2051b,478s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on notes.pdf (23 pages, 1318309 bytes).
+Output written on notes.pdf (24 pages, 1331008 bytes).
 PDF statistics:
- 542 PDF objects out of 1000 (max. 8388607)
- 468 compressed objects within 5 object streams
- 169 named destinations out of 1000 (max. 500000)
+ 551 PDF objects out of 1000 (max. 8388607)
+ 476 compressed objects within 5 object streams
+ 170 named destinations out of 1000 (max. 500000)
  163 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -5,15 +5,15 @@
 \contentsline {section}{\numberline {4}Spectral function of a correlated SIAM}{8}{section.4}%
 \contentsline {section}{\numberline {5}Solution of the Hubbard dimer using the Anderson molecule}{8}{section.5}%
 \contentsline {section}{\numberline {6}Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}{10}{section.6}%
-\contentsline {section}{\numberline {7}Formal expressions for single particle Greens functions and other related many-body quantites}{11}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}{11}{subsection.7.1}%
+\contentsline {section}{\numberline {7}Formal expressions for single particle Greens functions and other related many-body quantites}{12}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}{12}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Constructing full Greens function matrix from the inverse matrix}{14}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Calculation of self energy matrix from the Dyson equation}{15}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}{15}{section.8}%
+\contentsline {section}{\numberline {8}Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}{16}{section.8}%
 \contentsline {section}{\numberline {9}Analytic consistency checks}{17}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Single-particle Greens function and self energy for the Hubbard dimer}{17}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}On the Bethe lattice}{17}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.2}On the Bethe lattice}{18}{subsection.9.2}%
 \contentsline {section}{\numberline {10}Future goals}{18}{section.10}%
-\contentsline {section}{\numberline {11}Appendix: Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac {1}{2}$ eigenstates}{22}{section.11}%
-\contentsline {section}{\numberline {12}Appendix: Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}{22}{section.12}%
-\contentsline {section}{References}{23}{equation.12.2}%
+\contentsline {section}{\numberline {11}Appendix: Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac {1}{2}$ eigenstates}{23}{section.11}%
+\contentsline {section}{\numberline {12}Appendix: Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}{23}{section.12}%
+\contentsline {section}{References}{24}{equation.12.2}%

@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex notes"] 1631700581 "notes.aux" "notes.bbl" "notes" 1631700585
+["bibtex notes"] 1632376148 "notes.aux" "notes.bbl" "notes" 1632376153
   "/usr/share/texmf-dist/bibtex/bst/base/unsrt.bst" 1617738065 18030 1376b4b231b50c66211e47e42eda2875 ""
-  "notes.aux" 1631700585 13469 3065c1d305f840a44880221e86da783e "pdflatex"
+  "notes.aux" 1632376153 13469 a7f4653710cd8d47c63ff1b1ff016d21 "pdflatex"
   "notes.bib" 1631695551 18061 69174d411c6e2aef5032e86933695756 ""
   (generated)
-  "notes.blg"
   "notes.bbl"
-["pdflatex"] 1631700581 "notes.tex" "notes.pdf" "notes" 1631700585
-  "../figures//./siam_specfunc_all.pdf" 1631694647 106360 b15bf3a2366f257ec7390e9e8dab1ae2 ""
-  "../figures//./width_vs_U_simple_fit.pdf" 1631700486 154460 3a6e3b1c00cfbb45c33794a034a9202b ""
+  "notes.blg"
+["pdflatex"] 1632376148 "notes.tex" "notes.pdf" "notes" 1632376153
+  "../figures//./siam_specfunc_all.pdf" 1632376109 104393 91d9bd177ff27679d0fae03d888b40a3 ""
+  "../figures//./width_vs_U_simple_fit.pdf" 1632376109 193172 0d18702e149e027bbb9583b3fbb355f8 ""
   "../figures//cluster-bath.png" 1628787541 59923 7f5f9707bddd9f700c3b0bd610ce2018 ""
   "../figures//dimer-nn.png" 1629823522 18476 8f162fc61acde9fc5570c4ea409907ce ""
   "../figures//dimer-peaks.png" 1629524193 198405 cae42fb0aca5b12616094cb7af792c6a ""
@@ -146,14 +146,14 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1617738065 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1626341072 5040116 bcb7f02849a1aaf755d92a15beaab845 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1626341037 2812676 187b2d2480b2facd75855dade8f88671 ""
-  "notes.aux" 1631700585 13469 3065c1d305f840a44880221e86da783e "pdflatex"
-  "notes.bbl" 1631700581 729 fe98abad39ad66d17948da6444cf335d "bibtex notes"
-  "notes.out" 1631700585 4107 f6a868e2e867c971c800a3b10ea3b147 "pdflatex"
-  "notes.tex" 1631700576 123982 023838b266a5a7b859974d72734037a4 ""
-  "notes.toc" 1631700585 2126 a618d9e9de579a1909198dd3f86e1e83 "pdflatex"
+  "notes.aux" 1632376153 13469 a7f4653710cd8d47c63ff1b1ff016d21 "pdflatex"
+  "notes.bbl" 1632376148 729 fe98abad39ad66d17948da6444cf335d "bibtex notes"
+  "notes.out" 1632376153 4107 f6a868e2e867c971c800a3b10ea3b147 "pdflatex"
+  "notes.tex" 1632376142 123982 023838b266a5a7b859974d72734037a4 ""
+  "notes.toc" 1632376153 2126 0712c949b97a7343db9141c238701b05 "pdflatex"
   (generated)
   "notes.log"
-  "notes.out"
-  "notes.toc"
   "notes.pdf"
   "notes.aux"
+  "notes.out"
+  "notes.toc"

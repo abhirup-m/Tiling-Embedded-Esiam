@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2022.2.1)  7 MAR 2022 20:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/Arch Linux) (preloaded format=pdflatex 2021.12.31)  8 MAR 2022 00:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -293,24 +293,24 @@ File: l3backend-pdftex.def 2021-12-14 L3 backend support: PDF output (pdfTeX)
 ) (./notes.aux)
 \openout1 = `notes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
@@ -339,7 +339,7 @@ Package grfext Info: Graphics extension search list:
  (/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 21.
+Package hyperref Info: Link coloring OFF on input line 22.
  (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
  (/usr/share/texmf-dist/tex/latex/refcount/refcount.sty
@@ -349,9 +349,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count296
 )
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
+LaTeX Info: Redefining \ref on input line 22.
+LaTeX Info: Redefining \pageref on input line 22.
+LaTeX Info: Redefining \nameref on input line 22.
  (./notes.out) (./notes.out)
 \@outlinefile=\write3
 \openout3 = `notes.out'.
@@ -391,11 +391,11 @@ LaTeX Info: Redefining \nameref on input line 21.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 23.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 24.
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 23.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 24.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -403,7 +403,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./notes.tocpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.56 ...numberline {5}Future goals}{67}{chapter.5}
+l.56 ...ons: \(U_b\)-free terms}{71}{appendix.a.A}
                                                   % [1
 
 ])
@@ -412,10 +412,10 @@ l.56 ...numberline {5}Future goals}{67}{chapter.5}
 
  [2]
 Chapter 1.
-<../figures/correlated_bath.png, id=306, 1253.68375pt x 634.37pt>
+<../figures/correlated_bath.png, id=301, 1253.68375pt x 634.37pt>
 File: ../figures/correlated_bath.png Graphic file (type png)
 <use ../figures/correlated_bath.png>
-Package pdftex.def Info: ../figures/correlated_bath.png  used on input line 32.
+Package pdftex.def Info: ../figures/correlated_bath.png  used on input line 33.
 (pdftex.def)             Requested size: 249.33128pt x 126.15544pt.
 [3
 
@@ -423,36 +423,36 @@ Package pdftex.def Info: ../figures/correlated_bath.png  used on input line 32.
 
 Package amsmath Warning: Foreign command \atop;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 64.
+(amsmath)                 on input line 65.
 
-<../figures/cluster-bath.png, id=317, 672.5928pt x 258.4857pt>
+<../figures/cluster-bath.png, id=316, 672.5928pt x 258.4857pt>
 File: ../figures/cluster-bath.png Graphic file (type png)
 <use ../figures/cluster-bath.png>
-Package pdftex.def Info: ../figures/cluster-bath.png  used on input line 79.
+Package pdftex.def Info: ../figures/cluster-bath.png  used on input line 80.
 (pdftex.def)             Requested size: 398.93158pt x 153.31773pt.
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 88--97
+Underfull \hbox (badness 10000) in paragraph at lines 89--98
 
  []
 
 [5 <../figures/cluster-bath.png>]
-<../figures/gen_siam.png, id=344, 706.13812pt x 265.74281pt>
+<../figures/gen_siam.png, id=338, 706.13812pt x 265.74281pt>
 File: ../figures/gen_siam.png Graphic file (type png)
 <use ../figures/gen_siam.png>
-Package pdftex.def Info: ../figures/gen_siam.png  used on input line 103.
+Package pdftex.def Info: ../figures/gen_siam.png  used on input line 104.
 (pdftex.def)             Requested size: 299.20059pt x 112.6006pt.
-<../figures/hubb_dim.png, id=347, 633.86812pt x 206.27063pt>
+<../figures/hubb_dim.png, id=341, 633.86812pt x 206.27063pt>
 File: ../figures/hubb_dim.png Graphic file (type png)
 <use ../figures/hubb_dim.png>
-Package pdftex.def Info: ../figures/hubb_dim.png  used on input line 129.
+Package pdftex.def Info: ../figures/hubb_dim.png  used on input line 130.
 (pdftex.def)             Requested size: 199.46198pt x 64.90634pt.
-<../figures/dimer_bath.png, id=349, 702.2235pt x 2141.1192pt>
+<../figures/dimer_bath.png, id=343, 702.2235pt x 2141.1192pt>
 File: ../figures/dimer_bath.png Graphic file (type png)
 <use ../figures/dimer_bath.png>
-Package pdftex.def Info: ../figures/dimer_bath.png  used on input line 136.
+Package pdftex.def Info: ../figures/dimer_bath.png  used on input line 137.
 (pdftex.def)             Requested size: 149.6003pt x 456.11713pt.
  [6 <../figures/gen_siam.png>] [7 <../figures/hubb_dim.png> <../figures/dimer_bath.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 149--154
+Underfull \hbox (badness 10000) in paragraph at lines 150--155
 
  []
 
@@ -461,93 +461,93 @@ Chapter 2.
 [9
 
 ]
-<../figures/zeromode.pdf, id=394, 348.42671pt x 181.92184pt>
+<../figures/zeromode.pdf, id=389, 348.42671pt x 181.92184pt>
 File: ../figures/zeromode.pdf Graphic file (type pdf)
 <use ../figures/zeromode.pdf>
-Package pdftex.def Info: ../figures/zeromode.pdf  used on input line 220.
+Package pdftex.def Info: ../figures/zeromode.pdf  used on input line 221.
 (pdftex.def)             Requested size: 249.33128pt x 130.18138pt.
  [10 <../figures/zeromode.pdf>] [11]
-<../figures/U_irr,U>0,U.pdf, id=437, 678.78159pt x 515.34323pt>
+<../figures/U_irr,U>0,U.pdf, id=432, 678.78159pt x 515.34323pt>
 File: ../figures/U_irr,U>0,U.pdf Graphic file (type pdf)
 <use ../figures/U_irr,U>0,U.pdf>
-Package pdftex.def Info: ../figures/U_irr,U>0,U.pdf  used on input line 288.
+Package pdftex.def Info: ../figures/U_irr,U>0,U.pdf  used on input line 289.
 (pdftex.def)             Requested size: 159.57567pt x 121.15285pt.
-<../figures/U_irr,U>0,V.pdf, id=438, 739.80646pt x 515.34323pt>
+<../figures/U_irr,U>0,V.pdf, id=433, 739.80646pt x 515.34323pt>
 File: ../figures/U_irr,U>0,V.pdf Graphic file (type pdf)
 <use ../figures/U_irr,U>0,V.pdf>
-Package pdftex.def Info: ../figures/U_irr,U>0,V.pdf  used on input line 289.
+Package pdftex.def Info: ../figures/U_irr,U>0,V.pdf  used on input line 290.
 (pdftex.def)             Requested size: 159.57567pt x 111.15836pt.
-<../figures/U_irr,U>0,J.pdf, id=439, 717.88826pt x 515.34323pt>
+<../figures/U_irr,U>0,J.pdf, id=434, 717.88826pt x 515.34323pt>
 File: ../figures/U_irr,U>0,J.pdf Graphic file (type pdf)
 <use ../figures/U_irr,U>0,J.pdf>
-Package pdftex.def Info: ../figures/U_irr,U>0,J.pdf  used on input line 290.
+Package pdftex.def Info: ../figures/U_irr,U>0,J.pdf  used on input line 291.
 (pdftex.def)             Requested size: 159.57567pt x 114.54752pt.
-<../figures/U_rel,U>0,U.pdf, id=440, 717.88826pt x 515.34323pt>
+<../figures/U_rel,U>0,U.pdf, id=435, 717.88826pt x 515.34323pt>
 File: ../figures/U_rel,U>0,U.pdf Graphic file (type pdf)
 <use ../figures/U_rel,U>0,U.pdf>
-Package pdftex.def Info: ../figures/U_rel,U>0,U.pdf  used on input line 292.
+Package pdftex.def Info: ../figures/U_rel,U>0,U.pdf  used on input line 293.
 (pdftex.def)             Requested size: 159.57567pt x 114.54752pt.
-<../figures/U_rel,U>0,V.pdf, id=441, 669.06909pt x 515.34323pt>
+<../figures/U_rel,U>0,V.pdf, id=436, 669.06909pt x 515.34323pt>
 File: ../figures/U_rel,U>0,V.pdf Graphic file (type pdf)
 <use ../figures/U_rel,U>0,V.pdf>
-Package pdftex.def Info: ../figures/U_rel,U>0,V.pdf  used on input line 293.
+Package pdftex.def Info: ../figures/U_rel,U>0,V.pdf  used on input line 294.
 (pdftex.def)             Requested size: 159.57567pt x 122.9064pt.
-<../figures/U_rel,U>0,J.pdf, id=442, 669.06909pt x 515.44896pt>
+<../figures/U_rel,U>0,J.pdf, id=437, 669.06909pt x 515.44896pt>
 File: ../figures/U_rel,U>0,J.pdf Graphic file (type pdf)
 <use ../figures/U_rel,U>0,J.pdf>
-Package pdftex.def Info: ../figures/U_rel,U>0,J.pdf  used on input line 294.
+Package pdftex.def Info: ../figures/U_rel,U>0,J.pdf  used on input line 295.
 (pdftex.def)             Requested size: 159.57567pt x 122.93163pt.
-<../figures/VvsJ_relvsirr.pdf, id=443, 670.35098pt x 518.67464pt>
+<../figures/VvsJ_relvsirr.pdf, id=438, 670.35098pt x 518.67464pt>
 File: ../figures/VvsJ_relvsirr.pdf Graphic file (type pdf)
 <use ../figures/VvsJ_relvsirr.pdf>
-Package pdftex.def Info: ../figures/VvsJ_relvsirr.pdf  used on input line 299.
+Package pdftex.def Info: ../figures/VvsJ_relvsirr.pdf  used on input line 300.
 (pdftex.def)             Requested size: 239.3559pt x 185.19525pt.
-<../figures/UvsJ_relvsirr.pdf, id=444, 795.64807pt x 528.11942pt>
+<../figures/UvsJ_relvsirr.pdf, id=439, 795.64807pt x 528.11942pt>
 File: ../figures/UvsJ_relvsirr.pdf Graphic file (type pdf)
 <use ../figures/UvsJ_relvsirr.pdf>
-Package pdftex.def Info: ../figures/UvsJ_relvsirr.pdf  used on input line 301.
+Package pdftex.def Info: ../figures/UvsJ_relvsirr.pdf  used on input line 302.
 (pdftex.def)             Requested size: 239.3559pt x 158.8722pt.
-<../figures/VcvsJ.pdf, id=445, 795.64807pt x 528.11942pt>
+<../figures/VcvsJ.pdf, id=440, 795.64807pt x 528.11942pt>
 File: ../figures/VcvsJ.pdf Graphic file (type pdf)
 <use ../figures/VcvsJ.pdf>
-Package pdftex.def Info: ../figures/VcvsJ.pdf  used on input line 306.
+Package pdftex.def Info: ../figures/VcvsJ.pdf  used on input line 307.
 (pdftex.def)             Requested size: 239.3559pt x 158.8722pt.
-<../figures/UcvsJ.pdf, id=446, 795.64807pt x 528.11942pt>
+<../figures/UcvsJ.pdf, id=441, 795.64807pt x 528.11942pt>
 File: ../figures/UcvsJ.pdf Graphic file (type pdf)
 <use ../figures/UcvsJ.pdf>
-Package pdftex.def Info: ../figures/UcvsJ.pdf  used on input line 308.
+Package pdftex.def Info: ../figures/UcvsJ.pdf  used on input line 309.
 (pdftex.def)             Requested size: 239.3559pt x 158.8722pt.
  [12 <../figures/U_irr,U>0,U.pdf> <../figures/U_irr,U>0,V.pdf> <../figures/U_irr,U>0,J.pdf> <../figures/U_rel,U>0,U.pdf> <../figures/U_rel,U>0,V.pdf> <../figures/U_rel,U>0,J.pdf>] [13 <../figures/VvsJ_relvsirr.pdf> <../figures/UvsJ_relvsirr.pdf> <../figures/VcvsJ.pdf> <../figures/UcvsJ.pdf>]
-<../figures/two_site_problem.png, id=598, 663.22781pt x 280.04625pt>
+<../figures/two_site_problem.png, id=593, 663.22781pt x 280.04625pt>
 File: ../figures/two_site_problem.png Graphic file (type png)
 <use ../figures/two_site_problem.png>
-Package pdftex.def Info: ../figures/two_site_problem.png  used on input line 343.
+Package pdftex.def Info: ../figures/two_site_problem.png  used on input line 344.
 (pdftex.def)             Requested size: 199.46198pt x 84.21962pt.
  [14 <../figures/two_site_problem.png>]
-<../figures/coeffs_vs_J.pdf, id=611, 1745.32054pt x 661.2705pt>
+<../figures/coeffs_vs_J.pdf, id=606, 1745.32054pt x 661.2705pt>
 File: ../figures/coeffs_vs_J.pdf Graphic file (type pdf)
 <use ../figures/coeffs_vs_J.pdf>
-Package pdftex.def Info: ../figures/coeffs_vs_J.pdf  used on input line 369.
+Package pdftex.def Info: ../figures/coeffs_vs_J.pdf  used on input line 370.
 (pdftex.def)             Requested size: 398.93158pt x 151.14053pt.
-<../figures/Vstar_vs_D_smallV.pdf, id=614, 793.33119pt x 760.26723pt>
+<../figures/Vstar_vs_D_smallV.pdf, id=609, 793.33119pt x 760.26723pt>
 File: ../figures/Vstar_vs_D_smallV.pdf Graphic file (type pdf)
 <use ../figures/Vstar_vs_D_smallV.pdf>
-Package pdftex.def Info: ../figures/Vstar_vs_D_smallV.pdf  used on input line 393.
+Package pdftex.def Info: ../figures/Vstar_vs_D_smallV.pdf  used on input line 394.
 (pdftex.def)             Requested size: 199.46198pt x 191.1452pt.
-<../figures/Vstar_vs_D_largeV.pdf, id=615, 793.33119pt x 760.26723pt>
+<../figures/Vstar_vs_D_largeV.pdf, id=610, 793.33119pt x 760.26723pt>
 File: ../figures/Vstar_vs_D_largeV.pdf Graphic file (type pdf)
 <use ../figures/Vstar_vs_D_largeV.pdf>
-Package pdftex.def Info: ../figures/Vstar_vs_D_largeV.pdf  used on input line 395.
+Package pdftex.def Info: ../figures/Vstar_vs_D_largeV.pdf  used on input line 396.
 (pdftex.def)             Requested size: 199.46198pt x 191.1452pt.
-<../figures/coeffs_vs_D_largeV.pdf, id=617, 782.10645pt x 622.74661pt>
+<../figures/coeffs_vs_D_largeV.pdf, id=612, 782.10645pt x 622.74661pt>
 File: ../figures/coeffs_vs_D_largeV.pdf Graphic file (type pdf)
 <use ../figures/coeffs_vs_D_largeV.pdf>
-Package pdftex.def Info: ../figures/coeffs_vs_D_largeV.pdf  used on input line 404.
+Package pdftex.def Info: ../figures/coeffs_vs_D_largeV.pdf  used on input line 405.
 (pdftex.def)             Requested size: 224.39664pt x 178.67242pt.
-<../figures/coeffs_vs_D_smallV.pdf, id=618, 782.10645pt x 622.74661pt>
+<../figures/coeffs_vs_D_smallV.pdf, id=613, 782.10645pt x 622.74661pt>
 File: ../figures/coeffs_vs_D_smallV.pdf Graphic file (type pdf)
 <use ../figures/coeffs_vs_D_smallV.pdf>
-Package pdftex.def Info: ../figures/coeffs_vs_D_smallV.pdf  used on input line 405.
+Package pdftex.def Info: ../figures/coeffs_vs_D_smallV.pdf  used on input line 406.
 (pdftex.def)             Requested size: 224.39664pt x 178.67242pt.
  [15 <../figures/coeffs_vs_J.pdf>] [16 <../figures/Vstar_vs_D_smallV.pdf> <../figures/Vstar_vs_D_largeV.pdf
 
@@ -558,159 +558,301 @@ pdfTeX warning: pdflatex (file ../figures/coeffs_vs_D_largeV.pdf): PDF inclusion
 > <../figures/coeffs_vs_D_smallV.pdf
 
 pdfTeX warning: pdflatex (file ../figures/coeffs_vs_D_smallV.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->]
-<../figures/siam_specfunc_all.pdf, id=694, 966.62706pt x 624.55005pt>
-File: ../figures/siam_specfunc_all.pdf Graphic file (type pdf)
-<use ../figures/siam_specfunc_all.pdf>
-Package pdftex.def Info: ../figures/siam_specfunc_all.pdf  used on input line 422.
-(pdftex.def)             Requested size: 498.66258pt x 322.19484pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 418--428
-
- []
-
-[17 <../figures/siam_specfunc_all.pdf>]
-<../figures/width_vs_U_simple_fit.pdf, id=717, 952.3485pt x 603.24597pt>
-File: ../figures/width_vs_U_simple_fit.pdf Graphic file (type pdf)
-<use ../figures/width_vs_U_simple_fit.pdf>
-Package pdftex.def Info: ../figures/width_vs_U_simple_fit.pdf  used on input line 442.
-(pdftex.def)             Requested size: 274.26593pt x 173.72182pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 434--447
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 434--447
-
- []
-
-[18 <../figures/width_vs_U_simple_fit.pdf>] [19]
-<../figures/chiT_J=0.020.pdf, id=776, 802.44568pt x 528.11942pt>
+>] [17]
+<../figures/chiT_J=0.020.pdf, id=708, 802.44568pt x 528.11942pt>
 File: ../figures/chiT_J=0.020.pdf Graphic file (type pdf)
 <use ../figures/chiT_J=0.020.pdf>
-Package pdftex.def Info: ../figures/chiT_J=0.020.pdf  used on input line 517.
+Package pdftex.def Info: ../figures/chiT_J=0.020.pdf  used on input line 485.
 (pdftex.def)             Requested size: 244.3474pt x 160.81429pt.
-<../figures/chiT_J=0.100.pdf, id=777, 802.44568pt x 528.11942pt>
+<../figures/chiT_J=0.100.pdf, id=709, 802.44568pt x 528.11942pt>
 File: ../figures/chiT_J=0.100.pdf Graphic file (type pdf)
 <use ../figures/chiT_J=0.100.pdf>
-Package pdftex.def Info: ../figures/chiT_J=0.100.pdf  used on input line 518.
+Package pdftex.def Info: ../figures/chiT_J=0.100.pdf  used on input line 486.
 (pdftex.def)             Requested size: 244.3474pt x 160.81429pt.
-<../figures/chi_chargeT_K=0.010.pdf, id=779, 802.44568pt x 528.11942pt>
+<../figures/chi_chargeT_K=0.010.pdf, id=711, 802.44568pt x 528.11942pt>
 File: ../figures/chi_chargeT_K=0.010.pdf Graphic file (type pdf)
 <use ../figures/chi_chargeT_K=0.010.pdf>
-Package pdftex.def Info: ../figures/chi_chargeT_K=0.010.pdf  used on input line 537.
+Package pdftex.def Info: ../figures/chi_chargeT_K=0.010.pdf  used on input line 505.
 (pdftex.def)             Requested size: 244.3474pt x 160.81429pt.
-<../figures/chi_chargeT_K=0.100.pdf, id=780, 802.44568pt x 528.11942pt>
+<../figures/chi_chargeT_K=0.100.pdf, id=712, 802.44568pt x 528.11942pt>
 File: ../figures/chi_chargeT_K=0.100.pdf Graphic file (type pdf)
 <use ../figures/chi_chargeT_K=0.100.pdf>
-Package pdftex.def Info: ../figures/chi_chargeT_K=0.100.pdf  used on input line 538.
+Package pdftex.def Info: ../figures/chi_chargeT_K=0.100.pdf  used on input line 506.
 (pdftex.def)             Requested size: 244.3474pt x 160.81429pt.
-<../figures/chiC_posU_J=small.pdf, id=784, 818.49734pt x 582.68324pt>
+<../figures/chiC_posU_J=small.pdf, id=716, 818.49734pt x 582.68324pt>
 File: ../figures/chiC_posU_J=small.pdf Graphic file (type pdf)
 <use ../figures/chiC_posU_J=small.pdf>
-Package pdftex.def Info: ../figures/chiC_posU_J=small.pdf  used on input line 546.
+Package pdftex.def Info: ../figures/chiC_posU_J=small.pdf  used on input line 514.
 (pdftex.def)             Requested size: 239.3559pt x 170.39636pt.
-<../figures/chiC_posU_J=large.pdf, id=785, 770.34247pt x 610.29752pt>
+<../figures/chiC_posU_J=large.pdf, id=717, 770.34247pt x 610.29752pt>
 File: ../figures/chiC_posU_J=large.pdf Graphic file (type pdf)
 <use ../figures/chiC_posU_J=large.pdf>
-Package pdftex.def Info: ../figures/chiC_posU_J=large.pdf  used on input line 547.
+Package pdftex.def Info: ../figures/chiC_posU_J=large.pdf  used on input line 515.
 (pdftex.def)             Requested size: 239.3559pt x 189.62796pt.
- [20 <../figures/chiT_J=0.020.pdf> <../figures/chiT_J=0.100.pdf>] [21 <../figures/chi_chargeT_K=0.010.pdf> <../figures/chi_chargeT_K=0.100.pdf> <../figures/chiC_posU_J=small.pdf> <../figures/chiC_posU_J=large.pdf
+ [18] [19 <../figures/chiT_J=0.020.pdf> <../figures/chiT_J=0.100.pdf> <../figures/chi_chargeT_K=0.010.pdf> <../figures/chi_chargeT_K=0.100.pdf>] [20 <../figures/chiC_posU_J=small.pdf> <../figures/chiC_posU_J=large.pdf
 
 pdfTeX warning: pdflatex (file ../figures/chiC_posU_J=large.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >]
-<../figures/Cv.pdf, id=874, 794.74626pt x 656.13663pt>
+<../figures/Cv.pdf, id=815, 794.74626pt x 656.13663pt>
 File: ../figures/Cv.pdf Graphic file (type pdf)
 <use ../figures/Cv.pdf>
-Package pdftex.def Info: ../figures/Cv.pdf  used on input line 579.
+Package pdftex.def Info: ../figures/Cv.pdf  used on input line 547.
 (pdftex.def)             Requested size: 299.20059pt x 247.02177pt.
- [22 <../figures/Cv.pdf>]
-<../figures/gen_siam_spec_func.pdf, id=898, 1113.04492pt x 627.8023pt>
+ [21 <../figures/Cv.pdf>]
+<../figures/gen_siam_spec_func.pdf, id=840, 1113.04492pt x 627.8023pt>
 File: ../figures/gen_siam_spec_func.pdf Graphic file (type pdf)
 <use ../figures/gen_siam_spec_func.pdf>
-Package pdftex.def Info: ../figures/gen_siam_spec_func.pdf  used on input line 610.
+Package pdftex.def Info: ../figures/gen_siam_spec_func.pdf  used on input line 578.
 (pdftex.def)             Requested size: 398.93158pt x 225.01239pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 611.
+(caption)                particular \caption on input line 579.
 See the caption package documentation for explanation.
 
-[23] [24 <../figures/gen_siam_spec_func.pdf>] [25] [26] [27] [28] [29] [30]
-Overfull \hbox (3.35573pt too wide) detected at line 825
+[22 <../figures/gen_siam_spec_func.pdf>] [23] [24] [25] [26] [27] [28]
+Overfull \hbox (3.35573pt too wide) detected at line 793
 [][][][]
  []
 
-[31] [32]
-Overfull \hbox (2.71619pt too wide) detected at line 918
+[29] [30]
+Overfull \hbox (2.71619pt too wide) detected at line 886
 []
  []
 
-
-Overfull \hbox (0.49696pt too wide) in paragraph at lines 928--929
+[31]
+Overfull \hbox (0.49696pt too wide) in paragraph at lines 896--897
 []\T1/cmr/m/n/10 Having ac-counted for both chan-nels, we will cal-cu-late the sec-ond part of the ef-fec-tive Hamil-to-nian in eq. [],
  []
 
-[33]
-Overfull \hbox (5.3763pt too wide) detected at line 944
+
+Overfull \hbox (5.3763pt too wide) detected at line 912
 []
  []
 
 
-Overfull \hbox (11.63428pt too wide) detected at line 991
+Overfull \hbox (11.63428pt too wide) detected at line 959
 []
  []
 
-[34] [35]
+[32] [33]
+Overfull \hbox (14.654pt too wide) in paragraph at lines 1007--1007
+[]\T1/cmr/bx/n/14.4 Destruction of the Abrikosov-Suhl res-o-nance: tran-si-tion from strong-
+ []
+
+<../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1004, 663.01799pt x 647.80232pt>
+File: ../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1013.
+(pdftex.def)             Requested size: 159.57567pt x 155.91066pt.
+<../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1005, 678.42993pt x 647.80232pt>
+File: ../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1014.
+(pdftex.def)             Requested size: 159.57567pt x 152.37195pt.
+<../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1006, 683.51675pt x 647.80232pt>
+File: ../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1015.
+(pdftex.def)             Requested size: 159.57567pt x 151.23521pt.
+[34]
+<../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1016, 671.17761pt x 648.14075pt>
+File: ../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1021.
+(pdftex.def)             Requested size: 119.68175pt x 115.57242pt.
+<../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1017, 671.17761pt x 647.80232pt>
+File: ../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1022.
+(pdftex.def)             Requested size: 119.68175pt x 115.51207pt.
+<../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1018, 673.06995pt x 647.80232pt>
+File: ../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1023.
+(pdftex.def)             Requested size: 119.68175pt x 115.18587pt.
+<../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1019, 701.22554pt x 647.80232pt>
+File: ../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1024.
+(pdftex.def)             Requested size: 119.68175pt x 110.55986pt.
+<../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1020, 684.93617pt x 647.80232pt>
+File: ../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1030.
+(pdftex.def)             Requested size: 159.57567pt x 150.9189pt.
+<../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1021, 671.17761pt x 647.80232pt>
+File: ../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1031.
+(pdftex.def)             Requested size: 159.57567pt x 154.0128pt.
+<../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1022, 684.93617pt x 647.80232pt>
+File: ../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1032.
+(pdftex.def)             Requested size: 159.57567pt x 150.9189pt.
+ [35 <../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>]
+<../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1147, 705.37556pt x 647.80232pt>
+File: ../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1039.
+(pdftex.def)             Requested size: 159.57567pt x 146.54988pt.
+<../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1148, 695.80074pt x 647.80232pt>
+File: ../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1040.
+(pdftex.def)             Requested size: 159.57567pt x 148.56636pt.
+<../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1149, 719.13412pt x 647.80232pt>
+File: ../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1041.
+(pdftex.def)             Requested size: 159.57567pt x 143.74265pt.
+<../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1150, 671.17761pt x 647.80232pt>
+File: ../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1043.
+(pdftex.def)             Requested size: 159.57567pt x 154.0128pt.
+<../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1151, 687.46706pt x 647.80232pt>
+File: ../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1050.
+(pdftex.def)             Requested size: 159.57567pt x 150.36536pt.
+<../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1152, 714.9841pt x 647.80232pt>
+File: ../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1051.
+(pdftex.def)             Requested size: 159.57567pt x 144.58284pt.
+<../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1153, 714.34555pt x 647.80232pt>
+File: ../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1052.
+(pdftex.def)             Requested size: 159.57567pt x 144.70145pt.
+ [36 <../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>]
+<../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1211, 700.58699pt x 647.80232pt>
+File: ../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1054.
+(pdftex.def)             Requested size: 149.6003pt x 138.32585pt.
+<../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1212, 685.02304pt x 647.80232pt>
+File: ../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1055.
+(pdftex.def)             Requested size: 149.6003pt x 141.46918pt.
+<../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1213, 685.02304pt x 647.80232pt>
+File: ../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1056.
+(pdftex.def)             Requested size: 149.6003pt x 141.46918pt.
+<../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf, id=1214, 705.37556pt x 666.34952pt>
+File: ../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf Graphic file (type pdf)
+<use ../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf>
+Package pdftex.def Info: ../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf  used on input line 1061.
+(pdftex.def)             Requested size: 174.53494pt x 164.8788pt.
+<../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf, id=1215, 760.40979pt x 642.24997pt>
+File: ../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf Graphic file (type pdf)
+<use ../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf>
+Package pdftex.def Info: ../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf  used on input line 1062.
+(pdftex.def)             Requested size: 174.53494pt x 147.41058pt.
+<../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1216, 918.86003pt x 627.8023pt>
+File: ../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1064.
+(pdftex.def)             Requested size: 224.39664pt x 153.30998pt.
+<../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf, id=1217, 893.05397pt x 627.8023pt>
+File: ../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf Graphic file (type pdf)
+<use ../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf>
+Package pdftex.def Info: ../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf  used on input line 1065.
+(pdftex.def)             Requested size: 224.39664pt x 157.74529pt.
+ [37 <../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf> <../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf
+
+pdfTeX warning: pdflatex (file ../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>]
+<../figures/spec-func-gen-siam-U_by_J=0.100.pdf, id=1314, 533.01888pt x 430.09578pt>
+File: ../figures/spec-func-gen-siam-U_by_J=0.100.pdf Graphic file (type pdf)
+<use ../figures/spec-func-gen-siam-U_by_J=0.100.pdf>
+Package pdftex.def Info: ../figures/spec-func-gen-siam-U_by_J=0.100.pdf  used on input line 1070.
+(pdftex.def)             Requested size: 159.57567pt x 128.76065pt.
+<../figures/spec-func-gen-siam-U_by_J=9.000.pdf, id=1315, 505.23099pt x 430.09578pt>
+File: ../figures/spec-func-gen-siam-U_by_J=9.000.pdf Graphic file (type pdf)
+<use ../figures/spec-func-gen-siam-U_by_J=9.000.pdf>
+Package pdftex.def Info: ../figures/spec-func-gen-siam-U_by_J=9.000.pdf  used on input line 1071.
+(pdftex.def)             Requested size: 159.57567pt x 135.84183pt.
+<../figures/spec-func-gen-siam-U_by_J=16.000.pdf, id=1316, 505.23099pt x 430.09578pt>
+File: ../figures/spec-func-gen-siam-U_by_J=16.000.pdf Graphic file (type pdf)
+<use ../figures/spec-func-gen-siam-U_by_J=16.000.pdf>
+Package pdftex.def Info: ../figures/spec-func-gen-siam-U_by_J=16.000.pdf  used on input line 1072.
+(pdftex.def)             Requested size: 159.57567pt x 135.84183pt.
+<../figures/spec-func-gen-siam-U_by_J=20.250.pdf, id=1317, 505.23099pt x 430.09578pt>
+File: ../figures/spec-func-gen-siam-U_by_J=20.250.pdf Graphic file (type pdf)
+<use ../figures/spec-func-gen-siam-U_by_J=20.250.pdf>
+Package pdftex.def Info: ../figures/spec-func-gen-siam-U_by_J=20.250.pdf  used on input line 1073.
+(pdftex.def)             Requested size: 159.57567pt x 135.84183pt.
+<../figures/spec-func-gen-siam-U_by_J=36.000.pdf, id=1318, 518.98953pt x 432.9861pt>
+File: ../figures/spec-func-gen-siam-U_by_J=36.000.pdf Graphic file (type pdf)
+<use ../figures/spec-func-gen-siam-U_by_J=36.000.pdf>
+Package pdftex.def Info: ../figures/spec-func-gen-siam-U_by_J=36.000.pdf  used on input line 1074.
+(pdftex.def)             Requested size: 159.57567pt x 133.12756pt.
+
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1039.
+(hyperref)                removing `math shift' on input line 1077.
 
-<../figures/lattice_eff.png, id=1066, 671.1474pt x 252.4632pt>
+<../figures/lattice_eff.png, id=1319, 671.1474pt x 252.4632pt>
 File: ../figures/lattice_eff.png Graphic file (type png)
 <use ../figures/lattice_eff.png>
-Package pdftex.def Info: ../figures/lattice_eff.png  used on input line 1047.
+Package pdftex.def Info: ../figures/lattice_eff.png  used on input line 1085.
 (pdftex.def)             Requested size: 349.06227pt x 131.30858pt.
-[36 <../figures/lattice_eff.png>] [37] [38] [39] [40]
-<../figures/luttinger_top_change.png, id=1142, 1754.80594pt x 1275.26437pt>
+[38 <../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf> <../figures/spec-func-gen-siam-U_by_J=0.100.pdf> <../figures/spec-func-gen-siam-U_by_J=9.000.pdf
+
+pdfTeX warning: pdflatex (file ../figures/spec-func-gen-siam-U_by_J=9.000.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <../figures/spec-func-gen-siam-U_by_J=16.000.pdf
+
+pdfTeX warning: pdflatex (file ../figures/spec-func-gen-siam-U_by_J=16.000.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <../figures/spec-func-gen-siam-U_by_J=20.250.pdf
+
+pdfTeX warning: pdflatex (file ../figures/spec-func-gen-siam-U_by_J=20.250.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <../figures/spec-func-gen-siam-U_by_J=36.000.pdf
+
+pdfTeX warning: pdflatex (file ../figures/spec-func-gen-siam-U_by_J=36.000.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [39 <../figures/lattice_eff.png>] [40] [41] [42]
+<../figures/luttinger_top_change.png, id=1467, 1754.80594pt x 1275.26437pt>
 File: ../figures/luttinger_top_change.png Graphic file (type png)
 <use ../figures/luttinger_top_change.png>
-Package pdftex.def Info: ../figures/luttinger_top_change.png  used on input line 1267.
+Package pdftex.def Info: ../figures/luttinger_top_change.png  used on input line 1305.
 (pdftex.def)             Requested size: 350.95497pt x 255.04836pt.
- [41 <../figures/luttinger_top_change.png>] [42] [43]
-<../figures/reverse-rg.png, id=1192, 790.0359pt x 678.29314pt>
+ [43] [44 <../figures/luttinger_top_change.png>] [45]
+<../figures/reverse-rg.png, id=1515, 790.0359pt x 678.29314pt>
 File: ../figures/reverse-rg.png Graphic file (type png)
 <use ../figures/reverse-rg.png>
-Package pdftex.def Info: ../figures/reverse-rg.png  used on input line 1371.
+Package pdftex.def Info: ../figures/reverse-rg.png  used on input line 1409.
 (pdftex.def)             Requested size: 199.46198pt x 171.24954pt.
- [44 <../figures/reverse-rg.png>]
-<../figures/mut_I_ee.pdf, id=1205, 739.75438pt x 515.34323pt>
+ [46]
+<../figures/mut_I_ee.pdf, id=1531, 739.75438pt x 515.34323pt>
 File: ../figures/mut_I_ee.pdf Graphic file (type pdf)
 <use ../figures/mut_I_ee.pdf>
-Package pdftex.def Info: ../figures/mut_I_ee.pdf  used on input line 1402.
+Package pdftex.def Info: ../figures/mut_I_ee.pdf  used on input line 1440.
 (pdftex.def)             Requested size: 224.39664pt x 156.31839pt.
-<../figures/mut_I_ie.pdf, id=1206, 753.51292pt x 515.34323pt>
+<../figures/mut_I_ie.pdf, id=1532, 753.51292pt x 515.34323pt>
 File: ../figures/mut_I_ie.pdf Graphic file (type pdf)
 <use ../figures/mut_I_ie.pdf>
-Package pdftex.def Info: ../figures/mut_I_ie.pdf  used on input line 1403.
+Package pdftex.def Info: ../figures/mut_I_ie.pdf  used on input line 1441.
 (pdftex.def)             Requested size: 224.39664pt x 153.46394pt.
-<../figures/corr_same.pdf, id=1207, 670.15236pt x 515.34323pt>
+<../figures/corr_same.pdf, id=1533, 670.15236pt x 515.34323pt>
 File: ../figures/corr_same.pdf Graphic file (type pdf)
 <use ../figures/corr_same.pdf>
-Package pdftex.def Info: ../figures/corr_same.pdf  used on input line 1410.
+Package pdftex.def Info: ../figures/corr_same.pdf  used on input line 1448.
 (pdftex.def)             Requested size: 224.39664pt x 172.55652pt.
-<../figures/corr_opp.pdf, id=1208, 670.15236pt x 515.34323pt>
+<../figures/corr_opp.pdf, id=1534, 670.15236pt x 515.34323pt>
 File: ../figures/corr_opp.pdf Graphic file (type pdf)
 <use ../figures/corr_opp.pdf>
-Package pdftex.def Info: ../figures/corr_opp.pdf  used on input line 1411.
+Package pdftex.def Info: ../figures/corr_opp.pdf  used on input line 1449.
 (pdftex.def)             Requested size: 224.39664pt x 172.55652pt.
-<../figures/corr_od.pdf, id=1209, 680.38284pt x 515.34323pt>
+<../figures/corr_od.pdf, id=1535, 680.38284pt x 515.34323pt>
 File: ../figures/corr_od.pdf Graphic file (type pdf)
 <use ../figures/corr_od.pdf>
-Package pdftex.def Info: ../figures/corr_od.pdf  used on input line 1417.
+Package pdftex.def Info: ../figures/corr_od.pdf  used on input line 1455.
 (pdftex.def)             Requested size: 224.39664pt x 169.96156pt.
- [45 <../figures/mut_I_ee.pdf> <../figures/mut_I_ie.pdf
+ [47 <../figures/reverse-rg.png>] [48 <../figures/mut_I_ee.pdf> <../figures/mut_I_ie.pdf
 
 pdfTeX warning: pdflatex (file ../figures/mut_I_ie.pdf): PDF inclusion: multiple pdfs with page group included in a single page
 > <../figures/corr_same.pdf
@@ -719,436 +861,439 @@ pdfTeX warning: pdflatex (file ../figures/corr_same.pdf): PDF inclusion: multipl
 > <../figures/corr_opp.pdf
 
 pdfTeX warning: pdflatex (file ../figures/corr_opp.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] [46 <../figures/corr_od.pdf>]
+> <../figures/corr_od.pdf
+
+pdfTeX warning: pdflatex (file ../figures/corr_od.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [49]
 Chapter 3.
 File: ../figures/zeromode.pdf Graphic file (type pdf)
 <use ../figures/zeromode.pdf>
-Package pdftex.def Info: ../figures/zeromode.pdf  used on input line 1441.
+Package pdftex.def Info: ../figures/zeromode.pdf  used on input line 1479.
 (pdftex.def)             Requested size: 249.33128pt x 130.18138pt.
-[47
+[50
 
 ]
-<../figures/phase-map_D=1000.pdf, id=1316, 1173.1523pt x 736.93004pt>
+<../figures/phase-map_D=1000.pdf, id=1648, 1173.1523pt x 736.93004pt>
 File: ../figures/phase-map_D=1000.pdf Graphic file (type pdf)
 <use ../figures/phase-map_D=1000.pdf>
-Package pdftex.def Info: ../figures/phase-map_D=1000.pdf  used on input line 1467.
+Package pdftex.def Info: ../figures/phase-map_D=1000.pdf  used on input line 1505.
 (pdftex.def)             Requested size: 448.79327pt x 281.91417pt.
-<../figures/overlaps_gs_D=500,J=0.500.pdf, id=1317, 1373.13pt x 867.24pt>
+<../figures/overlaps_gs_D=500,J=0.500.pdf, id=1649, 1373.13pt x 867.24pt>
 File: ../figures/overlaps_gs_D=500,J=0.500.pdf Graphic file (type pdf)
 <use ../figures/overlaps_gs_D=500,J=0.500.pdf>
-Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=0.500.pdf  used on input line 1487.
+Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=0.500.pdf  used on input line 1525.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
- [48 <../figures/phase-map_D=1000.pdf>]
-<../figures/overlaps_gs_D=500,J=5.000.pdf, id=1538, 1373.13pt x 867.24pt>
+ [51 <../figures/phase-map_D=1000.pdf>]
+<../figures/overlaps_gs_D=500,J=5.000.pdf, id=1869, 1373.13pt x 867.24pt>
 File: ../figures/overlaps_gs_D=500,J=5.000.pdf Graphic file (type pdf)
 <use ../figures/overlaps_gs_D=500,J=5.000.pdf>
-Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=5.000.pdf  used on input line 1488.
+Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=5.000.pdf  used on input line 1526.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
-<../figures/overlaps_gs_D=500,J=50.000.pdf, id=1539, 1373.13pt x 867.24pt>
+<../figures/overlaps_gs_D=500,J=50.000.pdf, id=1870, 1373.13pt x 867.24pt>
 File: ../figures/overlaps_gs_D=500,J=50.000.pdf Graphic file (type pdf)
 <use ../figures/overlaps_gs_D=500,J=50.000.pdf>
-Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=50.000.pdf  used on input line 1489.
+Package pdftex.def Info: ../figures/overlaps_gs_D=500,J=50.000.pdf  used on input line 1527.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
- [49 <../figures/overlaps_gs_D=500,J=0.500.pdf> <../figures/overlaps_gs_D=500,J=5.000.pdf>]
-<../figures/corrs_gs_D=500,J=0.500.pdf, id=1584, 1373.13pt x 867.24pt>
+ [52 <../figures/overlaps_gs_D=500,J=0.500.pdf> <../figures/overlaps_gs_D=500,J=5.000.pdf>]
+<../figures/corrs_gs_D=500,J=0.500.pdf, id=1915, 1373.13pt x 867.24pt>
 File: ../figures/corrs_gs_D=500,J=0.500.pdf Graphic file (type pdf)
 <use ../figures/corrs_gs_D=500,J=0.500.pdf>
-Package pdftex.def Info: ../figures/corrs_gs_D=500,J=0.500.pdf  used on input line 1494.
+Package pdftex.def Info: ../figures/corrs_gs_D=500,J=0.500.pdf  used on input line 1532.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
-<../figures/corrs_gs_D=500,J=5.000.pdf, id=1585, 1373.13pt x 867.24pt>
+<../figures/corrs_gs_D=500,J=5.000.pdf, id=1916, 1373.13pt x 867.24pt>
 File: ../figures/corrs_gs_D=500,J=5.000.pdf Graphic file (type pdf)
 <use ../figures/corrs_gs_D=500,J=5.000.pdf>
-Package pdftex.def Info: ../figures/corrs_gs_D=500,J=5.000.pdf  used on input line 1495.
+Package pdftex.def Info: ../figures/corrs_gs_D=500,J=5.000.pdf  used on input line 1533.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
- [50 <../figures/overlaps_gs_D=500,J=50.000.pdf> <../figures/corrs_gs_D=500,J=0.500.pdf>]
-<../figures/corrs_gs_D=500,J=50.000.pdf, id=1628, 1373.13pt x 867.24pt>
+ [53 <../figures/overlaps_gs_D=500,J=50.000.pdf> <../figures/corrs_gs_D=500,J=0.500.pdf>]
+<../figures/corrs_gs_D=500,J=50.000.pdf, id=1959, 1373.13pt x 867.24pt>
 File: ../figures/corrs_gs_D=500,J=50.000.pdf Graphic file (type pdf)
 <use ../figures/corrs_gs_D=500,J=50.000.pdf>
-Package pdftex.def Info: ../figures/corrs_gs_D=500,J=50.000.pdf  used on input line 1496.
+Package pdftex.def Info: ../figures/corrs_gs_D=500,J=50.000.pdf  used on input line 1534.
 (pdftex.def)             Requested size: 398.93158pt x 251.95631pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1499.
+(hyperref)                removing `math shift' on input line 1537.
 
-<../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1629, 676.77654pt x 655.69148pt>
+<../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1960, 676.77654pt x 655.69148pt>
 File: ../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1502.
+Package pdftex.def Info: ../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1540.
 (pdftex.def)             Requested size: 159.57567pt x 154.59778pt.
-<../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1630, 700.34813pt x 647.80232pt>
+<../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1961, 700.34813pt x 647.80232pt>
 File: ../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1503.
+Package pdftex.def Info: ../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1541.
 (pdftex.def)             Requested size: 159.57567pt x 147.59766pt.
-<../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1631, 732.3359pt x 647.80232pt>
+<../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1962, 732.3359pt x 647.80232pt>
 File: ../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1504.
+Package pdftex.def Info: ../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1542.
 (pdftex.def)             Requested size: 159.57567pt x 141.15286pt.
-[51 <../figures/corrs_gs_D=500,J=5.000.pdf> <../figures/corrs_gs_D=500,J=50.000.pdf>]
-<../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1672, 671.17761pt x 647.80232pt>
+[54 <../figures/corrs_gs_D=500,J=5.000.pdf> <../figures/corrs_gs_D=500,J=50.000.pdf>]
+<../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2004, 671.17761pt x 647.80232pt>
 File: ../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1509.
+Package pdftex.def Info: ../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1547.
 (pdftex.def)             Requested size: 119.68175pt x 115.51207pt.
-<../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1673, 671.17761pt x 647.80232pt>
+<../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2005, 671.17761pt x 647.80232pt>
 File: ../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1510.
+Package pdftex.def Info: ../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1548.
 (pdftex.def)             Requested size: 119.68175pt x 115.51207pt.
-<../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1674, 673.06995pt x 647.80232pt>
+<../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2006, 673.06995pt x 647.80232pt>
 File: ../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1511.
+Package pdftex.def Info: ../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1549.
 (pdftex.def)             Requested size: 119.68175pt x 115.18587pt.
-<../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1675, 701.22554pt x 647.80232pt>
+<../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2007, 701.22554pt x 647.80232pt>
 File: ../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1512.
+Package pdftex.def Info: ../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1550.
 (pdftex.def)             Requested size: 119.68175pt x 110.55986pt.
-<../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1676, 684.93617pt x 647.80232pt>
+<../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2008, 684.93617pt x 647.80232pt>
 File: ../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1517.
+Package pdftex.def Info: ../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1555.
 (pdftex.def)             Requested size: 159.57567pt x 150.9189pt.
-<../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1677, 671.17761pt x 647.80232pt>
+<../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2009, 671.17761pt x 647.80232pt>
 File: ../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1518.
+Package pdftex.def Info: ../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1556.
 (pdftex.def)             Requested size: 159.57567pt x 154.0128pt.
-<../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1678, 726.21184pt x 647.80232pt>
+<../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2010, 726.21184pt x 647.80232pt>
 File: ../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1519.
+Package pdftex.def Info: ../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1557.
 (pdftex.def)             Requested size: 159.57567pt x 142.33902pt.
-<../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1679, 705.37556pt x 647.80232pt>
+<../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2011, 705.37556pt x 647.80232pt>
 File: ../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1525.
+Package pdftex.def Info: ../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1563.
 (pdftex.def)             Requested size: 159.57567pt x 146.54988pt.
-<../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1680, 695.80074pt x 671.90189pt>
+<../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2012, 695.80074pt x 671.90189pt>
 File: ../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1526.
+Package pdftex.def Info: ../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1564.
 (pdftex.def)             Requested size: 159.57567pt x 154.09332pt.
-<../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1681, 719.13412pt x 647.80232pt>
+<../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2013, 719.13412pt x 647.80232pt>
 File: ../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1527.
+Package pdftex.def Info: ../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1565.
 (pdftex.def)             Requested size: 159.57567pt x 143.74265pt.
- [52 <../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>]
-<../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1803, 671.17761pt x 647.80232pt>
+ [55 <../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>]
+<../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2135, 671.17761pt x 647.80232pt>
 File: ../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1529.
+Package pdftex.def Info: ../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1567.
 (pdftex.def)             Requested size: 159.57567pt x 154.0128pt.
-<../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1804, 687.46706pt x 647.80232pt>
+<../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2136, 687.46706pt x 647.80232pt>
 File: ../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1534.
+Package pdftex.def Info: ../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1572.
 (pdftex.def)             Requested size: 159.57567pt x 150.36536pt.
-<../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1805, 714.9841pt x 650.42369pt>
+<../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2137, 714.9841pt x 650.42369pt>
 File: ../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1535.
+Package pdftex.def Info: ../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1573.
 (pdftex.def)             Requested size: 159.57567pt x 145.16791pt.
-<../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1806, 686.82843pt x 647.80232pt>
+<../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2138, 686.82843pt x 647.80232pt>
 File: ../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1536.
+Package pdftex.def Info: ../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1574.
 (pdftex.def)             Requested size: 159.57567pt x 150.50374pt.
-<../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1807, 700.58699pt x 647.80232pt>
+<../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2139, 700.58699pt x 647.80232pt>
 File: ../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1538.
+Package pdftex.def Info: ../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1576.
 (pdftex.def)             Requested size: 149.6003pt x 138.32585pt.
-<../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1808, 685.02304pt x 649.81442pt>
+<../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2140, 685.02304pt x 649.81442pt>
 File: ../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1539.
+Package pdftex.def Info: ../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1577.
 (pdftex.def)             Requested size: 149.6003pt x 141.90858pt.
-<../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=1809, 671.2645pt x 647.80232pt>
+<../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf, id=2141, 671.2645pt x 647.80232pt>
 File: ../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf Graphic file (type pdf)
 <use ../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>
-Package pdftex.def Info: ../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1540.
+Package pdftex.def Info: ../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf  used on input line 1578.
 (pdftex.def)             Requested size: 149.6003pt x 144.36537pt.
- [53 <../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>]
-<../figures/spec_func_U_by_J=0.00.pdf, id=1898, 678.72945pt x 518.67464pt>
+ [56 <../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf>]
+<../figures/spec_func_U_by_J=0.00.pdf, id=2230, 678.72945pt x 518.67464pt>
 File: ../figures/spec_func_U_by_J=0.00.pdf Graphic file (type pdf)
 <use ../figures/spec_func_U_by_J=0.00.pdf>
-Package pdftex.def Info: ../figures/spec_func_U_by_J=0.00.pdf  used on input line 1545.
+Package pdftex.def Info: ../figures/spec_func_U_by_J=0.00.pdf  used on input line 1583.
 (pdftex.def)             Requested size: 224.39664pt x 171.47972pt.
-<../figures/spec_func_U_by_J=1.50.pdf, id=1899, 678.72945pt x 518.67464pt>
+<../figures/spec_func_U_by_J=1.50.pdf, id=2231, 678.72945pt x 518.67464pt>
 File: ../figures/spec_func_U_by_J=1.50.pdf Graphic file (type pdf)
 <use ../figures/spec_func_U_by_J=1.50.pdf>
-Package pdftex.def Info: ../figures/spec_func_U_by_J=1.50.pdf  used on input line 1546.
+Package pdftex.def Info: ../figures/spec_func_U_by_J=1.50.pdf  used on input line 1584.
 (pdftex.def)             Requested size: 224.39664pt x 171.47972pt.
-<../figures/spec_func_U_by_J=1.76.pdf, id=1900, 678.72945pt x 518.67464pt>
+<../figures/spec_func_U_by_J=1.76.pdf, id=2232, 678.72945pt x 518.67464pt>
 File: ../figures/spec_func_U_by_J=1.76.pdf Graphic file (type pdf)
 <use ../figures/spec_func_U_by_J=1.76.pdf>
-Package pdftex.def Info: ../figures/spec_func_U_by_J=1.76.pdf  used on input line 1547.
+Package pdftex.def Info: ../figures/spec_func_U_by_J=1.76.pdf  used on input line 1585.
 (pdftex.def)             Requested size: 224.39664pt x 171.47972pt.
-<../figures/spec_func_U_by_J=4.00.pdf, id=1901, 678.72945pt x 518.67464pt>
+<../figures/spec_func_U_by_J=4.00.pdf, id=2233, 678.72945pt x 518.67464pt>
 File: ../figures/spec_func_U_by_J=4.00.pdf Graphic file (type pdf)
 <use ../figures/spec_func_U_by_J=4.00.pdf>
-Package pdftex.def Info: ../figures/spec_func_U_by_J=4.00.pdf  used on input line 1548.
+Package pdftex.def Info: ../figures/spec_func_U_by_J=4.00.pdf  used on input line 1586.
 (pdftex.def)             Requested size: 224.39664pt x 171.47972pt.
-<../figures/spec_func_U_by_J=6.00.pdf, id=1902, 644.76657pt x 484.65962pt>
+<../figures/spec_func_U_by_J=6.00.pdf, id=2234, 644.76657pt x 484.65962pt>
 File: ../figures/spec_func_U_by_J=6.00.pdf Graphic file (type pdf)
 <use ../figures/spec_func_U_by_J=6.00.pdf>
-Package pdftex.def Info: ../figures/spec_func_U_by_J=6.00.pdf  used on input line 1549.
+Package pdftex.def Info: ../figures/spec_func_U_by_J=6.00.pdf  used on input line 1587.
 (pdftex.def)             Requested size: 224.39664pt x 168.67201pt.
- [54 <../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/spec_func_U_by_J=0.00.pdf> <../figures/spec_func_U_by_J=1.50.pdf> <../figures/spec_func_U_by_J=1.76.pdf> <../figures/spec_func_U_by_J=4.00.pdf>] [55 <../figures/spec_func_U_by_J=6.00.pdf>]
+ [57 <../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf> <../figures/spec_func_U_by_J=0.00.pdf> <../figures/spec_func_U_by_J=1.50.pdf> <../figures/spec_func_U_by_J=1.76.pdf> <../figures/spec_func_U_by_J=4.00.pdf>] [58 <../figures/spec_func_U_by_J=6.00.pdf>]
 Chapter 4.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1553--1556
+Underfull \hbox (badness 10000) in paragraph at lines 1591--1594
 
  []
 
-[56
+[59
 
-] [57]
-Overfull \hbox (13.45602pt too wide) in paragraph at lines 1608--1608
+] [60]
+Overfull \hbox (13.45602pt too wide) in paragraph at lines 1646--1646
 []\T1/cmr/bx/n/14.4 Creating Gen-eral $\OML/cmm/m/it/14.4 N\OMS/cmsy/m/n/14.4 ^^@$\T1/cmr/bx/n/14.4 site Hub-bard Hamil-to-nian from Hub-bard dimers 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1608.
+(hyperref)                removing `math shift' on input line 1646.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1609--1614
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1609--1614
+Underfull \hbox (badness 10000) in paragraph at lines 1647--1652
 
  []
 
-<../figures/dimer-nn.png, id=2015, 383.93437pt x 504.38437pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 1647--1652
+
+ []
+
+<../figures/dimer-nn.png, id=2347, 383.93437pt x 504.38437pt>
 File: ../figures/dimer-nn.png Graphic file (type png)
 <use ../figures/dimer-nn.png>
-Package pdftex.def Info: ../figures/dimer-nn.png  used on input line 1625.
+Package pdftex.def Info: ../figures/dimer-nn.png  used on input line 1663.
 (pdftex.def)             Requested size: 149.6003pt x 196.53209pt.
-[58] [59 <../figures/dimer-nn.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1704--1708
+[61] [62 <../figures/dimer-nn.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1742--1746
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1726--1734
-
- []
-
-[60]
-<../figures/lattice.png, id=2057, 670.4247pt x 305.2203pt>
-File: ../figures/lattice.png Graphic file (type png)
-<use ../figures/lattice.png>
-Package pdftex.def Info: ../figures/lattice.png  used on input line 1777.
-(pdftex.def)             Requested size: 349.06227pt x 158.91573pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 1772--1783
-
- []
-
-[61] [62 <../figures/lattice.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1851--1855
+Underfull \hbox (badness 10000) in paragraph at lines 1764--1772
 
  []
 
 [63]
+<../figures/lattice.png, id=2388, 670.4247pt x 305.2203pt>
+File: ../figures/lattice.png Graphic file (type png)
+<use ../figures/lattice.png>
+Package pdftex.def Info: ../figures/lattice.png  used on input line 1815.
+(pdftex.def)             Requested size: 349.06227pt x 158.91573pt.
 
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2019.
+Underfull \hbox (badness 10000) in paragraph at lines 1810--1821
 
+ []
 
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@@overline' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2019.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2019.
-
-<../figures/dimer_dispersion.png, id=2106, 517.18219pt x 517.18219pt>
-File: ../figures/dimer_dispersion.png Graphic file (type png)
-<use ../figures/dimer_dispersion.png>
-Package pdftex.def Info: ../figures/dimer_dispersion.png  used on input line 2035.
-(pdftex.def)             Requested size: 99.73099pt x 99.72557pt.
-[64 <../figures/dimer_dispersion.png>] [65]
-Underfull \hbox (badness 10000) in paragraph at lines 2200--2204
+[64] [65 <../figures/lattice.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 1889--1893
 
  []
 
 [66]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@@overline' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2057.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2057.
+
+<../figures/dimer_dispersion.png, id=2438, 517.18219pt x 517.18219pt>
+File: ../figures/dimer_dispersion.png Graphic file (type png)
+<use ../figures/dimer_dispersion.png>
+Package pdftex.def Info: ../figures/dimer_dispersion.png  used on input line 2073.
+(pdftex.def)             Requested size: 99.73099pt x 99.72557pt.
+[67 <../figures/dimer_dispersion.png>] [68]
+Underfull \hbox (badness 10000) in paragraph at lines 2238--2242
+
+ []
+
+[69]
 Chapter 5.
-[67
+[70
 
 ]
 Appendix A.
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2236.
+(hyperref)                removing `math shift' on input line 2274.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2236.
+(hyperref)                removing `subscript' on input line 2274.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2237.
+(hyperref)                removing `math shift' on input line 2275.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\epsilon' on input line 2237.
+(hyperref)                removing `\epsilon' on input line 2275.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2237.
+(hyperref)                removing `subscript' on input line 2275.
 
 
-Overfull \hbox (16.45795pt too wide) detected at line 2243
+Overfull \hbox (16.45795pt too wide) detected at line 2281
 [][][][]
  []
 
-[68
+[71
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2299.
+(hyperref)                removing `math shift' on input line 2337.
 
-[69] [70]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2367.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2367.
-
-[71]
-Appendix B.
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2391.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2391.
-
+[72] [73]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 2405.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 2405.
+(hyperref)                removing `math shift' on input line 2405.
+
+[74]
+Appendix B.
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2429.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2420.
+(hyperref)                removing `subscript' on input line 2429.
 
-[72
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2443.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 2443.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 2458.
+
+[75
 
 ]
-Overfull \hbox (7.46442pt too wide) detected at line 2428
+Overfull \hbox (7.46442pt too wide) detected at line 2466
 [][][][]
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2430.
+(hyperref)                removing `math shift' on input line 2468.
 
-[73]
-Overfull \hbox (1.48386pt too wide) detected at line 2475
+[76]
+Overfull \hbox (1.48386pt too wide) detected at line 2513
 [][][][]
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2477.
+(hyperref)                removing `math shift' on input line 2515.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 2500.
+(hyperref)                removing `math shift' on input line 2538.
 
-[74] [75]
+[77] [78]
 Appendix C.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 2534.
+(caption)                particular \caption on input line 2572.
 See the caption package documentation for explanation.
 
-[76
-
-] [77]
-<../figures/dimer-peaks.png, id=2279, 929.1513pt x 522.0303pt>
-File: ../figures/dimer-peaks.png Graphic file (type png)
-<use ../figures/dimer-peaks.png>
-Package pdftex.def Info: ../figures/dimer-peaks.png  used on input line 2622.
-(pdftex.def)             Requested size: 448.79327pt x 252.14886pt.
- [78pdfTeX warning (ext4): destination with the same identifier (name{equation.a.C.0.14}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.2626 \chapter
-               {Simple results for the Greens functions} <../figures/dimer-peaks.png>]
-Appendix D.
 [79
 
 ] [80]
+<../figures/dimer-peaks.png, id=2610, 929.1513pt x 522.0303pt>
+File: ../figures/dimer-peaks.png Graphic file (type png)
+<use ../figures/dimer-peaks.png>
+Package pdftex.def Info: ../figures/dimer-peaks.png  used on input line 2660.
+(pdftex.def)             Requested size: 448.79327pt x 252.14886pt.
+ [81pdfTeX warning (ext4): destination with the same identifier (name{equation.a.C.0.14}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.2664 \chapter
+               {Simple results for the Greens functions} <../figures/dimer-peaks.png>]
+Appendix D.
+[82
+
+] [83]
 Appendix E.
-[81
+[84
 
-] [82]
+] [85]
 Appendix F.
-[83
+[86
 
-] (./notes.bbl [84]) [85
+] (./notes.bbl [87]) [88
 
 ] (./notes.aux)
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 03227457EF5E839072CAC55640CA5DCD;14651.
+(rerunfilecheck)             Checksum: 30F10C82D25765B7624B3A964345BE37;14819.
  ) 
 Here is how much of TeX's memory you used:
- 13203 strings out of 478353
- 222140 string characters out of 5854636
- 526770 words of memory out of 5000000
- 30468 multiletter control sequences out of 15000+600000
+ 13393 strings out of 478353
+ 235761 string characters out of 5854634
+ 533355 words of memory out of 5000000
+ 30627 multiletter control sequences out of 15000+600000
  428594 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,20n,63p,2069b,510s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,20n,63p,2069b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
 </usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfsl1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on notes.pdf (86 pages, 2491003 bytes).
+Output written on notes.pdf (89 pages, 2574662 bytes).
 PDF statistics:
- 2618 PDF objects out of 2984 (max. 8388607)
- 2098 compressed objects within 21 object streams
- 606 named destinations out of 1000 (max. 500000)
- 821 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2952 PDF objects out of 2984 (max. 8388607)
+ 2372 compressed objects within 24 object streams
+ 610 named destinations out of 1000 (max. 500000)
+ 948 words of extra memory for PDF output out of 10000 (max. 10000000)
 

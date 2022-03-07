@@ -41,7 +41,7 @@ central peak. In this situation there is a kink at the effective
 Kondo energy scale which is smaller than the width of the
 narrow band." Image and caption source in footnote.}
 \end{figure}
-\section{Introduction}
+
 This is an attempt to obtain various quantities like Greens functions, self-energies, spectral functions and (if possible) energies and wavefunctions of the Hubbard model, using a cluster-bath approach. The cluster-bath system is taken to be a single-impurity Anderson model with a correlated bath. The correlation will be brought about in two ways: a self-energy $\Sigma(k,\omega)$ of the bath, and a double occupancy repulsion cost $U_b$. The Hubbard and the correlated single-impurity Anderson models are defined using the Hamiltonians
 \begin{align}
 H_\text{hubb} &= -t^H\sum_{\sigma,\left<i,j \right>}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right) + U^H\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu^H \sum_{i\sigma}\hat n_{i\sigma}\\
@@ -54,7 +54,7 @@ Broadly speaking, the method involves first solving the SIAM using a unitary ren
 \end{itemize}
 The meaning of each of these statements will become clearer when we describe the method in more detail.
 
-\section{Philosophy of the method}
+\section{Philosophy of the auxiliary model method}
 The method is closely tied to the auxiliary system approach described in [CITE MARTIN]. We can view the full Hamiltonian as a sum of two component Hamiltonians \(H_1, H_2\) connected via the interaction term \(H_{12}\).
 \begin{equation}\begin{aligned}
 	H = \begin{pmatrix} H_1 && H_{12} \\ H_{12}^* && H_2 \end{pmatrix} = H_1 \ket{1}\bra{1} + H_2\ket{2}\bra{2} + H_{12}\ket{1}\bra{2} + H_{12}^*\ket{2}\bra{1}
@@ -412,39 +412,6 @@ For both \(V_0 < J_0\) and \(V_0 > J_0\), we see that the spin contribution incr
 	\label{gstate_kondo}
 	\lim_{D_0 \to \infty} \ket{\Psi}_1 = \frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} - \ket{\downarrow, \uparrow}\right) 
 \end{aligned}\end{equation}
-\section{Spectral function of the single-impurity Anderson model}
-To get a better look at what we are getting into and what we should expect going forward, we first calculate the spectral function of the smaller single-impurity Anderson model that is obtained as the low-energy Hamiltonian of an URG analysis of the full SIAM. This ow energy effective Hamiltonian is
-\begin{equation}\begin{aligned}
-	\epsilon_d \hat n_d + U\hat n_{d \uparrow} \hat n_{d \downarrow} + v \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + \sum_{k \in \left[-\Lambda^*, \Lambda^*\right], \sigma}\epsilon_k \hat n_{k\sigma}
-\end{aligned}\end{equation}
-All the impurity couplings are fixed point values, and the momentum states of the bath now run over a reduced bandwidth. The subscript \(d\) indicates that the operator is that of the impurity, while the subscript \(0\) indicates it is of the zeroth site of the bath: \(c_0 = \frac{1}{\sqrt N}\sum_k c_k\). The spectral function of the SIAM is already known from other methods like the numerical renormalization group. For small values of \(U\), the spectral function consists of just the central quasiparticle excitation peak. At larger values of \(U\), we see the emergence of the two Hubbard side bands while the spectral weight at the centre decreases. We also calculated the spectral function of the low energy theory sing exact diagonalization. The plots are shown in fig.~\ref{siam_spec_func}.
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=\textwidth]{../figures/siam_specfunc_all.pdf}
-	\caption{Spectral function of the effective SIAM Hamiltonian for various values of \(\frac{U}{\Delta}\). \(\Delta\) is defined by the height of the central peak in the non-interacting model \(U=0\). The inset shows a zoom-in of the final spectral function \(\left( \frac{U}{\Delta} = 19.71 \right)\) near \(\omega = 0\).}
-	\label{siam_spec_func}
-\end{figure}
-\\\\
-Because we kept only a discrete bath of 4 momentum states, \textit{we had to artificially enforce the constancy of the height of the central peak, using \cite{langreth1966}.} To convert the discrete sum of delta functions into a continuous spectrum, we broadened them using a Gaussian. Following \cite{bullaNRGreview}, we replace the delta-functions at \(\pm x_n \equiv \pm(E_n - E_0)\) by normalised Gaussian functions
-\begin{equation}\begin{aligned}
-	\delta(\omega \pm x_n) \to \frac{1}{\eta_n\sqrt \pi}e^{-\left(\frac{\omega \pm x_n}{\eta_n}\right)^2}
-\end{aligned}\end{equation}
-The parameter \(\eta_n\) determines the height and width of the Gaussian, and is chosen such that the higher energy poles are broader than the lower energy ones.
-\begin{equation}\begin{aligned}
-	\eta_n = 2\Delta + \frac{1}{2}|x_n| 
-\end{aligned}\end{equation}
-where \(\Delta = \frac{V^2}{t}\) is the relevant energy scale of the non-interacting problem and \(t\) is the tight-binding hopping parameter of the conduction bath.
-\\\\
-The central peak (or equivalently, the central pole in the impurity Greens function) does not vanish even for exhorbitantly large values of \(\frac{U}{\Delta}\), implying that there is no stable local moment phase in the SIAM (a local moment phase would involve a gap at zero frequency in the impurity spectral function). Formally, the local moment phase will be stable only at \(U \to \infty\) or \(v^* = 0\).
-\\\\
-We also checked how the width of the central peak varies with increasing \(U\). The behaviour is shown in fig.~\ref{fwhm}. The width was also fitted against a function, as shown in the plot.
-\begin{figure}[htpb!]
-	\centering
-	\includegraphics[width=0.55\textwidth]{../figures/width_vs_U_simple_fit.pdf}
-	% \includegraphics[width=0.49\textwidth]{./width_vs_U_simple_fit_log.pdf}
-	\caption{The decay of the full width at half maximum (FWHM) of the central peak, with increasing \(\frac{U}{\Delta}\). The behaviour satisfies a function of the form shown in the legend.}
-	\label{fwhm}
-\end{figure}
 
 \section{Effective temperature scale at the fixed point}
 We will first change the discrete RG equation to a continuum equation by interpreting \(\Delta J\) as \(\frac{\Delta J}{\Delta \ln D}\), where the denominator is unity: \(\Delta \ln D = 1\). Now, since the bandwidth is decreasing under the RG, we can write \(\Delta \ln D = -d \ln D\). The continuum equation (for \(K=0\)) becomes
@@ -1036,6 +1003,76 @@ The effective Hamiltonian becomes
 	=& \ket{\Psi}_1 \bra{\Psi}_1 \left[\text{constant} + \frac{64 t^4}{27 J^3} \mathcal{P}_\text{charge}  - \frac{8t^4}{27 J^3}\mathcal{P}_\text{spin}\right] 
 \end{aligned}\end{equation}
 \(\mathcal{P}_\text{spin}\) and \(\mathcal{P}_\text{charge}\) project, respectively,  onto the spin and charge sectors of the first site. The fact that the charge sector comes with a positive factor means that the holon-doublon states are repulsive, and this renormalisation of the states generates an effective particle-hole symmetric Fermi liquid interaction on the first site - also known as the local Fermi liquid (LFL)~\cite{nozieres1974fermi}.
+
+\section{Destruction of the Abrikosov-Suhl resonance: transition from strong-coupling to local moment}
+
+We will now tune the parameters of the fixed point Hamiltonian and study the variation of quantities related to the effective Hamiltonian like the local FL strength \(\mathcal{F}\), the gap in the spectrum of the zeroth Hamiltonian \(H_0^*\) and the value of the small parameter \(t^2/\delta E\), as well as various measures of entanglement like entanglement entropy, mutual information and spin-spin correlations between various sets of members of the real-space impurity+lattice construction. We will trace a specific path through the space of values of fixed point couplings: we will start from the strong-coupling regime \(U \ll J,V\) and go towards the local moment regime \(U \gg J,V\). The context of this study is that the technique of dynamical mean-field theory (DMFT) obtains a metal-insulator transition in the 2D Hubbard model by studying the Anderson impurity model as the auxiliary system for the Hubbard; there, the local moment regime of the impurity corresponds to the insulator in the bulk. Our goal here is to study what precisely happens in the effective Hamiltonian in the journey from the metal to the insulator, and draw a concrete connection between this modification of the effective Hamiltonian, and the simultaneous change of the impurity spectral function in fig.~\ref{spec_func}. This is done with the knowledge that the local moment phase of the generalised SIAM is never RG-stable.
+
+\subsection*{Perturbation theory parameters}
+\begin{center}
+	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+The vanishing of the gap and the growth of the small parameter indicates the breakdown of perturbation theory around the singlet; this simply shows that there is a degeneracy in the local moment regime, and the effective Hamiltonian will have to be obtained using degenerate perturbation theory. The presence of degeneracy also suggests that the effective Hamiltonian will be of the non-Fermi liquid type.
+
+\subsection*{\(k-\)space correlations within the Kondo cloud}
+\begin{center}
+	\includegraphics[width=0.24\textwidth]{../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.24\textwidth]{../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.24\textwidth]{../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.24\textwidth]{../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+The vanishing of the Kondo cloud at large \(U/J\) is clear indication of the destruction of the Kondo cloud and the breakdown of screening. Non-zero mutual information indicates an (impurity-mediated) interaction between the \(k-\)states of the conduction bath; seen differently, it is this interaction that is responsively for the screening of the impurity. The disappearance of the mutual information is indicative of the disappearance of this interaction.
+
+\subsection*{Mutual information between various real space members}
+\begin{center}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+The impurity-zeroth site mutual information \(I(d:0)\) remains unchanged at the maximum for an appreciable range of values, and this shows the stability of the singlet. Meanwhile, the mutual information between the zeroth site and the site nearest to it (\(I(0:1)\)) grows, because when the singlet weakens, the zeroth site is able to entangle more with the other sites. It finally saturates to its maximum value, which is the value produced as result of the tight-binding hopping. The mutual information between the impurity and sites beyond the zeroth site (\(I(d:1)\)) show a non-monotonic behaviour; it first increases as the entanglement that was initially restricted to just the impurity and the zeroth sites begins "seeping" into the other sites as well. Beyond a critical value of \(U/J\), \(I(d:1)\) starts dropping, because the entanglement has now mostly shifted out of the zero mode and into the conduction bath.
+
+\subsection*{Impurity entanglement entropy and spin-spin correlations}
+
+\begin{center}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+
+	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+
+The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty straightforward behaviour. It is maximum for \(U \ll J\) because it is in a singlet configuration. For \(U \gg J\), the singlet weakens and the impurity begins to decouple from the bath, leading to a reduction in \(S(d)\). At sufficiently low values of \(J/U\), the impurity decouples from the zeroth site and the total system can be factorised into a local moment in product with a tight-binding chain, so that the impurity site will now have zero entanglement entropy.
+
+\subsection*{Behaviour of real-space correlations}
+\begin{center}
+	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+
+	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+
+\subsection*{Behaviour of real-space correlations as function of distance}
+\begin{center}
+	\includegraphics[width=0.35\textwidth]{../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf}
+	\includegraphics[width=0.35\textwidth]{../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf}
+
+	\includegraphics[width=0.45\textwidth]{../figures/corr-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+\end{center}
+
+\subsection*{Behaviour of \(A(\omega)\)}
+\begin{center}
+	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=0.100.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=9.000.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=16.000.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=20.250.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=36.000.pdf}
+\end{center}
 
 \section{Calculating the \(T=0\) Wilson ratio from low energy excitations}
 The total system now consists of two decoupled parts - the singlet composed of the impurity and the zeroth site, and the remaining lattice composed of N-1 sites with a tight-binding dispersion and a local interaction at the 1-th site. The effective Hamiltonian for the remaining lattice is

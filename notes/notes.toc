@@ -1,8 +1,7 @@
 \contentsline {chapter}{Contents}{1}{chapter*.1}%
 \contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}%
 \contentsline {section}{\numberline {1.1}What is the minimal impurity model for a Mott MIT?}{3}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Introduction}{3}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Philosophy of the method}{4}{section.1.3}%
+\contentsline {section}{\numberline {1.2}Philosophy of the auxiliary model method}{4}{section.1.2}%
 \contentsline {chapter}{\numberline {2}Physics of the generalised single-impurity Anderson model}{9}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Introduction of spin-exchange and charge isospin-exchange interactions into the SIAM: the generalised SIAM}{9}{section.2.1}%
 \contentsline {section}{\numberline {2.2}RG equations for generalised SIAM}{11}{section.2.2}%
@@ -11,61 +10,61 @@
 \contentsline {subsection}{\numberline {2.3.2}Attractive interaction on impurity: \(U<0\)}{12}{subsection.2.3.2}%
 \contentsline {section}{\numberline {2.4}Effective Hamiltonian and ground state}{14}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Approach towards the thermodynamic limit}{15}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Spectral function of the single-impurity Anderson model}{17}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Effective temperature scale at the fixed point}{18}{section.2.7}%
-\contentsline {section}{\numberline {2.8}Impurity susceptibilities}{19}{section.2.8}%
-\contentsline {subsection}{\numberline {2.8.1}Spin susceptibility}{19}{subsection.2.8.1}%
-\contentsline {subsection}{\numberline {2.8.2}Charge susceptibility}{20}{subsection.2.8.2}%
-\contentsline {section}{\numberline {2.9}Specific heat}{22}{section.2.9}%
-\contentsline {section}{\numberline {2.10}Renormalization of impurity spectral function}{23}{section.2.10}%
-\contentsline {section}{\numberline {2.11}Effective Hamiltonian for excitations of the Kondo cloud}{25}{section.2.11}%
-\contentsline {section}{\numberline {2.12}Obtaining the real space low energy Hamiltonian: the local Fermi liquid}{30}{section.2.12}%
-\contentsline {subsection}{\numberline {2.12.1}Second order effective Hamiltonian}{31}{subsection.2.12.1}%
-\contentsline {subsection}{\numberline {2.12.2}Fourth order effective Hamiltonian}{33}{subsection.2.12.2}%
-\contentsline {section}{\numberline {2.13}Calculating the \(T=0\) Wilson ratio from low energy excitations}{36}{section.2.13}%
-\contentsline {subsection}{\numberline {2.13.1}Low-\(T\) Specific heat}{37}{subsection.2.13.1}%
-\contentsline {subsection}{\numberline {2.13.2}Low-\(T\) Charge Susceptibility}{37}{subsection.2.13.2}%
-\contentsline {subsection}{\numberline {2.13.3}Low-\(T\) Spin Susceptibility}{38}{subsection.2.13.3}%
-\contentsline {subsection}{\numberline {2.13.4}Wilson ratio}{38}{subsection.2.13.4}%
-\contentsline {section}{\numberline {2.14}Luttinger's and Friedel's sum rules}{38}{section.2.14}%
-\contentsline {section}{\numberline {2.15}Reverse RG analysis}{43}{section.2.15}%
-\contentsline {chapter}{\numberline {3}Effect of minimal attractive correlation in the bath}{47}{chapter.3}%
-\contentsline {section}{\numberline {3.1}The modified hamiltonian}{47}{section.3.1}%
-\contentsline {section}{\numberline {3.2}RG Equations}{47}{section.3.2}%
-\contentsline {paragraph}{Important points regarding notation}{48}{section*.28}%
-\contentsline {section}{\numberline {3.3}Phase diagram}{48}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Overlap of ground state against spin singlet and charge triplet zero states}{49}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Spin and charge correlations in ground state}{50}{section.3.5}%
-\contentsline {section}{\numberline {3.6}\large Behaviour of \(\mathcal {F}\), the gap and the small parameter}{51}{section.3.6}%
-\contentsline {section}{\numberline {3.7}\large Behaviour of correlation within the Kondo cloud}{52}{section.3.7}%
-\contentsline {section}{\numberline {3.8}\large Behaviour of mutual information between various real space members}{52}{section.3.8}%
-\contentsline {section}{\numberline {3.9}\large Behaviour of impurity entanglement entropy and spin-spin correlations}{53}{section.3.9}%
-\contentsline {section}{\numberline {3.10}Behaviour of real-space correlations}{53}{section.3.10}%
-\contentsline {section}{\numberline {3.11}Impurity spectral function}{54}{section.3.11}%
-\contentsline {chapter}{\numberline {4}From the auxiliary model to the bulk}{56}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Solution of the Hubbard dimer using the Anderson molecule}{56}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}{58}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Formal expressions for single particle Greens functions and other related many-body quantites}{59}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}{59}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Constructing full Greens function matrix from the inverse matrix}{62}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Calculation of self energy matrix from the Dyson equation}{63}{subsection.4.3.3}%
-\contentsline {section}{\numberline {4.4}Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}{64}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Analytic consistency checks}{65}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Single-particle Greens function and self energy for the Hubbard dimer}{65}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}On the Bethe lattice}{66}{subsection.4.5.2}%
-\contentsline {chapter}{\numberline {5}Future goals}{67}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Derivation of RG equations: \(U_b\)-free terms}{68}{appendix.a.A}%
-\contentsline {section}{\numberline {A.1}Renormalisation of the impurity energy \(\epsilon _d\)}{68}{section.a.A.1}%
-\contentsline {section}{\numberline {A.2}Renormalisation of the hybridisation \(V\)}{69}{section.a.A.2}%
-\contentsline {section}{\numberline {A.3}Renormalisation of the exchange couplings \(J\) and \(K\)}{71}{section.a.A.3}%
-\contentsline {chapter}{\numberline {B}Derivation of RG equations: \(U_b\)-included terms}{72}{appendix.a.B}%
-\contentsline {section}{\numberline {B.1}Renormalisation of \(U_b\)}{72}{section.a.B.1}%
-\contentsline {section}{\numberline {B.2}Renormalisation of \(U\)}{73}{section.a.B.2}%
-\contentsline {section}{\numberline {B.3}Renormalisation of \(V\)}{73}{section.a.B.3}%
-\contentsline {section}{\numberline {B.4}Renormalisation of \(J\)}{74}{section.a.B.4}%
-\contentsline {section}{\numberline {B.5}Renormalisation of \(K\)}{75}{section.a.B.5}%
-\contentsline {chapter}{\numberline {C}Analytic results for the Hubbard dimer}{76}{appendix.a.C}%
-\contentsline {chapter}{\numberline {D}Simple results for the Greens functions}{79}{appendix.a.D}%
-\contentsline {chapter}{\numberline {E}Zero temperature Greens function in frequency domain}{81}{appendix.a.E}%
-\contentsline {chapter}{\numberline {F}Topological interpretation of the Wilson ratio}{83}{appendix.a.F}%
-\contentsline {chapter}{Bibliography}{85}{appendix*.39}%
+\contentsline {section}{\numberline {2.6}Effective temperature scale at the fixed point}{17}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Impurity susceptibilities}{17}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Spin susceptibility}{17}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}Charge susceptibility}{18}{subsection.2.7.2}%
+\contentsline {section}{\numberline {2.8}Specific heat}{20}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Renormalization of impurity spectral function}{21}{section.2.9}%
+\contentsline {section}{\numberline {2.10}Effective Hamiltonian for excitations of the Kondo cloud}{23}{section.2.10}%
+\contentsline {section}{\numberline {2.11}Obtaining the real space low energy Hamiltonian: the local Fermi liquid}{28}{section.2.11}%
+\contentsline {subsection}{\numberline {2.11.1}Second order effective Hamiltonian}{29}{subsection.2.11.1}%
+\contentsline {subsection}{\numberline {2.11.2}Fourth order effective Hamiltonian}{31}{subsection.2.11.2}%
+\contentsline {section}{\numberline {2.12}Destruction of the Abrikosov-Suhl resonance: transition from strong-coupling to local moment}{34}{section.2.12}%
+\contentsline {section}{\numberline {2.13}Calculating the \(T=0\) Wilson ratio from low energy excitations}{38}{section.2.13}%
+\contentsline {subsection}{\numberline {2.13.1}Low-\(T\) Specific heat}{39}{subsection.2.13.1}%
+\contentsline {subsection}{\numberline {2.13.2}Low-\(T\) Charge Susceptibility}{40}{subsection.2.13.2}%
+\contentsline {subsection}{\numberline {2.13.3}Low-\(T\) Spin Susceptibility}{40}{subsection.2.13.3}%
+\contentsline {subsection}{\numberline {2.13.4}Wilson ratio}{41}{subsection.2.13.4}%
+\contentsline {section}{\numberline {2.14}Luttinger's and Friedel's sum rules}{41}{section.2.14}%
+\contentsline {section}{\numberline {2.15}Reverse RG analysis}{46}{section.2.15}%
+\contentsline {chapter}{\numberline {3}Effect of minimal attractive correlation in the bath}{50}{chapter.3}%
+\contentsline {section}{\numberline {3.1}The modified hamiltonian}{50}{section.3.1}%
+\contentsline {section}{\numberline {3.2}RG Equations}{50}{section.3.2}%
+\contentsline {paragraph}{Important points regarding notation}{51}{section*.33}%
+\contentsline {section}{\numberline {3.3}Phase diagram}{51}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Overlap of ground state against spin singlet and charge triplet zero states}{52}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Spin and charge correlations in ground state}{53}{section.3.5}%
+\contentsline {section}{\numberline {3.6}\large Behaviour of \(\mathcal {F}\), the gap and the small parameter}{54}{section.3.6}%
+\contentsline {section}{\numberline {3.7}\large Behaviour of correlation within the Kondo cloud}{55}{section.3.7}%
+\contentsline {section}{\numberline {3.8}\large Behaviour of mutual information between various real space members}{55}{section.3.8}%
+\contentsline {section}{\numberline {3.9}\large Behaviour of impurity entanglement entropy and spin-spin correlations}{56}{section.3.9}%
+\contentsline {section}{\numberline {3.10}Behaviour of real-space correlations}{56}{section.3.10}%
+\contentsline {section}{\numberline {3.11}Impurity spectral function}{57}{section.3.11}%
+\contentsline {chapter}{\numberline {4}From the auxiliary model to the bulk}{59}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Solution of the Hubbard dimer using the Anderson molecule}{59}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}{61}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Formal expressions for single particle Greens functions and other related many-body quantites}{62}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}{62}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Constructing full Greens function matrix from the inverse matrix}{65}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Calculation of self energy matrix from the Dyson equation}{66}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Calculating the coefficients $C^{0,1}_n$ and $\overline C^{0,1}_n$ in practice}{67}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Analytic consistency checks}{68}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Single-particle Greens function and self energy for the Hubbard dimer}{68}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}On the Bethe lattice}{69}{subsection.4.5.2}%
+\contentsline {chapter}{\numberline {5}Future goals}{70}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Derivation of RG equations: \(U_b\)-free terms}{71}{appendix.a.A}%
+\contentsline {section}{\numberline {A.1}Renormalisation of the impurity energy \(\epsilon _d\)}{71}{section.a.A.1}%
+\contentsline {section}{\numberline {A.2}Renormalisation of the hybridisation \(V\)}{72}{section.a.A.2}%
+\contentsline {section}{\numberline {A.3}Renormalisation of the exchange couplings \(J\) and \(K\)}{74}{section.a.A.3}%
+\contentsline {chapter}{\numberline {B}Derivation of RG equations: \(U_b\)-included terms}{75}{appendix.a.B}%
+\contentsline {section}{\numberline {B.1}Renormalisation of \(U_b\)}{75}{section.a.B.1}%
+\contentsline {section}{\numberline {B.2}Renormalisation of \(U\)}{76}{section.a.B.2}%
+\contentsline {section}{\numberline {B.3}Renormalisation of \(V\)}{76}{section.a.B.3}%
+\contentsline {section}{\numberline {B.4}Renormalisation of \(J\)}{77}{section.a.B.4}%
+\contentsline {section}{\numberline {B.5}Renormalisation of \(K\)}{78}{section.a.B.5}%
+\contentsline {chapter}{\numberline {C}Analytic results for the Hubbard dimer}{79}{appendix.a.C}%
+\contentsline {chapter}{\numberline {D}Simple results for the Greens functions}{82}{appendix.a.D}%
+\contentsline {chapter}{\numberline {E}Zero temperature Greens function in frequency domain}{84}{appendix.a.E}%
+\contentsline {chapter}{\numberline {F}Topological interpretation of the Wilson ratio}{86}{appendix.a.F}%
+\contentsline {chapter}{Bibliography}{88}{appendix*.44}%

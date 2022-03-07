@@ -22,13 +22,13 @@ R.~\ifmmode~\check{Z}\else \v{Z}\fi{}itko and J.~Bon\ifmmode~\check{c}\else
 J.~Schrieffer and P.A.Wolff, ``Relation between the anderson and kondo
   hamiltonians,'' {\em Phys. Rev.}, vol.~149, p.~491, 1966.
 
-\bibitem{langreth1966}
-D.~C. Langreth, ``Friedel sum rule for anderson's model of localized impurity
-  states,'' {\em Phys. Rev.}, vol.~150, pp.~516--518, Oct 1966.
-
 \bibitem{bullaNRGreview}
 R.~Bulla, T.~Costi, and T.~Pruschke, ``Numerical renormalisation group method
   for quantum impurity systems,'' {\em Rev. Mod. Phys.}, vol.~80, p.~395, 2008.
+
+\bibitem{langreth1966}
+D.~C. Langreth, ``Friedel sum rule for anderson's model of localized impurity
+  states,'' {\em Phys. Rev.}, vol.~150, pp.~516--518, Oct 1966.
 
 \bibitem{nozieres1974fermi}
 P.~Nozieres, ``A ``fermi-liquid" description of the kondo problem at low

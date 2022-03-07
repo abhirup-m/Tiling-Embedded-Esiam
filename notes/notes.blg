@@ -1,46 +1,46 @@
 This is BibTeX, Version 0.99d (TeX Live 2021/Arch Linux)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: notes.aux
-The style file: unsrt.bst
+The style file: ieeetr.bst
 Database file #1: notes.bib
-You've used 4 entries,
-            1791 wiz_defined-function locations,
-            471 strings with 4043 characters,
-and the built_in function-call counts, 773 in all, are:
-= -- 68
-> -- 27
+You've used 13 entries,
+            1876 wiz_defined-function locations,
+            573 strings with 5302 characters,
+and the built_in function-call counts, 3397 in all, are:
+= -- 368
+> -- 86
 < -- 0
-+ -- 11
-- -- 7
-* -- 47
-:= -- 126
-add.period$ -- 11
-call.type$ -- 4
-change.case$ -- 3
++ -- 35
+- -- 22
+* -- 199
+:= -- 456
+add.period$ -- 13
+call.type$ -- 13
+change.case$ -- 13
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 33
-empty$ -- 84
-format.name$ -- 7
-if$ -- 168
+cite$ -- 13
+duplicate$ -- 223
+empty$ -- 298
+format.name$ -- 22
+if$ -- 875
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 4
-newline$ -- 22
-num.names$ -- 4
-pop$ -- 16
+int.to.str$ -- 13
+missing$ -- 13
+newline$ -- 42
+num.names$ -- 13
+pop$ -- 28
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 13
+skip$ -- 188
 stack$ -- 0
-substring$ -- 50
-swap$ -- 4
+substring$ -- 158
+swap$ -- 123
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 8
-width$ -- 5
-write$ -- 42
+while$ -- 30
+width$ -- 15
+write$ -- 137

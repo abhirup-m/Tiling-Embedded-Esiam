@@ -55,7 +55,7 @@ Broadly speaking, the method involves first solving the SIAM using a unitary ren
 The meaning of each of these statements will become clearer when we describe the method in more detail.
 
 \section{Philosophy of the auxiliary model method}
-The method is closely tied to the auxiliary system approach described in [CITE MARTIN]. We can view the full Hamiltonian as a sum of two component Hamiltonians \(H_1, H_2\) connected via the interaction term \(H_{12}\).
+The method is closely tied to the auxiliary system approach described in \cite{martin_2016}. We can view the full Hamiltonian as a sum of two component Hamiltonians \(H_1, H_2\) connected via the interaction term \(H_{12}\).
 \begin{equation}\begin{aligned}
 	H = \begin{pmatrix} H_1 && H_{12} \\ H_{12}^* && H_2 \end{pmatrix} = H_1 \ket{1}\bra{1} + H_2\ket{2}\bra{2} + H_{12}\ket{1}\bra{2} + H_{12}^*\ket{2}\bra{1}
 \end{aligned}\end{equation}
@@ -134,7 +134,7 @@ This single site will act as the zeroth site of the effective bath, and it means
 This entire procedure is depicted in fig.~\ref{dimer-bath}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.3\textwidth]{../figures/dimer_bath.png}
+	\includegraphics[width=\textwidth]{../figures/dimer_bath.pdf}
 	\caption{The process of symmetrizing the Rg fixed point Hamiltonian and then creating a dimer+bath Hamiltonian. We first add the asymmetric Hamiltonians to get a symmetrized Hamiltonian. In the symmetrized Hamiltonian, the dimer has \(w\) entry points into the bath, \(w\) being the coordination number of the lattice. We then merge these \(w\) lattice sites (enclosed in the black box) into a single lattice site.}
 	\label{dimer-bath} 
 \end{figure}
@@ -1004,7 +1004,7 @@ The effective Hamiltonian becomes
 \end{aligned}\end{equation}
 \(\mathcal{P}_\text{spin}\) and \(\mathcal{P}_\text{charge}\) project, respectively,  onto the spin and charge sectors of the first site. The fact that the charge sector comes with a positive factor means that the holon-doublon states are repulsive, and this renormalisation of the states generates an effective particle-hole symmetric Fermi liquid interaction on the first site - also known as the local Fermi liquid (LFL)~\cite{nozieres1974fermi}.
 
-\section{Destruction of the Abrikosov-Suhl resonance: transition from strong-coupling to local moment}
+\section{Destruction of the Abrikosov-Suhl resonance: passage from strong-coupling to local moment}
 
 We will now tune the parameters of the fixed point Hamiltonian and study the variation of quantities related to the effective Hamiltonian like the local FL strength \(\mathcal{F}\), the gap in the spectrum of the zeroth Hamiltonian \(H_0^*\) and the value of the small parameter \(t^2/\delta E\), as well as various measures of entanglement like entanglement entropy, mutual information and spin-spin correlations between various sets of members of the real-space impurity+lattice construction. We will trace a specific path through the space of values of fixed point couplings: we will start from the strong-coupling regime \(U \ll J,V\) and go towards the local moment regime \(U \gg J,V\). The context of this study is that the technique of dynamical mean-field theory (DMFT) obtains a metal-insulator transition in the 2D Hubbard model by studying the Anderson impurity model as the auxiliary system for the Hubbard; there, the local moment regime of the impurity corresponds to the insulator in the bulk. Our goal here is to study what precisely happens in the effective Hamiltonian in the journey from the metal to the insulator, and draw a concrete connection between this modification of the effective Hamiltonian, and the simultaneous change of the impurity spectral function in fig.~\ref{spec_func}. This is done with the knowledge that the local moment phase of the generalised SIAM is never RG-stable.
 
@@ -1018,10 +1018,10 @@ The vanishing of the gap and the growth of the small parameter indicates the bre
 
 \subsection*{\(k-\)space correlations within the Kondo cloud}
 \begin{center}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
 \end{center}
 The vanishing of the Kondo cloud at large \(U/J\) is clear indication of the destruction of the Kondo cloud and the breakdown of screening. Non-zero mutual information indicates an (impurity-mediated) interaction between the \(k-\)states of the conduction bath; seen differently, it is this interaction that is responsively for the screening of the impurity. The disappearance of the mutual information is indicative of the disappearance of this interaction.
 
@@ -1045,7 +1045,7 @@ The impurity-zeroth site mutual information \(I(d:0)\) remains unchanged at the 
 
 The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty straightforward behaviour. It is maximum for \(U \ll J\) because it is in a singlet configuration. For \(U \gg J\), the singlet weakens and the impurity begins to decouple from the bath, leading to a reduction in \(S(d)\). At sufficiently low values of \(J/U\), the impurity decouples from the zeroth site and the total system can be factorised into a local moment in product with a tight-binding chain, so that the impurity site will now have zero entanglement entropy.
 
-\subsection*{Behaviour of real-space correlations}
+\subsection*{Real-space correlations}
 \begin{center}
 	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
 	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
@@ -1056,7 +1056,7 @@ The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty strai
 	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
 \end{center}
 
-\subsection*{Behaviour of real-space correlations as function of distance}
+\subsection*{Real-space correlations as function of distance}
 \begin{center}
 	\includegraphics[width=0.35\textwidth]{../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf}
 	\includegraphics[width=0.35\textwidth]{../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.010,100.000,100.pdf}
@@ -1065,7 +1065,7 @@ The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty strai
 	\includegraphics[width=0.45\textwidth]{../figures/I-all-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf}
 \end{center}
 
-\subsection*{Behaviour of \(A(\omega)\)}
+\subsection*{Impurity spectral function}
 \begin{center}
 	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=0.100.pdf}
 	\includegraphics[width=0.32\textwidth]{../figures/spec-func-gen-siam-U_by_J=9.000.pdf}
@@ -1511,74 +1511,76 @@ The denominators are
 phase & RG flow & fixed point & GS & 2-site GS \\ 
 \hline
 blue & \(\Delta U <0, \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) & SS & \(\ket{SS}=\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\)  \\ 
-green &  \(\Delta U < 0, \Delta J < 0,\Delta V>0\) & \(V^* < U^* \ll V^*\) & SS + CT-0 & \(c\ket{SS} + \sqrt{1-c^2}\ket{CT-0}\)  \\  
+green &  \(\Delta U < 0, \Delta J < 0,\Delta V>0\) & \(J^* < U^* \ll V^*\) & SS + CT-0 & \(c\ket{SS} + \sqrt{1-c^2}\ket{CT-0}\)  \\  
 red &  \(\Delta U > 0, \Delta J,\Delta V<0\) & \(U^* \gg 1,  V^* = J^* = 0\) & decoupled LM & \(\left\{\ket{\uparrow}, \ket{\downarrow} \right\} \otimes \left\{\ket{0}, \ket{2}\right\} \) \\
 yellow &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice & \(\left\{\ket{\uparrow}, \ket{\downarrow}, \ket{0}, \ket{2} \right\} \otimes \left\{\ket{0}, \ket{2}\right\}\) \\
 \hline
 \end{tabular}
 \end{center}
 
+\section{Evolution of the groundstate across the transition}
 
-
-\section{Overlap of ground state against spin singlet and charge triplet zero states}
+\subsection*{Overlap of ground state against spin singlet and charge triplet zero states}
 \begin{center}
-	\includegraphics[width=0.8\textwidth]{../figures/overlaps_gs_D=500,J=0.500.pdf}\\
-	\includegraphics[width=0.8\textwidth]{../figures/overlaps_gs_D=500,J=5.000.pdf}\\
-	\includegraphics[width=0.8\textwidth]{../figures/overlaps_gs_D=500,J=50.000.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=0.400.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=4.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=40.000.pdf}
 \end{center}
 
-\section{Spin and charge correlations in ground state}
+\subsection*{Spin and charge correlations in ground state}
 \begin{center}
-	\includegraphics[width=0.8\textwidth]{../figures/corrs_gs_D=500,J=0.500.pdf}\\
-	\includegraphics[width=0.8\textwidth]{../figures/corrs_gs_D=500,J=5.000.pdf}\\
-	\includegraphics[width=0.8\textwidth]{../figures/corrs_gs_D=500,J=50.000.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=0.400.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=4.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=40.000.pdf}
 \end{center}
 
-\section{\large Behaviour of \(\mathcal{F}\), the gap and the small parameter}
+\section{Evolution of various correlation measures and other quantities}
+
+\subsection*{Perturbation theoretic terms}
 These quantities are related to the local Fermi liquid of the Kondo strong-coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. \(\mathcal{F}\) is the strength of the local Fermi liquid \((\mathcal{F} \hat n_{1 \uparrow} \hat n_{1 \downarrow})\).
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{\large Behaviour of correlation within the Kondo cloud}
+\subsection*{Correlation within the Kondo cloud}
 \begin{center}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/mi-dk-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-diag-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.24\textwidth]{../figures/corr-k-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{\large Behaviour of mutual information between various real space members}
+\subsection*{Mutual information between various real space members}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{\large Behaviour of impurity entanglement entropy and spin-spin correlations}
+\subsection*{Impurity entanglement entropy and spin-spin correlations}
 
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 
-	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{Behaviour of real-space correlations}
+\subsection*{Real-space correlations}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 
-	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=100,V=2J,Ubath=-U,N=4,U=0.100,3.162,50.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{Impurity spectral function}
+\subsection*{Impurity spectral function}
 \begin{center}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.00.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=1.50.pdf}\\
@@ -1586,6 +1588,7 @@ These quantities are related to the local Fermi liquid of the Kondo strong-coupl
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=4.00.pdf}\\
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=6.00.pdf}
 \end{center}
+
 \chapter{From the auxiliary model to the bulk}
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.
@@ -1660,8 +1663,8 @@ We now choose a particular nearest neighbour pair from the full lattice, say \((
 \(H^D(i, j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. This is not the total local Hamiltonian for the nearest neighbour pair \((i,j\), because it has just one nearest neighbour of the dimer, namely \(l\). To get the full thing, we need to \textit{average} over all the nearest neighbours of the pair \(i,j\), \(2(w-1)\) in number. What we mean by nearest neighbours of the dimer pair \((i,j)\) is made clear in \ref{dimer-nn}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.3\textwidth]{../figures/dimer-nn.png}
-	\caption{Blue circles indicate the dimer sites (enclosed by dotted circle). Green circles are the sites that are nearest neighbour to the dimer and the ones that are being summed over under the index \(l\). Orange circles are sites that are \textit{not} nearest neighbour to the dimer.}
+	\includegraphics[width=0.3\textwidth]{../figures/dimer-nn.pdf}
+	\caption{Blue circles (enclosed by the oval) indicate the dimer sites. Green circles are the sites that are nearest neighbour to the dimer and the ones that are being summed over under the index \(l\). The red circles are sites that are \textit{not} nearest neighbour to the dimer.}
 	\label{dimer-nn}
 \end{figure}
 
@@ -2269,8 +2272,9 @@ We can now see that even in the limit of $w\to\infty$, the competition between $
 \end{enumerate}
 
 \begin{appendices}
+
 \appendixtitleon
-\appendixtitletocon
+
 \chapter{Derivation of RG equations: \(U_b\)-free terms}
 \section{Renormalisation of the impurity energy \(\epsilon_d\)}
 The coupling \(\epsilon_d\) is renormalised by three kinds of vertices: \(V^2\), \(J^2\) and \(K^2\). We will consider these processes one after another. We define \(n_j\) as the number of states being decoupled on each side of the Fermi surface, at the \(j^\text{th}\) RG step. In order to treat both spin and isospin exchanges democratically, we take \(\ket{\Psi}_i = \frac{1}{2}\left(\ket{0} + \ket{q\uparrow} + \ket{q\downarrow} + \ket{q\uparrow, q\downarrow}\right) \) as the \textit{initial} state for the scattering processes. The intermediate states \(\ket{\Psi}_\text{int}\) in the particle sector \(\left(c_{q\beta}\ket{\Psi}_i\right)\) and hole sector \(\left(c^\dagger_{q\beta}\ket{\Psi}_i\right)\) will then have both spin and isospin excitations which can couple with the corresponding impurity degree of freedom. We will assume that states  \(q > k_F~\left(\epsilon_q > 0\right) \) above the Fermi surface can have only particle excitations and states below the Fermi surface can only have hole excitations. The kinetic energy part \(\epsilon_q \tau_{q\beta}\) of \(H_D\) for \(\ket{\Psi}_i\) is then zero, whereas it is always \(D/2\) for \(\ket{\Psi}_\text{int}\). To demonstrate this for a typical \(q < k_F\), the hole excitation is \(c_{q \uparrow}\ket{\Psi}_i = \frac{1}{\sqrt 2}\left(\ket{0} + \ket{q \downarrow}\right)\). This has an isospin term in the form of the \textit{holon} and a spin term in the form of the down state. Since \(\tau_{q \uparrow} = -\frac{1}{2}\) in the excited state, the kinetic energy for \(\ket{\Psi}_\text{int}\) is \(\epsilon_q \tau_{q \uparrow} = \left(-D\right)\times\left(-\frac{1}{2}\right) = D/2\).
@@ -2512,7 +2516,7 @@ Combining with the already existing RG equations, the complete RG equation for \
 		 &=-\frac{n_j V}{8}\left[\left(\frac{3J + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}} + \frac{3J + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}}\right) + \left(\frac{3K + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{3K + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} - \frac{U}{2} + \frac{K}{4}}\right)\right]
 \end{aligned}\end{equation}
 
-\section{Renormalisation of \(J\)}
+\section{Renormalisation of \(J\) and \(K\)}
 We will track the entire renormalisation purely from that of \(J^+\), by virtue of the SU(2) symmetry. \(J^+\) renormalises through the \(J U_b\) terms. One of the terms is
 \begin{equation}\begin{aligned}
 	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} S_d^+ c^\dagger_{q \downarrow} c_{k \uparrow} \frac{1}{\omega - H_D} \hat n_{q \uparrow} c^\dagger_{k^\prime \downarrow}c_{q \downarrow} = -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
@@ -2535,7 +2539,6 @@ Adding all these terms and combining with the existing RG equation, we get the u
 	\Delta J = -J n_j\frac{4 U_b + J}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}}
 \end{aligned}\end{equation}
 
-\section{Renormalisation of \(K\)}
 We will follow the same strategy with \(K\) - we will calculate the renormalisation in \(K^+\). The first term is
 \begin{equation}\begin{aligned}
 	\frac{1}{2} K U_b \sum_{q} \sum_{k,k^\prime} \hat n_{q \downarrow} c^\dagger_{q \uparrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D} C_d^+ c_{k \downarrow} c_{q \uparrow} = -\frac{1}{2}\frac{K U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{K}{4}} \sum_{k,k^\prime} C_d^+ c_{k \downarrow} c_{k^\prime \uparrow}

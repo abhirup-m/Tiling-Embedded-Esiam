@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex notes"] 1646746992 "notes.aux" "notes.bbl" "notes" 1646749712
+["bibtex notes"] 1646818558 "notes.aux" "notes.bbl" "notes" 1646818850
   "/usr/share/texmf-dist/bibtex/bst/base/ieeetr.bst" 1640600964 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "notes.aux" 1646749712 34347 d3fe20be81ee9c491b9e11fb719eb214 "pdflatex"
+  "notes.aux" 1646818850 32246 1340089aec120d60cef94e762e7ab78a "pdflatex"
   "notes.bib" 1646712523 272284 ad38a351ae9aaa3074f650f673fa1488 ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["pdflatex"] 1646749708 "notes.tex" "notes.pdf" "notes" 1646749712
+["pdflatex"] 1646818846 "notes.tex" "notes.pdf" "notes" 1646818850
   "../figures/Cv.pdf" 1642077500 70314 28b1f0b5f41f32540eaec954ccec1a13 ""
   "../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104332 123916 cfe70c3c7710146a8e49ebf126ada996 ""
   "../figures/EE-d-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748510 122314 18a5773e496b19224f4ae5aa7717f868 ""
@@ -55,13 +55,10 @@
   "../figures/corrs_gs_D=400,J=40.000.pdf" 1646736652 149888 4b18f1a66da6667017305aecfd95c05f ""
   "../figures/dimer-nn.pdf" 1646715002 2185 0621caf1b96e07b53f1c15ccd9e93d1f ""
   "../figures/dimer-peaks.png" 1629690512 198405 cae42fb0aca5b12616094cb7af792c6a ""
-  "../figures/dimer_bath.pdf" 1646713074 4758 03a06b2df572ff8f987c500ba026daa3 ""
   "../figures/dimer_dispersion.png" 1629690512 44338 57d6c926187327ce0915b222f3489ad6 ""
   "../figures/gap-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104331 100815 3c9ea4c70b65a7ac4e35afe9cdae51d5 ""
   "../figures/gap-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748508 99281 e0504ff72d03c092f500654841a41751 ""
-  "../figures/gen_siam.png" 1629777963 31538 556dc6a0223b13187dcabe1068b702c5 ""
   "../figures/gen_siam_spec_func.pdf" 1644217101 111713 92465592309ce017b8145a7448a427c0 ""
-  "../figures/hubb_dim.png" 1629690512 30401 3350fc8e5121e458b5be80f80385f71f ""
   "../figures/lattice.png" 1629690512 107086 46242fc73c1f7c3028f9840e435651db ""
   "../figures/lattice_eff.png" 1627896510 165583 5d2563e03246640f3e79ffa548bd78e1 ""
   "../figures/lfl-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104331 100740 d7b861e964d74740a5349206aeca56a6 ""
@@ -94,6 +91,8 @@
   "../figures/r-par-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104330 101027 478248e3e1cd7e835d21bbadcfaf613b ""
   "../figures/r-par-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748506 99594 de73dca6e690993be60199743e7d1b04 ""
   "../figures/r-vec-corr-01-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748507 99591 ba6bd9f0a06c26571c4765510957a399 ""
+  "../figures/r-vec-corr-02-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748507 99618 ba8dafd6aedc161a3d4004359931737f ""
+  "../figures/r-vec-corr-03-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748507 99569 759b709c98f5c058c2cab9d3a87753b8 ""
   "../figures/r-vec-corr-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104331 100986 6d85c087f86f3bfe7e1f516bcd29a068 ""
   "../figures/r1p-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104330 101008 b1c7c56aecb237f823bb5a521db5af0f ""
   "../figures/r1p-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748506 99698 6a18609d021bc74705fcd51112d58ede ""
@@ -250,11 +249,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1640600964 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1643713654 4264653 41ffd4fd31204e4cb93058b416bc413c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1643713632 2920113 12694437c094c3b29a2475b7adbc3f4f ""
-  "notes.aux" 1646749712 34347 d3fe20be81ee9c491b9e11fb719eb214 "pdflatex"
-  "notes.bbl" 1646746992 2642 10c7d494b4fae8a9dfd4e9964b603484 "bibtex notes"
-  "notes.out" 1646749712 12738 ea2a573cc0cc774634d7d599ef665410 "pdflatex"
-  "notes.tex" 1646749708 303943 c51467612bb04ad9ebe8219967517521 ""
-  "notes.toc" 1646749712 6596 caa0c3ad02814b4b06942a199a50905a "pdflatex"
+  "notes.aux" 1646818850 32246 1340089aec120d60cef94e762e7ab78a "pdflatex"
+  "notes.bbl" 1646818558 2642 d23afb1cce2a5187eeb8fbea3013e92b "bibtex notes"
+  "notes.out" 1646818850 13540 0b2faac34a58b51f57902057b7b2c452 "pdflatex"
+  "notes.tex" 1646818846 309989 de03447e5e7c0539445b042d960bd932 ""
+  "notes.toc" 1646818850 6848 78740afaad837546a5819ef4ab1c5682 "pdflatex"
   (generated)
   "notes.aux"
   "notes.log"

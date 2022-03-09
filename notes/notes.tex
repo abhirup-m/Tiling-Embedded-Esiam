@@ -1590,7 +1590,129 @@ These quantities are related to the local Fermi liquid of the Kondo strong-coupl
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=6.00.pdf}
 \end{center}
 
-\chapter{From the auxiliary model to the bulk}
+\chapter{From the auxiliary model to the bulk - single site approach}
+
+\section{Creating General \(N-\)site Hubbard Hamiltonian from Anderson molecule embedded in an interacting bath}
+
+Previously, we have worked out the grounstate phases of a single-impurity model with an interacting bath:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{U}{2}\left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} - U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2 
+\end{aligned}\end{equation}
+We will use this as the auxiliary model to study the Hubbard model. We do this by first recreating the Hubbard model upon tiling the lattice with instances of this auxiliary model Hamiltonian. To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity as a particular site \(i\) of the lattice, and the bath coupled to the impurity as the set of remaining \(N-1\) sites in the lattice. We will also identity the zeroth site of the SIAM lattice as one of the nearest neighbours \(j\) of \(i\):
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
+\end{aligned}\end{equation}
+The tight-binding term sums over all nearest pairs \((m,n)\) that do not involve the site \(i\).
+In general \(i\) will have \(w\) nearest neighbours for a lattice with coordination number \(w\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux}(i) &= \frac{1}{w}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{w}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
+				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
+				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
+				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
+\end{aligned}\end{equation}
+Once we have this local Hamiltonian for a particular site, we translate this over all sites \(i\), and take the average.
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{full} =& \frac{1}{N}\sum_i \mathcal{H}_\text{aux}(i) = \frac{1}{N}\sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
+				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
+	=& -\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{N}\sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
+				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j\right]\right]
+\end{aligned}\end{equation}
+In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\), each pair will appear \(N-2\) times, because that is the total number of sites that do not involve either \(m\) or \(n\).
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{full} =& -\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{2t (N-2)}{N}\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{Nw}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
+				  &+ \left. J \vec{S_i}\cdot\vec{S}_j\right]\\
+				  &=-\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(\frac{2t (N-2)}{N} - \frac{2V}{Nw}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{Nw} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
+\end{aligned}\end{equation}
+We end up with a Hubbard-Heisenberg model:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_{H-H} = -\sum_{i} U_H \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - t_H\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + J_H\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
+\end{aligned}\end{equation}
+The mapping between the parameters is
+\begin{equation}\begin{aligned}
+	t^H = \frac{1}{N}\left(2t (N-2) - \frac{2V}{N}\right),~ ~ U^H = \frac{1}{N}\left(\frac{U}{2} + U_b\right), ~ ~ J_H = \frac{2J}{Nw}
+\end{aligned}\end{equation}
+The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
+\begin{equation}\begin{aligned}
+	\label{siam_to_hubb}
+	\frac{1}{N}\sum_i \mathcal{H}_\text{aux}(i) = \mathcal{H}_{H-H}
+\end{aligned}\end{equation}
+
+\section{Single-particle Green's function}
+We now define the Greens function {\it operators}:
+\begin{equation}\begin{aligned}
+	\mathcal{G}_{H-H} = \frac{1}{\omega - \left(H_{H-H} - E_\text{gs}\right) }, \mathcal{G}_\text{aux}(i) = \frac{1}{\omega - \left(H_\text{aux}(i) - E_\text{gs}\right)}
+\end{aligned}\end{equation}
+Rewriting eq.~\ref{siam_to_hubb} in terms of these operators, we get
+\begin{equation}\begin{aligned}
+	\frac{1}{N}\sum_i \left(\omega - \mathcal{G}^{-1}_\text{aux}(i)\right) = \omega - \mathcal{G}^{-1}_{H-H} \implies \frac{1}{N}\sum_i \mathcal{G}^{-1}_\text{aux}(i) = \mathcal{G}^{-1}_{H-H}~,
+\end{aligned}\end{equation}
+where we used \(\frac{1}{N}\sum_i \omega = \omega\). We will now take matrix elements of the full Greens function and obtain these matrix elements in terms of those of the auxiliary model. Let \(\left\{ \ket{\Phi}_n \right\} \) be the set of eigenstates of \(H_\text{aux}\), and \(\ket{\Phi}_0\) be the groundstate. We assume that the ground state of \(H_{H-H}\) is captured well by the auxiliary model, such that the real-space diagonal matrix element for particle propagation is obtained by sandwiching the Greens function between the states \(c^\dagger_{i\sigma}\ket{\Phi}_0\):
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} \equiv \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{Nw}\sum_j \sum_{k \in \text{NN of j}}\braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(j,k) c^\dagger_{i\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+The superscript \(p\) indicates that this is the particle propagation matrix element.
+Under the single site approximation, we ignore the hopping between multiple impurity that reside in separate instances of the auxiliary model. Therefore, the only operator \(\mathcal{G}^{-1}_\text{aux}(j)\) that affects the matrix element is \(j=i, k \in \text{NN of i}\). Moreover, because of translation invariance, all \(k\) are equivalent.
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \frac{1}{Nw} w\times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i) c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{N}\braket{\Phi_0 | c_{d\sigma} \mathcal{G}^{-1}_\text{aux}(d) c^\dagger_{d\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+where we have identitied site \(i\) in the auxiliary model as the impurity.
+By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal{G}^{-1}_\text{aux}(d)\), we get
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \frac{1}{N}\sum_{m,n} \braket{\Phi_0 | c_{d\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux}(d) \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d\sigma} | \Phi_0} = \left(\mathcal{G}^{-1}_{H-H}\right)_{ii} = \frac{1}{N}\sum_{n} |d^p_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, \omega)\right)_{nn} 
+\end{aligned}\end{equation}
+There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(H_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_n = \bra{\Phi_n}c^\dagger_{d\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \frac{1}{N}\sum_{n} |d^h_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, -\omega)\right)_{nn} 
+\end{aligned}\end{equation}
+where \(d^h_n = \bra{\Phi_n}c_{d\sigma}\ket{\Phi_0}\). The off-diagonal matrix elements can also be obtained similarly. The difference from the diagonal case is that only one out of the \(w\) nearest-neighbour pairs contributes to the matrix element:
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{i,i+1} \equiv \braket{\Phi_0 | c_{i,\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{i+1,\sigma} | \Phi_0} = \frac{1}{Nw}\braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i,i+1) c^\dagger_{i+1,\sigma} | \Phi_0} = \frac{1}{Nw}\braket{\Phi_0 | c_{d\sigma} \mathcal{G}^{-1}_\text{aux}(d) c^\dagger_{z,\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+Here, we identity \(i+1\) as the bath zero mode \(z\) and \(i\) as the impurity \(d\). We again define matrix elements \(z_n^p = \braket{\Phi_n | c^\dagger_{z\sigma} | \Phi_0}, z_n^h = \braket{\Phi_n | c_{z\sigma} | \Phi_0}\). The matrix element becomes
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn}
+\end{aligned}\end{equation}
+The hole counterpart is
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^h_n\right)^* z^h_n \left(\mathcal{G}^{-1}_\text{aux}(d, -\omega) \right)_{nn}
+\end{aligned}\end{equation}
+In summary, the four Greens functions are
+\begin{gather}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \frac{1}{N}\sum_{n} |d^p_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, \omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \frac{1}{N}\sum_{n} |d^h_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, -\omega)\right)_{nn}\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^h_n\right)^* z^h_n \left(\mathcal{G}^{-1}_\text{aux}(d, -\omega) \right)_{nn}
+\end{gather}
+
+In order to obtain the matrix elements of \(\mathcal{G}_{H-H}\) as compared to its inverse, we note that the matrix elements of the inverse are related to the matrix elements of another inverse operator, through some coefficients. We can therefore use the identity
+\begin{equation}\begin{aligned}
+\left(\hat O\right)_{ij} = \bra{i} \hat O \ket{j} = \sum_{m,n} \braket{i|m} \left(\hat O\right)_{mn} \braket{n|j} \implies \left(\hat O^{-1}\right)_{ij} = \sum_{m,n} \braket{i|m} \left(\hat O^{-1}\right)_{mn} \braket{n|j}
+\end{aligned}\end{equation}
+We can identity \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of \(\mathcal{G}_\text{aux}^{-1}\) in our expressions. Using the relation, we can therefore write
+\begin{gather}
+	\left(\mathcal{G}_{H-H}(\omega)\right)^p_{ii} = \frac{1}{N}\sum_{n} |d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}(-\omega)\right)^h_{ii} = \frac{1}{N}\sum_{n} |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\\
+	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{1}{Nw} \sum_n \left(d^h_n\right)^* z^h_n \left(\mathcal{G}_\text{aux}(d, -\omega) \right)_{nn}
+\end{gather}
+
+The single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write
+\begin{equation}\begin{aligned}
+	\left(G_{H-H}(\omega)\right)_\text{loc} &= \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \frac{1}{N}\sum_n \left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] \\
+	\left(G_{H-H}(\omega)\right)_\text{nn} &= \left(G_{H-H}(\omega)\right)_{i,i+1}^p - \left(G_{H-H}(-\omega)\right)_{i+1,i}^h = \frac{1}{Nw}\sum_n \left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn} - \left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] 
+\end{aligned}\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{From the auxiliary model to the bulk - two site approach}
+
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.
 \\\\
@@ -1645,71 +1767,6 @@ From the forms of the wavefunctions and eigenenergies, we can immediately write 
 	E^H_\text{GS} &= E^A_\text{GS}\left(t^A, U^A \to t^H, 2U^H\right)
 \end{aligned}\end{equation}
 This shows that the rules laid out before work for the Hamiltonians, as well as the wavefunctions and energy eigenvalues of the \(N=2,0,4\) sector. These sectors specifically work because it is only in these sectors can we ensure that \(n_d = n_z\), which is required for the Hubbard Hamiltonian because \(n_1 = n_2\). In the other sectors (\(N=1,3\)), the impurity site and the zero-mode sites have to be singly-occupied in some part, and since the impurity site incurs a single-occupation cost of \(-\frac{U^H}{2}\) which is not borne by the zero-mode site, there is an intrinsic dissimilarity between the two sites of the Anderson molecule in this regime. This dissimilarity does not exist for the Hubbard model, so we cannot hope to connect the two models in this regime. Going forward, we will switch to using Hubbard dimers as the smallest tiling unit for a general Hubbard model.
-
-\section{Creating General \(N-\)site Hubbard Hamiltonian from Anderson molecule embedded in an interacting bath}
-
-Previously, we have worked out the grounstate phases of a single-impurity model with an interacting bath:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{U}{2}\left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} - U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2 
-\end{aligned}\end{equation}
-We will use this as the auxiliary model to study the Hubbard model. We do this by first recreating the Hubbard model upon tiling the lattice with instances of this auxiliary model Hamiltonian. To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity as a particular site \(i\) of the lattice, and the bath coupled to the impurity as the set of remaining \(N-1\) sites in the lattice. We will also identity the zeroth site of the SIAM lattice as one of the nearest neighbours \(j\) of \(i\):
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
-\end{aligned}\end{equation}
-The tight-binding term sums over all nearest pairs \((m,n)\) that do not involve the site \(i\).
-In general \(i\) will have \(w\) nearest neighbours for a lattice with coordination number \(w\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i) &= \frac{1}{w}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{w}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
-				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
-				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
-				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
-\end{aligned}\end{equation}
-Once we have this local Hamiltonian for a particular site, we translate this over all sites \(i\), and take the average.
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& \frac{1}{N}\sum_i \mathcal{H}_\text{aux}(i) = \frac{1}{N}\sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
-				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
-	=& -\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{N}\sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{w}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
-				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j\right]\right]
-\end{aligned}\end{equation}
-In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\), each pair will appear \(N-2\) times, because that is the total number of sites that do not involve either \(m\) or \(n\).
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& -\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{2t (N-2)}{N}\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{Nw}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
-				  &+ \left. J \vec{S_i}\cdot\vec{S}_j\right]\\
-				  &=-\frac{1}{N}\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(\frac{2t (N-2)}{N} - \frac{2V}{Nw}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{Nw} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
-\end{aligned}\end{equation}
-We end up with a Hubbard-Heisenberg model:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\sum_{i} U_H \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - t_H\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + J_H\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
-\end{aligned}\end{equation}
-The mapping between the parameters is
-\begin{equation}\begin{aligned}
-	t^H = \frac{1}{N}\left(2t (N-2) - \frac{2V}{N}\right),~ ~ U^H = \frac{1}{N}\left(\frac{U}{2} + U_b\right), ~ ~ J_H = \frac{2J}{Nw}
-\end{aligned}\end{equation}
-The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
-\begin{equation}\begin{aligned}
-	\label{siam_to_hubb}
-	\frac{1}{Nw}\sum_i \sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = \mathcal{H}_{H-H}
-\end{aligned}\end{equation}
-
-\section{Single-particle Green's function}
-We now define the Greens function {\it operators}:
-\begin{equation}\begin{aligned}
-	\mathcal{G}_H = \frac{1}{\omega - H_{H-H}}, \mathcal{G}_\text{aux}(i,j) = \frac{1}{\omega - H_\text{aux}(i,j)}
-\end{aligned}\end{equation}
-Rewriting eq.~\ref{siam_to_hubb} in terms of these operators, we get
-\begin{equation}\begin{aligned}
-	\frac{1}{Nw}\sum_i \sum_{j \in \text{NN of i}} \left(\omega - \mathcal{G}^{-1}_\text{aux}(i,j)\right) = \omega - \mathcal{G}^{-1}_{H-H} \implies \frac{1}{Nw}\sum_i \sum_{j \in \text{NN of i}} \mathcal{G}^{-1}_\text{aux}(i,j) = \mathcal{G}^{-1}_{H-H}
-\end{aligned}\end{equation}
-There we used \(\frac{1}{Nw}\sum_i \sum_{j \in \text{NN of i}} \omega = \omega\). 
-
-
-
-
-
-
-
-
-
 
 
 \section{Creating General \(N-\)site Hubbard Hamiltonian from Hubbard dimers}

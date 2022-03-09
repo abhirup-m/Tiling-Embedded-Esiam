@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex notes"] 1646818558 "notes.aux" "notes.bbl" "notes" 1646818850
+["bibtex notes"] 1646836595 "notes.aux" "notes.bbl" "notes" 1646837588
   "/usr/share/texmf-dist/bibtex/bst/base/ieeetr.bst" 1640600964 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "notes.aux" 1646818850 32246 1340089aec120d60cef94e762e7ab78a "pdflatex"
+  "notes.aux" 1646837588 32499 4a931e90b82299e53d514fef6e873ea3 "pdflatex"
   "notes.bib" 1646712523 272284 ad38a351ae9aaa3074f650f673fa1488 ""
   (generated)
   "notes.bbl"
   "notes.blg"
-["pdflatex"] 1646818846 "notes.tex" "notes.pdf" "notes" 1646818850
+["pdflatex"] 1646837585 "notes.tex" "notes.pdf" "notes" 1646837588
   "../figures/Cv.pdf" 1642077500 70314 28b1f0b5f41f32540eaec954ccec1a13 ""
   "../figures/EE-d-t=1.000,J=1_over_U,V=J,N=4,U=0.016,100.000,95.pdf" 1645104332 123916 cfe70c3c7710146a8e49ebf126ada996 ""
   "../figures/EE-d-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf" 1646748510 122314 18a5773e496b19224f4ae5aa7717f868 ""
@@ -249,11 +249,11 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1640600964 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1643713654 4264653 41ffd4fd31204e4cb93058b416bc413c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1643713632 2920113 12694437c094c3b29a2475b7adbc3f4f ""
-  "notes.aux" 1646818850 32246 1340089aec120d60cef94e762e7ab78a "pdflatex"
-  "notes.bbl" 1646818558 2642 d23afb1cce2a5187eeb8fbea3013e92b "bibtex notes"
-  "notes.out" 1646818850 13540 0b2faac34a58b51f57902057b7b2c452 "pdflatex"
-  "notes.tex" 1646818846 309989 de03447e5e7c0539445b042d960bd932 ""
-  "notes.toc" 1646818850 6848 78740afaad837546a5819ef4ab1c5682 "pdflatex"
+  "notes.aux" 1646837588 32499 4a931e90b82299e53d514fef6e873ea3 "pdflatex"
+  "notes.bbl" 1646836595 2642 d23afb1cce2a5187eeb8fbea3013e92b "bibtex notes"
+  "notes.out" 1646837588 14021 a3bb078365a0d2ccd1e2bee3507818fa "pdflatex"
+  "notes.tex" 1646837584 316998 511d079090ec1f69522b77614f9d70b3 ""
+  "notes.toc" 1646837588 6984 388d4f0113083026d8458525722816e3 "pdflatex"
   (generated)
   "notes.aux"
   "notes.log"

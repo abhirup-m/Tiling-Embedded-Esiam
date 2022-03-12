@@ -1706,7 +1706,7 @@ We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of 
 	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{1}{w} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{1}{w} \sum_n \left(d^h_n\right)^* z^h_n \left(\mathcal{G}_\text{aux}(d, -\omega) \right)_{nn}
 \end{gather}
 
-The Lehmann-Callen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
+The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
 	\label{greens_func_siam}
 	\left(G_{H-H}(\omega)\right)_\text{loc} &= \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] \\
@@ -1797,13 +1797,76 @@ Using the mappings between the auxiliary model parameters and the bulk paramets 
 
 On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
 
-Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}\)
+Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
 \begin{eqnarray}
 r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{w}{4}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)
 \end{eqnarray}
 where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the generalised SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{20}$, we obtain $U^{*}/J^{*}=5$, and $r^{*} = 4.5$ for the 2D square lattice Hubbard-Heisenberg model (with coordination number $w=4$). In general, $w=2d$ for the $d$-dimensional hypercubic lattice, and 
 $r^{*}_\text{Hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
 \end{itemize}
+
+\section{Important Remarks}
+\subsection{Greens function in the insulating phase: the Hubbard bands and mottness}
+In the insulating state, the cluster becomes a local moment and the bulk system reduces to the atomic limit \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). The Greens function in this limit is given in Appendix~\ref{atomic limit}. From eq.~\ref{atomic_limit_gf}, we have
+\begin{equation}\begin{aligned}
+	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 + \left<\tau_{i }\right>}{\omega - \frac{U}{2}} + \frac{1 - \left<\tau_{i}\right>}{\omega + \frac{U}{2}}
+\end{aligned}\end{equation}
+where \(\tau_i = \sum_\sigma \hat n_{i,\sigma} - 1\). At half-filling \(\left<\tau_{i}\right>=0\), the low and high-energy poles have equal spectral weights. \textit{This is different from the situation in a band insulator, where the valence band has all the spectral weight in the ground state while the conduction band is empty.} On doping holes into the system such that \(\left<\tau_{i}\right> = -x < 0\), spectral weight is transferred from the upper Hubbard band at \(\omega = U/2\) to the lower one at \(\omega = -U/2\):
+
+\begin{equation}\begin{aligned}
+	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 - x}{\omega - \frac{U}{2}} + \frac{1 + x}{\omega + \frac{U}{2}}
+\end{aligned}\end{equation}
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/hubbard_bands.pdf}
+	\caption{Structure of the Greens function in the atomic limit. The two poles at \(\omega = \pm \frac{U}{2}\) form the two Hubbard bands. Doping the system leads to transfer of spectral weight between the bands.}
+\end{figure}
+
+\textit{This transfer of spectral weight across energy scales of the order of \(U\), as well as the lack of poles at zero energies, is referred to as mottness.}
+
+\subsection{Nature of propagation: metal vs insulator}
+In the metallic state, the impurity in the auxiliary model hybridises with the bath through both 1-particle and 2-particle interactions. For any two auxiliary models differing by the locations \(i_1, i_2\) of the impurity, the baths will always overlap. This means that an electron that starts out from the impurity site at \(i_1\) can hop into the bath, and eventually reach \(i_2\) by hopping out of the other bath and into the other impurity. Such processes connect all sites of the lattice and \textit{allow spectral flow}.
+
+In the insulating state, each auxiliary model separates into an impurity and a bath that decoupled from each other. This means that the impurity cannot hybridise into the bath, and hence cannot tunnel into any other impurity. This leads to the atomic limit of the system, where each site develops a local moment configuration because of the repulsive local correlation, but these local moments cannot communicate with each other, either through spin-exchange processes or by breaking into holons and doublons. Any attempt at spectral flow fails because the boundaries of the system become disconnected from each other.
+
+A more accurate picture of the insulating and metallic phases can be obtained by working with a more complicated choice of the cluster. For instance, instead of a single impurity, one can take two correlated impurities interacting with each other through a single-particle hopping, and this cluster then interacts with the bath through the usual interactions. The ground state of such a cluster is actually a quantum liquid, consisting of the entangled spin and charge degrees of freedom. In the metallic state, various members of this liquid such as the holons, doublons and the spinons are free to propagate across the system through the baths. In the insulating state, it is this cluster that then gets decoupled from the other clusters. The composite degrees of freedom are then unable to propagate outside the cluster, and \textit{the holons and the doublons are bound to each other} within the confines of the cluster.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../figures/metal_prop.pdf}
+	\caption{Propagation of electrons from one cluster to another through the bath, in the metallic state}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../figures/ins_prop.pdf}
+	\caption{The clusters get isolated from each other in the insulator, because they get decoupled from their baths.}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{../figures/ins_prop_cluster.pdf}
+	\caption{Each cluster is a quantum liquid composed of spin \(\left(\uparrow,\downarrow\right) \) and charge \(\left(0,2\right) \) degrees of freedom. In the insulating state, these degrees of freedom get bound within the cluster and are unable to propagate outside.}
+\end{figure}
+
+\subsection*{Presence of two self-energies under symmetry-breaking}
+The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 = h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique groundstate is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
+\begin{equation}\begin{aligned}
+	G_{i,\sigma} = \sum_{n}\left[||\bra{\text{GS}}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_\text{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{\text{GS}}||^2\frac{1}{\omega - E_\text{GS} + E_n}\right]\\
+\end{aligned}\end{equation}
+We have \(c_{i,\sigma}\ket{\text{GS}} = \ket{\hat n_i = 0}\delta_{\sigma,\text{sgn}(h)}\) and \(c^\dagger_{i,\sigma}\ket{\text{GS}} = \ket{\hat n_i = 2}\delta_{\sigma,-\text{sgn}(h)}\), so that the only excited states that give non-zero inner product is \(\ket{n}=\ket{\hat n_i = 0}\) for the second term and \(\ket{n}=\ket{\hat n_i=2}\) for the first term, with energies \(E_n=0\). Substituting these, we get
+\begin{equation}\begin{aligned}
+	G_{i,\sigma}(h) = \frac{\delta_{\sigma,-\text{sgn}(h)}}{\omega - \frac{U}{2} - h} + \frac{\delta_{\sigma,\text{sgn}(h)}}{\omega + \frac{U}{2} + h} = \frac{1}{\omega + \left(\frac{U}{2}+h\right)\sigma \times \text{sgn}(h) }
+\end{aligned}\end{equation}
+Taking the limit of \(h \to 0^\pm\) then gives
+\begin{equation}\begin{aligned}
+	G_{i,\sigma}(h=0^\pm) = \frac{1}{\omega \pm \frac{U}{2}\sigma}
+\end{aligned}\end{equation}
+
+The self-energies arising from the correlation \(U\) can also be obtained using Dyson's equation \(\Sigma = G^{-1} - G_0^{-1}\), where \(G_0^{-1} = \omega\) is the Greens function at \(U=0\). Using Dyson's equation, we get
+\begin{equation}\begin{aligned}
+	\Sigma_{i,\sigma} = \pm\frac{U}{2}\sigma
+\end{aligned}\end{equation}
 
 
 \chapter{From the auxiliary model to the bulk - two site approach}
@@ -2157,7 +2220,7 @@ The expressions for $C^{0,1}_n$ and $\overline C^{0,1}_n$, as mentioned above, i
 By systematically increasing the number of momentum states in the bath dispersion, we can systematically improve the numerical computation of the ground state wavefunction. From here, we can compute matrix elements of $H^{D}$, and hence the functions $g_0$ and $g_1$. The presence of the bath can be understood as follow. In the absence of a bath, i.e., we have just a Hubbard dimer, an electron can at most hop between the two sites and lead to the wavefunction in eq.~\ref{guess}. However, with a single particle hopping term connecting the dimer to a bath, an electron can also journey between the two sites of the bath via the bath. This leads to entanglement between the dimer's sites and those in the bath; this was clearly ignored in the ground state wavefunction eq.~\ref{guess}. The introduction of the bath dispersion offers the possibility that we can capture a site diagonal spectral function of the three peak form, because we have previously seen such a spectral function in the fixed point of the URG analysis of the SIAM (where the fixed point effective Hamiltonian was an Anderson molecule with dispersion). If this can be found, then a metal-insulator transition of the full Hubbard model can perhaps be captured by studying the spectral functions of the bath-coupled Hubbard dimer.
 \item Another improvement can be made by introducing a self-energy $\Sigma (k,\omega)$ into the bath dispersion. This introduces correlation within the bath. The Hamiltonian that we would need to solve would be the same as eq.~\ref{dimer_dispersion}, but with $\epsilon_k$ replaced by $\tilde \epsilon_k \equiv \epsilon_k + \Sigma(k,\omega)$. The self-energy $\Sigma (k,\omega)$ will have to be chosen depending on the phase we want to look at (e.g., metal, insulator etc.). With a $\Sigma$ that is singular near the Fermi surface at $\omega \to 0$, the dispersion will become gapped and the phase will be insulating. In such a situation, there are no low-energy bath excitations within a given energy window proximate to its putative Fermi energy. This will localise the bath electrons, as well as confine all journeys between the two sites of the dimer to only the direct path. This is an indication of the localisation of electrons in the Hubbard model to holon-doublon excitations on nearest neighbour sites. In such a circumstance, eq.~\ref{guess} will be a very good approximation to the actual insulating ground state of the Hubbard model. On the other hand, if we use a self energy that vanishes near the Fermi surface ($\Sigma(\omega) \sim \omega^2$, i.e., a Fermi liquid bath), then we expect to end up in a metallic phase of the Hubbard model. This is simply due to the possibility of holons and doublons now dispersing throughout the lattice, and be concomitant with the presence of a pole in the single-particle Greens function $G(k,\omega)$ of the Hubbard model. Introducing the self energy therefore gives us a larger variety of wavefunctions and features to work with. Further, this appears to be in line with the original proposals offered by Mott and Kohn for the Mott metal insulator transition as the localisation-delocalisation transition of holon-doublon pairs. With regards to the transition itself, the precise form of the bath $\Sigma (k,\omega)$ (or spectral function) remains to be determined.
 \end{enumerate}
-Once we have chosen a test Hamiltonian whose wavefunction we can calculate, we can use that to obtain the ground state energy of this state. The wavefunction will act as our $\ket{0}$ and the ground state energy will be our $E_\text{GS}$. We can then substitute these into the Lehmann representation form of the Greens function, and calculate the matrix elements $\mathcal{G}_D(\omega)_{\nu \nu^\prime}$ and $\mathcal{G}_D(-\omega)_{\overline{\nu \nu^\prime}}$ for the Hubbard dimer Hamiltonian. Each set will form a $2\times2$ matrix, and we can invert them to obtain $\mathcal{G}_D(\omega)$, and then the matrix elements of this inverted matrix will give all the parameters $g_0$ through $\overline{g_1}$.
+Once we have chosen a test Hamiltonian whose wavefunction we can calculate, we can use that to obtain the ground state energy of this state. The wavefunction will act as our $\ket{0}$ and the ground state energy will be our $E_\text{GS}$. We can then substitute these into the Lehmann-Kallen representation form of the Greens function, and calculate the matrix elements $\mathcal{G}_D(\omega)_{\nu \nu^\prime}$ and $\mathcal{G}_D(-\omega)_{\overline{\nu \nu^\prime}}$ for the Hubbard dimer Hamiltonian. Each set will form a $2\times2$ matrix, and we can invert them to obtain $\mathcal{G}_D(\omega)$, and then the matrix elements of this inverted matrix will give all the parameters $g_0$ through $\overline{g_1}$.
 
 \section{Analytic consistency checks}
 \subsection{Single-particle Greens function and self energy for the Hubbard dimer}
@@ -2523,8 +2586,8 @@ The terms in the hole sector give identical contributions. The RG equation for \
 	\Delta K = -K n_j\frac{4 U_b + K}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{K}{4}}
 \end{aligned}\end{equation}
 
-\chapter{Analytic results for the Hubbard dimer}
-\section*{Spectrum of the Hubbard dimer}
+\chapter{Some analytic results for the Hubbard dimer and the Hubbard model}
+\section{Spectrum of the Hubbard dimer}
 Here we document the spectrum of the Hubbard dimer Hamiltonian in eqs.~\ref{hubb_dimer}.
 \begin{center}
 	\begin{tabular}{|c|c|c|}
@@ -2545,7 +2608,49 @@ Here we document the spectrum of the Hubbard dimer Hamiltonian in eqs.~\ref{hubb
 	\captionof{table}{Spectrum of Hubbard dimer at half-filling}
 	\label{hubb_dim_spectrum}
 \end{center}
-\section*{Appendix: Local Greens function for the Hubbard dimer}
+
+\section{Greens function of Hubbard model in the atomic limit}
+\label{atomic limit}
+The atomic limit is described by the Hamiltonian \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). Since the Hamiltonian has decoupled into \(\sum_i \equiv N\) single-site Hamiltonians, we can easily write down the retarded Greens function for a single site by identifying the ground state configuration of a site. The ground states are of course \(\ket{\Psi}_i = \ket{\uparrow},\ket{\downarrow}\), in the absence of any symmetry-breaking. The finite temperature retarded Greens function in the time domain is given by
+\begin{equation}\begin{aligned}
+	G_{i,\sigma}(T,t) = -i\theta(t) \frac{1}{Z}\sum_n e^{-\beta E_n} \braket{n | \left\{c_{i\sigma}(t),c^\dagger_{i\sigma}\right\} | n}
+\end{aligned}\end{equation}
+where \(n\) labels the eigenstates of the \(H\). At \(T \to 0\), only the ground states will survive in the exponential and the partition function \(Z\), such that the formula then reduces to
+\begin{equation}\begin{aligned}
+G_{i,\sigma}(T \to 0,t) = -i\theta(t)\braket{GS | \left\{c_{i\sigma}(t),c^\dagger_{i\sigma}\right\} | GS}
+\end{aligned}\end{equation}
+Since the Hamiltonian is simple, we can compute the time-dependent operator \(c_{i\sigma}(t) = e^{iH t} c_{i\sigma} e^{-iHt}\). Using the BCH lemma, we have
+\begin{equation}\begin{aligned}
+	e^{iH t} c_{i\sigma} e^{-iHt} = \sum_{n=0}^\infty \left(it\right)^n \frac{1}{n!}\left[H,c_{i\sigma}\right]_n
+\end{aligned}\end{equation}
+where \(\left[H,c_{i\sigma}\right]_n = \left[H,\left[H,c_{i\sigma}\right]_{n-1}\right],\left[H,c_{i\sigma}\right]_0=c_{i\sigma}\). The first two non-trivial commutators are
+\begin{equation}\begin{aligned}
+	\left[H, c_{i\sigma}\right]_1 = -U \tau_{i\overline\sigma}c_{i\sigma},~ ~\text{and} ~~\left[H, c_{i\sigma}\right]_2 = \frac{1}{4}U^2 c_{i\sigma}~,
+\end{aligned}\end{equation}
+such that
+\begin{equation}\begin{aligned}
+	e^{iH t} c_{i\sigma} e^{-iHt} =& \left[c_{i\sigma} + \frac{i^2 t^2}{2!}\frac{U^2}{2^2} c_{i\sigma} + \frac{i^4 t^4}{4!}\frac{U^4}{2^4} c_{i\sigma} + \ldots\right] + \left[- \frac{it}{1!}U\tau_{i\overline\sigma}c_{i\sigma} - \frac{i^3 t^3}{3!}\frac{U^3}{4}\tau_{i\overline\sigma}c_{i\sigma} + \ldots \right]\\
+				       &= c_{i\sigma} \left[\cos\left(Ut/2\right) - 2i\tau_{i\overline\sigma}\sin \left(Ut/2\right) \right] 
+\end{aligned}\end{equation}
+Using this, we can write
+\begin{equation}\begin{aligned}
+	\left\{c_{i\sigma}(t),c^\dagger_{i\sigma}\right\} = \left\{c_{i\sigma},c^\dagger_{i\sigma}\right\} \left[\cos\left(Ut/2\right) - 2i\tau_{i\overline\sigma}\sin \left(Ut/2\right) \right] = \left[\cos\left(Ut/2\right) - 2i\tau_{i\overline\sigma}\sin \left(Ut/2\right) \right]
+\end{aligned}\end{equation}
+and the Greens function becomes
+\begin{equation}\begin{aligned}
+	G_{i,\sigma}(T \to 0,t) = -i\theta(t) \braket{GS | \left[\cos\left(Ut/2\right) - 2i\tau_{i\overline\sigma}\sin \left(Ut/2\right) \right] | GS} = -i\theta(t)\left[\cos \frac{Ut}{2} - 2i\sin \frac{Ut}{2} \left<\tau_{i\overline\sigma} \right>\right]
+\end{aligned}\end{equation}
+We now Fourier transform to frequency domain:
+\begin{equation}\begin{aligned}
+	G_{i,\sigma}(\omega) = -i\int_{0}^\infty \mathrm{dt} e^{i\omega t}\left[\cos \frac{Ut}{2} - 2i\sin \frac{Ut}{2} \left<\tau_{i\overline\sigma} \right>\right] = \frac{1 + \left<\tau_{i\overline\sigma }\right>}{\omega - \frac{U}{2}} + \frac{1 - \left<\tau_{i\overline\sigma}\right>}{\omega + \frac{U}{2}}
+\end{aligned}\end{equation}
+The spin-total Greens function for the site \(i\) is
+\begin{equation}\begin{aligned}
+	\label{atomic_limit_gf}
+	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 + \left<\tau_{i }\right>}{\omega - \frac{U}{2}} + \frac{1 - \left<\tau_{i}\right>}{\omega + \frac{U}{2}}
+\end{aligned}\end{equation}
+At half-filling, we have \(\tau_i = 1\).
+\section{Local Greens function for the Hubbard dimer}
 From the spectral representation, we have the following expression for the local Greens function for the Hubbard dimer at site $0$:
 \begin{equation}\begin{aligned}
 	G_{D,00}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}c_{i\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
@@ -2618,7 +2723,7 @@ Using the diagonal and off-diagonal real space Greens functions, we can now comp
 	G(k=\pi, \sigma) = \sum_r e^{ikr} G(r, \sigma) = G(r=0, \sigma) - G(r=a, \sigma) = \frac{1/2 + 2t/\Delta}{\omega + t - \Delta/2} + \frac{1/2 - 2t/\Delta}{\omega + t + \Delta/2}\\
 \end{aligned}\end{equation}
 
-\section*{Contributions of various excitations to the site local spectral function}
+\section{Contributions of various excitations to the site local spectral function}
 The site local spectral function is
 \begin{equation}\begin{aligned}
 	A(0\uparrow, \omega) = \left( \frac{1}{4} - \frac{t}{\Delta} \right)\left[\delta(\omega - \frac{\Delta}{2} - t) + \delta(\omega + \frac{\Delta}{2} + t)\right]\nonumber + \left( \frac{1}{4} + \frac{t}{\Delta} \right) \left[\delta(\omega - \frac{\Delta}{2} + t) + \delta(\omega + \frac{\Delta}{2} - t)\right]
@@ -2635,7 +2740,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 \end{figure}
 
 \chapter{Simple results for the Greens functions}
-\section*{Relation between single-particle Greens function and the Greens function operator $(T=0)$}
+\section{Relation between single-particle Greens function and the Greens function operator $(T=0)$}
  The single-particle Greens function is defined as the solution of the equation:
  \begin{equation}\begin{aligned}
 	 \left(i\partial_t - H(\vec r)\right)G(\vec r,\vec r^\prime, t) = \delta(\vec r - \vec r^\prime)
@@ -2644,7 +2749,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
  \begin{equation}\begin{aligned}
 	 G(\vec r,\vec r^\prime, t) = -i \theta(t) \left< \left\{ c(\vec r, t) c^\dagger(\vec r^\prime, 0)\right\} \right>
  \end{aligned}\end{equation}
- This solution can be written in the Lehmann representation  and at $T=0$ as
+ This solution can be written in the Lehmann-Kallen representation  and at $T=0$ as
  \begin{equation}\begin{aligned}
 	 G(\vec r \sigma, \vec r^\prime \sigma, \omega) = \sum_{n}\left[\frac{\bra{GS}c({\vec r,\sigma})\ket{n}\bra{n}c^\dagger(\vec r^\prime,\sigma)\ket{GS}}{\omega + E_{GS} - E_n} + \frac{\bra{GS}c^\dagger(\vec r^\prime,\sigma)\ket{n}\bra{n}c({\vec r,\sigma})\ket{GS}}{\omega + E_n - E_{GS}}\right]
  \end{aligned}\end{equation}
@@ -2670,7 +2775,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 	\mathcal{G}(\omega, H)_{\overline{\nu^\prime}, \overline\nu} = \sum_{n}\frac{\bra{GS}c^\dagger(\nu^\prime)\ket{n}\bra{n}c(\nu)\ket{GS}}{\omega + E_\text{GS} - E_n}
  \end{aligned}\end{equation}
  
-\section*{Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac{1}{2}$ eigenstates}
+\section{Writing single-particle excitations of ground state in terms of $N=3, S^z = \frac{1}{2}$ eigenstates}
 The excited state $c^\dagger_{0\uparrow}\ket{\text{GS}}$ can actually be written in terms of the $N=3$, $S^z = + \frac{1}{2}$ eigenstates $\ket{3\pm\uparrow}$ defined in table \ref{hubb_dim_spectrum}.
 \begin{equation}\begin{aligned}
 	\ket{3\pm \uparrow} = \frac{1}{\sqrt 2}\left(\ket{\uparrow, 2} \pm \ket{2, \uparrow}\right), && H^D \ket{3\pm \uparrow} = \pm t\ket{3\pm \uparrow}
@@ -2704,7 +2809,7 @@ Similarly, we can also write the single-hole excitation $c_{0 \uparrow}\ket{GS}$
 	c_{1 \uparrow}\ket{GS} = a_1 \frac{1}{\sqrt 2}\ket{\downarrow, 0} + a_2 \frac{1}{\sqrt 2}\ket{0, \downarrow} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
 \end{aligned}\end{equation}
 
-\section*{Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}
+\section{Matrix elements of $G^{-1}$ between single-particle momentum excitations, for the Hubbard dimer}
 \begin{equation}\begin{aligned}
 	G^{-1} \equiv \omega + E_\text{GS} - H_D
 \end{aligned}\end{equation}
@@ -2723,7 +2828,7 @@ The impurity retarded Green's function (assuming the Hamiltonian to be time-inde
 \begin{equation}\begin{aligned}
 	G_{dd}^\sigma(t) = -i\theta(t) \left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right>
 \end{aligned}\end{equation}
-where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma = c_{d\sigma} + S_d^- c_{0\overline\sigma} + S_d^z c_{0\sigma}\) is the excitation whose spectral function we are interested in. The excitations defined in \(\mathcal{O}\) incorporates both single-particle excitations brought about by the hybridisation as well as two-particle spin excitations brought about by the spin-exchange term. What follows is a standard calculation where we write the Green's function in the Lehmann representation. The ensemble average for an arbitrary operator \(\hat M\) can be written in terms of the exact eigenstates of the fixed point Hamiltonian:
+where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma = c_{d\sigma} + S_d^- c_{0\overline\sigma} + S_d^z c_{0\sigma}\) is the excitation whose spectral function we are interested in. The excitations defined in \(\mathcal{O}\) incorporates both single-particle excitations brought about by the hybridisation as well as two-particle spin excitations brought about by the spin-exchange term. What follows is a standard calculation where we write the Green's function in the Lehmann-Kallen representation. The ensemble average for an arbitrary operator \(\hat M\) can be written in terms of the exact eigenstates of the fixed point Hamiltonian:
 \begin{equation}\begin{aligned}
 	H^* \ket{n} &= E_n^* \ket{n}, ~ ~ ~\left<\hat M \right> &\equiv \frac{1}{Z}\sum_n \bra{n} \hat M \ket{n} e^{-\beta E_n^*}
 \end{aligned}\end{equation}
@@ -2736,7 +2841,7 @@ where \(Z = \sum_n e^{-\beta E_n^*}\) is the fixed point partition function and 
 	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\left( e^{i\left( E_m - E_n \right)  t}\bra{m}\mathcal{O}_{\sigma}\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} \ket{m} + e^{i\left( E_n - E_m \right)  t}\bra{m}\mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}\mathcal{O}_{\sigma} \ket{m}\right)\\
 	&= \frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
 \end{aligned}\end{equation}
-The time-domain impurity Green's function can thus be written as (this is the so-called Lehmann representation)
+The time-domain impurity Green's function can thus be written as (this is the so-called Lehmann-Kallen representation)
 \begin{equation}\begin{aligned}
 	G_{dd}^\sigma = -i\theta(t)\frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
 \end{aligned}\end{equation}
@@ -2766,6 +2871,7 @@ The zero temperature Green's function is obtained by taking the limit of \(\beta
 \end{aligned}\end{equation*}
 where \(d_0\) is the degeneracy of the ground state. The Greens function then simplifies to
 \begin{equation}\begin{aligned}
+	\label{Gf_lk}
 	G_{d d}^\sigma(\omega, \beta \to \infty) &= \frac{1}{d_0e^{-\beta E_0}}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left[e^{-\beta E_m}\delta_{E_m, E_0} + e^{-\beta E_n}\delta_{E_n, E_0}\right]\frac{1}{\omega + E_m - E_n}\\
 						 &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n}\right]\\
 \end{aligned}\end{equation}

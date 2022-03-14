@@ -1494,7 +1494,7 @@ The denominators are
 \paragraph{Important points regarding notation}
 \begin{itemize}
 	\item The labels \(U_0,J_0,V_0\) that may occur in the axes of the plots or anywhere else represent the bare values of the couplings \(U,J\) and \(V\). 
-	\item Throughout the results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	
+	\item Throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	
 \end{itemize}
 
 \section{Phase diagram}
@@ -1581,18 +1581,29 @@ These quantities are related to the local Fermi liquid of the Kondo strong-coupl
 	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 \end{center}
 
-\section{Evolution of the impurity spectral function}
+\section{Spectral functions}
 
-\subsection*{Impurity spectral function}
+\subsection{Impurity spectral function \(A_{dd}(\omega)\)}
+These are the frequency-domain spectral functions for the retarded propagator \(-i\theta(t)\left<\left\{c_{d\sigma}(t),c^\dagger_{d\sigma}\right\}  \right>\):
 \begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.000.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.115.pdf}\\
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.117.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.040.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.141.pdf}\\
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.185.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.250.pdf}\\
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.40.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.26.pdf}
 \end{center}
 
-\subsection*{Width of central peak}
+\subsection{Impurity-bath off-diagonal spectral function \(A_{dz}(\omega)\)}
+These are the frequency-domain spectral functions for the off-diagonal retarded propagator \(-i\theta(t)\left<\left\{c_{d\sigma}(t),c^\dagger_{0\sigma}\right\}  \right>\):
+\begin{center}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.040.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.141.pdf}\\
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.185.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.250.pdf}\\
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.26.pdf}
+\end{center}
+
+\subsection{Width of central peak of \(A_{dd}\)}
 
 \begin{figure}[!htpb]
 	\centering
@@ -1816,13 +1827,12 @@ where \(\tau_i = \sum_\sigma \hat n_{i,\sigma} - 1\). At half-filling \(\left<\t
 \begin{equation}\begin{aligned}
 	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 - x}{\omega - \frac{U}{2}} + \frac{1 + x}{\omega + \frac{U}{2}}
 \end{aligned}\end{equation}
+\textit{This transfer of spectral weight across energy scales of the order of \(U\), as well as the lack of poles at zero energies, is referred to as mottness.}
 \begin{figure}[!htpb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/hubbard_bands.pdf}
 	\caption{Structure of the Greens function in the atomic limit. The two poles at \(\omega = \pm \frac{U}{2}\) form the two Hubbard bands. Doping the system leads to transfer of spectral weight between the bands.}
 \end{figure}
-
-\textit{This transfer of spectral weight across energy scales of the order of \(U\), as well as the lack of poles at zero energies, is referred to as mottness.}
 
 \subsection{Nature of propagation: metal vs insulator}
 In the metallic state, the impurity in the auxiliary model hybridises with the bath through both 1-particle and 2-particle interactions. For any two auxiliary models differing by the locations \(i_1, i_2\) of the impurity, the baths will always overlap. This means that an electron that starts out from the impurity site at \(i_1\) can hop into the bath, and eventually reach \(i_2\) by hopping out of the other bath and into the other impurity. Such processes connect all sites of the lattice and \textit{allow spectral flow}.
@@ -1833,24 +1843,24 @@ A more accurate picture of the insulating and metallic phases can be obtained by
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.6\textwidth]{../figures/metal_prop.pdf}
+	\includegraphics[width=0.55\textwidth]{../figures/metal_prop.pdf}
 	\caption{Propagation of electrons from one cluster to another through the bath, in the metallic state}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../figures/ins_prop.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/ins_prop.pdf}
 	\caption{The clusters get isolated from each other in the insulator, because they get decoupled from their baths.}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\textwidth]{../figures/ins_prop_cluster.pdf}
+	\includegraphics[width=0.85\textwidth]{../figures/ins_prop_cluster.pdf}
 	\caption{Each cluster is a quantum liquid composed of spin \(\left(\uparrow,\downarrow\right) \) and charge \(\left(0,2\right) \) degrees of freedom. In the insulating state, these degrees of freedom get bound within the cluster and are unable to propagate outside.}
 \end{figure}
 
 \subsection*{Presence of two self-energies under symmetry-breaking}
-The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 = h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique groundstate is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
+The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique groundstate is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
 \begin{equation}\begin{aligned}
 	G_{i,\sigma} = \sum_{n}\left[||\bra{\text{GS}}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_\text{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{\text{GS}}||^2\frac{1}{\omega - E_\text{GS} + E_n}\right]\\
 \end{aligned}\end{equation}

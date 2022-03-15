@@ -9,7 +9,7 @@
 \usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
 \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 
-
+\newcommand{\comment}[1]{{}}
 \renewcommand{\arraystretch}{2}
 \setlength\delimitershortfall{-2pt}
 \setcounter{tocdepth}{1}
@@ -1892,7 +1892,22 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 	\Sigma_{i,\sigma} = \pm\frac{U}{2}\sigma
 \end{aligned}\end{equation}
 
+\section{Analytic consistency check - On the Bethe lattice}
+Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{green_eq_final_siam}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma = \frac{1}{w} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma \to 0
+\end{aligned}\end{equation}
+There we used the fact since at half-filling on an $SU(2)$ symmetric mode, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\tilde \Phi_0} = \sum_n C^i_n \ket{n}$ to be constrained to $\sum_n |C_n^i|^2 = \frac{1}{2}$, such that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H}$ matrix has no $k$ dependence. 
+\\\\
+In this limit, the self-energy also simplifies:
+\begin{equation}\begin{aligned}
+	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) &= \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n \lim_{w \to \infty}\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1} \\
+						   &=\omega +t^{H}\xi_{\vec k} - \frac{N}{2}\frac{1}{\sum_n \left[ \frac{|C^0_{n}|^2}{g_n} - \frac{|\overline C^0_{n}|^2}{\overline{g_n}}\right]}
+\end{aligned}\end{equation}
+We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
 
+
+\comment{
 \chapter{From the auxiliary model to the bulk - two site approach}
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
@@ -2303,7 +2318,7 @@ In this limit, the self-energy also simplifies:
 						   &=\omega +t^{H}\xi_{\vec k} - \frac{N}{2}\frac{1}{\sum_n \left[ \frac{|C^0_{n}|^2}{g_n} - \frac{|\overline C^0_{n}|^2}{\overline{g_n}}\right]}
 \end{aligned}\end{equation}
 We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
-
+}
 
 \chapter{Future goals}
 \begin{enumerate}

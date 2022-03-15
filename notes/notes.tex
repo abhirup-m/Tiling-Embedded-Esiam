@@ -6,6 +6,10 @@
 \usepackage[margin=0.8in,top=0.3in,bottom=1.4in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
+
+
 \renewcommand{\arraystretch}{2}
 \setlength\delimitershortfall{-2pt}
 \setcounter{tocdepth}{1}
@@ -279,29 +283,14 @@ In short, the \(U>0\) regime is characterised by an irrelevant isospin-exchange 
 	\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2}, \quad \Delta V = -\frac{3n_j VJ}{8}\left(\frac{1}{d_2} + \frac{1}{d_1}\right)
 \end{aligned}\end{equation}
 
-%\begin{figure}[htpb]
-%	\centering
-%	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U>0,U.pdf}
-%	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U>0,V.pdf}
-%	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U>0,J.pdf}
-%
-%	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U>0,U.pdf}
-%	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U>0,V.pdf}
-%	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U>0,J.pdf}
-%\end{figure}
-
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.48\textwidth]{../figures/VvsJ_relvsirr.pdf}
-	\hspace*{\fill}
-	\includegraphics[width=0.48\textwidth]{../figures/UvsJ_relvsirr.pdf}
-\end{figure}
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.48\textwidth]{../figures/VcvsJ.pdf}
-	\hspace*{\fill}
-	\includegraphics[width=0.48\textwidth]{../figures/UcvsJ.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U_gt_0,U.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U_gt_0,J.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U_gt_0,V.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U_gt_0,U.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U_gt_0,J.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_rel,U_gt_0,V.pdf}
 \end{figure}
 
 \subsection{Attractive interaction on impurity: \(U<0\)}
@@ -380,8 +369,15 @@ In such a case, \(\ket{\Psi}_1\) will therefore be the ground state. In the othe
 	E_1 - E_2 \simeq - \frac{1}{8}K^* + \frac{3}{4}K^* > 0
 \end{aligned}\end{equation}
 In this case, the ground state will be \(\ket{\Psi}_2\). There exists, therefore, a phase transition at a critical plane \((U_c, K_c, V_c)\), where the ground state changes between the charge singlet \(\ket{\Psi}_2\) and the spin singlet + charge triplet \(\ket{\Psi}_1\).
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/E1_vs_E3.pdf}
+\end{figure}
 
 \section{Approach towards the thermodynamic limit}
+
+{\bf \Large [Update with V vs D plots]}
+
 The URG method works strictly on finite systems and leads to finite values of fixed point couplings. The behaviour of the Hamiltonian in the thermodynamic limit can then be determined using finite-size scaling where we increase the bandwidth and decrease the width of each RG step. When applied to the fixed point value of the impurity-bath hybridisation parameter \(V\) (fig.~\ref{V_vs_D}), it can be seen that the fixed point value increases as the system size is increased, implying that the continuum limit of \(V^*\) is \(\infty\). This holds for both \(V_0 > J_0\) and \(V_0 < J_0\), as shown in the two panels of fig.~\ref{V_vs_D}.
 \begin{figure}[htpb]
 	\centering
@@ -397,8 +393,7 @@ The URG method works strictly on finite systems and leads to finite values of fi
 In a similar manner, we checked the variation of the spin and charge probabilities, \(c_s\) and \(c_c\), in the ground state, with increasing bandwith. The result is shown in fig.~\ref{c_vs_D}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/coeffs_vs_D_largeV.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/coeffs_vs_D_smallV.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/coeffs_vs_D.pdf}
 	\caption{Variation of spin and charge fractions, \(c_s\) and \(c_c\), of the ground state, as a function of bare bandwidth \(D_0\). Left and right panels show the cases of \(J_0 < V_0\) and \(J_0 > V_0\) respectively.}
 	\label{c_vs_D}
 \end{figure}
@@ -477,8 +472,9 @@ This completes the proof.
 To calculate the impurity susceptibility, we take the zero bandwidth Hamiltonian \(\mathcal{H}_{IR}\) and insert a magnetic field to obtain the Hamiltonian in eq.~\eqref{field_ham}. For a particular regime of \(U\), only one of \(J\) or \(K\) will be non-zero. We then numerically diagonalise this Hamiltonian to obtain the partition function \(Z(B)\) and its derivatives. The spin susceptibility can then be calculated using eq.~\eqref{chi_exp}. The results for \(U>0\) are shown in fig.~\ref{chi}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.49\textwidth]{../figures/chiT_J=0.020.pdf}
-	\includegraphics[width=0.49\textwidth]{../figures/chiT_J=0.100.pdf}
+	\includegraphics[width=0.49\textwidth]{../figures/chiT.pdf}
+	\includegraphics[width=0.49\textwidth]{../figures/chiT_large.pdf}
+	\includegraphics[width=0.49\textwidth]{../figures/chi.pdf}
 	\caption{Spin susceptibility of the impurity times temperature, for two sets of bare parameters, in \(U>0\). At low temperatures, it becomes linear because \(\chi\) itself becomes constant (screening), while at high temperatures, \(\chi\times T\) becomes constant because of the paramagnetic \(\sim 1/T\) form of \(\chi\). For the right panel with a larger value of the spin-exchange coupling, the \(\chi\) tries to go towards the local moment value of \(1/4\) but eventually drops back to the free orbital value of \(1/8\).}
 	\label{chi}
 \end{figure}
@@ -497,8 +493,8 @@ where \(B_c\) is now a field that couples to the impurity charge-isospin:
 The charge susceptibility for \(U<0\) is shown in fig.~\ref{chi_charge}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.49\textwidth]{../figures/chi_chargeT_K=0.010.pdf}
-	\includegraphics[width=0.49\textwidth]{../figures/chi_chargeT_K=0.100.pdf}
+	\includegraphics[width=0.49\textwidth]{../figures/chic.pdf}
+	\includegraphics[width=0.49\textwidth]{../figures/chic_T.pdf}
 	\caption{Charge susceptibility for the impurity at \(U<0\), for two sets of bare parameters. The physics is very similar to that of the spin susceptibility in \(U>0\).}
 	\label{chi_charge}
 \end{figure}
@@ -506,8 +502,8 @@ The charge susceptibility for \(U<0\) is shown in fig.~\ref{chi_charge}.
 It is interesting to look at the behaviour of the charge susceptibility in the positive \(U\) regime, fig.~\ref{chi_charge_posU}. It  is seen that for \(J_0<V_0\), the charge susceptibility is very similar to the spin susceptibility, with a reduced saturation value. This is because, for that range of bare values, the ground state consists of a comparable mixture of the spin and charge states (see fig.~\ref{cs_cc}). This means that the magnetic field term in eq.~\eqref{charge_field} can couple to the charge component of the ground state, and give a non-zero charge susceptibility at zero temperature. On the other hand, for \(J_0 > V_0\), we see that \(\chi_c\) vanishes at low temperatures. This can again be understood from the ground state. For that range of bare values, the ground state can be approximated by purely the singlet, because the charge fraction \(c_-^c\) becomes very small. This means that the field \(B_c \) has nothing to couple with. Alternatively, it can be said that since the ground state has only terms with \(\hat n_d=1\), no number fluctuation is possible, and the impurity isospin is not susceptible at all to charge polarisation.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J=small.pdf}
-	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J=large.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J0=10.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J0=40.pdf}
 	\caption{Charge susceptibility of the impurity in the positive \(U\) regime, for two values of \(J_0\). The smaller bare value leads to a spin+charge mixed ground state, and hence a non-zero \(\chi_c\) at zero temperature. The larger \(J_0\), however, leads to a purely spin ground state without any number fluctuation, and this gives vanishing \(\chi_c\) at zero temperature.}
 	\label{chi_charge_posU}
 \end{figure}
@@ -1500,7 +1496,7 @@ The denominators are
 \section{Phase diagram}
 
 \begin{center}
-	\includegraphics[width=0.9\textwidth]{../figures/phase-map_D=1000.pdf}
+	\includegraphics[width=0.9\textwidth]{../figures/phase-map-MIT.pdf}
 \end{center}
 
 \begin{center}
@@ -1520,16 +1516,16 @@ yellow &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattic
 
 \subsection*{Overlap of ground state against spin singlet and charge triplet zero states}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=0.400.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=4.000.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=40.000.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=0.050.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=5.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=50.000.pdf}
 \end{center}
 
 \subsection*{Spin and charge correlations in ground state}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=0.400.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=4.000.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs_D=400,J=40.000.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=0.050.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=5.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=50.000.pdf}
 \end{center}
 
 
@@ -1605,10 +1601,11 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 
 \subsection{Bath spectral function \(A_{00}(\omega)\)}
 \begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_U_by_J=0.040.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_U_by_J=0.020.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_U_by_J=0.141.pdf}\\
 	\includegraphics[width=0.48\textwidth]{../figures/spec_func_00_U_by_J=0.185.pdf}
 	\includegraphics[width=0.48\textwidth]{../figures/spec_func_00_U_by_J=0.250.pdf}\\
+	\includegraphics[width=0.48\textwidth]{../figures/spec_func_00_U_by_J=0.26.pdf}\\
 \end{center}
 
 
@@ -1622,7 +1619,7 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 
 \begin{figure}[!htpb]
 	\centering
-	\includegraphics[width=0.6\textwidth]{../figures/spec_func_width_fit.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_width_fit.pdf}
 \end{figure}
 
 

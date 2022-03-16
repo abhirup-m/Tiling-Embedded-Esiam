@@ -1582,9 +1582,9 @@ These quantities are related to the local Fermi liquid of the Kondo strong-coupl
 \subsection{Impurity spectral function \(A_{dd}(\omega)\)}
 These are the frequency-domain spectral functions for the retarded propagator \(-i\theta(t)\left<\left\{c_{d\sigma}(t),c^\dagger_{d\sigma}\right\}  \right>\):
 \begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.040.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.141.pdf}\\
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.185.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.100.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.133.pdf}\\
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.182.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.250.pdf}\\
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_U_by_J=0.26.pdf}
 \end{center}
@@ -1592,9 +1592,9 @@ These are the frequency-domain spectral functions for the retarded propagator \(
 \subsection{Impurity-bath off-diagonal spectral function \(A_{dz}(\omega)\)}
 These are the frequency-domain spectral functions for the off-diagonal retarded propagator \(-i\theta(t)\left<\left\{c_{d\sigma}(t),c^\dagger_{0\sigma}\right\}  \right>\):
 \begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.040.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.141.pdf}\\
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.185.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.100.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.133.pdf}\\
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.182.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.250.pdf}\\
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_d0_U_by_J=0.26.pdf}
 \end{center}
@@ -1763,7 +1763,7 @@ On a 2D square lattice with lattice spacing $a$, this simplifies to
 \epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~
 \end{eqnarray}
 where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
-\\\\
+
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
 	A_\text{H-H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{k},\omega))\\ 
@@ -1800,28 +1800,41 @@ Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_at
 \begin{itemize}
 	\item For \(U_b > J/4\), the couplings \(J\) and \(V\) become irrelevant while \(U\) is relevant, which means that \textbf{the impurity gets cut off from the bath at low energies}.
 \begin{center}
-	\includegraphics[width=0.7\textwidth]{../figures/phase-map_D=1000.pdf}
+	\includegraphics[width=0.7\textwidth]{../figures/phase-map-MIT.pdf}
 \end{center}
-	\item Study of the impurity spectral function shows a gap at low \(\omega\) for \(U_b > J/4\). Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
-\begin{center}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_U_by_J=0.040.pdf}
+\item The impurity spectral function \(A_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(A_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). The gap in the diagonal spectral function shows that the impurity site cannot fluctuate through gapless excitations, while the vanishing of the off-diagonal spectral function shows that an electron on the impurity site cannot delocalise out of that site.  Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
+
+\begin{figure}[!htpb]
+\centering
+	\includegraphics[width=0.3\textwidth]{../figures/spec_func_U_by_J=0.100.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_U_by_J=0.250.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_U_by_J=0.26.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_U_by_J=0.040.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_U_by_J=0.100.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_U_by_J=0.250.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_U_by_J=0.26.pdf}
+	\caption{Evolution of diagonal and off-diagonal spectral functions across the transition.}
+	\label{spec_func_mit}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
 	\includegraphics[width=0.3\textwidth]{../figures/corr-k-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/corr-d0-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/r1p-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-\end{center}
-	\item In the context of the auxiliary model, this represents an \textbf{impurity phase transition} from the completely-screened spin-singlet phase to the unscrened local moment phase.
-\begin{center}
+	\caption{Evolution of correlation functions and mutual information across the transition.}
+\end{figure}
+
+	\item In the context of the auxiliary model, this represents an \textbf{impurity phase transition} from the completely-screened spin-singlet phase to the unscreened local moment phase.
+
+\begin{figure}[!htb]
+\centering
 	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=4.000.pdf}
-\end{center}
+	\caption{Evolution of the zero-bandwidth ground state across the transition.}
+\end{figure}
 
-Using the mappings between the auxiliary model parameters and the bulk paramets (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled, and the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) are non-zero at low \(\omega\). This means that both the local and the nearest-neighbour Greens functions, that are related to these parameters via eq.~\ref{greens_func_siam}, have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model (eq.\eqref{main}), the former also shows the same zero-energy resonance.
+Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled, and the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) are non-zero at low \(\omega\). This means that both the local and the nearest-neighbour Greens functions, that are related to these parameters via eq.~\ref{greens_func_siam}, have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model (eq.\eqref{main}), the former also shows the same zero-energy resonance.
 
-On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
+On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations, and is demonstrated through both the diagonal and off-diagonal spectral functions in fig.~\ref{spec_func_mit}. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
 
 Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
 \begin{eqnarray}
@@ -1897,12 +1910,11 @@ Another test involves considering the case of infinite number of nearest neighbo
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma = \frac{1}{w} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma \to 0
 \end{aligned}\end{equation}
-There we used the fact since at half-filling on an $SU(2)$ symmetric mode, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\tilde \Phi_0} = \sum_n C^i_n \ket{n}$ to be constrained to $\sum_n |C_n^i|^2 = \frac{1}{2}$, such that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H}$ matrix has no $k$ dependence. 
-\\\\
+There we used the fact since at half-filling on an $SU(2)$ symmetric model, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\Phi_0} = \sum_n d^p_n \ket{\Phi_n}$ and \(c^\dagger_{i+1,\sigma}\ket{\Phi_0}=z^p_n\ket{\Phi_n}\) are constrained such that $\sum_n |d^p_n|^2 = \sum_n |z^p_n|^2 = \frac{1}{2}$, so that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H-H}$ matrix has no $k$ dependence. 
+
 In this limit, the self-energy also simplifies:
 \begin{equation}\begin{aligned}
-	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) &= \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n \lim_{w \to \infty}\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1} \\
-						   &=\omega +t^{H}\xi_{\vec k} - \frac{N}{2}\frac{1}{\sum_n \left[ \frac{|C^0_{n}|^2}{g_n} - \frac{|\overline C^0_{n}|^2}{\overline{g_n}}\right]}
+	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) = = \omega +t^{H-H}\xi_{\vec k} - \left\{\sum_n \left[|d^p_n|^2  \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}- |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}
 \end{aligned}\end{equation}
 We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
 
@@ -1912,7 +1924,7 @@ We can now see that even in the limit of $w\to\infty$, the competition between $
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
 This section tries to see how far we can we can go if we just work with the Anderson molecule as the smallest unit of tiling. We will attempt to reproduce the entire spectrum of a Hubbard dimer by creating a new Hamiltonian made up purely of Anderson molecules. This will guide us in deciding how to generalize the "tiling method" for a general $N-$site Hubbard model, as well as give indications as to whether we need a different smallest unit for tiling.
-\\\\
+
 The Hubbard dimer and Anderson molecules (zero-mode) are defined by the following respective Hamiltonians:
 \begin{equation}\begin{aligned}
 	H^H &= -t^H\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.}\right) + U^H\sum_{i=1,2}\hat n_{i \uparrow}\hat n_{i \downarrow} - \mu^H \sum_{\sigma, i=1,2}\hat n_{i\sigma}\\
@@ -2023,7 +2035,7 @@ We start with a SIAM (with a correlated bath having a non-trivial self-energy), 
  \end{aligned}\end{equation}
  where $\mathcal{U} = TZ\mathcal{U}_{A}$ is some transformation that is either a unitary, or, at the very least, a similarity transformation that maps from the original to the reconstructed Hubbard Hamiltonian. 
  The existence of $U$ is contingent on how good the approximations are.
- \\\\
+ 
  We mention the two approximations made along the entire journey from the original Hubbard model to the reconstructed one here.
  \begin{itemize}
  	\item We have replaced the full Hubbard model by an auxiliary system described by the SIAM Hamiltonian in eq.~\ref{clus_bath_siam}. The accuracy of this assumption is determined by the choice of the SIAM parameters, particular the self-energy and repulsion of the bath. As discussed before, the very choice of th cluster and bath spoil the translational invariance of the parent model.
@@ -2033,9 +2045,9 @@ We start with a SIAM (with a correlated bath having a non-trivial self-energy), 
 
 \section{Creating \(N-\)site Hubbard Hamiltonian from Hubbard dimer embedded in a bath}
 We will follow the strategy outlined in the previous section. For concreteness, we will consider a lattice of \(N\) lattice sites and \(w\) nearest neighbours for each site. Note that a uniform number of nearest neighbours means that there is perfect translational invariance on the lattice, which means there cannot be any edge sites. This is achieved by applying periodic boundary conditions on the edges of the lattice. A square 2d lattice is thus placed on a 2-torus.
-\\\\
+
 For each nearest-neighbour pair \(i,j\), we will create a local Hamiltonian \(H^D_{i,j}\) from the Hamiltonian of the Hubbard dimer with bath (we will interpret the effective bath as the remaining \(N-2\) sites of the lattice, apart from \(i,j\)). We will need to suitably transform the Hamiltonian parameters \(U^D, t^D\), but we will figure those out as we go along. Since the number of nearest neighbour pairs is \(\frac{Nw}{2}\), the general Hubbard Hamiltonian should be the average of these local Hamiltonians. 
-\\\\
+
 We recall the dimer+bath Hamiltonian here, since we are going to create the full Hamiltonian by combining various realizations of that Hamiltonian:
 \begin{equation}\begin{aligned}
 	\tilde H^D = H^D(0,1) - t^D \left(c^\dagger_{0\sigma}c_{z\sigma} + c^\dagger_{1\sigma}c_{z\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
@@ -2089,7 +2101,7 @@ where we have defined the renormalised excitation $\ket{\tilde {\nu^\prime}} \eq
 	G(i\sigma, j\sigma, \omega) = \bra{ i\sigma} \mathcal{G}(\omega, H) \ket{ j\sigma} - \bra{\overline{i\sigma}} \mathcal{G}(-\omega, H) \ket{\overline {j\sigma}} = \mathcal{G}(\omega, H)_{ i\sigma, j\sigma} - \mathcal{G}(-\omega, H)_{\overline{i\sigma}, \overline {j\sigma}}
 \end{aligned}\end{equation}
 where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{\Phi_0}$ and $\ket{\overline{i\sigma}}=c_{i\sigma}\ket{\Phi_0}$. We can see from the relation that we will need two types of matrix elements, one that propagates a particle excitation $\left( \ket{i\sigma} \right) $ and the one that propagates a hole excitation $\ket{\overline{i\sigma}}$.
-\\\\
+
 To this end, we rewrite eq.~\ref{H_tiled} in terms of inverse Greens function operators for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
 \begin{equation}\begin{aligned}
 	\label{Gd_op}
@@ -2151,7 +2163,7 @@ For convenience, we define $g_n = \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn}
 	\hspace*{\fill}
 	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
 \end{figure}
-\\\\
+
 The matrix elements for hole propagation are obtained similarly. Here the relavant excitations are $\ket{\overline{i\sigma}} \equiv c_{i\sigma}\ket{\tilde \Phi_0}$, at frequency $-\omega$. To expand these states, we choose the eigenstates with $N-1$ total particles as the orthonormal basis:
 \begin{equation}\begin{aligned}
 	c_{0\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^0_n \ket{\overline{n}}, && c_{1\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^1_n \ket{\overline{n}}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
@@ -2215,7 +2227,7 @@ On a 2D square lattice with lattice spacing $a$, this simplifies to
 \epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~
 \end{eqnarray}
 where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
-\\\\
+
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
 	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{4(w-1)}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
@@ -2311,7 +2323,7 @@ Another test involves considering the case of infinite number of nearest neighbo
 	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma \to 0
 \end{aligned}\end{equation}
 There we used the fact since at half-filling on an $SU(2)$ symmetric mode, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\tilde \Phi_0} = \sum_n C^i_n \ket{n}$ to be constrained to $\sum_n |C_n^i|^2 = \frac{1}{2}$, such that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H}$ matrix has no $k$ dependence. 
-\\\\
+
 In this limit, the self-energy also simplifies:
 \begin{equation}\begin{aligned}
 	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) &= \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n \lim_{w \to \infty}\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1} \\

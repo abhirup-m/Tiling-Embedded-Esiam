@@ -1490,7 +1490,7 @@ The denominators are
 \paragraph{Important points regarding notation}
 \begin{itemize}
 	\item The labels \(U_0,J_0,V_0\) that may occur in the axes of the plots or anywhere else represent the bare values of the couplings \(U,J\) and \(V\). 
-	\item Throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	
+	\item Throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	
 \end{itemize}
 
 \section{Phase diagram}
@@ -1507,7 +1507,7 @@ phase & RG flow & fixed point & GS & 2-site GS \\
 blue & \(\Delta U <0, \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) & SS & \(\ket{SS}=\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\)  \\ 
 green &  \(\Delta U < 0, \Delta J < 0,\Delta V>0\) & \(J^* < U^* \ll V^*\) & SS + CT-0 & \(c\ket{SS} + \sqrt{1-c^2}\ket{CT-0}\)  \\  
 red &  \(\Delta U > 0, \Delta J,\Delta V<0\) & \(U^* \gg 1,  V^* = J^* = 0\) & decoupled LM & \(\left\{\ket{\uparrow}, \ket{\downarrow} \right\} \otimes \left\{\ket{0}, \ket{2}\right\} \) \\
-yellow &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice & \(\left\{\ket{\uparrow}, \ket{\downarrow}, \ket{0}, \ket{2} \right\} \otimes \left\{\ket{0}, \ket{2}\right\}\) \\
+gray &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice & \(\left\{\ket{\uparrow}, \ket{\downarrow}, \ket{0}, \ket{2} \right\} \otimes \left\{\ket{0}, \ket{2}\right\}\) \\
 \hline
 \end{tabular}
 \end{center}
@@ -1516,15 +1516,15 @@ yellow &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattic
 
 \subsection*{Overlap of ground state against spin singlet and charge triplet zero states}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=0.050.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=5.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=0.100.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=10.000.pdf}\\
 	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=50.000.pdf}
 \end{center}
 
 \subsection*{Spin and charge correlations in ground state}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=0.050.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=5.000.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=0.100.pdf}\\
+	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=10.000.pdf}\\
 	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=50.000.pdf}
 \end{center}
 
@@ -1534,47 +1534,47 @@ yellow &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattic
 \subsection*{Perturbation theoretic terms}
 These quantities are related to the local Fermi liquid of the Kondo strong-coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. \(\mathcal{F}\) is the strength of the local Fermi liquid \((\mathcal{F} \hat n_{1 \uparrow} \hat n_{1 \downarrow})\).
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 \end{center}
 
 \subsection*{Correlation within the Kondo cloud}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 \end{center}
 
 \subsection*{Mutual information between various real space members}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 \end{center}
 
 \subsection*{Impurity entanglement entropy and spin-spin correlations}
 
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-02-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-03-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-02-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-03-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 
 \end{center}
 
 \subsection*{Real-space correlations}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 
-	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=31.623,0.000,50,V=2J,Ubath=-U,N=4,U=0.032,3.162,50.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 \end{center}
 
 \section{Spectral functions}

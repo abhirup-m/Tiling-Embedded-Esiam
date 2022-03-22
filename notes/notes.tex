@@ -1683,10 +1683,10 @@ Under the single site approximation, we ignore the hopping between multiple impu
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \frac{1}{w} w\times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i) c^\dagger_{i\sigma} | \Phi_0} = \braket{\Phi_0 | c_{d\sigma} \mathcal{G}^{-1}_\text{aux}(d) c^\dagger_{d\sigma} | \Phi_0}
 \end{aligned}\end{equation}
-where we have identitied site \(i\) in the auxiliary model as the impurity.
+where we have identified site \(i\) in the auxiliary model as the impurity.
 By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal{G}^{-1}_\text{aux}(d)\), we get from the spectral representation
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux}(d) \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d\sigma} | \Phi_0} = \left(\mathcal{G}^{-1}_{H-H}\right)_{ii} = \sum_{n} |d^p_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, \omega)\right)_{nn} 
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux}(d) \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d\sigma} | \Phi_0} = \sum_{n} |d^p_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, \omega)\right)_{nn} 
 \end{aligned}\end{equation}
 There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(H_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_n = \bra{\Phi_n}c^\dagger_{d\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
 \begin{equation}\begin{aligned}
@@ -1898,7 +1898,7 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{green_eq_final_siam}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
+One can apply a test to this method: it involves considering the case of infinite number of nearest-neighbours $w\to\infty$ (the coordination number, and effectively the dimension). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{green_eq_final_siam}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma = \frac{1}{w} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma \to 0
 \end{aligned}\end{equation}

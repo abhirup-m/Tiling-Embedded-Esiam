@@ -1,12 +1,12 @@
 \documentclass{report}
-\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix}
+\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=0.8in,top=0.3in,bottom=1.4in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
+\usepackage[sfdefault]{FiraSans}
 \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 
 \newcommand{\comment}[1]{{}}
@@ -19,9 +19,10 @@
 \allowdisplaybreaks
 \bibliographystyle{ieeetr}
 
-\title{\bf Auxiliary Model Approach to Strongly-Correlated Systems}
-\author{\Large Abhirup Mukherjee, Siddhartha Lal}
-\date{\Large \today}
+\title{Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Systems}
+\author{Abhirup Mukherjee, Siddhartha Lal}
+\affil{Indian Institute of Science Education and Research Kolkata, Mohanpur}
+\date{\today}
 
 \begin{document}
 \maketitle
@@ -565,11 +566,16 @@ The parameter \(\eta_n\) determines the height and width of the Gaussian, and is
 From the results of Langreth \cite{langreth1966}, we know that the spectral function at zero frequency is fixed by the occupancy of the impurity. Since we are in the particle-hole symmetric regime, this occupancy is fixed at 1, and hence so is the spectral function height at \(\omega = 0\). This result has been used to fix the spectral function height at the center during the computations. The fixed-point Hamiltonian \(H^*\) is diagonalized numerically to obtain \(\left\{E_n, \ket{n}\right\}\), for various values of the couplings. The intention here is to get an idea of how the spectral function morphs under the RG. Doing an actual reverse RG (described in \ref{rev_rg}) would require us to diagonalize a huge Hamiltonian. We take the simpler route of tuning the \(U\) from zero to soem large value. This should mimic the journey from the IR theory \((U=0)\) to the UV theory \((U \gg 0)\).
 
 The spectral function is plotted for three sets of values in fig.~\ref{spec_func}. For low values of \(U\), the profile is that of a single peak at zero frequency. This is expected because at the low energy effective theory, the high energy Hubbard side bands have been integrated out. As \(U\) increases, shoulder-like structures appear on either side of the peak, which finally, at larger \(U\), develop into two side-peaks. This is the microscopic theory, where high energy features are also relevant.
-\begin{center}
-	\includegraphics[width=0.8\textwidth]{../figures/gen_siam_spec_func.pdf}
-	\captionof{figure}{Impurity spectral function for multiple values of \(U\). The increase in value of \(U\) is accompanied by the appearance of the side-peaks.}
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=0.00.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=3.00.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=5.00.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=10.00.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=25.00.pdf}
+	\caption{Impurity spectral function for multiple values of \(U\). The increase in value of \(U\) is accompanied by the appearance of the side-peaks.}
 	\label{spec_func}
-\end{center}
+\end{figure}
 The physics of the three peaks can now be looked into. Since the central peak is at zero energy, it has to do with excitations that do not cost any energy. There are two such excitations: excitations within the spin sector and within the charge sector.
 \begin{equation}\begin{aligned}
 	\ket{\uparrow} \mathrel{\mathlarger{\mathlarger{\mathop{\rightleftarrows}}^{J S_d^-}_{JS_d^+}}}\ket{\downarrow}, &&&&\ket{\Uparrow} \mathrel{\mathlarger{\mathlarger{\mathop{\rightleftarrows}}^{K C_d^-}_{K C_d^+}}}\ket{\Downarrow}\\
@@ -1820,7 +1826,7 @@ Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_at
 
 \begin{figure}[!htb]
 \centering
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs_D=400,J=4.000.pdf}
+	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=10.000.pdf}
 	\caption{Evolution of the zero-bandwidth ground state across the transition.}
 \end{figure}
 

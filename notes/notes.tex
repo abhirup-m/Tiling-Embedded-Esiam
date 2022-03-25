@@ -30,41 +30,65 @@
 \newpage
 \chapter{Introduction}
 
-\section{Philosophy of the auxiliary model method}
-The method is closely tied to the auxiliary system approach described in \cite{martin_2016}. We can view the full Hamiltonian as a sum of two component Hamiltonians \(H_1, H_2\) connected via the interaction term \(H_{12}\).
+\section{What is the minimal impurity model for a Mott metal-insulator transition?}
+The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
+\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
+The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
+\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
+There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
+
+One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For eg, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
+\begin{equation}
+\label{clus_bath_siam}
+\mathcal{H}_\text{SIAM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow} - t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
+\end{equation}
+The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
+
+If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
+
+This difference in the type of conduction baths is utilised in dynamical mean-field theory to describe various phases of the bulk system. This is done through the DMFT algorithm: one starts with a non-interacting bath, but depending on the value of \(U\), the conduction bath then gets modified and we ultimately end up with something that is different from what we started with. For small\(U\), the bath does not change much and we retain the central resonance of the impurity spectral function. This then describes a metal in the bulk. For larger values of \(U\), however, the bath changes significantly such that its density of states becomes non-constant. Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk. \textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.5\textwidth]{../figures/dos_diff.pdf}
+\caption{Various kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
+\end{figure}
+
+\section{Philosophy of auxiliary model methods}
+The present method is a realisation of the general method of using simpler systems called auxiliary models to study bulk systems~\cite{martin_2016}. In general, a full Hamiltonian can be separated into the Hamiltonians for a particular subsystem \(S\), the rest of the system \(R\), and the interactions between \(S\) and \(R\).
 \begin{equation}\begin{aligned}
-	H = \begin{bmatrix} & H_1 && H_{12} & \\ & H_{12}^* && H_2 & \end{bmatrix} = H_1 \ket{1}\bra{1} + H_2\ket{2}\bra{2} + H_{12}\ket{1}\bra{2} + H_{12}^*\ket{2}\bra{1}
+	\mathcal{H} = \mathcal{H}_S\ket{S}\bra{S} + \mathcal{H}_R \ket{R}\bra{R} + \mathcal{H}_{SR} \ket{S}\bra{R} + \mathcal{H}_{RS}\ket{S}\bra{R} = \begin{bmatrix} & \mathcal{H}_{R} && \mathcal{H}_{RS} & \\ & \mathcal{H}_{RS}^* && \mathcal{H}_{S} & \end{bmatrix}
 \end{aligned}\end{equation}
-where \(\ket{1}\) and \(\ket{2}\) actually represents sums over all basis kets of subsystems 1 and 2. As an example, we can split the Hubbard model Hamiltonian between a particular site \(i = p\) and the rest of the lattice as follows:
+where \(\ket{S}\) and \(\ket{R}\) actually represents sums over all basis kets of \(S\) and \(R\) respectively. As an example, we can split the Hubbard model Hamiltonian between a particular site \(i = p\) and the rest of the lattice as follows (fig.~\ref{cluster-bath}):
 \begin{equation}\begin{aligned}
-	H_\text{hubb} &= \overbrace{U^H\hat n_{p \uparrow} \hat n_{p \downarrow} - \mu^H \sum_\sigma \hat n_{p \sigma}}^{H_1} + \underbrace{U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} -t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right)}_{H_2}\\
-		      & -\underbrace{t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)}_{H_{12} + H_{12}^*}\\
+	H_\text{hubb} &= \overbrace{U^H\hat n_{p \uparrow} \hat n_{p \downarrow} - \mu^H \sum_\sigma \hat n_{p \sigma}}^{H_S} + \underbrace{U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} -t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right)}_{H_R}\\
+		      & -\underbrace{t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)}_{H_{SR} + H_{RS}}\\
 \end{aligned}\end{equation}
 The Greens function of the full Hamiltonian can also be split in a similar fashion:
 \begin{equation}\begin{aligned}
-	G(\omega) = \begin{pmatrix} G_1 && G_{12} \\ G_{12}^* && G_2 \end{pmatrix}
+	G(\omega) = \begin{bmatrix} G_S && G_{SR} \\ G_{RS} && G_R \end{bmatrix}
 \end{aligned}\end{equation}
 Each Greens function can be written in terms of the non-interacting counterpart and the self-energy through the Dyson equation: \(\Sigma_i = 1/G_{i,0} - 1/G_i\).
 
-The subsystem 1 is usually taken to be the "cluster", and consequently, subsystem 2 represents the "bath".
+The subsystem \(S\) is usually taken to be the "cluster", and consequently, \(R\) represents the "bath".
 The smaller system is typically chosen such that its eigenstates are known exactly.
-Progress is then made by choosing a simpler version of the bath \(H_2\) and a simpler form also for its coupling \(H_{12}\) with the smaller system.
+Progress is then made by choosing a simpler version of \(H_R\) and a simpler form also for its coupling \(H_{RS}\) with the smaller system.
 This combination of the cluster and the simpler bath is then called the \textit{auxiliary system}.
-A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{12}\).
+A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{RS}\).
 Such a construction is shown in fig.~\ref{cluster-bath}.
 \begin{figure}[htpb!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../figures/cluster-bath.png}
+	\includegraphics[width=0.8\textwidth]{../figures/cluster-bath.pdf}
 	\caption{\textit{Left}: Full Hubbard model lattice with onsite repulsion $U^H$ on all sites and hopping between nearest neighbour sites with strength $t^H$. \textit{Right}: Extraction of the auxiliary (cluster+bath) system from the full lattice. The central site on left becomes the impurity site (red) on the right (with an onsite repulsion $\epsilon_d$), while the rest of the $N-1$ sites on the left form a conduction bath (green circles) (with dispersion $\epsilon_k$ and correlation modelled by the self-energy $\Sigma_k(\omega)$) that hybridizes with the impurity through the coupling $V$.}
 	\label{cluster-bath}
 \end{figure}
-\textit{It should be noted that any reasonable choice of the cluster and bath would break the translational symmetry of the full model}. To allow computing quantities, one would need to make the bath (which is a much larger system) simpler than the cluster (which is a single site). This distinction breaks the translational symmetry of the Hubbard model. For eg., if one chooses eq.~\ref{clus_bath_siam} as the auxiliary system, then the fact that the impurity has an onsite correlation while the bath only has a global capacitance cost $(\sim U_b N^2)$ means we have broken the symmetry between the cluster and the bath.
+\textit{It should be noted that any reasonable choice of the cluster and bath would break the translational symmetry of the full model}. To allow computing quantities, one would need to make the bath (which is a much larger system) simpler than the cluster (which is a single site). This distinction breaks the translational symmetry of the Hubbard model. For eg., if one chooses eq.~\ref{clus_bath_siam} as the auxiliary system, then the fact that the impurity has an onsite correlation while the bath does not means we have broken the symmetry between the cluster and the bath.
 
 \subsection*{Dynamical mean-field theory - an example of an auxiliary model approach}
-Dynamical mean-field theory is an approximation scheme that use impurity models to obtain Greens functions of bulk systems of strong-correlation~\cite{kotliar1996,kotliar1992}. The essential idea is to find the most suitable impurity model that replicates the full Hamiltonian. This is done through the following algorithm. Given a bulk Hamiltonian with on=site correlation \(U\) and a non-interacting \(k-\)space Greens function \(G_{k,0}\) for the bath:
+Dynamical mean-field theory is an approximation scheme that use impurity models to obtain Greens functions of bulk systems of strong correlation~\cite{kotliar1996,kotliar1992}. The essential idea is to find the most suitable impurity model that replicates the full Hamiltonian. This is done through the following algorithm. Given a bulk Hamiltonian with on=site correlation \(U\) and a non-interacting \(k-\)space Greens function \(G_{k,0}\) for the bath:
 \begin{itemize}
 	\item[1.] We first create an impurity model with on-site correlation \(U\) and non-interacting impurity Greens function \(G_{i,0} = \sum_k G_{k,0}\).
-		\[H_\text{aux} = H_\text{imp}(U) -t \sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + H_\text{bath}\left(t,G_{i,0}\right)\]
+		\[\mathcal{H}_\text{aux} = H_\text{imp}(U) -t \sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + H_\text{bath}\left(t,G_{i,0}\right)\]
 
 	\item[2.] This impurity model is solved using some method like numerical renormalisation group, and the self-energy \(\Sigma_\text{aux}\) of the impurity is obtained.
 
@@ -86,49 +110,24 @@ The stopping condition is the consistency relation that makes the bath and impur
 \end{figure}
 
 
-\section{What is the minimal impurity model for a Mott metal-insulator transition?}
-The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
-The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
-There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
-
-A correlated single impurity site connected with a non-interacting bath with a uniform density of states leads to a well-defined Kondo resonance at low temperatures, as seen in the impurity spectral function. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice. This difference is what leads to a metal-insulator transition of a bulk Hubbard model under dynamical mean-field theory (DMFT). Under self-consistency, the non-interacting bath gets modified into one with a highly-correlated self-energy. At low \(U\), the impurity spectral function remains gapless, but at sufficiently large \(U\), the bath is able to kill the Kondo resonance and lead to an insulating state. \textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
-\cite{held_2013}
-
-\begin{figure}[htpb]
-\centering
-\includegraphics[width=0.5\textwidth]{../figures/correlated_bath.png}
-\caption{"Comparison of the usual Anderson
-impurity model of a strongly interacting site coupled via $V$ to
-an uncorrelated featureless and wide conduction-electron band
-(left-hand side) and the Hubbard model situation (right-hand
-side). In the latter case, an electron leaving a correlated site
-moves within the strongly correlated and narrow band of the
-central peak. In this situation there is a kink at the effective
-Kondo energy scale which is smaller than the width of the
-narrow band." Image and caption source in footnote.}
-\end{figure}
-
 \section{A "bottoms-up" approach to using auxiliary models}
 As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}, and this analysis is shown in chapters~\ref{chap:urg1}~and~\ref{siam-attr-chap}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process is shown in chapter~\ref{chap:tile}. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
 
-In our approach, the auxiliary models can be chosen in various ways. The simplest choice is of course the single-impurity Anderson model:
+In our approach, the auxiliary models can be chosen in various ways. The simplest choice is of course the single-impurity Anderson model of eq.~\ref{clus_bath_siam}:
 \begin{equation}
-\label{clus_bath_siam}
-H_\text{SIAM} = -\frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right) ^2 + V\sum_\sigma\left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.} \right) + \text{K.E.}
+\mathcal{H}_\text{SIAM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow} - t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
 \end{equation}
-This model, of course, does not show any impurity phase transition. Correlation can be introduced into the auxiliary model in two ways:
+This model does not show any impurity phase transition - the impurity is always screened~\cite{hrk_wilson_1980,wilson1975,bullaNRGreview}. Correlation can be introduced into the auxiliary model in two ways:
 \begin{itemize}
 	\item[1.] The impurity or the bath can be made to have additional interaction: 
 \begin{gather}
-H_\text{aux} = H_\text{SIAM} + J \vec{S}_d\cdot\vec{s}_0\\
-H_\text{aux} = H_\text{SIAM} + J \vec{S}_d\cdot\vec{s}_0 - U_b \left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2
+\mathcal{H}_\text{aux} = H_\text{SIAM} + J \vec{S}_d\cdot\vec{s}_0\\
+\mathcal{H}_\text{aux} = H_\text{SIAM} + J \vec{S}_d\cdot\vec{s}_0 - U_b \left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2
 \end{gather}
 The first example has a spin-exchange interaction between the impurity site and the zeroth site, while the second example additionally has a correlation locally on the zeroth site.
 \item[2.] The second method is to make the cluster itself more complicated. That is, one can introduce multiple impurity sites that are connected via the hopping:
 \begin{equation}
-H_\text{aux} = -\frac{U}{2}\sum_{d_i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right) ^2 + V\sum_{d_i}\sum_\sigma\left( c^\dagger_{d_i\sigma}c_{0\sigma} + \text{h.c.} \right) + \text{K.E.} - t\sum_{\sigma}\left(c^\dagger_{d_1\sigma}c_{d_2\sigma} + \text{h.c.}\right)
+\mathcal{H}_\text{aux} = -\frac{U}{2}\sum_{d_i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right) ^2 + V\sum_{d_i}\sum_\sigma\left( c^\dagger_{d_i\sigma}c_{0\sigma} + \text{h.c.} \right) + \text{K.E.} - t\sum_{\sigma}\left(c^\dagger_{d_1\sigma}c_{d_2\sigma} + \text{h.c.}\right)
 \end{equation}
 	
 \end{itemize}
@@ -138,9 +137,9 @@ H_\text{aux} = -\frac{U}{2}\sum_{d_i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \
  	\includegraphics[width=0.6\textwidth]{../figures/gen_siam.pdf}
  	\caption{Cluster+bath construction of auxiliary model. It consists of a cluster (red square) hybridising with a bath (ring) by hopping into and out of the zeroth site (pink). The other sites (green) form the rest of the bath. Just the cluster and the zeroth site have onsite correlations.}
  \end{figure}
- The next step in the programme is to tile the real-space lattice with this cluster+bath Hamiltonian \(\tilde H\) to restore translational invariance (shown in a later section), and obtain a new bulk Hamiltonian for correlated electrons, $\tilde H = T\left[ H_\text{aux} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the cluster-bath (auxiliary model) Hamiltonian to span the target real-space lattice. Given a general auxiliary model Hamiltonian \(H_\text{aux}\), the result of tiling can be written very generally as
+ The next step in the programme is to tile the real-space lattice with this cluster+bath Hamiltonian \(\tilde H\) to restore translational invariance (shown in a later section), and obtain a new bulk Hamiltonian for correlated electrons, $\tilde H = T\left[ \mathcal{H}_\text{aux} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the cluster-bath (auxiliary model) Hamiltonian to span the target real-space lattice. Given a general auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}\), the result of tiling can be written very generally as
  \begin{equation}\begin{aligned}
-	 \tilde H = \sum_{\left\{i_1,i_2,...\right\}} H_\text{aux}\left(\left\{i_1,i_2,...\right\}\right)
+	 \tilde H = \sum_{\left\{i_1,i_2,...\right\}} \mathcal{H}_\text{aux}\left(\left\{i_1,i_2,...\right\}\right)
  \end{aligned}\end{equation}
 where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of the cluster. To reiterate, what that means is that we have placed the cluster+bath system at all lattice point sets \(\left\{i_1,i_2,...\right\}\) to reconstruct a new model of correlated electrons. The answer to how closely $\tilde H$ approximates a target model of correlated electrons lies in (i) the choice of the cluster-bath construction of the auxiliary model, and (ii) the accuracy of the URG procedure on the auxiliary model. 
 
@@ -238,16 +237,16 @@ For the Hamiltonians with positive on-site correlation, we will assume that the 
 	d_1 > d_2 > d_3 > d_0
 \end{aligned}\end{equation}
 
-The strong-coupling regime is defined as the range of values of \(\omega\) where the hybridisation is relevant. This is ensured by the assumption \(d_1<0\). From eq.~\ref{ineq_den}, we can then conclude that all denominators are negative: \(d_i = - |d_i|\). The simplest consequence of this is the RG flow of \(K\):
+The strong coupling regime is defined as the range of values of \(\omega\) where the hybridisation is relevant. This is ensured by the assumption \(d_1<0\). From eq.~\ref{ineq_den}, we can then conclude that all denominators are negative: \(d_i = - |d_i|\). The simplest consequence of this is the RG flow of \(K\):
 \begin{equation}\begin{aligned}
 	\Delta K= -\frac{n_j K^2}{d_3} = \frac{n_j K^2}{|d_3|} > 0 \implies K_{j+1} > K_j \implies K_0 = -|K_0|, K^* \to 0
 \end{aligned}\end{equation}
 \(K_j\) is the value of \(K\) after the \(j^\text{th}\) RG step, \(K_0\) representing the bare value.
 In other words, since \(d_3 < 0\), the RG equation for \(K\) provides an algebraic increment, and the negative \(K\) increases and flows towards zero. The \(*\) indicates a fixed point value. The isospin coupling is irrelevant in this regime, and we will ignore it.
 
-The coupling \(J\), on the other hand, is relevant and flows from a small positive value towards a large value at strong-coupling.
+The coupling \(J\), on the other hand, is relevant and flows from a small positive value towards a large value at strong coupling.
 \begin{equation}\begin{aligned}
-	\Delta J= -\frac{n_j J^2}{d_2} = \frac{n_j J^2}{|d_2|} > 0 \implies J_{j+1} > J_j \implies J_0 \to \text{ large } J^* ~(\text{strong-coupling})
+	\Delta J= -\frac{n_j J^2}{d_2} = \frac{n_j J^2}{|d_2|} > 0 \implies J_{j+1} > J_j \implies J_0 \to \text{ large } J^* ~(\text{strong coupling})
 \end{aligned}\end{equation}
 The value of \(J^*\) is obtained when the denominator \(d_2\) vanishes.
 
@@ -289,13 +288,13 @@ Here, we have \(J<0\) and \(K>0\). The denominators satisfy the following inequa
 	d_0 > d_3 > d_2 > d_1
 \end{aligned}\end{equation}
 
-The strong-coupling regime here corresponds to \(d_0 < 0\). This again means that all the denominators are negative. The spin-exchange coupling \(J\) is now irrelevant, because its bare value is negative while its RG equation is positive: \(\Delta J>0\). Moreover, the isospin coupling \(K\) is now positive and so is its RG equation: \(\Delta K>0\), which means it flows to strong-coupling. \(V\) also flows to strong-coupling. The RG equation for \(U\) can be written as
+The strong coupling regime here corresponds to \(d_0 < 0\). This again means that all the denominators are negative. The spin-exchange coupling \(J\) is now irrelevant, because its bare value is negative while its RG equation is positive: \(\Delta J>0\). Moreover, the isospin coupling \(K\) is now positive and so is its RG equation: \(\Delta K>0\), which means it flows to strong coupling. \(V\) also flows to strong coupling. The RG equation for \(U\) can be written as
 \begin{equation}\begin{aligned}
 	\Delta U = 4V^2\left(\frac{K}{4} - U\right)\frac{n_j}{d_0 d_1} + \frac{n_j K^2}{d_3}
 \end{aligned}\end{equation}
 The first term is necessarily positive, while the second term is negative. This means that for roughly \(V_0 > J_0\), we  will have \(\Delta U > 0\), and since \(U_0 < 0\), this amounts to an irrelevant flow of \(U\) towards zero. On the other hand, for \(J_0 > V_0\), we will have \(\Delta U < 0\), and this corresponds to a relevant flow of \(U\) towards large negative value.
 
-In other words, the RG flows in this regime can be exactly mapped to those in the positive \(U\) regime. The general statement is: in the strong-coupling regime of positive(negative) \(U\), \(V\) is always relevant, \(J\)(\(K\)) is relevant, \(K\)(\(J\)) is irrelevant, and \(U\) is relevant when \(J(K) > V\), otherwise \(U\) is irrelevant.
+In other words, the RG flows in this regime can be exactly mapped to those in the positive \(U\) regime. The general statement is: in the strong coupling regime of positive(negative) \(U\), \(V\) is always relevant, \(J\)(\(K\)) is relevant, \(K\)(\(J\)) is irrelevant, and \(U\) is relevant when \(J(K) > V\), otherwise \(U\) is irrelevant.
 
 
 \section{Effective Hamiltonian and ground state}
@@ -746,7 +745,7 @@ The more interesting interaction is the off-diagonal term
 \end{aligned}\end{equation}
 This interaction arises from the enhanced entanglement between the impurity and the conduction electrons; removing the impurity from the singlet and the triplet generates these off-diagonal scatterings. As such, this is an indicator of the macroscopic entanglement of the singlet formed at the IR fixed point, and plotted in fig.~\ref{mutI}. 
 
-We also wish to point out that this scattering is a signature of the change in Luttinger's count in going from the free orbital or local moment fixed point to the strong-coupling fixed point, as shown in eq.~\eqref{luttinger_change}. Both this off-diagonal scattering as well as the change in Luttinger's count are a direct consequence of the non-number conserving term \(V c^\dagger_{k} c_d\) in the full Hamiltonian. The topological change of Luttinger's count is concomitant with the presence of the off-diagonal scattering term in the effective Hamiltonian. \textit{Just the Fermi liquid piece in eq.~\eqref{fermiliq} will give neither the enhanced mutual information nor the change in Luttinger's count}.
+We also wish to point out that this scattering is a signature of the change in Luttinger's count in going from the free orbital or local moment fixed point to the strong coupling fixed point, as shown in eq.~\eqref{luttinger_change}. Both this off-diagonal scattering as well as the change in Luttinger's count are a direct consequence of the non-number conserving term \(V c^\dagger_{k} c_d\) in the full Hamiltonian. The topological change of Luttinger's count is concomitant with the presence of the off-diagonal scattering term in the effective Hamiltonian. \textit{Just the Fermi liquid piece in eq.~\eqref{fermiliq} will give neither the enhanced mutual information nor the change in Luttinger's count}.
 
 \section{Obtaining the real space low energy Hamiltonian: the local Fermi liquid}
 The next step is to obtain the lowest excitations of the fixed point Hamiltonian, in real space. We will work in the \(U>0\) regime. For \(V,J \gg 1\), the impurity couples very strongly with the zeroth site, and at zeroth order, it suffices to say that the zeroth site decouples from the rest of the lattice. This zeroth Hamiltonian then consists of two sites interacting with each other through \(V\) and \(J\) (the two site problem analysed before).
@@ -824,7 +823,7 @@ Since the \(\ket{\hat n_{1\sigma}, \hat n_{1\overline\sigma}}\) form a complete 
 		 &= \ket{\Psi}_1 \bra{\Psi}_1\left[\mathrm{constant} + \left(\hat n_{1 \uparrow} - \hat n_{1 \downarrow}\right)^2 \sum_{\pm}\frac{t^2}{\mathcal{N}_\pm^2}\frac{8V {c_s^-} \left(U \pm 2\Delta\right) {c_c^-}}{\delta E_{\pm}^\sigma}\right]\\
 \end{aligned}\end{equation}
 
-In the strong-coupling regime, we have \(J,V \gg U\), and we can then approximate:
+In the strong coupling regime, we have \(J,V \gg U\), and we can then approximate:
 \begin{equation}\begin{aligned}
 	\delta E_{\pm}^\sigma \simeq \frac{3J}{8} + \sqrt{4V^2 - \left(\frac{3J}{8}\right)^2} \mp V, ~~U \pm 2\Delta \simeq \pm 4V, \text{ and }~~ \mathcal{N}_\pm^2 \simeq 32V^2
 \end{aligned}\end{equation}
@@ -976,7 +975,7 @@ Since \(\mathcal{\hat P}_\text{charge} + \mathcal{\hat P}_\text{spin} = 1\), we 
 \end{aligned}\end{equation}
 where \(\mathcal{F} \equiv \alpha_\text{charge} - \alpha_\text{spin}\) is the net energy of the charge sector above the spin sector.
 
-We will now look at the extreme strong-coupling regime \(J \gg V \gg U,t\). There, all the expressions simplify:
+We will now look at the extreme strong coupling regime \(J \gg V \gg U,t\). There, all the expressions simplify:
 \begin{gather}
 	V\gamma \simeq \frac{3J}{8},~ ~ \Delta \simeq 2V,~ ~ \alpha \simeq \frac{3J}{8}, ~ ~ c_s^+ = -c_c^- \simeq 0, ~ ~ c_s^- = c_c^+ \simeq 1, ~ ~ \mathcal{N}_\pm \simeq 4\sqrt 2 V, ~ ~ a_{1,\pm} \simeq \frac{1}{2}, ~ ~ a_{2,\pm} \simeq \pm \frac{1}{2}~,\nonumber\\
 	\delta E_\pm = \delta E_\mathrm{CS} = \delta E_{00} = \delta E_2 \simeq \frac{3J}{4}, ~ ~ \delta E_\mathrm{ST} = \delta E_{\uparrow \uparrow} \simeq J, ~ ~ \mathcal{S}^-_\pm = \mathcal{D}^-_\pm \simeq \frac{1}{2}, ~ ~ \mathcal{S}^+_\pm = -\mathcal{D}^+_\pm \simeq \pm \frac{1}{2},~\nonumber\\
@@ -990,68 +989,73 @@ The effective Hamiltonian becomes
 \end{aligned}\end{equation}
 \(\mathcal{P}_\text{spin}\) and \(\mathcal{P}_\text{charge}\) project, respectively,  onto the spin and charge sectors of the first site. The fact that the charge sector comes with a positive factor means that the holon-doublon states are repulsive, and this renormalisation of the states generates an effective particle-hole symmetric Fermi liquid interaction on the first site - also known as the local Fermi liquid (LFL)~\cite{nozieres1974fermi}.
 
-\section{Destruction of the Abrikosov-Suhl resonance: passage from strong-coupling to local moment}
+\section{Destruction of the Abrikosov-Suhl resonance: passage from strong coupling to local moment}
 
-We will now tune the parameters of the fixed point Hamiltonian and study the variation of quantities related to the effective Hamiltonian like the local FL strength \(\mathcal{F}\), the gap in the spectrum of the zeroth Hamiltonian \(H_0^*\) and the value of the small parameter \(t^2/\delta E\), as well as various measures of entanglement like entanglement entropy, mutual information and spin-spin correlations between various sets of members of the real-space impurity+lattice construction. We will trace a specific path through the space of values of fixed point couplings: we will start from the strong-coupling regime \(U \ll J,V\) and go towards the local moment regime \(U \gg J,V\). The context of this study is that the technique of dynamical mean-field theory (DMFT) obtains a metal-insulator transition in the 2D Hubbard model by studying the Anderson impurity model as the auxiliary system for the Hubbard; there, the local moment regime of the impurity corresponds to the insulator in the bulk. Our goal here is to study what precisely happens in the effective Hamiltonian in the journey from the metal to the insulator, and draw a concrete connection between this modification of the effective Hamiltonian, and the simultaneous change of the impurity spectral function in fig.~\ref{spec_func}. This is done with the knowledge that the local moment phase of the generalised SIAM is never RG-stable.
+We will now tune the parameters of the fixed point Hamiltonian and study the variation of quantities related to the effective Hamiltonian like the local FL strength \(\mathcal{F}\), the gap in the spectrum of the zeroth Hamiltonian \(H_0^*\) and the value of the small parameter \(t^2/\delta E\), as well as various measures of entanglement like entanglement entropy, mutual information and spin-spin correlations between various sets of members of the real-space impurity+lattice construction. We will trace a specific path through the space of values of fixed point couplings: we will start from the strong coupling regime \(U \ll J,V\) and go towards the local moment regime \(U \gg J,V\). The context of this study is that the technique of dynamical mean-field theory (DMFT) obtains a metal-insulator transition in the 2D Hubbard model by studying the Anderson impurity model as the auxiliary system for the Hubbard; there, the local moment regime of the impurity corresponds to the insulator in the bulk. Our goal here is to study what precisely happens in the effective Hamiltonian in the journey from the metal to the insulator, and draw a concrete connection between this modification of the effective Hamiltonian, and the simultaneous change of the impurity spectral function in fig.~\ref{spec_func}. This is done with the knowledge that the local moment phase of the generalised SIAM is never RG-stable.
 
 \subsection*{Perturbation theory parameters}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=1_over_U,V=3J,N=4,U=1.000,1.000,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=1_over_U,V=3J,N=4,U=1.000,1.000,50.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=1_over_U,V=3J,N=4,U=1.000,1.000,50.pdf}
 \end{center}
 The vanishing of the gap and the growth of the small parameter indicates the breakdown of perturbation theory around the singlet; this simply shows that there is a degeneracy in the local moment regime, and the effective Hamiltonian will have to be obtained using degenerate perturbation theory. The presence of degeneracy also suggests that the effective Hamiltonian will be of the non-Fermi liquid type.
 
 \subsection*{\(k-\)space correlations within the Kondo cloud}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 \end{center}
-The vanishing of the Kondo cloud at large \(U/J\) is clear indication of the destruction of the Kondo cloud and the breakdown of screening. Non-zero mutual information indicates an (impurity-mediated) interaction between the \(k-\)states of the conduction bath; seen differently, it is this interaction that is responsively for the screening of the impurity. The disappearance of the mutual information is indicative of the disappearance of this interaction.
+
+The mutual information \(I(d:k)\) between the impurity and the cloud vanishes as \(U/J\) is increased. This is a signature of the loss of entanglement and the breakdown of the singlet. The reduction of the mutual information within the cloud, \(I(k_1:k_2)\), shows that the Kondo cloud is being killed as \(U/J\) is increased; it ultimately drops to zero, characteristic of a decoupled tight-binding chain. The four-Fermion off-diagonal term also vanishes as \(U/J\) increases and this is again a signature of the reduction in the spin-flip processes. The diagonal correlation \(\left<\hat n_{k \uparrow} \hat n_{q \downarrow} \right>\) increasing to 1 shows the formation of a filled Fermi sea.
 
 \subsection*{Mutual information between various real space members}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 \end{center}
-The impurity-zeroth site mutual information \(I(d:0)\) remains unchanged at the maximum for an appreciable range of values, and this shows the stability of the singlet. Meanwhile, the mutual information between the zeroth site and the site nearest to it (\(I(0:1)\)) grows, because when the singlet weakens, the zeroth site is able to entangle more with the other sites. It finally saturates to its maximum value, which is the value produced as result of the tight-binding hopping. The mutual information between the impurity and sites beyond the zeroth site (\(I(d:1)\)) show a non-monotonic behaviour; it first increases as the entanglement that was initially restricted to just the impurity and the zeroth sites begins "seeping" into the other sites as well. Beyond a critical value of \(U/J\), \(I(d:1)\) starts dropping, because the entanglement has now mostly shifted out of the zero mode and into the conduction bath.
+The impurity-zeroth site mutual information \(I(d:0)\) remains unchanged at the maximum for an appreciable range of values, and this shows the stability of the singlet. Meanwhile, the mutual information between the zeroth site and the site nearest to it (\(I(0:1)\)) grows, because when the singlet weakens, the zeroth site is able to entangle more with the other sites. It finally saturates to its maximum value, which is the value produced as result of the tight-binding hopping. The mutual information between the impurity and sites beyond the zeroth site (\(I(d:1)\)) show a non-monotonic behaviour; it first increases as the entanglement that was initially restricted to just the impurity and the zeroth sites begins "seeping" into the other sites as well. Beyond a critical value of \(U/J\), \(I(d:1)\) starts dropping, because the entanglement has now mostly shifted out of the singlet and into the conduction bath.
 
 \subsection*{Impurity entanglement entropy and spin-spin correlations}
 
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-02-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-03-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-02-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-03-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 
 \end{center}
 
-The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty straightforward behaviour. It is maximum for \(U \ll J\) because it is in a singlet configuration. For \(U \gg J\), the singlet weakens and the impurity begins to decouple from the bath, leading to a reduction in \(S(d)\). At sufficiently low values of \(J/U\), the impurity decouples from the zeroth site and the total system can be factorised into a local moment in product with a tight-binding chain, so that the impurity site will now have zero entanglement entropy.
+The von-Neumann entanglement entropy \(S(d)\) of the impurity shows pretty straightforward behaviour. It is maximum for \(U \ll J\) because it is in a singlet configuration. For \(U \gg J\), the singlet weakens and the impurity begins to decouple from the bath, leading to a reduction in \(S(d)\). At sufficiently low values of \(J/U\), the impurity decouples from the zeroth site and the total system can be factorised into a local moment in product with a tight-binding chain, so that the impurity site will now have zero entanglement entropy. The spin-spin correlation \(\vec{S}_d\cdot\vec{S}_0\) is most negative at large \(J\), showing maximum screening at strong-coupling. It decreases to 0 as the singlet breaks. This reduction in the spin-spin correlation between the impurity and the zeroth site is accompanied by the appearance of antiferromagnetic spin-spin correlation \(\vec{S}_0\cdot\vec{S}_1, \vec{S}_0\cdot\vec{S}_3\) between the zeroth site and odd-numbered sites like 1 and 3. This can be understood on the following grounds:since the tight-binding hopping only connects same spin states, an electron on the first site has to have spin opposite to that on the zeroth site in order to hop onto that site. This requirement of opposite spin is what induces an antiferromagnetic superexchange interaction \(J_1\) between the zeroth site and the first site. This interaction strength increases as \(J\) is decreased, because \(J_1 \sim t^2/J\). By the same argument, a ferromagnetic superexchange interaction is induced between the impurity site and the first site, as well as between the zeroth site and the other even-numbered sites. These are also seen in the plots.
 
 \subsection*{Real-space correlations}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=1_over_U,V=J,N=4,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=1_over_U,V=3J,N=4,U=1.000,1.000,50.pdf}
 
-	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 \end{center}
+
+The increase of single-particle hopping correlation is another signature of the "handover" of entanglement from the singlet to the tight-binding chain. Exactly the same can be said for the four-Fermion interaction as well.
 
 \subsection*{Real-space correlations as function of distance}
 \begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/corr-di-min-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/corr-di-max-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/corr-di-min-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/corr-di-max-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 
-	\includegraphics[width=0.45\textwidth]{../figures/corr-all-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/I-all-t=1.000,J=1_over_U,V=J,N=6,U=0.016,91.116,32.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/corr-all-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
+	\includegraphics[width=0.45\textwidth]{../figures/I-all-t=1.000,U=1,V=3J,N=6,J=100.000,0.010,40.pdf}
 \end{center}
+
+The first thing to note in the first two figures is the difference in the order of magnitudes; the correlations are very small in the first figure, because the impurity is being screened almost completely by the zeroth site at \(J \gg U\). This changes in the second figure where, because \(U \gg J\), the singlet has become entangled with the other sites, and the impurity is being screened by multiple sites. The mutual information all vary similarly with distance in the bottom right figure.
 
 \subsection*{Impurity spectral function}
 \begin{center}
@@ -1295,7 +1299,7 @@ If we take into account the spin-degeneracy and redefine \(V_L\) to mean the Lut
 This is a specific case of the more general result for Kondo lattices obtained by Oshikawa using flux-insertion arguments in \cite{oshikawa2000topological}.
 One can now ask what happens to this result once we also incorporate the spin-exchange interaction \(J \vec{S_d}\cdot\vec{s}\); we can expect that it will complicate the self-energy of the impurity. It cannot, however, preclude the loss of the real pole, nor can it create a new singularity - to do so would require the self-energy to diverge, and we are working with finite systems here. This suggests that the eq.~\eqref{luttinger_change} would still hold.
 
-We have also not accounted for the RG flow from the local moment fixed point to the strong-coupling fixed point. The local moment fixed point is characterized by a decoupled quantum top:
+We have also not accounted for the RG flow from the local moment fixed point to the strong coupling fixed point. The local moment fixed point is characterized by a decoupled quantum top:
 \begin{equation}\begin{aligned}
 	\mathcal{H}_\text{LM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow}
 \end{aligned}\end{equation}
@@ -1427,7 +1431,7 @@ Here, \(q\) is the first momentum state immediately outside the emergent cloud. 
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/mut_I_ee.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/mut_I_ie.pdf}
-	\caption{\textit{Left}: Mutual information between two conduction electrons inside the cloud. \textit{Right}: Mutual information between a conduction electron inside the cloud and an impurity electron. Both the measures increase towards the strong-coupling fixed point, because of the distillation of the Kondo cloud brought about by the RG flow.}
+	\caption{\textit{Left}: Mutual information between two conduction electrons inside the cloud. \textit{Right}: Mutual information between a conduction electron inside the cloud and an impurity electron. Both the measures increase towards the strong coupling fixed point, because of the distillation of the Kondo cloud brought about by the RG flow.}
 	\label{mutI}
 \end{figure}
 
@@ -1435,13 +1439,13 @@ Here, \(q\) is the first momentum state immediately outside the emergent cloud. 
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/corr_same.pdf}
 	\includegraphics[width=0.45\textwidth]{../figures/corr_opp.pdf}
-	\caption{Increase in the diagonal correlation functions between cloud electrons under RG flow towards the strong-coupling fixed point. This is consistent with the Fermi liquid pieces generated in the \(k-\)space effective Hamiltonian of the Kondo cloud.}
+	\caption{Increase in the diagonal correlation functions between cloud electrons under RG flow towards the strong coupling fixed point. This is consistent with the Fermi liquid pieces generated in the \(k-\)space effective Hamiltonian of the Kondo cloud.}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/corr_od.pdf}
-	\caption{Growth of the off-diagonal correlation function between Kondo cloud electrons towards the strong-coupling fixed point. This is the direct cause of the screening of the impurity spin, and is a reflection of the off-diagonal two-particle scattering terms in the \(k-\)space effective Hamiltonian of the Kondo cloud.}
+	\caption{Growth of the off-diagonal correlation function between Kondo cloud electrons towards the strong coupling fixed point. This is the direct cause of the screening of the impurity spin, and is a reflection of the off-diagonal two-particle scattering terms in the \(k-\)space effective Hamiltonian of the Kondo cloud.}
 \end{figure}
 
 The results of the reverse RG study are depicted in the following plots. We have used two types of quantities in the process - mutual information and correlation functions. The mutual information between two subsystems \(A\) and \(B\) in a wavefunction with many subsystems is defined as
@@ -1527,7 +1531,7 @@ gray &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice 
 \section{Evolution of various correlation measures and other quantities}
 
 \subsection*{Perturbation theoretic terms}
-These quantities are related to the local Fermi liquid of the Kondo strong-coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. \(\mathcal{F}\) is the strength of the local Fermi liquid \((\mathcal{F} \hat n_{1 \uparrow} \hat n_{1 \downarrow})\).
+These quantities are related to the local Fermi liquid of the Kondo strong coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. \(\mathcal{F}\) is the strength of the local Fermi liquid \((\mathcal{F} \hat n_{1 \uparrow} \hat n_{1 \downarrow})\).
 \begin{center}
 	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
 	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=10.000,0.000,40,V=3J,Ubath=-U_by_10,N=4,U=1.000,1000.000,40.pdf}
@@ -1652,7 +1656,7 @@ We end up with a Hubbard-Heisenberg model:
 The mapping between the parameters is
 \begin{equation}\begin{aligned}
 	\label{map_aux_bulk}
-	t_{H-H} = \left(2t (N-2) - \frac{2V}{N}\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = \frac{2J}{w}
+	t_{H-H} = \left(2t (N-2) - \frac{2V}{w}\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = \frac{2J}{w}
 \end{aligned}\end{equation}
 The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
 \begin{equation}\begin{aligned}
@@ -1663,14 +1667,14 @@ The conclusion is that we can tile Anderson models with interacting baths into a
 \section{Single-particle Green's function}
 We now define the Greens function {\it operators}:
 \begin{equation}\begin{aligned}
-	\mathcal{G}_{H-H} = \frac{1}{\omega^\prime - \left(H_{H-H} - E_\text{gs}^\prime\right) }, \mathcal{G}_\text{aux}(i) = \frac{1}{\omega - \left(H_\text{aux}(i) - E_\text{gs}\right)}
+	\mathcal{G}_{H-H} = \frac{1}{\omega^\prime - \left(H_{H-H} - E_\text{gs}^\prime\right) }, \mathcal{G}_\text{aux}(i) = \frac{1}{\omega - \left(\mathcal{H}_\text{aux}(i) - E_\text{gs}\right)}
 \end{aligned}\end{equation}
 Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). From the relation eq.~\ref{siam_to_hubb} we know that while the auxiliary model is intensive, the full Hamiltonian is extensive (scales with system size). This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
 Rewriting eq.~\ref{siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
 \begin{equation}\begin{aligned}
 \sum_i \left(\omega + E_\text{gs} - \mathcal{G}^{-1}_\text{aux}(i)\right) = N\omega + N E_\text{gs} - \mathcal{G}^{-1}_{H-H} \implies \sum_i \mathcal{G}^{-1}_\text{aux}(i) = \mathcal{G}^{-1}_{H-H}~,
 \end{aligned}\end{equation}
-We will now take matrix elements of the full Greens function and obtain these matrix elements in terms of those of the auxiliary model. Let \(\left\{ \ket{\Phi}_n \right\} \) be the set of eigenstates of \(H_\text{aux}\), and \(\ket{\Phi}_0\) be the groundstate. We assume that the ground state of \(H_{H-H}\) is captured well by the auxiliary model, such that the real-space diagonal matrix element for particle propagation is obtained by sandwiching the Greens function between the states \(c^\dagger_{i\sigma}\ket{\Phi}_0\):
+We will now take matrix elements of the full Greens function and obtain these matrix elements in terms of those of the auxiliary model. Let \(\left\{ \ket{\Phi}_n \right\} \) be the set of eigenstates of \(\mathcal{H}_\text{aux}\), and \(\ket{\Phi}_0\) be the groundstate. We assume that the ground state of \(H_{H-H}\) is captured well by the auxiliary model, such that the real-space diagonal matrix element for particle propagation is obtained by sandwiching the Greens function between the states \(c^\dagger_{i\sigma}\ket{\Phi}_0\):
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} \equiv \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{w}\sum_j \sum_{k \in \text{NN of j}}\braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(j,k) c^\dagger_{i\sigma} | \Phi_0}
 \end{aligned}\end{equation}
@@ -1684,7 +1688,7 @@ By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux}(d) \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d\sigma} | \Phi_0} = \sum_{n} |d^p_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, \omega)\right)_{nn} 
 \end{aligned}\end{equation}
-There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(H_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_n = \bra{\Phi_n}c^\dagger_{d\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
+There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(\mathcal{H}_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_n = \bra{\Phi_n}c^\dagger_{d\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_n|^2 \left(\mathcal{G}^{-1}_\text{aux}(d, -\omega)\right)_{nn} 
 \end{aligned}\end{equation}
@@ -1911,20 +1915,29 @@ We can now see that even in the limit of $w\to\infty$, the competition between $
 \section{Why expand the cluster?}
 The previous chapter dealt with treating the Hubbard-Heisenberg model using an auxiliary model that has a single-site cluster:
 \begin{equation}\begin{aligned}
-	H_\text{aux} = 
+	\mathcal{H}_\text{aux} =  \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{U}{2}\left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s}_0 - U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2
 \end{aligned}\end{equation}
+This was able to describe an impurity phase transition from screened strong-coupling phase to local moment weak coupling phase, upon tuning \(U_b/J\). This then leads to a metal-insulator transition in the bulk, owing to the relations between the Greens functions and spectral functions obtained earlier. The single-site nature of the cluster (there was only a single impurity) has the following consequences:
+\begin{itemize}
+	\item [1.] The \(k-\)space self-energy of the bath has only minimal \(k-\)dependence arising from nearest-neighbour non-locality between the impurity and the zeroth site of the bath.
+	\item [2.] The local moment phase (which reduces to a set of decoupled clusters) becomes just the atomic limit, because each cluster has just one impurity.
+\end{itemize}
 
-In this chapter, we will improve the formalism by considering a larger cluster that has two impurities interacting with each other:
+In this chapter, we will improve on these two points by considering a larger cluster that has two impurities interacting with each other:
 \begin{equation}\begin{aligned}
 	\label{dimer_ham}
-	H_\text{CL} = \mathcal{H}_D = -t^A\sum_{\sigma, i=1,2}\left(c^\dagger_{d_i\sigma}c_{z\sigma} + \text{h.c.}\right) - \frac{U^A}{2}\sum_{i=1,2}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right)^2 - t^A \sum_\sigma \left(c^\dagger_{d_1,\sigma}c_{d_2,\sigma} + \text{h.c.}\right) 
+	H_\text{aux} = \sum_{i=1,2} \left[- \frac{U}{2}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right)^2 + V\sum_{\sigma}\left(c^\dagger_{d_i\sigma}c_{0_i\sigma} + \text{h.c.}\right) + J \vec{S}_{d_i}\cdot\vec{s}_{0_i} - U_b\left(\hat n_{0_i \uparrow} - \hat n_{0_i \downarrow}\right)^2\right]\\
+	 -t \sum_\sigma \left(c^\dagger_{d_1,\sigma}c_{d_2,\sigma} + \text{h.c.}\right) + \sum_{k\sigma}\epsilon_k \tau_{k\sigma}
 \end{aligned}\end{equation}
-The name \(\mathcal{H}_D\) is used to indicate that the impurity sites now form a dimer interacting with a bath. \(d_1\) and \(d_2\), or \(d_i\) in general, represent the two impurity sites in the dimer. Note that this chapter only sets out the relations between such an auxiliary model and the corresponding bulk model (in this case, a Hubbard), but does not describe the physics of this auxiliary model. That requires performing a renormalisation group calculation for \(H_\text{CL}\), and that will be provided at a later point in time.
+\(d_1\) and \(d_2\), or \(d_i\) in general, represent the two impurity sites in the dimer. They interact with each other through the same hopping parameter \(t\) as the bath. Each of the impurities has its own correlation \(U\) and hybridisation with the bath through \(V\) and \(J\). Each impurity site \(d_i\) couples with a bath site \(0_i\). \(0_1\) and \(0_2\) are assumed to be adjacent to each other, connected by the hopping \(t\). The setup is shown in fig.~\ref{two-imp-cluster}.
+
+Note that this chapter only sets out the relations between such an auxiliary model and the corresponding bulk model (in this case, a Hubbard-Heisenberg), but does not describe the physics of this new auxiliary model. That requires performing a renormalisation group calculation for \(H_\text{aux}\), and that will be provided at a later point in time.
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.2\textwidth]{../figures/dimer_dispersion.png}
+	\includegraphics[width=0.6\textwidth]{../figures/two-site-cluster.pdf}
 	\caption{Two-impurity SIAM hybridising with a bath}
+	\label{two-imp-cluster}
 \end{figure}
 
 \section{Solution of the Hubbard dimer using the Anderson molecule}
@@ -2050,178 +2063,140 @@ We start with a SIAM (with a correlated bath having a non-trivial self-energy), 
 
 
 \section{Creating \(N-\)site Hubbard Hamiltonian from Hubbard dimer embedded in a bath}
-We will follow the strategy outlined in the previous section. For concreteness, we will consider a lattice of \(N\) lattice sites and \(w\) nearest neighbours for each site. Note that a uniform number of nearest neighbours means that there is perfect translational invariance on the lattice, which means there cannot be any edge sites. This is achieved by applying periodic boundary conditions on the edges of the lattice. A square 2d lattice is thus placed on a 2-torus.
-
-For each nearest-neighbour pair \(i,j\), we will create a local Hamiltonian \(H^D_{i,j}\) from the Hamiltonian of the Hubbard dimer with bath (we will interpret the effective bath as the remaining \(N-2\) sites of the lattice, apart from \(i,j\)). We will need to suitably transform the Hamiltonian parameters \(U^D, t^D\), but we will figure those out as we go along. Since the number of nearest neighbour pairs is \(\frac{Nw}{2}\), the general Hubbard Hamiltonian should be the average of these local Hamiltonians. 
-
-We recall the dimer+bath Hamiltonian here, since we are going to create the full Hamiltonian by combining various realizations of that Hamiltonian:
+Similar to the previous chapterm, we will now tile the lattice with the two-site auxiliary model
 \begin{equation}\begin{aligned}
-	\tilde H^D = H^D(0,1) - t^D \left(c^\dagger_{0\sigma}c_{z\sigma} + c^\dagger_{1\sigma}c_{z\sigma} + \text{h.c.}\right) + \sum_{\vec k}^\text{eff. bath}\epsilon_{\vec k}\hat n_{\vec k}
+	H_\text{aux} = \sum_{i=1,2} \left[- \frac{U}{2}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right)^2 + V\sum_{\sigma}\left(c^\dagger_{d_i\sigma}c_{0_i\sigma} + \text{h.c.}\right) + J \vec{S}_{d_i}\cdot\vec{s}_{0_i} - U_b\left(\hat n_{0_i \uparrow} - \hat n_{0_i \downarrow}\right)^2\right]\\
+	 -t \sum_\sigma \left(c^\dagger_{d_1,\sigma}c_{d_2,\sigma} + \text{h.c.}\right) + \sum_{k\sigma}\epsilon_k \tau_{k\sigma}
 \end{aligned}\end{equation}
-We now choose a particular nearest neighbour pair from the full lattice, say \((i,j\), and one site that is nearest neighbour to this pair, call that \(l\). We will first create a "local" Hamiltonian, where one particular nearest neighbour pair \((i,j)\) makes up the dimer sites of the Hamiltonian, while the rest \(N-2\) sites of the lattice make up the effective bath and the site \(l\) forms the zeroth site of the bath.
-\begin{equation}\begin{aligned}
-	\label{Hdjl}
-	\tilde H^D(i, j, l) \equiv \tilde H^D(0\to i, 1\to j, z \to l) = H^D(i, j) - t^D \sum_{\sigma}\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\\
-\end{aligned}\end{equation}
-\(H^D(i, j)\) is the Hubbard dimer Hamiltonian in eq.~\ref{dimer_ham} with the indices 0 and 1 replaced by \(i, j\) respectively. This is not the total local Hamiltonian for the nearest neighbour pair \((i,j\), because it has just one nearest neighbour of the dimer, namely \(l\). To get the full thing, we need to \textit{average} over all the nearest neighbours of the pair \(i,j\), \(2(w-1)\) in number. What we mean by nearest neighbours of the dimer pair \((i,j)\) is made clear in \ref{dimer-nn}.
-\begin{figure}[htpb]
+For concreteness, we will consider a lattice of \(N\) lattice sites and \(w\) nearest neighbours for each site. Note that a uniform number of nearest neighbours means that there is perfect translational invariance on the lattice, which means there cannot be any edge sites. This is achieved by applying periodic boundary conditions on the edges of the lattice. For example, a square 2d lattice will have to be placed on a 2-torus.
+
+The first step is to identity the two impurity sites \(d_1\) and \(d_2\) and the two bath sites \(0_1\) and \(0_2\) as sitting on a square arrangement of the lattice. \(d_i\) form one arm of the square, while \(0_i\) form the opposite arm.
+This square arrangement is shown in fig.~\ref{square-arms}, and is dictated by the auxiliary model chosen and shown in fig.~\ref{two-imp-cluster}.
+\begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.3\textwidth]{../figures/dimer-nn.pdf}
-	\caption{Blue circles (enclosed by the oval) indicate the dimer sites. Green circles are the sites that are nearest neighbour to the dimer and the ones that are being summed over under the index \(l\). The red circles are sites that are \textit{not} nearest neighbour to the dimer.}
-	\label{dimer-nn}
+	\includegraphics[width=0.3\textwidth]{../figures/square_arms.pdf}
+	\caption{Placing the impurity and bath sites \(d_i,0_i\) on a chosen square of the lattice. The chosen square is marked in blue, the impurity sites in orange and the bath sites in green.}
+	\label{square-arms}
+\end{figure}
+The sites at the vertices of the square are labelled as \(i,j,k,l\). With this identification, the Hamiltonian becomes
+\begin{equation}\begin{aligned}
+	H_\text{aux}(i,j,k,l) = \sum_{i=1,2} \left[- \frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \frac{U}{2}\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 + V\sum_{\sigma}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.} + c^\dagger_{j\sigma}c_{l\sigma} + \text{h.c.}\right) + J \vec{S}_{i}\cdot\vec{s}_{k} \right.\\
++ \left. J \vec{S}_{j}\cdot\vec{s}_{l} - U_b\left(\hat n_{k \uparrow} - \hat n_{k \downarrow}\right)^2 - U_b\left(\hat n_{l \uparrow} - \hat n_{l \downarrow}\right)^2\right] -t \sum_\sigma \left(c^\dagger_{i,\sigma}c_{j,\sigma} + \text{h.c.}\right) -t \sum_{\left<m,n \right>, \sigma}^{m,n \notin \left\{i,j\right\}}\left(c^\dagger_{m\sigma,n\sigma} + \text{h.c.}\right) 
+\end{aligned}\end{equation}
+As before, the kinetic energy part sums over all nearest neighbour pairs that involve neither \(i\) nor \(j\). For a given arm \(i-j\), the square can be rotated along the axis \(i-j\) to give one square arrangements for each dimension perpendicular to the axis along \(i-j\). Since there are \(w/2\) dimensions, the number of such squares is \(w/2 - 1\). For each such square, we can obtain another square by reflecting the square in the plane of \(i-j-l-k-i\) and across the line \(i-j\). The total number of squares is therefore \(w - 2\). The upshot is that given \(i-j\), there are multiple ways of choosing \(k\); if \(\left\{\vec a\right\}\) represents the set of \(w\) primitive vectors that connect a particular lattice site to its nearest neighbours, \(k\) can be situated at all \(\vec r_i + \vec a\) for which \(\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0\). Choosing \(k\) then automatically fixes \(l\) at \(\vec r_j + \vec a\). The condition \(\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0\) simply means we only take those \(\vec a\) that are perpendicular to \(\vec r_j - \vec r_i\). Since there are \(w\) number of \(\vec a\) in total and 2 of them are parallel, the total number of choices of \(k,l\) is \(w-2\).  For a 2D lattice, we have \(w=4\), so there are only two possible choices of the square. They are shown in fig.~\ref{square-arms-all}.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../figures/square_arms_all.pdf}
+	\caption{Placing the impurity and bath sites \(d_i,0_i\) on a chosen square of the lattice. The chosen square is marked in blue, the impurity sites in orange and the bath sites in green.}
+	\label{square-arms-all}
 \end{figure}
 
-The total  Hamiltonian for a particular dimer pair \((i,j)\) then looks like:
+The Hamiltonian for an arm \(i-j\) is then obtained by averaging over these squares:
 \begin{equation}\begin{aligned}
-	\tilde H^D(i, j) &= \frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}} \left[H^D(i, j) - t^D \sum_{\sigma}\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\right]\\
-			 &= H^D(i, j) + \frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}}\left[- t^D \sum_\sigma\left(c^\dagger_{i\sigma}c_{l,\sigma} + c^\dagger_{j\sigma}c_{l,\sigma} + \text{h.c.}\right) + \sum_{\vec k,\sigma}^{\text{eff. bath (i,j)}\atop{z = l}}\epsilon_{\vec k}\hat n_{\vec k}\right]
+	H_\text{aux}(i,j) = \frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
 \end{aligned}\end{equation}
-We now translate this Hamiltonian over all nearest neighbour pairs on the lattice, and take the average:
+The final step is to sum over all nearest neighbour arms \(i-j\):
 \begin{equation}\begin{aligned}
-	\label{H_tiled}
-	\tilde H = \frac{2}{Nw}\sum_{\left<ij\right>}\frac{1}{2(w-1)}\sum_{l \in \text{NN of (i,j)}}\tilde H^D(i, j, l) = \frac{2}{N}U^D\sum_{i} \tau_{i \uparrow}\tau_{i \downarrow} - \frac{2}{Nw}\left(1 + \frac{Nw}{2}\right)t^D\sum_{\left<ij\right>}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)
+	\label{22siam_to_hubb}
+	H_\text{full} = \sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
 \end{aligned}\end{equation}
-The sum $\left<ij\right>$ is over all nearest-neighbour pairs. 
-The conclusion is that on tiling the Hubbard dimer+bath Hamiltonians into all the nearest neighbour pairs, we end up with a new Hubbard model Hamiltonian with "renormalised parameters" given by
-\begin{equation}\begin{aligned}
-	\tilde t = \frac{2}{Nw}(1 + \frac{Nw}{2})t^D, &&\tilde U = \frac{2}{N}U^D
-\end{aligned}\end{equation}
-It is thus apparent that translating the Hubbard dimers throughout the lattice has restored translational invariance, and generated correlations on all sites. 
-With some knowledge of the RG procedure, one can even write down the relation between the Hubbard dimer couplings $t^D, U^D$ and the parent Hubbard model parameters $t^H, U^H$. We have seen previously in another work that in the absence of any explicit spin or charge isospin exchange couplings, the impurity-bath hybridisation coupling $t^A$ does not flow under the RG. In going from the Hubbard model to the auxiliary model, we replace the non-local operator $c_i$ with the local operator $c_d$. If we define the normalization of the Fourier transform such that both spaces have $\frac{1}{\sqrt N}$, then the auxiliary model coupling can be written as $t^A = \sqrt N t^H$. When we write the fixed-point hopping purely in terms of zero mode, another such factor appears: $\sum_k c_k = \sqrt N c_0$, such that $t^D = \sqrt N (t^A)*$. Combining these, we get
-\[ t^D = \sqrt N \times (t^A)^* = \sqrt N \times t^A = N \times t^H \]
-As for the on-site repulsion $U^H$, we will constrain the RG flows such that the fixed-point value of the impurity ons-te repulsion $U^A$ is identical to that of the on-site repulsion of the bath, $U_b$. A sensible choice for the bath on-site repulsion is simply $U^H\times N$. The factor of $N$ maintains the extensivity of the bath correlation term. We can therefore write
-\[U^D \equiv (U^A)* = U_b = N \times U^H\]
-\section{Formal expressions for single particle Greens functions and other related many-body quantites}
-\subsection{Expressing matrix elements of the inverse single particle Greens function in terms of Hubbard dimer counterparts}
-Since the two Hamiltonians $H^H$ and $\tilde H$ are connected via a similarity transformation $\mathcal{U}$, their ground states are also connected by the same transformation. That is, if the ground states are $\ket{\Phi_0}$ and $\ket{\tilde{\Phi_0}}$ respectively, then $\ket{\tilde{\Phi_0}} = \mathcal{U}\ket{\Phi_0}$. This means that matrix elements of the type in eq.~\ref{G_mat_el} will also be connected. The matrix elements are of the inverse Greebs function operator defined in eq.~\ref{inv_G_func}:
- \begin{equation}\begin{aligned}
-	 \mathcal{G}(\omega, H) = \frac{1}{\omega - (H - E_\text{GS})}
- \end{aligned}\end{equation}
-Its easy to see that the matrix elements of the original and renormalised versions of this operator, between the original and renormalised states, are equal:
-\begin{equation}\begin{aligned}
-	\left[\mathcal{G}_H^{-1}\right]_{\nu \nu^\prime} = \bra{\nu}\omega - H^H + E_\text{GS}\ket{\nu^\prime} = \bra{\nu} \mathcal{U}^{-1}\left(\omega -  \mathcal{U} H^H  \mathcal{U}^{-1} + E_\text{GS}\right)  \mathcal{U}\ket{\nu^\prime} = \bra{\tilde \nu}\left(\omega - \tilde H + E_\text{GS}\right)\ket{\tilde \nu^\prime}\\
-	= \left[\mathcal{\tilde G}^{-1}\right]_{\tilde \nu,\tilde \nu^\prime}
-\end{aligned}\end{equation}
-where we have defined the renormalised excitation $\ket{\tilde {\nu^\prime}} \equiv \tilde c^\dagger_{\nu^\prime}\ket{\tilde \Phi_0} \equiv  \left(\mathcal{U} c^\dagger_{\nu^\prime}  \mathcal{U}^{-1}\right)  \mathcal{U}\ket{\Phi_0} =  \mathcal{U}\ket{{\nu^\prime}}$. These equalities are important because they allows us to calculate these matrix elements for $\tilde H$ and then equate them to those of $H^H$, and once we have the matrix elements of $\mathcal{G}$, we can use them to obtain the single-particle Greens functions using eq.~\ref{G_mat_el}. More specifically, to calculate the real space single-particle Greens function between the lattice sites $i$ and $j$, both with spin $\sigma$, we will use the relation:
-\begin{equation}\begin{aligned}
-	G(i\sigma, j\sigma, \omega) = \bra{ i\sigma} \mathcal{G}(\omega, H) \ket{ j\sigma} - \bra{\overline{i\sigma}} \mathcal{G}(-\omega, H) \ket{\overline {j\sigma}} = \mathcal{G}(\omega, H)_{ i\sigma, j\sigma} - \mathcal{G}(-\omega, H)_{\overline{i\sigma}, \overline {j\sigma}}
-\end{aligned}\end{equation}
-where $\ket{i\sigma}=c^\dagger_{i\sigma}\ket{\Phi_0}$ and $\ket{\overline{i\sigma}}=c_{i\sigma}\ket{\Phi_0}$. We can see from the relation that we will need two types of matrix elements, one that propagates a particle excitation $\left( \ket{i\sigma} \right) $ and the one that propagates a hole excitation $\ket{\overline{i\sigma}}$.
 
-To this end, we rewrite eq.~\ref{H_tiled} in terms of inverse Greens function operators for the new (symmetrized) Hubbard model and the Hubbard dimer respectively:
+There are four kinds of terms: the first kind, \(A(i), A(j)\), depend only on either \(i\) or \(j\). They can be summed over easily by noting that the internal summation gives a constant factor of \(w-2\) which is cancelled by the factor of \(1/(w-2)\) in the front, and the external summation gives \(\sum_{i,j}A(i) = \frac{w}{2} \sum_i A(i)\), because \(i\) is a member of \(w/2\) distinct nearest-neighbour pairs. The second kind, \(B(i,j)\) depends on both \(i\) and \(j\). The internal summation is again cancelled by the prefactor. The external summation simply sums over all nearest-neighbour values of \(A(i,j)\). The third kind, \(C(i,k), C(j,l)\), depend on \(i\) and \(k\). Here, the total summation \(\sum_{i,j,k}C(i,k)\) gives \((w-2)\sum_{\left<i,k\right>}\left(C(i,k) + C(k,i)\right)\), because the pair \((i,k)\) occurs \(w-2\) times corresponding to the \(w-2\) vectors \(\vec r_j - \vec r_i\) that are perpendicular to \(\vec r_i - \vec r_k\). The factor is again cancelled by the existing prefactor. The fourth kind, \(D(k), D(l), E(k,l)\), depend on just \(k\), just \(l\) or both \(k\) and \(l\). For each pair \(i-j\) in the external summation, the particular pair \(k-l\) appears only once. When \(i-j\) is summed over, a factor of \(2(w/2-1)\) is generated because there are that many squares that involve \(k-l\). This factor cancels the inverse factor in front, giving \(\sum_{\left<k\right>} D(k), \sum_{\left<k,l \right>}E(k,l)\). The full Hamiltonian reads
 \begin{equation}\begin{aligned}
-	\label{Gd_op}
-	\mathcal{\tilde G}(\omega) = \frac{1}{\omega - \left(\tilde H - E_\text{GS}\right)}, && \mathcal{G}_D(\omega) = \frac{1}{\omega - \left(\tilde H^D(i,j,l) - E_\text{GS}\right)}
+	H_\text{full} =& w\sum_i\left[- \frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\right] - t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + 4V\sum_{\sigma, \left<i,k\right>}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.}\right)\\
+		      &+ 4J \sum_{\left<i,k\right>}\left(\vec{S}_{i}\cdot\vec{S}_{k}\right) - 2 U_b\sum_k\left(\hat n_{k \uparrow} - \hat n_{k \downarrow}\right)^2 - \frac{Nw/2}{w-2}t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)\\
+	=& -\frac{1}{2}\left(Uw - 2U_b\right)^2\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{Nw/2}{w-2}t + t - 4V\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
-These are the same operators that appear in the appendix. However, before proceeding, we should note that even though eq.~\ref{H_tiled} used the indices $i,$, the correct indices are actually $\tilde i, \tilde j$, in light of the fact that operators get renormalised as $c_i \to \tilde c_i\equiv Uc_i$. With this in mind, we can write
+The bulk model hence obtained is again a Hubbard-Heisenberg model. In eq.~\ref{2siam_to_hubb}, the total number of terms in the outer summation is \(Nw/2\). In order to make sure that this full Hamiltonian scales as \(N\), we divide this by \(w\):
 \begin{equation}\begin{aligned}
-	\label{green_eq}
-	\omega - \mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<\tilde i, \tilde j\right>} \frac{1}{2(w-1)} \sum_{l \in \text{NN of j}}\left[\omega - \mathcal{G}_D^{-1}\left(\tilde i, \tilde j, \tilde l\right)\right]
+	\label{2siam_to_hubb}
+	H_\text{full} &= \frac{1}{w}\sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
+		      &= -\left(U/2 - U_b/w\right)^2\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{N}{2w-4}t + t/w - 4V/w\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J/w \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
-where $\mathcal{G}_D^{-1}(\tilde i,\tilde j, \tilde l)$ is the Greens function inverse matrix of the Hubbard dimer+bath Hamiltonian with $\tilde i, \tilde j$ as the two sites and \(\tilde l\) as the zero mode of the bath, eq.~\ref{Hdjl}. Since the $\omega$ on the RHS of eq.~\ref{green_eq} is independent of the summation indices, they can be pulled out along with a factor. The factor is just the total number of nearest neighbour pairs, which is $\frac{Nw}{2}$. This allows it to cancel the $\omega$ on the LHS. The equation then simplifies to
+The mappings between the parameters of the auxiliary model and the bulk are
 \begin{equation}\begin{aligned}
-	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\sum_{\left<i,j\right>}\frac{1}{2(w-1)}\sum_{l \in \text{NN of j}}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j, \tilde l\right)
+	t_\text{H-H} = \left(\frac{N}{2w-4}t + t/w - 4V/w\right),~ ~ ~ U_\text{H-H} = \left(U/2 - U_b/w\right),~ ~ ~ J_\text{H-H} = 4J/w
 \end{aligned}\end{equation}
-Because of translational invariance, all values of \(l\) should give the same Greens function, and we can simplify this to
+
+\section{Single-particle Green's function}
+We now define the Greens function {\it operators}:
 \begin{equation}\begin{aligned}
-	\label{green_eq_final}
-	\mathcal{\tilde G}^{-1}(\omega) = \frac{2}{Nw}\frac{1}{2(w-1)}\times 2(w-1)\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right) = \frac{2}{Nw}\sum_{\left<i,j\right>}\mathcal{G}_D^{-1}\left(\omega, \tilde i, \tilde j\right)
+	\mathcal{G}_{H-H} = \frac{1}{\omega^\prime - \left(H_{H-H} - E_\text{gs}^\prime\right) }, \mathcal{G}_\text{aux}(i,j) = \frac{1}{\omega - \left(\mathcal{H}_\text{aux}(i,j) - E_\text{gs}\right)}
 \end{aligned}\end{equation}
-We dropped the index \(\tilde l\) on \(\mathcal{G}_D^{-1}\) to mean that any particular choice of \(\tilde l\) will do. We will now calculate the site-diagonal and site-off-diagonal matrix elements for particle propagation. The site-diagonal matrix element will be calculated between the state $\ket{\tilde i, \sigma} = \mathcal{U}c^\dagger_{i\sigma}\ket{\Phi_0}$ and its bra, while the off-diagonal one is between $\ket{\tilde j\sigma}$ and $\bra{\tilde i\sigma}$. Since it has already been shown that the matrix elements of the renormalised Hamiltonian are the same as those of the original Hamiltonian, we will directly replace the former with the latter. \\\\
-First lets consider the diagonal matrix element at $\tilde i^\text{th}$ site. The only terms that will contribute on the RHS of eq.~\ref{green_eq_final} are those that have the index $\tilde i$ on the dimer. There are $w$ terms that have the index \(\tilde i\) on the dimer corresponding to the $w$ nearest neighbours of \(\tilde i\). Thus, the right hand side will be a sum of $w$ terms, each term being the inverse Greens function of a Hubbard dimer+bath Hamiltonian. Each term will be a real space local Greens function, and because of translational invariance, it will be the same for all choices of the nearest neighbour of \(\tilde i\).
+Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). While the auxiliary model is intensive, the full Hamiltonian is extensive and scales as \(N\). This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
+Rewriting eq.~\ref{2siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
+\begin{equation}\begin{aligned}
+\sum_{\left<i,j \right>} \left(\omega + E_\text{gs} - \mathcal{G}^{-1}_\text{aux}(i,j)\right) = N\omega + N E_\text{gs} - \mathcal{G}^{-1}_{H-H} \implies \sum_{\left<i,j \right>} \mathcal{G}^{-1}_\text{aux}(i,j) = \mathcal{G}^{-1}_{H-H}~,
+\end{aligned}\end{equation}
+We will now take matrix elements of the full Greens function and obtain these matrix elements in terms of those of the auxiliary model. Let \(\left\{ \ket{\Phi}_n \right\} \) be the set of eigenstates of \(\mathcal{H}_\text{aux}\), and \(\ket{\Phi}_0\) be the groundstate. We assume that the ground state of \(H_{H-H}\) is captured well by the auxiliary model, such that the real-space diagonal matrix element for particle propagation is obtained by sandwiching the Greens function between the states \(c^\dagger_{i\sigma}\ket{\Phi}_0\):
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} \equiv \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{i\sigma} | \Phi_0} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+The superscript \(p\) indicates that this is the particle propagation matrix element. Under the auxiliary model approximation, we ignore the virtual entanglement between separate clusters. Therefore, the only operators \(\mathcal{G}^{-1}_\text{aux}(k,l)\) that affect the matrix element are those that satisfy \(i \in \left(k,l\right)\). There are \(w\) such pairs: \(\left\{k,l\right\} = \left\{i,j\right\} \text{ such that } j \in \text{NN of i}\). Moreover, because of translation invariance, all \(j \in \text{NN of i}\) are equivalent.
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{w} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = \braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+where we have identified site \(i\) in the auxiliary model as one of the impurities \(d_1\). We could very well have chosen \(d_2\) since the model is symmetric in \(d_1,d_2\). \(\mathcal{G}^{-1}_\text{aux}(d_1,d_2)\) is the Greens operator corresponding to the Hamiltonian in eq.~\ref{dimer_ham}.
+
+By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal{G}^{-1}_\text{aux}\), we get from the spectral representation
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d_1\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux} \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d_1\sigma} | \Phi_0} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn} 
+\end{aligned}\end{equation}
+There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(\mathcal{H}_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_{1,n} = \bra{\Phi_n}c^\dagger_{d_1\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn} 
+\end{aligned}\end{equation}
+where \(d^h_{1,n} = \bra{\Phi_n}c_{d_1\sigma}\ket{\Phi_0}\). The off-diagonal matrix elements between two sites \(i\) and \(j\) can also be obtained similarly. Only that auxiliary model contributes that has \(\left\{k,l\right\} = \left\{i,j\right\}\):
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{i,j} \equiv \braket{\Phi_0 | c_{i,\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{j,\sigma} | \Phi_0} = \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i,j) c^\dagger_{j,\sigma} | \Phi_0} = \frac{1}{w}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux} c^\dagger_{d_2,\sigma} | \Phi_0}
+\end{aligned}\end{equation}
+We again define matrix elements \(d_{2,n}^p = \braket{\Phi_n | c^\dagger_{d_2\sigma} | \Phi_0}, d_{2,n}^h = \braket{\Phi_n | c_{d_2\sigma} | \Phi_0}\). Thus, the spectral representation of the matrix element is obtained as
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}
+\end{aligned}\end{equation}
+The hole counterpart is
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
+\end{aligned}\end{equation}
+In summary, the spectral representation of the matrix elements of the four inverse Greens operators are given by
 \begin{gather}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{Nw}\sum_{j \in \text{NN of i}}\bra{\tilde \Phi_0}c_{i\sigma}\mathcal{G}_{D}^{-1}(\omega, \tilde i, \tilde j)c^\dagger_{i\sigma}\ket{\tilde \Phi_0} = \frac{2}{N}\bra{\tilde \Phi_0}c_{i\sigma}\mathcal{G}_{D}^{-1}(\omega, \tilde i)c^\dagger_{i\sigma}\ket{\tilde \Phi_0}
+\label{green_eq_final_siam}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn}\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
 \end{gather}
-Once we have stripped away the \(j,l\) dependence, we can view the RHS as simply the matrix element of the dimer-bath Hamiltonian eq.~\ref{dimer_ham} between the local states of the site zero of the bath:
+
+In order to obtain the matrix elements of the Greens operators \(\mathcal{G}_{H-H}\) (as compared to its inverse), we note that we have just observed that the matrix elements of the inverse Greens operators are related to the matrix elements of another inverse operator through some coefficients. We can, therefore, use the identity
+\begin{equation}\begin{aligned}
+\left(\hat O\right)_{ij} = \bra{i} \hat O \ket{j} = \sum_{m,n} \braket{i|m} \left(\hat O\right)_{mn} \braket{n|j} \implies \left(\hat O^{-1}\right)_{ij} = \sum_{m,n} \braket{i|m} \left(\hat O^{-1}\right)_{mn} \braket{n|j}
+\end{aligned}\end{equation}
+We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of \(\mathcal{G}_\text{aux}^{-1}\) in our expressions. Using the above relation, we can therefore write the spectral representation of the matrix elements of the Greens operators as 
 \begin{gather}
-	\label{local_gf}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{0\sigma}\ket{\tilde \Phi_0}
+	\left(\mathcal{G}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\\
+	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}
 \end{gather}
-Just to make it explicit, we repeat once more that \(\mathcal{G}_{D}^{-1}(\omega)\) is the inverse Greens function operator of the Hamiltonian in eq.~\ref{dimer_ham}.
-We can expand the state $c^\dagger_{i\sigma}\ket{\tilde \Phi_0}$ in terms of a complete set of orthogonal states:
-\begin{equation}\begin{aligned}
-	c^\dagger_{0\sigma}\ket{\tilde \Phi_0} = \sum_n C^0_n \ket{n}, && c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \sum_n C^1_n \ket{n}
-\end{aligned}\end{equation}
-where $C^{0}$ and $C^{1}$ are coefficients of the linear superposition defined by
-\begin{equation}
-C^{0}_{n} = \bra{n} c^\dagger_{0\sigma}\ket{\tilde \Phi_0}~,~ C^{1}_{n} = \bra{n} c^\dagger_{1\sigma}\ket{\tilde \Phi_0}~.
-\end{equation}
-Due to the translation invariance, the coefficients $C^{0}_{n}$ and $C^{1}_{n}$ are independent of the site indices. The index $n$ actually defines a set of quantum numbers that characterize the state $\ket{n}$. For example it might be a combination of number of particles, parity and total spin angular momentum $(n \equiv n, P, S^z)$. In light of the Greens function we have in between te states, we choose the orthogonal set to be formed by the eigenstates of the dimer+bath Hamiltonian.
 
-Using this expansion, the matrix element of $\mathcal{G}$ can be written as
+The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{nn^\prime} \left(C^0_{n^\prime}\right)^*\bra{n^\prime}\mathcal{G}_{D}^{-1}(\omega)\ket{n} C^0_{n}
+	\label{greens_func_siam}
+	\left(G_{H-H}(\omega)\right)_\text{loc} &= \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] \\
+	\left(G_{H-H}(\omega)\right)_\text{n-n} &= \left(G_{H-H}(\omega)\right)_{i,j}^p - \left(G_{H-H}(-\omega)\right)_{j,i}^h = \frac{1}{w}\sum_n \left[\left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left(d^h_{2,n}\right)^* d^h_{1,n} \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] 
 \end{aligned}\end{equation}
-Since $\ket{n}$ is an actual eigenstate of the Hamiltonian that defines \(\mathcal{G}_{D}^{-1}(\omega)\), $\mathcal{G}_{D}^{-1}(\omega)$ will be diagonal in that basis:
-\begin{equation}\begin{aligned}
-	\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma = \frac{2}{N}\sum_{n} |C^0_{n}|^2 \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{n n} 
-\end{aligned}\end{equation}
-Now we come to the off-diagonal Greens function for the nearest neighbour sites $i$ and $j$. This will receive contribution from only that dimer+bath Hamiltonian that has \(i,j\) as the dimer sites. This will not be a real space diagonal Greens function. Instead, it involves two nearest neighbour sites. %We call this Greens function $\left[\mathcal{G}_D^{-1}(\omega)\right]_{01}^\sigma$.
-\begin{gather}
-\label{nn_gf}
-\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\bra{\tilde \Phi_0}c_{0\sigma}\mathcal{G}_{D}^{-1}(\omega)c^\dagger_{1\sigma}\ket{\tilde \Phi_0} = \frac{2}{Nw}\sum_{n} \left(C^0_{n}\right)^* C^1_{n} \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn} 
-\end{gather}
-For convenience, we define $g_n = \left(\mathcal{G}_{D}^{-1}(\omega)\right)_{nn}$.
-\begin{figure}[htpb!]
-	\centering
-	\hspace*{\fill}
-	\includegraphics[width=0.7\textwidth]{../figures/lattice.png}
-	\hspace*{\fill}
-	\caption{\textit{Left:} Part of the lattice that is picked out by the Greens function on the LHS of eq.~\ref{local_gf}. \textit{Right:} Hamiltonian whose Greens functions appear on the right hand side of same equation. The two submodels are identical.}
-\end{figure}
+		
+\section{Spectral functions and self-energies}
 
-The matrix elements for hole propagation are obtained similarly. Here the relavant excitations are $\ket{\overline{i\sigma}} \equiv c_{i\sigma}\ket{\tilde \Phi_0}$, at frequency $-\omega$. To expand these states, we choose the eigenstates with $N-1$ total particles as the orthonormal basis:
-\begin{equation}\begin{aligned}
-	c_{0\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^0_n \ket{\overline{n}}, && c_{1\sigma}\ket{\tilde \Phi_0} = \sum_n \overline C^1_n \ket{\overline{n}}%\sum_{m,\alpha,\beta} C^i_{m,\alpha,\beta} \ket{m,\alpha,\beta}
-\end{aligned}\end{equation}
-and the counterpart for $g_n$, here, is
-\begin{equation}\begin{aligned}
-	\overline {g_n} = \bra{\overline n}\mathcal{G}_{D}^{-1}(-\omega)\ket{\overline n}
-\end{aligned}\end{equation}
-By suitably replacing the symbols, we can write down the matrix elements of $\mathcal{G}_H^{-1}(-\omega)$ for hole propagation:
-\begin{equation}\begin{aligned}
-	\left(\mathcal{G}_{H}^{-1}(-\omega)\right)_{\overline{ii}}^\sigma &= \frac{2}{N}\sum_{n} |\overline C^0_{n}|^2 \overline{g_n}\\
-	\left(\mathcal{G}_{H}^{-1}(-\omega)\right)_{ij}^\sigma &= \frac{2}{Nw}\sum_{n} \left(\overline C^0_{n}\right)^* \overline C^1_{n} \overline{g_n} 
-\end{aligned}\end{equation}
-
-\subsection{Constructing full Greens function matrix from the inverse matrix}
-The matrix elements $\left(\mathcal{G}_{H}^{-1}(\omega)\right)_{ii}^\sigma$ and its nearest neighbour partner can be obtained simply by inverting the internal matrix $\mathcal{G}^{-1}_D$. This is because,
-\begin{equation}\begin{aligned}
-	A_{ij} = \sum_{mn}\braket{i | n} A_{nm} \braket{m|j} \implies A^{-1}_{ij} = \sum_{mn}\braket{i|n} A^{-1}_{nm} \braket{m|j}
-\end{aligned}\end{equation}
-The spectral weights remain unchanged; only the matrix element changes from $A_{nm}$ to $(A^{-1})_{nm}$. Inverting the matrix $\mathcal{G}_D$ is actually simple because it is diagonal in the chosen basis:
-\begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_D\right)_{nn} = \begin{pmatrix} g_{0} && 0 && &..& 0\\ 0 && g_{1} && && \\ &&..&& .. &&  \\ 0 &&&&&& g_{M} \end{pmatrix} \implies \left(\mathcal{G}_D\right)_{nn} = \begin{pmatrix} \frac{1}{g_{0}} && 0 && &..& 0\\ 0 && \frac{1}{g_{1}} && && \\ &&..&& .. &&  \\ 0 &&&&&& \frac{1}{g_{M}} \end{pmatrix}
-\end{aligned}\end{equation}
-This allows us to write
-\begin{equation}\begin{aligned}
-	\label{G_mat_loc}
-	\left(\mathcal{G}_{H}(\omega)\right)_{ii}^\sigma = \frac{4(w-1)}{N}\sum_{n} |C^0_{n}|^2 \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ii}}^\sigma = \frac{4(w-1)}{N}\sum_{n} |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}
-\end{aligned}\end{equation}
-and
-\begin{equation}\begin{aligned}
-	\label{G_mat_nn}
-	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{4(w-1)}{Nw}\sum_{n} {C^0_{n}}^* C^1_{n} \frac{1}{g_n}, && \left(\mathcal{G}_{H}(-\omega)\right)_{\overline{ij}}^\sigma = \frac{4(w-1)}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}
-\end{aligned}\end{equation}
-These two expressions can be used to obtain an expression for the real space local and nearest-neighbour Greens functions:
-\begin{equation}\begin{aligned}
-	G_H(\omega)_\text{loc} &= \left(\mathcal{G}_H(\omega)\right)_{ii} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ii}} = \frac{4(w-1)}{N}\sum_n\left(|C^0_{n}|^2 \frac{1}{g_n} - |\overline C^0_{n}|^2 \frac{1}{\overline{g_n}}\right)\\
-	G_H(\omega)_\text{nn} &= \left(\mathcal{G}_H(\omega)\right)_{ij} - \left(\mathcal{G}_H(-\omega)\right)_{\overline{ji}} = \frac{4(w-1)}{Nw}\sum_n\left({C^0_{n}}^* C^1_{n} \frac{1}{g_n} - {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}}\right)\\
-\end{aligned}\end{equation}
 The momentum space Greens function can be expressed as a Fourier transform of the real space Greens functions:
 \begin{equation}\begin{aligned}
-	G_H (\vec k, \omega) = \frac{1}{N}\sum_{\vec r, \vec r_j}e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_H (|\vec{r_i} - \vec {r_j}|, \omega)
+	G_{H-H} (\vec k, \omega) = \frac{1}{N}\sum_{\vec r, \vec r_j}e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_{H-H} (|\vec{r_i} - \vec {r_j}|, \omega)
 \end{aligned}\end{equation}
 where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). As we do not have real space Greens function that are more non-local than nearest neighbour, we will attempt to obtain momentum space Greens function from these two contributions:
 \begin{equation}\begin{aligned}
-	G_H (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}G_H (\omega)_\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_H (\omega)_\text{nn}
+	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
 \end{aligned}\end{equation}
 The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, w\right]\right\}$.
 \begin{equation}\begin{aligned}
-	\label{k_Gf}
-	G_H (\vec k, \omega) &\simeq G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\\
-			     &= G_H (\omega)_\text{loc} + G_H (\omega)_\text{nn} \xi_{\vec k}\\
-			     &= \frac{4(w-1)}{N}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
+	\label{k_Gf_siam}
+	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}} = G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n} \xi_{\vec k}\\
+			     &= \sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec k}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec k}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -2229,6 +2204,7 @@ where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}
 \end{aligned}\end{equation}
 On a 2D square lattice with lattice spacing $a$, this simplifies to
 \begin{eqnarray}
+	\label{2dsquaretb}
 \xi_{\vec{q}} &=& 2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}}~,\nonumber\\
 \epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~
 \end{eqnarray}
@@ -2236,24 +2212,33 @@ where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
 
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-	A_{H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{k},\omega)) = -\frac{4(w-1)}{N\pi} \textrm{Im}\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\\
-A_{H}(\vec{r}=0,\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H}(\vec{r}=0,\omega)) = \frac{1}{N}\sum_{\vec{k}}A_{H}(\vec{k},\omega)
+	A_\text{H-H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{k},\omega))\\ 
+	&= -\frac{1}{\pi} \textrm{Im}\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec k}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec k}}{w}\left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\\
+	&= A_\text{aux,dd} + \frac{\xi_{\vec k}}{w} A_\text{aux,dz}
 \end{aligned}\end{equation}
-We can again use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the spectral functions  $A_{H} (\vec{k},\omega)$ and $A_{H} (\vec{r}=0,\omega)$ for the Hubbard model on the 2D square lattice.
+where 
+\begin{eqnarray}
+G_\text{aux,dd} &=& \sum_n\left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\nonumber\\
+G_\text{aux,dz} &=& \sum_n\left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]
+\end{eqnarray}
+and the spectral function $A_\text{aux,dd}=-\frac{1}{\pi}\textrm{Im}G_\text{aux,dd}$~,~$A_\text{aux,dz}=-\frac{1}{\pi}\textrm{Im}G_\text{aux,dz}$.
+Further,
+\begin{equation}\begin{aligned}
+A_\text{H-H}(\vec{r}=0,\omega) = -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{r}=0,\omega)) 
+= A_\text{aux,dd}
+\label{main}
+\end{aligned}\end{equation}
 
-
-\subsection{Calculation of self energy matrix from the Dyson equation}
-With the knowledge of the momentum-space Greens function $G_H(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
+With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
 \begin{equation}\begin{aligned}
 	\Sigma(\vec k,\omega) = G_0(\vec k,\omega)^{-1} - G(\vec k,\omega)^{-1}
 \end{aligned}\end{equation}
-where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_H(\vec k, \omega)$ into Dyson's equation gives
+where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_H(\vec k,\omega) = \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1}
+	\Sigma_{H-H}(\vec k,\omega) &= \omega +t^{H-H}\xi_{\vec k} - \left\{\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}\\
+&= 	 \omega +t^{H-H}\xi_{\vec k} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}
 \end{aligned}\end{equation}
-
-Thus, we can use eqs.\eqref{2dsquaretb}, \eqref{local_gf} and \eqref{nn_gf} to obtain the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
-		
+This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 \section{Analytic consistency checks}
 \subsection{Single-particle Greens function and self energy for the Hubbard dimer}
 The simplest test involves choosing $H^H = H^D$ and then calculating the momentum space Greens function at $k=0$, $G(k=0, \uparrow)$, for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are \(\left\{ \vec k_n \right\} = 0, \frac{\pi}{a}\). For $k=0$, we have

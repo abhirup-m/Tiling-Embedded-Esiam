@@ -3,7 +3,7 @@
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.8in,top=0.3in,bottom=1.4in]{geometry}
+\usepackage[margin=0.5in,top=0.3in,bottom=1.4in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[sfdefault]{roboto}
@@ -2101,7 +2101,15 @@ The final step is to sum over all nearest neighbour arms \(i-j\):
 	H_\text{full} = \sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
 \end{aligned}\end{equation}
 
-There are four kinds of terms: the first kind, \(A(i), A(j)\), depend only on either \(i\) or \(j\). They can be summed over easily by noting that the internal summation gives a constant factor of \(w-2\) which is cancelled by the factor of \(1/(w-2)\) in the front, and the external summation gives \(\sum_{i,j}A(i) = \frac{w}{2} \sum_i A(i)\), because \(i\) is a member of \(w/2\) distinct nearest-neighbour pairs. The second kind, \(B(i,j)\) depends on both \(i\) and \(j\). The internal summation is again cancelled by the prefactor. The external summation simply sums over all nearest-neighbour values of \(A(i,j)\). The third kind, \(C(i,k), C(j,l)\), depend on \(i\) and \(k\). Here, the total summation \(\sum_{i,j,k}C(i,k)\) gives \((w-2)\sum_{\left<i,k\right>}\left(C(i,k) + C(k,i)\right)\), because the pair \((i,k)\) occurs \(w-2\) times corresponding to the \(w-2\) vectors \(\vec r_j - \vec r_i\) that are perpendicular to \(\vec r_i - \vec r_k\). The factor is again cancelled by the existing prefactor. The fourth kind, \(D(k), D(l), E(k,l)\), depend on just \(k\), just \(l\) or both \(k\) and \(l\). For each pair \(i-j\) in the external summation, the particular pair \(k-l\) appears only once. When \(i-j\) is summed over, a factor of \(2(w/2-1)\) is generated because there are that many squares that involve \(k-l\). This factor cancels the inverse factor in front, giving \(\sum_{\left<k\right>} D(k), \sum_{\left<k,l \right>}E(k,l)\). The full Hamiltonian reads
+There are four kinds of terms:
+\begin{itemize}
+	\item the first kind, \(A(i), A(j)\), depend only on either \(i\) or \(j\). They can be summed over easily by noting that the internal summation gives a constant factor of \(w-2\) which is canceled by the factor of \(1/(w-2)\) in the front, and the external summation gives \(\sum_{i,j}A(i) = \frac{w}{2} \sum_i A(i)\), because \(i\) is a member of \(w/2\) distinct nearest-neighbour pairs. 
+	\item The second kind, \(B(i,j)\) depends on both \(i\) and \(j\). The internal summation is again cancelled by the prefactor. The external summation simply sums over all nearest-neighbour values of \(A(i,j)\).
+	\item The third kind, \(C(i,k), C(j,l)\), depend on \(i\) and \(k\). Here, the total summation \(\sum_{i,j,k}C(i,k)\) gives \((w-2)\sum_{\left<i,k\right>}\left(C(i,k) + C(k,i)\right)\), because the pair \((i,k)\) occurs \(w-2\) times corresponding to the \(w-2\) vectors \(\vec r_j - \vec r_i\) that are perpendicular to \(\vec r_i - \vec r_k\). The factor is again cancelled by the existing prefactor. 
+	\item The fourth kind, \(D(k), D(l), E(k,l)\), depend on just \(k\), just \(l\) or both \(k\) and \(l\). For each pair \(i-j\) in the external summation, the particular pair \(k-l\) appears only once. When \(i-j\) is summed over, a factor of \(2(w/2-1)\) is generated because there are that many squares that involve \(k-l\). This factor cancels the inverse factor in front, giving \(\sum_{\left<k\right>} D(k), \sum_{\left<k,l \right>}E(k,l)\).
+\end{itemize}
+
+ The full Hamiltonian reads
 \begin{equation}\begin{aligned}
 	H_\text{full} =& w\sum_i\left[- \frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\right] - t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + 4V\sum_{\sigma, \left<i,k\right>}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.}\right)\\
 		      &+ 4J \sum_{\left<i,k\right>}\left(\vec{S}_{i}\cdot\vec{S}_{k}\right) - 2 U_b\sum_k\left(\hat n_{k \uparrow} - \hat n_{k \downarrow}\right)^2 - \frac{Nw/2}{w-2}t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)\\
@@ -2110,7 +2118,7 @@ There are four kinds of terms: the first kind, \(A(i), A(j)\), depend only on ei
 The bulk model hence obtained is again a Hubbard-Heisenberg model. In eq.~\ref{2siam_to_hubb}, the total number of terms in the outer summation is \(Nw/2\). In order to make sure that this full Hamiltonian scales as \(N\), we divide this by \(w\):
 \begin{equation}\begin{aligned}
 	\label{2siam_to_hubb}
-	H_\text{full} &= \frac{1}{w}\sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
+	H_\text{full} &= \frac{1}{w}\sum_{\left<i,j\right>} H_\text{aux}(i,j) = \frac{1}{w}\sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
 		      &= -\left(U/2 - U_b/w\right)^2\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{N}{2w-4}t + t/w - 4V/w\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J/w \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
 The mappings between the parameters of the auxiliary model and the bulk are
@@ -2132,7 +2140,14 @@ We will now take matrix elements of the full Greens function and obtain these ma
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} \equiv \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{i\sigma} | \Phi_0} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0}
 \end{aligned}\end{equation}
-The superscript \(p\) indicates that this is the particle propagation matrix element. Under the auxiliary model approximation, we ignore the virtual entanglement between separate clusters. Therefore, the only operators \(\mathcal{G}^{-1}_\text{aux}(k,l)\) that affect the matrix element are those that satisfy \(i \in \left(k,l\right)\). There are \(w\) such pairs: \(\left\{k,l\right\} = \left\{i,j\right\} \text{ such that } j \in \text{NN of i}\). Moreover, because of translation invariance, all \(j \in \text{NN of i}\) are equivalent.
+The superscript \(p\) indicates that this is the particle propagation matrix element. Under the auxiliary model approximation, we ignore the virtual entanglement between separate clusters. Therefore, the only operators \(\mathcal{G}^{-1}_\text{aux}(k,l)\) that affect the matrix element are those that satisfy \(i \in \left(k,l\right)\). There are \(w\) such pairs: \(\left\{k,l\right\} = \left\{i,j\right\} \forall~ j \in \text{NN of i}\). Moreover, because of translation invariance, all \(j \in \text{NN of i}\) are equivalent. These configurations are shown in fig.~\ref{diag_conrib}.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../figures/diagonal_contributors.pdf}
+	\caption{The various configurations of auxiliary models that contribute to the diagonal matrix element at site \(i\). Orange colour represents impurities and green represents bath sites.}
+	\label{diag_conrib}
+\end{figure}
+
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{w} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = \braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
 \end{aligned}\end{equation}
@@ -2140,29 +2155,83 @@ where we have identified site \(i\) in the auxiliary model as one of the impurit
 
 By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal{G}^{-1}_\text{aux}\), we get from the spectral representation
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d_1\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux} \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d_1\sigma} | \Phi_0} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn} 
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d_1\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux} \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d_1\sigma} | \Phi_0} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 \end{aligned}\end{equation}
-There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(\mathcal{H}_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_{1,n} = \bra{\Phi_n}c^\dagger_{d_1\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
+There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(\mathcal{H}_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_{i,n} = \bra{\Phi_n}c^\dagger_{d_i\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
 \begin{equation}\begin{aligned}
 	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn} 
 \end{aligned}\end{equation}
-where \(d^h_{1,n} = \bra{\Phi_n}c_{d_1\sigma}\ket{\Phi_0}\). The off-diagonal matrix elements between two sites \(i\) and \(j\) can also be obtained similarly. Only that auxiliary model contributes that has \(\left\{k,l\right\} = \left\{i,j\right\}\):
+where \(d^h_{i,n} = \bra{\Phi_n}c_{d_i\sigma}\ket{\Phi_0}\).
+
+The off-diagonal matrix elements between two nearest-neighbour sites \(i\) and \(i+1\) can also be obtained similarly. Several  auxiliary models can contribute to such a matrix element:
+\begin{itemize}
+	\item those auxiliary models that have \(i\) and \(i+1\) as the two impurities. These give the contribution \(\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0}\). We can symmetrise it by exchanging \(d_1\) and \(d_2\): 
+	\begin{equation}\begin{aligned}
+		\frac{1}{2}\left[\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0} + \braket{\Phi_0 | c_{d_2\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}\right] = \frac{1}{2}\sum_{n} \left(\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{2,n}\right)^* d^p_{1,n}\right) \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+	\end{aligned}\end{equation}
+	\item those that have \(i\) as an impurity and \(i+1\) as the corresponding bath site. There will be \(w-2\) of these in number:
+	\begin{equation}
+		(w-2) \times \frac{1}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{0_1\sigma} | \Phi_0} = \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+	\end{equation}
+		where \(z^p_{i,n} = \braket{\Phi_n | c^\dagger_{0_i,\sigma} | \Phi_0}\).
+	\item those that have \(i+1\) as an impurity site and \(i\) as the corresponding bath site. There are again \(w-2\) of these:
+	\begin{equation}
+		(w-2) \times \frac{1}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{0_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0} = \frac{1}{w}\left(z^p_{1,n}\right)^* d^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+	\end{equation}
+\end{itemize}
+These choices are shown in fig.~\ref{off-diag-contrib}.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/offdiagonal_contributors.pdf}
+	\caption{Auxiliary models that contribute to the off-diagonal matrix element. \(j \equiv i+1\)}
+	\label{off-diag-contrib}
+\end{figure}
+
+Adding all contributions gives
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{i,j} \equiv \braket{\Phi_0 | c_{i,\sigma} \mathcal{G}^{-1}_{H-H} c^\dagger_{j,\sigma} | \Phi_0} = \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i,j) c^\dagger_{j,\sigma} | \Phi_0} = \frac{1}{w}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux} c^\dagger_{d_2,\sigma} | \Phi_0}
-\end{aligned}\end{equation}
-We again define matrix elements \(d_{2,n}^p = \braket{\Phi_n | c^\dagger_{d_2\sigma} | \Phi_0}, d_{2,n}^h = \braket{\Phi_n | c_{d_2\sigma} | \Phi_0}\). Thus, the spectral representation of the matrix element is obtained as
-\begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}
 \end{aligned}\end{equation}
 The hole counterpart is
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
 \end{aligned}\end{equation}
-In summary, the spectral representation of the matrix elements of the four inverse Greens operators are given by
+where \(z^h_{i,n} = \bra{\Phi_n}c_{z_i\sigma}\ket{\Phi_0}\).
+
+\par\noindent
+\begin{minipage}{0.65\textwidth}
+	The off-diagonal matrix element between next-to-nearest-neighbour sites \(i,i+2\) can also be obtained, provided their positions are related as \(\vec r_{i+2} = \vec r_i + \vec a + \vec a^\prime\), where \(\vec a\) and \(\vec a^\prime\) are primitive vectors that connect any lattice site to its nearest-neighbours, and \(\vec{a}\cdot\vec{a}^\prime = 0\). This is shown in fig.~\ref{next-near}. In other words, the two sites have to form the two most separated vertices of a right-angled triangle. To find the auxiliary models that contribute to this matrix element, note that there is only one square that can be formed keeping both \(i\) and \(i+2\) on it - we call this square \(ABCD\), where \(A\) is the vertex \(i\) and \(C\) is the vertex \(i+2\). We can set \(A=d_1, C=0_2\). The other two vertices \(B\) and \(D\) can have two possible configurations:\(B=d_2,D=0_1\) and \(B=0_1,D=d_2\). This gives two configurations. Two more configurations can be obtained by taking each of these two configurations and keeping \(B,D\) unchanged but exchanging \(A\) and \(C\). These four configurations are shown in fig.~\ref{nn-configs}. 
+\end{minipage}
+\hspace*{\fill}
+\begin{minipage}{0.29\textwidth}
+	\centering
+	\includegraphics[width=0.7\textwidth]{../figures/next-near.pdf}
+	\captionof{figure}{The kind of next-nearest neighbour sites that can be connected by the auxiliary model.}
+	\label{next-near}
+\end{minipage}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../figures/nn-offdiagonal_contributors.pdf}
+	\caption{Auxiliary model configurations that contribute to the next-nearest neighbour matrix elements. \(j \equiv i+2\)}
+	\label{nn-configs}
+\end{figure}
+
+These four configurations give
+\begin{equation}\begin{aligned}
+	\left(\mathcal{G}_\text{H-H}^{-1}\left( \omega \right) \right)^p_{i,i+2} &= \frac{2}{w(w-2)}\left[\braket{\Phi_0|c_{d_1\sigma}\mathcal{G}^{-1}_\text{aux}(d_1,d_2)c^\dagger_{0_2,\sigma}|\Phi_0} + \braket{\Phi_0|c_{0_2\sigma}\mathcal{G}^{-1}_\text{aux}(d_1,d_2)c^\dagger_{d_1,\sigma}|\Phi_0}\right] \\
+										 &= \frac{2}{w(w-2)}\sum_n \left[\left(d^p_{1,n}\right)^* z^p_{2,n} + \left(z^p_{2,n}\right)^* d^p_{1,n}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}
+\end{aligned}\end{equation}
+
+
+In summary, the spectral representation of the matrix elements of the inverse Greens operators are given by
 \begin{gather}
 \label{green_eq_final_siam}
-	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn}\\
-	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}_\text{H-H}^{-1}\left( \omega \right) \right)^p_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^p_{1,n}\right)^* z^p_{2,n} + \left(z^p_{2,n}\right)^* d^p_{1,n}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}_\text{H-H}^{-1}\left( -\omega \right) \right)^h_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^h_{1,n}\right)^* z^h_{2,n} + \left(z^h_{2,n}\right)^* d^h_{1,n}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~.
 \end{gather}
 
 In order to obtain the matrix elements of the Greens operators \(\mathcal{G}_{H-H}\) (as compared to its inverse), we note that we have just observed that the matrix elements of the inverse Greens operators are related to the matrix elements of another inverse operator through some coefficients. We can, therefore, use the identity
@@ -2171,15 +2240,22 @@ In order to obtain the matrix elements of the Greens operators \(\mathcal{G}_{H-
 \end{aligned}\end{equation}
 We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of \(\mathcal{G}_\text{aux}^{-1}\) in our expressions. Using the above relation, we can therefore write the spectral representation of the matrix elements of the Greens operators as 
 \begin{gather}
-	\left(\mathcal{G}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\\
-	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,j} = \frac{1}{w}\sum_n \left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn}, ~ ~ ~ \left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,j} = \frac{1}{w}\sum_n \left(d^h_{1,n}\right)^* d^h_{2,n} \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}
+	\left(\mathcal{G}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}_\text{H-H}\left( \omega \right) \right)^p_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^p_{1,n}\right)^* z^p_{2,n} + \left(z^p_{2,n}\right)^* d^p_{1,n}\right] \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~,\\
+	\left(\mathcal{G}_\text{H-H}\left( -\omega \right) \right)^h_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^h_{1,n}\right)^* z^h_{2,n} + \left(z^h_{2,n}\right)^* d^h_{1,n}\right] \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~.
 \end{gather}
 
 The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
 	\label{greens_func_siam}
-	\left(G_{H-H}(\omega)\right)_\text{loc} &= \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] \\
-	\left(G_{H-H}(\omega)\right)_\text{n-n} &= \left(G_{H-H}(\omega)\right)_{i,j}^p - \left(G_{H-H}(-\omega)\right)_{j,i}^h = \frac{1}{w}\sum_n \left[\left(d^p_{1,n}\right)^* d^p_{2,n} \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left(d^h_{2,n}\right)^* d^h_{1,n} \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] 
+	&\left(G_{H-H}(\omega)\right)_\text{loc} = \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] = G_\text{aux}(d_1,d_1;\omega)\\
+	&\left(G_{H-H}(\omega)\right)_\text{n-n} =\\
+						&\sum_n \left\{\left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}\right\}\\
+						&= \frac{1}{2}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_2,d_1;\omega)\right] + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\\
+						&\left(G_\text{H-H}\right)_\text{n-n-n} = \frac{2}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right] 
 \end{aligned}\end{equation}
 		
 \section{Spectral functions and self-energies}
@@ -2188,46 +2264,38 @@ The momentum space Greens function can be expressed as a Fourier transform of th
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) = \frac{1}{N}\sum_{\vec r, \vec r_j}e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_{H-H} (|\vec{r_i} - \vec {r_j}|, \omega)
 \end{aligned}\end{equation}
-where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). As we do not have real space Greens function that are more non-local than nearest neighbour, we will attempt to obtain momentum space Greens function from these two contributions:
+where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). As we do not have real space Greens function that are more non-local than next-nearest neighbour, we will attempt to obtain momentum space Greens function from these contributions:
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
 \end{aligned}\end{equation}
 The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, w\right]\right\}$.
 \begin{equation}\begin{aligned}
-	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}} = G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n} \xi_{\vec k}\\
-			     &= \sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec k}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec k}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]
+	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}} + G_{H-H} (\omega)_\text{n-n-n}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {b_i}}= G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n} \xi_{\vec k} + G_{H-H} (\omega)_\text{n-n-n} \xi^\prime_{\vec k}
 \end{aligned}\end{equation}
-where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\). For example, on a d-dimensional hypercubic lattice, we obtain
-\begin{equation}\begin{aligned}
-	\xi_{\vec k} = \sum_{i=1}^d \left(e^{i k_i {a_i}} + e^{-i k_i {a_i}}\right) = 2\sum_{i=1}^d \cos k_i a_i
-\end{aligned}\end{equation}
+where we defined \(\left\{b_i\right\} \) as the set of vectors that connect a particular lattice site with its next-nearest-neighbours,\(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\) and \(\xi^\prime_{\vec k} \equiv \sum_{j} e^{i \vec{k}\cdot\vec {b_j}}\). Note that \(b_j\) is simply \(a_i + a{i^\prime}\) where \(a_i\) and \(a_{i^\prime}\) are orthogonal.
+On a d-dimensional hypercubic lattice, we obtain
+\begin{gather}
+	\xi_{\vec k} = \sum_{i=1}^d \left(e^{i k_i {a_i}} + e^{-i k_i {a_i}}\right) = 2\sum_{i=1}^d \cos k_i a_i\\
+\end{gather}
 On a 2D square lattice with lattice spacing $a$, this simplifies to
 \begin{eqnarray}
 	\label{2dsquaretb}
 \xi_{\vec{q}} &=& 2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}}~,\nonumber\\
-\epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~
 \end{eqnarray}
-where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
+where \(\epsilon_{\vec{q}} = -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})\) is the tight-binding dispersion.
+\begin{equation}\begin{aligned}
+	\label{k_Gf_siam}
+	G_{H-H} (\vec k, \omega) = G_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[G_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\right] \\
+	+ \xi^\prime_{\vec k}\frac{2}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]
+\end{aligned}\end{equation}
 
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
 	A_\text{H-H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{k},\omega))\\ 
-	&= -\frac{1}{\pi} \textrm{Im}\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec k}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec k}}{w}\left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\\
-	&= A_\text{aux,dd} + \frac{\xi_{\vec k}}{w} A_\text{aux,dz}
+				     &=A_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[A_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[A_\text{aux}(d_1,0_1;\omega) + A_\text{aux}(0_1,d_1;\omega)\right]\right] \\
+				     &+ \xi^\prime_{\vec k}\frac{2}{w(w-2)} \left[A_\text{aux}(d_1,0_2;\omega) + A_\text{aux}(0_2,d_1;\omega)\right]
 \end{aligned}\end{equation}
-where 
-\begin{eqnarray}
-G_\text{aux,dd} &=& \sum_n\left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\nonumber\\
-G_\text{aux,dz} &=& \sum_n\left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]
-\end{eqnarray}
-and the spectral function $A_\text{aux,dd}=-\frac{1}{\pi}\textrm{Im}G_\text{aux,dd}$~,~$A_\text{aux,dz}=-\frac{1}{\pi}\textrm{Im}G_\text{aux,dz}$.
-Further,
-\begin{equation}\begin{aligned}
-A_\text{H-H}(\vec{r}=0,\omega) = -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{r}=0,\omega)) 
-= A_\text{aux,dd}
-\label{main}
-\end{aligned}\end{equation}
+where the spectral function $A_\text{aux}=-\frac{1}{\pi}\textrm{Im}G_\text{aux}$.
 
 With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
 \begin{equation}\begin{aligned}
@@ -2235,8 +2303,8 @@ With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \
 \end{aligned}\end{equation}
 where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_{H-H}(\vec k,\omega) &= \omega +t^{H-H}\xi_{\vec k} - \left\{\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}\\
-&= 	 \omega +t^{H-H}\xi_{\vec k} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}
+	&\Sigma_{H-H}(\vec k,\omega) = \omega +t^{H-H}\xi_{\vec k} -\\
+	&\left [G_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[G_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}
 \end{aligned}\end{equation}
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 \section{Analytic consistency checks}

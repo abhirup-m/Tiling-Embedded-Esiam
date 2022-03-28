@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[10pt]{report}
 \usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
@@ -2113,17 +2113,17 @@ There are four kinds of terms:
 \begin{equation}\begin{aligned}
 	H_\text{full} =& w\sum_i\left[- \frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\right] - t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + 4V\sum_{\sigma, \left<i,k\right>}\left(c^\dagger_{i\sigma}c_{k\sigma} + \text{h.c.}\right)\\
 		      &+ 4J \sum_{\left<i,k\right>}\left(\vec{S}_{i}\cdot\vec{S}_{k}\right) - 2 U_b\sum_k\left(\hat n_{k \uparrow} - \hat n_{k \downarrow}\right)^2 - \frac{Nw/2}{w-2}t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)\\
-	=& -\frac{1}{2}\left(Uw - 2U_b\right)^2\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{Nw/2}{w-2}t + t - 4V\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
+	=& -\frac{1}{2}\left(Uw + 4U_b\right)\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{Nw/2}{w-2}t + t - 4V\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
-The bulk model hence obtained is again a Hubbard-Heisenberg model. In eq.~\ref{2siam_to_hubb}, the total number of terms in the outer summation is \(Nw/2\). In order to make sure that this full Hamiltonian scales as \(N\), we divide this by \(w\):
+The bulk model hence obtained is again a Hubbard-Heisenberg model. In eq.~\ref{2siam_to_hubb}, the total number of terms in the outer summation is \(Nw/2\). In order to make sure that this full Hamiltonian scales as \(N\), we divide this by \(w/2\):
 \begin{equation}\begin{aligned}
 	\label{2siam_to_hubb}
-	H_\text{full} &= \frac{1}{w}\sum_{\left<i,j\right>} H_\text{aux}(i,j) = \frac{1}{w}\sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
-		      &= -\left(U/2 - U_b/w\right)^2\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{N}{2w-4}t + t/w - 4V/w\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 4J/w \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
+	H_\text{full} &= \frac{2}{w}\sum_{\left<i,j\right>} H_\text{aux}(i,j) = \frac{2}{w}\sum_{\left<i,j\right>}\frac{1}{w - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
+		      &= -\frac{1}{2}\left(2U + 8U_b/w\right)\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{N}{w-2}t + 2t/w - 8V/w\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 8J/w \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
 The mappings between the parameters of the auxiliary model and the bulk are
 \begin{equation}\begin{aligned}
-	t_\text{H-H} = \left(\frac{N}{2w-4}t + t/w - 4V/w\right),~ ~ ~ U_\text{H-H} = \left(U/2 - U_b/w\right),~ ~ ~ J_\text{H-H} = 4J/w
+	t_\text{H-H} = \left(\frac{N}{w-2}t + 2t/w - 8V/w\right),~ ~ ~ U_\text{H-H} = 2U + 8U_b/w,~ ~ ~ J_\text{H-H} = 8J/w
 \end{aligned}\end{equation}
 
 \section{Single-particle Green's function}
@@ -2131,7 +2131,11 @@ We now define the Greens function {\it operators}:
 \begin{equation}\begin{aligned}
 	\mathcal{G}_{H-H} = \frac{1}{\omega^\prime - \left(H_{H-H} - E_\text{gs}^\prime\right) }, \mathcal{G}_\text{aux}(i,j) = \frac{1}{\omega - \left(\mathcal{H}_\text{aux}(i,j) - E_\text{gs}\right)}
 \end{aligned}\end{equation}
-Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). While the auxiliary model is intensive, the full Hamiltonian is extensive and scales as \(N\). This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
+Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). While the auxiliary model is intensive, the full Hamiltonian is extensive and scales as \(N\):
+\begin{equation}\begin{aligned}
+	H_\text{full} &= \frac{2}{w}\sum_{\left<i,j\right>} H_\text{aux}(i,j) \sim N H_\text{aux}(d_1,d_2)~.
+\end{aligned}\end{equation}
+This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
 Rewriting eq.~\ref{2siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
 \begin{equation}\begin{aligned}
 \sum_{\left<i,j \right>} \left(\omega + E_\text{gs} - \mathcal{G}^{-1}_\text{aux}(i,j)\right) = N\omega + N E_\text{gs} - \mathcal{G}^{-1}_{H-H} \implies \sum_{\left<i,j \right>} \mathcal{G}^{-1}_\text{aux}(i,j) = \mathcal{G}^{-1}_{H-H}~,
@@ -2149,34 +2153,35 @@ The superscript \(p\) indicates that this is the particle propagation matrix ele
 \end{figure}
 
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{1}{w} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = \braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{2}{w} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = 2\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
 \end{aligned}\end{equation}
 where we have identified site \(i\) in the auxiliary model as one of the impurities \(d_1\). We could very well have chosen \(d_2\) since the model is symmetric in \(d_1,d_2\). \(\mathcal{G}^{-1}_\text{aux}(d_1,d_2)\) is the Greens operator corresponding to the Hamiltonian in eq.~\ref{dimer_ham}.
 
 By inserting \(1 = \sum_n \ket{\Phi_n}\bra{\Phi_n}\) on both sides of \(\mathcal{G}^{-1}_\text{aux}\), we get from the spectral representation
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{m,n} \braket{\Phi_0 | c_{d_1\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux} \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d_1\sigma} | \Phi_0} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = 2\sum_{m,n} \braket{\Phi_0 | c_{d_1\sigma} \ket{\Phi_m}\bra{\Phi_m}\mathcal{G}^{-1}_\text{aux} \ket{\Phi_n}\bra{\Phi_n} c^\dagger_{d_1\sigma} | \Phi_0} = 2\sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 \end{aligned}\end{equation}
 There we used the fact that since \(\ket{\Phi_m}\) are eigenstates of \(\mathcal{H}_\text{aux}\) and hence of \(\mathcal{G}^{-1}_\text{aux}\), we can set \(m=n\). We also defined \(d^p_{i,n} = \bra{\Phi_n}c^\dagger_{d_i\sigma}\ket{\Phi_0}\). The hole propagation matrix element can be obtained similarly:
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn} 
+	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = 2\sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn} 
 \end{aligned}\end{equation}
 where \(d^h_{i,n} = \bra{\Phi_n}c_{d_i\sigma}\ket{\Phi_0}\).
 
 The off-diagonal matrix elements between two nearest-neighbour sites \(i\) and \(i+1\) can also be obtained similarly. Several  auxiliary models can contribute to such a matrix element:
 \begin{itemize}
-	\item those auxiliary models that have \(i\) and \(i+1\) as the two impurities. These give the contribution \(\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0}\). We can symmetrise it by exchanging \(d_1\) and \(d_2\): 
+	\item those auxiliary models that have \(i\) and \(i+1\) as the two impurities. These give the contribution \\
+		\(\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0}\). 
 	\begin{equation}\begin{aligned}
-		\frac{1}{2}\left[\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0} + \braket{\Phi_0 | c_{d_2\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}\right] = \frac{1}{2}\sum_{n} \left(\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{2,n}\right)^* d^p_{1,n}\right) \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		\frac{2}{w}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0} = \frac{2}{w}\sum_{n} \left(d^p_{1,n}\right)^*d^p_{2,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{aligned}\end{equation}
 	\item those that have \(i\) as an impurity and \(i+1\) as the corresponding bath site. There will be \(w-2\) of these in number:
 	\begin{equation}
-		(w-2) \times \frac{1}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{0_1\sigma} | \Phi_0} = \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		(w-2) \times \frac{2}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{0_1\sigma} | \Phi_0} = \frac{2}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{equation}
 		where \(z^p_{i,n} = \braket{\Phi_n | c^\dagger_{0_i,\sigma} | \Phi_0}\).
 	\item those that have \(i+1\) as an impurity site and \(i\) as the corresponding bath site. There are again \(w-2\) of these:
 	\begin{equation}
-		(w-2) \times \frac{1}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{0_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0} = \frac{1}{w}\left(z^p_{1,n}\right)^* d^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		(w-2) \times \frac{2}{w}\frac{1}{w-2}\braket{\Phi_0 | c_{0_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0} = \frac{2}{w}\left(z^p_{1,n}\right)^* d^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{equation}
 \end{itemize}
 These choices are shown in fig.~\ref{off-diag-contrib}.
@@ -2189,22 +2194,24 @@ These choices are shown in fig.~\ref{off-diag-contrib}.
 
 Adding all contributions gives
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{2}{w} \sum_n \left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}
 \end{aligned}\end{equation}
 The hole counterpart is
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{2}{w} \sum_n \left[\left(d^h_{1,n}\right)^*d^h_{2,n} + \left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}
 \end{aligned}\end{equation}
 where \(z^h_{i,n} = \bra{\Phi_n}c_{z_i\sigma}\ket{\Phi_0}\).
 
+The off-diagonal matrix element between next-to-nearest-neighbour sites \(i,i+2\) can also be obtained, provided their positions are related as \(\vec r_{i+2} = \vec r_i + \vec a + \vec a^\prime\), where \(\vec a\) and \(\vec a^\prime\) are primitive vectors that connect any lattice site to its nearest-neighbours, and \(\vec{a}\cdot\vec{a}^\prime = 0\). This is shown in fig.~\ref{next-near}. 
+
 \par\noindent
-\begin{minipage}{0.65\textwidth}
-	The off-diagonal matrix element between next-to-nearest-neighbour sites \(i,i+2\) can also be obtained, provided their positions are related as \(\vec r_{i+2} = \vec r_i + \vec a + \vec a^\prime\), where \(\vec a\) and \(\vec a^\prime\) are primitive vectors that connect any lattice site to its nearest-neighbours, and \(\vec{a}\cdot\vec{a}^\prime = 0\). This is shown in fig.~\ref{next-near}. In other words, the two sites have to form the two most separated vertices of a right-angled triangle. To find the auxiliary models that contribute to this matrix element, note that there is only one square that can be formed keeping both \(i\) and \(i+2\) on it - we call this square \(ABCD\), where \(A\) is the vertex \(i\) and \(C\) is the vertex \(i+2\). We can set \(A=d_1, C=0_2\). The other two vertices \(B\) and \(D\) can have two possible configurations:\(B=d_2,D=0_1\) and \(B=0_1,D=d_2\). This gives two configurations. Two more configurations can be obtained by taking each of these two configurations and keeping \(B,D\) unchanged but exchanging \(A\) and \(C\). These four configurations are shown in fig.~\ref{nn-configs}. 
+\begin{minipage}{0.6\textwidth}
+The essence is that the two sites have to form the two most separated vertices of a right-angled triangle. To find the auxiliary models that contribute to this matrix element, note that there is only one square that can be formed keeping both \(i\) and \(i+2\) on it - we call this square \(ABCD\), where \(A\) is the vertex \(i\) and \(C\) is the vertex \(i+2\). We can set \(A=d_1, C=0_2\). The other two vertices \(B\) and \(D\) can have two possible configurations:\(B=d_2,D=0_1\) and \(B=0_1,D=d_2\). Two more configurations can be obtained by taking each of these two configurations and keeping \(B,D\) unchanged but exchanging \(A\) and \(C\). These four configurations are shown in fig.~\ref{nn-configs}. 
 \end{minipage}
 \hspace*{\fill}
-\begin{minipage}{0.29\textwidth}
+\begin{minipage}{0.35\textwidth}
 	\centering
-	\includegraphics[width=0.7\textwidth]{../figures/next-near.pdf}
+	\includegraphics[width=0.9\textwidth]{../figures/next-near.pdf}
 	\captionof{figure}{The kind of next-nearest neighbour sites that can be connected by the auxiliary model.}
 	\label{next-near}
 \end{minipage}
@@ -2228,8 +2235,8 @@ In summary, the spectral representation of the matrix elements of the inverse Gr
 \label{green_eq_final_siam}
 	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn}~,\\
-	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}~,\\
-	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{2}{w} \sum_n \left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}^{-1}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{2}{w} \sum_n \left[\left(d^h_{1,n}\right)^*d^h_{2,n} + \left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(-\omega) \right)_{nn}~,\\
 	\left(\mathcal{G}_\text{H-H}^{-1}\left( \omega \right) \right)^p_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^p_{1,n}\right)^* z^p_{2,n} + \left(z^p_{2,n}\right)^* d^p_{1,n}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}_\text{H-H}^{-1}\left( -\omega \right) \right)^h_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^h_{1,n}\right)^* z^h_{2,n} + \left(z^h_{2,n}\right)^* d^h_{1,n}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~.
 \end{gather}
@@ -2242,8 +2249,8 @@ We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of 
 \begin{gather}
 	\left(\mathcal{G}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}~,\\
-	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn}~,\\
-	\left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \sum_n \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{2}{w}\sum_n \left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn}~,\\
+	\left(\mathcal{G}_{H-H}\left(-\omega\right) \right)^h_{i,i+1} = \frac{2}{w}\sum_n \left[\left(d^h_{1,n}\right)^*d^h_{2,n} + \left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}~,\\
 	\left(\mathcal{G}_\text{H-H}\left( \omega \right) \right)^p_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^p_{1,n}\right)^* z^p_{2,n} + \left(z^p_{2,n}\right)^* d^p_{1,n}\right] \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}_\text{H-H}\left( -\omega \right) \right)^h_{i,i+2} = \frac{2}{w(w-2)}\sum_n \left[\left(d^h_{1,n}\right)^* z^h_{2,n} + \left(z^h_{2,n}\right)^* d^h_{1,n}\right] \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn}~.
 \end{gather}
@@ -2251,10 +2258,10 @@ We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of 
 The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
 	\label{greens_func_siam}
-	&\left(G_{H-H}(\omega)\right)_\text{loc} = \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] = G_\text{aux}(d_1,d_1;\omega)\\
-	&\left(G_{H-H}(\omega)\right)_\text{n-n} =\\
-						&\sum_n \left\{\left[\frac{1}{2} \left(d^p_{1,n}\right)^*d^p_{2,n} + \frac{1}{w}\left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left[\frac{1}{2} \left(d^h_{1,n}\right)^*d^h_{2,n} + \text{h.c.} + \frac{1}{w}\left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}\right\}\\
-						&= \frac{1}{2}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_2,d_1;\omega)\right] + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\\
+	&\left(G_{H-H}(\omega)\right)_\text{loc} = \left(\mathcal{G}_{H-H}(\omega)\right)_{ii}^p - \left(\mathcal{G}_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] = G_\text{aux}(d_1,d_1;\omega)\\
+	&\left(G_{H-H}(\omega)\right)_\text{n-n} = \left(\mathcal{G}_{H-H}(\omega)\right)_{i,i+1}^p - \left(\mathcal{G}_{H-H}(-\omega)\right)_{i+1,i}^h\\
+						&\frac{2}{w}\sum_n \left\{\left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left[\left(d^h_{1,n}\right)^*d^h_{2,n} + \left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}\right\}\\
+						&= \frac{2}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\\
 						&\left(G_\text{H-H}\right)_\text{n-n-n} = \frac{2}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right] 
 \end{aligned}\end{equation}
 		
@@ -2285,15 +2292,14 @@ On a 2D square lattice with lattice spacing $a$, this simplifies to
 where \(\epsilon_{\vec{q}} = -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})\) is the tight-binding dispersion.
 \begin{equation}\begin{aligned}
 	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) = G_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[G_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\right] \\
-	+ \xi^\prime_{\vec k}\frac{2}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]
+	G_{H-H} (\vec k, \omega) = G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) \right.\\
+	+ \left.G_\text{aux}(0_2,d_1;\omega)\right]
 \end{aligned}\end{equation}
 
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
-	A_\text{H-H}(\vec{k},\omega) &= -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{k},\omega))\\ 
-				     &=A_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[A_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[A_\text{aux}(d_1,0_1;\omega) + A_\text{aux}(0_1,d_1;\omega)\right]\right] \\
-				     &+ \xi^\prime_{\vec k}\frac{2}{w(w-2)} \left[A_\text{aux}(d_1,0_2;\omega) + A_\text{aux}(0_2,d_1;\omega)\right]
+	A_\text{H-H}(\vec{k},\omega) = -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{k},\omega)) =A_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[A_\text{aux}(d_1,d_2;\omega) + A_\text{aux}(d_1,0_1;\omega) + A_\text{aux}(0_1,d_1;\omega)\right]\\
+	 + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[A_\text{aux}(d_1,0_2;\omega) + A_\text{aux}(0_2,d_1;\omega)\right]
 \end{aligned}\end{equation}
 where the spectral function $A_\text{aux}=-\frac{1}{\pi}\textrm{Im}G_\text{aux}$.
 
@@ -2303,8 +2309,9 @@ With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \
 \end{aligned}\end{equation}
 where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
+	\label{self-energy}
 	&\Sigma_{H-H}(\vec k,\omega) = \omega +t^{H-H}\xi_{\vec k} -\\
-	&\left [G_\text{aux}(d_1,d_1;\omega) + \xi_{\vec k}\left[G_\text{aux}(d_1,d_2;\omega) + \frac{1}{w}\left[G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right]\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}
+	&\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}
 \end{aligned}\end{equation}
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 \section{Analytic consistency checks}
@@ -2325,22 +2332,17 @@ The expansion in terms of the exact eigenstates takes the form:
 \end{aligned}\end{equation}
 where $\ket{(3,1)\pm (\uparrow, \downarrow)}$ are the $N=(3,1), S^z = (+\frac{1}{2}, -\frac{1}{2})$ eigenstates of even $(+)$ and odd \((-)\) parity:
 \begin{equation}\begin{aligned}
-	H^D\ket{3\pm \uparrow} = \pm t \ket{3\pm \uparrow}\\
-	H^D\ket{1\pm \downarrow} = \mp t \ket{1\pm \downarrow}\\
+	H^D\ket{3\pm \uparrow} = \pm t \ket{3\pm \uparrow}, ~ ~ ~H^D\ket{1\pm \downarrow} = \mp t \ket{1\pm \downarrow}\\
 \end{aligned}\end{equation}
 and \(x = \frac{a_2 - a_1}{2}, y = \frac{a_2 + a_1}{2}\). The orthogonal basis is therefore
 \begin{equation}\begin{aligned}
-	\left\{ \ket{n} \right\} = \ket{3+ \uparrow}, \ket{3- \uparrow}\\
-	\left\{ \ket{\overline n} \right\} = \ket{1+ \downarrow}, \ket{1- \downarrow}
+	\left\{ \ket{n} \right\} = \ket{3+ \uparrow}, \ket{3- \uparrow}, ~ ~ ~\left\{ \ket{\overline n} \right\} = \ket{1+ \downarrow}, \ket{1- \downarrow}
 \end{aligned}\end{equation}
 The coefficients can thus be determined:
 \begin{gather*}
-	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde \Phi_0} = x, y\\
-	C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde \Phi_0} = x, -y\\
-	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde \Phi_0} = y, x\\
-	\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde \Phi_0} = y, -x\\
-	g_\pm = \bra{3 \pm \uparrow}\left( \omega + E_{GS} - H^D\right) \ket{3 \pm \uparrow} = \omega + E_{GS} \mp t\\
-	\overline{g_\pm} = \bra{1 \pm \downarrow}\left(-\omega + E_{GS} - H^D\right) \ket{1 \pm \downarrow} = -\omega + E_{GS} \pm t\\
+	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde \Phi_0} = x, y, ~ ~ ~ C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde \Phi_0} = x, -y\\
+	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde \Phi_0} = y, x, ~ ~ ~\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde \Phi_0} = y, -x\\
+	g_\pm = \bra{3 \pm \uparrow}\left( \omega + E_{GS} - H^D\right) \ket{3 \pm \uparrow} = \omega + E_{GS} \mp t, ~ ~ ~\overline{g_\pm} = \bra{1 \pm \downarrow}\left(-\omega + E_{GS} - H^D\right) \ket{1 \pm \downarrow} = -\omega + E_{GS} \pm t\\
 \end{gather*}
 We can see that $|C^0_-|^2 + {C^0_-}^* C^1_- = y^2 - y^2 = 0$ and $|\overline C^0_-|^2 + {\overline C^0_-}^* \overline C^1_- = x^2 - x^2 = 0$. So we do not need to consider those terms. With this preparation, we can now calculate the Greens function:
 \begin{equation}\begin{aligned}
@@ -2352,18 +2354,13 @@ The final step is to recognize that $2x^2 = \frac{a_1^2 + a_2^2 -2a_1a_2}{2} = \
 \end{aligned}\end{equation}
 
 \subsection{On the Bethe lattice}
-Another test involves considering the case of infinite number of nearest neighbours $w\to\infty$ (the coordination number, and effectively the dimensionality). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{G_mat_nn}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
+Another test involves considering the case of a Bethe lattice with infinite number of nearest neighbours $w\to\infty$ (the coordination number). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma = \frac{2}{Nw}\sum_{n} {\overline C^0_{n}}^* \overline C^1_{n} \frac{1}{\overline{g_n}} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H}(\omega)\right)_{ij}^\sigma \to 0
+	&\Sigma_{H-H}(\omega) = \lim_{k\to \infty} G_0 -\\
+	&\lim_{w \to \infty}\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}\\
+	& = \lim_{w\to \infty}\left[G_0(\omega) - G_\text{aux}(d_1,d_1;\omega)\right] 
 \end{aligned}\end{equation}
-There we used the fact since at half-filling on an $SU(2)$ symmetric mode, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\tilde \Phi_0} = \sum_n C^i_n \ket{n}$ to be constrained to $\sum_n |C_n^i|^2 = \frac{1}{2}$, such that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H}$ matrix has no $k$ dependence. 
-
-In this limit, the self-energy also simplifies:
-\begin{equation}\begin{aligned}
-	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) &= \omega +t^{H}\xi_{\vec k} - \frac{N}{2}\left\{\sum_n \lim_{w \to \infty}\left[\left(|C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{C^0_{n}}^* C^1_{n} \frac{1}{g_n}\right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + \frac{\xi_{\vec{k}}}{w}{\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]\right\}^{-1} \\
-						   &=\omega +t^{H}\xi_{\vec k} - \frac{N}{2}\frac{1}{\sum_n \left[ \frac{|C^0_{n}|^2}{g_n} - \frac{|\overline C^0_{n}|^2}{\overline{g_n}}\right]}
-\end{aligned}\end{equation}
-We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
+It is clear from the final form that only the diagonal term \(G_\text{aux}(d_1,d_1;\omega)\) of the interacting Greens function affects the self-energy.
 
 \chapter{Future goals}
 \begin{enumerate}

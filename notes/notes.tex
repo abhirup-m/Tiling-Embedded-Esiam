@@ -2347,12 +2347,12 @@ where the spectral function $A_\text{aux}=-\frac{1}{\pi}\textrm{Im}G_\text{aux}$
 
 With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
 \begin{equation}\begin{aligned}
-	\Sigma(\vec k,\omega) = G_0(\vec k,\omega)^{-1} - G(\vec k,\omega)^{-1}
+	\Sigma(\vec k,\omega) = \left(G^{(0)}(\vec k,\omega)\right)^{-1} - G(\vec k,\omega)^{-1}
 \end{aligned}\end{equation}
-where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
+where $\left(G^{(0)}(\vec k,\omega)\right)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
 	\label{self-energy}
-	&\Sigma_{H-H}(\vec k,\omega) = \omega +t^{H-H}\xi_{\vec k} -\\
+	&\Sigma_{H-H}(\vec k,\omega) = \left(G^{(0)}(\vec k,\omega)\right)^{-1} -\\
 	&\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}
 \end{aligned}\end{equation}
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
@@ -2398,11 +2398,31 @@ The final step is to recognize that $2x^2 = \frac{a_1^2 + a_2^2 -2a_1a_2}{2} = \
 \subsection{On the Bethe lattice}
 Another test involves considering the case of a Bethe lattice with infinite number of nearest neighbours $w\to\infty$ (the coordination number). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
-	&\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left[G_\text{aux}^{(0)}(\vec k,\omega)\right]^{-1} -\right.\\
+	&\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left[G^{(0)}(\vec k,\omega)\right]^{-1} -\right.\\
 	&\left.\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}\right\}\\
-	& = \lim_{w\to \infty}\left\{G_\text{aux}^{(0)}(\vec k,\omega) - G_\text{aux}(d_1,d_1;\omega)\right\}^{-1} 
+	& = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux}(d_1,d_1;\omega)\right\}^{-1} 
 \end{aligned}\end{equation}
-where \(G_\text{aux}^{(0)}(\vec k,\omega)\) is the non-interacting Greens function. It is clear from the final form that only the diagonal term \(G_\text{aux}(d_1,d_1;\omega)\) of the interacting Greens function affects the self-energy.
+where \(G_\text{aux}^{(0)}(\vec k,\omega)\) is the non-interacting Greens function. It is clear from the final form that only the diagonal term \(G_\text{aux}(d_1,d_1;\omega)\) of the interacting Greens function affects the self-energy. Even the non-interacting part Greens function can be shown to be diagonal in the limit of \(w\to\infty\)~\cite{kuramoto_manybody}. From its definition in time domain, we have
+\begin{equation}\begin{aligned}
+	G^{(0)}(\vec k, t) = -i\theta(t) \left<\left\{c_{\vec k}(t), c^\dagger_{\vec k}\right\} \right> = -i\theta(t) \left<\left\{e^{i H^{(0)}t} c_{\vec k} e^{-i H^{(0)}t}, c^\dagger_{\vec k}\right\} \right> = -i\theta(t) e^{-i \epsilon_{\vec k}t}\left[ \left<1 - \hat n_{\vec k}\right> + \left<\hat n_{\vec k}\right>\right] = -i \theta(t) e^{-i \epsilon_{\vec k}t}
+\end{aligned}\end{equation}
+A quick Fourier transform to \(\omega-\)domain shows that this is identical to the \(G^{(0)}(\vec k, \omega)\) defined just above eq.~\ref{self-energy}. We note that \(|G^{(0)}(\vec k, t)| \leq 1\). Using the Fourier transform  definition
+\begin{equation}\begin{aligned}
+	f(\vec k) = \frac{1}{d_N}\sum_{\vec r_i}h(\vec r_i) e^{i \vec{k}\cdot\vec{r}_i}
+\end{aligned}\end{equation}
+where \(d_N\) is a factor that only depends on the total number of sites and not on the coordination number, we can write
+\begin{equation}\begin{aligned}
+	|G^{(0)}(\vec k, t)|^2 = \frac{1}{d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}
+\end{aligned}\end{equation}
+From the inequality \(|G^{(0)}(\vec k, t)| \leq 1\), we get
+\begin{equation}\begin{aligned}
+	1 \geq \frac{1}{N}\sum_k |G^{(0)}(\vec k, t)|^2 = \frac{1}{N d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* \underbrace{\sum_k e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}}_{N \delta_{\vec r_i = \vec r_j}} = \frac{1}{d_N^2}\sum_{\vec r_i} |G^{(0)}(\vec r_i, t)|^2
+\end{aligned}\end{equation}
+For a coordination number of \(w\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{w}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
+\begin{equation}\begin{aligned}
+	\lim_{w\to \infty}G^{(0)}(\vec k,\omega) = G^{(0)}(\vec r=0,\omega)
+\end{aligned}\end{equation}
+Since both the non-interacting and the interaction Greens functions lose their non-locality, the self-energy becomes completely local in the limit of \(w \to \infty\).
 
 \chapter{Future goals}
 \begin{enumerate}

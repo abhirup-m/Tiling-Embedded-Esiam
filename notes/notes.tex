@@ -1180,87 +1180,51 @@ The Wilson ratio becomes
 \end{aligned}\end{equation}
 
 \section{Luttinger's and Friedel's sum rules}
-The subsequent discussions are for the first quadrant where \(U^* = 0\) and \(J^* > K^*\). At high temperatures, we see that the impurity susceptibility attains the value of
+\label{lutt_theorem}
+In this section, we will compute Luttinger's sum for the various fixed-point theories. Luttinger's sum is essentially the volume enclosed by the Fermi surface~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}, and Luttinger's theorem states that this volume counts the number of conduction electrons in the system~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}.
+
+We first consider the strong-coupling fixed point Hamiltonian, which is essentially just a resonant-level model:
 \begin{equation}\begin{aligned}
-	\frac{1}{8k_B T}
+	\mathcal{H}_\text{res} = \sum_{k\sigma}\epsilon_k \hat n_{k\sigma} + \sum_{k\sigma}\left(V_k c^\dagger_{k\sigma} c_{d\sigma} + \text{h.c.}\right)
 \end{aligned}\end{equation}
-which implies that the impurity behaves as a free orbital in this limit, having no coupling with the bath. We can write down the following effective Hamiltonian for such a limit:
+The impurity Green's function is given by~\cite{anderson_1961,hewson1993,coleman2015}
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{high-T} = \tilde \epsilon_d \hat n_d + \sum_{k\sigma} \epsilon_k\hat n_{k\sigma}
+	G_{d}(z) &= \frac{1}{z - \Sigma_d}\ket{d\sigma}\bra{d\sigma}, ~ ~ \Sigma_d = \sum_k \frac{V^2}{z - \epsilon_k}
 \end{aligned}\end{equation}
-Since the impurity is decoupled from the bath, we can immediately write down the Hamiltonian just for the impurity:
+\(\Sigma_d(z)\) is zero at the free orbital fixed point. The conduction electron Green's function is 
+\begin{gather}
+	G_{k}(z) = G_k^0(z) + \left[G_k^0(z)V_k\right]^2 G_{d}(z), ~ ~ G_k^0 = \frac{1}{z - \epsilon_k}, ~ ~ G_c^0(z) = \sum_k G_k^0(z)\ket{k}\bra{k}~,\\
+	G_c(z) = \sum_k G_k(z)\ket{k}\bra{k} = G_c^0 + \left[G_k^0(z)V_k\right]^2 G_{d}(z)\ket{k}\bra{k} 
+\end{gather}
+The total number of electrons is given by the sum of the number of electrons in the conduction bath and at the impurity:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{high-T, imp} = \tilde \epsilon_d \hat n_d
+	\label{tot_num}
+	N &= \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c(z)\right] = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c^0(z) + \left[G_k^0(z)V_k\right]^2 G_{d}(z)\ket{k}\bra{k}\right]
+\end{aligned}\end{equation}
+Since the eigenstates of the system are situated at real poles, the contour \(\Gamma\) encloses only the real axes and hence picks out those real poles to count the total number of particles.
+
+Since \(1/G_{c}^0(z) = z - \sum_k \epsilon_k \hat n_k\), we can write \(\text{Tr}\left[G_{c}^{0}(z)\right] = \text{Tr}\left[G_{c}^{0} \frac{\partial{}}{\partial{z}}\left(1/G_{c}^{0}\right)\right]\) and hence
+\begin{equation}\begin{aligned}
+	\label{simple_bath}
+	\text{Tr}\left[G_c(z)\right] &=\frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{c}^{0}\right)\right] + \sum_k\left[G_k^0(z)V_k\right]^2 G_{d}(z)
 \end{aligned}\end{equation}
 
-We consider the resonant-level model:
+The impurity part can, on the other hand, be written as
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{res} = \sum_{k\sigma}\epsilon_k \hat n_{k\sigma} + \epsilon_d n_d + \sum_{k\sigma}\left(V_k c^\dagger_{k\sigma} c_{d\sigma} + \text{h.c.}\right)
+	\text{Tr}\left[G_{d}(z)\right] &= \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \Sigma_d(z)}\right] = \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \Sigma_d(z)}\frac{\partial{\left(z\right)}}{\partial{z}} \right] = \text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right]\\
 \end{aligned}\end{equation}
-The total Green's function is 
+The fist term can be written as \(\text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}G_{d}^{-1}(z)\right]\). The second part can be written as \(\frac{\partial{\Sigma_d(z)}}{\partial{z}} = -\sum_k V^2 {G_k^0}^2\). Together, we get
 \begin{equation}\begin{aligned}
-	G(z) = \frac{1}{z - \mathcal{H}_\text{res}}
+	\label{simple_imp}
+	\text{Tr}\left[G_{d}(z)\right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{d}\right)\right] - \text{Tr}\left[ G_{d}(z)\sum_k V^2 {G_k^0}^2\right]\\
 \end{aligned}\end{equation}
-The impurity diagonal Green's function is
+Substituting eqs.~\ref{simple_bath} and \ref{simple_imp} into eq.~\ref{tot_num}, we get
 \begin{equation}\begin{aligned}
-	G_{dd}(z) &= \frac{1}{z - \epsilon_d - \Sigma_d(z)}, &&	G_d(z) = G_{dd}\ket{d}\bra{d}
-\end{aligned}\end{equation}
-where \(\Sigma_d(z)\) is in general complex and is zero at the free orbital fixed point. The conduction electron Green's function is 
-\begin{equation}\begin{aligned}
-	&G_{kk}(z) = G_k^0(z) + \left[G_k^0(z)V_k\right]^2 G_{dd}(z), & G_c(z) \equiv \sum_k \ket{k}\bra{k}G_{kk}(z), && G_{c0}(z) \equiv \sum_k G_{kk}^0(z)\ket{k}\bra{k}
-\end{aligned}\end{equation}
-The total Green's function can be written as
-\begin{equation}\begin{aligned}
-	G(z) &= \left(\sum_{k}\ket{k}\bra{k} + \ket{d}\bra{d}\right) G \left(\sum_{k}\ket{k}\bra{k} + \ket{d}\bra{d}\right)\\
-	     &= \sum_{k} \ket{k}\bra{k}G_{kk}(z) + G_{dd}(z)\ket{d}\bra{d} + \text{off-diagonal terms}\\
-	     &= G_c(z) + G_{d}(z) + \text{off-diagonal terms}
-\end{aligned}\end{equation}
-The total number of electrons is given by
-\begin{equation}\begin{aligned}
-	N &= \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G(z) \right]\\
-	  &= \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c(z)\right]
-\end{aligned}\end{equation}
-The contour \(\Gamma\) counts all the singularities of \(\text{Tr} G(z)\), and thus encloses only the real axis of the complex plane (since \(G(z)\) comes from a Hermitian matrix \(\mathcal{H}_\text{res}\), all its singularities are real).
-At this point, we can use an identity:
-\begin{equation}\begin{aligned}
-	\text{Tr}\left[G_{d}(z)\right] &= \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \epsilon_d - \Sigma_d(z)}\right] = \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \epsilon_d - \Sigma_d(z)}\frac{\partial{\left(z - \epsilon_d\right)}}{\partial{z}} \right] = \text{Tr}\left[ \ket{d}\bra{d}G_{dd}\frac{\partial{\left\{G_{dd}^{-1}(z) + \Sigma_d(z)\right\}}}{\partial{z}} \right]\\
-				       &= \text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}G_{d}^{-1}(z)\right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right]\\
-\end{aligned}\end{equation}
-In the last step, we converted the trace to a determinant using
-\begin{equation}\begin{aligned}
-	\text{Tr}\left[A \frac{\partial{A^{-1}}}{\partial{z}}\right] = \frac{\partial{}}{\partial{z}}\text{Tr}\ln A^{-1} =\frac{\partial{}}{\partial{z}}\sum_i \ln \lambda_i = \frac{\partial{}}{\partial{z}}\ln \prod_i \lambda_i = \frac{\partial{}}{\partial{z}}\ln \text{Det}A^{-1}
-\end{aligned}\end{equation}
-where \(\lambda_i\) are the eigenvalues of \(A^{-1}\). Substituting \(\text{Tr}\left[G_d(z)\right] \) into the total number of particles gives
-\begin{equation}\begin{aligned}
-	N  &= \oint \frac{dz}{2\pi i}n_F(z) \left[\frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_d(z)\right\} + \text{Tr} \left( G_d(z) \frac{\partial{}}{\partial{z}}\Sigma_d(z) \right) + \text{Tr}G_c(z)\right]
-\end{aligned}\end{equation}
-The conduction electron part can also be simplified:
-\begin{equation}\begin{aligned}
-	\text{Tr}G_c(z) &= \text{Tr}\left[G_{c0}(z) + \sum_k \left\{G_k^0(z)V_k\right\}^2 G_{dd}(z)\ket{k}\bra{k}\right] =\text{Tr}\left[G_{c0}(z)\right] + \sum_k\left[G_k^0(z)V_k\right]^2 G_{dd}(z)\\
-\end{aligned}\end{equation}
-Since \(G_{c0}^{-1}(z) = z - \sum_k \epsilon_k \hat n_k\), we can write \(\text{Tr}\left[G_{c0}(z)\right] = \text{Tr}\left[G_{c0}(z) \frac{\partial{}}{\partial{z}}G_{c0}^{-1}\right]\) and hence
-\begin{equation}\begin{aligned}
-	\text{Tr}G_c(z) &=\frac{\partial{}}{\partial{z}}\left[\ln \text{Det}G_{c0}^{-1}(z)\right] + \sum_k\left[G_k^0(z)V_k\right]^2 G_{dd}(z)
-\end{aligned}\end{equation}
-Updating the total particles with this leads to
-\begin{equation}\begin{aligned}
-	N  = \oint \frac{dz}{2\pi i}n_F(z) \left[\frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_d(z)\right\} + \frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_{c0}(z)\right\} + \text{Tr} \left( G_d(z) \frac{\partial{}}{\partial{z}}\Sigma_d(z) \right) + \sum_k\left( V_k G_k^0 \right)^2 G_{dd}(z)\right]
-\end{aligned}\end{equation}
-For the resonant-level model, we have
-\begin{equation}\begin{aligned}
-	\Sigma_d = \sum_k V^2_k G^0_k = \sum_k \frac{V_k^2}{z - \epsilon_k}
-\end{aligned}\end{equation}
-such that
-\begin{equation}\begin{aligned}
-	\text{Tr} \left( G_d(z) \frac{\partial{}}{\partial{z}}\Sigma_d(z) \right) = -G_{dd}(z) \sum_k \left( V_k G_k^0 \right)^2
-\end{aligned}\end{equation}
-which allows us to write
-\begin{equation}\begin{aligned}
-	N  = \oint \frac{dz}{2\pi i}n_F(z) \left[\frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_d(z)\right\} + \frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_{c0}(z)\right\} \right]
+	N = \oint \frac{dz}{2\pi i}n_F(z) \left[\frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{d}\right)\right] + \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{c}^{0}\right)\right]\right]
 \end{aligned}\end{equation}
 At \(T=0\), \(n_F\) is defined as 1 below the FS, \(\frac{1}{2}\) at the FS and 0 above it.
 \begin{equation}\begin{aligned}
-	N  = \left[\oint_{\Gamma_<} + \frac{1}{2}\oint_{\Gamma_0}\right]\frac{dz}{2\pi i}\left[\frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_d(z)\right\} + \frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{G^{-1}_{c0}(z)\right\} \right]
+N  = \left[\oint_{\Gamma_<} + \frac{1}{2}\oint_{\Gamma_0}\right]\frac{dz}{2\pi i}\left[\frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{1/G_d(z)\right\} + \frac{\partial{}}{\partial{z}} \ln \text{Det} \left\{1/G_{c}^{0}(z)\right\} \right]
 \end{aligned}\end{equation}
 Following Seki and Yunoki~\cite{seki2017topological}, we can define a winding number for a Green's function \(G(z)\):
 \begin{equation}\begin{aligned}
@@ -1272,14 +1236,32 @@ n_{\text{Det }G^{-1}(C)} = P_{\text{Det }G}(C) - Z_{\text{Det }G}(C)
 \end{aligned}\end{equation}
 where \(P_{f(z)}(C)\) is the number of poles of \(f(z)\) enclosed by the contour \(C\), and \(Z\) is the corresponding number of zeros. The total number of particles in the resonant level model can thus be written as
 \begin{equation}\begin{aligned}
-	N = P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right] + P_{\text{Det }G_{c0}}(\Gamma_<) - Z_{\text{Det }G_{c0}}(\Gamma_<) \\
-	+ \frac{1}{2}\left[P_{\text{Det }G_{c0}}(\Gamma_0) - Z_{\text{Det }G_{c0}}(\Gamma_0)\right]
+N = P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right] + P_{\text{Det }G_{c}^{0}}(\Gamma_<) - Z_{\text{Det }G_{c}^{0}}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_{c}^{0}}(\Gamma_0) - Z_{\text{Det }G_{c}^{0}}(\Gamma_0)\right]
 \end{aligned}\end{equation}
-The average number of particles can thus be expressed purely in terms of the number of poles and zeros of the impurity and the conduction electron Green's functions. As shown by Seki and Yunoki, the second line gives the Luttinger volume \(V_L\):
+The average number of particles can thus be expressed purely in terms of the number of poles and zeros of the impurity and the conduction electron Green's functions. The number of poles in the conduction electron Greens function \(G_c^0\) minus the number of zeros gives the Luttinger volume \(V_L = V_L^< + \frac{1}{2}V_L^0\)~\cite{seki2017topological}, while those in the impurity Greens function \(G_d = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0\) give the number of localised excitations \(V_\text{imp}\) on the impurity:
 \begin{equation}\begin{aligned}
 	\label{total_lutt}
-	N = P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right] + V_L
+	N = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
 \end{aligned}\end{equation}
+Note that this also holds at the free orbital fixed point, because it is a special case of the strong-coupling fixed point with \(V=0\).
+
+If we are the local moment fixed point with particle-hole symmetry, we instead have the Hamiltonian
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{lm} = \sum_{k\sigma}\epsilon_k \hat n_{k\sigma} + H_\text{imp}
+\end{aligned}\end{equation}
+where \(H_\text{imp} = -(U/2)\hat n_d + U\hat n_{d \uparrow} \hat n_{d \downarrow}\) is the impurity Hamiltonian. In this atomic limit, the impurity Greens function is given by~\cite{phillips2012advanced}
+\begin{equation}\begin{aligned}
+	G_d = \sum_{a=\pm U/2} \frac{1}{z - a} 
+\end{aligned}\end{equation}
+where \(a=\pm U/2\) represent the two Hubbard side bands. Such a Greens function satisfies
+\begin{equation}\begin{aligned}
+	\frac{1}{2\pi i}\o\int dz n_F(z)\text{Tr}\left[G_d\right] = \sum_{a = \pm U/2}n_F(a) = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0
+\end{aligned}\end{equation}
+The conduction bath can be written in a similar form over the scattering states \(\epsilon_k\).
+
+This shows that the equation eq.~\ref{total_lutt} holds at all three fixed points - free orbital, local moment and strong-coupling.
+
+
 If we start from a non-interacting model (\(V_k = 0\)), we can write
 \begin{equation}\begin{aligned}
 	N = \mathcal{N}^0_{imp} + V_L^0
@@ -1306,9 +1288,8 @@ If we take into account the spin-degeneracy and redefine \(V_L\) to mean the Lut
 	\includegraphics[scale=0.2]{../figures/luttinger_top_change.png}
 \end{figure}
 This is a specific case of the more general result for Kondo lattices obtained by Oshikawa using flux-insertion arguments in \cite{oshikawa2000topological}.
-One can now ask what happens to this result once we also incorporate the spin-exchange interaction \(J \vec{S_d}\cdot\vec{s}\); we can expect that it will complicate the self-energy of the impurity. It cannot, however, preclude the loss of the real pole, nor can it create a new singularity - to do so would require the self-energy to diverge, and we are working with finite systems here. This suggests that the eq.~\eqref{luttinger_change} would still hold.
 
-We have also not accounted for the RG flow from the local moment fixed point to the strong coupling fixed point. The local moment fixed point is characterized by a decoupled quantum top:
+We have not accounted for the RG flow from the local moment fixed point to the strong coupling fixed point. The local moment fixed point is characterized by a decoupled quantum top:
 \begin{equation}\begin{aligned}
 	\mathcal{H}_\text{LM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow}
 \end{aligned}\end{equation}
@@ -1868,6 +1849,17 @@ $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right
 \end{itemize}
 
 \section{Important Remarks}
+\subsection{Topological nature of the transition}
+The phase transition is characterised by a change in a topological quantity - the Fermi surface volume. As shown in section~\ref{lutt_theorem}, the total number of particles in the system can be expressed in terms of topological quantities:
+\begin{equation}\begin{aligned}
+	N = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
+\end{aligned}\end{equation}
+\(V_L^<\) represents the winding number of the curve traced by the determinant of the conduction electron Greens function on the contour that encloses all real poles below the Fermi surface. \(V_L^0\) does the same but for the real poles {\it on} the Fermi surface. \(V_\text{imp}^{<,0}\) has the same meanings but for the impurity Greens function. This equation holds for the free orbital, local moment and strong coupling fixed points. At the local moment fixed point, the impurity Greens function has a single real pole below the Fermi surface, while that pole moves off the real axis at the strong-coupling fixed point. That means, \(V_\text{imp}^\text{loc} = V_\text{imp}^\text{sc} + 1\). Assuming the total number of particles remains conserved in the process, we get the equation
+\begin{equation}\begin{aligned}
+	V_L^\text{sc} = V_L^\text{loc} + 1
+\end{aligned}\end{equation}
+This shows that the localised \(d-\)electrons is hybridising with the bath and this shows up in the transfer of a real pole from the impurity Greens function into the bath Greens function. The addition of this pole "enlarges" the Fermi volume. The transition from the metal to the insulator is therefore characterised by the change in the winding number by 1.
+
 \subsection{Greens function in the insulating phase: the Hubbard bands and mottness}
 In the insulating state, the cluster becomes a local moment and the bulk system reduces to the atomic limit \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). The Greens function in this limit is given in Appendix~\ref{atomic limit}. From eq.~\ref{atomic_limit_gf}, we have
 \begin{equation}\begin{aligned}

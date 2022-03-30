@@ -1211,9 +1211,10 @@ Since \(1/G_{c}^0(z) = z - \sum_k \epsilon_k \hat n_k\), we can write \(\text{Tr
 
 The impurity part can, on the other hand, be written as
 \begin{equation}\begin{aligned}
+	\label{self_id}
 	\text{Tr}\left[G_{d}(z)\right] &= \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \Sigma_d(z)}\right] = \text{Tr}\left[ \frac{\ket{d}\bra{d}}{z - \Sigma_d(z)}\frac{\partial{\left(z\right)}}{\partial{z}} \right] = \text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right]\\
 \end{aligned}\end{equation}
-The fist term can be written as \(\text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}G_{d}^{-1}(z)\right]\). The second part can be written as \(\frac{\partial{\Sigma_d(z)}}{\partial{z}} = -\sum_k V^2 {G_k^0}^2\). Together, we get
+The fist term can be written as \(\text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}G_{d}^{-1}(z)\right]\). The second part can be written as \(\frac{\partial{}}{\partial{z}}{\Sigma_d(z)} = -\sum_k V^2 {G_k^0}^2\). Together, we get
 \begin{equation}\begin{aligned}
 	\label{simple_imp}
 	\text{Tr}\left[G_{d}(z)\right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{d}\right)\right] - \text{Tr}\left[ G_{d}(z)\sum_k V^2 {G_k^0}^2\right]\\
@@ -1236,13 +1237,15 @@ n_{\text{Det }G^{-1}(C)} = P_{\text{Det }G}(C) - Z_{\text{Det }G}(C)
 \end{aligned}\end{equation}
 where \(P_{f(z)}(C)\) is the number of poles of \(f(z)\) enclosed by the contour \(C\), and \(Z\) is the corresponding number of zeros. The total number of particles in the resonant level model can thus be written as
 \begin{equation}\begin{aligned}
-N = P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right] + P_{\text{Det }G_{c}^{0}}(\Gamma_<) - Z_{\text{Det }G_{c}^{0}}(\Gamma_<) + \frac{1}{2}\left[P_{\text{Det }G_{c}^{0}}(\Gamma_0) - Z_{\text{Det }G_{c}^{0}}(\Gamma_0)\right]
+	N &= \underbrace{P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<)}_{V_\text{imp}^<} + \underbrace{\frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right]}_{V_\text{imp}^0} + \underbrace{P_{\text{Det }G_{c}^{0}}(\Gamma_<) - Z_{\text{Det }G_{c}^{0}}(\Gamma_<)}_{V_\text{L}^<} + \underbrace{\frac{1}{2}\left[P_{\text{Det }G_{c}^{0}}(\Gamma_0) - Z_{\text{Det }G_{c}^{0}}(\Gamma_0)\right]}_{V_\text{L}^0}\\
+	  &= V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
 \end{aligned}\end{equation}
-The average number of particles can thus be expressed purely in terms of the number of poles and zeros of the impurity and the conduction electron Green's functions. The number of poles in the conduction electron Greens function \(G_c^0\) minus the number of zeros gives the Luttinger volume \(V_L = V_L^< + \frac{1}{2}V_L^0\)~\cite{seki2017topological}, while those in the impurity Greens function \(G_d = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0\) give the number of localised excitations \(V_\text{imp}\) on the impurity:
+The average number of particles can thus be expressed purely in terms of the number of poles and zeros of the impurity and the conduction electron Green's functions. The number of poles in the conduction electron Greens function \(G_c^0\) minus the number of zeros gives the Luttinger volume \(V_L = V_L^< + \frac{1}{2}V_L^0\)~\cite{seki2017topological}, while those in the impurity Greens function \(V_\text{imp} = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0\) give the number of localised excitations on the impurity:
 \begin{equation}\begin{aligned}
 	\label{total_lutt}
-	N = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
+	N = V_\text{imp} + V_L
 \end{aligned}\end{equation}
+
 Note that this also holds at the free orbital fixed point, because it is a special case of the strong-coupling fixed point with \(V=0\).
 
 If we are the local moment fixed point with particle-hole symmetry, we instead have the Hamiltonian
@@ -1251,105 +1254,34 @@ If we are the local moment fixed point with particle-hole symmetry, we instead h
 \end{aligned}\end{equation}
 where \(H_\text{imp} = -(U/2)\hat n_d + U\hat n_{d \uparrow} \hat n_{d \downarrow}\) is the impurity Hamiltonian. In this atomic limit, the impurity Greens function is given by~\cite{phillips2012advanced}
 \begin{equation}\begin{aligned}
-	G_d = \sum_{a=\pm U/2} \frac{1}{z - a} 
+	\label{lm_sigma}
+	G_d = \frac{1}{z - \Sigma_d(z)}, ~ ~ ~\Sigma_d = \frac{U^2}{4}\frac{1}{z}
 \end{aligned}\end{equation}
-where \(a=\pm U/2\) represent the two Hubbard side bands. Such a Greens function satisfies
+Since \(V=0\) at this fixed point, the total number of particles is given by
 \begin{equation}\begin{aligned}
-	\frac{1}{2\pi i}\o\int dz n_F(z)\text{Tr}\left[G_d\right] = \sum_{a = \pm U/2}n_F(a) = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0
+	\label{total_num_lm}
+	N = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c^0(z)\right]
 \end{aligned}\end{equation}
-The conduction bath can be written in a similar form over the scattering states \(\epsilon_k\).
+We again use eq.~\ref{self_id} to write
+\begin{equation}\begin{aligned}
+	\text{Tr}\left[G_{d}(z)\right] = \text{Tr}\left[ G_{d}(z)\frac{\partial{G_{d}^{-1}(z)}}{\partial{z}} \right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right] = \frac{\partial{}}{\partial{z}}\left[\ln \text{Det}\left(1/G_{d}\right)\right] + \text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right]
+\end{aligned}\end{equation}
+Performing the integral for the second term gives
+\begin{equation}\begin{aligned}
+	\left(\int_{\Gamma_<} + \frac{1}{2}\int_{\Gamma_0}\right)\frac{dz}{2\pi i}\text{Tr}\left[ G_{d}(z)\frac{\partial{\Sigma_d(z)}}{\partial{z}} \right] = 0
+\end{aligned}\end{equation}
+Here we used the form of \(\Sigma_d\) in eq.~\ref{lm_sigma}. Repeating the same steps as before, we recover eq.~\ref{total_lutt}.
 
-This shows that the equation eq.~\ref{total_lutt} holds at all three fixed points - free orbital, local moment and strong-coupling.
-
-
-If we start from a non-interacting model (\(V_k = 0\)), we can write
+We now compare the Luttinger volume across the fixed points. At the local moment fixed point, the impurity Greens function has a single pole at \(z<0\) and a zero at \(z=0\), so \(V_\text{imp} = 1 - 1/2 = 1/2\), and eq.~\ref{total_lutt} becomes
 \begin{equation}\begin{aligned}
-	N = \mathcal{N}^0_{imp} + V_L^0
+	N = 1/2 + V_\text{L}^{LM}
 \end{aligned}\end{equation}
-where \(\mathcal{N}^0_{imp}\) is simply the number of singularities of \(G_d\) on the real axis, for the non-interacting case. We now turn up the interaction \(V_k\), keeping the total number of particles conserved at \(N\). With a non-zero \(V_k\), the impurity self-energy can be written (assuming a constant density of states) as
-\begin{equation}\begin{aligned}
-	\Sigma_d(z) = \Sigma_d^\text{real}(z) - i \Delta
-\end{aligned}\end{equation}
-so that the impurity Greens function becomes
-\begin{equation}\begin{aligned}
-	G_d(z) = \frac{1}{z - \epsilon_d - \Sigma_d^\text{real}(z) + i \Delta}
-\end{aligned}\end{equation}
-We can see that the presence of an imaginary part lifts the pole of \(G_d(z)\) off the real axis, and since the contour \(\Gamma_0\) encloses only the real axis, this will count as a loss in the number of poles of \(G_d(z)\). Also, if we specialize to the case where the renormalized impurity site energy \(\epsilon_d^* = \epsilon_d + \Sigma_d^\text{real} = 0\), this loss will happen at the Fermi surface, and will hence be multiplied by a factor of half. We can therefore write
-\begin{equation}\begin{aligned}
-	N &= \mathcal{N}_{imp} + V_L = \mathcal{N}^0_{imp} - \frac{1}{2} + V_L \implies V_L &= V_L^0 + \frac{1}{2}
-\end{aligned}\end{equation}
-If we take into account the spin-degeneracy and redefine \(V_L\) to mean the Luttinger volume for both momentum and spin degrees of freedom, we get
+The same thing happens at the free orbital fixed point; there, \(G_d\) has a single pole at \(z=0\), so \(V_\text{imp} = 1/2\) and we again get \(N = 1/2 + V_\text{L}^{FO}\). The change happens when we go to the strong-coupling fixed point. There, the impurity self-energy becomes imaginary, so the real pole that existed at the free orbital fixed point moves off the real axis. We therefore have \(V_\text{imp} = 0\). Assuming the number of particles \(N\) remained constant, we obtain \(N = V_\text{L}^{SC}\). The change in the Fermi volume in going from the local moment to the strong coupling fixed point is therefore by \(1/2\). If one defines new a Luttinger volume \(\mathcal{V} = 2V\) to also account for the spin degeneracy, we can write:
 \begin{equation}\begin{aligned}
 	\label{luttinger_change}
-	V_L = V_L^0 + 1
+	\Delta \mathcal{V}_L = 1
 \end{aligned}\end{equation}
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[scale=0.2]{../figures/luttinger_top_change.png}
-\end{figure}
-This is a specific case of the more general result for Kondo lattices obtained by Oshikawa using flux-insertion arguments in \cite{oshikawa2000topological}.
 
-We have not accounted for the RG flow from the local moment fixed point to the strong coupling fixed point. The local moment fixed point is characterized by a decoupled quantum top:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{LM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow}
-\end{aligned}\end{equation}
-It can be shown that the single-particle Green's function for this effective Hamiltonian is similar to the one at the free-orbital fixed point. We will use the equation of motion technique to solve for the Green's function. The time-domain retarded Green's function is defined as
-\begin{equation}\begin{aligned}
-	G_{d\sigma}(t, t^\prime) = -i\theta(t-t^\prime) \left<\left\{ c_{d\sigma}(t), c^\dagger_{d\sigma}(t^\prime) \right\} \right>
-\end{aligned}\end{equation}
-Since the Hamiltonian is time-translation invariant, we can drop one of the instants:
-\begin{equation}\begin{aligned}
-	G_{d\sigma}(t, 0) = -i\theta(t) \left<\left\{ c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>
-\end{aligned}\end{equation}
-The time derivative is
-\begin{equation}\begin{aligned}
-	\partial_t G_{d\sigma} &= -i \left[\partial_t \theta(t) \left<\left\{ c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right> + \theta(t) \partial_t \left<\left\{ c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>\right] \\
-			       &= -i \left[\delta(t) \left<\left\{ c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right> + \theta(t) \left<\left\{ \partial_t c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>\right] = -i \delta(t) -i\theta(t) \left<\left\{ \partial_t c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>
-\end{aligned}\end{equation}
-From the Heisenberg equations of motion, we get
-\begin{equation}\begin{aligned}
-	i \partial_t c_{d\sigma}(t) = \left[c_{d\sigma}(t), \mathcal{H}_{LM}(t)\right] = \left[\epsilon_d + U \hat n_{d\overline\sigma}(t)\right]c_{d\sigma}(t)
-\end{aligned}\end{equation}
-Substituting this into the time-derivative gives
-\begin{equation}\begin{aligned}
-	\partial_t G_{d\sigma} &= -i \delta(t) -i \theta(t) \left<\left\{ -i\left[\epsilon_d + U \hat n_{d\overline\sigma}(t)\right]c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right> = -i \delta(t) - i\epsilon_d G_{d\sigma} - U \theta(t) \left<\hat n_{d\overline\sigma}(t)\left\{c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>\\
-\end{aligned}\end{equation}
-We define another Greens function
-\begin{equation}\begin{aligned}
-	G^\prime = -i \theta(t) \left<\hat n_{d\overline\sigma}(t)\left\{c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>
-\end{aligned}\end{equation}
-which satisfies the equation of motion
-\begin{equation}\begin{aligned}
-	\partial_t G^\prime = -i \delta(t) -i\theta(t) \left<\left\{\partial_t \hat n_{d\overline\sigma}(t)c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right> -i\theta(t) \left<\left\{\hat n_{d\overline\sigma}(t)\partial_t c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right>
-\end{aligned}\end{equation}
-The second term vanishes because \(\left[\hat n_{d\overline\sigma}, \mathcal{H}_{LM}\right] = 0\) and hence \(\partial_t \hat n_{d\overline\sigma} = 0\). Also,
-\begin{equation}\begin{aligned}
-	\hat n_{d\overline\sigma}(t)\partial_t c_{d\sigma}(t) = -i\hat n_{d\overline\sigma}(t)\left[\epsilon_d + U \hat n_{d\overline\sigma}(t)\right]c_{d\sigma}(t) = -i\left[\epsilon_d + U\right]\hat n_{d\overline\sigma}(t)c_{d\sigma}(t)
-\end{aligned}\end{equation}
-Therefore,
-\begin{equation}\begin{aligned}
-	\partial_t G^\prime = -i \delta(t) \left< \hat n_{d\overline\sigma}(0)\right>- \left[\epsilon_d + U\right]\theta(t) \left<\left\{\hat n_{d\overline\sigma}(t)c_{d\sigma}(t), c^\dagger_{d\sigma}(0) \right\} \right> = -i \delta(t) -i \left( \epsilon_d + U \right) G^\prime
-\end{aligned}\end{equation}
-Changing all quantities to frequency-domain:
-\begin{equation}\begin{aligned}
-	G^\prime(t) &= \int_{-\infty}^\infty d\omega e^{-i\omega t} G^\prime(\omega)\\
-	\partial_t G^\prime(t) &= -\int_{-\infty}^\infty d\omega i \omega e^{-i\omega t} G^\prime(\omega)\\
-	\delta(t) &= \int_{-\infty}^\infty d\omega e^{-i\omega t}
-\end{aligned}\end{equation}
-Substituting these forms in the equation and comparing the coefficients of \(e^{i\omega t}\) gives
-\begin{equation}\begin{aligned}
-	 \omega G^\prime(\omega) =  \left< \hat n_{d\overline\sigma}(0)\right> + \left( \epsilon_d + U \right) G^\prime(\omega)\implies G^\prime(\omega) = \frac{\left< \hat n_{d\overline\sigma}(0)\right>}{\omega - \epsilon_d - U}
-\end{aligned}\end{equation}
-The equation of motion \(G_{d\sigma}\) can now be solved
-\begin{equation}\begin{aligned}
-	\partial_t G_{d\sigma}(t) &= -i \delta(t) - i\epsilon_d G_{d\sigma}(t) - iU G^\prime_{d\sigma}(t) \implies \omega G_{d\sigma}(\omega) = 1 + \epsilon_d G_{d\sigma}(\omega) + U\frac{\left< \hat n_{d\overline\sigma}(0)\right>}{\omega - \epsilon_d - U}\\
-	\implies G_{d\sigma}(\omega) &= \frac{1}{\omega - \epsilon_d} + \frac{U\left< \hat n_{d\overline\sigma}(0)\right>}{\left( \omega - \epsilon_d \right) \left(\omega - \epsilon_d - U\right)}
-\end{aligned}\end{equation}
-For a particle-hole symmetric system, we can substitute \(\epsilon_d = -|\epsilon_d|\) and \(\epsilon_d + U = |\epsilon_d|\).
-\begin{equation}\begin{aligned}
-	G_{d\sigma}(\omega) &= \frac{1}{\omega + |\epsilon_d|} + \frac{U\left< \hat n_{d\overline\sigma}(0)\right>}{\left( \omega + |\epsilon_d| \right) \left(\omega - |\epsilon_d|\right)}
-\end{aligned}\end{equation}
-which reveals two poles at \(\pm |\epsilon_d|\), one above and one below the Fermi surface. Since the RHS of eq.~\eqref{total_lutt} counts the number of poles on or below the FS, we will still count one pole for \(G_{d\sigma}\). Thus, this Green's function is topological similar to the free-orbital one at \(T=0\).
 
 The scattering phase shift suffered by the conduction electrons at the Fermi surface, off the impurity, can be calculated from the impurity occupancy, using the Friedel sum rule. From the ground state wavefunction, we can calculate the average number of particles on the impurity:
 \begin{equation}\begin{aligned}
@@ -1850,11 +1782,11 @@ $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right
 
 \section{Important Remarks}
 \subsection{Topological nature of the transition}
-The phase transition is characterised by a change in a topological quantity - the Fermi surface volume. As shown in section~\ref{lutt_theorem}, the total number of particles in the system can be expressed in terms of topological quantities:
+The phase transition is characterised by a change in a topological quantity - the Fermi surface volume. As shown in section~\ref{lutt_theorem}, the total number of particles in the system can be expressed in terms of topological winding numbers that count the number of poles and zeros of the impurity and bath Greens functions:
 \begin{equation}\begin{aligned}
-	N = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
+	N = V_\text{imp} + V_L
 \end{aligned}\end{equation}
-\(V_L^<\) represents the winding number of the curve traced by the determinant of the conduction electron Greens function on the contour that encloses all real poles below the Fermi surface. \(V_L^0\) does the same but for the real poles {\it on} the Fermi surface. \(V_\text{imp}^{<,0}\) has the same meanings but for the impurity Greens function. This equation holds for the free orbital, local moment and strong coupling fixed points. At the local moment fixed point, the impurity Greens function has a single real pole below the Fermi surface, while that pole moves off the real axis at the strong-coupling fixed point. That means, \(V_\text{imp}^\text{loc} = V_\text{imp}^\text{sc} + 1\). Assuming the total number of particles remains conserved in the process, we get the equation
+\(V_L\) counts the number of poles minus the number of zeros of the bath Greens function at or below the Fermi surface, those at the Fermi surface being counted half. \(V_\text{imp}\) is defined in the same way but for the impurity Greens function. This equation holds for the free orbital, local moment and strong coupling fixed points. At the local moment fixed point, the impurity Greens function has a single real pole below the Fermi surface, while that pole moves off the real axis at the strong-coupling fixed point. That means, \(V_\text{imp}^\text{loc} = V_\text{imp}^\text{sc} + 1\). Assuming the total number of particles remains conserved in the process, we get the equation
 \begin{equation}\begin{aligned}
 	V_L^\text{sc} = V_L^\text{loc} + 1
 \end{aligned}\end{equation}
@@ -1902,7 +1834,7 @@ A more accurate picture of the insulating and metallic phases can be obtained by
 	\caption{Each cluster is a quantum liquid composed of spin \(\left(\uparrow,\downarrow\right) \) and charge \(\left(0,2\right) \) degrees of freedom. In the insulating state, these degrees of freedom get bound within the cluster and are unable to propagate outside.}
 \end{figure}
 
-\subsection*{Presence of two self-energies under symmetry-breaking}
+\subsection{Presence of two self-energies under symmetry-breaking}
 The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity, leading to two kinds of self-energies, one for each spin state~\cite{logan_2014,Logan_2015}. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique groundstate is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
 \begin{equation}\begin{aligned}
 	G_{i,\sigma} = \sum_{n}\left[||\bra{\text{GS}}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_\text{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{\text{GS}}||^2\frac{1}{\omega - E_\text{GS} + E_n}\right]\\

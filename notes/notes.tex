@@ -1,12 +1,14 @@
-\documentclass[10pt]{report}
+\documentclass[12pt]{report}
 \usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,pifont,enumitem}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=0.5in,top=0.3in,bottom=1.4in]{geometry}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[sfdefault]{roboto}
+
 \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 \newlist{todolist}{itemize}{2}
 \setlist[todolist]{label=$\square$}
@@ -57,7 +59,7 @@ For larger values of \(U\), however, the bath changes significantly such that it
 Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk.
 \textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.5\textwidth]{../figures/dos_diff.pdf}
 \caption{Various kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
@@ -85,7 +87,7 @@ Progress is then made by choosing a simpler version of \(H_R\) and a simpler for
 This combination of the cluster and the simpler bath is then called the \textit{auxiliary system}.
 A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{RS}\).
 Such a construction is shown in fig.~\ref{cluster-bath}.
-\begin{figure}[htpb!]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../figures/cluster-bath.pdf}
 	\caption{\textit{Left}: Full Hubbard model lattice with onsite repulsion $U^H$ on all sites and hopping between nearest neighbour sites with strength $t^H$. \textit{Right}: Extraction of the auxiliary (cluster+bath) system from the full lattice. The central site on left becomes the impurity site (red) on the right (with an onsite repulsion $\epsilon_d$), while the rest of the $N-1$ sites on the left form a conduction bath (green circles) (with dispersion $\epsilon_k$ and correlation modelled by the self-energy $\Sigma_k(\omega)$) that hybridizes with the impurity through the coupling $V$.}
@@ -113,7 +115,7 @@ Dynamical mean-field theory is an approximation scheme that use impurity models 
 \end{itemize}
 The stopping condition is the consistency relation that makes the bath and impurity self-energies equal.
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../figures/dmft.pdf}
 \end{figure}
@@ -141,7 +143,7 @@ The first example has a spin-exchange interaction between the impurity site and 
 	
 \end{itemize}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
  	\centering
  	\includegraphics[width=0.6\textwidth]{../figures/gen_siam.pdf}
  	\caption{Cluster+bath construction of auxiliary model. It consists of a cluster (red square) hybridising with a bath (ring) by hopping into and out of the zeroth site (pink). The other sites (green) form the rest of the bath. Just the cluster and the zeroth site have onsite correlations.}
@@ -213,7 +215,7 @@ where \(s_q^z = \frac{1}{2}\left(\hat n_{q\uparrow} - \hat n_{q\downarrow}\right
 \left.\left.c^\dagger_{d\beta}c^\dagger_{d\overline\beta}c_{k\overline\beta}c_{q\beta}\right\}\right] + \text{h.c.}~.
 \end{aligned}\end{equation}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/zeromode.pdf}
 	\caption{While we have studied the full model under renormalisation group, often we will turn to a simplified zero-bandwidth version of the model that is obtained by ignoring the kinetic energy part of the Hamiltonian. This zero-bandwidth model is effectively a two site model.}
@@ -281,7 +283,7 @@ In short, the \(U>0\) regime is characterised by an irrelevant isospin-exchange 
 	\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2}, \quad \Delta V = -\frac{3n_j VJ}{8}\left(\frac{1}{d_2} + \frac{1}{d_1}\right)
 \end{aligned}\end{equation}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U_gt_0,U.pdf}
 	\includegraphics[width=0.32\textwidth]{../figures/U_irr,U_gt_0,J.pdf}
@@ -347,7 +349,7 @@ where $\gamma = \frac{1}{2{V^*}}\left[ \frac{1}{4}\left( 3J^* + K^* \right) + \f
 	\left(c_s\right)^2 = \frac{1}{2\sqrt{\gamma^2 + 4}}\left(\sqrt{\gamma^2 + 4} + \gamma\right), \quad \left(c_c \right)^2 = \frac{1}{2\sqrt{\gamma^2 + 4}}\left(\sqrt{\gamma^2 + 4} - \gamma\right)~.
 \end{aligned}\end{equation}
 For (roughly) \(J_0 > V_0\), we get \(J^* \gg V^*\) and \(U^* \gg U_0\) so that \(\gamma \gg 1\). This gives \(\left( c_s \right) ^2 \sim 1\) and \(\left( c_c \right) ^2 \sim 0\). The entire contribution to the ground state then comes from the spin sectors of the two sites. This is calculated numerically in fig.~\ref{cs_cc}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../figures/coeffs_vs_J.pdf}
 	\caption{Variation of relative weights \(c_s\) and \(c_c\) with \(J_0\)}
@@ -367,7 +369,7 @@ In such a case, \(\ket{\Psi}_1\) will therefore be the ground state. In the othe
 	E_1 - E_2 \simeq - \frac{1}{8}K^* + \frac{3}{4}K^* > 0
 \end{aligned}\end{equation}
 In this case, the ground state will be \(\ket{\Psi}_2\). There exists, therefore, a phase transition at a critical plane \((U_c, K_c, V_c)\), where the ground state changes between the charge singlet \(\ket{\Psi}_2\) and the spin singlet + charge triplet \(\ket{\Psi}_1\).
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/E1_vs_E3.pdf}
 \end{figure}
@@ -377,7 +379,7 @@ In this case, the ground state will be \(\ket{\Psi}_2\). There exists, therefore
 {\bf \Large [Update with V vs D plots]}
 
 The URG method works strictly on finite systems and leads to finite values of fixed point couplings. The behaviour of the Hamiltonian in the thermodynamic limit can then be determined using finite-size scaling where we increase the bandwidth and decrease the width of each RG step. When applied to the fixed point value of the impurity-bath hybridisation parameter \(V\) (fig.~\ref{V_vs_D}), it can be seen that the fixed point value increases as the system size is increased, implying that the continuum limit of \(V^*\) is \(\infty\). This holds for both \(V_0 > J_0\) and \(V_0 < J_0\), as shown in the two panels of fig.~\ref{V_vs_D}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\hspace*{\fill}
 	\includegraphics[width=0.4\textwidth]{../figures/Vstar_vs_D_smallV.pdf}
@@ -389,7 +391,7 @@ The URG method works strictly on finite systems and leads to finite values of fi
 \end{figure}
 
 In a similar manner, we checked the variation of the spin and charge probabilities, \(c_s\) and \(c_c\), in the ground state, with increasing bandwith. The result is shown in fig.~\ref{c_vs_D}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/coeffs_vs_D.pdf}
 	\caption{Variation of spin and charge fractions, \(c_s\) and \(c_c\), of the ground state, as a function of bare bandwidth \(D_0\). Left and right panels show the cases of \(J_0 < V_0\) and \(J_0 > V_0\) respectively.}
@@ -468,7 +470,7 @@ The full thing becomes
 This completes the proof. 
 
 To calculate the impurity susceptibility, we take the zero bandwidth Hamiltonian \(\mathcal{H}_{IR}\) and insert a magnetic field to obtain the Hamiltonian in eq.~\eqref{field_ham}. For a particular regime of \(U\), only one of \(J\) or \(K\) will be non-zero. We then numerically diagonalise this Hamiltonian to obtain the partition function \(Z(B)\) and its derivatives. The spin susceptibility can then be calculated using eq.~\eqref{chi_exp}. The results for \(U>0\) are shown in fig.~\ref{chi}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.49\textwidth]{../figures/chiT.pdf}
 	\includegraphics[width=0.49\textwidth]{../figures/chiT_large.pdf}
@@ -489,7 +491,7 @@ where \(B_c\) is now a field that couples to the impurity charge-isospin:
 	\mathcal{H}^\prime(B_c) = \mathcal{H} + B_c C_d^z
 \end{aligned}\end{equation}
 The charge susceptibility for \(U<0\) is shown in fig.~\ref{chi_charge}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.49\textwidth]{../figures/chic.pdf}
 	\includegraphics[width=0.49\textwidth]{../figures/chic_T.pdf}
@@ -498,7 +500,7 @@ The charge susceptibility for \(U<0\) is shown in fig.~\ref{chi_charge}.
 \end{figure}
 
 It is interesting to look at the behaviour of the charge susceptibility in the positive \(U\) regime, fig.~\ref{chi_charge_posU}. It  is seen that for \(J_0<V_0\), the charge susceptibility is very similar to the spin susceptibility, with a reduced saturation value. This is because, for that range of bare values, the ground state consists of a comparable mixture of the spin and charge states (see fig.~\ref{cs_cc}). This means that the magnetic field term in eq.~\eqref{charge_field} can couple to the charge component of the ground state, and give a non-zero charge susceptibility at zero temperature. On the other hand, for \(J_0 > V_0\), we see that \(\chi_c\) vanishes at low temperatures. This can again be understood from the ground state. For that range of bare values, the ground state can be approximated by purely the singlet, because the charge fraction \(c_-^c\) becomes very small. This means that the field \(B_c \) has nothing to couple with. Alternatively, it can be said that since the ground state has only terms with \(\hat n_d=1\), no number fluctuation is possible, and the impurity isospin is not susceptible at all to charge polarisation.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J0=10.pdf}
 	\includegraphics[width=0.48\textwidth]{../figures/chiC_posU_J0=40.pdf}
@@ -531,7 +533,7 @@ The impurity specific heat is the difference.
 	C_V^\text{imp} = C_V - C_V^0
 \end{aligned}\end{equation}
 These values were calculated numerically and plotted against temperature in fig.~\ref{cv}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../figures/Cv.pdf}
 	\caption{Impurity specific heat}
@@ -1081,7 +1083,7 @@ The total system now consists of two decoupled parts - the singlet composed of t
 	\sum_{i=1\atop{\sigma}}^\infty t\left(c^\dagger_{i\sigma}c_{i+1 \sigma} + c^\dagger_{i+1 \sigma}c_{i\sigma}\right) + u \hat n_{1 \uparrow} \hat n_{1 \downarrow}
 \end{aligned}\end{equation}
 We have rewritten the holon term in terms of the spin and doublon operators.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.7\textwidth]{../figures/lattice_eff.png}
 	\caption{\textit{Left}: The nearest-neighbor hopping described by the effective Hamiltonian. The red circle is the impurity. The black cloud at the center demarcates the collection of electrons at the origin of the lattice (which couple to the impurity). The green circles represent lattice sites that are nearest to the origin. The blue circles represent next-nearest sites. \textit{Right}: After treating the hopping between origin and its nearest neighbors as perturbation, we get a system consisting of two decoupled parts: one part is the impurity+cloud singlet, the other part is the rest of the lattice sites. The effect of the hopping between the origin and the green sites is a repulsion term on the green sites.}
@@ -1181,7 +1183,7 @@ The Wilson ratio becomes
 
 \section{Luttinger's and Friedel's sum rules}
 \label{lutt_theorem}
-In this section, we will compute Luttinger's sum for the various fixed-point theories. Luttinger's sum is essentially the volume enclosed by the Fermi surface~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}, and Luttinger's theorem states that this volume counts the number of conduction electrons in the system~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}.
+In this section, we will compute Luttinger's sum for the various fixed-point theories. Luttinger's sum is essentially the volume enclosed by the Fermi surface~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}, and Luttinger's theorem states that this volume counts the number of electrons in the system~\cite{luttinger1960fermi,oshikawa2000topological,seki2017topological}.
 
 We first consider the strong-coupling fixed point Hamiltonian, which is essentially just a resonant-level model:
 \begin{equation}\begin{aligned}
@@ -1196,7 +1198,7 @@ The impurity Green's function is given by~\cite{anderson_1961,hewson1993,coleman
 	G_{k}(z) = G_k^0(z) + \left[G_k^0(z)V_k\right]^2 G_{d}(z), ~ ~ G_k^0 = \frac{1}{z - \epsilon_k}, ~ ~ G_c^0(z) = \sum_k G_k^0(z)\ket{k}\bra{k}~,\\
 	G_c(z) = \sum_k G_k(z)\ket{k}\bra{k} = G_c^0 + \left[G_k^0(z)V_k\right]^2 G_{d}(z)\ket{k}\bra{k} 
 \end{gather}
-The total number of electrons is given by the sum of the number of electrons in the conduction bath and at the impurity:
+The total number of electrons is given by the sum of the number of electrons in the conduction bath and at the impurity~\cite{hewson1993,langreth1966}:
 \begin{equation}\begin{aligned}
 	\label{tot_num}
 	N &= \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c(z)\right] = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_{d}(z) + G_c^0(z) + \left[G_k^0(z)V_k\right]^2 G_{d}(z)\ket{k}\bra{k}\right]
@@ -1237,15 +1239,15 @@ n_{\text{Det }G^{-1}(C)} = P_{\text{Det }G}(C) - Z_{\text{Det }G}(C)
 \end{aligned}\end{equation}
 where \(P_{f(z)}(C)\) is the number of poles of \(f(z)\) enclosed by the contour \(C\), and \(Z\) is the corresponding number of zeros. The total number of particles in the resonant level model can thus be written as
 \begin{equation}\begin{aligned}
-	N &= \underbrace{P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<)}_{V_\text{imp}^<} + \underbrace{\frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right]}_{V_\text{imp}^0} + \underbrace{P_{\text{Det }G_{c}^{0}}(\Gamma_<) - Z_{\text{Det }G_{c}^{0}}(\Gamma_<)}_{V_\text{L}^<} + \underbrace{\frac{1}{2}\left[P_{\text{Det }G_{c}^{0}}(\Gamma_0) - Z_{\text{Det }G_{c}^{0}}(\Gamma_0)\right]}_{V_\text{L}^0}\\
-	  &= V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0 + V_L^< + \frac{1}{2}V_L^0
+	N =& \underbrace{P_{\text{Det }G_d}(\Gamma_<) - Z_{\text{Det }G_d}(\Gamma_<)}_{N_\text{imp}^<} + \underbrace{\frac{1}{2}\left[P_{\text{Det }G_d}(\Gamma_0) - Z_{\text{Det }G_d}(\Gamma_0)\right]}_{N_\text{imp}^0} + \underbrace{P_{\text{Det }G_{c}^{0}}(\Gamma_<) - Z_{\text{Det }G_{c}^{0}}(\Gamma_<)}_{N_\text{L}^<} \\
+	  &+ \underbrace{\frac{1}{2}\left[P_{\text{Det }G_{c}^{0}}(\Gamma_0) - Z_{\text{Det }G_{c}^{0}}(\Gamma_0)\right]}_{N_\text{L}^0}\\
+	  =& N_\text{imp}^< + \frac{1}{2}N_\text{imp}^0 + N_L^< + \frac{1}{2}N_L^0
 \end{aligned}\end{equation}
-The average number of particles can thus be expressed purely in terms of the number of poles and zeros of the impurity and the conduction electron Green's functions. The number of poles in the conduction electron Greens function \(G_c^0\) minus the number of zeros gives the Luttinger volume \(V_L = V_L^< + \frac{1}{2}V_L^0\)~\cite{seki2017topological}, while those in the impurity Greens function \(V_\text{imp} = V_\text{imp}^< + \frac{1}{2}V_\text{imp}^0\) give the number of localised excitations on the impurity:
+The average number of particles can thus be expressed purely in terms of the number of real poles and real zeros of the impurity and the conduction electron Green's functions. \(N_\text{imp}^<\left(N_\text{imp}^<\right)\) is the number of poles minus the number of zeros of the impurity Greens function inside (on) the Fermi surface. \(N_\text{imp} = N_\text{imp}^0 + \frac{1}{2}N_\text{imp}^0\)  therefore gives the total number of localised eigenstates of the system. Similarly, \(N_L^<\left( N_L^0 \right) \) gives the number of real poles in the conduction electron Greens function minus the number of real zeros, and \(N_L = N_L^< + \frac{1}{2}N_L^0\) gives the total number of delocalised eigenstates of the system.
 \begin{equation}\begin{aligned}
 	\label{total_lutt}
-	N = V_\text{imp} + V_L
+	N = N_\text{imp} + N_L
 \end{aligned}\end{equation}
-
 Note that this also holds at the free orbital fixed point, because it is a special case of the strong-coupling fixed point with \(V=0\).
 
 If we are the local moment fixed point with particle-hole symmetry, we instead have the Hamiltonian
@@ -1272,16 +1274,20 @@ Performing the integral for the second term gives
 \end{aligned}\end{equation}
 Here we used the form of \(\Sigma_d\) in eq.~\ref{lm_sigma}. Repeating the same steps as before, we recover eq.~\ref{total_lutt}.
 
-We now compare the Luttinger volume across the fixed points. At the local moment fixed point, the impurity Greens function has a single pole at \(z<0\) and a zero at \(z=0\), so \(V_\text{imp} = 1 - 1/2 = 1/2\), and eq.~\ref{total_lutt} becomes
+We now compare the Luttinger volume across the fixed points. At the local moment fixed point, the impurity Greens function has a single pole at \(z<0\) and a zero at \(z=0\), so \(N_\text{imp} = 1 - 1/2 = 1/2\), and eq.~\ref{total_lutt} becomes
 \begin{equation}\begin{aligned}
-	N = 1/2 + V_\text{L}^{LM}
+	N = 1/2 + N_\text{L}^{LM}
 \end{aligned}\end{equation}
-The same thing happens at the free orbital fixed point; there, \(G_d\) has a single pole at \(z=0\), so \(V_\text{imp} = 1/2\) and we again get \(N = 1/2 + V_\text{L}^{FO}\). The change happens when we go to the strong-coupling fixed point. There, the impurity self-energy becomes imaginary, so the real pole that existed at the free orbital fixed point moves off the real axis. We therefore have \(V_\text{imp} = 0\). Assuming the number of particles \(N\) remained constant, we obtain \(N = V_\text{L}^{SC}\). The change in the Fermi volume in going from the local moment to the strong coupling fixed point is therefore by \(1/2\). If one defines new a Luttinger volume \(\mathcal{V} = 2V\) to also account for the spin degeneracy, we can write:
+The same thing happens at the free orbital fixed point; there, \(G_d\) has a single pole at \(z=0\), so \(N_\text{imp} = 1/2\) and we again get \(N = 1/2 + N_\text{L}^{FO}\). The change happens when we go to the strong-coupling resonant-level fixed point. There, the impurity self-energy can be written as~\cite{anderson_1961,hewson1993,coleman2015}
+\begin{equation}\begin{aligned}
+	\Sigma_d^\text{sc} = \text{Re}\left[\Sigma_d^\text{sc}\right] - i\Delta
+\end{aligned}\end{equation}
+That is, the self-energy becomes imaginary, so the real pole that existed at the free orbital fixed point moves off the real axis. We therefore have \(N_\text{imp} = 0\). Assuming the number of particles \(N\) remained constant, we obtain \(N = N_\text{L}^{SC}\). The change in the Fermi volume in going from the local moment to the strong coupling fixed point is therefore by \(1/2\). If one defines new a Luttinger volume \(\mathcal{N}_L = 2N_L\) to also account for the spin degeneracy, we can write:
 \begin{equation}\begin{aligned}
 	\label{luttinger_change}
-	\Delta \mathcal{V}_L = 1
+	\Delta \mathcal{N}_L = 1
 \end{aligned}\end{equation}
-
+This is a specific case of the more general result for Kondo lattices obtained by Oshikawa using flux-insertion arguments\cite{oshikawa2000topological}.
 
 The scattering phase shift suffered by the conduction electrons at the Fermi surface, off the impurity, can be calculated from the impurity occupancy, using the Friedel sum rule. From the ground state wavefunction, we can calculate the average number of particles on the impurity:
 \begin{equation}\begin{aligned}
@@ -1299,7 +1305,7 @@ There we used \(\delta_\uparrow = \delta_\downarrow\) because the model is SU(2)
 
 The change in Luttinger's number also allows us to calculate the Wilson ratio of the system, from eq.~\eqref{wilson_luttinger}.
 \begin{equation}\begin{aligned}
-	R = 1 + \sin^2 \left( \frac{\pi}{2}\Delta N_L \right) = 1 + \sin^2 \frac{\pi}{2} = 2
+	R = 1 + \sin^2 \left( \frac{\pi}{2}\Delta \mathcal{N}_L \right) = 1 + \sin^2 \frac{\pi}{2} = 2
 \end{aligned}\end{equation}
 \section{Reverse RG analysis}\label{rev_rg}
 The goal here is to chart the journey starting from the IR fixed point towards the UV regime, by following one particular wavefunction. We will start with a very simple IR ground state wavefunction, and then go back towards the UV ground state by applying the inverse unitary operator \(U^\dagger\):
@@ -1394,7 +1400,7 @@ We will include a local particle-hole symmetric correlation of strength \(U_b\) 
 	\mathcal{H} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} + \epsilon_d \left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} - U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2 
 \end{aligned}\end{equation}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/zeromode.pdf}
 	\caption{While we have studied the full model under renormalisation group, often we will turn to a simplified zero-bandwidth version of the model that is obtained by ignoring the kinetic energy part of the Hamiltonian. This zero-bandwidth model is effectively a two site model.}
@@ -1535,7 +1541,7 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 
 \subsection{Width of central peak of \(A_{dd}\)}
 
-\begin{figure}[!htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_width_fit.pdf}
 \end{figure}
@@ -1668,8 +1674,12 @@ We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of 
 The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
 	\label{greens_func_siam}
-	\left(G_{H-H}(\omega)\right)_\text{loc} &= \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] \\
-	\left(G_{H-H}(\omega)\right)_\text{n-n} &= \left(G_{H-H}(\omega)\right)_{i,i+1}^p - \left(G_{H-H}(-\omega)\right)_{i+1,i}^h = \frac{1}{w}\sum_n \left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn} - \left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] 
+	\left(G_{H-H}(\omega)\right)_\text{loc} = \left(G_{H-H}(\omega)\right)_{ii}^p - \left(G_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_n|^2 \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right] \\
+	= G(\omega)_\text{aux,dd}
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	\left(G_{H-H}(\omega)\right)_\text{n-n} = \left(G_{H-H}(\omega)\right)_{i,i+1}^p - \left(G_{H-H}(-\omega)\right)_{i+1,i}^h = \frac{1}{w}\sum_n \left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn} \right.\\
+ - \left.\left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]= G(\omega)_\text{aux,dz}
 \end{aligned}\end{equation}
 
 \section{Spectral functions and self-energies}
@@ -1740,7 +1750,7 @@ Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_at
 \end{center}
 \item The impurity spectral function \(A_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(A_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). The gap in the diagonal spectral function shows that the impurity site cannot fluctuate through gapless excitations, while the vanishing of the off-diagonal spectral function shows that an electron on the impurity site cannot delocalise out of that site.  Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
 
-\begin{figure}[!htpb]
+\begin{figure}[!htb]
 \centering
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_Ub_by_J=-0.100.pdf}
 	\includegraphics[width=0.3\textwidth]{../figures/spec_func_Ub_by_J=-0.250.pdf}
@@ -1782,15 +1792,58 @@ $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right
 
 \section{Important Remarks}
 \subsection{Topological nature of the transition}
-The phase transition is characterised by a change in a topological quantity - the Fermi surface volume. As shown in section~\ref{lutt_theorem}, the total number of particles in the system can be expressed in terms of topological winding numbers that count the number of poles and zeros of the impurity and bath Greens functions:
+As shown in section~\ref{lutt_theorem}, there is a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
 \begin{equation}\begin{aligned}
-	N = V_\text{imp} + V_L
+	\label{lutt_change}
+	\mathcal{N}_L^\text{lm} - \mathcal{N}_L^\text{sc} = 1
 \end{aligned}\end{equation}
-\(V_L\) counts the number of poles minus the number of zeros of the bath Greens function at or below the Fermi surface, those at the Fermi surface being counted half. \(V_\text{imp}\) is defined in the same way but for the impurity Greens function. This equation holds for the free orbital, local moment and strong coupling fixed points. At the local moment fixed point, the impurity Greens function has a single real pole below the Fermi surface, while that pole moves off the real axis at the strong-coupling fixed point. That means, \(V_\text{imp}^\text{loc} = V_\text{imp}^\text{sc} + 1\). Assuming the total number of particles remains conserved in the process, we get the equation
+where \(\mathcal{N}_L^\text{lm},\mathcal{N}_L^\text{sc}\) are the Luttinger volumes at the local moment and strong-coupling fixed points respectively. This equation expresses the fact that the Luttinger volume of the bath increases by \(1\) when the system is tuned from LM to SC, and this happens because the single-particle impurity excitation in the lower-Hubbard at the atomic limit gets transferred to the bath Greens function in the process. The quantity which tracks this transfer is therefore \(\mathcal{N}_\text{imp}\), the number of poles minus the number of zeros in the impurity Greens function at and below the Fermi surface:
 \begin{equation}\begin{aligned}
-	V_L^\text{sc} = V_L^\text{loc} + 1
+	\label{imp_count_def}
+	\mathcal{N}_\text{imp} = \begin{cases}
+		1 & \text{ at LM}\\
+		0 & \text{ at SC}
+	\end{cases}\implies \Delta \mathcal{N}_\text{imp} = 1
 \end{aligned}\end{equation}
-This shows that the localised \(d-\)electrons is hybridising with the bath and this shows up in the transfer of a real pole from the impurity Greens function into the bath Greens function. The addition of this pole "enlarges" the Fermi volume. The transition from the metal to the insulator is therefore characterised by the change in the winding number by 1.
+The Luttinger volume \(\mathcal{N}_L\) is related to this impurity count by the equation
+\begin{equation}\begin{aligned}
+	\mathcal{N}_L = \mathcal{N} - \mathcal{N}_\text{imp}
+\end{aligned}\end{equation}
+where \(\mathcal{N}\) is the total number of electrons in the system, accounting for the spin degeneracy. If we keep this total number fixed (isolated system), the changes in the impurity count and Luttinger volume become constrained: 
+\begin{equation}\begin{aligned}
+	\Delta \mathcal{N}_L = - \Delta \mathcal{N}_\text{imp}~.
+\end{aligned}\end{equation}
+Eq.~\ref{imp_count_def} then readily implies eq.~\ref{lutt_change}.
+
+In order to connect this impurity topological change with the bulk model, we write the total number of particles in the bulk system in the following manner:
+\begin{equation}\begin{aligned}
+	\mathcal{N} = \mathcal{N}_\text{loc} + \mathcal{N}_\text{deloc}
+\end{aligned}\end{equation}
+\(\mathcal{N}_\text{loc}\) is the number of real poles minus the number of zeros of the local Greens function. \(\mathcal{N}_\text{deloc}\) is the number of real poles minus the number of zeros of the \(k-\)space Greens functions. The former (latter) contributes only in the insulating (metallic) phase, because in the metallic (insulating) phase, the local (\(k-\)space) Greens function develop imaginary self-energy and the real poles in these Greens functions get replaced by imaginary poles. Together, these two terms accurately count the total number of particles in both these phases. These two terms are defined as
+\begin{equation}\begin{aligned}
+	\mathcal{N}_\text{loc} = \sum_i \mathcal{N}_i = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_i(z)\right], ~ ~ ~\mathcal{N}_\text{deloc} = \sum_k \mathcal{N}_k = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_k(z)\right] = \mathcal{N}_L
+\end{aligned}\end{equation}
+\(G_i(z)\) is the local Greens function at site \(i\) of the bulk model, and \(G_k(z)\) is the \(k-\)space Greens function in the bulk model. \(N_\text{deloc}\) is just the Luttinger volume \(\mathcal{N}_L\) of the bulk system. With this, the total number of particles in the bulk can be expressed as
+\begin{equation}\begin{aligned}
+	\label{bulk_total}
+	\mathcal{N} = \sum_i \mathcal{N}_i + \mathcal{N}_\text{L}
+\end{aligned}\end{equation}
+From eq.~\ref{greens_func_siam}, we know that the bulk local Greens function is equal to that of the auxiliary model, and that gives \(\sum_i \mathcal{N}_i = \mathcal{N}_\text{imp}\sum_i = \mathcal{N} \mathcal{N}_\text{imp}\). There we used the fact that for a half-filled system, the total number of sites is equal to the total number of particles in the system. Substituting this into eq.~\ref{bulk_total} and again using \(\Delta \mathcal{N} = 0\) gives
+\begin{equation}\begin{aligned}
+	\mathcal{N} = \mathcal{N} \mathcal{N}_\text{imp} + \mathcal{N}_\text{L} \implies \Delta \mathcal{N}_\text{L} = - \mathcal{N} \Delta \mathcal{N}_\text{imp}
+\end{aligned}\end{equation}
+We already know that \(\Delta \mathcal{N}_\text{imp}=1\) across the transition, so we get
+\begin{equation}\begin{aligned}
+	\mathcal{N}_L^\text{metal} - \mathcal{N}_L^\text{insulator} = \mathcal{N}\left(\mathcal{N}_\text{imp}^\text{sc} - \mathcal{N}_\text{imp}^\text{lm}\right) = \mathcal{N}
+\end{aligned}\end{equation}
+The metal-insulator transition is therefore characterised by a change in the topological quantity \(\mathcal{N}_L\). The topological nature arises from the fact that it can be expressed in terms of winding numbers related to the corresponding Greens functions. \(\mathcal{N}_\text{imp}\), which derives from the impurity Greens function \(G_d\), is related to the winding numbers of the curves \(\text{Det}[G_d^{-1}(\Gamma^<)]\) and \(\text{Det}[G_d^{-1}(\Gamma^0)]\). The winding number is simply the number of times this function encircles the origin when traced on the curves \(\Gamma^<\) and \(\Gamma^0\) that enclose all poles inside and on the Fermi surface respectively. An example of such a winding number is shown in fig.~\ref{imp_winding}.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[scale=0.2]{../figures/luttinger_top_change.png}
+	\caption{The green lines describe the winding number related to the impurity Greens function, while the blue lines do it for the bath. At the local moment fixed point \(V=0\), the impurity has a winding number of 1 because the curve encircles the origin once. At the strong-coupling fixed point, this winding number becomes zero, indicated by the fact that the curve does not encircle the origin even once. The reduction in the winding number on the part of the impurity is directly linked to the increase in the winding number of the bath - it encircles the origin once at the local moment fixed point but twice at strong-coupling.}
+	\label{imp_winding}
+\end{figure}
+
 
 \subsection{Greens function in the insulating phase: the Hubbard bands and mottness}
 In the insulating state, the cluster becomes a local moment and the bulk system reduces to the atomic limit \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). The Greens function in this limit is given in Appendix~\ref{atomic limit}. From eq.~\ref{atomic_limit_gf}, we have
@@ -1803,7 +1856,7 @@ where \(\tau_i = \sum_\sigma \hat n_{i,\sigma} - 1\). At half-filling \(\left<\t
 	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 - x}{\omega - \frac{U}{2}} + \frac{1 + x}{\omega + \frac{U}{2}}
 \end{aligned}\end{equation}
 \textit{This transfer of spectral weight across energy scales of the order of \(U\), as well as the lack of poles at zero energies, is referred to as mottness}~\cite{phillips2006mottness}.
-\begin{figure}[!htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/hubbard_bands.pdf}
 	\caption{Structure of the Greens function in the atomic limit. The two poles at \(\omega = \pm \frac{U}{2}\) form the two Hubbard bands. Doping the system leads to transfer of spectral weight between the bands.}
@@ -1888,7 +1941,7 @@ In this chapter, we will improve on these two points by considering a larger clu
 
 Note that this chapter only sets out the relations between such an auxiliary model and the corresponding bulk model (in this case, a Hubbard-Heisenberg), but does not describe the physics of this new auxiliary model. That requires performing a renormalisation group calculation for \(H_\text{aux}\), and that will be provided at a later point in time.
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../figures/two-site-cluster.pdf}
 	\caption{Two-impurity SIAM hybridising with a bath}
@@ -1958,7 +2011,7 @@ We start with a SIAM (with a correlated bath having a non-trivial self-energy), 
  \begin{equation}\begin{aligned}
  	\underbrace{U^A\tau_{0 \uparrow}\tau_{0 \downarrow} + U^A\tau_{1 \uparrow}\tau_{1 \downarrow}}_\text{imp. \& zero-mode isolated} - \underbrace{t^A\sum_{\sigma}\left(c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.}\right)}_\text{0-1 coupling} - \underbrace{t^A\sum_{j \in \atop{\text{NN of 1}}}\left(c^\dagger_{1\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{1 \& eff. bath coupling} - \underbrace{t^A \sum_{\left<ij \right>}^{\text{eff.} \atop{\text{bath}}}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_\text{eff. bath isolated}
  \end{aligned}\end{equation}
- \begin{figure}[htpb]
+ \begin{figure}[!htb]
  	\centering
  	\includegraphics[width=0.6\textwidth]{../figures/gen_siam.png}
  	\caption{Correlated asymmetric Anderson molecule schematic version. It consists of an impurity site (blue) hybridising with a bath (ring) by hopping into and out of the zeroth site (pink). The other sites (green) form the rest of the bath. Just the impurity site and the zeroth site have onsite repulsion.}
@@ -1984,14 +2037,14 @@ We start with a SIAM (with a correlated bath having a non-trivial self-energy), 
  	\label{dimer_ham}
  	H^D(0,1) \equiv -t^D\sum_\sigma\left( c^\dagger_{0\sigma}c_{1\sigma} + \text{h.c.} \right) + U^D\left( \tau_{0 \uparrow}\tau_{0 \downarrow} + \tau_{1 \uparrow}\tau_{1 \downarrow}\right)
  \end{aligned}\end{equation}
- \begin{figure}[htpb!]
+ \begin{figure}[!htb]
  	\centering
  	\includegraphics[width=0.4\textwidth]{../figures/hubb_dim.png}
  	\caption{Hubbard dimer schematic version. It again consists of two sites, like the Anderson molecule, but now both sites have onsite repulsion, and their is again inter-site hopping.}
  	\label{hubb-dim}
  \end{figure}
  This entire procedure is depicted in fig.~\ref{dimer-bath}.
- \begin{figure}[htpb]
+ \begin{figure}[!htb]
  	\centering
  	\includegraphics[width=\textwidth]{../figures/dimer_bath.pdf}
  	\caption{The process of symmetrizing the Rg fixed point Hamiltonian and then creating a dimer+bath Hamiltonian. We first add the asymmetric Hamiltonians to get a symmetrized Hamiltonian. In the symmetrized Hamiltonian, the dimer has \(w\) entry points into the bath, \(w\) being the coordination number of the lattice. We then merge these \(w\) lattice sites (enclosed in the black box) into a single lattice site.}
@@ -2151,7 +2204,7 @@ The off-diagonal matrix elements between two nearest-neighbour sites \(i\) and \
 	\end{equation}
 \end{itemize}
 These choices are shown in fig.~\ref{off-diag-contrib}.
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\textwidth]{../figures/offdiagonal_contributors.pdf}
 	\caption{Auxiliary models that contribute to the off-diagonal matrix element. \(j \equiv i+1\)}
@@ -2182,7 +2235,7 @@ The essence is that the two sites have to form the two most separated vertices o
 	\label{next-near}
 \end{minipage}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../figures/nn-offdiagonal_contributors.pdf}
 	\caption{Auxiliary model configurations that contribute to the next-nearest neighbour matrix elements. \(j \equiv i+2\)}
@@ -2815,7 +2868,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 	A(0\uparrow, \omega) =& \braket{1 \downarrow_- | c_{0 \uparrow} | \text{GS}} \delta\left(\omega + \frac{\Delta}{2} + t\right) + \braket{2 \uparrow_+ | c^\dagger_{0 \uparrow} | \text{GS}}\delta\left(\omega - \frac{\Delta}{2} - t\right) \\
 			      &+ \braket{1 \downarrow_+ | c_{0 \uparrow} | \text{GS}}\delta\left(\omega + \frac{\Delta}{2} - t\right) + \braket{2 \uparrow_- | c^\dagger_{0 \uparrow} | \text{GS}}\delta(\omega - \frac{\Delta}{2} + t)
 \end{aligned}\end{equation}
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.9\textwidth]{../figures/dimer-peaks.png}
 	\caption{Position, weight and nature of each of the peaks in the Hubbard dimer site local spectral function}

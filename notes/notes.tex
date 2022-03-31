@@ -1706,9 +1706,8 @@ On a 2D square lattice with lattice spacing $a$, this simplifies to
 \begin{eqnarray}
 	\label{2dsquaretb}
 \xi_{\vec{q}} &=& 2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}}~,\nonumber\\
-\epsilon_{\vec{q}} &=& -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})~
 \end{eqnarray}
-where \(\epsilon_{\vec{q}}\) is the tight-binding dispersion.
+where \(\epsilon_{\vec{q}} = -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})\) is the tight-binding dispersion.
 
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
 \begin{equation}\begin{aligned}
@@ -1731,12 +1730,13 @@ A_\text{H-H}(\vec{r}=0,\omega) = -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{r}=0,\o
 
 With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
 \begin{equation}\begin{aligned}
-	\Sigma(\vec k,\omega) = G_0(\vec k,\omega)^{-1} - G(\vec k,\omega)^{-1}
+	\Sigma(\vec k,\omega) = \left(G^{(0)}(\vec k,\omega)\right)^{-1} - G(\vec k,\omega)^{-1}
 \end{aligned}\end{equation}
-where the $G_{0}(\vec k, \omega)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
+where $\left(G^{(0)}(\vec k,\omega)\right)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_{H-H}(\vec k,\omega) &= \omega +t^{H-H}\xi_{\vec k} - \left\{\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}\\
-&= 	 \omega +t^{H-H}\xi_{\vec k} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}
+	\label{self-energy1}
+	\Sigma_{H-H}(\vec k,\omega) &= \left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left\{\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}\\
+&= \left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}
 \end{aligned}\end{equation}
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 
@@ -1906,17 +1906,31 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-One can apply a test to this method: it involves considering the case of infinite number of nearest-neighbours $w\to\infty$ (the coordination number, and effectively the dimension). Here, as has been argued in the DMFT literature, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$ such that the kinetic energy of the associated tight-binding lattice model is finite. This allows for the competition between the kinetic and potential terms of the Hamiltonian to drive a metal-insulator transition in the limit of $w\to\infty$ as well. Further, it has been argued in the DMFT literature that the Greens function matrix of the Hubbard model on the Bethe lattice with $w\to\infty$ becomes purely local (i.e., it has vanishing inter-site matrix elements). We can also see this from eqs.\eqref{green_eq_final_siam}- the nearest-neighbour inverse Greens function vanishes in the limit of $w \to \infty$:
+One can apply a test to this method: it involves considering the case of infinite number of nearest-neighbours $w\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma = \frac{1}{w} \sum_n \left(d^p_n\right)^* z^p_n \left(\mathcal{G}^{-1}_\text{aux}(d, \omega) \right)_{nn} \implies \lim_{w \to \infty}\left(\mathcal{G}_{H-H}(\omega)\right)_{ij}^\sigma \to 0
+	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
 \end{aligned}\end{equation}
-There we used the fact since at half-filling on an $SU(2)$ symmetric model, we expect $\left<\hat n_{i \uparrow} \right> = \frac{1}{2}$, the orthonormal expansion of $c^\dagger_{i \sigma}\ket{\Phi_0} = \sum_n d^p_n \ket{\Phi_n}$ and \(c^\dagger_{i+1,\sigma}\ket{\Phi_0}=z^p_n\ket{\Phi_n}\) are constrained such that $\sum_n |d^p_n|^2 = \sum_n |z^p_n|^2 = \frac{1}{2}$, so that the only term that scales with $w$ is $w$ itself. This result then implies that $G^{H-H}$ matrix has no $k$ dependence. 
-
-In this limit, the self-energy also simplifies:
+where \(G^{(0)}(\vec k,\omega)\) is the non-interacting Greens function and \(G_\text{aux,dd}(\omega)\) is the site-diagonal Greens function of the auxiliary model. It is clear from the final form that only the diagonal term \(G_\text{aux,dd}(\omega)\) of the interacting Greens function affects the self-energy while the off-diagonal part \(G_\text{aux,dz}\) fails to contribute as \(w \to \infty\). Even the non-interacting part Greens function can be shown to be diagonal in the limit of \(w\to\infty\)~\cite{kuramoto_manybody}. From its definition in time domain, we have
 \begin{equation}\begin{aligned}
-	\lim_{w \to \infty}\Sigma_H(\vec k,\omega) = = \omega +t^{H-H}\xi_{\vec k} - \left\{\sum_n \left[|d^p_n|^2  \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}- |d^h_n|^2 \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}
+	G^{(0)}(\vec k, t) = -i\theta(t) \left<\left\{c_{\vec k}(t), c^\dagger_{\vec k}\right\} \right> = -i\theta(t) \left<\left\{e^{i H^{(0)}t} c_{\vec k} e^{-i H^{(0)}t}, c^\dagger_{\vec k}\right\} \right> = -i\theta(t) e^{-i \epsilon_{\vec k}t}\left[ \left<1 - \hat n_{\vec k}\right> + \left<\hat n_{\vec k}\right>\right] = -i \theta(t) e^{-i \epsilon_{\vec k}t}
 \end{aligned}\end{equation}
-We can now see that even in the limit of $w\to\infty$, the competition between ${g}_{0}$ (the on-site repulsion) and the hopping related kinetic energy ($t^{H}\xi_{\vec{k}}$) can lead to a metal-insulator transition.
+A quick Fourier transform to \(\omega-\)domain shows that this is identical to the \(G^{(0)}(\vec k, \omega)\) defined just above eq.~\ref{self-energy}. We note that \(|G^{(0)}(\vec k, t)| \leq 1\). Using the Fourier transform  definition
+\begin{equation}\begin{aligned}
+	f(\vec k) = \frac{1}{d_N}\sum_{\vec r_i}h(\vec r_i) e^{i \vec{k}\cdot\vec{r}_i}
+\end{aligned}\end{equation}
+where \(d_N\) is a factor that only depends on the total number of sites and not on the coordination number, we can write
+\begin{equation}\begin{aligned}
+	|G^{(0)}(\vec k, t)|^2 = \frac{1}{d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}
+\end{aligned}\end{equation}
+From the inequality \(|G^{(0)}(\vec k, t)| \leq 1\), we get
+\begin{equation}\begin{aligned}
+	1 \geq \frac{1}{N}\sum_k |G^{(0)}(\vec k, t)|^2 = \frac{1}{N d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* \underbrace{\sum_k e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}}_{N \delta_{\vec r_i = \vec r_j}} = \frac{1}{d_N^2}\sum_{\vec r_i} |G^{(0)}(\vec r_i, t)|^2
+\end{aligned}\end{equation}
+For a coordination number of \(w\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{w}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
+\begin{equation}\begin{aligned}
+	\lim_{w\to \infty}G^{(0)}(\vec k,\omega) = G^{(0)}(\vec r=0,\omega)
+\end{aligned}\end{equation}
+Since both the non-interacting and the interaction Greens functions lose their non-locality, the self-energy becomes completely local in the limit of \(w \to \infty\).
 
 \chapter{Going to larger clusters - the two site approach}
 
@@ -2251,7 +2265,7 @@ These four configurations give
 
 In summary, the spectral representation of the matrix elements of the inverse Greens operators are given by
 \begin{gather}
-\label{green_eq_final_siam}
+\label{green_eq_final_2siam}
 	\left(\mathcal{G}^{-1}_{H-H}(\omega)\right)^p_{ii} = \sum_{n} |d^p_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}^{-1}_{H-H}(-\omega)\right)^h_{ii} = \sum_{n} |d^h_{1,n}|^2 \left(\mathcal{G}^{-1}_\text{aux}(-\omega)\right)_{nn}~,\\
 	\left(\mathcal{G}^{-1}_{H-H}\left(\omega\right) \right)^p_{i,i+1} = \frac{2}{w} \sum_n \left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}^{-1}_\text{aux}(\omega) \right)_{nn}~,\\
@@ -2276,7 +2290,6 @@ We can now identify \(\left(\hat O^{-1}\right)_{mn}\) as the matrix elements of 
 
 The Lehmann-Kallen spectral representation of the single-particle Greens functions can now be written in terms of these matrix elements. Using eq.~\ref{G_mat_el}, we write the on-site ($\left(G_{H-H}(\omega)\right)_\text{loc}$) and nearest neighbour ($\left(G_{H-H}(\omega)\right)_\text{n-n}$) Greens functions as
 \begin{equation}\begin{aligned}
-	\label{greens_func_siam}
 	&\left(G_{H-H}(\omega)\right)_\text{loc} = \left(\mathcal{G}_{H-H}(\omega)\right)_{ii}^p - \left(\mathcal{G}_{H-H}(-\omega)\right)_{ii}^h = \sum_n \left[|d^p_{1,n}|^2 \left(\mathcal{G}_\text{aux}(\omega)\right)_{nn} - |d^h_{1,n}|^2 \left(\mathcal{G}_\text{aux}(-\omega)\right)_{nn}\right] = G_\text{aux}(d_1,d_1;\omega)\\
 	&\left(G_{H-H}(\omega)\right)_\text{n-n} = \left(\mathcal{G}_{H-H}(\omega)\right)_{i,i+1}^p - \left(\mathcal{G}_{H-H}(-\omega)\right)_{i+1,i}^h\\
 						&\frac{2}{w}\sum_n \left\{\left[\left(d^p_{1,n}\right)^*d^p_{2,n} + \left(d^p_{1,n}\right)^* z^p_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(\omega) \right)_{nn} - \left[\left(d^h_{1,n}\right)^*d^h_{2,n} + \left(d^h_{1,n}\right)^* z^h_{1,n} + \text{h.c.}\right] \left(\mathcal{G}_\text{aux}(-\omega) \right)_{nn}\right\}\\
@@ -2303,16 +2316,14 @@ On a d-dimensional hypercubic lattice, we obtain
 \begin{gather}
 	\xi_{\vec k} = \sum_{i=1}^d \left(e^{i k_i {a_i}} + e^{-i k_i {a_i}}\right) = 2\sum_{i=1}^d \cos k_i a_i\\
 \end{gather}
-On a 2D square lattice with lattice spacing $a$, this simplifies to
+On a 2D square lattice with lattice spacing $a$, this simplifies to (same as eq.~\ref{2dsquaretb})
 \begin{eqnarray}
-	\label{2dsquaretb}
 \xi_{\vec{q}} &=& 2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}}~,\nonumber\\
 \end{eqnarray}
 where \(\epsilon_{\vec{q}} = -2t^{H}(\cos q_{x}a_{x} + \cos q_{y}a_{y})\) is the tight-binding dispersion.
 \begin{equation}\begin{aligned}
-	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) = G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) \right.\\
-	+ \left.G_\text{aux}(0_2,d_1;\omega)\right]
+	G_{H-H} (\vec k, \omega) = G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] \\
+	 + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]
 \end{aligned}\end{equation}
 
 We can now compute the $k$-space spectral function $A_{H}(\vec{k},\omega)$ and the real-space local spectral function $A_{H}(\vec{r}=0,\omega)$ as
@@ -2400,6 +2411,83 @@ For a coordination number of \(w\), there are \(w\) number of \(\vec r_i\) that 
 	\lim_{w\to \infty}G^{(0)}(\vec k,\omega) = G^{(0)}(\vec r=0,\omega)
 \end{aligned}\end{equation}
 Since both the non-interacting and the interaction Greens functions lose their non-locality, the self-energy becomes completely local in the limit of \(w \to \infty\).
+
+\chapter{The Periodic Anderson and Kondo models}
+The heavy Fermion systems are described by periodic versions of the single impurity models, where instead a lattice of impurities \(\left\{ d_i \right\} \) hybridises with a conduction bath lattice \(\left\{ i \right\} \). The periodic Anderson model is defined by the Hamiltonian
+\begin{equation}\begin{aligned}
+	\mathcal{H}_{PAM} = \sum_{k\sigma} \left(\epsilon_k - \mu\right)\tau_{k\sigma} + V\sum_{i,\sigma} \left(c^\dagger_{d_i\sigma}c_{i\sigma} + \text{h.c.} \right)  - \frac{U}{2}\sum_i \left(\hat n_{d_i,\uparrow} - \hat n_{d_i,\uparrow}\right)^2 + \eta \sum_i\tau_{d_i\sigma}
+\end{aligned}\end{equation}
+
+As before, we will work with a generalised form of it where we also consider a spin-exchange interaction between the impurity sites and the bath sites:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_{PAM} = \sum_{k\sigma} \left(\epsilon_k - \mu\right)\tau_{k\sigma} + V\sum_{i,\sigma} \left(c^\dagger_{d_i\sigma}c_{i\sigma} + \text{h.c.} \right) + J \sum_i \vec{S}_{d_i}\cdot\vec{s}_i - \frac{U}{2}\sum_i \left(\hat n_{d_i,\uparrow} - \hat n_{d_i,\uparrow}\right)^2 + \eta \sum_i\tau_{d_i\sigma}
+\end{aligned}\end{equation}
+One can also introduce an RKKY interaction \(J_\text{RKKY}\) between the nearest neighbour impurity spins:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_{PAM} = \sum_{k\sigma} \left(\epsilon_k - \mu\right)\tau_{k\sigma} + V\sum_{i,\sigma} \left(c^\dagger_{d_i\sigma}c_{i\sigma} + \text{h.c.} \right) + J \sum_i \vec{S}_{d_i}\cdot\vec{s}_i - \frac{U}{2}\sum_i \left(\hat n_{d_i,\uparrow} - \hat n_{d_i,\uparrow}\right)^2 + \eta \sum_i\tau_{d_i\sigma} \\
+	+ J^\prime\sum_{\left<d_i,d_j \right>}\vec{S}_{d_i}\cdot\vec{S}_{d_j}
+\end{aligned}\end{equation}
+
+\section{Creating a bulk periodic Anderson model by tiling with generalised single-impurity Anderson models: no RKKY}
+
+The auxiliary model we will be using is a generalised SIAM with attractive interaction on the bath zeroth site and explicit particle-hole asymetry on the impurity:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux} = \sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{0\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s}_0 + \eta \sum_\sigma\tau_{d\sigma}
+\end{aligned}\end{equation}
+where \(\tau = \hat n - 1/2\).
+
+We will use this as the auxiliary model to study the Hubbard model. We do this by first recreating the Hubbard model upon tiling the lattice with instances of this auxiliary model Hamiltonian. Note that the impurity level and the conduction bath can be tuned to half-filling by setting \(\eta=0\) and \(\mu=0\) respectively. To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity as a particular site \(d_i\) of the impurity lattice, and the bath sites will constitute the bulk lattice sites. We will also identity the zeroth site of the SIAM lattice as one particular site \(i\) of the conduction bath lattice:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux}(d_i) = \sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - \frac{U}{2}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + h.c.\right) +J \vec{S}_{d_i}\cdot\vec{s}_i + \eta \sum_\sigma\tau_{d_i\sigma}
+\end{aligned}\end{equation}
+Once we have this local Hamiltonian for a particular site, we translate this over all \(N\) sites \(\left\{\left(d_i,i\right) \right\} \):
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{full} = \sum_{i} \mathcal{H}_\text{aux}(d_i) = N\sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - \frac{U}{2}\sum_{i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + V \sum_{i,\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + h.c.\right) +J \sum_i\vec{S}_{d_i}\cdot\vec{s}_i \\
+	+ \eta \sum_{i,\sigma}\tau_{d_i\sigma}
+\end{aligned}\end{equation}
+
+We end up with a generalised periodic Anderson model:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{GPAM} = \sum_{k\sigma}\left(\left(\epsilon_k\right)_\text{GPAM} - \mu_\text{GPAM}\right)\tau_{k\sigma} - \frac{U_\text{GPAM}}{2}\sum_{i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + V_\text{GPAM} \sum_{i,\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + h.c.\right)\\
+	+ J_\text{GPAM} \sum_i\vec{S}_{d_i}\cdot\vec{s}_i + \eta_\text{GPAM} \sum_{i,\sigma}\tau_{d_i\sigma}
+\end{aligned}\end{equation}
+The mapping between the parameters of the auxiliary model and that of the bulk are
+\begin{equation}\begin{aligned}
+	\label{map_pam_bulk}
+	\left(\epsilon_k\right)_\text{GPAM} = N\epsilon_k, ~ ~ \mu_\text{GPAM} = N\mu, ~ ~ U_\text{GPAM} = U, ~ ~ V_\text{GPAM} = V, ~ ~ J_\text{GPAM} = J, ~ ~ \eta_\text{GPAM} = \eta
+\end{aligned}\end{equation}
+
+\section{Creating a bulk periodic Anderson model by tiling with two-impurity Anderson models: with RKKY}
+
+This time we will use a two-impurity model with a spin-exchange coupling between the impurities as the auxiliary model:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux} = \sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - \frac{U}{2}\sum_{i=1,2}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right)^2 + \sum_{i=1,2}\left[V \sum_{\sigma} \left(c^\dagger_{0_i\sigma} c_{d_i\sigma} + h.c.\right) + J \vec{S}_{d_i}\cdot\vec{s}_{0_i}\right] + \eta \sum_\sigma\tau_{d\sigma}\\
+ + J^\prime\vec{S}_{d_1}\cdot\vec{S}_{d_2}
+\end{aligned}\end{equation}
+where \(\tau = \hat n - 1/2\).
+
+We will use this as the auxiliary model to study the Hubbard model. We do this by first recreating the Hubbard model upon tiling the lattice with instances of this auxiliary model Hamiltonian. Note that the impurity level and the conduction bath can be tuned to half-filling by setting \(\eta=0\) and \(\mu=0\) respectively. To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity sites \(d_1 \) and \(d_2\) as particular nearest-neighbour sites \(d_i, d_{j}\) of the impurity lattice, and the bath sites will constitute the bulk lattice sites. We will also identity the bath sites \(0_1,0_2\) as two particular nearest-neighbour sites \(i,j\) of the conduction bath lattice:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux}(d_i, d_{j}) = \sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - \frac{U}{2}\left[\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + \left(\hat n_{d_{j} \uparrow} - \hat n_{d_{j} \downarrow} \right) ^2\right] + V \sum_{\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + c^\dagger_{j,\sigma} c_{d_{j},\sigma} + h.c.\right)\\
+ + J \left(\vec{S}_{d_i}\cdot\vec{s}_i + \vec{S}_{d_{j}}\cdot\vec{s}_{j}\right) + \eta \sum_\sigma\left(\tau_{d_i\sigma} + \tau_{d_{j}\sigma}\right)+ J^\prime\vec{S}_{d_i}\cdot\vec{S}_{d_j}\\
+\end{aligned}\end{equation}
+Once we have this local Hamiltonian for a particular site, we translate this over all nearest-neighbour pairs \((i,j)\) of the lattice. There are \(Nw/2\) of these. To ensure the bulk model scales as \(N\), we divide this sum by \(w/2\). 
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{full} = \frac{2}{w}\sum_{\left<i,j\right>} \mathcal{H}_\text{aux}(d_i) = N\sum_{k\sigma}\left(\epsilon_k - \mu\right)\tau_{k\sigma} - 2\frac{U}{2}\sum_{i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + 2V \sum_{i,\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + h.c.\right) \\
+	 + 2J \sum_i\vec{S}_{d_i}\cdot\vec{s}_i + 2\eta \sum_{i,\sigma}\tau_{d_i\sigma} + \frac{2}{w}J^\prime\sum_{\left<i,j\right>}\vec{S}_{d_i}\cdot\vec{S}_{d_j}
+\end{aligned}\end{equation}
+
+We end up with a generalised periodic Anderson model with RKKY interaction:
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{GPAM} = \sum_{k\sigma}\left(\left(\epsilon_k\right)_\text{GPAM} - \mu_\text{GPAM}\right)\tau_{k\sigma} - \frac{U_\text{GPAM}}{2}\sum_{i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow} \right) ^2 + V_\text{GPAM} \sum_{i,\sigma} \left(c^\dagger_{i\sigma} c_{d_i\sigma} + h.c.\right)\\
+	+ J_\text{GPAM} \sum_i\vec{S}_{d_i}\cdot\vec{s}_i + \eta_\text{GPAM} \sum_{i,\sigma}\tau_{d_i\sigma} + J^\prime_\text{GPAM}\sum_{\left<i,j\right>}\vec{S}_{d_i}\cdot\vec{S}_{d_j}
+\end{aligned}\end{equation}
+The mapping between the parameters of the auxiliary model and that of the bulk are
+\begin{equation}\begin{aligned}
+	\label{map_pam_bulk}
+	\left(\epsilon_k\right)_\text{GPAM} = N\epsilon_k, ~ ~ \mu_\text{GPAM} = N\mu, ~ ~ U_\text{GPAM} = 2U, ~ ~ V_\text{GPAM} = 2V, ~ ~ J_\text{GPAM} = 2J, ~ ~ \eta_\text{GPAM} = 2\eta, ~ ~ J^\prime_\text{GPAM} = \frac{2}{w}J^\prime
+\end{aligned}\end{equation}
+
 
 \chapter{Future goals}
 \begin{enumerate}
@@ -2725,6 +2813,72 @@ The terms in the hole sector give identical contributions. The RG equation for \
 	\Delta K = -K n_j\frac{4 U_b + K}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{K}{4}}
 \end{aligned}\end{equation}
 
+\chapter{Zero temperature Greens function in frequency domain}
+
+\label{appx-spectral-func}
+The impurity retarded Green's function (assuming the Hamiltonian to be time-independent, which it is) is defined as
+\begin{equation}\begin{aligned}
+	G_{dd}^\sigma(t) = -i\theta(t) \left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right>
+\end{aligned}\end{equation}
+where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma = c_{d\sigma} + S_d^- c_{0\overline\sigma} + S_d^z c_{0\sigma}\) is the excitation whose spectral function we are interested in. The excitations defined in \(\mathcal{O}\) incorporates both single-particle excitations brought about by the hybridisation as well as two-particle spin excitations brought about by the spin-exchange term. What follows is a standard calculation where we write the Green's function in the Lehmann-Kallen representation. The ensemble average for an arbitrary operator \(\hat M\) can be written in terms of the exact eigenstates of the fixed point Hamiltonian:
+\begin{equation}\begin{aligned}
+	H^* \ket{n} &= E_n^* \ket{n}, ~ ~ ~\left<\hat M \right> &\equiv \frac{1}{Z}\sum_n \bra{n} \hat M \ket{n} e^{-\beta E_n^*}
+\end{aligned}\end{equation}
+where \(Z = \sum_n e^{-\beta E_n^*}\) is the fixed point partition function and \(\left\{ \ket{n} \right\} \) is the set of eigenfunctions of the fixed point Hamiltonian. We can therefore write
+\begin{equation}\begin{aligned}
+	&\left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right> \\
+	&= \frac{1}{Z}\sum_{m}e^{-\beta E_m}\bra{m}\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\} \ket{m}\\
+	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\bra{m}\left( \mathcal{O}_{\sigma}(t)\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} + \mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}\mathcal{O}_{\sigma}(t)\right) \ket{m} && \left[\sum_n \ket{n}\bra{n} = 1\right]  \\
+	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\bra{m}\left( e^{iH^* t}\mathcal{O}_{\sigma}e^{-iH^* t}\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} + \mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}e^{iH^* t}\mathcal{O}_{\sigma}e^{-iH^* t}\right) \ket{m}\\
+	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\left( e^{i\left( E_m - E_n \right)  t}\bra{m}\mathcal{O}_{\sigma}\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} \ket{m} + e^{i\left( E_n - E_m \right)  t}\bra{m}\mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}\mathcal{O}_{\sigma} \ket{m}\right)\\
+	&= \frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
+\end{aligned}\end{equation}
+The time-domain impurity Green's function can thus be written as (this is the so-called Lehmann-Kallen representation)
+\begin{equation}\begin{aligned}
+	G_{dd}^\sigma = -i\theta(t)\frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
+\end{aligned}\end{equation}
+We are interested in the frequency domain form.
+\begin{equation}\begin{aligned}
+	G_{d d}^\sigma(\omega) &= \int_{-\infty}^\infty dt e^{i \omega t}G_{d d}^\sigma(t) \\
+			       &= \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t}
+\end{aligned}\end{equation}
+To evaluate the time-integral, we will use the integral representation of the Heaviside function:
+\begin{equation}\begin{aligned}
+	\theta(t) = \frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty \frac{1}{x- i\eta}e^{ixt}dx
+\end{aligned}\end{equation}
+With this definition, the integral in \(G_{dd}^\sigma(\omega)\) becomes
+\begin{equation}\begin{aligned}
+	\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t} &= \left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta}\int_{-\infty}^\infty dt e^{i\left( \omega + E_m - E_n + x\right)t} \\
+									     &=\left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta} 2\pi \delta\left( \omega + E_m - E_n + x\right) \\
+									     &=\left(-i\right)\frac{1}{i}\lim_{\eta \to 0^+} \frac{-1}{\omega + E_m - E_n- i\eta} \\
+									     &=\frac{1}{\omega + E_m - E_n} \\
+\end{aligned}\end{equation}
+The frequency-domain Green's function is thus
+\begin{equation}\begin{aligned}
+	G_{d d}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
+\end{aligned}\end{equation}
+The zero temperature Green's function is obtained by taking the limit of \(\beta \to \infty\). In both the partition function as well as inside the summation, the only term that will survive is the exponential of the ground state energy \(E_0\).
+\begin{equation*}\begin{aligned}
+	Z \equiv \sum_m e^{-\beta E_m} \implies \lim_{\beta \to \infty}Z = d_0 e^{-\beta E_0}, && E_0 \equiv \text{min}\left\{ E_n \right\} 
+\end{aligned}\end{equation*}
+where \(d_0\) is the degeneracy of the ground state. The Greens function then simplifies to
+\begin{equation}\begin{aligned}
+	\label{Gf_lk}
+	G_{d d}^\sigma(\omega, \beta \to \infty) &= \frac{1}{d_0e^{-\beta E_0}}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left[e^{-\beta E_m}\delta_{E_m, E_0} + e^{-\beta E_n}\delta_{E_n, E_0}\right]\frac{1}{\omega + E_m - E_n}\\
+						 &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n}\right]\\
+\end{aligned}\end{equation}
+The label 0 sums over all states \(\ket{0}\) with energy \(E_0\). The spectral function is the imaginary part of this Green's function. To extract the imaginary part, we insert an infinitesimal imaginary part in the denominator:
+\begin{equation}\begin{aligned}
+	G_{d d}^\sigma(\omega, \eta) = \frac{1}{d_0}\lim_{\eta \to 0^-}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n + i\eta} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n + i\eta}\right]\\
+\end{aligned}\end{equation}
+The spectral function at zero temperature can then be written as
+\begin{equation}\begin{aligned}
+	\mathcal{A(\omega)} &= -\frac{1}{\pi}\text{ Im }\left[G_{dd}^\sigma\left( \omega \right) \right] \\
+			    &= \frac{1}{d_0}\frac{1}{\pi}\text{ Im }\left[\lim_{\eta \to 0^-}\sum_{n,0}\left(\frac{-i\eta ||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2}{\left(\omega + E_0 - E_n\right)^2 + \eta^2} + \frac{-i\eta ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2}{\left(\omega - E_0 + E_n\right)^2 + \eta^2}\right)\right]\\
+			    &= \frac{1}{d_0}\frac{1}{\pi}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\pi\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\pi\delta\left(\omega - E_0 + E_n\right)\right]\\
+			    &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\delta\left(\omega - E_0 + E_n\right)\right]\\
+\end{aligned}\end{equation}
+
 \chapter{Some analytic results for the Hubbard dimer and the Hubbard model}
 \section{Spectrum of the Hubbard dimer}
 Here we document the spectrum of the Hubbard dimer Hamiltonian in eqs.~\ref{hubb_dimer}.
@@ -2955,72 +3109,6 @@ The particle excitation momentum space kets are $\ket{k_0} = \frac{1}{\sqrt 2}\l
 				      &= 2x^2\left(\omega + E_\text{GS} - t\right)\\
 \end{aligned}\end{equation}
 At the final step, we used $\braket{+,+} = 1$ and $\braket{+|H_D|+} = t$.
-
-\chapter{Zero temperature Greens function in frequency domain}
-
-\label{appx-spectral-func}
-The impurity retarded Green's function (assuming the Hamiltonian to be time-independent, which it is) is defined as
-\begin{equation}\begin{aligned}
-	G_{dd}^\sigma(t) = -i\theta(t) \left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right>
-\end{aligned}\end{equation}
-where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma = c_{d\sigma} + S_d^- c_{0\overline\sigma} + S_d^z c_{0\sigma}\) is the excitation whose spectral function we are interested in. The excitations defined in \(\mathcal{O}\) incorporates both single-particle excitations brought about by the hybridisation as well as two-particle spin excitations brought about by the spin-exchange term. What follows is a standard calculation where we write the Green's function in the Lehmann-Kallen representation. The ensemble average for an arbitrary operator \(\hat M\) can be written in terms of the exact eigenstates of the fixed point Hamiltonian:
-\begin{equation}\begin{aligned}
-	H^* \ket{n} &= E_n^* \ket{n}, ~ ~ ~\left<\hat M \right> &\equiv \frac{1}{Z}\sum_n \bra{n} \hat M \ket{n} e^{-\beta E_n^*}
-\end{aligned}\end{equation}
-where \(Z = \sum_n e^{-\beta E_n^*}\) is the fixed point partition function and \(\left\{ \ket{n} \right\} \) is the set of eigenfunctions of the fixed point Hamiltonian. We can therefore write
-\begin{equation}\begin{aligned}
-	&\left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right> \\
-	&= \frac{1}{Z}\sum_{m}e^{-\beta E_m}\bra{m}\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\} \ket{m}\\
-	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\bra{m}\left( \mathcal{O}_{\sigma}(t)\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} + \mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}\mathcal{O}_{\sigma}(t)\right) \ket{m} && \left[\sum_n \ket{n}\bra{n} = 1\right]  \\
-	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\bra{m}\left( e^{iH^* t}\mathcal{O}_{\sigma}e^{-iH^* t}\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} + \mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}e^{iH^* t}\mathcal{O}_{\sigma}e^{-iH^* t}\right) \ket{m}\\
-	&= \frac{1}{Z}\sum_{m,n}e^{-\beta E_m}\left( e^{i\left( E_m - E_n \right)  t}\bra{m}\mathcal{O}_{\sigma}\ket{n}\bra{n}\mathcal{O}^\dagger_{\sigma} \ket{m} + e^{i\left( E_n - E_m \right)  t}\bra{m}\mathcal{O}^\dagger_{\sigma}\ket{n}\bra{n}\mathcal{O}_{\sigma} \ket{m}\right)\\
-	&= \frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
-\end{aligned}\end{equation}
-The time-domain impurity Green's function can thus be written as (this is the so-called Lehmann-Kallen representation)
-\begin{equation}\begin{aligned}
-	G_{dd}^\sigma = -i\theta(t)\frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
-\end{aligned}\end{equation}
-We are interested in the frequency domain form.
-\begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega) &= \int_{-\infty}^\infty dt e^{i \omega t}G_{d d}^\sigma(t) \\
-			       &= \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t}
-\end{aligned}\end{equation}
-To evaluate the time-integral, we will use the integral representation of the Heaviside function:
-\begin{equation}\begin{aligned}
-	\theta(t) = \frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty \frac{1}{x- i\eta}e^{ixt}dx
-\end{aligned}\end{equation}
-With this definition, the integral in \(G_{dd}^\sigma(\omega)\) becomes
-\begin{equation}\begin{aligned}
-	\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t} &= \left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta}\int_{-\infty}^\infty dt e^{i\left( \omega + E_m - E_n + x\right)t} \\
-									     &=\left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta} 2\pi \delta\left( \omega + E_m - E_n + x\right) \\
-									     &=\left(-i\right)\frac{1}{i}\lim_{\eta \to 0^+} \frac{-1}{\omega + E_m - E_n- i\eta} \\
-									     &=\frac{1}{\omega + E_m - E_n} \\
-\end{aligned}\end{equation}
-The frequency-domain Green's function is thus
-\begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
-\end{aligned}\end{equation}
-The zero temperature Green's function is obtained by taking the limit of \(\beta \to \infty\). In both the partition function as well as inside the summation, the only term that will survive is the exponential of the ground state energy \(E_0\).
-\begin{equation*}\begin{aligned}
-	Z \equiv \sum_m e^{-\beta E_m} \implies \lim_{\beta \to \infty}Z = d_0 e^{-\beta E_0}, && E_0 \equiv \text{min}\left\{ E_n \right\} 
-\end{aligned}\end{equation*}
-where \(d_0\) is the degeneracy of the ground state. The Greens function then simplifies to
-\begin{equation}\begin{aligned}
-	\label{Gf_lk}
-	G_{d d}^\sigma(\omega, \beta \to \infty) &= \frac{1}{d_0e^{-\beta E_0}}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left[e^{-\beta E_m}\delta_{E_m, E_0} + e^{-\beta E_n}\delta_{E_n, E_0}\right]\frac{1}{\omega + E_m - E_n}\\
-						 &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n}\right]\\
-\end{aligned}\end{equation}
-The label 0 sums over all states \(\ket{0}\) with energy \(E_0\). The spectral function is the imaginary part of this Green's function. To extract the imaginary part, we insert an infinitesimal imaginary part in the denominator:
-\begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega, \eta) = \frac{1}{d_0}\lim_{\eta \to 0^-}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n + i\eta} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n + i\eta}\right]\\
-\end{aligned}\end{equation}
-The spectral function at zero temperature can then be written as
-\begin{equation}\begin{aligned}
-	\mathcal{A(\omega)} &= -\frac{1}{\pi}\text{ Im }\left[G_{dd}^\sigma\left( \omega \right) \right] \\
-			    &= \frac{1}{d_0}\frac{1}{\pi}\text{ Im }\left[\lim_{\eta \to 0^-}\sum_{n,0}\left(\frac{-i\eta ||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2}{\left(\omega + E_0 - E_n\right)^2 + \eta^2} + \frac{-i\eta ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2}{\left(\omega - E_0 + E_n\right)^2 + \eta^2}\right)\right]\\
-			    &= \frac{1}{d_0}\frac{1}{\pi}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\pi\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\pi\delta\left(\omega - E_0 + E_n\right)\right]\\
-			    &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\delta\left(\omega - E_0 + E_n\right)\right]\\
-\end{aligned}\end{equation}
 
 \chapter{Topological interpretation of the Wilson ratio}
 From the Friedel sum rule\cite{langer1961friedel}, we can relate the phase shift \(\delta(0)\) due to scattering (at the Fermi surface) off a local impurity to the number of electrons bound in the potential well produced by that impurity:

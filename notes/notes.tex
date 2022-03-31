@@ -1,4 +1,5 @@
 \documentclass[12pt]{report}
+% \documentclass{nature}
 \usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,pifont,enumitem}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
@@ -36,6 +37,7 @@
 \chapter{Introduction}
 
 \section{What is the minimal impurity model for a Mott metal-insulator transition?}
+\label{sec:min_model}
 The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
 The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
@@ -1546,6 +1548,67 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 	\includegraphics[width=0.45\textwidth]{../figures/spec_func_width_fit.pdf}
 \end{figure}
 
+\section{What, then, are the minimal ingredients for a metal-insulator transition?}
+We now return to the question posed at the very beginning in section~\ref{sec:min_model}: What is the minimal auxiliary model that can demonstrate a metal-insulator transition in the bulk? To answer this question, we first recall all the relevant RG equations in the positive \(U\) regime:
+\begin{gather}
+	\Delta U_b = 0, ~ ~\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2},\\
+	\Delta V = -\frac{3n_j V}{8}\left[\left(J + 4U_b/3\right) \left(\frac{1}{d_2} + \frac{1}{d_1}\right) + 4U_b/3\left(\frac{1}{d_3} + \frac{1}{d_0}\right)\right],\\
+	\Delta J = -\frac{n_j J\left(J + 4U_b\right)}{d_2}~.
+\end{gather}
+where \(d_1 > d_2 > d_3 > d_0\).
+We now consider various models with increasing number of parameters.
+
+\subsection{Only impurity correlation and hybridisation \(U,V\)}
+If we had only \(U\) and \(V\), the RG equations simplify to
+\begin{equation}\begin{aligned}
+	\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) < 0,~ ~ ~\Delta V = 0
+\end{aligned}\end{equation}
+\(U\) is irrelevant while the hybridisation \(V\) is marginal, so the fixed point is where the impurity is screened. The bulk model will always be metallic. There is no transition in such a model.
+
+\subsection{Impurity correlation, hybridisation and spin-exchange between impurity and bath \(U,V,J\)}
+If we now add a spin-exchange coupling \(J\) between the impurity and the bath into the Hamiltonian, we obtain the generalised SIAM studied in chapter~\ref{chap:urg1}. As discussed in that chapter, this is again similar to the previous case - the only stable fixed point is one of strong-coupling, and the bulk metal will never have an insulating phase.
+
+\subsection{Impurity correlation, hybridisation and local pairing interaction on the bath \(U,V,U_b\)}
+If we replace the \(J\) with an local interaction \(U_b\) on the bath, the RG equations undergo some changes:
+\begin{gather}
+	\Delta U_b = 0, ~ ~\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) = \frac{4V^2U}{\left(\omega - D/2 + U_b/2\right)^2 - U^2/4},\\
+	\Delta V = -n_j V U_b\left[\frac{\omega - D/2 + U_b/2}{\left(\omega - D/2 + U_b/2\right)^2 - U^2/4} + \frac{1}{\omega - D/2 + U_b/2}\right]~.
+\end{gather}
+This regime is interesting because it shows a variety of behaviour:
+\begin{itemize}
+	\item For \(U_b>0\), the correlation \(U\) is irrelevant and \(V\) is relevant. This will produce a metal (see fig.~\ref{noJ_Ub_gt_0}).
+	\item For \(U_b<0\), both \(U\) and \(V\) are irrelevant, but \(V\) decays much faster than \(U\), and \(U\) saturates to a non-zero appreciable value which although lower than the bare value is much greater than 0 (see fig.~\ref{noJ_Ub_lt_0}). This behaviour is enhanced by making \(U_b\) more negative; \(V\) decays even faster to zero, while \(U\) saturates at higher values. If the bare bandwidth is increased, the fixed point value of \(U\) actually decreases, so it appears that on taking the thermodynamic limit, \(U\) renormalises to zero (see fig.~\ref{noJ_Ub_lt_0_D}).
+\end{itemize}
+
+Neither of these cases give rise to an insulator, because \(U\) never renormalises to a non-zero fixed point value in the thermodynamic limit.
+
+\begin{center}
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=0.05_D=10_U.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=0.05_D=10_V.pdf}
+	\captionof{figure}{RG flows of \(U\) (left panel) and \(V\) (right panel) in the regime \(U_b>0\), for the auxiliary model with \(U,V,U_b\). The impurity correlation \(U\) is irrelevant while the hybridisation \(V\) is relevant, leading to a metallic phase in the bulk.}
+	\label{noJ_Ub_gt_0}
+
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=-0.10_D=10_U.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=-0.10_D=10_V.pdf}
+	\captionof{figure}{RG flows of \(U\) (left panel) and \(V\) (right panel) in the regime \(U_b<0\), for the auxiliary model with \(U,V,U_b\). The hybridisation \(V\) is sharply irrelevant, renormalising to zero, while the impurity correlation \(U\) survives at the fixed point.}
+	\label{noJ_Ub_lt_0}
+
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=-0.10_D=100_U.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/no_J_Ub=-0.10_D=100_V.pdf}
+	\captionof{figure}{RG flows of \(U\) and \(V\) in the regime \(U_b<0\) at a larger bandwidth, for the auxiliary model with \(U,V,U_b\).  \(U\) now renormalises to zero, so an insulator is not possible in the thermodynamic limit.}
+	\label{noJ_Ub_lt_0_D}
+\end{center}
+
+\subsection{The full model?}
+We are therefore ultimately led to a model with all four parameters. This was studied in chapter~\ref{siam-attr-chap}, and was shown to display both metallic and insulating phases. This makes it clear that {\it the minimal model must have all three kinds of correlation: magnetic \((U,J)\), delocalisation \((V)\) and pair formation \((U_b)\)}.
+
+
+\subsection{Possibly a more minimal model: \(U,J,U_b\)}
+In the presence of these three couplings, the RG equations become
+\begin{equation}\begin{aligned}
+	\Delta U = -n_j J^2/d_2,~ ~ ~ \Delta J = -n_j J(J+4U_b)/d_2
+\end{aligned}\end{equation}
+Since \(J > 0\), \(\Delta U\) is always positive, so \(U\) is always relevant. For \(4U_b > -J\), \(\Delta J\) is also positive, and \(J\) is relevant. We end up in a metallic phase. However, for \(4U_b < -J\), \(J\) becomes irrelevant, and the fixed point is that of a local moment decoupled from the bath, which describes an insulating state in the bulk.
 
 \chapter{From the auxiliary model to the bulk - single site approach}
 \label{chap:tile}
@@ -2484,7 +2547,6 @@ We end up with a generalised periodic Anderson model with RKKY interaction:
 \end{aligned}\end{equation}
 The mapping between the parameters of the auxiliary model and that of the bulk are
 \begin{equation}\begin{aligned}
-	\label{map_pam_bulk}
 	\left(\epsilon_k\right)_\text{GPAM} = N\epsilon_k, ~ ~ \mu_\text{GPAM} = N\mu, ~ ~ U_\text{GPAM} = 2U, ~ ~ V_\text{GPAM} = 2V, ~ ~ J_\text{GPAM} = 2J, ~ ~ \eta_\text{GPAM} = 2\eta, ~ ~ J^\prime_\text{GPAM} = \frac{2}{w}J^\prime
 \end{aligned}\end{equation}
 

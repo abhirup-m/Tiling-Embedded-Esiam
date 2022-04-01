@@ -569,11 +569,11 @@ From the results of Langreth \cite{langreth1966}, we know that the spectral func
 The spectral function is plotted for three sets of values in fig.~\ref{spec_func}. For low values of \(U\), the profile is that of a single peak at zero frequency. This is expected because at the low energy effective theory, the high energy Hubbard side bands have been integrated out. As \(U\) increases, shoulder-like structures appear on either side of the peak, which finally, at larger \(U\), develop into two side-peaks. This is the microscopic theory, where high energy features are also relevant.
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=0.00.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=3.00.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=5.00.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=10.00.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_Ub=0_U_by_delta=25.00.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/spec_func_Ub=0_U_by_delta=0.00.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/spec_func_Ub=0_U_by_delta=3.00.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/spec_func_Ub=0_U_by_delta=5.00.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/spec_func_Ub=0_U_by_delta=10.00.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/spec_func_Ub=0_U_by_delta=25.00.pdf}
 	\caption{Impurity spectral function for multiple values of \(U\). The increase in value of \(U\) is accompanied by the appearance of the side-peaks.}
 	\label{spec_func}
 \end{figure}
@@ -1602,7 +1602,6 @@ Neither of these cases give rise to an insulator, because \(U\) never renormalis
 \subsection{The full model?}
 We are therefore ultimately led to a model with all four parameters. This was studied in chapter~\ref{siam-attr-chap}, and was shown to display both metallic and insulating phases. This makes it clear that {\it the minimal model must have all three kinds of correlation: magnetic \((U,J)\), delocalisation \((V)\) and pair formation \((U_b)\)}.
 
-
 \subsection{Possibly a more minimal model: \(U,J,U_b\)}
 In the presence of these three couplings, the RG equations become
 \begin{equation}\begin{aligned}
@@ -2407,46 +2406,8 @@ where $\left(G^{(0)}(\vec k,\omega)\right)^{-1}  = \omega -\epsilon_{k} = \omega
 	&\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}
 \end{aligned}\end{equation}
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
-\section{Analytic consistency checks}
-\subsection{Single-particle Greens function and self energy for the Hubbard dimer}
-The simplest test involves choosing $H^H = H^D$ and then calculating the momentum space Greens function at $k=0$, $G(k=0, \uparrow)$, for the Hubbard dimer \(\left(N = 2, w = 1 \right)\). The discrete set of momenta are \(\left\{ \vec k_n \right\} = 0, \frac{\pi}{a}\). For $k=0$, we have
-\begin{equation}\begin{aligned}
-	\xi_{\vec k = 0} = e^{ikr} = 1
-\end{aligned}\end{equation}
-Substituting this into eq.~\ref{k_Gf} gives
-\begin{equation}\begin{aligned}
-	\label{Gk_dim}
-	G(k=0,\uparrow) = \sum_n\left[\left(|C^0_{n}|^2 + {C^0_{n}}^* C^1_{n} \right)\frac{1}{g_n} - \left(|\overline C^0_{n}|^2 + {\overline C^0_{n}}^* \overline C^1_{n}\right)\frac{1}{\overline{g_n}}\right]
-\end{aligned}\end{equation}
-The expansion in terms of the exact eigenstates takes the form:
-\begin{equation}\begin{aligned}
-	c^\dagger_{0 \uparrow}\ket{\tilde \Phi_0} = x\ket{3+ \uparrow} + y\ket{3- \uparrow}, && c^\dagger_{1 \uparrow}\ket{\tilde \Phi_0} = x\ket{3+ \uparrow} - y\ket{3- \uparrow}\\
-	c_{0 \uparrow}\ket{\tilde \Phi_0} = y\ket{1+ \downarrow} + x\ket{1- \downarrow}, && c_{1 \uparrow}\ket{\tilde \Phi_0} = y\ket{1+ \downarrow} - x\ket{1- \downarrow}\\
-\end{aligned}\end{equation}
-where $\ket{(3,1)\pm (\uparrow, \downarrow)}$ are the $N=(3,1), S^z = (+\frac{1}{2}, -\frac{1}{2})$ eigenstates of even $(+)$ and odd \((-)\) parity:
-\begin{equation}\begin{aligned}
-	H^D\ket{3\pm \uparrow} = \pm t \ket{3\pm \uparrow}, ~ ~ ~H^D\ket{1\pm \downarrow} = \mp t \ket{1\pm \downarrow}\\
-\end{aligned}\end{equation}
-and \(x = \frac{a_2 - a_1}{2}, y = \frac{a_2 + a_1}{2}\). The orthogonal basis is therefore
-\begin{equation}\begin{aligned}
-	\left\{ \ket{n} \right\} = \ket{3+ \uparrow}, \ket{3- \uparrow}, ~ ~ ~\left\{ \ket{\overline n} \right\} = \ket{1+ \downarrow}, \ket{1- \downarrow}
-\end{aligned}\end{equation}
-The coefficients can thus be determined:
-\begin{gather*}
-	C^0_\pm = \braket{3\pm \uparrow|c^\dagger_{0 \uparrow} |\tilde \Phi_0} = x, y, ~ ~ ~ C^1_\pm = \braket{3\pm \uparrow|c^\dagger_{1 \uparrow} |\tilde \Phi_0} = x, -y\\
-	\overline C^0_\pm = \braket{1 \pm \downarrow|c_{0 \uparrow} |\tilde \Phi_0} = y, x, ~ ~ ~\overline C^1_\pm = \braket{1 \pm \downarrow|c_{1 \uparrow} |\tilde \Phi_0} = y, -x\\
-	g_\pm = \bra{3 \pm \uparrow}\left( \omega + E_{GS} - H^D\right) \ket{3 \pm \uparrow} = \omega + E_{GS} \mp t, ~ ~ ~\overline{g_\pm} = \bra{1 \pm \downarrow}\left(-\omega + E_{GS} - H^D\right) \ket{1 \pm \downarrow} = -\omega + E_{GS} \pm t\\
-\end{gather*}
-We can see that $|C^0_-|^2 + {C^0_-}^* C^1_- = y^2 - y^2 = 0$ and $|\overline C^0_-|^2 + {\overline C^0_-}^* \overline C^1_- = x^2 - x^2 = 0$. So we do not need to consider those terms. With this preparation, we can now calculate the Greens function:
-\begin{equation}\begin{aligned}
-	G(k=0, \omega) = \left(|C^0_{+}|^2 + {C^0_{+}}^* C^1_{+} \right)\frac{1}{g_+} - \left(|\overline C^0_{+}|^2 + {C^0_{+}}^* \overline C^1_{+}\right)\frac{1}{\overline{g_+}} = \frac{2x^2}{\omega + E_{GS} - t} - \frac{2y^2}{-\omega + E_{GS} + t}
-\end{aligned}\end{equation}
-The final step is to recognize that $2x^2 = \frac{a_1^2 + a_2^2 -2a_1a_2}{2} = \frac{1}{2} - \frac{2t}{\Delta}$, $2y^2 = \frac{a_1^2 + a_2^2 + 2a_1a_2}{2} = \frac{1}{2} + \frac{2t}{\Delta}$ and $E_{GS} = -\frac{\Delta}{2}$. Then,
-\begin{equation}\begin{aligned}
-	G(k=0, \omega) = \frac{\frac{1}{2} - \frac{2t}{\Delta}}{\omega - \frac{\Delta}{2} - t} - \frac{\frac{1}{2} + \frac{2t}{\Delta}}{-\omega - \frac{\Delta}{2} + t} = \frac{\frac{1}{2} - \frac{2t}{\Delta}}{\omega - \frac{\Delta}{2} - t} + \frac{\frac{1}{2} + \frac{2t}{\Delta}}{\omega + \frac{\Delta}{2} - t}
-\end{aligned}\end{equation}
 
-\subsection{On the Bethe lattice}
+\section{Analytic consistency check - On the Bethe lattice}
 Another test involves considering the case of a Bethe lattice with infinite number of nearest neighbours $w\to\infty$ (the coordination number). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
 	&\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left[G^{(0)}(\vec k,\omega)\right]^{-1} -\right.\\

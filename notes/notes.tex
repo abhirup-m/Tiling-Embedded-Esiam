@@ -1599,15 +1599,15 @@ Neither of these cases give rise to an insulator, because \(U\) never renormalis
 	\label{noJ_Ub_lt_0_D}
 \end{center}
 
-\subsection{The full model?}
-We are therefore ultimately led to a model with all four parameters. This was studied in chapter~\ref{siam-attr-chap}, and was shown to display both metallic and insulating phases. This makes it clear that {\it the minimal model must have all three kinds of correlation: magnetic \((U,J)\), delocalisation \((V)\) and pair formation \((U_b)\)}.
-
-\subsection{Possibly a more minimal model: \(U,J,U_b\)}
+\subsection{Attractive correlation \(U_b\) instead of \(V\): \(U,J,U_b\)}
 In the presence of these three couplings, the RG equations become
 \begin{equation}\begin{aligned}
 	\Delta U = -n_j J^2/d_2,~ ~ ~ \Delta J = -n_j J(J+4U_b)/d_2
 \end{aligned}\end{equation}
 Since \(J > 0\), \(\Delta U\) is always positive, so \(U\) is always relevant. For \(4U_b > -J\), \(\Delta J\) is also positive, and \(J\) is relevant. We end up in a metallic phase. However, for \(4U_b < -J\), \(J\) becomes irrelevant, and the fixed point is that of a local moment decoupled from the bath, which describes an insulating state in the bulk.
+
+\subsection{The full model?}
+We are therefore ultimately led to a model with all four parameters. This was studied in chapter~\ref{siam-attr-chap}, and was shown to display both metallic and insulating phases. This makes it clear that {\it the minimal model must have all three kinds of correlation: magnetic \((U,J)\), delocalisation \((V)\) and pair formation \((U_b)\)}.
 
 \chapter{From the auxiliary model to the bulk - single site approach}
 \label{chap:tile}
@@ -1741,7 +1741,7 @@ The Lehmann-Kallen spectral representation of the single-particle Greens functio
 \end{aligned}\end{equation}
 \begin{equation}\begin{aligned}
 	\left(G_{H-H}(\omega)\right)_\text{n-n} = \left(G_{H-H}(\omega)\right)_{i,i+1}^p - \left(G_{H-H}(-\omega)\right)_{i+1,i}^h = \frac{1}{w}\sum_n \left[\left(d^p_n\right)^* z^p_n \left(\mathcal{G}_\text{aux}(d, \omega) \right)_{nn} \right.\\
- - \left.\left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]= G(\omega)_\text{aux,dz}
+ - \left.\left(z^h_n\right)^* d^h_n \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]= \frac{1}{w}G(\omega)_\text{aux,dz}
 \end{aligned}\end{equation}
 
 \section{Spectral functions and self-energies}
@@ -1790,19 +1790,24 @@ A_\text{H-H}(\vec{r}=0,\omega) = -\frac{1}{\pi} \textrm{Im}(G_{H-H}(\vec{r}=0,\o
 \label{main}
 \end{aligned}\end{equation}
 
-With the knowledge of the momentum-space Greens function $G_\text{H-H}(\vec k, \omega)$, we can now use Dyson's equation to calculate the self-energy for propagation of momentum excitations:
+From the local Greens function, we can write down the local self-energy using Dyson's equation: \(\Sigma = \left(G^{(0)}\right)^{-1} - G^{-1}\). \(G^{(0)}\) is the non-interacting Greens function. Here, non-interacting is defined as the absence of \(U,J\) in the bulk model, and hence the absence of \(U,U_b,J\) in the auxiliary model. In real space, the local and nearest-neighbour self-energies are therefore
 \begin{equation}\begin{aligned}
-	\Sigma(\vec k,\omega) = \left(G^{(0)}(\vec k,\omega)\right)^{-1} - G(\vec k,\omega)^{-1}
+	\left(\Sigma_\text{H-H}(\omega)\right)_\text{loc} = \left(\left(G_{H-H}(\omega)\right)_\text{loc}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_\text{loc}\right)^{-1} = \left(G(\omega)_\text{aux,dd}^{(0)}\right)^{-1} - \frac{1}{w}\left(G(\omega)_\text{aux,dd}\right)^{-1} \\
+	\left(\Sigma_\text{H-H}(\omega)\right)_\text{n-n} = \left(\left(G_{H-H}(\omega)\right)_\text{n-n}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_\text{n-n}\right)^{-1} = \left(G(\omega)_\text{aux,dz}^{(0)}\right)^{-1} - \frac{1}{w}\left(G(\omega)_\text{aux,dz}\right)^{-1}\\
 \end{aligned}\end{equation}
-where $\left(G^{(0)}(\vec k,\omega)\right)^{-1}  = \omega -\epsilon_{k} = \omega +t^{H-H}\xi_{k}$ is the inverse $k-$space Greens function for the appropriate non-interacting tight-binding system. Substituting this as well as the full Greens function $G_{H-H}(\vec k, \omega)$ into Dyson's equation gives
+
+The \(k-\)space self-energy can be similarly obtained from the \(k-\)space Greens functions
 \begin{equation}\begin{aligned}
 	\label{self-energy1}
-	\Sigma_{H-H}(\vec k,\omega) &= \left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left\{\sum_n\left[\left(|d^p_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn} - \left(|d^h_n|^2 + \frac{\xi_{\vec{k}}}{w}\left(z^h_n\right)^* d^h_n\right) \left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\right]\right\}^{-1}\\
-&= \left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{w} G_\text{aux,dz}\right]^{-1}
+	\Sigma_{H-H}(\vec k,\omega) = \left(\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_{\vec k}\right)^{-1} = \frac{1}{G(\omega)_\text{aux,dd}^{(0)} + \frac{\xi_{\vec k}}{w}G(\omega)_\text{aux,dz}^{(0)}} -  \frac{1}{G(\omega)_\text{aux,dd} + \frac{\xi_{\vec k}}{w}G(\omega)_\text{aux,dz}}
 \end{aligned}\end{equation}
-This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
+Just to clarify the notation, we reiterate that bulk quantities with a superscript \((0)\) are for the non-interacting Hamiltonian and defined at \(U_\text{H-H}=J_\text{H-H}=0\), while the auxiliary model quantities with that superscript are evaluated in the non-interacting auxiliary model at \(U=J=U_b=0\). The non-interacting model is simply a resonant-level model with the impurity level at zero energy. Such a model is exactly solvable, and the corresponding Greens functions are given by
+\begin{equation}\begin{aligned}
+	G(\omega + i\eta)_\text{aux,dd}^{(0)} = \frac{1}{\omega + i\left(\Delta + \eta\right)}, ~ ~ ~ G(\omega + i\eta)_\text{aux,dz}^{(0)} = \sum_{\vec k} G(\omega)^{(0)}_{\vec k} V G(\omega + i\eta)_\text{aux,dd}^{(0)}
+\end{aligned}\end{equation}
+where \(\Delta = \pi \rho V^2\) is the hybridisation parameter, assuming a uniform density of states \(\rho\), and \(G(\omega)^{(0)}_{\vec k}\) is the free electron Greens function at momentum \(\vec k\).
 
-%\clearpage
+
 \section{Evidence for the Mott MIT}
 Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_attr}) shown in chapter \ref{siam-attr-chap}, we can conclude the following about that model:
 \begin{itemize}

@@ -8,7 +8,6 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[sfdefault]{roboto}
 
 \renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
 \newlist{todolist}{itemize}{2}
@@ -1450,66 +1449,69 @@ gray &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice 
 
 \subsection*{Overlap of ground state against spin singlet and charge triplet zero states}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=0.100.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=10.000.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=50.000.pdf}
+	\includegraphics[width=0.7\textwidth]{../figures/overlaps_gs-J=0.100.pdf}\\
+	\includegraphics[width=0.7\textwidth]{../figures/overlaps_gs-J=10.000.pdf}\\
+	\includegraphics[width=0.7\textwidth]{../figures/overlaps_gs-J=50.000.pdf}
 \end{center}
 
 \subsection*{Spin and charge correlations in ground state}
 \begin{center}
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=0.100.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=10.000.pdf}\\
-	\includegraphics[width=0.75\textwidth]{../figures/corrs_gs-J=50.000.pdf}
+	\includegraphics[width=0.7\textwidth]{../figures/corrs_gs-J=0.100.pdf}\\
+	\includegraphics[width=0.7\textwidth]{../figures/corrs_gs-J=10.000.pdf}\\
+	\includegraphics[width=0.7\textwidth]{../figures/corrs_gs-J=50.000.pdf}
 \end{center}
 
 
 \section{Evolution of various correlation measures and other quantities}
 
 \subsection*{Perturbation theoretic terms}
-These quantities are related to the local Fermi liquid of the Kondo strong coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. \(\mathcal{F}\) is the strength of the local Fermi liquid \((\mathcal{F} \hat n_{1 \uparrow} \hat n_{1 \downarrow})\).
+These quantities are related to the local Fermi liquid of the Kondo strong coupling fixed point and the perturbation theory associated with it. \(min(\delta E)\) is the gap in the spectrum of the two-site Hamiltonian; this which acts as the denominator for the perturbation theoretic calculations. \(t^2/\delta E\) is the small parameter for the expansion, \(t\) being the tight-binding hopping. 
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/gap-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/par-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/lfl-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/gap-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/par-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 \end{center}
 
 \subsection*{Correlation within the Kondo cloud}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-dk-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-diag-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-k-od-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 \end{center}
 
 \subsection*{Mutual information between various real space members}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-01-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/mi-d1-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-01-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/mi-d0-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 \end{center}
 
 \subsection*{Impurity entanglement entropy and spin-spin correlations}
 
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/EE-d-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/corr-d1-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-02-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-03-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-
+	\includegraphics[width=0.32\textwidth]{../figures/EE-d-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/corr-d0-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-vec-corr-01-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 \end{center}
 
 \subsection*{Real-space correlations}
 \begin{center}
-	\includegraphics[width=0.32\textwidth]{../figures/r1p-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-od-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/r-opp-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r1p-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-od-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/r-opp-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 
-	\includegraphics[width=0.3\textwidth]{../figures/r-par-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-ising-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r-charge-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-par-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-ising-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\includegraphics[width=0.3\textwidth]{../figures/r-charge-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
 \end{center}
+
+\section{Presence of sub-dominant pair fluctuations}
+\begin{center}
+	\includegraphics[width=0.4\textwidth]{../figures/odlro-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
+	\captionof{figure}{Growth of pair fluctuations \(p^\dagger_d p_0\) between the impurity and the zeroth site towards the critical point, \(p^\dagger=c^\dagger_\uparrow c^\dagger_\downarrow\) being the local pair creation operator. This comes at the cost of the spin-flip fluctuations \(S_d^+ s_0^- + \text{h.c.}\). which decrease towards the transition.}
+	\label{pair_fluc}
+\end{center}
+
+The behaviour of the various kinds of correlation functions (for eg., the reduction of the impurity compensation \(\vec{S}_d\cdot\vec{s}_0\)) shown above indicate that the Kondo cloud that screens the impurity is getting destroyed as \(U_b/J\) increases in magnitude. To shed some light on the nature of the fluctuations that faciliate this process, we also plot the average pair fluctuation in the ground state as a function of \(U_b/J\), in fig.~\ref{pair_fluc}. The pair fluctuations are terms that transfer an electron pair between the impurity and zeroth sites: \(c^\dagger_{d \uparrow}c^\dagger_{d \downarrow} c_{0 \downarrow}c_{0 \uparrow}\). It can be seen from the figure that while the spin-flip fluctuations decrease (since the Kondo cloud is formed out of these spin-flip fluctuations, this is consistent with the destruction of the Kondo cloud discussed in this paragraph), the pair fluctuations pick up. Since the spin subspace and charge subspace cannot coincide on the same site, we can then conclude that it is the growth of these pair fluctuations brought about by the presence of the purely local interaction \(U_b\) that make the screening of the impurity spin very poor.
 
 \section{Spectral functions}
 
@@ -1543,10 +1545,9 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 
 \subsection{Width of central peak of \(A_{dd}\)}
 
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_width_fit.pdf}
-\end{figure}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{../figures/spec_func_width_fit.pdf}
+\end{center}
 
 \section{What, then, are the minimal ingredients for a metal-insulator transition?}
 We now return to the question posed at the very beginning in section~\ref{sec:min_model}: What is the minimal auxiliary model that can demonstrate a metal-insulator transition in the bulk? To answer this question, we first recall all the relevant RG equations in the positive \(U\) regime:
@@ -1676,15 +1677,71 @@ The only change is the generation of the last term. The mappings between the exi
 \end{aligned}\end{equation}
 In the discussion henceforth, we will assume all the models are at half-filling. We will come back to the doped case at a later point in time.
 
-\section{Single-particle Green's function}
-We now define the Greens function {\it operators}:
+\section{Nature of the wavefunctions}
+In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full wavefunction \(\Psi\) is then obtained by constructing liner combinations of the eigenstates \(\psi_i\) of the local Hamiltonians such that \(\Psi\) satisfies Bloch's theorem: \(\Psi_{\vec k}(\vec r) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r - \vec R_i)\). To satisfy Bloch's theorem means to behave in acertain way under a translation operation by some lattice distance \(\vec R = \sum_i n_i \vec a_i\):
 \begin{equation}\begin{aligned}
-	\mathcal{G}_{H-H} = \frac{1}{\omega^\prime - \left(H_{H-H} - E_\text{gs}^\prime\right) }, \mathcal{G}_\text{aux}(i) = \frac{1}{\omega - \left(\mathcal{H}_\text{aux}(i) - E_\text{gs}\right)}
+\Psi_{\vec k}(\vec r + \vec R) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r + \vec R - \vec R_i) = e^{i \vec{k}\cdot\vec{R}}\sum_i e^{i \vec{k}\cdot\left(\vec{R}_i - \vec R\right)} \psi_i(\vec r - (\vec R_i - \vec R)) = e^{\vec{k}\cdot\vec{R}}\Psi(\vec r)
 \end{aligned}\end{equation}
-Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). From the relation eq.~\ref{siam_to_hubb} we know that while the auxiliary model is intensive, the full Hamiltonian is extensive (scales with system size). This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
-Rewriting eq.~\ref{siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
+At the end, we used the fact that \(\vec r_i - \vec R\) is just another lattice vector \(\vec R_j\). The bulk Hamiltonian obtained in eq.~\ref{siam_to_hubb},
 \begin{equation}\begin{aligned}
-\sum_i \left(\omega + E_\text{gs} - \mathcal{G}^{-1}_\text{aux}(i)\right) = N\omega + N E_\text{gs} - \mathcal{G}^{-1}_{H-H} \implies \sum_i \mathcal{G}^{-1}_\text{aux}(i) = \mathcal{G}^{-1}_{H-H}~,
+	H_\text{H-H}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i} \mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i\right\}\right)~,
+\end{aligned}\end{equation}
+also enjoys a Bloch's theorem. This is because the tiling procedure restores the translation symmetry of the lattice:
+\begin{equation}\begin{aligned}
+	H_\text{H-H}(\left\{\vec r_k + \vec R\right\}) =  \sum_{\vec R_i}\mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i + \vec R\right\}\right) = \sum_{\vec R_i} \mathcal{H}_{\text{aux},\tilde i}\left(\left\{\vec r_k - \vec R\right\}\right) = H_\text{H-H}(\left\{\vec r_k\right\})
+\end{aligned}\end{equation}
+There we used the fact that \(\vec r_k + \vec R\) simply translates the auxiliary model defined by the coordinate \(i\) to a new auxiliary model at the modified coordinate \(\tilde i: \vec R_i^\prime = \vec R_i + \vec R\). Since this transformation from one auxiliary model to another simply shuffles the group of all auxiliary models, the sum over the group remains the sum, and we recover the same bulk model.
+
+To build eigenstates that satisfy Bloch's theorem, we approximate the eigenstates of the auxiliary models to highly localised forms \(\psi_{\text{aux}}\left( \vec r_d - \vec R_i, \vec r_{0} - \vec R_i \right) \) which involve only the impurity electron \(\vec r_d\) and the zeroth site \(\vec r_0\) of the auxiliary model. With this approximation, the wavefunction for each auxiliary model is neglible outside the lattice site \(\vec R_i\). The Bloch function can now be constructed~\cite{stoyanova}:
+\begin{equation}\begin{aligned}
+	\label{bloch-states}
+	\Psi_{\vec k}(\vec r) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec r_d - \vec R_i, \vec r_{0} - \vec R_i\right)
+\end{aligned}\end{equation}
+Applying the full Hamiltonian on this state gives
+\begin{equation}\begin{aligned}
+	H_\text{H-H} \Psi_{\vec k}(\vec r) = \sum_{\vec R_i}\sum_{j} \mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i\right\}\right) e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} - \vec R_j\right)
+\end{aligned}\end{equation}
+From the local nature of the wavefunctions, we have \(\mathcal{H}_\text{aux,i}\psi_\text{aux,j} = \delta_{ij} E \psi_\text{aux,j}\), where \(E\) is the energy eigenvalue of the auxiliary model. Substituting this gives
+\begin{equation}\begin{aligned}
+	H_\text{H-H} \Psi_{\vec k}(\vec r) = E\left(\left\{\vec r_k - \vec R_i\right\}\right) e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} - \vec R_j\right) = E \Psi_{\vec k}(\vec r)
+\end{aligned}\end{equation}
+The states constructed in eq.~\ref{bloch-states} are therefore eigenstates of the full Hamiltonian with the same eigenvalue \(E\) as the auxiliary model.
+
+That \(\Psi_{\vec k}\) transforms like Bloch functions can be easily verified:
+\begin{equation}\begin{aligned}
+	\Psi_{\vec k}(\vec r + \vec R) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec r_d + \vec R - \vec R_i, \vec r_0 + \vec R - \vec R_{i}\right) = e^{i \vec{k}\cdot\vec{R}}\sum_{j} e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} + \vec R - \vec R_j\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}(\vec r)
+\end{aligned}\end{equation}
+In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\).
+
+Within the auxiliary model wavefunction \(\psi_\text{aux}\left(\vec r_d - \vec R_i, \vec r_0 - \vec R_i\right) \), the role of the impurity is to imitate the effect of correlations, while the role of the zeroth site is to introduce non-locality. Since it is the impurity site (and in general, the cluster) that is designed to be the closest to the bulk model in terms of local correlation, we will extract on-site measures of correlation only from the cluster sites, and involve the bath site only in the non-local measures.
+
+\section{Single-particle Green's function}
+We define \(\ket{\Phi_0(\vec k)}\) as the ground state of the bulk model, and it has a representation in terms of the auxiliary model eigenstates: \(\ket{\Phi_0} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_{\text{aux}, i}\). To obtain Greens functions, we start by calculating real-space matrix elements of the bulk and auxiliary Hamiltonians. The states that we will consider are local excitations on top of the ground state: \(\ket{i} \equiv c^\dagger_{i\sigma}\ket{\Phi_0}\). \(i\) represents a lattice site. Sandwiching eq.~\ref{siam_to_hubb} between \(\ket{i}\) and \(\bra{i}\), we get
+\begin{equation}\begin{aligned}
+	\braket{i | H_\text{H-H} | i} = \sum_j \braket{i | \mathcal{H}_\text{aux,j} | i}
+\end{aligned}\end{equation}
+As discussed above, the local nature of the auxiliary models (onsite matrix element only on the impurity and non-local matrix element only between impurity and zeroth site) renders all diagonal matrix elements zero, except the one for \(i=j\):
+\begin{equation}\begin{aligned}
+	\braket{i | H_\text{H-H} | i} = \braket{i | \mathcal{H}_\text{aux,i} | i} = \braket{\psi_\text{aux} | c_{i\sigma} e^{-i \vec{k}\cdot\vec{R}_i} \mathcal{H}_\text{aux,i} e^{i \vec{k}\cdot\vec{R}_i} c^\dagger_{i\sigma} | \psi_\text{aux}} = \braket{\psi_\text{aux} | c_{i\sigma} \mathcal{H}_\text{aux,i} c^\dagger_{i\sigma} | \psi_\text{aux}} = \braket{\psi_\text{aux} | c_{d\sigma} \mathcal{H}_\text{aux} c^\dagger_{d\sigma} | \psi_\text{aux}}
+\end{aligned}\end{equation}
+At the last step, we recognised \(i\) as the impurity site and rewrote the expression entirely in terms of a site-independent auxiliary model.
+Similarly, the off-diagonal matrix element between two nearest-neighbour sites \(i,j\) is obtained as
+\begin{equation}\begin{aligned}
+	\braket{i | H_\text{H-H} | j} = \braket{i | \left(\mathcal{H}_\text{aux,i} + \mathcal{H}_\text{aux,j}\right) | j} = \frac{1}{w}\braket{\psi_\text{aux} | c_{i\sigma} e^{-i \vec{k}\cdot\vec{R}_i} \left(\mathcal{H}_\text{aux,i,j} + \mathcal{H}_\text{aux,j,i}\right) e^{i \vec{k}\cdot\vec{R}_j} c^\dagger_{j\sigma} | \psi_\text{aux}} \\
+	= \frac{1}{w}e^{i \vec{k}\cdot\left(\vec{R}_j - \vec{R}_i\right)}\braket{\psi_\text{aux} | \left(c_{d\sigma}\mathcal{H}_\text{aux} c^\dagger_{0\sigma} + c_{0\sigma}\mathcal{H}_\text{aux} c^\dagger_{d\sigma}\right) | \psi_\text{aux}}
+\end{aligned}\end{equation}
+\(\mathcal{H}_\text{aux,i,j}\) is the auxiliary model with \(i\) as the impurity site and \(j\) as the bath zeroth site. 
+
+
+
+
+We now define the Greens {\it operators}:
+\begin{equation}\begin{aligned}
+	\mathcal{G}_{H-H} = \frac{1}{\omega - \left(H_{H-H} - E_\text{gs}\right) }, \mathcal{G}_\text{aux}(i) = \frac{1}{\omega - \left(\mathcal{H}_\text{aux}(i) - E_\text{gs}\right)}
+\end{aligned}\end{equation}
+Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian and also of the full model \(\mathcal{H}_{H-H}\). Rewriting eq.~\ref{siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
+\begin{equation}\begin{aligned}
+\sum_i \left(\omega + E_\text{gs} - \mathcal{G}^{-1}_\text{aux}(i)\right) = \omega + E_\text{gs} - \mathcal{G}^{-1}_{H-H} \implies \sum_i \mathcal{G}^{-1}_\text{aux}(i) = \mathcal{G}^{-1}_{H-H}~,
 \end{aligned}\end{equation}
 We will now take matrix elements of the full Greens function and obtain these matrix elements in terms of those of the auxiliary model. Let \(\left\{ \ket{\Phi}_n \right\} \) be the set of eigenstates of \(\mathcal{H}_\text{aux}\), and \(\ket{\Phi}_0\) be the groundstate. We assume that the ground state of \(H_{H-H}\) is captured well by the auxiliary model, such that the real-space diagonal matrix element for particle propagation is obtained by sandwiching the Greens function between the states \(c^\dagger_{i\sigma}\ket{\Phi}_0\):
 \begin{equation}\begin{aligned}
@@ -2562,10 +2619,37 @@ The mapping between the parameters of the auxiliary model and that of the bulk a
 
 \appendixtitleon
 
-\chapter{Derivation of RG equations}
-\section{\(U_b\)-free terms}
-\subsection{Renormalisation of the impurity energy \(\epsilon_d\)}
-The coupling \(\epsilon_d\) is renormalised by three kinds of vertices: \(V^2\), \(J^2\) and \(K^2\). We will consider these processes one after another. We define \(n_j\) as the number of states being decoupled on each side of the Fermi surface, at the \(j^\text{th}\) RG step. In order to treat both spin and isospin exchanges democratically, we take \(\ket{\Psi}_i = \frac{1}{2}\left(\ket{0} + \ket{q\uparrow} + \ket{q\downarrow} + \ket{q\uparrow, q\downarrow}\right) \) as the \textit{initial} state for the scattering processes. The intermediate states \(\ket{\Psi}_\text{int}\) in the particle sector \(\left(c_{q\beta}\ket{\Psi}_i\right)\) and hole sector \(\left(c^\dagger_{q\beta}\ket{\Psi}_i\right)\) will then have both spin and isospin excitations which can couple with the corresponding impurity degree of freedom. We will assume that states  \(q > k_F~\left(\epsilon_q > 0\right) \) above the Fermi surface can have only particle excitations and states below the Fermi surface can only have hole excitations. The kinetic energy part \(\epsilon_q \tau_{q\beta}\) of \(H_D\) for \(\ket{\Psi}_i\) is then zero, whereas it is always \(D/2\) for \(\ket{\Psi}_\text{int}\). To demonstrate this for a typical \(q < k_F\), the hole excitation is \(c_{q \uparrow}\ket{\Psi}_i = \frac{1}{\sqrt 2}\left(\ket{0} + \ket{q \downarrow}\right)\). This has an isospin term in the form of the \textit{holon} and a spin term in the form of the down state. Since \(\tau_{q \uparrow} = -\frac{1}{2}\) in the excited state, the kinetic energy for \(\ket{\Psi}_\text{int}\) is \(\epsilon_q \tau_{q \uparrow} = \left(-D\right)\times\left(-\frac{1}{2}\right) = D/2\).
+\chapter{Derivation of RG equations for the impurity model with \(U,V,J,K,U_b,\eta\)}
+
+\section{The Hamiltonian}
+
+The Hamiltonian for the impurity problem is
+\begin{equation}\begin{aligned}
+	\mathcal{H} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{1}{2} U \left( \tau_{d \uparrow} - \tau_{d \downarrow} \right) ^2 + \frac{1}{2}\eta \left(\tau_{d \uparrow} + \tau_{d \downarrow}\right) + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} + K \vec{C}_d\cdot\vec{C} - U_b\left(\tau_{0 \uparrow} - \tau_{0 \downarrow}\right)^2 
+\end{aligned}\end{equation}
+wher \(\tau \equiv \hat n -\frac{1}{2}\). The first term is the kinetic energy term with a dispersion \(\epsilon_k\). The second term is the particle-hole symmetric impurity correlation term that sets the uncorrelated half-filled level \(\tau_{d\uparrow} = - \tau_{d \downarrow} = \pm \frac{1}{2}\) at energy \(-U/2\) below the Fermi surface, and the correlated doublon and holon states \(\tau_{d\downarrow} = \tau_{d \uparrow} = \pm \frac{1}{2}\) at the Fermi surface. The particle-hole symmetry is in the fact that the term is invariant under \(\tau_{d\sigma} \to-\tau_{d\sigma}\), and manifests in the symmetric positioning of the doublon and holon levels with respect to each other. The third term is the particle-hole asymmetry term that explicitly measures the deviation away from particle-hole symmetry - it is non-zero only when we are away from half-filling. The fourth, fifth and sixth terms describe various mechanisms in which the impurity can hybridise with the conduction bath. The first of these is a single-particle hopping \(V\), the second mechanism is through spin-flip scattering, and the third is through isospin-flip scattering. The single-particle hybridisation \(V\) allows the impurity electron to tunnel into the conduction bath and this leads to a frequency-dependent self-energy renormalisation of the impurity, implying that the impurity electron can spend  large amount of time in the bath~\cite{coleman2015}. \(\vec S_d = \frac{1}{2}\sum_{\alpha\beta}\vec \sigma_{\alpha\beta}c^\dagger_{d\alpha}c_{d\beta} \) is the impurity spin, while \(\vec C_d = \frac{1}{2}\sum_{\alpha\beta} \psi^\dagger_\alpha \vec \sigma_{\alpha\beta}\psi_\beta\) is the impurity isospin, where \(\psi = \left(c_{d\uparrow} ~ ~ ~ ~ c^\dagger_{d \downarrow}\right)\)~
+\cite{anderson1958random,nambu_1960}. The former acts on the \(2-\)dimensional Hilbert-space formed by the magnetic up and down states on the impurity, while the latter acts on the \(2-\)dimensional space formed by the doublon and holon states. The former reacts to a magnetic field, while the latter responds to a chemical potential. Such a chemical potential term that couples with the isospin is already present in the Hamiltonian - it is the assymetry term \(\eta\). In fact, that term can be rewritten as \(\eta C_d^z\), because \(C^z_d = \frac{1}{2}\left(\hat n_{d \uparrow} + \hat n_{d \downarrow} - 1\right) = \frac{1}{2}\left( \tau_{d \uparrow} + \tau_{d \downarrow} \right) \). The bath operators \(\vec s\) and \(\vec C\) are defined in the same way as the operator counterparts: \(\vec s = \sum_{kk^\prime\alpha\beta}\vec \sigma_{\alpha\beta}c^\dagger_{k\alpha}c_{k^\prime\beta}, \vec C = \sum_{kk^\prime\alpha\beta}{\psi^k}^\dagger_\alpha\vec\sigma_{\alpha\beta}\psi^{k^\prime}_\beta\), where \(\psi^k = \left(c_{k\alpha} ~ ~ ~ ~ c^\dagger_{k^\prime\beta}\right) \). The final seventh term is a local particle-hole symmetric correlation on the zeroth site of the bath. For \(U_b>0\), this term promotes half-filling on the zeroth site, while for \(U_b<0\), a doublon or holon is more favourable on that site.
+
+We first Fourier transform the \(U_b\)-term to \(k-\)space. In \(k-\)space, the diagonal contribution (to \(H_D\)) coming from this term is the single-particle self-energy \(-U_b\left(\hat n_{q \beta}\right)^2\) which can be made particle-hole symmetric in the form:
+\begin{equation}\begin{aligned}
+	-U_b\left(\tau_{q \beta}\right)^2
+\end{aligned}\end{equation}
+where \(q\) is the \(k-\)state being decoupled and \(\tau \equiv \hat n - 1/2\). In the initial state \(\ket{\Psi}_i\), we have \(\langle \hat n_{q\beta} \rangle = 1/2 \implies \tau_{q\beta} = 0\), so the contribution of \(U_b\) to that state is 0. For both hole excitations \(c_{q\beta}\ket{\Psi}_i\) as well as particle excitations \(c^\dagger_{q\beta}\ket{\Psi}_i\), the intermediate state energy lowers to \(-U_b/4\).
+
+The off-diagonal part is
+\begin{equation}\begin{aligned}
+	-\frac{U_b}{2}\sum_{kk^\prime\sigma}c^\dagger_{k\sigma}c_{k^\prime\sigma} + U_b \sum_{k_1,k_2,k_1^\prime,k_2^\prime} c^\dagger_{k_1 \uparrow}c_{k_2 \uparrow} c^\dagger_{k^\prime_1 \downarrow}c_{k^\prime_2 \downarrow} 
+\end{aligned}\end{equation}
+We ignore the potential scattering arising from the first term.
+
+\section{Renormalisation of the impurity energy levels}
+A single site has four degrees of freedom arising from the spin-degeneracy, and can be represented by the Hamiltonian
+\begin{equation}\begin{aligned}
+	H = \epsilon_0 \ket{0}\bra{0} + \epsilon_1 \sum_\sigma\ket{\sigma}\bra{\sigma} + \epsilon_2 \ket{2}\bra{2}
+\end{aligned}\end{equation}
+\(\ket{0},\ket{2}\) are the holon and doublon states, while \(\ket{\sigma}\) is the state where the site is singly-occupied by a particle of spin \(\sigma\). We will obtain the renormalisation to the energy levels \(\epsilon_0,\epsilon_1\) and \(\epsilon_2\), and thereby calculate the renormalisation in \(U\) and \(\eta\). This can be done by noting that \(\epsilon_1 = -\frac{U}{2}\), and \(\epsilon_2 = \eta\). A qualifier is, however, needed here. In the bare Hamiltonian, the energies of the doublon and holon states are negatives of each other, and this would correspond to requiring \(\epsilon_2 = -\epsilon_0\). This may not hold true under renormalisation, and the way we account for this is that at each step of the RG, we subtract a constant energy from the Hamiltonian so as to set the energy of the holon state to 0. This means that the energy of the singly-occupied and doublon states become \(\epsilon_1 - \epsilon_0\) and \(\epsilon_2 - \epsilon_0\). And since we have identified \(\epsilon_1\) and \(\epsilon_2\) as \(-\frac{U}{2}\) and \(\eta\) respectively, we can use \(\Delta U = -2\left(\Delta \epsilon_1 - \Delta \epsilon_0\right), \Delta \eta = \Delta \epsilon_2 - \Delta \epsilon_0 \).
+
+We need to look at three kinds of scattering vertices here: \(V^2\), \(J^2\) and \(K^2\). We will consider these processes one after another. We define \(n_j\) as the number of states being decoupled on each side of the Fermi surface, at the \(j^\text{th}\) RG step. In order to treat both spin and isospin exchanges democratically, we take \(\ket{\Psi}_i = \frac{1}{2}\left(\ket{0} + \ket{q\uparrow} + \ket{q\downarrow} + \ket{q\uparrow, q\downarrow}\right) \) as the \textit{initial} state for the scattering processes. The intermediate states \(\ket{\Psi}_\text{int}\) in the particle sector \(\left(c_{q\beta}\ket{\Psi}_i\right)\) and hole sector \(\left(c^\dagger_{q\beta}\ket{\Psi}_i\right)\) will then have both spin and isospin excitations which can couple with the corresponding impurity degree of freedom. We will assume that states  \(q > k_F~\left(\epsilon_q > 0\right) \) above the Fermi surface can have only particle excitations and states below the Fermi surface can only have hole excitations. The kinetic energy part \(\epsilon_q \tau_{q\beta}\) of \(H_D\) for \(\ket{\Psi}_i\) is then zero, whereas it is always \(D/2\) for \(\ket{\Psi}_\text{int}\). To demonstrate this for a typical \(q < k_F\), the hole excitation is \(c_{q \uparrow}\ket{\Psi}_i = \frac{1}{\sqrt 2}\left(\ket{0} + \ket{q \downarrow}\right)\). This has an isospin term in the form of the \textit{holon} and a spin term in the form of the down state. Since \(\tau_{q \uparrow} = -\frac{1}{2}\) in the excited state, the kinetic energy for \(\ket{\Psi}_\text{int}\) is \(\epsilon_q \tau_{q \uparrow} = \left(-D\right)\times\left(-\frac{1}{2}\right) = D/2\).
 
 The renormalisation arising from the first kind of terms, in the particle sector, is
 \begin{equation}\begin{aligned}
@@ -3057,7 +3141,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 \end{figure}
 
 \chapter{Simple results for the Greens functions}
-\section{Relation between single-particle Greens function and the Greens function operator $(T=0)$}
+\section{Relation between single-particle Greens function and the Greens operator $(T=0)$}
  The single-particle Greens function is defined as the solution of the equation:
  \begin{equation}\begin{aligned}
 	 \left(i\partial_t - H(\vec r)\right)G(\vec r,\vec r^\prime, t) = \delta(\vec r - \vec r^\prime)
@@ -3075,7 +3159,7 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 	 G(\nu, \nu^\prime, \omega) &= \sum_{n}\left[\frac{\bra{GS}c(\nu)\ket{n}\bra{n}c^\dagger(\nu^\prime)\ket{GS}}{\omega + E_{GS} - E_n} + \frac{\bra{GS}c^\dagger(\nu^\prime)\ket{n}\bra{n}c(\nu)\ket{GS}}{\omega + E_n - E_{GS}}\right]\\
 							&= \bra{GS}c(\nu)\frac{1}{\omega + E_{GS} - H}c^\dagger(\nu^\prime)\ket{GS} + \bra{GS}c^\dagger(\nu^\prime)\frac{1}{\omega + H - E_{GS}}c(\nu)\ket{GS}\\
  \end{aligned}\end{equation}
- If we now define a Greens function operator
+ If we now define a Greens operator
  \begin{equation}\begin{aligned}
 	 \label{inv_G_func}
 	 \mathcal{G}(\omega, H) = \frac{1}{\omega - (H - E_\text{GS})}

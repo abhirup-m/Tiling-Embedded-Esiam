@@ -1692,28 +1692,36 @@ also enjoys a Bloch's theorem. This is because the tiling procedure restores the
 \end{aligned}\end{equation}
 There we used the fact that \(\vec r_k + \vec R\) simply translates the auxiliary model defined by the coordinate \(i\) to a new auxiliary model at the modified coordinate \(\tilde i: \vec R_i^\prime = \vec R_i + \vec R\). Since this transformation from one auxiliary model to another simply shuffles the group of all auxiliary models, the sum over the group remains the sum, and we recover the same bulk model.
 
-To build eigenstates that satisfy Bloch's theorem, we approximate the eigenstates of the auxiliary models to highly localised forms \(\psi_{\text{aux}}\left( \vec r_d - \vec R_i, \vec r_{0} - \vec R_i \right) \) which involve only the impurity electron \(\vec r_d\) and the zeroth site \(\vec r_0\) of the auxiliary model. With this approximation, the wavefunction for each auxiliary model is neglible outside the lattice site \(\vec R_i\). The Bloch function can now be constructed~\cite{stoyanova}:
+We can use the auxiliary model eigenstates \(\psi_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\} \right) \equiv \psi_\text{aux,i}\) to construct eigenstates of the bulk Hamiltonian. The following combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
 \begin{equation}\begin{aligned}
 	\label{bloch-states}
-	\Psi_{\vec k}(\vec r) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec r_d - \vec R_i, \vec r_{0} - \vec R_i\right)
+	\Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux,i}
 \end{aligned}\end{equation}
-Applying the full Hamiltonian on this state gives
+To demonstrate that these are indeed eigenstates of the bulk Hamiltonian, we will calculate the matrix elements of the full Hamiltonian between these states:
 \begin{equation}\begin{aligned}
-	H_\text{H-H} \Psi_{\vec k}(\vec r) = \sum_{\vec R_i}\sum_{j} \mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i\right\}\right) e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} - \vec R_j\right)
+	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{ij}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux,i}} H_\text{H-H}\ket{\psi_\text{aux,j}} = \sum_{i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_j e^{i\vec k^\prime\cdot\left(\vec R_i - \vec{R}_j\right)} \bra{\psi_\text{aux,i}} H_\text{H-H}\ket{\psi_\text{aux,j}}
 \end{aligned}\end{equation}
-From the local nature of the wavefunctions, we have \(\mathcal{H}_\text{aux,i}\psi_\text{aux,j} = \delta_{ij} E \psi_\text{aux,j}\), where \(E\) is the energy eigenvalue of the auxiliary model. Substituting this gives
+We define \(\vec L = \vec R_i - \vec R_j\), and sum over \(\vec L\): 
 \begin{equation}\begin{aligned}
-	H_\text{H-H} \Psi_{\vec k}(\vec r) = E\left(\left\{\vec r_k - \vec R_i\right\}\right) e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} - \vec R_j\right) = E \Psi_{\vec k}(\vec r)
+\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{\vec L} e^{i\vec k^\prime\cdot\vec L} \bra{\psi_{\text{aux},\vec R_i}} H_\text{H-H}\ket{\psi_{\text{aux},\vec R_i - \vec L}}
 \end{aligned}\end{equation}
-The states constructed in eq.~\ref{bloch-states} are therefore eigenstates of the full Hamiltonian with the same eigenvalue \(E\) as the auxiliary model.
+The sum over \(\vec L\) can be split into two summations, one over the distance \(L\) and another over the directions \(\vec a(L)\). Also note that because of translation symmetry, the matrix element will depend only on the distance \(L\) and not the direction: \(M(L) \equiv \bra{\psi_{\text{aux},\vec R_i}} H_\text{H-H}\ket{\psi_{\text{aux},\vec R_i - \vec L}}\).
+\begin{equation}\begin{aligned}
+	\bra{\Psi_{\vec k^\prime}(\vec r)}H_\text{H-H} \ket{\Psi_{\vec k}(\vec r)} = \sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{L} M(L) \sum_{\vec a(L)}e^{i\vec k^\prime\cdot\vec a(L)} = \delta_{\vec k, \vec k^\prime}\sum_{L} M(L) \xi_{\vec k}\left(L\right)
+\end{aligned}\end{equation}
+Here, \(\vec a(L)\) sums over all the primitive vectors connecting any single site with all its neighbours at a distance \(L\), and \(\xi_{\vec k} = \sum_{\vec a(L)}e^{i\vec k^\prime\cdot\vec a(L)}\). The Kronecker delta in front ensures that the Hamiltonian \(H_\text{H-H}\) is diagonal in the basis of the constructed eigenstates. The eigenvalue corresponding to \(\ket{\Psi_{\vec k}}\) is \(\sum_{L} M(L) \xi_{\vec k}\left(L\right)\).
 
 That \(\Psi_{\vec k}\) transforms like Bloch functions can be easily verified:
 \begin{equation}\begin{aligned}
-	\Psi_{\vec k}(\vec r + \vec R) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec r_d + \vec R - \vec R_i, \vec r_0 + \vec R - \vec R_{i}\right) = e^{i \vec{k}\cdot\vec{R}}\sum_{j} e^{i \vec{k}\cdot\vec{R}_j} \psi_\text{aux}\left(\vec r_d - \vec R_j, \vec r_{0} + \vec R - \vec R_j\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}(\vec r)
+	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \sum_{\vec R_i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_i + \vec R\right\}\right) = \sum_{\vec R_j} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_j\right\}\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\vec r\right)
 \end{aligned}\end{equation}
-In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\).
+In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\). The wavefunction can be even brought into the familiar Bloch function form:
+\begin{equation}\begin{aligned}
+	\Psi_{\vec k}\left(\left\{\vec r_k\right\}\right) = e^{i \vec{k}\cdot\frac{1}{N}\sum_k \vec{r}_k}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right) = e^{i \vec{k}\cdot\vec{r}_\text{COM}} \eta_{\vec k}\left(\left\{\vec r_k\right\}\right)
+\end{aligned}\end{equation}
+where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
 
-Within the auxiliary model wavefunction \(\psi_\text{aux}\left(\vec r_d - \vec R_i, \vec r_0 - \vec R_i\right) \), the role of the impurity is to imitate the effect of correlations, while the role of the zeroth site is to introduce non-locality. Since it is the impurity site (and in general, the cluster) that is designed to be the closest to the bulk model in terms of local correlation, we will extract on-site measures of correlation only from the cluster sites, and involve the bath site only in the non-local measures.
+
 
 \section{Single-particle Green's function}
 We define \(\ket{\Phi_0(\vec k)}\) as the ground state of the bulk model, and it has a representation in terms of the auxiliary model eigenstates: \(\ket{\Phi_0} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_{\text{aux}, i}\). To obtain Greens functions, we start by calculating real-space matrix elements of the bulk and auxiliary Hamiltonians. The states that we will consider are local excitations on top of the ground state: \(\ket{i} \equiv c^\dagger_{i\sigma}\ket{\Phi_0}\). \(i\) represents a lattice site. Sandwiching eq.~\ref{siam_to_hubb} between \(\ket{i}\) and \(\bra{i}\), we get

@@ -1678,34 +1678,40 @@ The only change is the generation of the last term. The mappings between the exi
 In the discussion henceforth, we will assume all the models are at half-filling. We will come back to the doped case at a later point in time.
 
 \section{Nature of the wavefunctions}
-In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full wavefunction \(\Psi\) is then obtained by constructing liner combinations of the eigenstates \(\psi_i\) of the local Hamiltonians such that \(\Psi\) satisfies Bloch's theorem: \(\Psi_{\vec k}(\vec r) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r - \vec R_i)\). To satisfy Bloch's theorem means to behave in acertain way under a translation operation by some lattice distance \(\vec R = \sum_i n_i \vec a_i\):
+In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full wavefunction \(\Psi\) is then obtained by constructing liner combinations of the eigenstates \(\psi_i\) of the local Hamiltonians such that \(\Psi\) satisfies Bloch's theorem: \(\Psi_{\vec k}(\vec r) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r - \vec R_i)\). To satisfy Bloch's theorem means to behave in acertain way under a translation operation \(T(\vec R)\) by some lattice distance \(\vec R = \sum_i n_i \vec a_i\):
 \begin{equation}\begin{aligned}
-\Psi_{\vec k}(\vec r + \vec R) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r + \vec R - \vec R_i) = e^{i \vec{k}\cdot\vec{R}}\sum_i e^{i \vec{k}\cdot\left(\vec{R}_i - \vec R\right)} \psi_i(\vec r - (\vec R_i - \vec R)) = e^{\vec{k}\cdot\vec{R}}\Psi(\vec r)
+T(\vec R)\Psi_{\vec k}\left(\vec r\right) = \Psi_{\vec k}(\vec r + \vec R) = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_i(\vec r + \vec R - \vec R_i) = e^{i \vec{k}\cdot\vec{R}}\sum_i e^{i \vec{k}\cdot\left(\vec{R}_i - \vec R\right)} \psi_i(\vec r - (\vec R_i - \vec R)) = e^{\vec{k}\cdot\vec{R}}\Psi(\vec r)
 \end{aligned}\end{equation}
-At the end, we used the fact that \(\vec r_i - \vec R\) is just another lattice vector \(\vec R_j\). The bulk Hamiltonian obtained in eq.~\ref{siam_to_hubb},
+At the end, we used the fact that \(\vec r_i - \vec R\) is just another lattice vector \(\vec R_j\). Note that the translation operator has been defined as an operation that simply advances the argument of the wavefunction from \(\vec r\) to \(\vec r + \vec R\). An equivalent definition can be given in terms of their action on position eigenkets: \(T(\vec R)\ket{\vec r} = \ket{\vec r - \vec R}\). These translation operators share eigenstates with the momentum operator:
 \begin{equation}\begin{aligned}
-	H_\text{H-H}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i} \mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i\right\}\right)~,
+	T\left( \vec R \right) \ket{\vec k} = \sum_{\vec r_i} e^{i \vec{k}\cdot\vec{r}_i}T\left( \vec R \right)\ket{\vec r_i} = e^{i \vec{k}\cdot\vec{R}}\sum_{\vec r_i} e^{i \vec{k}\cdot\left(\vec{r}_i - \vec R\right)}\ket{\vec r_i - \vec R} = e^{i \vec{k}\cdot\vec{R}} \ket{\vec k}
+\end{aligned}\end{equation}
+
+
+The bulk Hamiltonian obtained in eq.~\ref{siam_to_hubb},
+\begin{equation}\begin{aligned}
+	H_\text{H-H}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i} \mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i\right\}\right) \equiv \sum_{\vec R_i} \mathcal{H}_\text{aux}\left(\vec R_i\right)~,
 \end{aligned}\end{equation}
 also enjoys a Bloch's theorem. This is because the tiling procedure restores the translation symmetry of the lattice:
 \begin{equation}\begin{aligned}
-	H_\text{H-H}(\left\{\vec r_k + \vec R\right\}) =  \sum_{\vec R_i}\mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i + \vec R\right\}\right) = \sum_{\vec R_i} \mathcal{H}_{\text{aux},\tilde i}\left(\left\{\vec r_k - \vec R\right\}\right) = H_\text{H-H}(\left\{\vec r_k\right\})
+	H_\text{H-H}\left(\left\{\vec r_k + \vec R\right\}\right) =  \sum_{\vec R_i}\mathcal{H}_\text{aux,i}\left(\left\{\vec r_k - \vec R_i + \vec R\right\}\right) = \sum_{\vec R_i} \mathcal{H}_{\text{aux},\tilde i}\left(\left\{\vec r_k - \vec R\right\}\right) = H_\text{H-H}(\left\{\vec r_k\right\})
 \end{aligned}\end{equation}
 There we used the fact that \(\vec r_k + \vec R\) simply translates the auxiliary model defined by the coordinate \(i\) to a new auxiliary model at the modified coordinate \(\tilde i: \vec R_i^\prime = \vec R_i + \vec R\). Since this transformation from one auxiliary model to another simply shuffles the group of all auxiliary models, the sum over the group remains the sum, and we recover the same bulk model.
 
-We can use the auxiliary model eigenstates \(\psi_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\} \right) \equiv \psi_\text{aux,i}\) to construct eigenstates of the bulk Hamiltonian. The following combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
+We can use the auxiliary model eigenstates \(\psi_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\} \right) \equiv \psi_\text{aux}\left(\vec R_i\right)\) to construct eigenstates of the bulk Hamiltonian. The following combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
 \begin{equation}\begin{aligned}
 	\label{bloch-states}
-	\Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux,i}
+	\Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right) = \sum_{i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i\right)
 \end{aligned}\end{equation}
 To demonstrate that these are indeed eigenstates of the bulk Hamiltonian, we will calculate the matrix elements of the full Hamiltonian between these states:
 \begin{equation}\begin{aligned}
-	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{ij}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux,i}} H_\text{H-H}\ket{\psi_\text{aux,j}} = \sum_{i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_j e^{i\vec k^\prime\cdot\left(\vec R_i - \vec{R}_j\right)} \bra{\psi_\text{aux,i}} H_\text{H-H}\ket{\psi_\text{aux,j}}
+	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{ij}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi_\text{aux,j}} = \sum_{i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_j e^{i\vec k^\prime\cdot\left(\vec R_i - \vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi_\text{aux,j}}
 \end{aligned}\end{equation}
 We define \(\vec L = \vec R_i - \vec R_j\), and sum over \(\vec L\): 
 \begin{equation}\begin{aligned}
-\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{\vec L} e^{i\vec k^\prime\cdot\vec L} \bra{\psi_{\text{aux},\vec R_i}} H_\text{H-H}\ket{\psi_{\text{aux},\vec R_i - \vec L}}
+\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{\vec L} e^{i\vec k^\prime\cdot\vec L} \bra{\psi_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi_\text{aux}\left(\vec R_i- \vec L\right)}
 \end{aligned}\end{equation}
-The sum over \(\vec L\) can be split into two summations, one over the distance \(L\) and another over the directions \(\vec a(L)\). Also note that because of translation symmetry, the matrix element will depend only on the distance \(L\) and not the direction: \(M(L) \equiv \bra{\psi_{\text{aux},\vec R_i}} H_\text{H-H}\ket{\psi_{\text{aux},\vec R_i - \vec L}}\).
+The sum over \(\vec L\) can be split into two summations, one over the distance \(L\) and another over the directions \(\vec a(L)\). Also note that because of translation symmetry, the matrix element will depend only on the distance \(L\) and not the direction: \(M(L) \equiv \bra{\psi_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi_\text{aux}\left(\vec R_i- \vec L\right)}\).
 \begin{equation}\begin{aligned}
 	\bra{\Psi_{\vec k^\prime}(\vec r)}H_\text{H-H} \ket{\Psi_{\vec k}(\vec r)} = \sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{L} M(L) \sum_{\vec a(L)}e^{i\vec k^\prime\cdot\vec a(L)} = \delta_{\vec k, \vec k^\prime}\sum_{L} M(L) \xi_{\vec k}\left(L\right)
 \end{aligned}\end{equation}
@@ -1713,7 +1719,7 @@ Here, \(\vec a(L)\) sums over all the primitive vectors connecting any single si
 
 That \(\Psi_{\vec k}\) transforms like Bloch functions can be easily verified:
 \begin{equation}\begin{aligned}
-	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \sum_{\vec R_i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_i + \vec R\right\}\right) = \sum_{\vec R_j} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\left\{\vec r_k - \vec R_j\right\}\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\vec r\right)
+	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \sum_{\vec R_i} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i - \vec R\right) = \sum_{\vec R_j} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\vec R_j\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\vec r\right)
 \end{aligned}\end{equation}
 In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\). The wavefunction can be even brought into the familiar Bloch function form:
 \begin{equation}\begin{aligned}
@@ -1724,10 +1730,72 @@ where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass c
 
 
 \section{Single-particle Green's function}
-We define \(\ket{\Phi_0(\vec k)}\) as the ground state of the bulk model, and it has a representation in terms of the auxiliary model eigenstates: \(\ket{\Phi_0} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_{\text{aux}, i}\). To obtain Greens functions, we start by calculating real-space matrix elements of the bulk and auxiliary Hamiltonians. The states that we will consider are local excitations on top of the ground state: \(\ket{i} \equiv c^\dagger_{i\sigma}\ket{\Phi_0}\). \(i\) represents a lattice site. Sandwiching eq.~\ref{siam_to_hubb} between \(\ket{i}\) and \(\bra{i}\), we get
+We define \(\ket{\Phi_0(\vec k)}\) as the ground state of the bulk model, and it has an expression in terms of the auxiliary model eigenstates: \(\ket{\Phi_0(\vec k)} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left( \vec R_i \right) \). To obtain Greens functions, we start by calculating real-space matrix elements of the bulk and auxiliary Hamiltonians. The states that we will consider are local excitations on top of the ground state: \(\ket{i} \equiv c^\dagger_{i\sigma}\ket{\Phi_0\left( \vec k \right) }\). \(i\) represents a lattice site. Sandwiching eq.~\ref{siam_to_hubb} between \(\ket{i}\) and \(\bra{i}\), we get
 \begin{equation}\begin{aligned}
-	\braket{i | H_\text{H-H} | i} = \sum_j \braket{i | \mathcal{H}_\text{aux,j} | i}
+	\label{diag_mat_ele_1}
+	\braket{i | H_\text{H-H} | i} = \sum_{\vec R_j} \braket{\Phi_0\left( \vec k \right) | c_{i\sigma} \mathcal{H}_\text{aux}\left( \vec R_j \right) c^\dagger_{i\sigma} | \Phi_0\left( \vec k \right) } = \sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi_\text{aux}\left( \vec R_n \right) | c_{i\sigma} \mathcal{H}_\text{aux}\left( \vec R_j \right) c^\dagger_{i\sigma}  | \psi_\text{aux}\left( \vec R_m \right)}
 \end{aligned}\end{equation}
+There are, in general, three auxiliary models in the final expression on the right hand side - one at \(\vec R_n\), one at \(\vec R_m\) and another at \(\vec R_j\). In order to rewrite everything in terms of a single auxiliary model at the origin \(\vec R_0\) of the lattice, we will use the translation operators:
+\begin{equation}\begin{aligned}
+	\ket{\psi_\text{aux}\left( \vec R_m \right)} = \ket{\psi_\text{aux}\left( \left\{\vec r_k - \vec R_m\right\} \right)} = \ket{\psi_\text{aux}\left( \left\{\vec r_k - \vec R_0 + \left(\vec R_0 - \vec R_m\right)\right\} \right)} = T\left( \vec R_0 - \vec R_m \right) \ket{\psi_\text{aux}\left( \left\{\vec r_k - \vec R_0\right\} \right)} \\
+	= T\left(\vec R_0 - \vec R_m\right) \ket{\psi_\text{aux}\left(\vec R_0\right)}
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	\ket{\psi_\text{aux}\left( \vec R_n \right)} = T\left(\vec R_0 - \vec R_n\right) \ket{\psi_\text{aux}\left(\vec R_0\right)}
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{aux}\left( \vec R_j \right) = T\left(\vec R_0 - \vec R_j\right) \mathcal{H}_\text{aux}\left( \vec R_0 \right) T^\dagger\left(\vec R_0 - \vec R_j\right)
+\end{aligned}\end{equation}
+Substituting these forms into the expression in eq.~\ref{diag_mat_ele_1} gives
+\begin{equation}\begin{aligned}
+	&\braket{i | H_\text{H-H} | i} \\
+	&= \sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi_\text{aux}\left( \vec R_0 \right) | T^\dagger\left( \vec R_0 - \vec R_n \right) c_{i\sigma} T\left( \vec R_0 - \vec R_j \right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)T^\dagger\left( \vec R_0 - \vec R_j \right) c^\dagger_{i\sigma}  T\left( \vec R_0 - \vec R_m \right)| \psi_\text{aux}\left( \vec R_0 \right)}
+\end{aligned}\end{equation}
+We will now absorb some of the translation operators into the creation and annihilation operators \(c_{i\sigma}\) that describe the excitation:
+\begin{equation}\begin{aligned}
+	T^\dagger\left( \vec R_0 - \vec R_n \right) c_{i\sigma} T\left( \vec R_0 - \vec R_j \right) &= T^\dagger\left( \vec R_0 - \vec R_n \right) c_{\sigma}\left( \vec R_i \right)  T^\dagger\left(\vec R_j - \vec R_0\right) \\
+												    &= T^\dagger\left( \vec R_0 - \vec R_n \right) T^\dagger \left(\vec R_j - \vec R_0\right) T\left(\vec R_j - \vec R_0\right) c_{\sigma}\left( \vec R_i \right)  T^\dagger\left(\vec R_j - \vec R_0\right)\\
+												    &=T^\dagger\left(\vec R_j - \vec R_n\right) c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)
+\end{aligned}\end{equation}
+There, we used \(T^\dagger(\vec R_1) T^\dagger (\vec R_2) = T^\dagger(\vec R_1 + \vec R_2)\). For the creation operator, we similarly get
+\begin{equation}\begin{aligned}
+	T^\dagger\left( \vec R_0 - \vec R_j \right) c^\dagger_{i\sigma} T\left( \vec R_0 - \vec R_m \right) = \left[T^\dagger\left( \vec R_0 - \vec R_m \right) c_{i\sigma} T\left( \vec R_0 - \vec R_j \right)\right]^\dagger = c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right) T\left(\vec R_j - \vec R_m\right)
+\end{aligned}\end{equation}
+Substituting these forms gives
+\begin{equation}\begin{aligned}
+	&\braket{i | H_\text{H-H} | i} \\
+	&= \sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi_\text{aux}\left( \vec R_0 \right) | T^\dagger\left(\vec R_j - \vec R_n\right) c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right) T\left(\vec R_j - \vec R_m\right)| \psi_\text{aux}\left( \vec R_0 \right)}
+\end{aligned}\end{equation}
+To resolve the remaining translation operators, we will now insert momentum eigenkets \(1 = \sum_{\vec k}\ket{\vec k}\bra{\vec k}\) in between the operators. These eigenkets can be any state with a definite momentum, the simplest case being the eigenstates of a tight-binding Hamiltonian obtained by setting \(U=J=0\) in the bulk model.
+\begin{equation}\begin{aligned}
+	&\braket{i | H_\text{H-H} | i} \\
+	=& \sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \bra{\psi_\text{aux}\left( \vec R_0 \right)} \sum_{\vec k_2}\ket{\vec k_2}\bra{\vec k_2}T^\dagger\left(\vec R_j - \vec R_n\right) c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\\
+	 &\sum_{\vec k_1}T\left(\vec R_j - \vec R_m\right)\ket{\vec k_1}\bra{\vec k_1} \ket{\psi_\text{aux}\left( \vec R_0 \right)}
+\end{aligned}\end{equation}
+From the definition of the translation operators shown above, we get \(T\left(\vec R_j - \vec R_m\right)\ket{\vec k_1} = e^{i \vec{k}_1\cdot\left(\vec{R}_j - \vec R_m\right)}\ket{\vec k_1}\) and \(\bra{\vec k_2}T^\dagger\left(\vec R_j - \vec R_n\right) = \bra{\vec k_2}e^{-i \vec{k}_2\cdot\left(\vec{R}_j - \vec R_n\right)}\). Substituting this gives
+\begin{equation}\begin{aligned}
+	&\braket{i | H_\text{H-H} | i} \\
+	=& \sum_{\vec R_j, \vec R_m, \vec R_n}\sum_{\vec k_1,\vec k_2} e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right)} e^{i\vec{R}_n\cdot\left(\vec{k}_2 - \vec k\right)} e^{i\vec{R}_m\cdot\left(\vec{k} - \vec k_1\right)} \bra{\psi_\text{aux}\left( \vec R_0 \right)} \ket{\vec k_2}\bra{\vec k_2} c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\\
+	 &\ket{\vec k_1}\bra{\vec k_1} \ket{\psi_\text{aux}\left( \vec R_0 \right)}\\
+	=& \sum_{\vec R_j}\sum_{\vec k_1,\vec k_2} e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right)} \delta_{\vec{k},\vec k_2} \delta_{\vec{k},\vec k_1} \bra{\psi_\text{aux}\left( \vec R_0 \right)} \ket{\vec k_2}\bra{\vec k_2} c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\ket{\vec k_1}\bra{\vec k_1} \ket{\psi_\text{aux}\left( \vec R_0 \right)}\\
+	=& \sum_{\vec R_j} \braket{\psi_\text{aux}\left( \vec R_0 \right) | \vec k}\bra{\vec k} c_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left( \vec R_i - \vec R_j + \vec R_0\right)\ket{\vec k}\braket{\vec k | \psi_\text{aux}\left( \vec R_0 \right)}\\
+\end{aligned}\end{equation}
+Since \(\vec R_i + \vec R_0 - \vec R_j\) is a lattice translation vector, summing over \(\vec R_j\) means that \(\vec R_i + \vec R_0 - \vec R_j\) sums over all lattice sites \(\vec R_k\). This is equivalent to stating the translation symmetry of the lattice. Redefining \(\vec R_j\) to be equal to \(\vec R_k\), we get
+\begin{equation}\begin{aligned}
+	\braket{i | H_\text{H-H} | i} = |\braket{\psi_\text{aux}\left( \vec R_0 \right) | \vec k}|^2 \bra{\vec k} \sum_{\vec R_j} c_{\sigma}\left(\vec R_j\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left(\vec R_j\right)\ket{\vec k}
+\end{aligned}\end{equation}
+Even though it is computationally easier to consider the state \(\ket{\vec k}\) as the momentum eigenstates of the tight-binding kind, there is a more illuminating interpretation of this expression if we consider them as the eigenstates \(\ket{\Phi\left( \vec k \right) }\) of the full bulk model. With this choice, the expression can be seen as the sum of effects of creating a single-particle excitation \(c^\dagger_\sigma\) on the ground state \(\ket{\Phi_0\left( \vec k \right) }\), at increasingly larger distances \(\vec R_j\) from the auxiliary model at \(\vec R_0\). The excitation is made to evolve through the auxiliary model \(\mathcal{H}_\text{aux}\left( \vec R_0 \right) \) centred at \(\vec R_0\). The excitation is ultimately annihilated and the state returns to the ground state. However, since we are describing the excitation of the bulk ground state using an auxiliary model Hamiltonian, we also need to multply this with the fidelity between the full ground state and the auxiliary model ground state. That is taken care of by the inner-product multiplying the matrix element. That inner product can be thought of as an overlap between a separable state and an entangled state - the full Hamiltonian state is obtained by entangling the overlapping auxiliary models, while the single auxiliary model groundstate is the separable state in this context. The inner product then becomes a measure of entanglement of the bulk ground state - the more the overlap with the separable state, the lower the entanglement: \(\varepsilon(\vec R_0,\vec k) \equiv 1 - |\braket{\psi_\text{aux}\left(  \right) | \Phi_0(\vec k)}|^2\).
+\begin{equation}\begin{aligned}
+	\braket{i | H_\text{H-H} | i} = \left( 1 - \varepsilon(\vec R_0,\vec k) \right) \bra{\Phi_0(\vec k)} \sum_{\vec R_j} c_{\sigma}\left(\vec R_j\right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\sigma}\left(\vec R_j\right)\ket{\Phi_0(\vec k)}
+\end{aligned}\end{equation}
+The more is the entanglement content within the groundstate, the lower is the contribution from a single auxiliary model \(\mathcal{H}_\text{aux}\left( \vec R_0 \right)\). This makes sense between the contributions will then be distributed across all the auxiliary models. On the other hand, when the entanglement is low, any single auxiliary model provides a large contribution, which can be understood from the fact that any single auxiliary model is sufficient to describe the full ground state.
+
+
+
+
+
+
+\clearpage
 As discussed above, the local nature of the auxiliary models (onsite matrix element only on the impurity and non-local matrix element only between impurity and zeroth site) renders all diagonal matrix elements zero, except the one for \(i=j\):
 \begin{equation}\begin{aligned}
 	\braket{i | H_\text{H-H} | i} = \braket{i | \mathcal{H}_\text{aux,i} | i} = \braket{\psi_\text{aux} | c_{i\sigma} e^{-i \vec{k}\cdot\vec{R}_i} \mathcal{H}_\text{aux,i} e^{i \vec{k}\cdot\vec{R}_i} c^\dagger_{i\sigma} | \psi_\text{aux}} = \braket{\psi_\text{aux} | c_{i\sigma} \mathcal{H}_\text{aux,i} c^\dagger_{i\sigma} | \psi_\text{aux}} = \braket{\psi_\text{aux} | c_{d\sigma} \mathcal{H}_\text{aux} c^\dagger_{d\sigma} | \psi_\text{aux}}

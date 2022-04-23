@@ -1698,88 +1698,88 @@ also enjoys a Bloch's theorem. This is because the tiling procedure restores the
 \end{aligned}\end{equation}
 There we used the fact that \(\vec r_k + \vec R\) simply translates the auxiliary model defined by the coordinate \(i\) to a new auxiliary model at the modified coordinate \(\tilde i: \vec R_i^\prime = \vec R_i + \vec R\). Since this transformation from one auxiliary model to another simply shuffles the group of all auxiliary models, the sum over the group remains the sum, and we recover the same bulk model.
 
-We can use the auxiliary model eigenstates \(\psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\} \right) \equiv \psi^n_\text{aux}\left(\vec R_i\right)\) to construct eigenstates of the bulk Hamiltonian. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states. The following combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
+We can use the auxiliary model zero-bandwidth wavefunctions 
+\begin{equation}\begin{aligned}
+\psi^n_\text{aux}\left(\vec r_d - \vec R_i, \vec r_0 - \left(\vec R_i + \vec a\right)  \right) \equiv \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
+\end{aligned}\end{equation}
+with the impurity position \(\vec R_i\) and zeroth site position \(\vec R_i + \vec a\), to construct eigenstates of the bulk Hamiltonian. \(\vec R_i\) is a lattice vector, while \(\vec a\) is one of the \(w\) vectors that connect a lattice site with its nearest neighbours. This two site wavefunction can be obtained by first studying the full auxiliary model \(\mathcal{H}_\text{aux}\) under a renormalisation group, obtaining a fixed-point Hamiltonian in the IR, obtaining the IR eigenstate and then tracing out all lattice sites except the impurity and the zeroth site from this eigenstate. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states.
+
+The following un-normalised combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
+\begin{equation}\begin{aligned}
+	\ket{\Psi^n_{\vec k}} = \frac{1}{w \sqrt N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
+\end{aligned}\end{equation}
+where \(N\) is the total number of lattice sites. The interpretation is that the set of \(n=0\) states form the lowest band in the spectrum of the lattice. Higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \(\vec k\) and \(n\) to 0: \(\ket{\Psi_{\vec k=0}^{n=0}} \equiv \ket{\Psi_\text{gs}}\). We will actually work only in the lowest band \(n=0\), so we will drop the band index from now on and keep in mind that only the auxiliary model ground states appear in the formulation:
 \begin{equation}\begin{aligned}
 	\label{bloch-states}
-	\ket{\Psi^n_{\vec k}\left(\left\{ \vec r_k \right\} \right)} = \frac{1}{\sqrt N}\sum_{\vec R_i} e^{i \vec{k}\cdot\vec{R}_i} \ket{\psi^n_\text{aux}\left(\vec R_i\right)}
+	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\vec k} w N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i, \vec a\right)~,
 \end{aligned}\end{equation}
-where \(N\) is the total number of lattice sites. The interpretation is that the set of \(n=0\) states form the lowest band in the spectrum of the lattice. Higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \(\vec k\) and \(n\) to 0: \(\ket{\Psi_{\vec k=0}^{n=0}} \equiv \ket{\Psi_\text{gs}}\). These states form an orthonormal basis:
-\begin{flalign*}
-	&\braket{\Psi^m_{\vec k^\prime} | \Psi^n_{\vec k}} \\
-	&= \frac{1}{N}\sum_{\vec R_i, \vec R_j} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}^m\left( \vec R_j \right) | \psi_\text{aux}^n\left( \vec R_i \right)} = \frac{1}{N}\sum_{\vec R_i, \vec R_j} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}^m\left( \vec R_0 \right) T^\dagger\left( \vec R_0 - \vec R_j \right) T\left( \vec R_0 - \vec R_i \right) | \psi_\text{aux}^n\left( \vec R_0 \right)}\\
-	&= \frac{1}{N}\sum_{\vec R_i, \vec R_j, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}^m\left( \vec R_0 \right) T\left( \vec R_j - \vec R_i \right) \ket{\vec q}\bra{\vec q} \psi_\text{aux}^n\left( \vec R_0 \right)}\\
-	&= \frac{1}{N}\sum_{\vec R_i, \vec R_j, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}^m\left( \vec R_0 \right) e^{i \vec q \cdot \left( \vec R_j - \vec R_i \right)} \ket{\vec q}\bra{\vec q} \psi_\text{aux}^n\left( \vec R_0 \right)} \\
-	&= N \delta_{\vec k, \vec k^\prime}\braket{\psi_\text{aux}^m\left( \vec R_0 \right) \ket{\vec k}\bra{\vec k} \psi_\text{aux}^n\left( \vec R_0 \right)}, ~ ~ ~ \left[\because \sum_{\vec R_i}e^{i \vec R_i \left( \vec k - \vec q \right) }\sum_{\vec R_j}e^{i \vec R_j \left( \vec q - \vec k^\prime \right) } = N \delta_{\vec k,\vec q}N \delta_{\vec k^\prime,\vec q} \right]\\
-	&= \delta_{\vec k, \vec k^\prime}\int \prod_{\vec r_k}d\vec r_k~ \psi_\text{aux}^m\left( \left\{\vec r_k\right\} \right) e^{i \vec k \cdot \sum \vec r_k} \prod_{\vec r_k^\prime} d\vec r_k^\prime~ e^{-i \vec k \cdot \sum \vec r^\prime_k} \psi_\text{aux}^n\left( \left\{\vec r_k^\prime\right\} \right)
-\end{flalign*}
-The local nature of the auxiliary model wavefunctions ensures that the product of two auxiliary model wavefunctions will be non-zero only in the common region: \(\psi_\text{aux}^m\left( \left\{\vec r_k\right\} \right) \psi_\text{aux}^n\left( \left\{\vec r_k^\prime\right\}\right) \simeq \delta_{\vec r_k, \vec r_k^\prime} \psi_\text{aux}^m\left( \left\{\vec r_k\right\} \right) \psi_\text{aux}^n\left( \left\{\vec r_k\right\}\right)\). Substituting this and dropping the \(\prod\) for brevity gives
+where \(\lambda_{\vec k}\) is a normalisation factor and is defined by \(|\lambda_{\vec k}|^2 = |\braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}|^2 \); \(\ket{\vec k}\) is the momentum eigenstate for momentum \(\vec k\), and \(\vec R_0\) is any particular lattice site which we define as the origin of the lattice. Becuase of the symmetry of the lattice, the inner product in the definition of \(\lambda\) will be the same irrespective of which \(\vec a\) we choose among the \(w\) choices.
+
+It is easy to verify that \(\Psi_{\vec k}\left(\left\{ \vec r_k \right\}  \right) \) transforms like Bloch functions under translation by a displacement \(\vec R\):
 \begin{equation}\begin{aligned}
-	\braket{\Psi^m_{\vec k^\prime} | \Psi^n_{\vec k}} = \delta_{\vec k, \vec k^\prime}\int d\vec r_k~ d\vec r_k^\prime~ \delta_{\vec r_k, \vec r_k^\prime} \psi_\text{aux}^m\left(\left\{\vec r_k\right\}\right) \psi_\text{aux}^n\left(\left\{\vec r_k\right\}\right) e^{i \vec k \cdot \sum \left(\vec r_k - \vec r^\prime_k\right) } = \delta_{\vec k, \vec k^\prime}\int d\vec r_k \psi_\text{aux}^m\left(\left\{\vec r_k\right\}\right) \psi_\text{aux}^n\left(\left\{\vec r_k\right\}\right) = \delta_{\vec k,\vec k^\prime}\delta_{m,n}
+	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \frac{1}{\lambda_{\vec k} w N}\sum_{\vec R_i,\vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i - \vec R, \vec a\right) = \frac{1}{\lambda_{\vec k} w N}\sum_{\vec R_j, \vec a} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\vec R_j, \vec a\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right)
 \end{aligned}\end{equation}
-At the last step, we used the orthonormality of the eigenstates of the auxiliary model: \(\int \prod_{\vec r_k} d\vec r_k \psi_\text{aux}^m\left(\left\{\vec r_k\right\}\right) \psi_\text{aux}^n\left(\left\{\vec r_k\right\}\right) = \delta_{m,n}\).
+In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\). Note that the argument \(\vec a\) does not change under a translation of the system, because that vector always represents the difference between the impurity lattice position and its nearest neighbours, irrespective of the absolute position of the impurity.
+
+The wavefunction can be even brought into the familiar Bloch function form:
+\begin{equation}\begin{aligned}
+	\Psi^n_{\vec k}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i, \vec a} \frac{e^{i \vec{k}\cdot\vec{R}_i}}{\lambda_{\vec k} w N} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) = \frac{e^{i \vec{k}\cdot\frac{1}{N}\sum_k \vec{r}_k}}{\lambda_{\vec k} w N}\sum_{\vec R_i, \vec a} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) \\
+	= e^{i \vec{k}\cdot\vec{r}_\text{COM}} \eta_{\vec k}\left(\left\{\vec r_k\right\}\right)
+\end{aligned}\end{equation}
+where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\lambda_{\vec k} w N}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
+
+It is straightforward to show that these states form an orthonormal basis. We start by writing down the inner product of two distinct such states:
+\begin{equation}\begin{aligned}
+	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} 
+	&= \frac{1}{\lambda_{\vec k}^* \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_j, \vec a^\prime \right) | \psi_\text{aux}\left( \vec R_i, \vec a \right)} \\
+	&= \frac{1}{\lambda_{\vec k}^* \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T^\dagger\left( \vec R_0 - \vec R_j \right) T\left( \vec R_0 - \vec R_i \right) | \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+\end{aligned}\end{equation}
+At this point, we insert a complete basis of momentum eigenkets \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) to resolve the translation operators:
+\begin{equation}\begin{aligned}
+	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} &= \frac{1}{\lambda_{\vec k}^* \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T\left( \vec R_j - \vec R_i \right) \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+	&= \frac{1}{\lambda_{\vec k}^* \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) e^{i \vec q \cdot \left( \vec R_j - \vec R_i \right)} \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)} \\
+	&= \frac{1}{|\lambda_{\vec k}|^2 w^2} \delta_{\vec k, \vec k^\prime}\sum_{\vec a, \vec a^\prime}\braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) \ket{\vec k}\bra{\vec k} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+\end{aligned}\end{equation}
+At the last step, we used the summation form of the Kronecker delta function: \(\sum_{\vec R_i}e^{i \vec R_i \left( \vec k - \vec q \right) }\sum_{\vec R_j}e^{i \vec R_j \left( \vec q - \vec k^\prime \right) } = N \delta_{\vec k,\vec q}N \delta_{\vec k^\prime,\vec q}\). The final remaining step is to identify that the inner products inside the summation are actually independent of the direction \(\vec a, \vec a^\prime\) of the connecting vector, and both are equal to the normalisation factor \(\lambda_{\vec k}\):
+\begin{equation}\begin{aligned}
+	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} = \frac{1}{|\lambda_{\vec k}|^2 w^2 } \delta_{\vec k, \vec k^\prime}\sum_{\vec a,\vec a^\prime} |\lambda_{\vec k}|^2 = \frac{1}{|\lambda_{\vec k}|^2 w^2 } \delta_{\vec k, \vec k^\prime}w^2 |\lambda_{\vec k}|^2 = \delta_{\vec k, \vec k^\prime}
+\end{aligned}\end{equation}
+This concludes the proof of orthonormality.
 
 To demonstrate that these are indeed eigenstates of the bulk Hamiltonian, we will calculate the matrix elements of the full Hamiltonian between these states:
 \begin{equation}\begin{aligned}
-	&\bra{\Psi^n_{\vec k^\prime}}H_\text{H-H} \ket{\Psi^n_{\vec k}}\\
-	&= \frac{1}{N}\sum_{ij}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi^n_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi^n_\text{aux}\left(\vec R_j\right)} = \frac{1}{N}\sum_{i,j}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i} e^{i\vec k^\prime\cdot\left(\vec R_i - \vec{R}_j\right)} \bra{\psi^n_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi^n_\text{aux}\left(\vec R_j\right)}
+	&\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \frac{1}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_j, \vec a^\prime\right)} H_\text{aux}\left(\vec R_k\right) \ket{\psi_\text{aux}\left(\vec R_i, \vec a\right)}\\
+	&= \frac{1}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_0 - \vec R_j} T_{\vec R_0 - \vec R_k} H_\text{aux}\left(\vec R_0\right) T^\dagger_{\vec R_0 - \vec R_k} T_{\vec R_0 - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \frac{1}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}
 \end{aligned}\end{equation}
-We define \(\vec L = \vec R_i - \vec R_j\), and sum over \(\vec L\): 
+To resolve the translation operators, we will now insert the momentum eigenstates \(\ket{\vec k}\) of the full model: \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) in between the operators.
 \begin{equation}\begin{aligned}
-\bra{\Psi^n_{\vec k^\prime}}H_\text{H-H} \ket{\Psi^n_{\vec k}} = \frac{1}{N}\sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{\vec L} e^{i\vec k^\prime\cdot\vec L} \bra{\psi^n_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi^n_\text{aux}\left(\vec R_i- \vec L\right)}
+	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} &= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime}\bra{\vec q^\prime} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i}  \ket{\vec q}\braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} e^{-i \vec q^\prime \cdot \left(\vec R_k - \vec R_j\right) } e^{i \vec q \cdot \left(\vec R_k - \vec R_i\right)} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \frac{N}{\lambda^*_{\vec k^\prime} \lambda_{\vec k} w^2}\sum_{\vec a, \vec a^\prime, \vec q, \vec q^\prime} \delta_{\vec k, \vec q} \delta_{\vec q,\vec q^\prime} \delta_{\vec q^\prime,\vec k} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \frac{N}{|\lambda_{\vec k}|^2 w^2}\delta_{kk^\prime}\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}  \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \frac{N}{|\lambda_{\vec k}|^2 w^2}\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k} \underbrace{\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}}_{w^2 |\lambda_{\vec k}|^2}\\
+	&= N\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}
 \end{aligned}\end{equation}
-Note that because of translation symmetry, the matrix element will depend only on the distance \(\vec L\) and not the position \(\vec R_i\): \(C(-\vec L) \equiv \bra{\psi^n_\text{aux}\left(\vec R_i\right)} H_\text{H-H}\ket{\psi^n_\text{aux}\left(\vec R_i- \vec L\right)}\).
-\begin{equation}\begin{aligned}
-	\bra{\Psi^n_{\vec k^\prime}(\vec r)}H_\text{H-H} \ket{\Psi^n_{\vec k}(\vec r)} = \frac{1}{N}\sum_{\vec R_i}e^{i\left(\vec{k} - \vec k^\prime\right)\cdot\vec{R}_i}\sum_{\vec L} C(-\vec L) e^{i\vec k^\prime\cdot\vec L} = \frac{1}{N}\delta_{\vec k, \vec k^\prime}\times N\sum_{L} C(\vec L) e^{-i\vec k\cdot\vec L} = \delta_{\vec k, \vec k^\prime} \sum_{L} C(\vec L) e^{-i\vec k\cdot\vec L}
-\end{aligned}\end{equation}
-The Kronecker delta in front ensures that the Hamiltonian \(H_\text{H-H}\) is diagonal in the basis of the constructed eigenstates. The eigenvalue corresponding to \(\ket{\Psi^n_{\vec k}}\) is \(\sum_{L} C(\vec L) e^{-i\vec k\cdot\vec L}\). For thr ground state \(\vec k=0,n=0\), this can be simplified into
-\begin{equation}\begin{aligned}
-	\sum_{L} C(\vec L) &= \sum_{\vec L}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} H_\text{H-H}\ket{\psi^0_\text{aux}\left(\vec R_0 - \vec L\right)} = \sum_{\vec L,\vec R_j}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} H_\text{aux}\left(\vec R_j\right) T\left( \vec L \right) \ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-			   &=\sum_{\vec L,\vec R_j}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} T(\vec R_0 - \vec R_j) H_\text{aux}\left(\vec R_0\right)T^\dagger(\vec R_0 - \vec R_j) T\left( \vec L \right) \ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-			   &=\sum_{\vec L,\vec R_j}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} T(\vec R_0 - \vec R_j) H_\text{aux}\left(\vec R_0\right) T\left(\vec L + \vec R_j - \vec R_0\right) \ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-\end{aligned}\end{equation}
-To resolve the remaining translation operators, we will now insert the eigenstates \(\ket{\Psi_{\vec k}}\) of the full model: \(1 = \sum_{\vec k,n}\ket{\Psi^n_{\vec k}}\bra{\Psi^n_{\vec k}}\) in between the operators. These eigenkets can in general be any state with a definite momentum, the simplest case being the eigenstates of a tight-binding Hamiltonian obtained by setting \(U=J=0\) in the bulk model. We have chosen the eigenstates of the full model for our purpose. We already know, from Bloch's theorem, that \(T(\vec R)\ket{\Psi_{\vec k}} = e^{i \vec{k}\cdot\vec{R}}\ket{\Psi_{\vec k}}\). 
-\begin{equation}\begin{aligned}
-	\sum_{L} C(\vec L) &= \sum_{n,\vec L,\vec R_j, \vec k_1, \vec k_2}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} \ket{\Psi^n_{\vec k_2}}\bra{\Psi^n_{\vec k_2}} T^\dagger(-\vec R_0 + \vec R_j) H_\text{aux}\left(\vec R_0\right) T\left(\vec L + \vec R_j - \vec R_0\right) \ket{\Psi^n_{\vec k_1}}\bra{\Psi^n_{\vec k_1}}\ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-			   &= \sum_{n,\vec L,\vec R_j, \vec k_1, \vec k_2}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} \ket{\Psi^n_{\vec k_2}}\bra{\Psi^n_{\vec k_2}} e^{-i \vec k_2 \cdot \left(-\vec R_0 + \vec R_j\right)} H_\text{aux}\left(\vec R_0\right) e^{i \vec k_1 \cdot \left(\vec L + \vec R_j - \vec R_0\right)} \ket{\Psi^n_{\vec k_1}}\bra{\Psi^n_{\vec k_1}}\ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-			   &= \sum_{n,\vec L,\vec k_1, \vec k_2}e^{i \vec{\Psi^n_{\vec k_1}}\cdot\vec{L}}\bra{\psi^0_\text{aux}\left(\vec R_0\right)} \ket{\Psi^n_{\vec k_2}}\bra{\Psi^n_{\vec k_2}} N\delta_{\vec k_1,\vec k_2} H_\text{aux}\left(\vec R_0\right) \ket{\Psi^n_{\vec k_1}}\bra{k_1}\ket{\psi^0_\text{aux}\left(\vec R_0\right)}\\
-			   &= N\sum_{n,\vec L, \vec k}e^{i \vec{k}\cdot\vec{L}} |\braket{\psi^0_\text{aux}\left(\vec R_0\right) | \Psi_{\vec k}^n}|^2 \bra{\Psi_{\vec k}^n} H_\text{aux}\left(\vec R_0\right) \ket{\Psi_{\vec k}^n}\\
-			   &= N^2 |\braket{\psi^0_\text{aux}\left(\vec R_0\right) | \Psi_\text{gs}}|^2 \bra{\Psi_\text{gs}} H_\text{aux}\left(\vec R_0\right) \ket{\Psi_\text{gs}}\\
-\end{aligned}\end{equation}
-\(\ket{\Psi_\text{gs}}\) is the ground state of the bulk model, and can be expressed as a sum over the auxiliary models at varying distances from \(\vec R_0\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the auxiliary model at \(\vec R_0\), and improvements are then made by considering auxiliary models at further distances. 
-
-It is easy to verify that \(\Psi^n_{\vec k}\) transforms like Bloch functions:
-\begin{equation}\begin{aligned}
-	\Psi^n_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \frac{1}{\sqrt N}\sum_{\vec R_i} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i - \vec R\right) = \frac{1}{\sqrt N}\sum_{\vec R_j} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi^n_\text{aux}\left(\vec R_j\right) = e^{i \vec{k}\cdot\vec{R}} \Psi^n_{\vec k}\left(\vec r\right)
-\end{aligned}\end{equation}
-In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\). The wavefunction can be even brought into the familiar Bloch function form:
-\begin{equation}\begin{aligned}
-	\Psi^n_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\sqrt N}e^{i \vec{k}\cdot\frac{1}{N}\sum_k \vec{r}_k}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right) = e^{i \vec{k}\cdot\vec{r}_\text{COM}} \eta_{\vec k}\left(\left\{\vec r_k\right\}\right)
-\end{aligned}\end{equation}
-where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\sqrt N}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
+The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position eigenkets at varying distances from \(\vec R_0\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the state at \(\vec R_0\), and improvements are then made by considering auxiliary models at further distances. 
 
 
 \section{Single-particle Green's function}
-In the previous part, we obtained, among other states, the ground state \(\ket{\Psi_\text{gs}} = \ket{\Psi^{n=0}_{\vec k=0}} = \frac{1}{\sqrt N}\sum_{\vec R}\ket{\psi^0_\text{aux}\left( \vec R \right)}\) of the bulk Hamiltonian.
+In the previous part, we obtained, among other states, the ground state \(\ket{\Psi_\text{gs}} = \ket{\Psi^{n=0}_{\vec k=0}} = \frac{1}{\lambda_0 w N}\sum_{\vec R, \vec a}\ket{\psi_\text{aux}\left( \vec R, \vec a \right)}\) of the bulk Hamiltonian.
 To obtain Greens functions, we start by calculating real-space matrix elements of the bulk and auxiliary Hamiltonians. The states that we will consider are local excitations on top of the ground state: \(\ket{i} \equiv c^\dagger_{i\sigma}\ket{\Psi_\text{gs} }\). \(i\) represents a lattice site. Sandwiching eq.~\ref{siam_to_hubb} between \(\ket{i}\) and \(\bra{i}\), we get
 \begin{equation}\begin{aligned}
 	\label{diag_mat_ele_1}
-	\braket{i | H_\text{H-H} | i} = \sum_{\vec R_j} \braket{\Psi_\text{gs} | c_{i\sigma} \mathcal{H}_\text{aux}\left( \vec R_j \right) c^\dagger_{i\sigma} | \Psi_\text{gs} } = \frac{1}{N}\sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi^0_\text{aux}\left( \vec R_n \right) | c_{i\sigma} \mathcal{H}_\text{aux}\left( \vec R_j \right) c^\dagger_{i\sigma}  | \psi^0_\text{aux}\left( \vec R_m \right)}
+	\braket{i | H_\text{H-H} | i} = \frac{1}{|\lambda_0|^2 w^2 N^2}\sum_{\vec R_j, \vec R_m, \vec R_n, \atop{\vec a, \vec a^\prime}} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi_\text{aux}\left( \vec R_n, \vec a^\prime \right) | c_{i\sigma} \mathcal{H}_\text{aux}\left( \vec R_j \right) c^\dagger_{i\sigma}  | \psi_\text{aux}\left( \vec R_m, \vec a \right)}
 \end{aligned}\end{equation}
 There are, in general, three auxiliary models in the final expression on the right hand side - one at \(\vec R_n\), one at \(\vec R_m\) and another at \(\vec R_j\). In order to rewrite everything in terms of a single auxiliary model at the origin \(\vec R_0\) of the lattice, we will use the translation operators:
-\begin{equation}\begin{aligned}
-	\ket{\psi^0_\text{aux}\left( \vec R_m \right)} = \ket{\psi^0_\text{aux}\left( \left\{\vec r_k - \vec R_m\right\} \right)} = \ket{\psi^0_\text{aux}\left( \left\{\vec r_k - \vec R_0 + \left(\vec R_0 - \vec R_m\right)\right\} \right)} = T\left( \vec R_0 - \vec R_m \right) \ket{\psi^0_\text{aux}\left( \left\{\vec r_k - \vec R_0\right\} \right)} \\
-	= T\left(\vec R_0 - \vec R_m\right) \ket{\psi^0_\text{aux}\left(\vec R_0\right)}
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-	\ket{\psi^0_\text{aux}\left( \vec R_n \right)} = T\left(\vec R_0 - \vec R_n\right) \ket{\psi^0_\text{aux}\left(\vec R_0\right)}
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
+\begin{gather}
+	\ket{\psi_\text{aux}\left( \vec R_m, \vec a \right)} = T\left(\vec R_0 - \vec R_m\right) \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}, ~ \ket{\psi_\text{aux}\left( \vec R_n, \vec a^\prime \right)} = T\left(\vec R_0 - \vec R_n\right) \ket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)}\\
 	\mathcal{H}_\text{aux}\left( \vec R_j \right) = T\left(\vec R_0 - \vec R_j\right) \mathcal{H}_\text{aux}\left( \vec R_0 \right) T^\dagger\left(\vec R_0 - \vec R_j\right)
-\end{aligned}\end{equation}
+\end{gather}
 Substituting these forms into the expression in eq.~\ref{diag_mat_ele_1} gives
 \begin{equation}\begin{aligned}
-	&\braket{i | H_\text{H-H} | i} \\
-	&= \frac{1}{N}\sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi^0_\text{aux}\left( \vec R_0 \right) | T^\dagger\left( \vec R_0 - \vec R_n \right) c_{i\sigma} T\left( \vec R_0 - \vec R_j \right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)T^\dagger\left( \vec R_0 - \vec R_j \right) c^\dagger_{i\sigma}  T\left( \vec R_0 - \vec R_m \right)| \psi^0_\text{aux}\left( \vec R_0 \right)}
+	&\braket{i | H_\text{H-H} | i} =\\
+	&\sum_{\vec R_j, \vec R_m, \atop{\vec R_n, \vec a, \vec a^\prime}} \frac{e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)}}{|\lambda_0|^2 w^2 N^2} \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) | T^\dagger\left( \vec R_0 - \vec R_n \right) c_{i\sigma} T\left( \vec R_0 - \vec R_j \right)\mathcal{H}_\text{aux}\left( \vec R_0 \right)T^\dagger\left( \vec R_0 - \vec R_j \right) c^\dagger_{i\sigma}  T\left( \vec R_0 - \vec R_m \right)| \psi_\text{aux}\left( \vec R_0, \vec a \right)}
 \end{aligned}\end{equation}
 We will now absorb some of the translation operators into the creation and annihilation operators \(c_{i\sigma}\) that describe the excitation:
 \begin{equation}\begin{aligned}
@@ -1794,24 +1794,23 @@ There, we used \(T^\dagger(\vec R_1) T^\dagger (\vec R_2) = T^\dagger(\vec R_1 +
 The operator \(c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\) creates an electron of spin \(\sigma\) at the position \(\vec R_i - \vec R_j + \vec R_0\). It will be represented as \(c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\). Substituting these forms gives
 \begin{equation}\begin{aligned}
 	&\braket{i | H_\text{H-H} | i} \\
-	&= \frac{1}{N}\sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \braket{\psi^0_\text{aux}\left( \vec R_0 \right) | T^\dagger\left(\vec R_j - \vec R_n\right) c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma} T\left(\vec R_j - \vec R_m\right)| \psi^0_\text{aux}\left( \vec R_0 \right)}
+	&= \sum_{\vec R_j, \vec R_m, \atop{\vec R_n, \vec a, \vec a^\prime}} \frac{e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)}}{|\lambda_0|^2 w^2 N^2} \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime\right) | T^\dagger\left(\vec R_j - \vec R_n\right) c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma} T\left(\vec R_j - \vec R_m\right)| \psi_\text{aux}\left( \vec R_0, \vec a \right)}
 \end{aligned}\end{equation}
-To resolve the remaining translation operators, we will now insert momentum eigenkets \(1 = \sum_{\vec k}\ket{\vec k}\bra{\vec k}\) in between the operators. These eigenkets can be any state with a definite momentum, the simplest case being the eigenstates of a tight-binding Hamiltonian obtained by setting \(U=J=0\) in the bulk model.
+To resolve the remaining translation operators, we will now insert the eigenstates \(1 = \sum_{\vec k}\ket{\Psi_{\vec k}}\bra{\Psi_{\vec k}}\) in between the operators.
 \begin{equation}\begin{aligned}
-	\braket{i | H_\text{H-H} | i} = \frac{1}{N}\sum_{\vec R_j, \vec R_m, \vec R_n} e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)} \bra{\psi^0_\text{aux}\left( \vec R_0 \right)} \sum_{\vec k_2}\ket{\vec k_2}\bra{\vec k_2}T^\dagger\left(\vec R_j - \vec R_n\right) c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\\
-	 \sum_{\vec k_1}T\left(\vec R_j - \vec R_m\right)\ket{\vec k_1}\bra{\vec k_1} \ket{\psi^0_\text{aux}\left( \vec R_0 \right)}
+	\braket{i | H_\text{H-H} | i} = \sum_{\vec R_j, \vec R_m, \vec R_n, \atop{\vec a, \vec a^\prime, \vec k_1, \vec k_2}} \frac{e^{i\vec{k}\cdot\left(\vec{R}_m - \vec R_n\right)}}{|\lambda_0|^2 w^2 N^2} \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) | \Psi_{\vec k_2}}\bra{\Psi_{\vec k_2}}T^\dagger\left(\vec R_j - \vec R_n\right) c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma} T\left(\vec R_j - \vec R_m\right)\\
+	\ket{\Psi_{\vec k_1}}\braket{\Psi_{\vec k_1} | \psi_\text{aux}\left( \vec R_0, \vec a \right)}
 \end{aligned}\end{equation}
-From the definition of the translation operators shown above, we get 
+From Bloch's theorem, we have
 \begin{equation}\begin{aligned}
-T\left(\vec R_j - \vec R_m\right)\ket{\vec k_1} = e^{i \vec{k}_1\cdot\left(\vec{R}_j - \vec R_m\right)}\ket{\vec k_1}, ~ ~\bra{\vec k_2}T^\dagger\left(\vec R_j - \vec R_n\right) = \bra{\vec k_2}e^{-i \vec{k}_2\cdot\left(\vec{R}_j - \vec R_n\right)}~.
+T\left(\vec R_j - \vec R_m\right)\ket{\Psi_{\vec k_1}} = e^{i \vec{k}_1\cdot\left(\vec{R}_j - \vec R_m\right)}\ket{\Psi_{\vec k_1}}, ~ ~\bra{\Psi_{\vec k_2}}T^\dagger\left(\vec R_j - \vec R_n\right) = \bra{\Psi_{\vec k_2}}e^{-i \vec{k}_2\cdot\left(\vec{R}_j - \vec R_n\right)}~.
 \end{aligned}\end{equation}
  Substituting this gives
 \begin{equation}\begin{aligned}
-	&\braket{i | H_\text{H-H} | i} \\
-	=& \frac{1}{N} \sum_{\vec R_j, \vec R_m, \vec R_n}\sum_{\vec k_1,\vec k_2} e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right)} e^{i\vec{R}_n\cdot\left(\vec{k}_2 - \vec k\right)} e^{i\vec{R}_m\cdot\left(\vec{k} - \vec k_1\right)} \bra{\psi^0_\text{aux}\left( \vec R_0 \right)} \ket{\vec k_2}\bra{\vec k_2} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\\
-	 &\ket{\vec k_1}\bra{\vec k_1} \ket{\psi^0_\text{aux}\left( \vec R_0 \right)}\\
-	=& \frac{1}{N} \sum_{\vec R_j}\sum_{\vec k_1,\vec k_2} e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right)} N^2 \delta_{\vec{k},\vec k_2} \delta_{\vec{k},\vec k_1} \bra{\psi^0_\text{aux}\left( \vec R_0 \right)} \ket{\vec k_2}\bra{\vec k_2} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\ket{\vec k_1}\bra{\vec k_1} \ket{\psi^0_\text{aux}\left( \vec R_0 \right)}\\
-	=& N \sum_{\vec R_j} \braket{\psi^0_\text{aux}\left( \vec R_0 \right) | \vec k}\bra{\vec k} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\ket{\vec k}\braket{\vec k | \psi^0_\text{aux}\left( \vec R_0 \right)}\\
+	&\braket{i | H_\text{H-H} | i} =\\
+	& \sum_{\vec R_j, \vec R_m, \vec R_n, \atop{\vec a, \vec a^\prime, \vec k_1, \vec k_2}} \frac{e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right) + i\vec{R}_n\cdot\left(\vec{k}_2 - \vec k\right) + i\vec{R}_m\cdot\left(\vec{k} - \vec k_1\right)}}{|\lambda_0|^2 w^2 N^2}  \braket{\psi_\text{aux}\left( \vec R_0 \right) | \Psi_{\vec k_2}}\bra{\Psi_{\vec k_2}} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\ket{\Psi_{\vec k_1}}\braket{\Psi_{\vec k_1} | \psi_\text{aux}\left( \vec R_0 \right)}\\
+	&= \frac{1}{N} \sum_{\vec R_j}\sum_{\vec k_1,\vec k_2} e^{i\vec{R}_j\cdot\left(\vec{k}_1 - \vec k_2\right)} N^2 \delta_{\vec{k},\vec k_2} \delta_{\vec{k},\vec k_1} \bra{\psi^0_\text{aux}\left( \vec R_0 \right)} \ket{\vec k_2}\bra{\vec k_2} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\ket{\vec k_1}\bra{\vec k_1} \ket{\psi^0_\text{aux}\left( \vec R_0 \right)}\\
+	&= N \sum_{\vec R_j} \braket{\psi^0_\text{aux}\left( \vec R_0 \right) | \vec k}\bra{\vec k} c_{\vec R_i - \vec R_j + \vec R_0,\sigma}\mathcal{H}_\text{aux}\left( \vec R_0 \right)c^\dagger_{\vec R_i - \vec R_j + \vec R_0,\sigma}\ket{\vec k}\braket{\vec k | \psi^0_\text{aux}\left( \vec R_0 \right)}\\
 \end{aligned}\end{equation}
 Since \(\vec R_i + \vec R_0 - \vec R_j\) is a lattice translation vector, summing over \(\vec R_j\) means that \(\vec R_i + \vec R_0 - \vec R_j\) sums over all lattice sites \(\vec R_k\). This is equivalent to stating the translation symmetry of the lattice. Redefining \(\vec R_j\) to be equal to \(\vec R_k\), we get
 \begin{equation}\begin{aligned}

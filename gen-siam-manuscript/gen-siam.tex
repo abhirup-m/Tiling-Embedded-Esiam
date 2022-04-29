@@ -15,7 +15,7 @@
 \date{\today}
 
 \begin{abstract}
-
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 \end{abstract}
 
 \maketitle
@@ -49,6 +49,15 @@ Above a critical \(U_c\), the impurity spectral function gets gapped out, and th
 \caption{Two kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
 \end{figure}
 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+
+
+
+
 \section{The generalised Anderson impurity model}
 
 The impurity models we will work with couple the impurity to a single site in the lattice. We will refer to that specific site as the zeroth site throughout. We recall the Hamiltonian of the Anderson impurity model with a half-filled impurity site:
@@ -64,8 +73,9 @@ In order to enhance the Anderson impurity model, we introduce two extra two-part
 	\item a local correlation term \(U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}\) on the zeroth site
 \end{itemize}
 
-With these additional terms, the generalised Anderson impurity model, at particle-hole symmetry, is
+With these additional terms, the {\it generalised Anderson impurity model} (hence referred to as the GAIM), at particle-hole symmetry, is
 \begin{equation}\begin{aligned}
+	\label{GIAM-ham}
 	\mathcal{H} = \frac{- U}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)\\
 	+ J \vec{S}_d\cdot\vec{s}_0 + U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
 \end{aligned}\end{equation}
@@ -78,15 +88,26 @@ All the terms in the Hamiltonian have been depicted schematically in fig.~\ref{z
 	\label{zeromode-bare}
 \end{figure}
 
-\section{RG Equations for the model}
-We now perform a renormalisation group analysis of the MCK Hamiltonian using the recently developed URG method \cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome,1dhubjhep}.
-The RG proceeds {by applying unitary transformations in order to block-diagonalize the Hamiltonian by removing number fluctuations of the high energy degrees of freedom}.
-Given the most energetic electronic state at the \(j^\text{th}\) RG step is \(\ket{j}\) and defined by the energy \(D_{(j)}\), the Hamiltonian will in general not conserve the number of particles in this state: \(\left[H_{(j)}, \hat n_{j}\right] \neq 0\).
-The unitary transformation \(U_{(j)}\) will remove this number fluctuation at the next RG step~\cite{anirbanurg1,anirbanurg2}:
+\section{Method and RG Equations}
+
+\subsection{The unitary RG method}
+The focus here is on obtaining the low-energy phases of the GAIM. To accomplish this, we perform a renormalisation group analysis of the associated Hamiltonian (eq.~\ref{GIAM-ham}) using the recently developed unitary renormalisation group (URG) method \cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome,1dhubjhep,Mukherjee_mott_merg,anirban_kondo}. The unitary RG transformations lead to a series of Hamiltonians \(H_{(j)}\) related to the Hamiltonian at the previous step through a unitary transformation; the unitary transformations are defined by the requirement that they remove number fluctuations in high-energy \(k-\)states, thus making the Hamiltonian progressively more block-diagonal in momentum space. The high-energy degrees of freedom that get decoupled in the process become integrals of motion (IOMs) for the Hamiltonian and enter the Hamiltonian only in a purely number-diagonal form.
+
+To be more precise, we first choose a complete basis \(\left\{ \ket{j} \right\} \) and arrange these states from high-energy (UV) to low-energy (IR). Typically we take these states to be the momentum eigenstates \(\left(\ket{j} = \left\{\ket{\vec k \uparrow}, \ket{\vec k \downarrow}\right\}\right)\), and the isoenergetic shells \(\left\{D_{(j)}\right\}\) then define the sequence of states, such that the momenta far away from the Fermi surface (taken to be at higher \(j\) and having \(|D_{(j)}| \gg |\epsilon_F|\)) are taken to be the UV states while those near the Fermi surface (taken to be at lower \(j\) and having \(D_{(j)} \sim \epsilon_F\)) comprise the IR states. This scheme is shown in fig.~\ref{urg-scheme}.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{../figures/urg-scheme.pdf}
+	\caption{High energy - low energy scheme defined and used in the URG method. The states away from the Fermi surface form the UV subspace and are decoupled first, leading to a Hamiltonian which is more block-diagonal and comprised of only the IR states near the Fermi surface.}
+	\label{urg-scheme}
+\end{figure}
+
+At a given RG step \(j\), the Hamiltonian \(H_{(j)}\) involves number fluctuations between the \(k-\)states that have energies lower than \(D_{(j+1)}\). So the most energetic states that are still non-trivially present in \(H_{(j)}\) are those on the energy contour \(D_{(j)}\), and the Hamiltonian \(H_{(j)}\) will, in general, not conserve the number of particles in this energy (or momentum) state: \(\left[H_{(j)}, \hat n_{j}\right] \neq 0\). The unitary transformation \(U_{(j)}\) is then defined so as to remove this number fluctuation at the next RG step~\cite{anirbanurg1,anirbanurg2}:
 \begin{equation}\begin{aligned}
 	H_{(j-1)} = U_{(j)} H_{(j)} U^\dagger_{(j)}~, ~\left[H_{(j-1)}, \hat n_{j}\right] =0~.
 \end{aligned}\end{equation}
-The unitary transformations are given in terms of a fermionic generator \(\eta_{(j)}\)~\cite{anirbanurg1,anirbanurg2}:
+
+The unitary transformations can be expressed in terms of a generator \(\eta_{(j)}\) that has fermionic algebra~\cite{anirbanurg1,anirbanurg2}:
 \begin{equation}\begin{aligned}
 	U_{(j)} = \frac{1}{\sqrt 2}\left(1 + \eta_{(j)} - \eta_{(j)}^\dagger\right)~,~ \quad\left\{ \eta_{(j)},\eta_{(j)}^\dagger \right\}_\pm = 1~,
 \end{aligned}\end{equation}
@@ -94,11 +115,13 @@ where \(\left\{A,B\right\}_\pm = AB \pm BA\). The generator itself is given by t
 \begin{equation}\begin{aligned}
 	\eta^\dagger_{(j)} = \frac{1}{\hat \omega_{(j)} - \text{Tr}\left(H_{(j)} \hat n_{j}\right) } c^\dagger_{j} \text{Tr}\left(H_{(j)}c_{j}\right)~.
 \end{aligned}\end{equation}
-The operator \(\hat \omega_{(j)}\) encodes the quantum fluctuation scales arising from the interplay of the kinetic energy terms and the interaction terms in the Hamiltonian:
+The important operator \(\hat \omega_{(j)}\) originates from the quantum fluctuations that exist in the problem because of the non-commutation of the kinetic energy terms and the interaction terms in the Hamiltonian:
 \begin{equation}\begin{aligned}
 	\hat \omega_{(j)} = H_{(j-1)} - H^i_{(j)}~.
 \end{aligned}\end{equation}
-\(H^i_{(j)}\) is that part of \(H_{(j)}\) that commutes with \(\hat n_j\) but does not commute with at least one \(\hat n_l\) for \(l < j\). The RG flow continues up to energy \(D^*\), where a fixed point is reached from the vanishing of the RG function. 
+\(H^i_{(j)}\) is the part of \(H_{(j)}\) that commutes with \(\hat n_j\) but does {\it not} commute with at least one \(\hat n_l\) for \(l < j\). The RG flow continues up to energy \(D^*\), where a fixed point is reached from the vanishing of the RG function. 
+
+\subsection{URG equations for the GAIM}
 
 The derivation of the RG equations for the generalised Anderson impurity model Hamiltonian is shown in the appendix. We provide below the RG equations for a given quantum fluctuation scale \(\omega\):
 \begin{gather}
@@ -116,52 +139,85 @@ The denominators \(d_i\) used in these equations are given by
 \end{gather}
 The symbols used in the RG equations have the following meanings: \(\Delta U\) represents the renormalisation in the coupling \(U\) in going from the \(j^\text{th}\) Hamiltonian to the \(\left( j-1 \right) ^\text{th}\) Hamiltonian by decoupling the isoenergetic shell at energy \(D_{(j)}\). \(n_j\) is the number of electronic states on the shell \(D_{(j)}\).
 
-We will discuss the consequences of these RG equations in the next sections, but we clarify here that the labels \(U_0,J_0,V_0\) that will occur in the axes of the plots or anywhere else represent the bare values of the couplings \(U,J\) and \(V\). We also point out here that throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	The reason for choosing the negative sign of \(U_b\) will be clarified in the next section.
+We will discuss the consequences of these RG equations in the next sections, but we clarify here that the labels \(U_0,J_0,V_0\) that might occur in the figures or elsewhere in the text represent the bare values of the associated couplings \(U,J\) and \(V\). We also point out here that throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\). The reason for choosing the negative sign of \(U_b\) will be clarified in the next section.
 
 \section{RG flows and phase diagram}
 
-We start the discussion on the nature of the RG flows by pointing out the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(U_b = -J/4\). Since \(J\) is positive, this means that we can capture both relevant and irrelevant RG flows of \(J\) by keeping \(U_b\) negative. \(U_b\) is found to be marginal under the RG transformation, and we set \(U_b\) to \(-U_0/10\) hereafter. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\).
+We start the discussion on the nature of the RG flows by noting that the bath correlation \(U_b\) is marginal, and the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(U_b = -J/4\). We will look at the RG flows of the couplings \(U,V\) and \(J\) on both sides of this critical point, and see what phases they lead to. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\). Before we start, note that:
+\begin{itemize}
+	\item Since \(J\) is positive, this means that we can capture both relevant and irrelevant RG flows of \(J\) by keeping \(U_b\) negative. \(U_b\) is found to be marginal under the RG transformation, and we set \(U_b\) to \(-U_0/10\) hereafter.
+	\item The critical point has been chosen from the RG equation of \(J\) and not of \(V\); this is because, the RG irrelevance of \(J\) is sufficient to make \(V\) irrelevant as well, and on the other hand, the RG relevance of \(J\) is sufficient to screen the impurity.
+\end{itemize}
+  
 
-\subsection{RG flows for \(4U_b + J > 0\)}
+\subsection{RG flows for \(4U_b + J_0 > 0\)}
 
-\begin{figure}[htpb]
+In this regime, \(J\) is relevant and flows to large positive values. It is also easy to deduce from its RG equation that \(V\) is also relevant. \(U\) is more non-trivial, because its RG equation involves both \(V\) and \(J\). Nevertheless, the RG equations were solved numerically with bare values of the couplings and the bandwidth, and it was found that while \(V\) and \(J\) are relevant, \(U\) is irrelevant. These findings are shown in the blue curves of fig.~\ref{rg-flow}. The fixed point values can be summarised as:
+\begin{equation}\begin{aligned}
+	U^* = 0, ~ ~ ~ ~ V^* \gg 1, ~ ~ ~ ~ J^* \gg 1, ~ ~ ~ ~ U_b \sim \mathcal{O}(1)
+\end{aligned}\end{equation}
+
+
+\subsection{RG flows for \(4U_b + J_0 < 0\)}
+
+The RG \(\beta\)-function function for \(J\) changes sign as we tune \(U_b\) to less than \(-J_0/4\), and \(J\) becomes irrelevant. As for \(V\), note that in the RG equation for \(V\), it is \(J\) that drives \(V\) to be relevant while \(U_b\) drives \(V\) to irrelevance; if \(J\) itself is irrelevant, then \(\Delta V\) will be dominated by \(U_b\) and \(V\) will be ultimately irrelevant. The behaviour of \(U\) is again non-trivial and ananlytically not tractable, so we solve the RG equations numerically. It turns out that although \(U\) is slightly irrelevant, it saturates to an appreciable value near the fixed point. These RG flows are shown in the purple curves of fig.~\ref{rg-flow}. The fixed point values in this regime can be summarised as:
+\begin{equation}\begin{aligned}
+	U^* \sim \mathcal{O}(1), ~ ~ ~ ~ V^* =0, ~ ~ ~ ~ J^* =0, ~ ~ ~ ~ U_b \sim \mathcal{O}(1)
+\end{aligned}\end{equation}
+
+\begin{figure*}[!htb]
 	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/J_Ub.pdf}
-	\caption{JUb}
-	\label{fig:-figures-J_Ub-pdf}
-\end{figure}
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/U_Ub.pdf}
-	\caption{JUb}
-	\label{fig:-figures-J_Ub-pdf}
-\end{figure}
+	\includegraphics[width=0.32\textwidth]{../figures/J_Ub.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/U_Ub.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/V_Ub.pdf}
+	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations. x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(4U_b + J > 0\), where \(J\) is relevant. The purple curves represent the RG flows for \(4U_b + J < 0\), where \(J\) is irrelevant. The red curves are exactly at the critical point, where \(J\) is marginal.}
+	\label{rg-flow}
+\end{figure*}
 
-\begin{widetext}
+\subsection{Phase diagram: impurity phase transition}
 
-\begin{figure}[!htb]
-	\includegraphics[width=0.7\textwidth]{../figures/phase-map-MIT.pdf}
-\end{figure}
+The low-energy RG phase diagram is obtained by solving the RG equations for ranges of couplings, and is shown in fig.~\ref{phase-diag}. There are four distinct phases in the space of couplings \(U_0 \text{ vs } J_0\), with \(U_b\) constrained at \(-U_0/10\) and \(V_0\) set to \(2J_0\). The purple phase (phase B in the legend) is composed of those Hamiltonians which lead to RG relevant \(V,J\) and RG irrelevant \(U\). In other words, this is the phase where the impurity moment is screened by the conduction electrons. This is the low-energy phase of the usual Anderson impurity model that has \(U\) and \(V\). The red phase (phase C in the legend) consists of those Hamiltonians which produce irrelevant \(J,V\) and a relevant \(U\); here, the conduction electrons fail to screen the impurity and a residual local moment survives on the impurity at low energies. The light green phase (phase D in the legend) lies in between these two phases, and is defined by non-negligible \(V^*, U^*\) but zero \(J^*\). In this phase, the impurity still gets screened, but there is more charge content on the impurity site compared to phase B. On going to the thermodynamic limit by increasing the bandwidth \(D_0\), this light green phase disappears. The gray phase (phase A in the legend) is a ``dead" phase where \(U,V,J\) are all RG irrelevant. The various phases are summarised in table.~\ref{summary-phases}.
 
-\end{widetext}
-\begin{table}
+The black line in fig.~\ref{phase-diag} represents a line of critical points \(U_b = J_0\), and separates the two major phases of the impurity. Such a {\it phase transition} between the screened impurity and the local moment phases is absent in the usual Anderson impurity model without the attractive correlation \(U_b\). In fact, only the purply screened phase is adiabatically connected the Anderson impurity model.
+
+\begin{table}[!htb]
 \centering
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|}
 \hline
-phase & RG flow & fixed point & GS & 2-site GS \\ 
+phase & RG flow & fixed point \\ 
 \hline
-blue & \(\Delta U <0, \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) & SS & \(\ket{SS}=\ket{\uparrow,\downarrow} - \ket{\downarrow, \uparrow}\)  \\ 
-green &  \(\Delta U < 0, \Delta J < 0,\Delta V>0\) & \(J^* < U^* \ll V^*\) & SS + CT-0 & \(c\ket{SS} + \sqrt{1-c^2}\ket{CT-0}\)  \\  
-red &  \(\Delta U > 0, \Delta J,\Delta V<0\) & \(U^* \gg 1,  V^* = J^* = 0\) & decoupled LM & \(\left\{\ket{\uparrow}, \ket{\downarrow} \right\} \otimes \left\{\ket{0}, \ket{2}\right\} \) \\
-gray &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^* = V^* = J^* = 0\) & lattice & \(\left\{\ket{\uparrow}, \ket{\downarrow}, \ket{0}, \ket{2} \right\} \otimes \left\{\ket{0}, \ket{2}\right\}\) \\
+B & \(\Delta U <0, \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) \\ 
+D &  \(\Delta U, \Delta J < 0,\Delta V>0\) & \(J^* < U^* \ll V^*\) \\
+C &  \(\Delta U > 0, \Delta J,\Delta V<0\) & \(U^* \gg 1,  V^*, J^* = 0\)\\
+A &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 \hline
 \end{tabular}
+\caption{Summary of the various fixed point phases}
+\label{summary-phases}
 \end{table}
+
+\begin{figure}[!htb]
+	\includegraphics[width=0.5\textwidth]{../figures/phase-map-MIT.pdf}
+	\caption{Phase diagram of the GAIM, in the space of couplings \(U_0\) and \(J_0\). \(U_b\) is set to \(-U_0/10\) and \(V_0\) is set to \(2J_0\). The various phases \(A\) through \(D\) are characterised in the text.}
+	\label{phase-diag}
+\end{figure}
 
 \section{Low-energy effective Hamiltonian and the ground state}
 
+The RG fixed point Hamiltonian describes the low-energy phase of the system. In general, if the RG fixed point is reached at an energy scale \(D^*\), the fixed point Hamiltonian \(\mathcal{H}^*\) is obtained simply from the fixed point values of the couplings, and by noting that the states above \(D^*\) are now part of the IOMs:
+\begin{equation}\begin{aligned}
+	\mathcal{H}^* = \frac{- U^*}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} + U_b^* \hat n_{0 \uparrow} \hat n_{0 \downarrow} \\
+	+ V^*\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + J^* \vec{S}_d\cdot\vec{s}_0
+\end{aligned}\end{equation}
+
 \subsection{Screened regime: \(-U_b/J < 1/4 \)}
 
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/J_bandwidth.pdf}
+	% \caption{../figures/J_bandwidth.pdf}
+	% \label{fig:-figures-J_bandwidth-pdf}
+\end{figure}
 The fixed point Hamiltonian can, in general, be written as
 \begin{equation}\begin{aligned}
 	\mathcal{H}^* = \sum_{\sigma, k}\epsilon_k \tau_{k\sigma} - \frac{U^*}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2  + \sum_{\sigma, k < \Lambda^*}\left( V^* c^\dagger_{k\sigma}c_{d\sigma} + \text{h.c.} \right) + J^* \vec{S_d}\cdot\vec{s}

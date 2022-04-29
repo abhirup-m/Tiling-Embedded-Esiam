@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="531.93311pt"
+   width="548.35187pt"
    height="172.65266pt"
-   viewBox="0 0 531.93311 172.65267"
+   viewBox="0 0 548.35187 172.65267"
    version="1.2"
    id="svg32714"
    sodipodi:docname="zeromode_bare.svg"
@@ -11,7 +11,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:ns11="http://www.iki.fi/pav/software/textext/">
+   xmlns:ns4="http://www.iki.fi/pav/software/textext/">
   <sodipodi:namedview
      id="namedview32716"
      pagecolor="#505050"
@@ -23,12 +23,12 @@
      inkscape:document-units="pt"
      showgrid="false"
      inkscape:zoom="1.0311008"
-     inkscape:cx="252.6426"
+     inkscape:cx="253.12753"
      inkscape:cy="156.1438"
-     inkscape:window-width="1024"
-     inkscape:window-height="736"
+     inkscape:window-width="1916"
+     inkscape:window-height="1052"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="24"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg32714"
      inkscape:snap-bbox="true"
@@ -232,16 +232,16 @@
      d="m 95.972656,91.605968 9.804684,-5.667969 v 11.339844 z m 0,0"
      id="path32637" />
   <g
-     ns11:version="1.6.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$U_b$"
-     ns11:preamble="/home/kirito/.config/inkscape/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:stroke-to-path="0"
+     ns4:version="1.6.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$U_b$"
+     ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:stroke-to-path="0"
      transform="matrix(2.5,0,0,2.5,292.867,126.55387)"
-     ns11:jacobian_sqrt="2.5"
+     ns4:jacobian_sqrt="2.5"
      id="g34217">
     <defs
        id="id-8ab35b15-088f-4598-b37e-567cdc66d2aa">
@@ -312,15 +312,15 @@
   </g>
   <g
      transform="matrix(2.7157221,0,0,2.7157221,30.094701,0)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$\\vec S_d$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="5.313819972394586"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="3.98536"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$\\vec S_d$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="5.313819972394586"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="3.98536"
      id="g2251">
     <defs
        id="id-abf36cd8-24b5-41cc-af55-74ed4837bb57">
@@ -392,15 +392,15 @@
   </g>
   <g
      transform="matrix(2.71572,0,0,2.71572,287.6,3.314374)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$\\vec s_0$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="3.6209673240192517"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="2.71572"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$\\vec s_0$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="3.6209673240192517"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="2.71572"
      id="g3152">
     <defs
        id="id-f122b48c-3809-4514-8360-d5b15a831743">
@@ -472,15 +472,15 @@
   </g>
   <g
      transform="matrix(2.0646512,0,0,2.0646512,76.028934,13.24421)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$V \\sum_\\sigma \\left(c^\\dagger_{d\\sigma}c_{0\\sigma} + \\text{h.c.}\\right)$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="2.5"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$V \\sum_\\sigma \\left(c^\\dagger_{d\\sigma}c_{0\\sigma} + \\text{h.c.}\\right)$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="2.5"
      id="g33225">
     <defs
        id="id-fcbb7d86-eaf8-474e-a897-eff7227cdade">
@@ -796,15 +796,15 @@
   </g>
   <g
      transform="matrix(2.8497254,0,0,2.8497254,132.11538,95.335093)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$J \\vec S_d \\cdot \\vec s_0$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$J \\vec S_d \\cdot \\vec s_0$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g5285">
     <defs
        id="id-b516e813-dad1-4b5d-b870-43143621d271">
@@ -969,15 +969,15 @@
   </g>
   <g
      transform="matrix(1.875,0,0,1.875,1.1561047,154.07891)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="impurity site"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="impurity site"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g6237">
     <defs
        id="id-cddaa2f2-109c-45e1-8620-c3fbb6070a55">
@@ -1156,15 +1156,15 @@
   </g>
   <g
      transform="matrix(1.875,0,0,1.875,256.945,155.954)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="zeroth site"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="zeroth site"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g6785">
     <defs
        id="id-cb54b633-2c39-40f7-aca3-3ff6258b21c7">
@@ -1355,15 +1355,15 @@
      inkscape:original-d="m 407.15741,100.60925 c 4.89888,9.291 9.79702,18.58137 14.69439,27.87111 4.8974,9.28974 50.14668,-18.57018 75.21887,-27.85621" />
   <g
      transform="matrix(2.6914036,0,0,2.6914036,357.85361,121.00561)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$t$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$t$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g9131">
     <defs
        id="id-570f25d3-5c88-421b-88ac-17c5cf3200ed">
@@ -1395,15 +1395,15 @@
   </g>
   <g
      transform="matrix(2.6914036,0,0,2.6914036,451.4396,116.04636)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$t$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$t$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g9177">
     <defs
        id="defs9169">
@@ -1434,16 +1434,16 @@
     </g>
   </g>
   <g
-     transform="matrix(1.875,0,0,1.875,384.467,29.3717)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="other lattice sites"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="1.875"
+     transform="matrix(2.5998163,0,0,2.5998163,345.72091,11.506592)"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="other lattice sites"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="1.875"
      id="g6785-3">
     <defs
        id="id-e84d47e6-8928-47d8-96ec-4f289539d5e6">
@@ -1675,15 +1675,15 @@
   </g>
   <g
      transform="matrix(2.5,0,0,2.5,40.9999,125.225)"
-     ns11:version="1.3.0"
-     ns11:texconverter="pdflatex"
-     ns11:pdfconverter="inkscape"
-     ns11:text="$U$"
-     ns11:preamble="/home/abhirup/textext.tex"
-     ns11:scale="2.5"
-     ns11:alignment="middle center"
-     ns11:inkscapeversion="1.1.2"
-     ns11:jacobian_sqrt="2.5"
+     ns4:version="1.3.0"
+     ns4:texconverter="pdflatex"
+     ns4:pdfconverter="inkscape"
+     ns4:text="$U$"
+     ns4:preamble="/home/abhirup/textext.tex"
+     ns4:scale="2.5"
+     ns4:alignment="middle center"
+     ns4:inkscapeversion="1.1.2"
+     ns4:jacobian_sqrt="2.5"
      id="g34144">
     <defs
        id="id-e92e207a-fed9-4fe3-a0c8-eede4b72b1d1">

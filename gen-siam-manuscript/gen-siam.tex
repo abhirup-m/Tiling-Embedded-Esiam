@@ -35,13 +35,13 @@ The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). I
 
 If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
 
-This difference in the type of conduction baths is utilised in dynamical mean-field theory to describe various phases of the bulk system.
+This difference in the type of conduction baths is utilized in dynamical mean-field theory to describe various phases of the bulk system.
 This is done through the DMFT algorithm: one starts with a non-interacting bath, but depending on the value of \(U\), the conduction bath then gets modified and we ultimately end up with something that is different from what we started with.
 For small \(U\), the bath does not change much and we retain the central resonance of the impurity spectral function.
 This then describes a metal in the bulk.
 For larger values of \(U\), however, the bath changes significantly such that its density of states becomes non-constant.
 Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk.
-\textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
+\textit{This leaves open the following question}: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?
 
 \begin{figure}[!htb]
 \centering
@@ -60,42 +60,82 @@ where \(\tau_{\vec k,\sigma} \equiv \hat n_{\vec k,\sigma} - 1/2\). Also, \(c_{d
 
 In order to enhance the Anderson impurity model, we introduce two extra two-particle interaction terms into the Hamiltonian:
 \begin{itemize}
-	\item a spin-exchange term \(J \vec{S}_d\cdot\vec{s}_0\) between the impurity and the zeroth site 
+	\item a spin-exchange term \(J \vec{S}_d\cdot\vec{s}_0\) between the impurity spin \(\vec S_d\) and the spin \(\vec s_0\) of the zeroth site 
 	\item a local correlation term \(U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}\) on the zeroth site
 \end{itemize}
 
-The full generalised Anderson model Hamiltonian, at particle-hole symmetry, is
+With these additional terms, the generalised Anderson impurity model, at particle-hole symmetry, is
 \begin{equation}\begin{aligned}
-	\mathcal{H} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} + \epsilon_d \left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} + K \vec{C_d}\cdot\vec{C}
+	\mathcal{H} = \frac{- U}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)\\
+	+ J \vec{S}_d\cdot\vec{s}_0 + U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
 \end{aligned}\end{equation}
+All the terms in the Hamiltonian have been depicted schematically in fig.~\ref{zeromode-bare}.
 
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{../figures/zeromode_bare.pdf}
 	\caption{While we have studied the full model under renormalisation group, often we will turn to a simplified zero-bandwidth version of the model that is obtained by ignoring the kinetic energy part of the Hamiltonian. This zero-bandwidth model is effectively a two site model.}
+	\label{zeromode-bare}
 \end{figure}
 
 \section{RG Equations for the model}
-The derivation of the RG equations are shown at the end. \(n_j\) is the number of \(k-\)states at the \(j^\text{th}\) isoenergetic shell. 
-\begin{gather}
-	\Delta U_b = 0, ~ ~\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2},\\
-	\Delta V = -\frac{3n_j V}{8}\left[\left(J + 4U_b/3\right) \left(\frac{1}{d_2} + \frac{1}{d_1}\right) + 4U_b/3\left(\frac{1}{d_3} + \frac{1}{d_0}\right)\right],\\
-	\Delta J = -\frac{n_j J\left(J + 4U_b\right)}{d_2}
-\end{gather}
+We now perform a renormalisation group analysis of the MCK Hamiltonian using the recently developed URG method \cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome,1dhubjhep}.
+The RG proceeds {by applying unitary transformations in order to block-diagonalize the Hamiltonian by removing number fluctuations of the high energy degrees of freedom}.
+Given the most energetic electronic state at the \(j^\text{th}\) RG step is \(\ket{j}\) and defined by the energy \(D_{(j)}\), the Hamiltonian will in general not conserve the number of particles in this state: \(\left[H_{(j)}, \hat n_{j}\right] \neq 0\).
+The unitary transformation \(U_{(j)}\) will remove this number fluctuation at the next RG step~\cite{anirbanurg1,anirbanurg2}:
+\begin{equation}\begin{aligned}
+	H_{(j-1)} = U_{(j)} H_{(j)} U^\dagger_{(j)}~, ~\left[H_{(j-1)}, \hat n_{j}\right] =0~.
+\end{aligned}\end{equation}
+The unitary transformations are given in terms of a fermionic generator \(\eta_{(j)}\)~\cite{anirbanurg1,anirbanurg2}:
+\begin{equation}\begin{aligned}
+	U_{(j)} = \frac{1}{\sqrt 2}\left(1 + \eta_{(j)} - \eta_{(j)}^\dagger\right)~,~ \quad\left\{ \eta_{(j)},\eta_{(j)}^\dagger \right\}_\pm = 1~,
+\end{aligned}\end{equation}
+where \(\left\{A,B\right\}_\pm = AB \pm BA\). The generator itself is given by the expression~\cite{anirbanurg1,anirbanurg2}
+\begin{equation}\begin{aligned}
+	\eta^\dagger_{(j)} = \frac{1}{\hat \omega_{(j)} - \text{Tr}\left(H_{(j)} \hat n_{j}\right) } c^\dagger_{j} \text{Tr}\left(H_{(j)}c_{j}\right)~.
+\end{aligned}\end{equation}
+The operator \(\hat \omega_{(j)}\) encodes the quantum fluctuation scales arising from the interplay of the kinetic energy terms and the interaction terms in the Hamiltonian:
+\begin{equation}\begin{aligned}
+	\hat \omega_{(j)} = H_{(j-1)} - H^i_{(j)}~.
+\end{aligned}\end{equation}
+\(H^i_{(j)}\) is that part of \(H_{(j)}\) that commutes with \(\hat n_j\) but does not commute with at least one \(\hat n_l\) for \(l < j\). The RG flow continues up to energy \(D^*\), where a fixed point is reached from the vanishing of the RG function. 
 
-The denominators are
+The derivation of the RG equations for the generalised Anderson impurity model Hamiltonian is shown in the appendix. We provide below the RG equations for a given quantum fluctuation scale \(\omega\):
 \begin{gather}
-	d_0 = \omega - \frac{D}{2} + \frac{U_b}{2} - \frac{U}{2}, \quad d_1 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{U}{2} + \frac{J}{4},\\
-	\quad d_2 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4},\quad d_3 = \omega - \frac{D}{2} + \frac{U_b}{2}
+	\Delta U_b = 0~,\\
+	\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2}~,\\
+	\Delta V = -\frac{3n_j V}{8}\left[J\left(\frac{1}{d_2} + \frac{1}{d_1}\right) +  \frac{4U_b}{3}\sum_{i=1}^4 \frac{1}{d_i}\right]~,\\
+	\Delta J = -\frac{n_j J\left(J + 4U_b\right)}{d_2}~.
 \end{gather}
+The denominators \(d_i\) used in these equations are given by
+\begin{gather}
+	d_0 = \omega - \frac{D}{2} + \frac{U_b}{2} - \frac{U}{2}~,\\
+	d_1 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{U}{2} + \frac{J}{4}~,\\
+	d_2 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}~,\\
+	d_3 = \omega - \frac{D}{2} + \frac{U_b}{2}~.
+\end{gather}
+The symbols used in the RG equations have the following meanings: \(\Delta U\) represents the renormalisation in the coupling \(U\) in going from the \(j^\text{th}\) Hamiltonian to the \(\left( j-1 \right) ^\text{th}\) Hamiltonian by decoupling the isoenergetic shell at energy \(D_{(j)}\). \(n_j\) is the number of electronic states on the shell \(D_{(j)}\).
 
-\paragraph{Important points regarding notation}
-\begin{itemize}
-	\item The labels \(U_0,J_0,V_0\) that may occur in the axes of the plots or anywhere else represent the bare values of the couplings \(U,J\) and \(V\). 
-	\item Throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	
-\end{itemize}
+We will discuss the consequences of these RG equations in the next sections, but we clarify here that the labels \(U_0,J_0,V_0\) that will occur in the axes of the plots or anywhere else represent the bare values of the couplings \(U,J\) and \(V\). We also point out here that throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\).	The reason for choosing the negative sign of \(U_b\) will be clarified in the next section.
 
 \section{RG flows and phase diagram}
+
+We start the discussion on the nature of the RG flows by pointing out the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(U_b = -J/4\). Since \(J\) is positive, this means that we can capture both relevant and irrelevant RG flows of \(J\) by keeping \(U_b\) negative. \(U_b\) is found to be marginal under the RG transformation, and we set \(U_b\) to \(-U_0/10\) hereafter. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\).
+
+\subsection{RG flows for \(4U_b + J > 0\)}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{../figures/J_Ub.pdf}
+	\caption{JUb}
+	\label{fig:-figures-J_Ub-pdf}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{../figures/U_Ub.pdf}
+	\caption{JUb}
+	\label{fig:-figures-J_Ub-pdf}
+\end{figure}
 
 \begin{widetext}
 

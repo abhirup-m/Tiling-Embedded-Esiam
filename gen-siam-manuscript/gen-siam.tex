@@ -1,6 +1,6 @@
 \documentclass[reprint,prb,superscriptaddress]{revtex4-2}
-\usepackage{braket,amsmath,graphicx,float,color,ulem,soul,lipsum}
-\usepackage[hidelinks]{hyperref}
+\usepackage{braket,amsmath,graphicx,color}
+\usepackage{hyperref}
 \bibliographystyle{apsrev4-1}
 \begin{document}
 
@@ -24,11 +24,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{Introduction}
 
-The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
-The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
-There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
+The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied. There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
 
 One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For eg, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
 The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
@@ -60,26 +56,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{The generalised Anderson impurity model}
 
-The impurity models we will work with couple the impurity to a single site in the lattice. We will refer to that specific site as the zeroth site throughout. We recall the Hamiltonian of the Anderson impurity model with a half-filled impurity site:
+The impurity models we will work with couple the impurity to a single site in the lattice. We will refer to that specific site as the zeroth site throughout. We recall the Hamiltonian of the Anderson impurity model (AIM) with a half-filled impurity site:
 \begin{equation} 
 	\mathcal{H} = \frac{- U}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)~,
  \end{equation}
 where \(\tau_{\vec k,\sigma} \equiv \hat n_{\vec k,\sigma} - 1/2\). Also, \(c_{d\sigma}\) and \(c_{0\sigma}\) are the fermionic annihilation operators of spin \(\sigma\) for the impurity and zeroth sites respectively. \(U\) is the repulsive correlation on the impurity site, and the impurity is at particle-hole symmetry. \(V\) is the momentum-independent hybridisation parameter that couples the impurity with the lattice. We will work with a constant density of states in the bath. 
 
-
-In order to enhance the Anderson impurity model, we introduce two extra two-particle interaction terms into the Hamiltonian:
+In order to enhance the Anderson impurity model (AIM), we introduce two extra two-particle interaction terms into the Hamiltonian:
 \begin{itemize}
 	\item a spin-exchange term \(J \vec{S}_d\cdot\vec{s}_0\) between the impurity spin \(\vec S_d\) and the spin \(\vec s_0\) of the zeroth site 
-	\item a local correlation term \(U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}\) on the zeroth site
+	\item a local particle-hole symmetric correlation term \(-U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}\) on the zeroth site
 \end{itemize}
 
-With these additional terms, the {\it generalised Anderson impurity model} (hence referred to as the GAIM), at particle-hole symmetry, is
+With these additional terms, the {\it generalised Anderson impurity model} (henceforth referred to as the GAIM), at particle-hole symmetry, is
 \begin{equation}\begin{aligned}
 	\label{GIAM-ham}
-	\mathcal{H} = \frac{- U}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)\\
-	+ J \vec{S}_d\cdot\vec{s}_0 + U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
+	\mathcal{H} = -\frac{1}{2}U \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + J \vec{S}_d\cdot\vec{s}_0 \\
+	+ V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
 \end{aligned}\end{equation}
-All the terms in the Hamiltonian have been depicted schematically in fig.~\ref{zeromode-bare}.
+All the terms in the Hamiltonian have been depicted schematically in Fig.~\ref{zeromode-bare}.
 
 \begin{figure}[!htb]
 	\centering
@@ -93,7 +88,7 @@ All the terms in the Hamiltonian have been depicted schematically in fig.~\ref{z
 \subsection{The unitary RG method}
 The focus here is on obtaining the low-energy phases of the GAIM. To accomplish this, we perform a renormalisation group analysis of the associated Hamiltonian (eq.~\ref{GIAM-ham}) using the recently developed unitary renormalisation group (URG) method \cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome,1dhubjhep,Mukherjee_mott_merg,anirban_kondo}. The unitary RG transformations lead to a series of Hamiltonians \(H_{(j)}\) related to the Hamiltonian at the previous step through a unitary transformation; the unitary transformations are defined by the requirement that they remove number fluctuations in high-energy \(k-\)states, thus making the Hamiltonian progressively more block-diagonal in momentum space. The high-energy degrees of freedom that get decoupled in the process become integrals of motion (IOMs) for the Hamiltonian and enter the Hamiltonian only in a purely number-diagonal form.
 
-To be more precise, we first choose a complete basis \(\left\{ \ket{j} \right\} \) and arrange these states from high-energy (UV) to low-energy (IR). Typically we take these states to be the momentum eigenstates \(\left(\ket{j} = \left\{\ket{\vec k \uparrow}, \ket{\vec k \downarrow}\right\}\right)\), and the isoenergetic shells \(\left\{D_{(j)}\right\}\) then define the sequence of states, such that the momenta far away from the Fermi surface (taken to be at higher \(j\) and having \(|D_{(j)}| \gg |\epsilon_F|\)) are taken to be the UV states while those near the Fermi surface (taken to be at lower \(j\) and having \(D_{(j)} \sim \epsilon_F\)) comprise the IR states. This scheme is shown in fig.~\ref{urg-scheme}.
+To be more precise, we first choose a complete basis \(\left\{ \ket{j} \right\} \) and arrange these states from high-energy (UV) to low-energy (IR). Typically we take these states to be the momentum eigenstates \(\left(\ket{j} = \left\{\ket{\vec k \uparrow}, \ket{\vec k \downarrow}\right\}\right)\), and the isoenergetic shells \(\left\{D_{(j)}\right\}\) then define the sequence of states, such that the momenta far away from the Fermi surface (taken to be at higher \(j\) and having \(|D_{(j)}| \gg |\epsilon_F|\)) are taken to be the UV states while those near the Fermi surface (taken to be at lower \(j\) and having \(D_{(j)} \sim \epsilon_F\)) comprise the IR states. This scheme is shown in Fig.~\ref{urg-scheme}.
 
 \begin{figure}[htpb]
 	\centering
@@ -123,7 +118,7 @@ The important operator \(\hat \omega_{(j)}\) originates from the quantum fluctua
 
 \subsection{URG equations for the GAIM}
 
-The derivation of the RG equations for the generalised Anderson impurity model Hamiltonian is shown in the appendix. We provide below the RG equations for a given quantum fluctuation scale \(\omega\):
+The derivation of the RG equations for the generalised Anderson impurity model (GAIM) Hamiltonian is shown in the appendix. We provide below the RG equations for a given quantum fluctuation scale \(\omega\):
 \begin{gather}
 	\Delta U_b = 0~,\\
 	\Delta U = 4V^2 n_j\left(\frac{1}{d_1} - \frac{1}{d_0}\right) - n_j\frac{J^2}{d_2}~,\\
@@ -132,10 +127,8 @@ The derivation of the RG equations for the generalised Anderson impurity model H
 \end{gather}
 The denominators \(d_i\) used in these equations are given by
 \begin{gather}
-	d_0 = \omega - \frac{D}{2} + \frac{U_b}{2} - \frac{U}{2}~,\\
-	d_1 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{U}{2} + \frac{J}{4}~,\\
-	d_2 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}~,\\
-	d_3 = \omega - \frac{D}{2} + \frac{U_b}{2}~.
+	d_0 = \omega - \frac{D}{2} + \frac{U_b}{2} - \frac{U}{2}~,d_2 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}~,\\
+	d_1 = \omega - \frac{D}{2} + \frac{U_b}{2} + \frac{U}{2} + \frac{J}{4}~,d_3 = \omega - \frac{D}{2} + \frac{U_b}{2}~.
 \end{gather}
 The symbols used in the RG equations have the following meanings: \(\Delta U\) represents the renormalisation in the coupling \(U\) in going from the \(j^\text{th}\) Hamiltonian to the \(\left( j-1 \right) ^\text{th}\) Hamiltonian by decoupling the isoenergetic shell at energy \(D_{(j)}\). \(n_j\) is the number of electronic states on the shell \(D_{(j)}\).
 
@@ -143,42 +136,42 @@ We will discuss the consequences of these RG equations in the next sections, but
 
 \section{RG flows and phase diagram}
 
-We start the discussion on the nature of the RG flows by noting that the bath correlation \(U_b\) is marginal, and the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(U_b = -J/4\). We will look at the RG flows of the couplings \(U,V\) and \(J\) on both sides of this critical point, and see what phases they lead to. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\). Before we start, note that:
+We start the discussion on the nature of the RG flows by noting that the bath correlation \(U_b\) is marginal, and the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(r \equiv -U_b/J = 1/4 \equiv r_c\). We will look at the RG flows of the couplings \(U,V\) and \(J\) on both sides of this critical point by tuning the ratio \(r\) across the critical value \(r_c\), and see what phases they lead to. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\). Before we start, note that:
 \begin{itemize}
 	\item Since \(J\) is positive, this means that we can capture both relevant and irrelevant RG flows of \(J\) by keeping \(U_b\) negative. \(U_b\) is found to be marginal under the RG transformation, and we set \(U_b\) to \(-U_0/10\) hereafter.
 	\item The critical point has been chosen from the RG equation of \(J\) and not of \(V\); this is because, the RG irrelevance of \(J\) is sufficient to make \(V\) irrelevant as well, and on the other hand, the RG relevance of \(J\) is sufficient to screen the impurity.
 \end{itemize}
   
 
-\subsection{RG flows for \(4U_b + J_0 > 0\)}
+\subsection{RG flows for \(r < r_c\)}
 
-In this regime, \(J\) is relevant and flows to large positive values. It is also easy to deduce from its RG equation that \(V\) is also relevant. \(U\) is more non-trivial, because its RG equation involves both \(V\) and \(J\). Nevertheless, the RG equations were solved numerically with bare values of the couplings and the bandwidth, and it was found that while \(V\) and \(J\) are relevant, \(U\) is irrelevant. These findings are shown in the blue curves of fig.~\ref{rg-flow}. The fixed point values can be summarised as:
+In this regime, \(J\) is relevant and flows to large positive values. It is also easy to deduce from its RG equation that \(V\) is also relevant. \(U\) is more non-trivial, because its RG equation involves both \(V\) and \(J\). Nevertheless, the RG equations were solved numerically with bare values of the couplings and the bandwidth, and it was found that while \(V\) and \(J\) are relevant, \(U\) is irrelevant. These findings are shown in the blue curves of Fig.~\ref{rg-flow}. The fixed point values can be summarised as:
 \begin{equation}\begin{aligned}
 	U^* = 0, ~ ~ ~ ~ V^* \gg 1, ~ ~ ~ ~ J^* \gg 1, ~ ~ ~ ~ U_b \sim \mathcal{O}(1)
 \end{aligned}\end{equation}
 
 
-\subsection{RG flows for \(4U_b + J_0 < 0\)}
+\subsection{RG flows for \(r > r_c\)}
 
-The RG \(\beta\)-function function for \(J\) changes sign as we tune \(U_b\) to less than \(-J_0/4\), and \(J\) becomes irrelevant. As for \(V\), note that in the RG equation for \(V\), it is \(J\) that drives \(V\) to be relevant while \(U_b\) drives \(V\) to irrelevance; if \(J\) itself is irrelevant, then \(\Delta V\) will be dominated by \(U_b\) and \(V\) will be ultimately irrelevant. The behaviour of \(U\) is again non-trivial and ananlytically not tractable, so we solve the RG equations numerically. It turns out that although \(U\) is slightly irrelevant, it saturates to an appreciable value near the fixed point. These RG flows are shown in the purple curves of fig.~\ref{rg-flow}. The fixed point values in this regime can be summarised as:
+The RG \(\beta\)-function function for \(J\) changes sign as \(r\) grows greater than \(r_c\) upon tuning \(U_b\) to less than \(-J_0/4\), and \(J\) becomes irrelevant. As for \(V\), note that in the RG equation for \(V\), it is \(J\) that drives \(V\) to be relevant while \(U_b\) drives \(V\) to irrelevance; if \(J\) itself is irrelevant, then \(\Delta V\) will be dominated by \(U_b\) and \(V\) will be ultimately irrelevant. The behaviour of \(U\) is again non-trivial and analytically not tractable, so we solve the RG equations numerically. It turns out that although \(U\) is slightly irrelevant, it saturates to an appreciable value near the fixed point. These RG flows are shown in the purple curves of Fig.~\ref{rg-flow}. The fixed point values in this regime can be summarised as:
 \begin{equation}\begin{aligned}
 	U^* \sim \mathcal{O}(1), ~ ~ ~ ~ V^* =0, ~ ~ ~ ~ J^* =0, ~ ~ ~ ~ U_b \sim \mathcal{O}(1)
 \end{aligned}\end{equation}
 
-\begin{figure*}[!htb]
+\begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.32\textwidth]{../figures/J_Ub.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/U_Ub.pdf}
-	\includegraphics[width=0.32\textwidth]{../figures/V_Ub.pdf}
-	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations. x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(4U_b + J > 0\), where \(J\) is relevant. The purple curves represent the RG flows for \(4U_b + J < 0\), where \(J\) is irrelevant. The red curves are exactly at the critical point, where \(J\) is marginal.}
+	\includegraphics[width=0.48\textwidth]{../figures/J_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/U_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/V_Ub.pdf}
+	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations, for three values of the transition-tuning ratio \(r\). x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(r > r_c\), where \(J\) is relevant. The purple curves represent the RG flows for \(r < r_c\), where \(J\) is irrelevant. The red curves are exactly at the critical point \(r = r_c\), where \(J\) is marginal.}
 	\label{rg-flow}
-\end{figure*}
+\end{figure}
 
 \subsection{Phase diagram: impurity phase transition}
 
-The low-energy RG phase diagram is obtained by solving the RG equations for ranges of couplings, and is shown in fig.~\ref{phase-diag}. There are four distinct phases in the space of couplings \(U_0 \text{ vs } J_0\), with \(U_b\) constrained at \(-U_0/10\) and \(V_0\) set to \(2J_0\). The purple phase (phase B in the legend) is composed of those Hamiltonians which lead to RG relevant \(V,J\) and RG irrelevant \(U\). In other words, this is the phase where the impurity moment is screened by the conduction electrons. This is the low-energy phase of the usual Anderson impurity model that has \(U\) and \(V\). The red phase (phase C in the legend) consists of those Hamiltonians which produce irrelevant \(J,V\) and a relevant \(U\); here, the conduction electrons fail to screen the impurity and a residual local moment survives on the impurity at low energies. The light green phase (phase D in the legend) lies in between these two phases, and is defined by non-negligible \(V^*, U^*\) but zero \(J^*\). In this phase, the impurity still gets screened, but there is more charge content on the impurity site compared to phase B. On going to the thermodynamic limit by increasing the bandwidth \(D_0\), this light green phase disappears. The gray phase (phase A in the legend) is a ``dead" phase where \(U,V,J\) are all RG irrelevant. The various phases are summarised in table.~\ref{summary-phases}.
+The low-energy RG phase diagram is obtained by solving the RG equations for ranges of couplings, and is shown in Fig.~\ref{phase-diag}. There are four distinct phases in the space of couplings \(U_0 \text{ vs } J_0\), with \(U_b\) constrained at \(-U_0/10\) and \(V_0\) set to \(2J_0\). The red phase (phase A in the legend) is composed of those Hamiltonians which lead to RG relevant \(V,J\) and RG irrelevant \(U\). In other words, this is the phase where the impurity moment is screened by the conduction electrons. This is the low-energy phase of the AIM that has \(U\) and \(V\). The blue phase (phase B in the legend) consists of those Hamiltonians which produce irrelevant \(J,V\) and a relevant \(U\); here, the conduction electrons fail to screen the impurity and a residual local moment survives on the impurity at low energies. The yellow phase (phase C in the legend) lies in between these two phases, and is defined by non-negligible \(V^*, U^*\) but zero \(J^*\). In this phase, the impurity still gets screened, but there is more charge content on the impurity site compared to phase B. On going to the thermodynamic limit by increasing the bandwidth \(D_0\), this light green phase disappears. The gray phase (phase D in the legend) is a ``dead" phase where \(U,V,J\) are all RG irrelevant. The various phases are summarised in table.~\ref{summary-phases}.
 
-The black line in fig.~\ref{phase-diag} represents a line of critical points \(U_b = J_0\), and separates the two major phases of the impurity. Such a {\it phase transition} between the screened impurity and the local moment phases is absent in the usual Anderson impurity model without the attractive correlation \(U_b\). In fact, only the purply screened phase is adiabatically connected the Anderson impurity model.
+The black line in Fig.~\ref{phase-diag} represents a line of critical points \(U_b = J_0\), and separates the two major phases of the impurity. Such a {\it phase transition} between the screened impurity and the local moment phases is absent in the AIM without the attractive correlation \(U_b\). In fact, only the purple screened phase is adiabatically connected the AIM.
 
 \begin{table}[!htb]
 \centering
@@ -186,10 +179,10 @@ The black line in fig.~\ref{phase-diag} represents a line of critical points \(U
 \hline
 phase & RG flow & fixed point \\ 
 \hline
-B & \(\Delta U <0, \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) \\ 
-D &  \(\Delta U, \Delta J < 0,\Delta V>0\) & \(J^* < U^* \ll V^*\) \\
-C &  \(\Delta U > 0, \Delta J,\Delta V<0\) & \(U^* \gg 1,  V^*, J^* = 0\)\\
-A &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
+A & \(\Delta U <0, ~ ~ \Delta J,\Delta V>0\) & \(U^* \ll V^* \ll J^*\) \\ 
+B &  \(\Delta U > 0, ~ ~ \Delta J,\Delta V<0\) & \(U^* \gg 1, ~ ~V^*, J^* = 0\)\\
+C &  \(\Delta U, \Delta J < 0,~ ~\Delta V>0\) & \(J^* < U^* \ll V^*\) \\
+D &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 \hline
 \end{tabular}
 \caption{Summary of the various fixed point phases}
@@ -206,149 +199,190 @@ A &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 
 The RG fixed point Hamiltonian describes the low-energy phase of the system. In general, if the RG fixed point is reached at an energy scale \(D^*\), the fixed point Hamiltonian \(\mathcal{H}^*\) is obtained simply from the fixed point values of the couplings, and by noting that the states above \(D^*\) are now part of the IOMs:
 \begin{equation}\begin{aligned}
-	\mathcal{H}^* = \frac{- U^*}{2} \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} + U_b^* \hat n_{0 \uparrow} \hat n_{0 \downarrow} \\
+	\mathcal{H}^* = -\frac{1}{2}U^*\left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} - U_b^* \hat n_{0 \uparrow} \hat n_{0 \downarrow} \\
 	+ V^*\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + J^* \vec{S}_d\cdot\vec{s}_0
 \end{aligned}\end{equation}
 
-\subsection{Screened regime: \(-U_b/J < 1/4 \)}
+\subsection{Screened regime}
+\(U\) is irrelevant in this regime. Moreover, as we go towards the thermodynamic limit by increasing the bandwidth \(D_0\), we find that \(J^* \gg V^*\) (see Fig.~\ref{J_bandwidth}), and the fixed point Hamiltonian is determined purely by the spin-exchange part; combining this with the local bath correlation \(U_b\) that is marginal then gives the low-energy Hamiltonian for the screened regime:
+\begin{equation}
+	H_\text{eff}^\text{sc} = J^* \vec{S}_d\cdot\vec{s}_0 - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow} + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma}
+\end{equation}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/J_bandwidth.pdf}
+	\caption{Increase of \(J^*\) in comparison to \(V^*\) when going towards the thermodynamic limit.}
+	\label{J_bandwidth}
+\end{figure}
+
+Since the high momentum modes have been decoupled, the ground state in this regime can be estimated by compressing the kinetic energy to the zero bandwidth limit: 
+\begin{equation}\begin{aligned}
+	\sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} \sim \epsilon_F \sum_{\vec k_F,\sigma}\tau_{\vec k_F,\sigma}
+\end{aligned}\end{equation}
+Choosing the chemical potential such that \(\epsilon_F\) vanishes results in a {\it two-site Hamiltonian} composed of the impurity site and the zeroth site (see Fig.~\ref{zero-bw}):
+\begin{equation}
+	\label{two-site}
+	H_\text{eff}^\text{sc} \sim J^* \vec{S}_d\cdot\vec{s}_0 - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
+\end{equation}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/zeromode_eff.pdf}
+	\caption{Two site Hamiltonian obtained by taking the zero bandwidth limit of the effective Hamiltonian in the screened regime.}
+	\label{zero-bw}
+\end{figure}
+This model is easily solved and the ground state is a maximally-entangled spin singlet formed by \(\vec S_d\) and \(\vec s_0\); the ground state energy is \(E_\text{gs}^\text{sc} = -\frac{3}{4}J^* - U_b\):
+\begin{equation}\begin{aligned}
+	\ket{\Psi}_\text{gs}^\text{sc} = \frac{1}{\sqrt 2}\left(\ket{\uparrow_d,\downarrow_0} - \ket{\downarrow_d,\uparrow_0}\right)
+\end{aligned}\end{equation}
+where \(\left\{\uparrow_d, \downarrow_d\right\}, \left\{\uparrow_0, \downarrow_0\right\}\) are the spin states of the impurity and zeroth sites respectively. As mentioned before, this regime in the GAIM is adiabatically connected to the AIM, and indeed, such a spin-singlet ground state is also obtained in the AIM from other methods like Poor Man's scaling~\cite{anderson1969exact,anderson1970}, numerical renormalisation group~\cite{wilson1975,hrk_wilson_1980}, Bethe ansatz~\cite{}, conformal field theory methods~\cite{}[CITE] and the URG analysis of the Kondo model~\cite{anirban_kondo}.
+
+\subsection{Unscreened regime}
+
+This regime is simpler than the screened regime, because both \(V\) and \(J\) are irrelevant, and only \(U\) is relevant. The effective Hamiltonian then consists of an impurity spin that is decoupled from the conduction bath:
+\begin{equation}\begin{aligned}
+	H_\text{eff}^\text{uns} = -\frac{1}{2}U^*\left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow} + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma}
+\end{aligned}\end{equation}
+The impurity site has a doubly-degenerate ground state \(\left\{ \ket{\uparrow_d}.\ket{\downarrow_d}\right\}\), and the total ground state is the impurity state in direct product with the ground state \(\ket{\Psi}_\text{gs, bath}\) of the conduction bath Hamiltonian \(H_\text{eff, bath}^\text{uns} =  - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow} + \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma}\):
+\begin{equation}\begin{aligned}
+	\ket{\Psi}_\text{gs}^\text{uns} = \ket{\sigma_d}\otimes\ket{\Psi}_\text{gs, bath}, ~ ~ ~ \sigma = \uparrow,\downarrow
+\end{aligned}\end{equation}
+
+
+
+\subsection{The critical point: \(4U_b + J = 0\)}
+
+Along the critical points, \(J\) is marginal and \(U\) is irrelevant, while \(V\) is slightly relevant (see Fig.~\ref{rg-flow}). This leads to enhanced fluctuations in both the spin and charge sectors of the impurity site. The effective Hamiltonian is
+\begin{equation}\begin{aligned}
+	H_\text{eff}^\text{crit} = \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} - U_b^* \hat n_{0 \uparrow} \hat n_{0 \downarrow} + J^* \vec{S}_d\cdot\vec{s}_0\\
+	+ V^*\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
+\end{aligned}\end{equation}
+Since the interactions are marginal or only slightly relevant, the kinetic energy is no longer negligible compared to them, and it is not possible to faithfully take a zero bandwidth limit of the problem. 
+\subsection{Nature of ground state near the critical point}
+
+We can obtain more insight on the change in the ground state as the system moves towards the transition by tracking its overlap with the singlet state \(\ket{\text{ss}} \equiv \ket{\Psi}_\text{gs}^\text{sc}\) and the entangled state among the charge isospin triplets, \(\ket{\text{ct}} \equiv \frac{1}{\sqrt 2}\left(\ket{\uparrow_d \downarrow_d,0} + \ket{0,\uparrow_0 \downarrow_0}\right)\). The ground state \(\ket{\Psi}_\text{gs}\)is obtained by numerically solving the fixed point Hamiltonian for various bare values of the couplings. The overlaps are shown in Fig.~\ref{overlaps}, and we see a continuous increase in the charge content at the cost of the spin content as \(r\) approaches the critical value \(r_c = 0.25\). The spin and charge overlaps approach equality towards the transition, leading to an {\it extra emergent symmetry of spin-charge interchange} at the critical point.
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/J_bandwidth.pdf}
-	% \caption{../figures/J_bandwidth.pdf}
-	% \label{fig:-figures-J_bandwidth-pdf}
-\end{figure}
-The fixed point Hamiltonian can, in general, be written as
-\begin{equation}\begin{aligned}
-	\mathcal{H}^* = \sum_{\sigma, k}\epsilon_k \tau_{k\sigma} - \frac{U^*}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2  + \sum_{\sigma, k < \Lambda^*}\left( V^* c^\dagger_{k\sigma}c_{d\sigma} + \text{h.c.} \right) + J^* \vec{S_d}\cdot\vec{s}
-\end{aligned}\end{equation}
-The first term is the kinetic energy of all the electrons. The next two terms are the impurity-diagonal pieces, featuring the renormalised interaction \(U^*\). The next three terms are the residual interactions between the impurity and the metal, with the renormalised couplings \(V^*, J^*\) and \(K^*\). The summations in these terms extend from the fixed point momentum cutoff \(\Lambda^*\) to 0. This is the region of momentum space  which the URG was unable to decouple. The operators \(\vec s\) and \(\vec C\) represent the macroscopic magnetic and charge spins formed by the remaining electrons that are lying inside the window \(\left[ 0, \Lambda^* \right] \):
-\begin{equation}\begin{aligned}
-	\vec s = \sum_{kk^\prime<\Lambda^*\atop{\alpha\beta}} c^\dagger_{k\alpha}\vec \sigma_{\alpha\beta}c_{k^\prime\beta}
-\end{aligned}\end{equation}
-Our goal here is to write down the ground state wavefunction for this low-energy Hamiltonian.
-
-To make progress, we will simplify the effective Hamiltonian by taking the zero bandwidth limit. This reduces it to a two-site problem. One site is of course the impurity site, and this site will be labeled as site 1. The other site will be formed by the center of mass degree of freedom of the conduction electrons, and will be labeled as site 2. The Hamiltonian for this two-site problem is
-\begin{equation}\begin{aligned}
-	\mathcal{H}_{IR} = - \frac{U^*}{2}\left(\hat n_{1 \uparrow} - \hat n_{1 \downarrow}\right)^2 + V^*\sum_{\sigma}\left(c^\dagger_{1\sigma}c_{2\sigma} + \text{h.c.} \right) + J^*\vec{S_1}\cdot\vec{S_2} + K^* \vec{C_1}\cdot\vec{C_2}
-\end{aligned}\end{equation}
-
-
-The subscripts on the operators designate the site on which they act; \(\hat n_1\) is the number operator for the first site.
-
-We will adopt the following notation to represent the states in this Hilbert space. A general state will be represented in the Fock space basis as \(\ket{n_{1 \uparrow}n_{1 \downarrow}n_{2 \uparrow}n_{2 \downarrow}}\). For example,
-\begin{equation}\begin{aligned}
-	\ket{1101} = c^\dagger_{1 \uparrow}c^\dagger_{1 \downarrow}c^\dagger_{2 \downarrow}\ket{-}
-\end{aligned}\end{equation}
-\(\ket{-}\) is the vacuum state.
-
-For \(U>0\), the ground state is given by
-\begin{gather}
-	\label{gstate}
-	\ket{\Psi}_\text{1} = c_s \frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} - \ket{\downarrow, \uparrow}\right) + c_c \frac{1}{\sqrt 2}\left(\ket{\uparrow\downarrow, 0} + \ket{0, \uparrow\downarrow}\right), \quad E_1 =  -V^*\sqrt{\gamma^2 + 4} -\frac{1}{4}U^* - \frac{3}{8}{J^*}
-\end{gather}
-where $\gamma = \frac{1}{2{V^*}}\left[ \frac{1}{4}\left( 3J^* + K^* \right) + \frac{1}{2}U^* \right]$. The probabilities for the spin and charge sectors for the ground state are
-\begin{equation}\begin{aligned}
-	\label{coeff_def}
-	\left(c_s\right)^2 = \frac{1}{2\sqrt{\gamma^2 + 4}}\left(\sqrt{\gamma^2 + 4} + \gamma\right),\\
-	\left(c_c \right)^2 = \frac{1}{2\sqrt{\gamma^2 + 4}}\left(\sqrt{\gamma^2 + 4} - \gamma\right)~.
-\end{aligned}\end{equation}
-For (roughly) \(J_0 > V_0\), we get \(J^* \gg V^*\) and \(U^* \gg U_0\) so that \(\gamma \gg 1\). This gives \(\left( c_s \right) ^2 \sim 1\) and \(\left( c_c \right) ^2 \sim 0\). The entire contribution to the ground state then comes from the spin sectors of the two sites. This is calculated numerically in fig.~\ref{cs_cc}.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/coeffs_vs_J.pdf}
-	\caption{Variation of relative weights \(c_s\) and \(c_c\) with \(J_0\)}
-	\label{cs_cc}
+\includegraphics[width=0.5\textwidth]{../figures/corrs_gs.pdf}
+\caption{Overlap of the RG fixed point ground state \(\ket{\Psi}_\text{gs}\) with the spin singlet state \(\ket{\text{ss}}\) and the charge triplet state \(\ket{\text{ct}}\), for a range of values of the transition tuning ratio \(r\). Beyond the critical point \(r > 0.25\), both these overlaps vanish.}
+	\label{overlaps}
 \end{figure}
 
-In the other regime of \(U<0\), the two competing states are \(\ket{\Psi}_1\) defined above (with energy \(E_1\)), and \(\ket{\Psi_2}\), the charge singlet: \(\ket{\Psi}_2 = \frac{1}{\sqrt 2}\left( \ket{2,0} - \ket{0,2} \right)\) having energy \(E_2\).
-\begin{equation}\begin{aligned}
-	E_2 = -\frac{3}{4}K^*, \quad E_1 - E_2 = -\frac{1}{4}\sqrt{\left( \frac{1}{2}K^* + U^* \right)^2 + (4V^*)^2} - \frac{1}{4}U^* + \frac{3}{4}K^*
-\end{aligned}\end{equation}
-For \(V_0 \gg K_0\), the largest energy scale will be \(V^*\), and we can then approximate this difference as
-\begin{equation}\begin{aligned}
-	E_1 - E_2 \simeq -V^* < 0
-\end{aligned}\end{equation}
-In such a case, \(\ket{\Psi}_1\) will therefore be the ground state. In the other regime \(V_0 \ll K_0\), the largest energy scale will be \(K^*\), and we can then write
-\begin{equation}\begin{aligned}
-	E_1 - E_2 \simeq - \frac{1}{8}K^* + \frac{3}{4}K^* > 0
-\end{aligned}\end{equation}
-In this case, the ground state will be \(\ket{\Psi}_2\). There exists, therefore, a phase transition at a critical plane \((U_c, K_c, V_c)\), where the ground state changes between the charge singlet \(\ket{\Psi}_2\) and the spin singlet + charge triplet \(\ket{\Psi}_1\).
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/E1_vs_E3.pdf}
-\end{figure}
 
-\subsection{Unscreened regime: \(-U_b/J > 1/4 \)}
+\section{Descriptors of the transition}
 
-\subsection{Approach towards the thermodynamic limit}
+In this section, we will discuss various diagnostics that track the impurity phase transition; these diagnostics or probes will also answer other interesting questions:
+\begin{itemize}
+	\item[1.] What are the fluctuations that force the transition?
+	\item[2.] How do entanglement measures behave across the transition?
+	\item[3.] How does the Kondo screening cloud~\cite{}[CITE] respond as the system is driven critical?
+\end{itemize}
 
-{\bf \Large [Update with V vs D plots]}
+\subsection{Impurity spectral function}
 
-The URG method works strictly on finite systems and leads to finite values of fixed point couplings. The behaviour of the Hamiltonian in the thermodynamic limit can then be determined using finite-size scaling where we increase the bandwidth and decrease the width of each RG step. When applied to the fixed point value of the impurity-bath hybridisation parameter \(V\) (fig.~\ref{V_vs_D}), it can be seen that the fixed point value increases as the system size is increased, implying that the continuum limit of \(V^*\) is \(\infty\). This holds for both \(V_0 > J_0\) and \(V_0 < J_0\), as shown in the two panels of fig.~\ref{V_vs_D}.
+One of the most obvious indicators of the transition is the appearance of a gap in the spectral function \(A_d(\omega)\) of the impurity. In the AIM, the spectral function \(A_d\) has a single peak structure for small \(U\), and two additional side peaks appear at large \(U\). Although the central peak keeps getting sharper as \(U\) is increased, it never disappears, simply because the impurity is always able to bind with the zeroth site and form a single site; indeed, it is the local Fermi liquid excitations that appear on top of this singlet ground state that gives rise to the central Abrikosov-Suhl resonance in the spectral function~\cite{}[lots of CITE here].
+
+In contrast, the GAIM shows the appearance of a gap as \(r\) crosses \(1/4\) (see Fig.~\ref{spec-func}); the three-peak form survives only up to the critical point. The spectral functions are calculated by numerically diagonalising the effective Hamiltonian obtained from the RG. In the unscreened regime \(r > 0.25\), the impurity spectral function has a two peaks at energies \(\omega = \pm U/2\) corresponding to the fluctuations that create a particle or a hole on the impurity site. The appearance of the gap shows that exactly at \(r=0.25\), the zero-energy pole in the impurity Greens function \(G_d(\omega)\) gets replaced by a zero; this is accompanied by a zero energy divergence in the impurity self-energy \(\Sigma_d = 1/G_d^{(0)}(\omega) - 1/G_d(\omega)\). The expression of the self-energy follows from Dyson's equation, \(G_d^{(0)}(\omega)\) being the self-energy of the impurity at \(U=0\).
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{../figures/Vstar_vs_D_smallV.pdf}
-	\includegraphics[width=0.4\textwidth]{../figures/Vstar_vs_D_largeV.pdf}
-	\caption{Variation of fixed point value \(V^*\) with increasing bandwith \(D_0\), for both \(V_0 > J_0\) and \(V_0 < J_0\).}
-	\label{V_vs_D}
+	\includegraphics[width=0.5\textwidth]{../figures/Add.pdf}
+	\caption{Impurity spectral function \(A_d(\omega)\) at three values of the ratio \(r\). The central large plot is exactly at the critical point \(r=0.25\), the left (blue) inset is at \(r < 0.25\) and the right (violet) inset is at \(r > 0.25\).}
+	\label{spec-func}
 \end{figure}
 
-In a similar manner, we checked the variation of the spin and charge probabilities, \(c_s\) and \(c_c\), in the ground state, with increasing bandwith. The result is shown in fig.~\ref{c_vs_D}.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/coeffs_vs_D.pdf}
-	\caption{Variation of spin and charge fractions, \(c_s\) and \(c_c\), of the ground state, as a function of bare bandwidth \(D_0\). Left and right panels show the cases of \(J_0 < V_0\) and \(J_0 > V_0\) respectively.}
-	\label{c_vs_D}
-\end{figure}
-For both \(V_0 < J_0\) and \(V_0 > J_0\), we see that the spin contribution increases towards unity while the charge contribution vanishes. This indicates that at large bandwidth, the ground state becomes purely a spin singlet, formed purely by singly-occupied impurity states.
+\subsection{Using geometric entanglement to track the transition}
+
+The impurity Greens function can be given a spectral representation in terms of the eigenstates \(\left\{\ket{\Psi}_n\right\}\) of the GAIM:
 \begin{equation}\begin{aligned}
-	\label{gstate_kondo}
-	\lim_{D_0 \to \infty} \ket{\Psi}_1 = \frac{1}{\sqrt 2}\left(\ket{\uparrow, \downarrow} - \ket{\downarrow, \uparrow}\right) 
+G_d(\omega) = \sum_n \left[ \frac{|\braket{\Psi_\text{gs} | c_{d\sigma} | \Psi_n}|^2}{\omega + E_\text{gs} - E_n} + \frac{|\braket{\Psi_n | c_{d\sigma} | \Psi_\text{gs}}|^2}{\omega - E_\text{gs} + E_n}\right] 
 \end{aligned}\end{equation}
+We will now introduce a complete basis into the expression. The basis will be the set of eigenstates of the Hamiltonian  \(H = H_1 + H_2\), where \(H_1\) is the two-site Hamiltonian in eq.~\ref{two-site}, and \(H_2\) is a tight-binding Hamiltonian formed by the remaining sites. Since the Hamiltonians are decoupled, the eigenstates \(\ket{\Psi}_{m,n}\) will be direct product states formed by combining the eigenstates \(\ket{\phi}_m,\ket{\psi}_n\) of the individual Hamiltonians \(H_1\) and \(H_2\) respectively: \(\ket{\Phi}_{m,n} = \ket{\phi}_m\otimes\ket{\psi}_n\). Inserting this basis leads to the expression:
+\begin{equation}\begin{aligned}
+	\label{summation}
+	\ket{\Psi}_\text{gs} = \sum_{m,n} \ket{\Phi}_{m,n} \left(\bra{\phi_{m}}\otimes\bra{\psi_n}\right)\ket{\Psi_\text{gs}}
+\end{aligned}\end{equation}
+The ground state of \(H_1\) is the spin singlet: \(\ket{\phi}_0 = \ket{\text{ss}}\). We denote the ground state of the tight-binding Hamiltonian \(H_2\) by \(\ket{\psi}_0\). Because of the highly renormalised couplings \(V\) and \(J\), the impurity site is almost maximally entangled with the zeroth site, such that the ground state \(\ket{\Psi}_\text{gs}\) in the \(r < 0.25\) regime can be thought of as a direct product of the two-site ground state, \(c\ket{\text{ss}} + \sqrt{1-c^2}\ket{\text{ct}}\), in direct product with the tight-binding ground state:
+\begin{equation}\begin{aligned}
+	\ket{\Psi}_\text{gs} \simeq \left(c\ket{\text{ss}} + \sqrt{1-c^2}\ket{\text{ct}}\right)  \otimes \ket{\psi}_0 = \ket{\Phi}_\text{ss} + \ket{\Phi}_\text{ct}
+\end{aligned}\end{equation}
+where \(\ket{\Phi}_\text{ss(ct)} = \ket{\text{ss}\left( \text{ct} \right)}\otimes\ket{\psi}_0 \).
+This suggests that not all terms in the summation of eq.~\ref{summation} contribute; out of all \(\left\{ \ket{\psi}_n \right\} \), only the ground state \(n=0\) contributes, while only \(\ket{ss}\) and \(\ket{ct}\) contribute from the set \(\left\{ \ket{\phi}_m \right\} \). The summation then simplifies to
+\begin{equation}\begin{aligned}
+	\ket{\Psi}_\text{gs} = \ket{\Phi}_{ss}\braket{\text{ss}|\Psi^{(2)}_\text{gs}} + \ket{\Phi}_{ct}\braket{\text{ct}|\Psi^{(2)}_\text{gs}}~,
+\end{aligned}\end{equation}
+where \(\ket{\Psi^{(2)}_\text{gs}}\) is the two-site part of the ground state and can be obtained by starting with the full ground state \(\ket{\Psi}_\text{gs}\) and tracing over the other lattice sites of the system.
 
-\subsection{The critical point: \(-U_b/J = 1/4 \)}
+{\color{blue}We assume that the global phase of the wavefunctions are real}, and since the internal weights of the wavefunctions are real as well, the overlaps \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}},\braket{\text{ct}|\Psi^{(2)}_\text{gs}}\) are also real. We can use these overlaps to define a geometric measure of entanglement:
+\begin{equation}\begin{aligned}
+	\varepsilon\left(\psi_1,\psi_2\right) = 1 - |\braket{\psi_1 | \psi_2}|^2
+\end{aligned}\end{equation}
+[CITE]
+If \(\ket{\psi_1}\) is thought of as a separable state, then \(\ket{\psi_2}\) should be less entangled if it's overlap with \(\ket{\psi_1}\) is large, which is indeed borne out by the definition.
+The overlaps then become \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}} = \sqrt{1 - \varepsilon\left(ss,\Psi^{(2)}_\text{gs}\right)}\), and similarly for the state \(\ket{\text{ct}}\). For brevity, we will use the notation \(\varepsilon_\text{ss} \equiv \varepsilon\left(ss,\Psi^{(2)}_\text{gs}\right), \varepsilon_\text{ct} \equiv \varepsilon\left(ct,\Psi^{(2)}_\text{gs}\right)\). The Greens function can now be written in terms of these measures:
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	G_d(\omega) = \sum_n \left[\left(1 - \varepsilon_\text{ss} \right) \left(\frac{|\braket{\Phi_\text{ss} | c_{d\sigma} | \Psi_n}|^2}{\omega + E_\text{gs} - E_n} + \frac{|\braket{\Psi_n | c_{d\sigma} | \Phi_\text{ss}}|^2}{\omega - E_\text{gs} + E_n}\right) + \left(1 - \varepsilon_\text{ct} \right) \left(\frac{|\braket{\Phi_\text{ct} | c_{d\sigma} | \Psi_n}|^2}{\omega + E_\text{gs} - E_n} + \frac{|\braket{\Psi_n | c_{d\sigma} | \Phi_\text{ct}}|^2}{\omega - E_\text{gs} + E_n}\right)\right.\\
+	+ \left. \sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)} \left(\frac{\braket{\Phi_\text{ss} | c_{d\sigma} | \Psi_n}\braket{\Psi_n | c^\dagger_{d\sigma} | \Phi_\text{ct}} + \text{h.c.}}{\omega + E_\text{gs} - E_n} + \frac{\braket{\Phi_\text{ct} | c_{d\sigma} | \Psi_n}\braket{\Psi_n | c^\dagger_{d\sigma} | \Phi_\text{ss}} + \text{h.c.}}{\omega - E_\text{gs} + E_n}\right)\right]
+\end{aligned}\end{equation}
+\end{widetext}
 
-\section{Evolution of the groundstate across the transition}
-
-\subsection*{Overlap of ground state against spin singlet and charge triplet zero states}
-
-\begin{figure}
-	\includegraphics[width=0.5\textwidth]{../figures/overlaps_gs-J=10.000.pdf}\\
-	\includegraphics[width=0.5\textwidth]{../figures/corrs_gs-J=10.000.pdf}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{../figures/entanglement.pdf}
+	\caption{Variation of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\) as \(r\) is increased towards the critical value 0.25. Inset shows the variation of the individual measures \(\varepsilon_\text{ss},\varepsilon_\text{ct}\).}
+	\label{entng}
 \end{figure}
 
+This expression is interesting because it relates the Greens function (measurable when converted into a spectral function) to measures of entanglement.
+These measures have been plotted up to the critical point in Fig.~\ref{entng}.
+While \(\varepsilon_\text{ss},\varepsilon_\text{ct}\) (plotted in the inset) are very similar to the overlaps plotted in Fig.~\ref{overlaps}, the cross-term \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\) plotted in the main figure has an overall monotonic incremental behaviour towards the transition.
+We can now use the knowledge of the behaviour of these measures to make some statements about the nature of the transition from the Greens function.
+Since \(\varepsilon_\text{ss}\) increases towards the transition, we find that the first major term in the Greens function decreases; this shows that scattering within the spin sector loses weight.
+On the other hand, since \(\varepsilon_\text{ct}\) decreases, the second major term in \(G_d\) increases, reflecting the growth in the participation of the charge sector in the scattering processes.
+The final major term also increases, due to the monotonic growth of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\), showing that there is a continual increase in the {\it mixing of the spin and charge sectors}.
 
 \subsection{Presence of sub-dominant pair fluctuations}
 
 \begin{figure}
-	\includegraphics[width=0.4\textwidth]{../figures/odlro-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-	\caption{Growth of pair fluctuations \(p^\dagger_d p_0\) between the impurity and the zeroth site towards the critical point, \(p^\dagger=c^\dagger_\uparrow c^\dagger_\downarrow\) being the local pair creation operator. This comes at the cost of the spin-flip fluctuations \(S_d^+ s_0^- + \text{h.c.}\). which decrease towards the transition.}
+	\includegraphics[width=0.49\textwidth]{../figures/odlro.pdf}
+	\caption{Growth of pair fluctuations \(p^\dagger_d p_0\) between the impurity and the zeroth site towards the critical point, \(p^\dagger=c^\dagger_\uparrow c^\dagger_\downarrow\) being the local pair creation operator. This comes at the cost of the spin-flip fluctuations \(S_d^+ s_0^- + \text{h.c.}\), which decrease towards the transition.}
 	\label{pair_fluc}
 \end{figure}
 
-The behaviour of the various kinds of correlation functions (for eg., the reduction of the impurity compensation \(\vec{S}_d\cdot\vec{s}_0\)) shown above indicate that the Kondo cloud that screens the impurity is getting destroyed as \(U_b/J\) increases in magnitude. To shed some light on the nature of the fluctuations that faciliate this process, we also plot the average pair fluctuation in the ground state as a function of \(U_b/J\), in fig.~\ref{pair_fluc}. The pair fluctuations are terms that transfer an electron pair between the impurity and zeroth sites: \(c^\dagger_{d \uparrow}c^\dagger_{d \downarrow} c_{0 \downarrow}c_{0 \uparrow}\). It can be seen from the figure that while the spin-flip fluctuations decrease (since the Kondo cloud is formed out of these spin-flip fluctuations, this is consistent with the destruction of the Kondo cloud discussed in this paragraph), the pair fluctuations pick up. Since the spin subspace and charge subspace cannot coincide on the same site, we can then conclude that it is the growth of these pair fluctuations brought about by the presence of the purely local interaction \(U_b\) that make the screening of the impurity spin very poor.
+\subsection{Mutual information and entanglement entropy in the ground state: fate of the Kondo cloud}
+Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy of subsystem \(A\) with the rest is defined as
+\begin{equation}\begin{aligned}
+	S(A) = \text{Tr}\left[\rho_A \ln \rho_A\right]
+\end{aligned}\end{equation}
+where \(\rho_A\) is the reduced density matrix obtained by tracing the full density matrix \(\rho = \ket{\Psi}_\text{gs} \bra{\Psi}_\text{gs}\) over all subsystems apart from \(A\). The mutual information between two subsystems \(A\) and \(B\) is defined as
+\begin{equation}\begin{aligned}
+	I(A:B) = S(A) + S(B) - S(A \cup B)
+\end{aligned}\end{equation}
+where \(S(A \cup B)\) is the entanglement entropy of \(A\) and \(B\) with the rest. I(A:B) represents the amount of information that can be gained about \(B\) on measuring \(A\), or vice-versa. If the ground state \(\ket{\Psi}_\text{gs}\) is a separable state where \(A\) is a disentangled from the rest, then its entanglement entropy \(S(A)\) will be \(0\). On the other hand, if the ground state cannot be written in separable form, \(S(A)\) becomes non-zero, and the maximum value it can take is \(\ln d\), where \(d\) is the dimension of the Hilbert space of \(A\). 
 
-\subsection*{Correlations in ground state}
-\begin{figure*}
-	\includegraphics[width=0.45\textwidth]{../figures/corr-k-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/mi-dk-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/mi-01-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/mi-d0-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/EE-d-D=1000.00000,t=1.00000,J=30.00000,V=1.50000J,Ub=-Uby10,N=4,U=59.85787,93.55363,25.pdf}
-\end{figure*}
+In the AIM or the Kondo model ground state, the impurity forms a maximally entangled singlet with the zeroth site. This in turn leads to entanglement in \(k-\)space between the conduction electrons that screen the impurity and form the Kondo cloud~\cite{anirban_kondo}. 
 
-
-\subsection{Impurity spectral function \(A_{dd}(\omega)\)}
-These are the frequency-domain spectral functions for the retarded propagator \(-i\theta(t)\left<\left\{c_{d\sigma}(t),c^\dagger_{d\sigma}\right\}  \right>\):
-\begin{center}
-	\includegraphics[width=0.2\textwidth]{../figures/spec_func_Ub_by_J=-0.100.pdf}
-	\includegraphics[width=0.2\textwidth]{../figures/spec_func_Ub_by_J=-0.250.pdf}
-	\includegraphics[width=0.2\textwidth]{../figures/spec_func_Ub_by_J=-0.26.pdf}
-\end{center}
+\begin{figure}[!htb]
+\includegraphics[width=0.49\textwidth]{../figures/I_k.pdf}
+\caption{caption}
+\end{figure}
+\begin{figure}[!htb]
+\includegraphics[width=0.49\textwidth]{../figures/I_r.pdf}
+\caption{caption}
+\end{figure}
+\begin{figure}[!htb]
+\includegraphics[width=0.49\textwidth]{../figures/S_imp.pdf}
+\caption{caption}
+\end{figure}
 
 \section{Conclusions}
+CC
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
 
 \begin{itemize}
 	\item discuss why the model is minimal

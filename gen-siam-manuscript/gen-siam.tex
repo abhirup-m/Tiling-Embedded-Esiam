@@ -1,4 +1,4 @@
-\documentclass[reprint,prb,superscriptaddress]{revtex4-2}
+\documentclass[reprint,superscriptaddress,floatfix]{revtex4-2}
 \usepackage{braket,amsmath,graphicx,color}
 \usepackage{hyperref}
 \bibliographystyle{apsrev4-1}
@@ -195,6 +195,17 @@ D &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 	\label{phase-diag}
 \end{figure}
 
+\subsection{Presence of sub-dominant pair fluctuations}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.49\textwidth]{../figures/odlro.pdf}
+	\caption{Growth of pair fluctuations \(p^\dagger_d p_0\) between the impurity and the zeroth site towards the critical point, \(p^\dagger=c^\dagger_\uparrow c^\dagger_\downarrow\) being the local pair creation operator. This comes at the cost of the spin-flip fluctuations \(S_d^+ s_0^- + \text{h.c.}\), which decrease towards the transition.}
+	\label{pair_fluc}
+\end{figure}
+
+
+
 \section{Low-energy effective Hamiltonian and the ground state}
 
 The RG fixed point Hamiltonian describes the low-energy phase of the system. In general, if the RG fixed point is reached at an energy scale \(D^*\), the fixed point Hamiltonian \(\mathcal{H}^*\) is obtained simply from the fixed point values of the couplings, and by noting that the states above \(D^*\) are now part of the IOMs:
@@ -227,7 +238,7 @@ Choosing the chemical potential such that \(\epsilon_F\) vanishes results in a {
 \end{equation}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/zeromode_eff.pdf}
+	\includegraphics[width=0.4\textwidth]{../figures/zeromode_eff.pdf}
 	\caption{Two site Hamiltonian obtained by taking the zero bandwidth limit of the effective Hamiltonian in the screened regime.}
 	\label{zero-bw}
 \end{figure}
@@ -272,9 +283,9 @@ We can obtain more insight on the change in the ground state as the system moves
 
 \section{Descriptors of the transition}
 
-In this section, we will discuss various diagnostics that track the impurity phase transition; these diagnostics or probes will also answer other interesting questions:
+In this section, we will discuss various diagnostics that track the impurity phase transition; these diagnostics or probes will answer several interesting questions:
 \begin{itemize}
-	\item[1.] What are the fluctuations that force the transition?
+	\item[1.] How is spectral weight transferred across energy scales, as the system undergoes the transition?
 	\item[2.] How do entanglement measures behave across the transition?
 	\item[3.] How does the Kondo screening cloud~\cite{}[CITE] respond as the system is driven critical?
 \end{itemize}
@@ -343,38 +354,33 @@ Since \(\varepsilon_\text{ss}\) increases towards the transition, we find that t
 On the other hand, since \(\varepsilon_\text{ct}\) decreases, the second major term in \(G_d\) increases, reflecting the growth in the participation of the charge sector in the scattering processes.
 The final major term also increases, due to the monotonic growth of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\), showing that there is a continual increase in the {\it mixing of the spin and charge sectors}.
 
-\subsection{Presence of sub-dominant pair fluctuations}
-
-\begin{figure}
-	\includegraphics[width=0.49\textwidth]{../figures/odlro.pdf}
-	\caption{Growth of pair fluctuations \(p^\dagger_d p_0\) between the impurity and the zeroth site towards the critical point, \(p^\dagger=c^\dagger_\uparrow c^\dagger_\downarrow\) being the local pair creation operator. This comes at the cost of the spin-flip fluctuations \(S_d^+ s_0^- + \text{h.c.}\), which decrease towards the transition.}
-	\label{pair_fluc}
-\end{figure}
-
 \subsection{Mutual information and entanglement entropy in the ground state: fate of the Kondo cloud}
-Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy of subsystem \(A\) with the rest is defined as
+Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy \(S(A)\) of subsystem \(A\) with the rest of the system is defined as the von Neumann entropy of the reduced density matrix \(\rho_A\),
 \begin{equation}\begin{aligned}
-	S(A) = \text{Tr}\left[\rho_A \ln \rho_A\right]
+	S(A) = -\text{Tr}\left[\rho_A \ln \rho_A\right]~,
 \end{aligned}\end{equation}
-where \(\rho_A\) is the reduced density matrix obtained by tracing the full density matrix \(\rho = \ket{\Psi}_\text{gs} \bra{\Psi}_\text{gs}\) over all subsystems apart from \(A\). The mutual information between two subsystems \(A\) and \(B\) is defined as
+where \(\rho_A\) is obtained by tracing the full density matrix \(\rho = \ket{\Psi}_\text{gs} \bra{\Psi}_\text{gs}\) over all subsystems apart from \(A\). The mutual information between two subsystems \(A\) and \(B\) is then defined using this entanglement entropy:
 \begin{equation}\begin{aligned}
-	I(A:B) = S(A) + S(B) - S(A \cup B)
+	I(A:B) = S(A) + S(B) - S(A \cup B)~,
 \end{aligned}\end{equation}
-where \(S(A \cup B)\) is the entanglement entropy of \(A\) and \(B\) with the rest. I(A:B) represents the amount of information that can be gained about \(B\) on measuring \(A\), or vice-versa. If the ground state \(\ket{\Psi}_\text{gs}\) is a separable state where \(A\) is a disentangled from the rest, then its entanglement entropy \(S(A)\) will be \(0\). On the other hand, if the ground state cannot be written in separable form, \(S(A)\) becomes non-zero, and the maximum value it can take is \(\ln d\), where \(d\) is the dimension of the Hilbert space of \(A\). 
+where \(S(A \cup B)\) is the entanglement entropy of \(A\) and \(B\) with the rest. \(I(A:B)\) represents the amount of information obtained about \(B\) on measuring \(A\), or vice-versa. If the ground state \(\ket{\Psi}_\text{gs}\) is a separable state where \(A\) is a disentangled from the rest, then its entanglement entropy \(S(A)\) will be \(0\). On the other hand, if the ground state cannot be written in separable form, \(S(A)\) becomes non-zero, and the maximum value it can take is \(\ln d\), where \(d\) is the dimension of the Hilbert space of \(A\). 
 
-In the AIM or the Kondo model ground state, the impurity forms a maximally entangled singlet with the zeroth site. This in turn leads to entanglement in \(k-\)space between the conduction electrons that screen the impurity and form the Kondo cloud~\cite{anirban_kondo}. 
+In the AIM or the Kondo model ground state, the impurity forms a maximally entangled singlet with the zeroth site~\cite{wilson1975,hewson1993,hrk_wilson_1980}.
+This in turn leads to entanglement in \(k-\)space between the conduction electrons that screen the impurity and form the Kondo cloud~\cite{anirban_kondo}.
+These features change once we turn on the attractive correlation \(U_b\) and drive the system across the transition, as plotted in Figs.~\ref{mut_inf_k} and \ref{mut_inf_r}.
+The \(k-\)space mutual information \(I(\vec k_1:\vec k_2)\) between two distinct \(k-\)states plotted in the red curve of Fig.~\ref{mut_inf_k} is essentially the entanglement within the Kondo cloud, and we find that this entanglement decreases towards the transition, signalling the weakening of the Kondo cloud.
+This is also supported by the reduction in the mutual information \(I(d \uparrow: \vec k \downarrow)\) between the impurity and \(k-\)space states plotted along the blue curve in the same figure. Beyond the transition, \(I(d \uparrow: \vec k \downarrow)\) drops to zero, because the impurity is no longer coupled to the bath, while \(I(\vec k_1:\vec k_2)\) takes on a larger value because they are connected by the \(U_b-\)term and are no longer sharing entanglement with the impurtiy. 
 
 \begin{figure}[!htb]
 \includegraphics[width=0.49\textwidth]{../figures/I_k.pdf}
-\caption{caption}
+\caption{Mutual information in \(k-\)space, across the transition. Red curve is the mutual information between two distinct \(k-\) states inside the Kondo cloud. Blue curve is the mutual information between a \(k-\)state and the impurity state of opposite spin.}
+\label{mut_inf_k}
 \end{figure}
+
 \begin{figure}[!htb]
 \includegraphics[width=0.49\textwidth]{../figures/I_r.pdf}
-\caption{caption}
-\end{figure}
-\begin{figure}[!htb]
-\includegraphics[width=0.49\textwidth]{../figures/S_imp.pdf}
-\caption{caption}
+\caption{Mutual information in \(r-\)space, across the transition. Red curve is the mutual information between the zeroth site and the site next to it. Blue curve is the mutual information between a \(k-\)state and the impurity state of opposite spin. The former is zero before the transition because the zeroth site is locked in a singlet with the impurity, and becomes zero after  the transition because the singlet has now decoupled and the zeroth site is free to entangle with the other sites.}
+\label{mut_inf_r}
 \end{figure}
 
 \section{Conclusions}

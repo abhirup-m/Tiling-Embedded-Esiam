@@ -4,7 +4,7 @@
 \bibliographystyle{apsrev4-1}
 \begin{document}
 
-\title{Local metal-insulator transition in a generalised impurity Anderson model}
+\title{Local metal-insulator transition in a generalised Anderson impurity model}
 \author{Abhirup Mukherjee}
 \email{am18ip014@iiserkol.ac.in }
 \affiliation{Department of Physical Sciences, Indian Institute of Science Education and Research-Kolkata, W.B. 741246, India}
@@ -30,9 +30,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{Introduction}
 
-The Hubbard model has become one of the fundamental and prototypical models for describing strongly correlated systems in quantum condensed matter physics.   strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied. There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
+Quantum impurity models, owing to their simple construction, have often served as testbeds for analytical and numerical methods, as well as experimental techniques. They consist of one or more local correlated quantum system(s) coupled with (typically non-interacting) bosonic or fermionic conduction bath channel(s). Even though the impurity itself is simple, the interaction with the bath often leads to novel phases, and such impurity systems often lead to interesting phenomena that have far-reaching consequences and require fundamental theoretical breakthroughs in order to understand them. One of the most well-studied impurity models is the single-impurity Anderson model; it consists of a single impurity site of spin-half electrons and local correlation \(U\) hybridising with a non-interacting conduction bath through a coupling \(V\).
 
-One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For eg, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
+
+One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For example, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
 The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
 
 If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
@@ -148,6 +149,14 @@ We start the discussion on the nature of the RG flows by noting that the bath co
 	\item The critical point has been chosen from the RG equation of \(J\) and not of \(V\); this is because, the RG irrelevance of \(J\) is sufficient to make \(V\) irrelevant as well, and on the other hand, the RG relevance of \(J\) is sufficient to screen the impurity.
 \end{itemize}
   
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{J_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{U_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{V_Ub.pdf}
+	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations, for three values of the transition-tuning ratio \(r\). x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(r > r_c\), where \(J\) is relevant. The purple curves represent the RG flows for \(r < r_c\), where \(J\) is irrelevant. The red curves are exactly at the critical point \(r = r_c\), where \(J\) is marginal.}
+	\label{rg-flow}
+\end{figure}
 
 \subsection{RG flows for \(r < r_c\)}
 
@@ -164,14 +173,6 @@ The RG \(\beta\)-function function for \(J\) changes sign as \(r\) grows greater
 	U^* \sim \mathcal{O}(1), ~ ~ ~ ~ V^* =0, ~ ~ ~ ~ J^* =0, ~ ~ ~ ~ U_b \sim \mathcal{O}(1)
 \end{aligned}\end{equation}
 
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.48\textwidth]{J_Ub.pdf}
-	\includegraphics[width=0.48\textwidth]{U_Ub.pdf}
-	\includegraphics[width=0.48\textwidth]{V_Ub.pdf}
-	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations, for three values of the transition-tuning ratio \(r\). x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(r > r_c\), where \(J\) is relevant. The purple curves represent the RG flows for \(r < r_c\), where \(J\) is irrelevant. The red curves are exactly at the critical point \(r = r_c\), where \(J\) is marginal.}
-	\label{rg-flow}
-\end{figure}
 
 \subsection{Phase diagram: impurity phase transition}
 
@@ -202,12 +203,14 @@ D &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 \end{figure}
 
 \subsection{Growth of charge isospin fluctuations in the bath}
-The low-energy phase of the AIM is characterised by enhanced spin-fluctuation \(\left<S_d^+S_0^- + \text{h.c.}\right>\); these fluctuations arise from the Kondo cloud and they serve to screen the local moment. For the system to undergo a transition into an unscreened regime, these fluctuations must get replaced by those of a different kind. This is shown in Fig.~\ref{pair_fluc}, where we plot not only the spin fluctuations mentioned, but also two-particle charge fluctuations \(\left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec k^\prime \uparrow} c_{\vec k^\prime \downarrow}\right>\) in the bath that transfer holons and doublons across \(k-\)states. We find that while the former decrease towards the transition, the latter pick up; the spin-fluctuations are getting replaced by the charge fluctuations. This is substantied by the inset of the same figure, which shows the behaviour of these fluctuations even after the transition. While the spin-fluctuations vanish beyond the transition, the charge fluctuations undergo an abrupt increase.
+The low-energy phase of the AIM is characterised by enhanced spin-fluctuation \(\left<S_d^+S_0^- + \text{h.c.}\right>\); these fluctuations arise from the Kondo cloud and they serve to screen the local moment. For the system to undergo a transition into an unscreened regime, these fluctuations must get replaced by those of a different kind. This is shown in Fig.~\ref{pair_fluc}, where we plot not only the spin fluctuations mentioned, but also two-particle charge fluctuations \(\left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec k^\prime \uparrow} c_{\vec k^\prime \downarrow}\right>\) in the bath that transfer holons and doublons across \(k-\)states. We find that while the former decrease towards the transition, the latter pick up; the spin-fluctuations are getting replaced by the charge fluctuations. This is substantiated by the inset of the same figure, which shows the behaviour of these fluctuations for a larger range across the transition. While the spin-fluctuations vanish beyond the transition, the charge fluctuations undergo an abrupt increase.
+
+{\color{blue}The death of the spin-fluctuations and the simultaneous growth in the charge fluctuations can be attributed to the presence of the attractive correlation term \(U_b\) in the Hamiltonian. Indeed, \(c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec k^\prime \uparrow} c_{\vec k^\prime \downarrow}\) is just the \(k-\)space Fourier transform of the \(U_b\) term. The presence of such terms force the conduction bath to shift spectral weight from the spin sector to the charge sector, destabilising the singlet ground state in the process.}
 
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.49\textwidth]{odlro.pdf}
-	\caption{Growth in the pair-fluctuation terms \(c^\dagger_{k \uparrow}c^\dagger_{k \downarrow} c_{k^\prime \downarrow}c_{k^\prime \uparrow}\), as \(r \to 0.25\). This comes at the cost of the spin-flip fluctuations \(S_d^+ S_0^- + \text{h.c.}\), which decrease towards the transition. The inset plots the same quantities but for a larger range of \(r\), and the pair fluctuations are seen to pick up abruplty after the transition while the spin fluctuations vanish.}
+	\caption{Growth in the pair-fluctuation terms \(c^\dagger_{k \uparrow}c^\dagger_{k \downarrow} c_{k^\prime \downarrow}c_{k^\prime \uparrow}\), as \(r \to 0.25\). This comes at the cost of the spin-flip fluctuations \(S_d^+ S_0^- + \text{h.c.}\), which decrease towards the transition. The inset plots the same quantities but for a larger range of \(r\), and the pair fluctuations are seen to pick up abruptly after the transition while the spin fluctuations vanish.}
 	\label{pair_fluc}
 \end{figure}
 
@@ -312,7 +315,7 @@ In contrast, the GAIM shows the appearance of a gap as \(r\) crosses \(1/4\) (se
 
 \subsection{Using geometric entanglement to track the transition}
 
-The impurity Greens function can be given a spectral representation in terms of the eigenstates \(\left\{\ket{\Psi}_n\right\}\) of the GAIM:
+Given a ground state \(\ket{\Psi}_\text{gs}\) and a spectrum of energies \(\left\{ E_n \right\} \), the impurity Greens function can be given a spectral representation in terms of the eigenstates \(\left\{\ket{\Psi}_n\right\}\) of the GAIM:
 \begin{equation}\begin{aligned}
 G_d(\omega) = \sum_n \left[ \frac{|\braket{\Psi_\text{gs} | c_{d\sigma} | \Psi_n}|^2}{\omega + E_\text{gs} - E_n} + \frac{|\braket{\Psi_n | c_{d\sigma} | \Psi_\text{gs}}|^2}{\omega - E_\text{gs} + E_n}\right] 
 \end{aligned}\end{equation}
@@ -332,7 +335,7 @@ This suggests that not all terms in the summation of eq.~\ref{summation} contrib
 \end{aligned}\end{equation}
 where \(\ket{\Psi^{(2)}_\text{gs}}\) is the two-site part of the ground state and can be obtained by starting with the full ground state \(\ket{\Psi}_\text{gs}\) and tracing over the other lattice sites of the system.
 
-{\color{blue}We assume that the global phase of the wavefunctions are real}, and since the internal weights of the wavefunctions are real as well, the overlaps \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}},\braket{\text{ct}|\Psi^{(2)}_\text{gs}}\) are also real. We can use these overlaps to define a geometric measure of entanglement:
+We assume that the global phase of the wavefunctions are real, and since the internal weights of the wavefunctions are real as well, the overlaps \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}},\braket{\text{ct}|\Psi^{(2)}_\text{gs}}\) are also real. We can use these overlaps to define a geometric measure of entanglement:
 \begin{equation}\begin{aligned}
 	\varepsilon\left(\psi_1,\psi_2\right) = 1 - |\braket{\psi_1 | \psi_2}|^2
 \end{aligned}\end{equation}
@@ -361,8 +364,8 @@ Since \(\varepsilon_\text{ss}\) increases towards the transition, we find that t
 On the other hand, since \(\varepsilon_\text{ct}\) decreases, the second major term in \(G_d\) increases, reflecting the growth in the participation of the charge sector in the scattering processes.
 The final major term also increases, due to the monotonic growth of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\), showing that there is a continual increase in the {\it mixing of the spin and charge sectors}.
 
-\subsection{Mutual information and entanglement entropy in the ground state: fate of the Kondo cloud}
-Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy \(S(A)\) of subsystem \(A\) with the rest of the system is defined as the von Neumann entropy of the reduced density matrix \(\rho_A\),
+\subsection{Mutual information and spin/charge correlations in ground state: fate of the Kondo cloud}
+Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy (EE) \(S(A)\) of subsystem \(A\) with the rest of the system is defined as the von Neumann entropy of the reduced density matrix \(\rho_A\),
 \begin{equation}\begin{aligned}
 	S(A) = -\text{Tr}\left[\rho_A \ln \rho_A\right]~,
 \end{aligned}\end{equation}
@@ -370,13 +373,7 @@ where \(\rho_A\) is obtained by tracing the full density matrix \(\rho = \ket{\P
 \begin{equation}\begin{aligned}
 	I(A:B) = S(A) + S(B) - S(A \cup B)~,
 \end{aligned}\end{equation}
-where \(S(A \cup B)\) is the entanglement entropy of \(A\) and \(B\) with the rest. \(I(A:B)\) represents the amount of information obtained about \(B\) on measuring \(A\), or vice-versa. If the ground state \(\ket{\Psi}_\text{gs}\) is a separable state where \(A\) is a disentangled from the rest, then its entanglement entropy \(S(A)\) will be \(0\). On the other hand, if the ground state cannot be written in separable form, \(S(A)\) becomes non-zero, and the maximum value it can take is \(\ln d\), where \(d\) is the dimension of the Hilbert space of \(A\). 
-
-In the AIM or the Kondo model ground state, the impurity forms a maximally entangled singlet with the zeroth site~\cite{wilson1975,hewson1993,hrk_wilson_1980}.
-This in turn leads to entanglement in \(k-\)space between the conduction electrons that screen the impurity and form the Kondo cloud~\cite{anirban_kondo}.
-These features change once we turn on the attractive correlation \(U_b\) and drive the system across the transition, as plotted in Figs.~\ref{mut_inf_k} and \ref{mut_inf_r}.
-The \(k-\)space mutual information \(I(\vec k_1:\vec k_2)\) between two distinct \(k-\)states plotted in the red curve of Fig.~\ref{mut_inf_k} is essentially the entanglement within the Kondo cloud, and we find that this entanglement decreases towards the transition, signalling the weakening of the Kondo cloud.
-This is also supported by the reduction in the mutual information \(I(d \uparrow: \vec k \downarrow)\) between the impurity and \(k-\)space states plotted along the blue curve in the same figure. Beyond the transition, \(I(d \uparrow: \vec k \downarrow)\) drops to zero, because the impurity is no longer coupled to the bath, while \(I(\vec k_1:\vec k_2)\) takes on a larger value because they are connected by the \(U_b-\)term and are no longer sharing entanglement with the impurtiy. 
+where \(S(A \cup B)\) is the EE of \(A\) and \(B\) with the rest. \(I(A:B)\) represents the amount of information obtained about \(B\) on measuring \(A\), or vice-versa. If the ground state \(\ket{\Psi}_\text{gs}\) is a state that is separable in terms of \(A\) and \(B\), then the system can be split into two disjoint parts, one of which is coupled to A and the other coupled to B.  The total EE from both \(A\) and \(B\) is then just a sum of its parts: \(S(A\cup B) = S(A) + S(B)\), such that \(I(A:B) = 0\). On the other hand, if the ground state cannot be written in separable form, the EE of the sum, \(S(A \cup B)\) is more than the sum of its parts because of the additional entanglement between \(A\) and \(B\), and we get \(I(A:B) > 0\).
 
 \begin{figure}[!htb]
 \includegraphics[width=0.49\textwidth]{I_k.pdf}
@@ -384,10 +381,25 @@ This is also supported by the reduction in the mutual information \(I(d \uparrow
 \label{mut_inf_k}
 \end{figure}
 
+In the AIM or the Kondo model ground state, the impurity forms a maximally entangled singlet with the zeroth site~\cite{wilson1975,hewson1993,hrk_wilson_1980}.
+This in turn leads to entanglement in \(k-\)space between the conduction electrons that screen the impurity and form the Kondo cloud~\cite{anirban_kondo}.
+These features change once we turn on the attractive correlation \(U_b\) and drive the system across the transition, as plotted in Figs.~\ref{mut_inf_k} and \ref{mut_inf_r}.
+The \(k-\)space mutual information \(I(\vec k_1:\vec k_2)\) between two distinct \(k-\)states plotted in the red curve of Fig.~\ref{mut_inf_k} is essentially the entanglement within the Kondo cloud, and we find that this entanglement decreases towards the transition, signalling the weakening of the Kondo cloud.
+This is also supported by the reduction in the mutual information \(I(d \uparrow: \vec k \downarrow)\) between the impurity and \(k-\)space states plotted along the blue curve in the same figure. Beyond the transition, \(I(d \uparrow: \vec k \downarrow)\) drops to zero, because the impurity is no longer coupled to the bath, while \(I(\vec k_1:\vec k_2)\) takes on a larger value because they are connected by the \(U_b-\)term and are no longer sharing entanglement with the impurity.
+
 \begin{figure}[!htb]
 \includegraphics[width=0.49\textwidth]{I_r.pdf}
 \caption{Mutual information in \(r-\)space, across the transition. Red curve is the mutual information between the zeroth site and the site next to it. Blue curve is the mutual information between a \(k-\)state and the impurity state of opposite spin. The former is zero before the transition because the zeroth site is locked in a singlet with the impurity, and becomes zero after  the transition because the singlet has now decoupled and the zeroth site is free to entangle with the other sites.}
 \label{mut_inf_r}
+\end{figure}
+
+{\color{blue}Apart from the mutual information, we also computed two complimentary measures of correlation in the ground state, the spin-flip and the charge isospin correlations, \(\left<S_d^+ S_0^- \right>\) and \(\left<c^\dagger_{ 0 \uparrow} c^\dagger_{0 \downarrow} c_{d \downarrow} c_{d \uparrow} \right>\) respectively. These are shown in Fig.~\ref{charge-spin}, and show opposite tendencies. While the spin-flips decrease due to the destruction of the Kondo cloud, the charge isospin fluctuations grow because of the attractive correlation \(U_b\). Both drop to zero abruptly beyond the transition, because the impurity entirely decouples from the bath.}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{odlro_d0.pdf}
+	\caption{Variation of spin-flip correlation and charge isospin-flip correlation across the transition.}
+	\label{charge-spin}
 \end{figure}
 
 \section{Discussions and Outlook}
@@ -408,44 +420,40 @@ Abhirup Mukherjee thanks IISER Kolkata for funding through a research fellowship
 
 \appendix*
 
-\begin{widetext}
 \section{Derivation of RG equations for the generalised Anderson impurity model}
 
 \subsection{Some preliminaries}
 The Hamiltonian we are working with is the generalised Anderson impurity model (Eq.~\ref{GIAM-ham}):
 \begin{equation}\begin{aligned}
-	\mathcal{H} = -\frac{1}{2}U \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + J \sum_{\vec k,\vec k^\prime,\atop{\alpha,\beta}}\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta}c^\dagger_{\vec k,\alpha}c_{\vec k^\prime,\beta} + V\sum_{\vec k,\sigma} \left( c^\dagger_{d\sigma}c_{\vec k,\sigma} + \text{h.c.}\right) - U_b \sum_{\vec k,\vec k^\prime,\sigma}c^\dagger_{\vec k,\sigma}c_{\vec k^\prime,\sigma} \\
-+ U_b \sum_{\vec k_1,\vec k_2,\atop{\vec k_3,\vec k_4}}c^\dagger_{\vec k_1 \uparrow} c_{\vec k_2 \uparrow} c^\dagger_{\vec k_3 \downarrow} c_{\vec k_4 \downarrow}
+	\mathcal{H} = -\frac{1}{2}U \left(\hat n_{d \uparrow} - \hat n_{d \downarrow}\right)^2 + \sum_{\vec k,\sigma} \epsilon_{\vec k} \tau_{\vec k,\sigma} + J \vec{S}_d\cdot\vec{S}_0 \\
+	+ V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
 \end{aligned}\end{equation}
 The renormalisation in the Hamiltonian \(H_{(j)}\) at the \(j^\text{th}\) RG step, upon decoupling an electronic state \(q\beta\), is given by the expression:
 \begin{equation}\begin{aligned}
-	\left(\Delta H_{(j)}\right)_{\vec q,\beta} = H_{(j-1)} - H_{(j)} = c^\dagger_{\vec q,\beta} T_{\vec q,\beta} \frac{1}{\omega_e - H_D} T^\dagger_{\vec q,\beta}c_{\vec q,\beta} + T^\dagger_{\vec q,\beta} c_{\vec q,\beta} \frac{1}{\omega_h - H_D} c^\dagger_{\vec q,\beta}T_{\vec q,\beta}~,
+	&\left(\Delta H_{(j)}\right)_{\vec q,\beta} = H_{(j-1)} - H_{(j)} \\
+	&= c^\dagger_{\vec q,\beta} T_{\vec q,\beta} \frac{1}{\omega_e - H_D} T^\dagger_{\vec q,\beta}c_{\vec q,\beta} + T^\dagger_{\vec q,\beta} c_{\vec q,\beta} \frac{1}{\omega_h - H_D} c^\dagger_{\vec q,\beta}T_{\vec q,\beta}~,
 \end{aligned}\end{equation}
-where \(\omega_{e,h}\) are the quantum fluctuation scales for the electron and hole scattering channels, \(H_D\) is the part of the Hamiltonian that is diagonal in \(k-\)space, and \(T_{\vec q,\beta} + T_{\vec q,\beta}^\dagger\) is the part of the Hamiltonian that does not commute with \(\hat n_{\vec q,\beta}\) (in short, it is the part that is off-diagonal with respect to a particular state \(\vec q,\beta\)). This off-diagonal part is made up of contributions from \(V,J\) and \(U_b\):
-\begin{equation}\begin{aligned}
-	T_{\vec q \uparrow} = \left[V c^\dagger_{d \uparrow}  + J \sum_{\vec k}S_d^+ c^\dagger_{\vec k \downarrow}  + U_b \sum_{\vec k_1,\vec k_2,\vec k_3}c^\dagger_{\vec k_1 \uparrow} c^\dagger_{\vec k_3 \downarrow} c_{\vec k_4 \downarrow}\right] c_{\vec q \uparrow} ~,
-\end{aligned}\end{equation}
-while the diagonal part is given by
-\begin{equation}\begin{aligned}
-	H_D = \epsilon_{\vec q} \tau_{q\uparrow} + \frac{1}{4}J S_d^z\left(\hat n_{q \uparrow} - \hat n_{q \downarrow}\right) - U_b \left(\tau_{\vec q,\uparrow}\right)^2~,
-\end{aligned}\end{equation}
-where we have rewritten \(\hat n_{\vec q,\beta}\) in terms of \(\tau_{\vec q,\beta} \equiv \hat n_{\vec q,\beta} - \frac{1}{2}\) in the contribution from \(U_b\). Note that we have ignored a potential scattering term in the off-diagonal part \(T_{\vec q\beta}\). In the initial state \(\ket{\Psi}_i\), we have \(\langle \hat n_{q\beta} \rangle = 1/2 \implies \tau_{q\beta} = 0\), so the contribution of \(U_b\) to that state is 0. For both hole excitations \(c_{q\beta}\ket{\Psi}_i\) as well as particle excitations \(c^\dagger_{q\beta}\ket{\Psi}_i\), the intermediate state energy lowers to \(-U_b/4\). Because the diagonal contribution from \(U_b\) always changes the energy of the excited energy by \(-U_b/4\),  the denominator will simply change by \(U_b/4\) (\(H_D\) comes with a minus sign in the denominator). We will suppress this change for now and substitute in all the denominators at the end.
+where \(\omega_{e,h}\) are the quantum fluctuation scales for the electron and hole scattering channels, \(H_D\) is the part of the Hamiltonian that is diagonal in \(k-\)space, and \(T_{\vec q,\beta} + T_{\vec q,\beta}^\dagger\) is the part of the Hamiltonian that does not commute with \(\hat n_{\vec q,\beta}\) (in short, it is the part that is off-diagonal with respect to a particular state \(\vec q,\beta\)). This off-diagonal part is made up of contributions from \(V,J\) and \(U_b\): \(T_{\vec q \uparrow} = \left[V c^\dagger_{d \uparrow}  + J \sum_{\vec k}S_d^+ c^\dagger_{\vec k \downarrow}  + U_b \sum_{\vec k_1,\vec k_2,\vec k_3}c^\dagger_{\vec k_1 \uparrow} c^\dagger_{\vec k_3 \downarrow} c_{\vec k_4 \downarrow}\right] c_{\vec q \uparrow}\),
+while the diagonal part is given by \(H_D = \epsilon_{\vec q} \tau_{q\uparrow} + \frac{1}{4}J S_d^z\left(\hat n_{q \uparrow} - \hat n_{q \downarrow}\right) - U_b \left(\tau_{\vec q,\uparrow}\right)^2\),
+where we have rewritten \(\hat n_{\vec q,\beta}\) in terms of \(\tau_{\vec q,\beta} \equiv \hat n_{\vec q,\beta} - \frac{1}{2}\) in the contribution from \(U_b\).
 
-We define \(n_j\) as the number of states being decoupled on each side of the Fermi surface, at the \(j^\text{th}\) RG step. In order to treat both spin and isospin exchanges democratically, we take \(\ket{\Psi}_i = \frac{1}{2}\left(\ket{0} + \ket{q\uparrow} + \ket{q\downarrow} + \ket{q\uparrow, q\downarrow}\right) \) as the \textit{initial} state for the scattering processes. The intermediate states \(\ket{\Psi}_\text{int}\) in the particle sector \(\left(c_{q\beta}\ket{\Psi}_i\right)\) and hole sector \(\left(c^\dagger_{q\beta}\ket{\Psi}_i\right)\) will then have both spin and isospin excitations which can couple with the corresponding impurity degree of freedom. We will assume that states  \(q > k_F~\left(\epsilon_q > 0\right) \) above the Fermi surface can have only particle excitations and states below the Fermi surface can only have hole excitations. The kinetic energy part \(\epsilon_q \tau_{q\beta}\) of \(H_D\) for \(\ket{\Psi}_i\) is then zero, whereas it is always \(D/2\) for \(\ket{\Psi}_\text{int}\). To demonstrate this for a typical \(q < k_F\), the hole excitation is \(c_{q \uparrow}\ket{\Psi}_i = \frac{1}{\sqrt 2}\left(\ket{0} + \ket{q \downarrow}\right)\). This has an isospin term in the form of the \textit{holon} and a spin term in the form of the down state. Since \(\tau_{q \uparrow} = -\frac{1}{2}\) in the excited state, the kinetic energy for \(\ket{\Psi}_\text{int}\) is \(\epsilon_q \tau_{q \uparrow} = \left(-D\right)\times\left(-\frac{1}{2}\right) = D/2\).
+Note that we have ignored a potential scattering term in the off-diagonal part \(T_{\vec q\beta}\). Because the diagonal contribution from \(U_b\) always changes the energy of the excited energy by \(-U_b/4\),  the denominator will simply change by \(U_b/4\) (\(H_D\) comes with a minus sign in the denominator). We will suppress this change for now and substitute in all the denominators at the end. We define \(n_j\) as the number of states being decoupled on each side of the Fermi surface, at the \(j^\text{th}\) RG step. In order to treat both spin and isospin exchanges democratically, we take \(\ket{\Psi}_i = \frac{1}{2}\left(\ket{0} + \ket{q\uparrow} + \ket{q\downarrow} + \ket{q\uparrow, q\downarrow}\right) \) as the \textit{initial} state for the scattering processes. The kinetic energy for \(\ket{\Psi}_\text{int}\) is \(\epsilon_q \tau_{q \uparrow} = \left(-D\right)\times\left(-\frac{1}{2}\right) = D/2\).
 
 
 \subsection{Renormalisation of \(U_b\)}
 \(U_b\) can renormalise only via itself. The relevant renormalisation term in the particle sector is
 \begin{equation}\begin{aligned}
-	U_b^2 \sum_{q\beta}\sum_{k_1,k_2,k_3,k_1^\prime,k_2^\prime,k_3^\prime} c^\dagger_{q\beta}c_{k_1\beta}c^\dagger_{k_3\overline\beta}c_{k_1^\prime\overline\beta}\frac{1}{\omega - H_D}c^\dagger_{k_2^\prime\overline\beta}c_{k_3^\prime\overline\beta}c^\dagger_{k_2\beta}c_{q\beta}
+	U_b^2 \sum_{q\beta}\sum_{k_1,k_2,k_3,\atop{k_1^\prime,k_2^\prime,k_3^\prime}} c^\dagger_{q\beta}c_{k_1\beta}c^\dagger_{k_3\overline\beta}c_{k_1^\prime\overline\beta}\frac{1}{\omega - H_D}c^\dagger_{k_2^\prime\overline\beta}c_{k_3^\prime\overline\beta}c^\dagger_{k_2\beta}c_{q\beta}
 \end{aligned}\end{equation}
 In order to renormalise \(U_b\), we need to contract one more pair of momenta. There are two choices. The first is by setting \(k_3 = k_3^\prime = q\). The two internal states, then, are \(q\beta\) and \(q\overline\beta\). As discussed above, the intermediate state energy is \(-U_b/4\). We therefore have
 \begin{equation}\begin{aligned}
-	\frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_1^\prime,k_2^\prime} c_{k_1\beta}c_{k_1^\prime\overline\beta}c^\dagger_{k_2^\prime\overline\beta}c^\dagger_{k_2\beta} = \frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_1^\prime,k_2^\prime} c^\dagger_{k_2^\prime\overline\beta}c_{k_1^\prime\overline\beta}c^\dagger_{k_2\beta}c_{k_1\beta}
+	\frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_1^\prime,k_2^\prime} c_{k_1\beta}c_{k_1^\prime\overline\beta}c^\dagger_{k_2^\prime\overline\beta}c^\dagger_{k_2\beta} \\
+	= \frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_1^\prime,k_2^\prime} c^\dagger_{k_2^\prime\overline\beta}c_{k_1^\prime\overline\beta}c^\dagger_{k_2\beta}c_{k_1\beta}
 \end{aligned}\end{equation}
 Another way to contract the momenta is by setting \(k_1^\prime = k_2^\prime = q\), which gives a renormalisation of
 \begin{equation}\begin{aligned}
-	\frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_3,k_3^\prime} c_{k_1\beta}c^\dagger_{k_3 \overline\beta}c_{k_3\prime\overline\beta}c^\dagger_{k_2\beta} = -\frac{U_b^2 n_j}{\omega - D/2}\sum_{\beta}\sum_{k_1,k_2,k_3,k_3^\prime} c^\dagger_{k_3 \overline\beta}c_{k_3\prime\overline\beta}c^\dagger_{k_2\beta}c_{k_1\beta}
+	\frac{U_b^2 n_j}{\omega - D/2 + \frac{U_b}{2}}\sum_{\beta}\sum_{k_1,k_2,k_3,k_3^\prime} c_{k_1\beta}c^\dagger_{k_3 \overline\beta}c_{k_3\prime\overline\beta}c^\dagger_{k_2\beta} \\
+	= -\frac{U_b^2 n_j}{\omega - D/2}\sum_{\beta}\sum_{k_1,k_2,k_3,k_3^\prime} c^\dagger_{k_3 \overline\beta}c_{k_3\prime\overline\beta}c^\dagger_{k_2\beta}c_{k_1\beta}
 \end{aligned}\end{equation}
 The two contributions cancel each other. The same cancellation happens in the hole sector as well.
 
@@ -456,17 +464,11 @@ The coupling \(U\) is renormalised by two kinds of vertices: \(V^2\) and \(J^2\)
 
 The renormalisation arising from the first kind of terms, in the particle sector, is
 \begin{equation}\begin{aligned}
-	\sum_{q\beta}c^\dagger_{q\beta}c_{d\beta}\frac{V^2}{\omega - H_D}c^\dagger_{d\beta}c_{q\beta} = \sum_{q\beta}V^2 \hat n_{q\beta} \left( 1 - \hat n_{d\beta} \right)\left( \frac{1-\hat n_{d \overline\beta }}{\omega - E_0} + \frac{\hat n_{d \overline\beta}}{\omega^\prime - E_1}\right) = V^2 n_j\sum_{\beta}\left( 1 - \hat n_{d\beta} \right)\left( \frac{1-\hat n_{d \overline\beta }}{\omega_0 - E_0} + \frac{\hat n_{d \overline\beta}}{\omega_1 - E_1}\right)
+	&\sum_{q\beta}c^\dagger_{q\beta}c_{d\beta}\frac{V^2}{\omega - H_D}c^\dagger_{d\beta}c_{q\beta}\\
+	&= \sum_{q\beta}V^2 \hat n_{q\beta} \left( 1 - \hat n_{d\beta} \right)\left( \frac{1-\hat n_{d \overline\beta }}{\omega - E_0} + \frac{\hat n_{d \overline\beta}}{\omega^\prime - E_1}\right) \\
+	&= V^2 n_j\sum_{\beta}\left( 1 - \hat n_{d\beta} \right)\left( \frac{1-\hat n_{d \overline\beta }}{\omega_0 - E_0} + \frac{\hat n_{d \overline\beta}}{\omega_1 - E_1}\right)
 \end{aligned}\end{equation}
-\(q\) runs over the momentum states that are being decoupled at this RG step: \(|q| = \Lambda_j\). \(E_{1,0}\) are the diagonal parts of the Hamiltonian at \(\hat n_{d\overline \beta}=1,0\) respectively. We have \(\hat n_{d\beta}=1\) in the intermediate state because of the \(c^\dagger_{d\beta}\) in front of the Greens function. Applying \(c_{q\beta}\) on the initial state \(\ket{\Psi}_i\) leaves us with \(C^z_q = - \frac{1}{2}\) and \(s^z_q = \frac{1}{2}\overline\beta\). We also know that
-\begin{equation}\begin{aligned}
-	\hat n_{d\beta}=1,
-	\begin{cases}
-		\hat n_{d\overline\beta}=0 &\implies S_d^z = \frac{1}{2}\beta, C_d^z = 0, \epsilon_d\left(\hat n_{d\uparrow} - \hat n_{d \downarrow}\right)^2 = \epsilon_d\\	
-		\hat n_{d\overline\beta}=1 &\implies S_d^z = 0, C_d^z = \frac{1}{2}, \epsilon_d\left(\hat n_{d\uparrow} - \hat n_{d \downarrow}\right)^2 = 0
-	\end{cases}
-\end{aligned}\end{equation}
-Combining all this, we can write \(E_1 = \frac{D}{2}\) and \(E_0 = \frac{D}{2} + \epsilon_d - \frac{J}{4}\). In order to relate \(\omega_0\) with \(\omega_1\) with the common fluctuation scale \(\omega\) for the conduction electrons, we will replace these quantum fluctuation scales by the current renormalised values of the single-particle self-energy for the initial state from which we started scattering. For \(\hat n_{d\overline\beta}=0\), there is no additional self-energy because the impurity does not have any spin: \(\omega_0 = \omega\). For \(\hat n_{d\overline\beta} = 1\), we have an additional self-energy of \(\epsilon_d\) arising from the correlation on the impurity: \(\omega_1 = \omega + \epsilon_d\).
+\(q\) runs over the momentum states that are being decoupled at this RG step: \(|q| = \Lambda_j\). \(E_{1,0}\) are the diagonal parts of the Hamiltonian at \(\hat n_{d\overline \beta}=1,0\) respectively: \(E_1 = \frac{D}{2}\) and \(E_0 = \frac{D}{2} + \epsilon_d - \frac{J}{4}\). In order to relate \(\omega_0\) with \(\omega_1\) with the common fluctuation scale \(\omega\) for the conduction electrons, we will replace these quantum fluctuation scales by the current renormalised values of the single-particle self-energy for the initial state from which we started scattering. For \(\hat n_{d\overline\beta}=0\), there is no additional self-energy because the impurity does not have any spin: \(\omega_0 = \omega\). For \(\hat n_{d\overline\beta} = 1\), we have an additional self-energy of \(\epsilon_d\) arising from the correlation on the impurity: \(\omega_1 = \omega + \epsilon_d\).
 Substituting the values of \(E_{0,1}\) and \(\omega_{0,1}\), we get
 \begin{equation}\begin{aligned}
 	\label{ren_ed_Vp}
@@ -480,7 +482,8 @@ Performing a similar calculation for the hole sector gives the contribution:
 We now come to the second type of terms: spin-spin. We first look at the particle sector:
 \begin{equation}\begin{aligned}
 	\label{ren_ed_Jpp}
-	\frac{J^2}{4}\sum_{q\beta}c^\dagger_{d\overline\beta}c_{d\beta}c^\dagger_{q\beta}c_{-q\overline\beta} \frac{1}{\omega - H_D}c^\dagger_{d\beta}c_{d\overline\beta}c^\dagger_{q\overline\beta}c_{q\beta} = \frac{J^2}{4} n_j\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} \sum_{\beta}\hat n_{d\overline\beta}\left( 1 - \hat n_{d\beta} \right)
+	\frac{J^2}{4}\sum_{q\beta}c^\dagger_{d\overline\beta}c_{d\beta}c^\dagger_{q\beta}c_{-q\overline\beta} \frac{1}{\omega - H_D}c^\dagger_{d\beta}c_{d\overline\beta}c^\dagger_{q\overline\beta}c_{q\beta}\\
+	= \frac{J^2}{4} n_j\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} \sum_{\beta}\hat n_{d\overline\beta}\left( 1 - \hat n_{d\beta} \right)
 \end{aligned}\end{equation}
 The diagonal part in the denominator was simple to deduce in this case, because the nature of the scattering requires the spins \(S_d^z\) and \(\frac{\beta}{2}\left(\hat n_{q\beta} - \hat n_{q \overline\beta}\right)\) to be anti-parallel. This ensures that the intermediate state has an energy of \(E = \frac{D}{2} + \epsilon_d - \frac{J}{4}\), and the quantum fluctuation scale is \(\omega^\prime = \omega + \epsilon_d\), such that \(\omega^\prime - E = \omega - \frac{D}{2} + \frac{J}{4}\). In the hole sector, we have
 \begin{equation}\begin{aligned}
@@ -488,28 +491,24 @@ The diagonal part in the denominator was simple to deduce in this case, because 
 	\frac{J^2}{4} n_j\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} \sum_{\beta}\hat n_{d\beta}\left( 1 - \hat n_{d\overline\beta} \right)
 \end{aligned}\end{equation}
 
-We now have all possible renormalisation to the impurity correlation \(U\). To actually compute the renormalisation, we will first calculate the renormalisation in the energies \(\epsilon_0, \epsilon_1\) and \(\epsilon_2\) of the impurity states \(\ket{\hat n_d = 0}, \ket{\hat n_d = 1}, \ket{\hat n_d = 2}\) respectively. The renormalisation of these states are given by the following terms:
-\begin{itemize}
-	\item \(\Delta \epsilon_0\) is given by the renormalisation of the term \(\left(1 - \hat n_{d\uparrow}\right)\left(1 - \hat n_{d \downarrow}\right)\)
-	\item \(\Delta \epsilon_1\) is given by the renormalisation of either \(\left(1 - \hat n_{d\uparrow}\right)\hat n_{d \downarrow}\) or \(\left(1 - \hat n_{d\downarrow}\right)\hat n_{d \uparrow}\)
-	\item \(\Delta \epsilon_2\) is given by the renormalisation of \(\hat n_{d\uparrow}\hat n_{d \downarrow}\)
-\end{itemize}
 From eqs.~\ref{ren_ed_Vp}, \ref{ren_ed_Vh}, \ref{ren_ed_Jpp} and \ref{ren_ed_Jph}, we write
 \begin{equation}\begin{aligned}
-	\Delta U = \Delta \epsilon_2 + \Delta \epsilon_0 - 2\Delta \epsilon_1 = -\frac{4V^2 n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} - U/2} + \frac{4V^2 n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} + U/2 + \frac{J}{4}} - \frac{J^2n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,
+	&\Delta U = \Delta \epsilon_2 + \Delta \epsilon_0 - 2\Delta \epsilon_1 = -\frac{4V^2 n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} - U/2} \\
+	&+ \frac{4V^2 n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} + U/2 + \frac{J}{4}} - \frac{J^2n_j}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,
 \end{aligned}\end{equation}
 where we have restored the contribution from \(U_b\) in the denominator.
 
 \subsection{Renormalisation of the hybridisation \(V\)}
 Renormalisation of \(V\) happens through two kinds of processes: \(VJ\) and \(VU_b\). Within the first kind, the scattering can be either via \(S_d^z\) or through \(S_d^\pm\). For the first kind, we have the following contribution in the particle sector:
 \begin{equation}\begin{aligned}
-	\sum_{q\beta} Vc^\dagger_{q\beta} c_{d\beta} \frac{1}{\omega - H_D}\frac{1}{4}J \sum_{k} \left(\hat n_{d\beta} - \hat n_{d\overline\beta}\right) c^\dagger_{k\beta}c_{q\beta} = \frac{1}{4}V J n_j \frac{1}{2}\left(\frac{1}{\omega^\prime_1 - E} + \frac{1}{\omega^\prime_2 - E}\right)\sum_{k\beta} \left(1 - \hat n_{d\overline\beta}\right) c_{d\beta}c^\dagger_{k\beta}
+	\sum_{q\beta} Vc^\dagger_{q\beta} c_{d\beta} \frac{1}{\omega - H_D}\frac{1}{4}J \sum_{k} \left(\hat n_{d\beta} - \hat n_{d\overline\beta}\right) c^\dagger_{k\beta}c_{q\beta} \\
+	= \frac{1}{4}V J n_j \frac{1}{2}\left(\frac{1}{\omega^\prime_1 - E} + \frac{1}{\omega^\prime_2 - E}\right)\sum_{k\beta} \left(1 - \hat n_{d\overline\beta}\right) c_{d\beta}c^\dagger_{k\beta}
 \end{aligned}\end{equation}
 The transformation from \(\frac{1}{\omega - H_D}\) to \(\frac{1}{2}\left(\frac{1}{\omega^\prime_1 - E} + \frac{1}{\omega^\prime_2 - E}\right)\) is made so that we can account for both the initial state and the final state energies through the two fluctuation scales \(\omega^\prime_1\) and \(\omega_2^\prime\) respectively; we calculate the denominators for both the initial and final states, and then take the mean of the two (hence the factor of half in front). This was not required previously because in the earlier scattering processes, the impurity returned to its initial state at the end, at least in terms of \(\epsilon_d \left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right)^2 \), and so we had \(\omega_1^\prime = \omega_2^\prime = \omega^\prime\).
 
-Note that the \(c_{d\beta}\) in front of the Greens function resulted in \(\left(\hat n_{d\beta} - \hat n_{d\overline\beta}\right) \to \left(1 - \hat n_{d\overline\beta}\right)\). The intermediate state is characterised by \(\hat n_{d\beta} = 1 - \hat n_{d \overline \beta} = 1\), which means that \(E = \frac{D}{2} + \epsilon_d - \frac{J}{4}\). Moreover, the initial state gives \(\omega_1^\prime = \omega + \epsilon_d\) while the final state gives \(\omega^\prime_2 = \omega\). Therefore, the renormalisation becomes
+Substituting the energies and the \(\omega-\)scales, we get
 \begin{equation}\begin{aligned}
-	-\frac{n_j}{4}V J \frac{1}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right)\sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right) c^\dagger_{k\beta} c_{d\beta}
+	-\left(\frac{\frac{n_j}{4}V J \frac{1}{2}}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{\frac{n_j}{4}V J \frac{1}{2}}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right)\sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right) c^\dagger_{k\beta} c_{d\beta}
 \end{aligned}\end{equation}
 One can generate another such process by exchanging the single-particle process and the spin-exchange process:
 \begin{equation}\begin{aligned}
@@ -517,37 +516,27 @@ One can generate another such process by exchanging the single-particle process 
 \end{aligned}\end{equation}
 This is simply the Hermitian conjugate of the previous contribution. Combining this with the previous then gives
 \begin{equation}\begin{aligned}
-	-\frac{n_j}{8}V J \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right)\left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
+	-\frac{n_j}{8}V J \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right)\\
+	\times \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
-We now consider the spin-exchange processes involving \(S_d^\pm\):
+If we similarly calculate the contributions from the spin-exchange processes involving \(S_d^\pm\), we get
 \begin{equation}\begin{aligned}
-	\sum_{q\beta} Vc^\dagger_{q\beta} c_{d\beta} \frac{1}{\omega - H_D}\frac{1}{2}J \sum_{k} c^\dagger_{d\beta}c_{d\overline\beta} c^\dagger_{k\overline\beta}c_{q\beta} = \frac{1}{2}V J n_j \frac{1}{2}\left(\frac{1}{\omega^\prime_1 - E} + \frac{1}{\omega^\prime_2 - E}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right) c_{d\overline\beta}c^\dagger_{k\overline\beta}
-\end{aligned}\end{equation}
-We again have \(E = \frac{D}{2} + \epsilon_d - \frac{J}{4},\omega_1^\prime = \omega + \epsilon_d\) and \(\omega_2^\prime = \omega\), which gives
-\begin{equation}\begin{aligned}
-	-\frac{1}{4}V J n_j \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right)c^\dagger_{k\overline\beta} c_{d\overline\beta}
-\end{aligned}\end{equation}
-Combining this with the Hermitian conjugate obtained from exchanging the processes gives
-\begin{equation}\begin{aligned}
-	-\frac{1}{4}V J n_j \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right)\left(c^\dagger_{k\overline\beta} c_{d\overline\beta} + \text{h.c.}\right)
+	-\frac{1}{4}V J n_j \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right)\\
+	\times \left(c^\dagger_{k\overline\beta} c_{d\overline\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
 The contributions from the hole sector are obtained making the transformation \(\hat n_{d\overline\beta} \to 1 - \hat n_{d\overline\beta}\) on the particle sector contributions. The total renormalisation to \(V\) from \(VJ\) processes are
 \begin{equation}\begin{aligned}
-	-\frac{3n_j}{8}V J \left(\frac{1}{\omega +U_b/4 - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega +U_b/4 - \frac{D}{2} + U/2 + \frac{J}{4}}\right) \sum_{k\beta}\left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
+	-\frac{3n_j}{8}V J \left(\frac{1}{\omega +U_b/4 - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega +U_b/4 - \frac{D}{2} + U/2 + \frac{J}{4}}\right)\\
+	\times\sum_{k\beta}\left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
 The renormalisation in \(V\) from \(U_b\) arises through terms of \(V U_b\) and \(U_b V\) kind. The first term gives
 \begin{equation}\begin{aligned}
-	&\sum_{q\beta}\sum_{k}U_b V c^\dagger_{q\beta}c_{k\beta} \hat n_{q\overline\beta} \frac{1}{\omega - H_D} c^\dagger_{d\beta}c_{q\beta} \\
-	&= n_jU_b V\sum_{k\beta} c_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_1 - E_1} + \frac{1}{\omega^\prime_1 - E_1}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_0 - E_0} + \frac{1}{\omega_0^\prime - E_0}\right)\right] c^\dagger_{d\beta}
-\end{aligned}\end{equation}
-\(E_1\) and \(E_0\) are the intermediate state energies for \(\hat n_{d\overline\beta}=1\) and 0 respectively. \(\omega_{1,0}\) are the quantum fluctuation scales for the corresponding initial states. \(\omega^\prime_{1,0}\) are the fluctuation scales for the corresponding final states.
-The intermediate energies are \(E_1 = D/2 - U_b/4 - K/4,~ ~ ~ E_0 = D/2 - U_b/4 - U/2 - J/4\). The fluctuation scales are \(\omega_1 = \omega - U/2= \omega_0^\prime,~ ~ ~ \omega_1^\prime = \omega = \omega_0\). Substituting these gives
-\begin{equation}\begin{aligned}
-	-n_jU_b V\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}}\right) \right.\\
-+\left. \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	&\sum_{q\beta}\sum_{k}U_b V c^\dagger_{q\beta}c_{k\beta} \hat n_{q\overline\beta} \frac{1}{\omega - H_D} c^\dagger_{d\beta}c_{q\beta} = \\
+	&-\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) \right.\\
+	&+ \left.\frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 
 The second term is of the form
@@ -556,73 +545,58 @@ The second term is of the form
 \end{aligned}\end{equation}
 and this is just the Hermitian conjugate of the previous term, so these two terms together lead to
 \begin{equation}\begin{aligned}
-	-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right) \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}}\right) \right.\\
-	+ \left.\frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	&-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)\left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} \right.\right.\\
+	&+ \left.\left. \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} \right.\right.\\
+	&+\left.\left. \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 
+\begin{widetext}
 In the hole sector, we have
 \begin{equation}\begin{aligned}
-	&\sum_{q\beta}\sum_{k}U_b V \hat n_{q\overline\beta} c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta}\\
-	&-\sum_{q\beta}\sum_{k}U_b V \left(1 - \hat n_{q\overline\beta}\right) c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta}\\
+	&\sum_{q\beta}\sum_{k}U_b V \hat n_{q\overline\beta} c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta} -\sum_{q\beta}\sum_{k}U_b V \left(1 - \hat n_{q\overline\beta}\right) c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta}\\
 	&= -n_jU_b V\sum_{k\beta} c^\dagger_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_1 - E_1} + \frac{1}{\omega^\prime_1 - E_1}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_0 - E_0} + \frac{1}{\omega_0^\prime - E_0}\right)\right] c_{d\beta}
 \end{aligned}\end{equation}
 \(E_1 = D/2 - U_b/4 - U/2 - J/4,~ ~ ~ E_0 = D/2 - U_b/4 - K/4\). The fluctuation scales are \(\omega_1 = \omega = \omega_0^\prime,~ ~ ~ \omega_1^\prime = \omega - U/2 = \omega_0\). Substituting these gives
 \begin{equation}\begin{aligned}
-	-n_jU_b V\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{1 - \hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}}\right) \right.\\
-+\left. \frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-n_jU_b V\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{1 - \hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 The other term, obtained by exchanging \(V\) and \(U_b\), gives the Hermitian conjugate, so the overall contribution from the hole sector is the same as the total contribution from the particle sector, but with \(\hat n_{d\overline\beta} \to 1 - \hat n_{d\overline\beta}\). Combining both the sectors, we get
 \begin{equation}\begin{aligned}
-	-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right) \frac{1}{2}\left[\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}}\right) \right.\\
-+\left. \left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right) \frac{1}{2}\left[\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
-
-Combining with the renormalisation from \(J\), the complete RG equation for \(V\) becomes
-\begin{equation}\begin{aligned}
-	\Delta V =& -\frac{3n_j V}{8}\left[\left(\frac{J}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}} + \frac{J}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}}\right) + K \left(\frac{K}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{K}{\omega - \frac{D}{2} + \frac{U_b}{4} - \frac{U}{2} + \frac{K}{4}}\right)\right]\\
-		 &-\frac{n_jU_b}{2}\left[\left(\frac{V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}}\right) + \left(\frac{V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]\\
-		 &=-\frac{n_j V}{8}\left[\left(\frac{3J + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}} + \frac{3J + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}}\right) + \left(\frac{3K + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{K}{4}} + \frac{3K + 4U_b}{\omega - \frac{D}{2} + \frac{U_b}{4} - \frac{U}{2} + \frac{K}{4}}\right)\right]
-\end{aligned}\end{equation}
-The RG equation for \(V\) is
-\begin{equation}\begin{aligned}
-	\Delta V = -\frac{3n_j V}{8}\left[J\left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) + K \left(\frac{1}{\omega - \frac{D}{2} + \frac{K}{4}} + \frac{1}{\omega - \frac{D}{2} + \epsilon_d + \frac{K}{4}}\right)\right]
-\end{aligned}\end{equation}
+\end{widetext}
 
 \subsection{Renormalisation of the spin-exchange coupling \(J\)}
 The term \(J \vec{S_d}\cdot\vec{S}_0\) can be split into three parts: \(J^z S_d^z, \frac{1}{2}J^+ S_d^+ S_0^-\) and \(\frac{1}{2}J^- S_d^- S_0^+\). We will only calculate the renormalisation in \(J^+\), which will be equal to that of \(J^-,J^z\) due to spin-rotation symmetry. The terms that renormalise \(J^+\) are of the form \(S_d^+ S_d^z\) and \(S_d^z S_d^+\). In the particle sector, we have
 \begin{equation}\begin{aligned}
-	-\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} = n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
-	\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} = -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
+	-\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} \\
+	= n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
+	\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} \\
+	= -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
 \end{aligned}\end{equation}
 The denominator is determined using \(E = \frac{D}{2} + \epsilon_d - \frac{J}{4}\) and \(\omega^\prime = \omega + \epsilon_d\).
 In the hole sector, we similarly have
 \begin{equation}\begin{aligned}
-	\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow} = n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
-	-\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} = -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
+	\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow}\\
+	= n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
+	-\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \\
+	= -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
 \end{aligned}\end{equation}
 
 The renormalisation due to \(U_b\) also happens through multiple terms. One of the terms is
 \begin{equation}\begin{aligned}
-	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} S_d^+ c^\dagger_{q \downarrow} c_{k \uparrow} \frac{1}{\omega - H_D} \hat n_{q \uparrow} c^\dagger_{k^\prime \downarrow}c_{q \downarrow} = -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
+	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} S_d^+ c^\dagger_{q \downarrow} c_{k \uparrow} \frac{1}{\omega - H_D} \hat n_{q \uparrow} c^\dagger_{k^\prime \downarrow}c_{q \downarrow} \\
+	= -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
 \end{aligned}\end{equation}
 The factor of half in front is the same half factor that appears in front of the \(S_1^+ S_2^-, S_1^-S_2^+\) terms when we rewrite \(\vec{S}_1\cdot\vec{S}_2\) in terms of \(S^z, S^\pm\). Another term is obtained by switching \(J\) and \(U_b\):
 \begin{equation}\begin{aligned}
-	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} \hat n_{q \downarrow} c^\dagger_{q \uparrow} c_{k \uparrow} \frac{1}{\omega - H_D}S_d^+ c^\dagger_{k^\prime \downarrow} c_{q \uparrow} = -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
+	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} \hat n_{q \downarrow} c^\dagger_{q \uparrow} c_{k \uparrow} \frac{1}{\omega - H_D}S_d^+ c^\dagger_{k^\prime \downarrow} c_{q \uparrow} \\
+	= -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
 \end{aligned}\end{equation}
 
 The corresponding terms in the hole sector are
 \begin{equation}\begin{aligned}
-	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{q \uparrow} \frac{1}{\omega - H_D} \hat n_{q \downarrow} c^\dagger_{q \uparrow}c_{k \uparrow} = -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
+	-\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}~,\\
+	-\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
 \end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-	\frac{1}{2} J U_b \sum_{q} \sum_{k,k^\prime} \hat n_{q \uparrow} c^\dagger_{k^\prime \downarrow} c_{q \downarrow} \frac{1}{\omega - H_D}S_d^+ c^\dagger_{q \downarrow} c_{k \uparrow} = -\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
-\end{aligned}\end{equation}
-
-Combining all these terms, we get the updated RG equation for \(J\):
-\begin{equation}\begin{aligned}
-	\Delta J = -J n_j\frac{4 U_b + J}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}}
-\end{aligned}\end{equation}
-
-\end{widetext}
-
 \end{document}

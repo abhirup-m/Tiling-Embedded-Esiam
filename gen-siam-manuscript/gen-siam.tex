@@ -30,7 +30,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{Introduction}
 
-The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied. There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
+The Hubbard model has become one of the fundamental and prototypical models for describing strongly correlated systems in quantum condensed matter physics.   strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied. There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
 
 One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For eg, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
 The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
@@ -47,7 +47,7 @@ Above a critical \(U_c\), the impurity spectral function gets gapped out, and th
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.5\textwidth]{../figures/dos_diff.pdf}
+\includegraphics[width=0.5\textwidth]{dos_diff.pdf}
 \caption{Two kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
 \end{figure}
 
@@ -84,7 +84,7 @@ All the terms in the Hamiltonian have been depicted schematically in Fig.~\ref{z
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/zeromode_bare.pdf}
+	\includegraphics[width=0.45\textwidth]{zeromode_bare.pdf}
 	\caption{While we have studied the full model under renormalisation group, often we will turn to a simplified zero-bandwidth version of the model that is obtained by ignoring the kinetic energy part of the Hamiltonian. This zero-bandwidth model is effectively a two site model.}
 	\label{zeromode-bare}
 \end{figure}
@@ -98,7 +98,7 @@ To be more precise, we first choose a complete basis \(\left\{ \ket{j} \right\} 
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.45\textwidth]{../figures/urg-scheme.pdf}
+	\includegraphics[width=0.45\textwidth]{urg-scheme.pdf}
 	\caption{High energy - low energy scheme defined and used in the URG method. The states away from the Fermi surface form the UV subspace and are decoupled first, leading to a Hamiltonian which is more block-diagonal and comprised of only the IR states near the Fermi surface.}
 	\label{urg-scheme}
 \end{figure}
@@ -166,9 +166,9 @@ The RG \(\beta\)-function function for \(J\) changes sign as \(r\) grows greater
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.48\textwidth]{../figures/J_Ub.pdf}
-	\includegraphics[width=0.48\textwidth]{../figures/U_Ub.pdf}
-	\includegraphics[width=0.48\textwidth]{../figures/V_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{J_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{U_Ub.pdf}
+	\includegraphics[width=0.48\textwidth]{V_Ub.pdf}
 	\caption{Variation of couplings \(U,V\) and \(J\) along the RG transformations, for three values of the transition-tuning ratio \(r\). x-axis represents the RG steps, the rightmost point is the first RG step and leftmost point is the final RG step. The values of the bare couplings are given in the title. All values are in units of the half-bandwidth \(D_0\), which is chosen to be 10. The blue curves represent the flows for \(r > r_c\), where \(J\) is relevant. The purple curves represent the RG flows for \(r < r_c\), where \(J\) is irrelevant. The red curves are exactly at the critical point \(r = r_c\), where \(J\) is marginal.}
 	\label{rg-flow}
 \end{figure}
@@ -196,7 +196,7 @@ D &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 \end{table}
 
 \begin{figure}[!htb]
-	\includegraphics[width=0.5\textwidth]{../figures/phase-map-MIT.pdf}
+	\includegraphics[width=0.5\textwidth]{phase-map-MIT.pdf}
 	\caption{Phase diagram of the GAIM, in the space of couplings \(U_0\) and \(J_0\). \(U_b\) is set to \(-U_0/10\) and \(V_0\) is set to \(2J_0\). The various phases \(A\) through \(D\) are characterised in the text.}
 	\label{phase-diag}
 \end{figure}
@@ -206,7 +206,7 @@ The low-energy phase of the AIM is characterised by enhanced spin-fluctuation \(
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.49\textwidth]{../figures/odlro.pdf}
+	\includegraphics[width=0.49\textwidth]{odlro.pdf}
 	\caption{Growth in the pair-fluctuation terms \(c^\dagger_{k \uparrow}c^\dagger_{k \downarrow} c_{k^\prime \downarrow}c_{k^\prime \uparrow}\), as \(r \to 0.25\). This comes at the cost of the spin-flip fluctuations \(S_d^+ S_0^- + \text{h.c.}\), which decrease towards the transition. The inset plots the same quantities but for a larger range of \(r\), and the pair fluctuations are seen to pick up abruplty after the transition while the spin fluctuations vanish.}
 	\label{pair_fluc}
 \end{figure}
@@ -229,7 +229,7 @@ The RG fixed point Hamiltonian describes the low-energy phase of the system. In 
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/J_bandwidth.pdf}
+	\includegraphics[width=0.5\textwidth]{J_bandwidth.pdf}
 	\caption{Increase of \(J^*\) in comparison to \(V^*\) when going towards the thermodynamic limit.}
 	\label{J_bandwidth}
 \end{figure}
@@ -245,7 +245,7 @@ Choosing the chemical potential such that \(\epsilon_F\) vanishes results in a {
 \end{equation}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{../figures/zeromode_eff.pdf}
+	\includegraphics[width=0.4\textwidth]{zeromode_eff.pdf}
 	\caption{Two site Hamiltonian obtained by taking the zero bandwidth limit of the effective Hamiltonian in the screened regime.}
 	\label{zero-bw}
 \end{figure}
@@ -282,7 +282,7 @@ We can obtain more insight on the change in the ground state as the system moves
 
 \begin{figure}[htpb]
 	\centering
-\includegraphics[width=0.5\textwidth]{../figures/corrs_gs.pdf}
+\includegraphics[width=0.5\textwidth]{corrs_gs.pdf}
 \caption{Overlap of the RG fixed point ground state \(\ket{\Psi}_\text{gs}\) with the spin singlet state \(\ket{\text{ss}}\) and the charge triplet state \(\ket{\text{ct}}\), for a range of values of the transition tuning ratio \(r\). Beyond the critical point \(r > 0.25\), both these overlaps vanish.}
 	\label{overlaps}
 \end{figure}
@@ -305,7 +305,7 @@ In contrast, the GAIM shows the appearance of a gap as \(r\) crosses \(1/4\) (se
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/Add.pdf}
+	\includegraphics[width=0.5\textwidth]{Add.pdf}
 	\caption{Impurity spectral function \(A_d(\omega)\) at three values of the ratio \(r\). The central large plot is exactly at the critical point \(r=0.25\), the left (blue) inset is at \(r < 0.25\) and the right (violet) inset is at \(r > 0.25\).}
 	\label{spec-func}
 \end{figure}
@@ -348,7 +348,7 @@ The overlaps then become \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}} = \sqrt{1 - \
 
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/entanglement.pdf}
+	\includegraphics[width=0.5\textwidth]{entanglement.pdf}
 	\caption{Variation of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\) as \(r\) is increased towards the critical value 0.25. Inset shows the variation of the individual measures \(\varepsilon_\text{ss},\varepsilon_\text{ct}\).}
 	\label{entng}
 \end{figure}
@@ -379,13 +379,13 @@ The \(k-\)space mutual information \(I(\vec k_1:\vec k_2)\) between two distinct
 This is also supported by the reduction in the mutual information \(I(d \uparrow: \vec k \downarrow)\) between the impurity and \(k-\)space states plotted along the blue curve in the same figure. Beyond the transition, \(I(d \uparrow: \vec k \downarrow)\) drops to zero, because the impurity is no longer coupled to the bath, while \(I(\vec k_1:\vec k_2)\) takes on a larger value because they are connected by the \(U_b-\)term and are no longer sharing entanglement with the impurtiy. 
 
 \begin{figure}[!htb]
-\includegraphics[width=0.49\textwidth]{../figures/I_k.pdf}
+\includegraphics[width=0.49\textwidth]{I_k.pdf}
 \caption{Mutual information in \(k-\)space, across the transition. Red curve is the mutual information between two distinct \(k-\) states inside the Kondo cloud. Blue curve is the mutual information between a \(k-\)state and the impurity state of opposite spin.}
 \label{mut_inf_k}
 \end{figure}
 
 \begin{figure}[!htb]
-\includegraphics[width=0.49\textwidth]{../figures/I_r.pdf}
+\includegraphics[width=0.49\textwidth]{I_r.pdf}
 \caption{Mutual information in \(r-\)space, across the transition. Red curve is the mutual information between the zeroth site and the site next to it. Blue curve is the mutual information between a \(k-\)state and the impurity state of opposite spin. The former is zero before the transition because the zeroth site is locked in a singlet with the impurity, and becomes zero after  the transition because the singlet has now decoupled and the zeroth site is free to entangle with the other sites.}
 \label{mut_inf_r}
 \end{figure}

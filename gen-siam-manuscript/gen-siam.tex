@@ -1,7 +1,7 @@
 \documentclass[reprint,superscriptaddress,floatfix]{revtex4-2}
 \usepackage{braket,amsmath,graphicx,color}
-\usepackage{hyperref}
-\bibliographystyle{apsrev4-1}
+\usepackage[hidelinks]{hyperref}
+\bibliographystyle{apsrev4-2}
 \begin{document}
 
 \title{Local metal-insulator transition in a generalised Anderson impurity model}
@@ -30,38 +30,54 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{Introduction}
 
-Quantum impurity models, owing to their simple construction, have often served as testbeds for analytical and numerical methods, as well as experimental techniques. They consist of one or more local correlated quantum system(s) coupled with (typically non-interacting) bosonic or fermionic conduction bath channel(s). Even though the impurity itself is simple, the interaction with the bath often leads to novel phases, and such impurity systems often lead to interesting phenomena that have far-reaching consequences and require fundamental theoretical breakthroughs in order to understand them. One of the most well-studied impurity models is the single-impurity Anderson model; it consists of a single impurity site of spin-half electrons and local correlation \(U\) hybridising with a non-interacting conduction bath through a coupling \(V\). One of the most well-studied of these is the single-impurity Anderson model~\cite{anderson_1961,anderson_1978} (AIM), consisting of a single correlated impurity site coupled with a non-interacting conduction bath. The model combines localisation arising from Mott physics~\cite{Mott_1949,vanvleck_1953} and delocalisation of the impurity arising from virtual resonance with the conduction bath~\cite{friedel_1956}.
+Quantum impurity models, owing to their simple construction, have often served as testbeds for analytical and numerical methods, as well as experimental techniques.
+They consist of one or more local correlated quantum system(s) coupled with (typically non-interacting) bosonic or fermionic conduction bath channel(s).
+Even though the impurity itself is usually simple, the interaction with the bath is what turns it into a correlated many-body problem, and leads to novel emergent phases. Such impurity systems often give rise to interesting phenomena that have far-reaching consequences and require fundamental theoretical breakthroughs in order to understand them.
+One of the most well-studied of these is the single-impurity Anderson model~\cite{anderson_1961,anderson_1978} (AIM), consisting of a single impurity site with local correlation \(U\) hybridising with a non-interacting fermionic conduction bath through a coupling \(V\).
+The model combines impurity localisation arising from Mott physics~\cite{Mott_1949,vanvleck_1953} and impurity delocalisation arising from virtual resonance with the conduction bath~\cite{friedel_1956}.
+In order to obtain its low-energy behaviour, the AIM (along with its \(U \to \infty\) limit, the Kondo model, as well as the \(U \to -\infty\) limit~\cite{schrieffer1966,taraphder_1991}) has been studied using several analytical and numerical techniques like the Coulomb gas approach~\cite{anderson1969exact,anderson1970exact}, perturbative renormalisation group~\cite{anderson1970,haldane1978scaling,jefferson_1977}, numerical renormalisation group (NRG)~\cite{wilson1975,hrk_wilson_1980}, the Bethe ansatz~\cite{andrei_1980,andreiKondoreview,Wiegmann_1981,tsvelickKondoreview}, bosonization~\cite{kotliar_1996,Duki_2011,borda_2008}, functional renormalisation group~\cite{streib_2013} and, most recently, a unitary renormalisation group approach~\cite{anirban_kondo}. 
+The general conclusion for the positive \(U\) case at \(T=0\) is that on the particle-hole symmetric (that is, half-filled) line where the holon and doublon impurity levels are degenerate with each other, the impurity local moment is always screened by the conduction bath through enhanced spin-flip scattering at low-energies, leading to a macroscopic singlet ground state and local Fermi liquid gapless excitations~\cite{nozaki2012,mora_2015}; there is no transition to any unscreened phase for a half-filled impurity. The group of conduction electrons that participate in forming the singlet and perform the screening are commonly referred to as the Kondo cloud~\cite{sorensen_erik_affleck_1996,affleck_ian_2001,simon_pascal_2003,martin2010,martin2019}. Because of technological advances, it has become possible to create such Kondo systems and observe this Kondo cloud in quantum dots using scanning tunnelling spectroscopy (STS) and other techniques~\cite{Goldhaber-Gordon1998,Cronenwett1998,Schmid_Weis1998,pustilnik_glazman_2004,Borzenets2020,neel_berndt_2008,Zhao2005}.
 
+Even though the AIM as well as the Kondo model have been successfully solved, they find use as auxiliary models in the dynamical mean-field theory~\cite{kuramoto1987,Cox1988,metzner_volhardt_1989,kotliar1992}(DMFT)-based methods of solving bulk lattice problems.
+Once a bulk model is given in terms of some parameters, the workflow of DMFT in solving this model typically involves (i) starting with an AIM (with a non-interacting bath) defined by the bulk parameters, (ii) calculating its self-energy using impurity solvers like exact diagonalisation~\cite{stanescu_2006,capone2007,sakai_2009}, NRG~\cite{bulla_1998,bulla_1999,bulla2001,zitzler_2004}, quantum Monte Carlo~\cite{hirsch1986,rozenberg1997,gull_2011} or density-matrix renormalisation group~\cite{white1992,peschel_1999,garcia2004,schollwock2005,hallberg2006,garcia2007,garcia2007_prb} (DMRG), (iii) equating the bath \(k-\)space self-energy to the impurity self-energy obtained in the previous step, and (iv) restarting the process with a new AIM defined by the new self-energy.
+This continues iteratively until the impurity self-energy converges and becomes equal to the bath self-energy.
+The results can be shown to become asymptotically exact in the limit of infinite dimensionality \((d=\infty)\).
+Improvements, like introducing non-locality in the self-energy, can be introduced by replacing the single impurity with a cluster of multiple impurities~\cite{parcollet_2004,maier_2005,kotliar_rmp_2006,ohashi_2008}. 
 
-One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For example, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
-The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
-
-If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
-
-This difference in the type of conduction baths is utilized in dynamical mean-field theory to describe various phases of the bulk system.
-This is done through the DMFT algorithm: one starts with a non-interacting bath, but depending on the value of \(U\), the conduction bath then gets modified and we ultimately end up with something that is different from what we started with.
-For small \(U\), the bath does not change much and we retain the central resonance of the impurity spectral function.
-This then describes a metal in the bulk.
-For larger values of \(U\), however, the bath changes significantly such that its density of states becomes non-constant.
-Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk.
-\textit{This leaves open the following question}: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?
+One of the primary motivations and applications of DMFT has been the study of the Mott metal-insulator transition (MIT)~\cite{Mott_1949} in the Hubbard model~\cite{gutzwiller_1963,kanamori_1963,hubbard1963electron}.
+The Hubbard model is believed to lie at the heart of the high-\(T_c\) problem and has achieved cult status in the field of strongly-correlated electrons because of the array of interesting phases it hosts~\cite{keimer2015quantum,arovas_2022,qin_2022}, ranging from antiferromagnetic long-range order and spin liquids to spin- and charge-density waves and unconventional superconductivity.
+The model has been found to be relevant to several materials like the high-\(T_c\) copper oxides~\cite{zhangrice-physrevb.37.3759}, the high-\(T_c\) nickelates~\cite{Kitatani2020} and organic salts~\cite{scriven_2009}.
+Using the AIM as the auxiliary model, an MIT was demonstrated in the \(d=\infty\) Hubbard model at zero temperature and half-filling~\cite{zhang_1993}. The transition is seen through the evolution of the real-space local spectral function (schematically shown in Fig.~\ref{spec-func_scheme}), and the behaviour until the transition is very similar to that of the impurity spectral function in the AIM~\cite{hewson1993}.
 
 \begin{figure}[!htb]
-\centering
-\includegraphics[width=0.5\textwidth]{dos_diff.pdf}
-\caption{Two kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
+	\centering
+	\includegraphics[width=0.35\textwidth]{spec_func.pdf}
+	\caption{Schematic description of the evolution of the density of states across the transition~\cite{zhang_1993}.}
+	\label{spec-func_scheme}
 \end{figure}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+Despite the success of DMFT and its cluster-variants, certain points remain to be addressed:
+\begin{itemize}
+	\item What is the minimal impurity model that can act as an auxiliary model for describing an MIT of the Mott kind?
+	\item Having obtained such a minimal model, can we create a formalism that relates (in a transparent and tractable manner) the physics of the bulk to that of the auxiliary model?
+	\item Can we then, using such a formulation, try to extract the fluctuations that destabilise the metal and lead to the Mott insulator, as well as study other aspects of the MIT?
+\end{itemize}
+The reliance of DMFT on the iterative route towards self-consistency means that the impurity auxiliary model gets highly correlated in the process~\cite{held2008}, and no single impurity model can be related to the bulk; for the same reason, it is also not possible, at present, to relate the properties of the auxiliary models to those of the full model. In this {\color{blue}work}, we will focus mostly on the first question, but we will provide hints about the third question as well. Since it has already been established that the AIM does not feature a transition, it is incapable of describing an MIT. This warrants the introduction of additional physics that can destabilise the Kondo cloud.
 
+The paper is structured as follows. Sec.~\ref{def-ham} describes the extended model that we will be studying in this {\color{blue}work}. In Sec.~\ref{method}, we talk about the renormalisation group technique that we employ to study the model and the RG equations obtained from them. Sec.~\ref{phase} lays out the phase diagram and demonstrates the phase transition. Sec.~\ref{eff-ham} gives the effective Hamiltonians in various phases and the zero-bandwidth limits of the ground states. In Sec.~\ref{descr}, we give additional insight into the transition by tracking it via entanglement measures and two-particle correlations. We conclude in Sec.~\ref{concl} with some discussions and possible future directions.
 
+\subsection*{Summary of results}
 
+\begin{itemize}
+	\item {\color{blue}Indeed}, we find that on extending the AIM with a spin-exchange interaction \(J\) between the impurity site and the site it is coupled to (zeroth site), and an attractive correlation \(U_b\) on the zeroth site, the enhanced model shows a phase transition under a renormalisation group treatment, at a critical value \(\left(-U_b/J\right)_c=1/4\). 
+	\item The ground state can be shown to evolve from a singlet between the impurity and the zeroth site to a decoupled local moment on the impurity, through a correlated state with both spin and charge content.
+	\item The transition can be tracked through the variation of the geometric entanglement, which starts from zero in the screened phase and reaches its maximum value of 1 in the local moment phase.
+	\item The impurity spectral function shows a three-peak structure at the critical point, similar to the AIM, and develops a gap beyond that.
+\end{itemize}
+ 
 
 \section{The generalised Anderson impurity model}
+\label{def-ham}
 
 The impurity models we will work with couple the impurity to a single site in the lattice. We will refer to that specific site as the zeroth site throughout. We recall the Hamiltonian of the Anderson impurity model (AIM) with a half-filled impurity site:
 \begin{equation} 
@@ -91,13 +107,14 @@ All the terms in the Hamiltonian have been depicted schematically in Fig.~\ref{z
 \end{figure}
 
 \section{Method and RG Equations}
+\label{method}
 
 \subsection{The unitary RG method}
-The focus here is on obtaining the low-energy phases of the GAIM. To accomplish this, we perform a renormalisation group analysis of the associated Hamiltonian (eq.~\ref{GIAM-ham}) using the recently developed unitary renormalisation group (URG) method \cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome,1dhubjhep,Mukherjee_mott_merg,anirban_kondo}. The unitary RG transformations lead to a series of Hamiltonians \(H_{(j)}\) related to the Hamiltonian at the previous step through a unitary transformation; the unitary transformations are defined by the requirement that they remove number fluctuations in high-energy \(k-\)states, thus making the Hamiltonian progressively more block-diagonal in momentum space. The high-energy degrees of freedom that get decoupled in the process become integrals of motion (IOMs) for the Hamiltonian and enter the Hamiltonian only in a purely number-diagonal form.
+The focus here is on obtaining the low-energy phases of the GAIM. To accomplish this, we perform a renormalisation group analysis of the associated Hamiltonian (eq.~\ref{GIAM-ham}) using the recently developed unitary renormalisation group (URG) method \cite{anirbanurg1,anirbanurg2}. The method has been applied on a wide variety of problems involving quantum spins and correlated fermions, like the Kagome antiferromagnet~\cite{santanukagome}, the 1D~\cite{1dhubjhep} and 2D Hubbard models, with~\cite{anirbanmott2} and without hole doping~\cite{anirbanmott1}, the reduced-BCS pairing hamiltonian~\cite{siddharthacpi}, the single-channel ~\cite{anirban_kondo} as well as multi-channel~\cite{patra_mck} Kondo problems, and other fermionic lattice problems with and without translation invariance~\cite{anirbanurg1,anirbanurg2}. The unitary RG transformations lead to a series of Hamiltonians \(H_{(j)}\) related to the Hamiltonian at the previous step through a unitary transformation; the unitary transformations are defined by the requirement that they remove number fluctuations in high-energy \(k-\)states, thus making the Hamiltonian progressively more block-diagonal in momentum space. The high-energy degrees of freedom that get decoupled in the process become integrals of motion (IOMs) for the Hamiltonian and enter the Hamiltonian only in a purely number-diagonal form.
 
 To be more precise, we first choose a complete basis \(\left\{ \ket{j} \right\} \) and arrange these states from high-energy (UV) to low-energy (IR). Typically we take these states to be the momentum eigenstates \(\left(\ket{j} = \left\{\ket{\vec k \uparrow}, \ket{\vec k \downarrow}\right\}\right)\), and the isoenergetic shells \(\left\{D_{(j)}\right\}\) then define the sequence of states, such that the momenta far away from the Fermi surface (taken to be at higher \(j\) and having \(|D_{(j)}| \gg |\epsilon_F|\)) are taken to be the UV states while those near the Fermi surface (taken to be at lower \(j\) and having \(D_{(j)} \sim \epsilon_F\)) comprise the IR states. This scheme is shown in Fig.~\ref{urg-scheme}.
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{urg-scheme.pdf}
 	\caption{High energy - low energy scheme defined and used in the URG method. The states away from the Fermi surface form the UV subspace and are decoupled first, leading to a Hamiltonian which is more block-diagonal and comprised of only the IR states near the Fermi surface.}
@@ -142,6 +159,7 @@ The symbols used in the RG equations have the following meanings: \(\Delta U\) r
 We will discuss the consequences of these RG equations in the next sections, but we clarify here that the labels \(U_0,J_0,V_0\) that might occur in the figures or elsewhere in the text represent the bare values of the associated couplings \(U,J\) and \(V\). We also point out here that throughout the upcoming results, the bare value of \(U_b\) is set to the negative of the bare value of \(U_0\): \(U_b = -U_0/10\). This means that whenever we vary \(U_0\) along the axis of a plot, we are simultaneous varying \(U_b\). The reason for choosing the negative sign of \(U_b\) will be clarified in the next section.
 
 \section{RG flows and phase diagram}
+\label{phase}
 
 We start the discussion on the nature of the RG flows by noting that the bath correlation \(U_b\) is marginal, and the spin-exchange coupling \(J\) has a critical point \(\left( \Delta J = 0 \right) \) at \(r \equiv -U_b/J = 1/4 \equiv r_c\). We will look at the RG flows of the couplings \(U,V\) and \(J\) on both sides of this critical point by tuning the ratio \(r\) across the critical value \(r_c\), and see what phases they lead to. We will work in the regime of quantum fluctuations where all the denominators are negative: \(d_i < 0 ~\forall~i\). Before we start, note that:
 \begin{itemize}
@@ -197,7 +215,7 @@ D &  \(\Delta U, \Delta J,\Delta V < 0\) & \(U^*, V^*, J^* = 0\) \\
 \end{table}
 
 \begin{figure}[!htb]
-	\includegraphics[width=0.5\textwidth]{phase-map-MIT.pdf}
+	\includegraphics[width=0.48\textwidth]{phase-map-MIT.pdf}
 	\caption{Phase diagram of the GAIM, in the space of couplings \(U_0\) and \(J_0\). \(U_b\) is set to \(-U_0/10\) and \(V_0\) is set to \(2J_0\). The various phases \(A\) through \(D\) are characterised in the text.}
 	\label{phase-diag}
 \end{figure}
@@ -207,16 +225,15 @@ The low-energy phase of the AIM is characterised by enhanced spin-fluctuation \(
 
 {\color{blue}The death of the spin-fluctuations and the simultaneous growth in the charge fluctuations can be attributed to the presence of the attractive correlation term \(U_b\) in the Hamiltonian. Indeed, \(c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec k^\prime \uparrow} c_{\vec k^\prime \downarrow}\) is just the \(k-\)space Fourier transform of the \(U_b\) term. The presence of such terms force the conduction bath to shift spectral weight from the spin sector to the charge sector, destabilising the singlet ground state in the process.}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.49\textwidth]{odlro.pdf}
 	\caption{Growth in the pair-fluctuation terms \(c^\dagger_{k \uparrow}c^\dagger_{k \downarrow} c_{k^\prime \downarrow}c_{k^\prime \uparrow}\), as \(r \to 0.25\). This comes at the cost of the spin-flip fluctuations \(S_d^+ S_0^- + \text{h.c.}\), which decrease towards the transition. The inset plots the same quantities but for a larger range of \(r\), and the pair fluctuations are seen to pick up abruptly after the transition while the spin fluctuations vanish.}
 	\label{pair_fluc}
 \end{figure}
 
-
-
 \section{Low-energy effective Hamiltonian and the ground state}
+\label{eff-ham}
 
 The RG fixed point Hamiltonian describes the low-energy phase of the system. In general, if the RG fixed point is reached at an energy scale \(D^*\), the fixed point Hamiltonian \(\mathcal{H}^*\) is obtained simply from the fixed point values of the couplings, and by noting that the states above \(D^*\) are now part of the IOMs:
 \begin{equation}\begin{aligned}
@@ -232,7 +249,7 @@ The RG fixed point Hamiltonian describes the low-energy phase of the system. In 
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{J_bandwidth.pdf}
+	\includegraphics[width=0.48\textwidth]{J_bandwidth.pdf}
 	\caption{Increase of \(J^*\) in comparison to \(V^*\) when going towards the thermodynamic limit.}
 	\label{J_bandwidth}
 \end{figure}
@@ -246,7 +263,7 @@ Choosing the chemical potential such that \(\epsilon_F\) vanishes results in a {
 	\label{two-site}
 	H_\text{eff}^\text{sc} \sim J^* \vec{S}_d\cdot\vec{S}_0 - U_b \hat n_{0 \uparrow} \hat n_{0 \downarrow}
 \end{equation}
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.4\textwidth]{zeromode_eff.pdf}
 	\caption{Two site Hamiltonian obtained by taking the zero bandwidth limit of the effective Hamiltonian in the screened regime.}
@@ -278,20 +295,21 @@ Along the critical points, \(J\) is marginal and \(U\) is irrelevant, while \(V\
 	H_\text{eff}^\text{crit} = \sum_{\sigma,\vec k:|\epsilon_{\vec k}| < D^*} \epsilon_{\vec k} \tau_{\vec k,\sigma} - U_b^* \hat n_{0 \uparrow} \hat n_{0 \downarrow} + J^* \vec{S}_d\cdot\vec{S}_0\\
 	+ V^*\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
 \end{aligned}\end{equation}
-Since the interactions are marginal or only slightly relevant, the kinetic energy is no longer negligible compared to them, and it is not possible to faithfully take a zero bandwidth limit of the problem. 
+
 \subsection{Nature of ground state near the critical point}
 
 We can obtain more insight on the change in the ground state as the system moves towards the transition by tracking its overlap with the singlet state \(\ket{\text{ss}} \equiv \ket{\Psi}_\text{gs}^\text{sc}\) and the entangled state among the charge isospin triplets, \(\ket{\text{ct}} \equiv \frac{1}{\sqrt 2}\left(\ket{\uparrow_d \downarrow_d,0} + \ket{0,\uparrow_0 \downarrow_0}\right)\). The ground state \(\ket{\Psi}_\text{gs}\)is obtained by numerically solving the fixed point Hamiltonian for various bare values of the couplings. The overlaps are shown in Fig.~\ref{overlaps}, and we see a continuous increase in the charge content at the cost of the spin content as \(r\) approaches the critical value \(r_c = 0.25\). The spin and charge overlaps approach equality towards the transition, leading to an {\it extra emergent symmetry of spin-charge interchange} at the critical point.
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
-\includegraphics[width=0.5\textwidth]{corrs_gs.pdf}
+\includegraphics[width=0.48\textwidth]{corrs_gs.pdf}
 \caption{Overlap of the RG fixed point ground state \(\ket{\Psi}_\text{gs}\) with the spin singlet state \(\ket{\text{ss}}\) and the charge triplet state \(\ket{\text{ct}}\), for a range of values of the transition tuning ratio \(r\). Beyond the critical point \(r > 0.25\), both these overlaps vanish.}
 	\label{overlaps}
 \end{figure}
 
 
 \section{Descriptors of the transition}
+\label{descr}
 
 In this section, we will discuss various diagnostics that track the impurity phase transition; these diagnostics or probes will answer several interesting questions:
 \begin{itemize}
@@ -308,7 +326,7 @@ In contrast, the GAIM shows the appearance of a gap as \(r\) crosses \(1/4\) (se
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Add.pdf}
+	\includegraphics[width=0.48\textwidth]{Add.pdf}
 	\caption{Impurity spectral function \(A_d(\omega)\) at three values of the ratio \(r\). The central large plot is exactly at the critical point \(r=0.25\), the left (blue) inset is at \(r < 0.25\) and the right (violet) inset is at \(r > 0.25\).}
 	\label{spec-func}
 \end{figure}
@@ -349,9 +367,9 @@ The overlaps then become \(\braket{\text{ss}|\Psi^{(2)}_\text{gs}} = \sqrt{1 - \
 \end{aligned}\end{equation}
 \end{widetext}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{entanglement.pdf}
+	\includegraphics[width=0.48\textwidth]{entanglement.pdf}
 	\caption{Variation of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\) as \(r\) is increased towards the critical value 0.25. Inset shows the variation of the individual measures \(\varepsilon_\text{ss},\varepsilon_\text{ct}\).}
 	\label{entng}
 \end{figure}
@@ -395,22 +413,22 @@ This is also supported by the reduction in the mutual information \(I(d \uparrow
 
 {\color{blue}Apart from the mutual information, we also computed two complimentary measures of correlation in the ground state, the spin-flip and the charge isospin correlations, \(\left<S_d^+ S_0^- \right>\) and \(\left<c^\dagger_{ 0 \uparrow} c^\dagger_{0 \downarrow} c_{d \downarrow} c_{d \uparrow} \right>\) respectively. These are shown in Fig.~\ref{charge-spin}, and show opposite tendencies. While the spin-flips decrease due to the destruction of the Kondo cloud, the charge isospin fluctuations grow because of the attractive correlation \(U_b\). Both drop to zero abruptly beyond the transition, because the impurity entirely decouples from the bath.}
 
-\begin{figure}[htpb]
+\begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{odlro_d0.pdf}
+	\includegraphics[width=0.48\textwidth]{odlro_d0.pdf}
 	\caption{Variation of spin-flip correlation and charge isospin-flip correlation across the transition.}
 	\label{charge-spin}
 \end{figure}
 
 \section{Discussions and Outlook}
-CC
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborumLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+\label{concl}
+
+In summary, we have shown that adding spin-exchange physics between impurity and bath and local atractive correlation in the bath lead to a model with multiple phases. We have demonstrated this phase transition under a renormalisation group treatment, and provided the effective Hamiltonians and simplified wavefunctions for the various phases. The phase transition can be observed through the discontinuous behaviour in the ground state, as well as through the appearance of a gap in the impurity spectral function. We also draw a connection between the change in the spectral function and some geometric measures of entanglement; this allows tracking the phase transition via these measures.
+
+Having summarised the main results, we now discuss some additional interesting features. We note that the GAIM as defined here represents the most minimal impurity model that supports a phase transition - both the \(J\) and \(U_b\) are crucial to stabilising the local moment. With just \(J\) or just \(U_b\), the low-energy phase is always of the local Fermi liquid kind. The introduction of the attractive \(U_b\) term is most interesting because it shows that pairing fluctuations in the bath are necessary to suppress the Kondo physics arising from spin fluctuations(fig.~\ref{pair_fluc}). Moreover, we find that there is a subdominant tendency towards transfer of local ``Cooper pairs" between the impurity and zeroth sites (Fig.~\ref{charge-spin}). This is reminiscent of a similar subdominant superconducting tendency in the half-filled Hubbard model as observed from a unitary RG treatment~\cite{anirbanmott1,anirbanmott2}.
 
 \begin{itemize}
-	\item discuss why the model is minimal
+	\item mention that entanglement acts like an order parameter
 \end{itemize}
 
 \acknowledgments

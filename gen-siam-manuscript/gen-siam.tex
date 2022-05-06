@@ -2,6 +2,8 @@
 \usepackage{braket,amsmath,graphicx,color}
 \usepackage{hyperref}
 \bibliographystyle{apsrev4-1}
+\allowdisplaybreaks
+
 \begin{document}
 
 \title{Local metal-insulator transition in a generalised Anderson impurity model}
@@ -338,6 +340,7 @@ In contrast, the GAIM shows the appearance of a gap as \(r\) crosses \(1/4\) (se
 
 Given a ground state \(\ket{\Psi}_\text{gs}\) and a spectrum of energies \(\left\{ E_n \right\} \), the impurity Greens function can be given a spectral representation in terms of the eigenstates \(\left\{\ket{\Psi}_n\right\}\) of the GAIM:
 \begin{equation}\begin{aligned}
+	\label{green_spectral}
 G_d(\omega) = \sum_n \left[ \frac{|\braket{\Psi_\text{gs} | c_{d\sigma} | \Psi_n}|^2}{\omega + E_\text{gs} - E_n} + \frac{|\braket{\Psi_n | c_{d\sigma} | \Psi_\text{gs}}|^2}{\omega - E_\text{gs} + E_n}\right] 
 \end{aligned}\end{equation}
 We will now introduce a complete basis into the expression. The basis will be the set of eigenstates of the Hamiltonian  \(H = H_1 + H_2\), where \(H_1\) is the two-site Hamiltonian in eq.~\ref{two-site}, and \(H_2\) is a tight-binding Hamiltonian formed by the remaining sites. Since the Hamiltonians are decoupled, the eigenstates \(\ket{\Psi}_{m,n}\) will be direct product states formed by combining the eigenstates \(\ket{\phi}_m,\ket{\psi}_n\) of the individual Hamiltonians \(H_1\) and \(H_2\) respectively: \(\ket{\Phi}_{m,n} = \ket{\phi}_m\otimes\ket{\psi}_n\). Inserting this basis leads to the expression:
@@ -352,6 +355,7 @@ The ground state of \(H_1\) is the spin singlet: \(\ket{\phi}_0 = \ket{\text{ss}
 where \(\ket{\Phi}_\text{ss(ct)} = \ket{\text{ss}\left( \text{ct} \right)}\otimes\ket{\psi}_0 \).
 This suggests that not all terms in the summation of eq.~\ref{summation} contribute; out of all \(\left\{ \ket{\psi}_n \right\} \), only the ground state \(n=0\) contributes, while only \(\ket{ss}\) and \(\ket{ct}\) contribute from the set \(\left\{ \ket{\phi}_m \right\} \). The summation then simplifies to
 \begin{equation}\begin{aligned}
+	\label{gs-ss}
 	\ket{\Psi}_\text{gs} = \ket{\Phi}_{ss}\braket{\text{ss}|\Psi^{(2)}_\text{gs}} + \ket{\Phi}_{ct}\braket{\text{ct}|\Psi^{(2)}_\text{gs}}~,
 \end{aligned}\end{equation}
 where \(\ket{\Psi^{(2)}_\text{gs}}\) is the two-site part of the ground state and can be obtained by starting with the full ground state \(\ket{\Psi}_\text{gs}\) and tracing over the other lattice sites of the system.
@@ -448,7 +452,7 @@ AM thanks IISER Kolkata for funding through a research fellowship. S. Lal thanks
 
 \bibliography{gen-siam}
 
-\appendix*
+\appendix
 
 \section{Derivation of RG equations}
 
@@ -545,73 +549,62 @@ One can generate another such process by exchanging the single-particle process 
 	\sum_{q\beta} \frac{1}{4}J \sum_{k} \left(\hat n_{d\beta} - \hat n_{d\overline\beta}\right) c^\dagger_{q\beta}c_{k\beta} \frac{1}{\omega - H_D} V c^\dagger_{d\beta} c_{q\beta}
 \end{aligned}\end{equation}
 This is simply the Hermitian conjugate of the previous contribution. Combining this with the previous then gives
+
+\begin{widetext}
 \begin{equation}\begin{aligned}
-	-\frac{n_j}{8}V J \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right)\\
-	\times \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
+	-\frac{n_j}{8}V J \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta}\left(1 - \hat n_{d\overline\beta}\right) \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
 If we similarly calculate the contributions from the spin-exchange processes involving \(S_d^\pm\), we get
 \begin{equation}\begin{aligned}
-	-\frac{1}{4}V J n_j \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right)\\
-	\times \left(c^\dagger_{k\overline\beta} c_{d\overline\beta} + \text{h.c.}\right)
+	-\frac{1}{4}V J n_j \left(\frac{1}{\omega - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega - \frac{D}{2} - \epsilon_d + \frac{J}{4}}\right) \sum_{k\beta} \left(1 - \hat n_{d\beta}\right)  \left(c^\dagger_{k\overline\beta} c_{d\overline\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
 The contributions from the hole sector are obtained making the transformation \(\hat n_{d\overline\beta} \to 1 - \hat n_{d\overline\beta}\) on the particle sector contributions. The total renormalisation to \(V\) from \(VJ\) processes are
 \begin{equation}\begin{aligned}
-	-\frac{3n_j}{8}V J \left(\frac{1}{\omega +U_b/4 - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega +U_b/4 - \frac{D}{2} + U/2 + \frac{J}{4}}\right)\\
-	\times\sum_{k\beta}\left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
+	-\frac{3n_j}{8}V J \left(\frac{1}{\omega +U_b/4 - \frac{D}{2} + \frac{J}{4}} + \frac{1}{\omega +U_b/4 - \frac{D}{2} + U/2 + \frac{J}{4}}\right)\sum_{k\beta}\left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)
 \end{aligned}\end{equation}
 
 The renormalisation in \(V\) from \(U_b\) arises through terms of \(V U_b\) and \(U_b V\) kind. The first term gives
 \begin{equation}\begin{aligned}
-	&\sum_{q\beta}\sum_{k}U_b V c^\dagger_{q\beta}c_{k\beta} \hat n_{q\overline\beta} \frac{1}{\omega - H_D} c^\dagger_{d\beta}c_{q\beta} = \\
-	&-\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) \right.\\
-	&+ \left.\frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 
-The second term is of the form
-\begin{equation}\begin{aligned}
-	\sum_{q\beta}\sum_{k}U_b V c^\dagger_{q\beta}c_{d\beta} \frac{1}{\omega - H_D} \hat n_{q\overline\beta} c^\dagger_{k\beta}c_{q\beta}
-\end{aligned}\end{equation}
+The second term is of the form \(\sum_{q\beta}\sum_{k}U_b V c^\dagger_{q\beta}c_{d\beta} \frac{1}{\omega - H_D} \hat n_{q\overline\beta} c^\dagger_{k\beta}c_{q\beta}\),
 and this is just the Hermitian conjugate of the previous term, so these two terms together lead to
 \begin{equation}\begin{aligned}
-	&-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)\left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} \right.\right.\\
-	&+ \left.\left. \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} \right.\right.\\
-	&+\left.\left. \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-n_jU_b V\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right)\left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} \right.\right.\\
+	+\left.\left. \frac{1}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 
-\begin{widetext}
 In the hole sector, we have
 \begin{equation}\begin{aligned}
-	&\sum_{q\beta}\sum_{k}U_b V \hat n_{q\overline\beta} c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta} -\sum_{q\beta}\sum_{k}U_b V \left(1 - \hat n_{q\overline\beta}\right) c^\dagger_{k\beta}c_{q\beta} \frac{1}{\omega - H_D} c^\dagger_{q\beta}c_{d\beta}\\
-	&= -n_jU_b V\sum_{k\beta} c^\dagger_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_1 - E_1} + \frac{1}{\omega^\prime_1 - E_1}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_0 - E_0} + \frac{1}{\omega_0^\prime - E_0}\right)\right] c_{d\beta}
+	-n_jU_b V\sum_{k\beta} c^\dagger_{k\beta} \left[\frac{\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_1 - E_1} + \frac{1}{\omega^\prime_1 - E_1}\right) + \frac{1-\hat n_{d\overline\beta}}{2}\left(\frac{1}{\omega_0 - E_0} + \frac{1}{\omega_0^\prime - E_0}\right)\right] c_{d\beta}
 \end{aligned}\end{equation}
-\end{widetext}
 \(E_1 = D/2 - U_b/4 - U/2 - J/4,~ ~ ~ E_0 = D/2 - U_b/4 - K/4\). The fluctuation scales are \(\omega_1 = \omega = \omega_0^\prime,~ ~ ~ \omega_1^\prime = \omega - U/2 = \omega_0\). Substituting these gives
 \begin{equation}\begin{aligned}
-	-\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{1 - \hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right)\right.\\
-	+ \left.\frac{\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-\sum_{k\beta} c^\dagger_{d\beta} c_{k\beta} \left[\frac{1 - \hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \frac{\hat n_{d\overline\beta}}{2}\left(\frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 The other term, obtained by exchanging \(V\) and \(U_b\), gives the Hermitian conjugate, so the overall contribution from the hole sector is the same as the total contribution from the particle sector, but with \(\hat n_{d\overline\beta} \to 1 - \hat n_{d\overline\beta}\). Combining both the sectors, we get
 \begin{equation}\begin{aligned}
-	-\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right) \left[\left(\frac{n_jU_b V/2}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) \right.\\
-	+ \left.\left(\frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
+	-\sum_{k\beta} \left(c^\dagger_{d\beta} c_{k\beta} + \text{h.c.}\right) \left[\left(\frac{n_jU_b V/2}{\omega - \frac{D}{2} - \frac{U}{2} + \frac{U_b}{4}} + \frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4}}\right) + \left(\frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{U}{2} + \frac{J}{4}} + \frac{n_jU_b V/2}{\omega - \frac{D}{2} + \frac{U_b}{4} + \frac{J}{4}}\right)\right]
 \end{aligned}\end{equation}
 
 \subsection{Renormalisation of the spin-exchange coupling \(J\)}
 The term \(J \vec{S_d}\cdot\vec{S}_0\) can be split into three parts: \(J^z S_d^z, \frac{1}{2}J^+ S_d^+ S_0^-\) and \(\frac{1}{2}J^- S_d^- S_0^+\). We will only calculate the renormalisation in \(J^+\), which will be equal to that of \(J^-,J^z\) due to spin-rotation symmetry. The terms that renormalise \(J^+\) are of the form \(S_d^+ S_d^z\) and \(S_d^z S_d^+\). In the particle sector, we have
 \begin{equation}\begin{aligned}
-	-\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} \\
-	= n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
-	\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} \\
-	= -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
+	-\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} = n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
+	\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} = -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
 \end{aligned}\end{equation}
+\end{widetext}
 The denominator is determined using \(E = \frac{D}{2} + \epsilon_d - \frac{J}{4}\) and \(\omega^\prime = \omega + \epsilon_d\).
 In the hole sector, we similarly have
 \begin{equation}\begin{aligned}
 	\sum_{q} \sum_{kk^\prime}\frac{1}{4}J^2 S_d^+ c^\dagger_{k\downarrow}c_{q \uparrow} \frac{1}{\omega - H_D}S_d^z c^\dagger_{q \uparrow}c_{k^\prime \uparrow}\\
 	= n_j \frac{1}{4}J^2 \left(-\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~,\\
 	-\sum_{q} \sum_{kk^\prime} \frac{1}{4}J^2 S_d^z c^\dagger_{k \downarrow}c_{q \downarrow} \frac{1}{\omega - H_D} S_d^+ c^\dagger_{q\downarrow}c_{k^\prime \uparrow} \\
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
 	= -n_j \frac{1}{4}J^2 \left(\frac{1}{2}S_d^+\right) \sum_{kk^\prime}c^\dagger_{k \downarrow}c_{k^\prime \uparrow} \frac{1}{\omega + \frac{U_b}{2} - \frac{D}{2} + \frac{J}{4}}~.
 \end{aligned}\end{equation}
 
@@ -631,4 +624,34 @@ The corresponding terms in the hole sector are
 	-\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}~,\\
 	-\frac{1}{2}\frac{J U_b n_j}{\omega - \frac{D}{2} + \frac{U_b}{2} + \frac{J}{4}} \sum_{k,k^\prime} S_d^+ c^\dagger_{k^\prime \downarrow} c_{k \uparrow}
 \end{aligned}\end{equation}
+
+\section{Expressing correlations in terms of entanglement}
+
+In Sec.~\ref{descr}, we related the impurity Greens function to the geometric measures of entanglement \(\varepsilon_\text{SS}\) and \(\varepsilon_\text{CT}\). We do the same here but for a general real-space static correlation \(\left< O_2 O_1^\dagger\right>\) at \(T=0\), where \(O_1, O_2\) are at most two-particle operators that act on the combined Hilbert space of the impurity site and the zeroth site.
+\begin{equation}\begin{aligned}
+	\left<O_2 O_1^\dagger\right> = \braket{\Psi_\text{gs} | O_2 O_1^\dagger | \Psi_\text{gs}}
+\end{aligned}\end{equation}
+Following Eq.~\ref{gs-ss}, we can rewrite the ground states in terms of the entanglement measures mentioned above.
+\begin{equation}\begin{aligned}
+	\ket{\Psi}_\text{gs} = \ket{\Phi}_{ss}\sqrt{1 - \varepsilon_\text{ss}} + \ket{\Phi}_{ct}\sqrt{1 - \varepsilon_\text{ss}}~,
+\end{aligned}\end{equation}
+where \(\ket{\Phi}_\text{ss(ct)}\) are the zero spin and zero charge isospin eigenstates of the Hamiltonian \(H = H_1 + H_2\) defined below Eq.~\ref{green_spectral}.
+Substituting this in the correlation gives
+\begin{equation}\begin{aligned}
+	&\left<O_2 O_1^\dagger\right> =\\
+	&\left(1 - \varepsilon_\text{ss}\right) \braket{\Phi_\text{ss} | O_2 O_1^\dagger | \Phi_\text{ss}} + \left(1 - \varepsilon_\text{ct}\right) \braket{\Phi_\text{ct} | O_2 O_1^\dagger | \Phi_\text{ct}}\\
+	&+ \sqrt{1 - \varepsilon_\text{ss}}\sqrt{1 - \varepsilon_\text{ct}}\left(\braket{\Phi_\text{ss} | O_2 O_1^\dagger | \Phi_\text{ct}} + \braket{\Phi_\text{ct} | O_2 O_1^\dagger | \Phi_\text{ss}}\right)
+\end{aligned}\end{equation}
+This allows any general correlation function to be written as a function of the entanglement measures and the matrix elements of the fluctuation \(O_1 O_2^\dagger\) between the two-site eigenstates.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{compens.pdf}
+	\includegraphics[width=0.48\textwidth]{corr_1p.pdf}
+	\caption{a}
+	\label{fig2}
+\end{figure}
+
+{\bf TODO}
+1. refer to these figures and the general relation in the discussions
+
 \end{document}

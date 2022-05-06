@@ -61,10 +61,9 @@ Despite the success of DMFT and its cluster-variants, certain points remain to b
 	\item What is the minimal impurity model that can act as an auxiliary model for describing an MIT of the Mott kind?
 	\item Having obtained such a minimal model, can we create a formalism that relates (in a transparent and tractable manner) the physics of the bulk to that of the auxiliary model?
 	\item Can we then, using such a formulation, try to extract the fluctuations that destabilise the metal and lead to the Mott insulator, as well as study other aspects of the MIT?
+	\item {\color{blue}Can such an impurity model give rise to a universal phase diagram consisting of a gapped ordered phase that leads into a superconducting phase below a metallic phase, as is often encountered in strongly-correlated systems?}
 \end{itemize}
-The reliance of DMFT on the iterative route towards self-consistency means that the impurity auxiliary model gets highly correlated in the process~\cite{held2008}, and no single impurity model can be related to the bulk; for the same reason, it is also not possible, at present, to relate the properties of the auxiliary models to those of the full model. In this {\color{blue}work}, we will focus mostly on the first question, but we will provide hints about the third question as well. Since it has already been established that the AIM does not feature a transition, it is incapable of describing an MIT. This warrants the introduction of additional physics that can destabilise the Kondo cloud.
-
-The paper is structured as follows. Sec.~\ref{def-ham} describes the extended model that we will be studying in this {\color{blue}work}. In Sec.~\ref{method}, we talk about the renormalisation group technique that we employ to study the model and the RG equations obtained from them. Sec.~\ref{phase} lays out the phase diagram and demonstrates the phase transition. Sec.~\ref{eff-ham} gives the effective Hamiltonians in various phases and the zero-bandwidth limits of the ground states. In Sec.~\ref{descr}, we give additional insight into the transition by tracking it via entanglement measures and two-particle correlations. We conclude in Sec.~\ref{concl} with some discussions and possible future directions.
+The reliance of DMFT on the iterative route towards self-consistency means that the impurity auxiliary model gets highly correlated in the process~\cite{held2008}, and no single impurity model can be related to the bulk; for the same reason, it is also not possible, at present, to relate the properties of the auxiliary models to those of the full model. In this {\color{blue}paper}, we will focus mostly on the first question, but we will provide hints about the third question as well. Since it has already been established that the AIM does not feature a transition, it is incapable of describing an MIT. This warrants the introduction of additional physics that can destabilise the Kondo cloud.
 
 \subsection*{Summary of results}
 
@@ -75,6 +74,10 @@ The paper is structured as follows. Sec.~\ref{def-ham} describes the extended mo
 	\item The impurity spectral function shows a three-peak structure at the critical point, similar to the AIM, and develops a gap beyond that.
 \end{itemize}
  
+\subsection*{Layout of the {\color{blue}paper}}
+
+The paper is structured as follows. Sec.~\ref{def-ham} describes the extended model that we will be studying in this {\color{blue}paper}. In Sec.~\ref{method}, we talk about the renormalisation group technique that we employ to study the model and the RG equations obtained from them. Sec.~\ref{phase} lays out the phase diagram and demonstrates the phase transition. Sec.~\ref{eff-ham} gives the effective Hamiltonians in various phases and the zero-bandwidth limits of the ground states. In Sec.~\ref{descr}, we give additional insight into the transition by tracking it via entanglement measures and two-particle correlations. We conclude in Sec.~\ref{concl} with some discussions and possible future directions.
+
 
 \section{The generalised Anderson impurity model}
 \label{def-ham}
@@ -422,24 +425,32 @@ This is also supported by the reduction in the mutual information \(I(d \uparrow
 \section{Discussions and Outlook}
 \label{concl}
 
-In summary, we have shown that adding spin-exchange physics between impurity and bath and local atractive correlation in the bath lead to a model with multiple phases. We have demonstrated this phase transition under a renormalisation group treatment, and provided the effective Hamiltonians and simplified wavefunctions for the various phases. The phase transition can be observed through the discontinuous behaviour in the ground state, as well as through the appearance of a gap in the impurity spectral function. We also draw a connection between the change in the spectral function and some geometric measures of entanglement; this allows tracking the phase transition via these measures.
+In summary, we have shown that adding spin-exchange physics between impurity and bath and local attractive correlation in the bath lead to a model with multiple phases. We have demonstrated this phase transition under a renormalisation group treatment, and provided the effective Hamiltonians and simplified wavefunctions for the various phases. The phase transition can be observed through the discontinuous behaviour in the ground state, as well as through the appearance of a gap in the impurity spectral function. We also draw a connection between the change in the spectral function and some geometric measures of entanglement; this allows tracking the phase transition via these measures.
 
 Having summarised the main results, we now discuss some additional notable insights. We note that the GAIM as defined here represents the most minimal impurity model that supports a phase transition - both the \(J\) and \(U_b\) are crucial to stabilising the local moment. With just \(J\) or just \(U_b\), the low-energy phase is always of the local Fermi liquid kind. The introduction of the attractive \(U_b\) term is most interesting because it shows that pairing fluctuations in the bath are necessary to suppress the Kondo physics arising from spin fluctuations(fig.~\ref{pair_fluc}). Moreover, we find that there is a subdominant tendency towards transfer of local ``Cooper pairs" between the impurity and zeroth sites (Fig.~\ref{charge-spin}). This is reminiscent of a similar subdominant superconducting tendency in the half-filled Hubbard model as observed from a unitary RG treatment~\cite{anirbanmott1,anirbanmott2}.
 It is also intriguing to see that the geometric entanglement \(\chi = \sqrt{1 -\varepsilon_\text{SS}}\sqrt{1 -\varepsilon_\text{CT}}\) emerges as an order parameter for the impurity transition: it is zero in the local moment phase and non-zero in the screened phase. The discontinuous change in \(\chi\) is intimately connected to the fact that this phase transition is topological in nature~\cite{oshikawa2000topological,seki2017topological} -  the Luttinger volume of the conduction bath changes by 1~\cite{martin-physrevlett.48.362}.
 
-Future studies can involve working with a general filling on the impurity site; this might allow the pair fluctuations between the impurity and zeroth site to become the dominant interaction, leading to a "local superconducting instability".
-Another important application of this model involves the following: Given a suitable analytical framework, the auxiliary model obtained here can be ``tiled" throughout the lattice to create a bulk model, and the impurity phase transition observed here will then get promoted to a bulk metal-insulator transition.
-Finer details like electronic differentiation in \(k-\)space can also be captured by taking more number of impurities in the auxiliary model~\cite{sakai_2009}.
+Possible directions for future studies include working with a general filling on the impurity site; this might allow the pair fluctuations between the impurity and zeroth site to become the dominant interaction, leading to a ``local superconducting instability".
+An important application of this model involves the following: Given a suitable analytical framework that restores translation symmetry, the auxiliary model obtained here can be ``tiled" throughout the lattice to create a bulk model, and the impurity phase transition observed here will then get promoted to a bulk metal-insulator transition.
+Finer details like electronic differentiation in \(k-\)space can be captured by considering more number of impurities connected to each other through single-particle hopping or RRKY-like interaction~\cite{Ferrero2007,sakai_2009}.
+In general, the presence of multiple and varied classes of correlations in the auxiliary model - localisation tendency from Mott physics, delocalisation tendency from the spin and charge fluctuations, and pairing tendency from the local correlation term - makes this a strong candidate for describing various kinds of phases (Fig.~\ref{universal}).
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{universal_phase_diagram.pdf}
+	\caption{Phase diagram for strongly-correlated electronic systems}
+	\label{universal}
+\end{figure}
 
 
 \acknowledgments
-Abhirup Mukherjee thanks IISER Kolkata for funding through a research fellowship. S. Lal thanks the SERB, Govt. of India for funding through MATRICS grant MTR/2021/000141 and Core Research Grant CRG/2021/000852.
+AM thanks IISER Kolkata for funding through a research fellowship. S. Lal thanks the SERB, Govt. of India for funding through MATRICS grant MTR/2021/000141 and Core Research Grant CRG/2021/000852.
 
 \bibliography{gen-siam}
 
 \appendix*
 
-\section{Derivation of RG equations for the generalised Anderson impurity model}
+\section{Derivation of RG equations}
 
 \subsection{Some preliminaries}
 The Hamiltonian we are working with is the generalised Anderson impurity model (Eq.~\ref{GIAM-ham}):

@@ -1,6 +1,6 @@
 \documentclass[reprint,superscriptaddress,floatfix]{revtex4-2}
 \usepackage{braket,amsmath,graphicx,color}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \bibliographystyle{apsrev4-1}
 \allowdisplaybreaks
 
@@ -53,7 +53,7 @@ Using the AIM as the auxiliary model, an MIT was demonstrated in the \(d=\infty\
 
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.35\textwidth]{spec_func.pdf}
+	\includegraphics[width=0.48\textwidth]{DMFT.pdf}
 	\caption{Schematic description of the evolution of the density of states across the transition~\cite{zhang_1993}.}
 	\label{spec-func_scheme}
 \end{figure}
@@ -70,15 +70,13 @@ The reliance of DMFT on the iterative route towards self-consistency means that 
 \subsection*{Summary of results}
 
 \begin{itemize}
-	\item {\color{blue}Indeed}, we find that on extending the AIM with a spin-exchange interaction \(J\) between the impurity site and the site it is coupled to (zeroth site), and an attractive correlation \(U_b\) on the zeroth site, the enhanced model shows a phase transition under a renormalisation group treatment, at a critical value \(\left(-U_b/J\right)_c=1/4\). 
+	\item We find that on extending the AIM with a spin-exchange interaction \(J\) between the impurity site and the site it is coupled to (zeroth site), and an attractive correlation \(U_b\) on the zeroth site, the enhanced model shows a phase transition under a renormalisation group treatment, at a critical value \(\left(-U_b/J\right)_c=1/4\). 
 	\item The ground state can be shown to evolve from a singlet between the impurity and the zeroth site to a decoupled local moment on the impurity, through a correlated state with both spin and charge content.
 	\item The transition can be tracked through the variation of the geometric entanglement, which starts from zero in the screened phase and reaches its maximum value of 1 in the local moment phase.
 	\item The impurity spectral function shows a three-peak structure at the critical point, similar to the AIM, and develops a gap beyond that.
 \end{itemize}
  
-\subsection*{Layout of the {\color{blue}paper}}
-
-The paper is structured as follows. Sec.~\ref{def-ham} describes the extended model that we will be studying in this {\color{blue}paper}. In Sec.~\ref{method}, we talk about the renormalisation group technique that we employ to study the model and the RG equations obtained from them. Sec.~\ref{phase} lays out the phase diagram and demonstrates the phase transition. Sec.~\ref{eff-ham} gives the effective Hamiltonians in various phases and the zero-bandwidth limits of the ground states. In Sec.~\ref{descr}, we give additional insight into the transition by tracking it via entanglement measures and two-particle correlations. We conclude in Sec.~\ref{concl} with some discussions and possible future directions.
+The rest of the work is structured as follows. Sec.~\ref{def-ham} describes the extended model that we will be studying throughout. In Sec.~\ref{method}, we talk about the renormalisation group technique that we employ to study the model and the RG equations obtained from them. Sec.~\ref{phase} lays out the phase diagram and demonstrates the phase transition. Sec.~\ref{eff-ham} gives the effective Hamiltonians in various phases and the zero-bandwidth limits of the ground states. In Sec.~\ref{descr}, we give additional insight into the transition by tracking it via entanglement measures and two-particle correlations. We conclude in Sec.~\ref{concl} with some discussions and possible future directions.
 
 
 \section{The generalised Anderson impurity model}
@@ -384,9 +382,26 @@ This expression is interesting because it relates the Greens function (measurabl
 These measures have been plotted up to the critical point in Fig.~\ref{entng}.
 While \(\varepsilon_\text{ss},\varepsilon_\text{ct}\) (plotted in the inset) are very similar to the overlaps plotted in Fig.~\ref{overlaps}, the cross-term \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\) plotted in the main figure has an overall monotonic incremental behaviour towards the transition.
 We can now use the knowledge of the behaviour of these measures to make some statements about the nature of the transition from the Greens function.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{corr_1p.pdf}
+	\caption{Growth in the single-particle correlation towards the transition.}
+	\label{one-particle}
+\end{figure}
+
 Since \(\varepsilon_\text{ss}\) increases towards the transition, we find that the first major term in the Greens function decreases; this shows that scattering within the spin sector loses weight.
 On the other hand, since \(\varepsilon_\text{ct}\) decreases, the second major term in \(G_d\) increases, reflecting the growth in the participation of the charge sector in the scattering processes.
-The final major term also increases, due to the monotonic growth of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\), showing that there is a continual increase in the {\it mixing of the spin and charge sectors}.
+The final major term also increases, due to the monotonic growth of \(\sqrt{\left(1 - \varepsilon_\text{ss} \right)}\sqrt{\left(1 - \varepsilon_\text{ct} \right)}\), showing that there is a continual increase in the {\it mixing of the spin and charge sectors}. This mixing is mediated by 1-particle correlations that transform spin degrees of freedom into charge, and indeed, the enhancement in the mixing is demonstrated by the growth of the 1-particle correlation in Fig.~\ref{one-particle}.
+
+{\color{blue}Generalising this result, any general one-particle or two-particle fluctuation \(\left<O_1 O_2^\dagger \right>\) that acts on the combined Hilbert space of the impurity and the zeroth site can be expressed in terms of these entanglement measures \(\varepsilon_\text{ss},\varepsilon_\text{ct}\). The details and the final expression are given in Appendix~\ref{general-ent}. As a demonstration, the spin-spin correlation between the impurity and the zeroth site is shown in Fig.~\ref{compens}. From the general expression in Fig.~\ref{gen-entng}, we know that only the singlet overlap will be non-zero, which means this correlation is related only to \(\varepsilon_\text{ss}\). Since \(\varepsilon_\text{ss}\) increases towards the transition (Fig.~\ref{entng}), the prefactor \(1 - \varepsilon_\text{ss}\) decreases, which then leads to the decrease in the magnitude of the correlation in Fig.~\ref{compens}.}
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{compens.pdf}
+	\caption{Spin-spin correlation between impurity and zeroth site}
+	\label{compens}
+\end{figure}
 
 \subsection{Mutual information and spin/charge correlations in ground state: fate of the Kondo cloud}
 Since the system has to undergo a phase transition into an unscreened phase for \(r > 0.25\), it is clear that the Kondo screening cloud must disappear. Indeed, this is captured by various entanglement measures like mutual information and entanglement entropy. The entanglement entropy (EE) \(S(A)\) of subsystem \(A\) with the rest of the system is defined as the von Neumann entropy of the reduced density matrix \(\rho_A\),
@@ -432,20 +447,12 @@ This is also supported by the reduction in the mutual information \(I(d \uparrow
 In summary, we have shown that adding spin-exchange physics between impurity and bath and local attractive correlation in the bath lead to a model with multiple phases. We have demonstrated this phase transition under a renormalisation group treatment, and provided the effective Hamiltonians and simplified wavefunctions for the various phases. The phase transition can be observed through the discontinuous behaviour in the ground state, as well as through the appearance of a gap in the impurity spectral function. We also draw a connection between the change in the spectral function and some geometric measures of entanglement; this allows tracking the phase transition via these measures.
 
 Having summarised the main results, we now discuss some additional notable insights. We note that the GAIM as defined here represents the most minimal impurity model that supports a phase transition - both the \(J\) and \(U_b\) are crucial to stabilising the local moment. With just \(J\) or just \(U_b\), the low-energy phase is always of the local Fermi liquid kind. The introduction of the attractive \(U_b\) term is most interesting because it shows that pairing fluctuations in the bath are necessary to suppress the Kondo physics arising from spin fluctuations(fig.~\ref{pair_fluc}). Moreover, we find that there is a subdominant tendency towards transfer of local ``Cooper pairs" between the impurity and zeroth sites (Fig.~\ref{charge-spin}). This is reminiscent of a similar subdominant superconducting tendency in the half-filled Hubbard model as observed from a unitary RG treatment~\cite{anirbanmott1,anirbanmott2}.
-It is also intriguing to see that the geometric entanglement \(\chi = \sqrt{1 -\varepsilon_\text{SS}}\sqrt{1 -\varepsilon_\text{CT}}\) emerges as an order parameter for the impurity transition: it is zero in the local moment phase and non-zero in the screened phase. The discontinuous change in \(\chi\) is intimately connected to the fact that this phase transition is topological in nature~\cite{oshikawa2000topological,seki2017topological} -  the Luttinger volume of the conduction bath changes by 1~\cite{martin-physrevlett.48.362}.
+It is also intriguing to see that the geometric entanglement \(\chi = \sqrt{1 -\varepsilon_\text{SS}}\sqrt{1 -\varepsilon_\text{CT}}\) emerges as an order parameter for the impurity transition: it is zero in the local moment phase and non-zero in the screened phase. The discontinuous change in \(\chi\) is intimately connected to the fact that this phase transition is topological in nature~\cite{oshikawa2000topological,seki2017topological} -  the Luttinger volume of the conduction bath changes by 1~\cite{martin-physrevlett.48.362}. The fact that any general 1-particle or 2-particle correlation between the impurity and the zeroth site can also be similarly rewritten in terms of \(\varepsilon_\text{ss},\varepsilon_\text{ct}\)(Eq.~\ref{gen-entng}) means that measurable quantities can be related to entanglement.
 
 Possible directions for future studies include working with a general filling on the impurity site; this might allow the pair fluctuations between the impurity and zeroth site to become the dominant interaction, leading to a ``local superconducting instability".
 An important application of this model involves the following: Given a suitable analytical framework that restores translation symmetry, the auxiliary model obtained here can be ``tiled" throughout the lattice to create a bulk model, and the impurity phase transition observed here will then get promoted to a bulk metal-insulator transition.
 Finer details like electronic differentiation in \(k-\)space can be captured by considering more number of impurities connected to each other through single-particle hopping or RRKY-like interaction~\cite{Ferrero2007,sakai_2009}.
-In general, the presence of multiple and varied classes of correlations in the auxiliary model - localisation tendency from Mott physics, delocalisation tendency from the spin and charge fluctuations, and pairing tendency from the local correlation term - makes this a strong candidate for describing various kinds of phases (Fig.~\ref{universal}).
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.48\textwidth]{universal_phase_diagram.pdf}
-	\caption{Phase diagram for strongly-correlated electronic systems}
-	\label{universal}
-\end{figure}
-
+In general, the presence of multiple and varied classes of correlations in the auxiliary model - localisation tendency from Mott physics, delocalisation tendency from the spin and charge fluctuations, and pairing tendency from the local correlation term - makes this a strong candidate for describing various kinds of phases.
 
 \acknowledgments
 AM thanks IISER Kolkata for funding through a research fellowship. S. Lal thanks the SERB, Govt. of India for funding through MATRICS grant MTR/2021/000141 and Core Research Grant CRG/2021/000852.
@@ -626,6 +633,7 @@ The corresponding terms in the hole sector are
 \end{aligned}\end{equation}
 
 \section{Expressing correlations in terms of entanglement}
+\label{general-ent}
 
 In Sec.~\ref{descr}, we related the impurity Greens function to the geometric measures of entanglement \(\varepsilon_\text{SS}\) and \(\varepsilon_\text{CT}\). We do the same here but for a general real-space static correlation \(\left< O_2 O_1^\dagger\right>\) at \(T=0\), where \(O_1, O_2\) are at most two-particle operators that act on the combined Hilbert space of the impurity site and the zeroth site.
 \begin{equation}\begin{aligned}
@@ -638,20 +646,11 @@ Following Eq.~\ref{gs-ss}, we can rewrite the ground states in terms of the enta
 where \(\ket{\Phi}_\text{ss(ct)}\) are the zero spin and zero charge isospin eigenstates of the Hamiltonian \(H = H_1 + H_2\) defined below Eq.~\ref{green_spectral}.
 Substituting this in the correlation gives
 \begin{equation}\begin{aligned}
+	\label{gen-entng}
 	&\left<O_2 O_1^\dagger\right> =\\
 	&\left(1 - \varepsilon_\text{ss}\right) \braket{\Phi_\text{ss} | O_2 O_1^\dagger | \Phi_\text{ss}} + \left(1 - \varepsilon_\text{ct}\right) \braket{\Phi_\text{ct} | O_2 O_1^\dagger | \Phi_\text{ct}}\\
 	&+ \sqrt{1 - \varepsilon_\text{ss}}\sqrt{1 - \varepsilon_\text{ct}}\left(\braket{\Phi_\text{ss} | O_2 O_1^\dagger | \Phi_\text{ct}} + \braket{\Phi_\text{ct} | O_2 O_1^\dagger | \Phi_\text{ss}}\right)
 \end{aligned}\end{equation}
 This allows any general correlation function to be written as a function of the entanglement measures and the matrix elements of the fluctuation \(O_1 O_2^\dagger\) between the two-site eigenstates.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.48\textwidth]{compens.pdf}
-	\includegraphics[width=0.48\textwidth]{corr_1p.pdf}
-	\caption{a}
-	\label{fig2}
-\end{figure}
-
-{\bf TODO}
-1. refer to these figures and the general relation in the discussions
 
 \end{document}

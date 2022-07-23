@@ -1,10 +1,10 @@
-\documentclass{report}
+\documentclass[12pt]{report}
 % \documentclass{nature}
 \usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,pifont,enumitem}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.5in,top=0.3in,bottom=1.4in]{geometry}
+\usepackage[margin=0.7in,top=0.3in,bottom=1.4in]{geometry}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -1536,12 +1536,84 @@ These are the frequency-domain spectral functions for the off-diagonal retarded 
 \end{center}
 
 \subsection{Bath spectral function \(A_{00}(\omega)\)}
-\begin{center}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_Ub_by_J=-0.000.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_Ub_by_J=-0.125.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_Ub_by_J=-0.250.pdf}
-	\includegraphics[width=0.45\textwidth]{../figures/spec_func_00_Ub_by_J=-0.26.pdf}
-\end{center}
+In order to calculate the spectral function \(A_{00}(\omega)\) of the site connected to the impurity (referred to as the zeroth site), we will use the following strategy. We will decouple the impurity states from the fixed point Hamiltonian using a single URG transformation. This will of course generate correlations on the zeroth site. The resulting Hamiltonian will be an Anderson impurity model with the hopping between the zeroth site and the rest of the chain acting as the effective hybridisation. Schematically, we will have
+\begin{equation}\begin{aligned}
+	H^* = H_\text{imp} + V_\text{imp-0} + H_\text{0} + H_\text{0-1} + H_\text{rest} ~ \mathlarger{\xrightarrow{\text{decouple imp.}}} ~ E_\text{imp} + \tilde H_\text{0} + H_\text{0-1} + H_\text{rest} = H_\text{new imp} \\
+	+ V_\text{new imp - rest} + H_\text{rest}
+\end{aligned}\end{equation}
+
+Since the impurity is not coupled with any site beyond the zeroth site, the parts of the Hamiltonian that involve "rest" will not change in the process. This also means that the decoupling can be performed by looking at the smaller Hamiltonian
+\begin{equation}\begin{aligned}
+	H_\text{imp+0} = H_\text{imp} + H_\text{0} + V_\text{imp-0} = -\frac{U^*}{2}\left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right)^2 - U_b \left( \hat n_{0 \uparrow} - \hat n_{0 \downarrow} \right)^2 + J^*S_d^z S_0^z + {V^*}\sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) \\
+	+ \frac{J^*}{2}\left( c^\dagger_{d \uparrow}c_{d \downarrow} c^\dagger_{0 \downarrow} c_{0 \uparrow} + \text{h.c.} \right) 
+\end{aligned}\end{equation}
+
+\paragraph{Renormalisation from \({V^*}\)}
+From the off-diagonal term involving \({V^*}\), we generate the following term, in the particle sector for \(0\):
+\begin{equation}\begin{aligned}
+	{V^*} \sum_\sigma c^\dagger_{0\sigma}c_{d\sigma} \frac{1}{\tilde \omega - H_d} {V^*} c^\dagger_{d\sigma}c_{0\sigma} = |V^*|^2 \sum_\sigma c^\dagger_{0\sigma}c_{d\sigma} \frac{1}{\tilde \omega + \frac{U^*}{2}\left( 1 - \hat n_{d\bar\sigma} \right)^2 + U_b \hat n_{0\bar\sigma} + \frac{J^*}{4}\left( 1 - \hat n_{d\bar\sigma} \right) \hat n_{0\bar\sigma} } c^\dagger_{d\sigma}c_{0\sigma}
+\end{aligned}\end{equation}
+where \(\tilde \omega\) is the quantum fluctuation operator for the impurity site and \(H_d = -\frac{U^*}{2}\left( \hat n_{d \uparrow} - \hat n_{d \downarrow} \right)^2 - U_b \left( \hat n_{0 \uparrow} - \hat n_{0 \downarrow} \right)^2 + J^*S_d^z S_0^z \), is the diagonal part of the Hamiltonian for the imp+0 system. In order to resolve the operators in the denominator, we expand the unity in the numerator using the identity \(1 = \hat n_{d\bar\sigma}\hat n_{0\bar\sigma} + \hat n_{d\bar\sigma}\hat h_{0\bar\sigma} + \hat h_{d\bar\sigma}\hat n_{0\bar\sigma} + \hat h_{d\bar\sigma}\hat h_{0\bar\sigma}\), where \(\hat h = 1 - \hat n\) is hole operator. On Substituting this, we get
+\begin{equation}\begin{aligned}
+	\sum_\sigma {V^*} c^\dagger_{0\sigma}c_{d\sigma} \frac{1}{\tilde \omega - H_d} {V^*} c^\dagger_{d\sigma}c_{0\sigma} &= |V^*|^2 \sum_\sigma c^\dagger_{0\sigma}c_{d\sigma} \frac{\hat h_{d\bar\sigma}\hat h_{0\bar\sigma} + \hat h_{d\bar\sigma}\hat n_{0\bar\sigma} + \hat n_{d\bar\sigma}\hat h_{0\bar\sigma} + \hat n_{d\bar\sigma}\hat n_{0\bar\sigma}}{\tilde \omega + \frac{U^*}{2}\hat h_{d\bar\sigma} + U_b \hat n_{0\bar\sigma} + \frac{J^*}{4}\hat h_{d\bar\sigma} \hat n_{0\bar\sigma} } c^\dagger_{d\sigma}c_{0\sigma}\\
+															    &= |V^*|^2 \sum_\sigma \hat h_{d\sigma} \hat n_{0\sigma}\left[\frac{\hat h_{d\bar\sigma}\hat h_{0\bar\sigma}}{\tilde\omega_{00} + \frac{U^*}{2}} + \frac{\hat h_{d\bar\sigma}\hat n_{0\bar\sigma}}{\tilde\omega_{01} + \frac{U^*}{2} + U_b + \frac{J^*}{4}} + \frac{\hat n_{d\bar\sigma}\hat h_{0\bar\sigma}}{\tilde\omega_{10}} + \frac{\hat n_{d\bar\sigma}\hat n_{0\bar\sigma}}{\tilde\omega_{11} + U_b}\right]
+\end{aligned}\end{equation}
+\(\tilde\omega_{(0,1),(0,1)}\) represents the quantum fluctuation scale corresponding to the configuration in the numerator.
+
+In order to "freeze" the impurity dynamics, we will substitute \(\hat n_{d\sigma} = \hat n_{d\bar\sigma} = \frac{1}{2}\), because of the \(\mathbb{Z}_2\) symmetry and the particle-hole symmetry of the impurity levels. This gives
+\begin{equation}\begin{aligned}
+	\frac{1}{4}|V^*|^2 \sum_\sigma \hat n_{0\sigma} \left[\frac{\hat h_{0\bar\sigma}}{\tilde\omega_{00} + \frac{U^*}{2}} + \frac{\hat n_{0\bar\sigma}}{\tilde\omega_{01} + \frac{U^*}{2} + U_b + \frac{J^*}{4}} + \frac{\hat h_{0\bar\sigma}}{\tilde\omega_{10}} + \frac{\hat n_{0\bar\sigma}}{\tilde\omega_{11} + U_b}\right]
+\end{aligned}\end{equation}
+
+The state that most closely represents the metallic ground state is \(\bar \omega_{10}\), we take that as the reference quantum fluctuation scale \(\bar\omega\). It is of the order of \(\bar\omega \sim -\frac{J^*}{4} - \frac{U^*}{2} - U_b\). We will now relate the other scales to \(\bar\omega\) by expressing them in terms of the energy of the initial state:
+\begin{equation}\begin{aligned}
+	\tilde\omega_{00} \sim -U_b = \bar\omega + \frac{J^*}{4} + \frac{U^*}{2}, ~~ \tilde\omega_{01} \sim 0 = \bar\omega + \frac{J^*}{4} + \frac{U^*}{2} + U_b, ~~ \tilde\omega_{11} \sim -\frac{U^*}{2} = \bar\omega + \frac{J^*}{4} + U_b
+\end{aligned}\end{equation}
+Substituting these gives
+\begin{equation}\begin{aligned}
+	\frac{1}{4}|V^*|^2 \sum_\sigma \hat n_{0\sigma} \left[\hat h_{0\bar\sigma}\alpha_1 + \hat n_{0\bar\sigma}\alpha_2\right]
+\end{aligned}\end{equation}
+where \(\alpha_1 = \left(\bar\omega + U^* + \frac{J^*}{4}\right)^{-1} + \left(\bar\omega\right)^{-1}\) and \(\alpha_2 = \left(\bar\omega + U^* + 2U_b + \frac{J^*}{2}\right)^{-1} + \left(\bar\omega + 2U_b + \frac{J^*}{4}\right)^{-1}\).
+
+Because of the particle-hole symmetry on the impurity as well as in the bath, the renormalisation from the hole sector is obtained simply by transforming \(\hat n \leftrightarrow \hat h\):
+\begin{equation}\begin{aligned}
+	\frac{1}{4}|V^*|^2 \sum_\sigma \hat h_{0\sigma} \left[\hat n_{0\bar\sigma}\alpha_1 + \hat h_{0\bar\sigma}\alpha_2\right]
+\end{aligned}\end{equation}
+
+The total renormalisation arising from \(V\) is therefore
+\begin{equation}\begin{aligned}
+	\frac{1}{4}|V^*|^2 \sum_\sigma \left[\alpha_1 \left( \hat n_{0\sigma}\hat h_{0\bar\sigma} + \hat h_{0\sigma}\hat n_{0\bar\sigma}\right) + \alpha_2 \left( \hat n_{0\sigma}\hat n_{0\bar\sigma} + \hat h_{0\sigma}\hat h_{0\bar\sigma}\right)\right] = \frac{1}{2}|V*|^2 \left(\alpha_1 - \alpha_2\right) \left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2 + \text{constant}
+\end{aligned}\end{equation}
+
+\paragraph{Renormalisation from \(J\)}
+The renormalisation arising from decoupling the Kondo coupling has two terms. The first term arises when the spin of the zeroth site is initially up:
+\begin{equation}\begin{aligned}
+	\frac{{J^*}^2}{4}c^\dagger_{d \downarrow}c_{d \uparrow} c^\dagger_{0 \uparrow}c_{0 \downarrow} \frac{1}{\tilde \omega - H_d} c^\dagger_{0 \downarrow}c_{0 \uparrow} c^\dagger_{d \uparrow}c_{d \downarrow} = c^\dagger_{d \downarrow}c_{d \uparrow} c^\dagger_{0 \uparrow}c_{0 \downarrow} \frac{{J^*}^2/4}{\tilde \omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}} c^\dagger_{0 \downarrow}c_{0 \uparrow} c^\dagger_{d \uparrow}c_{d \downarrow} = \frac{{J^*}^2}{4}\frac{\hat n_{d \downarrow} \hat h_{d \uparrow} \hat n_{ 0 \uparrow} \hat h_{0 \downarrow}}{\tilde \omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}} 
+\end{aligned}\end{equation}
+The quantum fluctuation scale \(\tilde \omega\) for this process can be similarly related to \(\bar\omega\): \(\tilde\omega \sim -\frac{U^*}{2} - U_b - \frac{J^*}{4} = \bar\omega\). This gives
+\begin{equation}\begin{aligned}
+	\frac{{J^*}^2}{4}\frac{\hat n_{d \downarrow} \hat h_{d \uparrow} \hat n_{ 0 \uparrow} \hat h_{0 \downarrow}}{\bar\omega + \frac{U^*}{2} + U_b + \frac{3J^*}{4}} = \frac{{J^*}^2}{16}\frac{\hat n_{ 0 \uparrow} \hat h_{0 \downarrow}}{\bar\omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}}
+\end{aligned}\end{equation}
+as the renormalisation for this configuration. At the final step, we substituted \(\hat n_{d\sigma} = \hat h_{d\sigma} = \frac{1}{2}\). For the other configuration where the spin of the zeroth site is down, we get
+\begin{equation}\begin{aligned}
+	\frac{{J^*}^2}{16}\frac{\hat n_{ 0 \downarrow} \hat h_{0 \uparrow}}{\bar\omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}}
+\end{aligned}\end{equation}
+Adding both sectors, we get
+\begin{equation}\begin{aligned}
+	\frac{{J^*}^2}{16}\frac{1}{\bar\omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}} \left(\hat n_{ 0\uparrow} - \hat n_{0 \downarrow}\right)^2
+\end{aligned}\end{equation}
+
+\paragraph{Total renormalisation}
+Adding the contributions from both \(V^*\) and \(J^*\),  the net renormalisation is the generation of a local correlation term \(-U_0\left(\hat n_{ 0\uparrow} - \hat n_{0 \downarrow}\right)^2\) on the zeroth site, where \(U_0\) is given by
+\begin{equation}\begin{aligned}
+	U_0 = -\frac{{J^*}^2}{16}\frac{1}{\bar\omega + \frac{U^*}{2} + U_b + \frac{J^*}{4}} - \frac{1}{2}|V^*|^2\left(\frac{1}{\bar\omega + U^* + \frac{J^*}{4}} + \frac{1}{\bar\omega} - \frac{1}{\bar\omega + U^* + 2U_b + \frac{J^*}{2}} - \frac{1}{\bar\omega + 2U_b + \frac{J^*}{4}}\right) 
+\end{aligned}\end{equation}
+
+Deep in the metallic regime, we have the following hierarchy of energy scales: \(|J^*| > |\bar\omega| \gg |V^*| \gg |U_b| \gg |U^*| \simeq 0\).
+
+
+
+
 
 \subsection{Width of central peak of \(A_{dd}\)}
 

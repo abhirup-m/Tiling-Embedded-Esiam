@@ -1,28 +1,15 @@
 \documentclass{report}
-% \documentclass{nature}
-\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,pifont,enumitem}
+\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,enumitem}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.7in,top=0.3in,bottom=1.4in]{geometry}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-
-\renewcommand*\oldstylenums[1]{{\firaoldstyle #1}}
-\newlist{todolist}{itemize}{2}
-\setlist[todolist]{label=$\square$}
-\newcommand{\cmark}{\ding{51}}%
+\usepackage[margin=0.5in,bottom=1in]{geometry}
 
 \newcommand{\comment}[1]{{}}
-\renewcommand{\arraystretch}{2}
-\setlength\delimitershortfall{-2pt}
 \setcounter{tocdepth}{1}
-\pagestyle{headings}
-\setlength{\headheight}{52pt}
 \numberwithin{equation}{section}
 \allowdisplaybreaks
-\bibliographystyle{ieeetr}
+\bibliographystyle{unsrt}
 
 \title{A New Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Systems}
 \author{Abhirup Mukherjee, Siddhartha Lal}
@@ -2800,33 +2787,33 @@ The mapping between the parameters of the auxiliary model and that of the bulk a
 \chapter{Future goals}
 \begin{enumerate}
 \item The Mott metal-insulator transition:
-	\begin{todolist}
-	\item[\cmark] Obtain the metal insulator transition of the 2D Hubbard-Heisenberg model on the square lattice from the present formalism. 
+	\begin{itemize}
+	\item Obtain the metal insulator transition of the 2D Hubbard-Heisenberg model on the square lattice from the present formalism. 
 	\item Determine the nature of the bath $\Sigma (k,\omega)$ in the metallic phase, insulating phase as well as at criticality.
 	\item Investigate nature of the zero-temperature transition (order of transition, order parameter, etc)
-	\end{todolist}
+	\end{itemize}
 
 \item Higher-order Greens functions:
-	\begin{todolist}
+	\begin{itemize}
 	\item Provide expressions for two-particle Greens functions.
 	\item Calculate explicitly the Greens functions for holon-doublon and spinon-spinon excitations as they are likely to contain more information regarding the ground state.
 	\item Obtain spectral functions for such excitations
-	\end{todolist}
+	\end{itemize}
 
 \item Benchmarking against ED and/or finite size scaling:
-	\begin{todolist}
+	\begin{itemize}
 	\item ground state energy
 	\item double occupancy
-	\end{todolist}
+	\end{itemize}
 
 \item Upgrade to two-site cluster:
-	\begin{todolist}
+	\begin{itemize}
 	\item Study a two-impurity model under renormalisation group
-	\item[\cmark] Derive the tiling and Greens function relations for such a two-impurity model 
+	\item Derive the tiling and Greens function relations for such a two-impurity model 
 	\item Demonstrate Mott MIT here.
 	\item Investigate the nature of many-particle entanglement in such a cluster
 	\item look for signs of a quantum liquid.
-	\end{todolist}
+	\end{itemize}
 
 \item Once we have a handle on the zero temperature features, we intend to compute Greens functions at non zero temperatures.
 

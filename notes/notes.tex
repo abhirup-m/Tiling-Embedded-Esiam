@@ -3,7 +3,7 @@
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.5in,bottom=1in]{geometry}
+\usepackage[margin=0.7in,bottom=1in]{geometry}
 
 \newcommand{\comment}[1]{{}}
 \setcounter{tocdepth}{1}
@@ -11,7 +11,7 @@
 \allowdisplaybreaks
 \bibliographystyle{unsrt}
 
-\title{A New Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Systems}
+\title{\bf An Unitary RG-based Auxiliary Model Approach\\ to Strongly-Correlated Systems}
 \author{Abhirup Mukherjee, Siddhartha Lal}
 \affil{Indian Institute of Science Education and Research Kolkata, Mohanpur}
 \date{\today}
@@ -2033,42 +2033,29 @@ where \(\Delta = \pi \rho V^2\) is the hybridisation parameter, assuming a unifo
 Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_attr}) shown in chapter \ref{siam-attr-chap}, we can conclude the following about that model:
 \begin{itemize}
 	\item For \(U_b > J/4\), the couplings \(J\) and \(V\) become irrelevant while \(U\) is relevant, which means that \textbf{the impurity gets cut off from the bath at low energies}.
-\begin{center}
-	\includegraphics[width=0.7\textwidth]{../figures/phase-map-MIT.pdf}
-\end{center}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.48\textwidth]{../figures/phase-map-MIT.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/spectral-function.pdf}
+	\caption{{\it Left:} Phase diagram. {\it Right:} Impurity spectral function}
+	\label{spec_func_mit}
+\end{figure}
+
 \item The impurity spectral function \(A_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(A_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). The gap in the diagonal spectral function shows that the impurity site cannot fluctuate through gapless excitations, while the vanishing of the off-diagonal spectral function shows that an electron on the impurity site cannot delocalise out of that site.  Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
 
 \begin{figure}[!htb]
 \centering
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_Ub_by_J=-0.100.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_Ub_by_J=-0.250.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_Ub_by_J=-0.26.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_Ub_by_J=-0.100.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_Ub_by_J=-0.250.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/spec_func_d0_Ub_by_J=-0.26.pdf}
-	\caption{Evolution of diagonal and off-diagonal spectral functions across the transition.}
-	\label{spec_func_mit}
-\end{figure}
-
-\begin{figure}[!htb]
-\centering
-	\includegraphics[width=0.3\textwidth]{../figures/corr-k-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/corr-d0-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\includegraphics[width=0.3\textwidth]{../figures/r1p-t=1.000,J=10.000,0.000,30,V=3J,Ubath=-U_by_10,N=6,U=1.000,889.513,30.pdf}
-	\caption{Evolution of correlation functions and mutual information across the transition.}
+	\includegraphics[width=0.48\textwidth]{../figures/corrs_gs.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/spin-charge-corr-full.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/mutinfo-d0-01-full.pdf}
+	\includegraphics[width=0.48\textwidth]{../figures/doub_occ.pdf}
 \end{figure}
 
 	\item In the context of the auxiliary model, this represents an \textbf{impurity phase transition} from the completely-screened spin-singlet phase to the unscreened local moment phase.
 
-\begin{figure}[!htb]
-\centering
-	\includegraphics[width=0.75\textwidth]{../figures/overlaps_gs-J=10.000.pdf}
-	\caption{Evolution of the zero-bandwidth ground state across the transition.}
-\end{figure}
-
 Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled, and the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) are non-zero at low \(\omega\). This means that both the local and the nearest-neighbour Greens functions, that are related to these parameters via eq.~\ref{greens_func_siam}, have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model (eq.\eqref{main}), the former also shows the same zero-energy resonance.
 
-On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations, and is demonstrated through both the diagonal and off-diagonal spectral functions in fig.~\ref{spec_func_mit}. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
+On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations, and is demonstrated through the impurity spectral function in fig.~\ref{spec_func_mit}. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
 
 Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
 \begin{eqnarray}
@@ -2078,6 +2065,7 @@ where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of t
 $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
 \end{itemize}
 
+\comment{
 \section{\(k-\)space picture of the MIT in terms of the momentum-resolved self-energy \(\Sigma(\vec k,\omega)\)}
 
 From the self-energy expressions obtained above, one can track the self-energy of the lattice model through the metal-insulator transition. In fig.~\ref{four-self}, we have provided these plots at specific values of \(U_b/J\) to show how the transition plays out in the Brillouin zone. {\it These plots can also be viewed as a video \href{https://abhirup-m.github.io/misc-sigma/}{\underline{here}}.}
@@ -2105,8 +2093,8 @@ If we, on the other hand, track the bottom right figure in each frame (\(\omega 
 In the insulating phase, we find that the momentum-dependence has vanished (the system is in the perfectly local atomic limit). The self-energy at the Hubbard side-bands (bottom right) is high, because the quasiparticle excitations are highly-renormalised and the single-particle picture description is not possible. The self-energy inside the gap (other three figures) diverges and the poles of the Greens function have been replaced by zeroes, so we have instead plotted the inverse self-energy.
 
 These plots are available as videos \href{https://abhirup-m.github.io/misc-sigma/}{\underline{here}}.
+}
 
-\clearpage
 \section{Some important remarks}
 \subsection{Entanglement as an order parameter for the transition}
 The spectral weights in the diagonal Greens function can be written in terms of a geometric measure of entanglement:

@@ -320,6 +320,11 @@ These matrix elements will now be expressed in terms of auxiliary model properti
 \end{aligned}\end{equation}
 where \(\vec k_0\) is the crystal momentum in the ground-state, and \(\ket{\psi}_\text{aux}(\vec R) = \frac{1}{w}\sum_{\vec a}^{\text{NN of }\vec R} \ket{\psi}_\text{aux}(\vec R, \vec a)\). The exponentiated sum can be simplified by inserting the momentum eigenbasis \(\left\{ \ket{\vec k}\bra{\vec k}\right\} \) of the auxiliary model Hilbert space, and shifting all the Hamiltonians \(\mathcal{H}\left( \vec R_c \right)\) to the origin \(\vec R_0\), using translation operators:
 \begin{equation}\begin{aligned}
+	\left[\sum_{\vec R_c}\mathcal{H}\left( \vec R_c \right)\right]^n = \left[\sum_{\vec R_c}T^\dagger_{\vec R_c -\vec R_0} \mathcal{H}\left( \vec R_0 \right)T_{\vec R_c -\vec R_0} \right]^n = \sum_{\left\{ \vec R_{i} \right\} }T^\dagger_{\vec R_1 -\vec R_0} \mathcal{H}\left( \vec R_0 \right)T^\dagger_{\vec R_2 -\vec R_1}\ldots \mathcal{H}\left( \vec R_0 \right)T_{\vec R_n -\vec R_{0}}
+\end{aligned}\end{equation}
+
+
+\begin{equation}\begin{aligned}
 	\left[\sum_{\vec R_c}\mathcal{H}\left( \vec R_c \right)\right]^n &= \left[\sum_{\vec R_c,\vec k,\vec k^\prime}T^\dagger_{\vec R_c - \vec R_0}\ket{\vec k}\bra{\vec k}\mathcal{H}(\vec R_0)\ket{\vec k^\prime}\bra{\vec k^\prime}T_{\vec R_c - \vec R_0}\right]^n = \left[\sum_{\vec k,\vec k^\prime}\ket{\vec k}\bra{\vec k^\prime}\mathcal{H}_{\vec k, \vec k^\prime}(\vec R_0)\sum_{\vec R_c}e^{i \left( \vec k^\prime - \vec k \right) \cdot \left(\vec R_c - \vec R_0\right)}\right]^n\\
 									 &= \left[\sum_{\vec k}\ket{\vec k}\bra{\vec k}\mathcal{H}_{\vec k, \vec k}(\vec R_0)\right]^n = \sum_{\vec k}\ket{\vec k}\bra{\vec k}\left(N_\text{aux}\mathcal{H}_{\vec k, \vec k}(\vec R_0)\right)^n~,
 \end{aligned}\end{equation}
@@ -361,13 +366,25 @@ Because of strong correlations in the model, the ground-state energy \(\varepsil
 \end{eqnarray}
 With these inputs, we can write down the final form of the Greens function:
 \begin{equation}\begin{aligned}
-	G(\vec r, \Omega) = \sum_{\vec k}\left[\frac{\theta(|\vec k - \vec k_0| - |\vec k_F|) e^{i\left(\vec k - \vec k_0\right) \cdot \vec r}}{\omega + N\varepsilon_\text{gs} - N\mathcal{H}_{\vec k, \vec k}} + \frac{\theta(|\vec k_F| - |\vec k_0 - \vec k|) e^{-i\left(\vec k - \vec k_0\right) \cdot \vec r}}{\omega - N\varepsilon_\text{gs} + N\mathcal{H}_{\vec k, \vec k}}\right]
+	G(\vec r, \omega) = \sum_{\vec k}\left[\frac{\theta(|\vec k - \vec k_0| - |\vec k_F|) e^{i\left(\vec k - \vec k_0\right) \cdot \vec r}}{\omega + N\varepsilon_\text{gs} - N\mathcal{H}_{\vec k, \vec k}} + \frac{\theta(|\vec k_F| - |\vec k_0 - \vec k|) e^{-i\left(\vec k - \vec k_0\right) \cdot \vec r}}{\omega - N\varepsilon_\text{gs} + N\mathcal{H}_{\vec k, \vec k}}\right]
 \end{aligned}\end{equation}
 In this expression, the state \(\ket{\vec k}\) represents one of total momentum. One can write this in terms of single-particle excitations \(\ket{\vec q},~\vec q = \vec k - \vec k_0\), which is equal to \(c^\dagger_q \ket{\vec k_0}\) when \(q > 0\) and \(c_q \ket{\vec k_0}\) when \(q < 0\). In terms of these single-particle excitations, the Greens function can be written as
 \begin{equation}\begin{aligned}
-	G(\vec r, \Omega) = \sum_{\vec q}\left[\frac{\theta(|\vec q| - |\vec k_F|) e^{i\vec q \cdot \vec r}}{\omega + N\varepsilon_\text{gs} - N\mathcal{E}^p_{\vec q}} + \frac{\theta(|\vec k_F| - |- \vec q|) e^{-i\vec q \cdot \vec r}}{\omega - N\varepsilon_\text{gs} + N\mathcal{E}^h_{\vec q}}\right]~,
+	G(\vec r, \omega) = \sum_{\vec q}\left[\frac{\theta(|\vec q| - |\vec k_F|) e^{i\vec q \cdot \vec r}}{\omega + N\varepsilon_\text{gs} - N\mathcal{E}^p_{\vec q}} + \frac{\theta(|\vec k_F| - |- \vec q|) e^{-i\vec q \cdot \vec r}}{\omega - N\varepsilon_\text{gs} + N\mathcal{E}^h_{\vec q}}\right]~,
 \end{aligned}\end{equation}
-where the matrix elements \(\mathcal{E}^p\) and \(\mathcal{E}^h\) for the particle and hole excitations are given by \(\mathcal{E}^p_{\vec q} = \mathcal{H}_{\vec k_0 + \vec q, \vec k_0 + \vec q} = \braket{\vec k_0 | c_{\vec q} \mathcal{H} c^\dagger_{\vec q} | \vec k_0}\) and \(\mathcal{E}^h_{\vec q} = \mathcal{H}_{\vec k_0 - \vec q, \vec k_0 - \vec q} = \braket{\vec k_0 | c^\dagger_{\vec q} \mathcal{H} c_{\vec q} | \vec k_0}\).
+where the matrix elements \(\mathcal{E}^p\) and \(\mathcal{E}^h\) for the particle and hole excitations are given by \(\mathcal{E}^p_{\vec q} = \mathcal{H}_{\vec k_0 + \vec q, \vec k_0 + \vec q} = \braket{\vec k_0 | c_{\vec q} \mathcal{H} c^\dagger_{\vec q} | \vec k_0}\) and \(\mathcal{E}^h_{\vec q} = \mathcal{H}_{\vec k_0 - \vec q, \vec k_0 - \vec q} = \braket{\vec k_0 | c^\dagger_{\vec q} \mathcal{H} c_{\vec q} | \vec k_0}\). For models with strong local correlations, it might be more convenient to express these \(k-\)space single-particle matrix elements in terms of real-space fluctuations:
+\begin{equation}\begin{aligned}
+\mathcal{E}^h_{\vec q} = \sum_{\vec x_{+},\vec x_{-}}e^{i\left( \vec x_+ - \vec x_- \right) \cdot \vec q}\braket{\vec k_0 | c^\dagger_{\vec x_-} \mathcal{H} c_{\vec x_+} | \vec k_0}, \quad \mathcal{E}^p_{\vec q} = \sum_{\vec x_{+},\vec x_{-}}e^{i\left(\vec x_+ - \vec x_- \right) \cdot \vec q}\braket{\vec k_0 | c_{\vec x_+} \mathcal{H} c^\dagger_{\vec x_-} | \vec k_0}
+\end{aligned}\end{equation}
+Guided by the fact that our auxiliary model has an emergent self-consistency at the impurity site, we retain distances \(|\vec x_+ - \vec x_-|\) up to one lattice spacing \(\vec a\) from the impurity, in the summation:
+\begin{equation}\begin{aligned}
+	\mathcal{E}^h_{\vec q} \to \braket{\vec k_0 | c^\dagger_{\vec R_0} \mathcal{H}\left(\vec R_0\right) c_{\vec R_0} | \vec k_0} + \sum_{\vec a}\left(e^{i\vec a \cdot \vec q}\braket{\vec k_0 | c^\dagger_{\vec R_0 + \vec a} \mathcal{H}\left(\vec R_0\right) c_{\vec R_0}| \vec k_0} + \text{h.c.}\right),\\
+	\quad \mathcal{E}^p_{\vec q} \to \braket{\vec k_0 | c_{\vec R_0} \mathcal{H}\left(\vec R_0\right) c^\dagger_{\vec R_0} | \vec k_0} + \sum_{\vec a}\left(e^{i\vec a \cdot \vec q}\braket{\vec k_0 | c_{\vec R_0} \mathcal{H}\left(\vec R_0\right) c_{\vec R_0 + \vec a}^\dagger| \vec k_0} + \text{h.c.}\right)
+\end{aligned}\end{equation}
+
+
+\clearpage
+
 
 
 
@@ -400,8 +417,6 @@ Similarly, the off-diagonal matrix element between two nearest-neighbour sites \
 	= \frac{1}{w}e^{i \vec{k}\cdot\left(\vec{R}_j - \vec{R}_i\right)}\braket{\psi_\text{aux} | \left(c_{d\sigma}\mathcal{H}_\text{aux} c^\dagger_{0\sigma} + c_{0\sigma}\mathcal{H}_\text{aux} c^\dagger_{d\sigma}\right) | \psi_\text{aux}}
 \end{aligned}\end{equation}
 \(\mathcal{H}_\text{aux,i,j}\) is the auxiliary model with \(i\) as the impurity site and \(j\) as the bath zeroth site. 
-
-
 
 
 We now define the Greens {\it operators}:

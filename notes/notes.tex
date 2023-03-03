@@ -311,11 +311,53 @@ We define the time-domain Greens function between two points \(\vec R\) and \(\v
 \end{aligned}\end{equation}
 We also define a Green operator \(\mathcal{G}(\omega)\):
 \begin{equation}\begin{aligned}
-	\mathcal{G}(\omega) = \frac{1}{\omega - (H_\text{H-H} - E_\text{gs})}~,
+	\mathcal{G}(\omega) = \frac{1}{\omega - (H_\text{H-H} - E_\text{gs})} = \frac{1}{\omega + E_\text{gs} - \sum_{\vec R_i} \mathcal{H}_\text{aux}(\vec R_i)}~,
 \end{aligned}\end{equation}
-where \(\omega\) is the frequency scale for the excitations. This operator can be related to the Greens function through the relation (eq.~\eqref{inv_G_func})
+where \(\omega\) is the frequency scale for the excitations, and we used eq.~\ref{siam_to_hubb} to write the operator in terms of the auxiliary model Hamiltonian. This operator can be related to the Greens function through the relation (eq.~\eqref{inv_G_func})
 \begin{equation}\begin{aligned}\label{greens_func_bulk}
-	G(\vec r, \omega) &= \braket{\Psi_\text{gs} | c(\vec R + r) \mathcal{G}(\omega) c^\dagger(\vec R) | \Psi_\text{gs}} - \braket{\Psi_\text{gs} | c^\dagger(\vec R) \mathcal{G}(-\omega) c(\vec R + r) | \Psi_\text{gs}}\\
+	G(\vec r, \omega) &= \braket{\Psi_\text{gs} | c(\vec R + r) \mathcal{G}(\omega) c^\dagger(\vec R) | \Psi_\text{gs}} - \braket{\Psi_\text{gs} | c^\dagger(\vec R) \mathcal{G}(-\omega) c(\vec R + r) | \Psi_\text{gs}}
+\end{aligned}\end{equation}
+In order to simplify the expression for the operator \(\mathcal{G}(\omega)\), we rewrite the sum over the auxiliary models in terms of a uniform piece \(\sum_{i}\mathcal{H}_\text{aux}(\vec R_0)\) and a difference piece \(\Delta(i) = \mathcal{H}_\text{aux}(\vec R_i) - \mathcal{H}_\text{aux}(\vec R_0)\):
+\begin{equation}\begin{aligned}
+	\sum_{\vec R_i} \mathcal{H}_\text{aux}(\vec R_i) = \sum_{\vec R_i} \left[\mathcal{H}_\text{aux}(\vec R_0) + \Delta(\vec R_i)\right] = N \mathcal{H}_\text{aux}(\vec R_0) + \sum_{\vec R_i} \Delta(\vec R_i);
+\end{aligned}\end{equation}
+\(\vec R_0\) is the origin of the lattice, and \(N\) is the number of lattice sites. The difference piece is smaller than the uniform sum piece, and we can then expand the Greens operator in powers of this difference:
+\begin{equation}\begin{aligned}
+	\mathcal{G}(\omega) &= \frac{1}{N}\frac{1}{\frac{1}{N}\omega + \frac{1}{N}E_\text{gs} - \mathcal{H}_\text{aux}(\vec R_0)}\left[1 + \frac{1}{\frac{1}{N}\omega + \frac{1}{N}E_\text{gs} - \mathcal{H}_\text{aux}(\vec R_0)}\sum_{\vec R_i} \frac{1}{N}\Delta(\vec R_i) + \ldots \right] 
+\end{aligned}\end{equation}
+In general, if the auxiliary model can be written as \(\mathcal{H}_\text{aux} = H_\text{imp} + H_\text{imp-bath} + H_\text{bath}\) where \(H_\text{imp}\) is the impurity-only part of the Hamiltonian and \(H_\text{imp-bath}\) is the impurity-bath interaction, the difference piece has the form \(\Delta(\vec R_i) = H_\text{imp}(\vec R_i) + H_\text{imp-bath}(\vec R_i) - H_\text{imp}(\vec R_0) - H_\text{imp-bath}(\vec R_0)\). For a model with translation symmetry in the bath, this difference piece will be small.
+
+In the limit of large \(N\), we retain only the leading piece in the expansion presently, resulting in the Greens operator of the bulk becoming equal to the Greens operator for suitably scaled auxiliary model. On substituting this relation into the expression for the single-particle Greens function, we get
+\begin{equation}\begin{aligned}
+	G(\vec r, \omega) &= \braket{\Psi_\text{gs} | c(\vec R + r) \frac{1}{\omega + E_\text{gs} - N\mathcal{H}_\text{aux}(\vec R_0)} c^\dagger(\vec R) | \Psi_\text{gs}} - \braket{\Psi_\text{gs} | c^\dagger(\vec R) \frac{1}{-\omega + E_\text{gs} - N\mathcal{H}_\text{aux}(\vec R_0)} c(\vec R + r) | \Psi_\text{gs}}
+\end{aligned}\end{equation}
+We will now express the ground-state in terms of the auxiliary model states, following eq.~\ref{bloch-states}. The first term in the previous equation takes the form
+\begin{equation}\begin{aligned}
+	\frac{1}{\lambda_{\vec k_0}^2 N^2}\sum_{\vec R_i,\vec R_j}e^{i\vec k_0\cdot\left(\vec R_j - \vec R_i\right)} \braket{\psi_\text{aux}(\vec R_i) | c(\vec R + r) \frac{1}{\omega + E_\text{gs} - N\mathcal{H}_\text{aux}(\vec R_0)} c^\dagger(\vec R) | \psi_\text{aux}(\vec R_j)}~.
+\end{aligned}\end{equation}
+We again simplify the wavefunction by keeping only the uniform piece and dropping the difference pieces:
+\begin{equation}\begin{aligned}
+	\frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} =  \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} + \ket{\psi_\text{diff}(\vec k_0)}
+\end{aligned}\end{equation}
+where \(\ket{\psi_\text{diff}(\vec k_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\).
+By retaining only the first term, the first term of the Greens function can be expressed as
+\begin{equation}\begin{aligned}
+	\frac{1}{\lambda_{\vec k_0}^2 N^2}\sum_{\vec R_i,\vec R_j}e^{i\vec k_0\cdot\left(\vec R_j - \vec R_i\right)} \braket{\psi_\text{aux}(\vec R_i) | c(\vec R + r) \frac{1}{\omega + E_\text{gs} - N\mathcal{H}_\text{aux}(\vec R_0)} c^\dagger(\vec R) | \psi_\text{aux}(\vec R_j)}\\
+	\simeq \frac{1}{\lambda_{\vec k_0}^2}\braket{\psi_\text{aux}(\vec R_0) | c(\vec R + r) \frac{1}{\omega + E_\text{gs} - N\mathcal{H}_\text{aux}(\vec R_0)} c^\dagger(\vec R) | \psi_\text{aux}(\vec R_0)}
+\end{aligned}\end{equation}
+The error can be estimated by calculating the norm of the difference piece:
+\begin{equation}\begin{aligned}
+	\braket{\psi_\text{diff}(\vec k_0) | \psi_\text{diff}(\vec k_0)} = \frac{1}{\lambda_{\vec k_0}^2 N^2}\sum_{\vec R_i, \vec R_j} e^{i \vec k_0 \cdot(\vec R_j - \vec R_i)}\braket{\psi_\text{aux}(\vec R_i) | \psi_\text{aux}(\vec R_j) } + \frac{1}{\lambda_{\vec k_0}^2} - \\
+	\frac{1}{\lambda_{\vec k_0}^2 N^2}\sum_{\vec R_j} \left(e^{i \vec k_0 \cdot \left( \vec R_j - \vec R_0 \right)}  \braket{\psi_\text{aux}(\vec R_0) | \psi_\text{aux}(\vec R_j) } + \text{h.c.}\right)
+\end{aligned}\end{equation}
+
+
+
+
+
+
+\clearpage
+\begin{equation}\begin{aligned}
 			  &= \sum_n\left[\braket{\Psi_\text{gs} | c(\vec R + r) \lambda^-_n \frac{\left(H_\text{H-H}\right)^n}{(\omega + E_\text{gs})^{n+1}} c^\dagger(\vec R) | \Psi_\text{gs}} + \braket{\Psi_\text{gs} | c^\dagger(\vec R) \lambda^+_n \frac{\left(H_\text{H-H}\right)^n}{(\omega - E_\text{gs})^{n+1}} c(\vec R + r) | \Psi_\text{gs}}\right]\\
 			  &= \sum_n\left[ \frac{\lambda^-_n}{(\omega + E_\text{gs})^{n+1}} \mathcal{U}(\vec r)^{(n)}_> + \frac{\lambda^+_n}{(\omega - E_\text{gs})^{n+1}} \mathcal{U}(\vec r)^{(n)}_<\right]
 \end{aligned}\end{equation}

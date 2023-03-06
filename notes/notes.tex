@@ -333,29 +333,44 @@ On substituting this into the expression for the single-particle Greens function
 \begin{equation}\begin{aligned}
 	G_\text{H-H}(\vec r, t) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R) \right\} | \Psi_\text{gs}}~.
 \end{aligned}\end{equation}
-We will now express the ground-state in terms of the auxiliary model states, following eq.~\ref{bloch-states}:
-\begin{equation}\begin{aligned}
-	\ket{\Psi_\text{gs}} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)}~.
-\end{aligned}\end{equation}
-We again simplify the wavefunction by keeping only the uniform piece and dropping the difference pieces:
-\begin{equation}\begin{aligned}
-	\ket{\Psi_\text{gs}} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{Z}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
-\end{aligned}\end{equation}
-where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\), and we have brought back the explicit sum over the nearest neighbours \(\vec a\) of the impurity site (following eq.~\ref{zeroth_site_average}).
-By retaining only the auxiliary model state with the impurity at \(\vec R_0\) and the , the Greens function can be expressed as
-\begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2}i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R) \right\} | \psi_\text{aux}(\vec R_0)}~.
-\end{aligned}\end{equation}
 Because of translation symmetry of the bulk lattice, the initial point \(\vec R\) of the excitation can be shifted to the origin \(\vec R_0\) without any loss of generality:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2}i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+	G_\text{H-H}(\vec r, t) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \Psi_\text{gs}}~.
 \end{aligned}\end{equation}
-In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r, t)\) is therefore captured by the auxiliary model Greens function \(\mathcal{G}\) for the propagation of an excitation between the impurity site \(\vec R_0\) and a bath site at a distance \(\vec r\) from the impurity:
+We will now express the ground-state in terms of the auxiliary model states, following eq.~\ref{bloch-states}:
+\begin{equation}\begin{aligned}
+	\ket{\Psi_\text{gs}} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j, \vec a \in \text{NN of }\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j, \vec a)}~,
+\end{aligned}\end{equation}
+where we have brought back the explicit sum over the nearest neighbours \(\vec a\) of the impurity site (following eq.~\ref{zeroth_site_average}).
+We again simplify the wavefunction by keeping only the uniform piece and dropping the difference pieces.
+\begin{equation}\begin{aligned}
+	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{Z}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
+\end{aligned}\end{equation}
+where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\).
+Specifically, for the local Greens function, we keep the states with \(\vec R_j = \vec R_0\), leading to the expression
+\begin{equation}\begin{aligned}\label{greens_func_approx}
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}^2}i\theta(t) \sum_{\vec a_1, \vec a_2}\braket{\psi_\text{aux}(\vec R_0, \vec a_2) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
+\end{aligned}\end{equation}
+Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a_1\) and \(\vec a_2\) are equal to their mean:
+\begin{equation}\begin{aligned}
+	G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+\end{aligned}\end{equation}
+In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r=0, t)\) is therefore captured by the impurity Greens function \(\mathcal{G}\) in the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\):
 \begin{equation}\begin{aligned}
 	\label{greens_func_relation}
-	G_\text{H-H}(\vec r, t) &= \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}(d,d+\vec r;t)~.
+	G_\text{H-H}(\vec r=0, t) &= \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}_{dd}(t)~.
 \end{aligned}\end{equation}
-The cursive script symbol \(\mathcal{G}\) has been used to denote the Greens function for the auxiliary model \(\mathcal{H}\).
+The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impurity Greens function for the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\).
+
+For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2\) in the summation of eq.~\ref{greens_func_approx}:
+\begin{equation}\begin{aligned}
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}^2}i\theta(t) \sum_{\vec a_1}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
+\end{aligned}\end{equation}
+Again, because of the lattice symmetry, all values of \(\vec a_1\) lead to the same impurity-bath Greens function \(\mathcal{G}_{dz}\) on the auxiliary model:
+\begin{equation}\begin{aligned}
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}} \mathcal{G}_{dz}(t)~.
+\end{aligned}\end{equation}
+
 
 The difference in the COM wavefunction and the full wavefunction can be estimated by calculating the norm of the difference piece:
 \begin{equation}\begin{aligned}
@@ -366,7 +381,7 @@ The difference in the COM wavefunction and the full wavefunction can be estimate
 \end{aligned}\end{equation}
 By choosing an appropriate auxiliary model, the overlap factor \(\lambda_{\vec k_0}\) can be brought close to unity, leading to a smaller difference.
 
-The local Greens function \((\vec r=0)\)of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) of the auxiliary model. The nearest neighbour Greens function is given by the auxiliary model Greens function \(\mathcal{G}_{dz}\) between the impurity site and the bath zeroth site coupled to it. By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. Moreover, this approach holds for any \(n-\)-particle Greens function; we just need to compute the corresponding correlator in the auxiliary model. 
+The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. Moreover, this approach holds for any \(n-\)-particle Greens function; we just need to compute the corresponding correlator in the auxiliary model. 
 
 \section{Spectral functions and self-energies}
 
@@ -378,10 +393,10 @@ where $\vec{r_i}$ is the position vector of a particular lattice site. Because o
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
 \end{aligned}\end{equation}
-The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, w\right]\right\}$.
+The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{Z}\right]\right\}$.
 \begin{equation}\begin{aligned}
 	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \mathcal{G}_{dz}(\omega) \xi_{\vec k}\right]~,
+	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^{\mathcal{Z}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{Z}}\mathcal{G}_{dz}(\omega) \xi_{\vec k}\right]~,
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\), it being essentially the disperson in units of the hopping strength \(t\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -392,7 +407,7 @@ leading to \(2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}
 The spectral function is simply the imaginary part of the Greens function: \(A_\text{H-H} = -\frac{1}{\pi}\text{Im}\left[G_{H-H}\right] \); as a result, they have similar relations with their auxiliary model counterparts:
 \begin{equation}\begin{aligned}
 	\left(A_\text{H-H}\right)_\text{loc}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dd}~,\\
-	A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \xi_{\vec k} \mathcal{A}_{dz} \right]~,
+	A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \xi_{\vec k} \frac{1}{\mathcal{Z}^2}\mathcal{A}_{dz} \right]~,
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 

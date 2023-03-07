@@ -8,12 +8,12 @@
    version="1.1"
    id="svg881"
    sodipodi:docname="ins_prop_cluster.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:ns4="http://www.iki.fi/pav/software/textext/">
+   xmlns:ns9="http://www.iki.fi/pav/software/textext/">
   <sodipodi:namedview
      id="namedview883"
      pagecolor="#505050"
@@ -30,15 +30,17 @@
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
      inkscape:zoom="0.81334877"
-     inkscape:cx="593.84119"
-     inkscape:cy="384.21402"
-     inkscape:window-width="1916"
-     inkscape:window-height="1051"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:cx="494.86766"
+     inkscape:cy="384.82876"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="1920"
+     inkscape:window-y="151"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     inkscape:snap-global="true" />
+     inkscape:snap-global="true"
+     inkscape:showpageshadow="0"
+     inkscape:deskcolor="#505050" />
   <defs
      id="defs878">
     <inkscape:path-effect
@@ -987,21 +989,21 @@
      id="layer1"
      transform="translate(88.659042,-196.37393)">
     <ellipse
-       style="opacity:0.740475;fill:#53a0ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.740475;fill:#d0d0d0;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
        id="path18407-7-0"
        cx="179.09854"
        cy="229.71106"
        rx="66.674232"
        ry="33.337116" />
     <ellipse
-       style="opacity:0.740475;fill:#ffa015;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.740475;fill:#909090;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
        id="path18407-7"
        cx="78.556854"
        cy="229.71104"
        rx="66.674232"
        ry="33.337116" />
     <ellipse
-       style="opacity:0.8;fill:#2fa015;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.8;fill:#707070;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
        id="path18407"
        cx="-21.98481"
        cy="229.71104"
@@ -1009,16 +1011,16 @@
        ry="33.337116" />
     <g
        transform="matrix(0.705556,0,0,0.705556,-16.913127,244.33997)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="bath 1"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="bath 1"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g16353">
       <defs
          id="id-fde2e2e7-1691-4708-8353-1f8677237401">
@@ -1133,16 +1135,16 @@
     </g>
     <g
        transform="matrix(0.705556,0,0,0.705556,-15.332367,253.79771)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="impurity 1"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="impurity 1"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g15770">
       <defs
          id="id-1b4e3dce-0d47-4fb8-9963-90aad50ed4ff">
@@ -1313,16 +1315,16 @@
     </g>
     <g
        transform="matrix(0.705556,0,0,0.705556,66.533944,254.99015)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="impurity 2"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="impurity 2"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g15929">
       <defs
          id="id-ef67b8cf-1c78-42b2-b704-e8373b3fc144">
@@ -1493,16 +1495,16 @@
     </g>
     <g
        transform="matrix(0.705556,0,0,0.705556,72.798718,197.43213)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="bath 2"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="bath 2"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g16831">
       <defs
          id="id-66fa7ae5-9762-4e90-b4fc-b4e9e7f568c4">
@@ -1617,16 +1619,16 @@
     </g>
     <g
        transform="matrix(0.705556,0,0,0.705556,219.86857,225.60085)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="bath 3"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="bath 3"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g16831-4">
       <defs
          id="id-07d234f8-e68f-4b1e-97bb-f06250d3670e">
@@ -1741,16 +1743,16 @@
     </g>
     <g
        transform="matrix(0.705556,0,0,0.705556,166.32568,254.38365)"
-       ns4:version="1.6.0"
-       ns4:texconverter="pdflatex"
-       ns4:pdfconverter="inkscape"
-       ns4:text="impurity 3"
-       ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-       ns4:scale="2.0"
-       ns4:alignment="middle center"
-       ns4:stroke-to-path="0"
-       ns4:inkscapeversion="1.1.2"
-       ns4:jacobian_sqrt="0.705556"
+       ns9:version="1.6.0"
+       ns9:texconverter="pdflatex"
+       ns9:pdfconverter="inkscape"
+       ns9:text="impurity 3"
+       ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+       ns9:scale="2.0"
+       ns9:alignment="middle center"
+       ns9:stroke-to-path="0"
+       ns9:inkscapeversion="1.1.2"
+       ns9:jacobian_sqrt="0.705556"
        id="g15929-1">
       <defs
          id="id-fa5bff3e-8e9b-4a1a-87a6-a564dba4317c">
@@ -1943,16 +1945,16 @@
          inkscape:original-d="m 21.361044,299.45358 c 2.64e-4,4.24089 2.64e-4,8.48151 0,12.72187" />
       <g
          transform="matrix(1.93479,0,0,1.93479,-9.839221,324.17067)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="0"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="0"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g41345">
         <defs
            id="id-d3cde856-5f2f-48d7-98af-c82b9a688fd3">
@@ -1995,16 +1997,16 @@
       </g>
       <g
          transform="matrix(1.93479,0,0,1.93479,17.587012,323.76204)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="2"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="2"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g41647">
         <defs
            id="id-0b734d99-d330-4bd4-9af4-1610912219f7">
@@ -2098,16 +2100,16 @@
          inkscape:original-d="m 21.361044,299.45358 c 2.64e-4,4.24089 2.64e-4,8.48151 0,12.72187" />
       <g
          transform="matrix(1.93479,0,0,1.93479,-9.839221,324.17067)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="0"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="0"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g45341">
         <defs
            id="defs45331">
@@ -2150,16 +2152,16 @@
       </g>
       <g
          transform="matrix(1.93479,0,0,1.93479,17.587012,323.76204)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="2"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="2"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g45363">
         <defs
            id="defs45353">
@@ -2253,16 +2255,16 @@
          inkscape:original-d="m 21.361044,299.45358 c 2.64e-4,4.24089 2.64e-4,8.48151 0,12.72187" />
       <g
          transform="matrix(1.93479,0,0,1.93479,-9.839221,324.17067)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="0"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="0"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g45505">
         <defs
            id="defs45495">
@@ -2305,16 +2307,16 @@
       </g>
       <g
          transform="matrix(1.93479,0,0,1.93479,17.587012,323.76204)"
-         ns4:version="1.6.0"
-         ns4:texconverter="pdflatex"
-         ns4:pdfconverter="inkscape"
-         ns4:text="2"
-         ns4:preamble="/home/kirito/.config/inkscape/textext.tex"
-         ns4:scale="5.484452828691132"
-         ns4:alignment="middle center"
-         ns4:stroke-to-path="0"
-         ns4:inkscapeversion="1.1.2"
-         ns4:jacobian_sqrt="1.93479"
+         ns9:version="1.6.0"
+         ns9:texconverter="pdflatex"
+         ns9:pdfconverter="inkscape"
+         ns9:text="2"
+         ns9:preamble="/home/kirito/.config/inkscape/textext.tex"
+         ns9:scale="5.484452828691132"
+         ns9:alignment="middle center"
+         ns9:stroke-to-path="0"
+         ns9:inkscapeversion="1.1.2"
+         ns9:jacobian_sqrt="1.93479"
          id="g45527">
         <defs
            id="defs45517">

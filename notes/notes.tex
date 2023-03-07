@@ -160,25 +160,25 @@ To begin this procedure, we first create the unit of tiling - this is done by id
 	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
 \end{aligned}\end{equation}
 The tight-binding term sums over all nearest pairs \((m,n)\) that do not involve the site \(i\).
-In general \(i\) will have \(\mathcal{Z}\) nearest neighbours for a lattice with coordination number \(\mathcal{Z}\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
+In general \(i\) will have \(\mathcal{W}\) nearest neighbours for a lattice with coordination number \(\mathcal{W}\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i) &= \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right)  \right.\\
+	\mathcal{H}_\text{aux}(i) &= \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right)  \right.\\
 				  &\left. +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
-				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
+				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
 				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
 \end{aligned}\end{equation}
 Once we have this local Hamiltonian for a particular site, we translate this over all sites \(i\):
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& \sum_i \mathcal{H}_\text{aux}(i) = \sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
+	\mathcal{H}_\text{full} =& \sum_i \mathcal{H}_\text{aux}(i) = \sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
 				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
-	=& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
+	=& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
 				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j\right]\right]
 \end{aligned}\end{equation}
 In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\), each pair will appear \(N-2\) times, because that is the total number of sites that do not involve either \(m\) or \(n\).
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - 2t\left(N-2\right)\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{\mathcal{Z}}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
+	\mathcal{H}_\text{full} =& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - 2t\left(N-2\right)\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{\mathcal{W}}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
 				  &+ \left. J \vec{S_i}\cdot\vec{S}_j\right]\\
-				  &=-\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{Z}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{Z}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
+				  &=-\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{W}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
 \end{aligned}\end{equation}
 We end up with a Hubbard-Heisenberg model:
 \begin{equation}\begin{aligned}
@@ -187,7 +187,7 @@ We end up with a Hubbard-Heisenberg model:
 The mapping between the parameters is
 \begin{equation}\begin{aligned}
 	\label{map_aux_bulk}
-	t_{H-H} = \left(2t (N-2) - \frac{2V}{\mathcal{Z}}\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = \frac{2J}{\mathcal{Z}}
+	t_{H-H} = \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = \frac{2J}{\mathcal{W}}
 \end{aligned}\end{equation}
 The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
 \begin{equation}\begin{aligned}
@@ -234,20 +234,20 @@ We can use the auxiliary model zero-bandwidth wavefunctions
 \begin{equation}\begin{aligned}
 \psi^n_\text{aux}\left(\vec r_d - \vec R_i, \vec r_0 - \left(\vec R_i + \vec a\right)  \right) \equiv \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
 \end{aligned}\end{equation}
-with the impurity position \(\vec R_i\) and zeroth site position \(\vec R_i + \vec a\), to construct eigenstates of the bulk Hamiltonian. \(\vec R_i\) is a lattice vector, while \(\vec a\) is one of the \(\mathcal{Z}\) vectors that connect a lattice site with its nearest neighbours. This two site wavefunction can be obtained by first studying the full auxiliary model \(\mathcal{H}_\text{aux}\) under a renormalisation group, obtaining a fixed-point Hamiltonian in the IR, obtaining the IR eigenstate and then tracing out all lattice sites except the impurity and the zeroth site from this eigenstate. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states.
+with the impurity position \(\vec R_i\) and zeroth site position \(\vec R_i + \vec a\), to construct eigenstates of the bulk Hamiltonian. \(\vec R_i\) is a lattice vector, while \(\vec a\) is one of the \(\mathcal{W}\) vectors that connect a lattice site with its nearest neighbours. This two site wavefunction can be obtained by first studying the full auxiliary model \(\mathcal{H}_\text{aux}\) under a renormalisation group, obtaining a fixed-point Hamiltonian in the IR, obtaining the IR eigenstate and then tracing out all lattice sites except the impurity and the zeroth site from this eigenstate. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states.
 
 The following un-normalised combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^n_{\vec k}} = \frac{1}{\mathcal{Z} \sqrt N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
+	\ket{\Psi^n_{\vec k}} = \frac{1}{\mathcal{W} \sqrt N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
 \end{aligned}\end{equation}
 where \(N\) is the total number of lattice sites. The interpretation is that the set of \(n=0\) states form the lowest band in the spectrum of the lattice. Higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \(\vec k\) and \(n\) to 0: \(\ket{\Psi_{\vec k=0}^{n=0}} \equiv \ket{\Psi_\text{gs}}\). We will actually work only in the lowest band \(n=0\), so we will drop the band index from now on and keep in mind that only the auxiliary model ground states appear in the formulation:
 \begin{equation}\begin{aligned}
 	\label{bloch-states}
-	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{Z} N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i, \vec a\right)~,
+	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i, \vec a\right)~,
 \end{aligned}\end{equation}
 where \(\lambda_{\ket{\vec k}}\) is a normalisation factor. To determine this, we compute the norm of the trail eigenstates:
 \begin{equation}\begin{aligned}
-	\braket{\Psi_{\vec k} | \Psi_{\vec k}} &= \frac{1}{\mathcal{Z}^2 \lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, a, a^\prime}e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R^\prime, \vec a^\prime) | \psi_\text{aux}(\vec R, \vec a)} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, }e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R^\prime) | \psi_\text{aux}(\vec R)}\\
+	\braket{\Psi_{\vec k} | \Psi_{\vec k}} &= \frac{1}{\mathcal{W}^2 \lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, a, a^\prime}e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R^\prime, \vec a^\prime) | \psi_\text{aux}(\vec R, \vec a)} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, }e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R^\prime) | \psi_\text{aux}(\vec R)}\\
 					       &=\frac{1}{\lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime}e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R_0) | T^\dagger(\vec R - \vec R^\prime) | \psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, q}e^{i \vec{k}\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R_0) | T^\dagger(\vec R - \vec R^\prime) \ket{\vec q}\bra{\vec q} \psi_\text{aux}(\vec R_0)}\\
 					       &= \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{\vec R, \vec R^\prime, q}e^{i (\vec{k} - \vec q)\cdot(\vec R - \vec R^\prime)}\braket{\psi_\text{aux}(\vec R_0) \ket{\vec q}\bra{\vec q} \psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{q} N^2 \delta_{\vec{k},\vec q}|\braket{\psi_\text{aux}(\vec R_0) | \vec q}|^2\\
 \end{aligned}\end{equation}
@@ -255,52 +255,52 @@ By requiring this norm to be unity, we obtain \(\lambda_{\vec k}^2 = |\braket{\p
 \begin{equation}\begin{aligned}\label{zeroth_site_average}
 	\ket{\psi_\text{aux}(\vec R)} = (1/w)\sum_{\vec a}\ket{\psi_\text{aux}(\vec R, \vec a)}~,
 \end{aligned}\end{equation}
-by averaging over the neasest neighbours of \(\vec R\), and inserted the total momentum basis \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) to resolve the translation operators. \(\vec R_0\) is any particular lattice site which we define as the origin of the lattice. Because of the symmetry of the lattice, the inner product in the definition of \(\lambda\) will be the same irrespective of which \(\vec a\) we choose among the \(\mathcal{Z}\) choices.
+by averaging over the neasest neighbours of \(\vec R\), and inserted the total momentum basis \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) to resolve the translation operators. \(\vec R_0\) is any particular lattice site which we define as the origin of the lattice. Because of the symmetry of the lattice, the inner product in the definition of \(\lambda\) will be the same irrespective of which \(\vec a\) we choose among the \(\mathcal{W}\) choices.
 
 It is easy to verify that \(\Psi_{\vec k}\left(\left\{ \vec r_k \right\}  \right) \) transforms like Bloch functions under translation by a displacement \(\vec R\):
 \begin{equation}\begin{aligned}
-	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{Z} N}\sum_{\vec R_i,\vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i - \vec R, \vec a\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{Z} N}\sum_{\vec R_j, \vec a} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\vec R_j, \vec a\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right)
+	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i,\vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i - \vec R, \vec a\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_j, \vec a} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\vec R_j, \vec a\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right)
 \end{aligned}\end{equation}
 In the last equation, we transformed \(\vec R_i \to \vec R_j = \vec R_i - \vec R\). Note that the argument \(\vec a\) does not change under a translation of the system, because that vector always represents the difference between the impurity lattice position and its nearest neighbours, irrespective of the absolute position of the impurity.
 
 The wavefunction can be even brought into the familiar Bloch function form:
 \begin{equation}\begin{aligned}
-	\Psi^n_{\vec k}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i, \vec a} \frac{e^{i \vec{k}\cdot\vec{R}_i}}{\lambda_{\ket{\vec k}} \mathcal{Z} N} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) = \frac{e^{i \vec{k}\cdot\frac{1}{N}\sum_k \vec{r}_k}}{\lambda_{\ket{\vec k}} \mathcal{Z} N}\sum_{\vec R_i, \vec a} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) \\
+	\Psi^n_{\vec k}\left(\left\{\vec r_k\right\}\right) = \sum_{\vec R_i, \vec a} \frac{e^{i \vec{k}\cdot\vec{R}_i}}{\lambda_{\ket{\vec k}} \mathcal{W} N} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) = \frac{e^{i \vec{k}\cdot\frac{1}{N}\sum_k \vec{r}_k}}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i, \vec a} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi_\text{aux}\left(\left\{ \vec r_d - \vec R_i, \vec r_0 - \vec R_i - \vec a \right\} \right) \\
 	= e^{i \vec{k}\cdot\vec{r}_\text{COM}} \eta_{\vec k}\left(\left\{\vec r_k\right\}\right)
 \end{aligned}\end{equation}
-where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{Z} N}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
+where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
 
 It is straightforward to show that these states form an orthonormal basis. We start by writing down the inner product of two distinct such states:
 \begin{equation}\begin{aligned}
 	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} 
-	&= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_j, \vec a^\prime \right) | \psi_\text{aux}\left( \vec R_i, \vec a \right)} \\
-	&= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T^\dagger\left( \vec R_0 - \vec R_j \right) T\left( \vec R_0 - \vec R_i \right) | \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+	&= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_j, \vec a^\prime \right) | \psi_\text{aux}\left( \vec R_i, \vec a \right)} \\
+	&= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T^\dagger\left( \vec R_0 - \vec R_j \right) T\left( \vec R_0 - \vec R_i \right) | \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
 \end{aligned}\end{equation}
 At this point, we insert a complete basis of momentum eigenkets \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) to resolve the translation operators:
 \begin{equation}\begin{aligned}
-	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} &= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T\left( \vec R_j - \vec R_i \right) \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
-						      &= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) e^{i \vec q \cdot \left( \vec R_j - \vec R_i \right)} \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)} \\
-						      &= \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{Z}^2} \delta_{\vec k, \vec k^\prime}\sum_{\vec a, \vec a^\prime}\braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) \ket{\vec k}\bra{\vec k} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} &= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) T\left( \vec R_j - \vec R_i \right) \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
+						      &= \frac{1}{\lambda_{\ket{\vec k^\prime}}^* \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec a, \vec a^\prime, \vec q} e^{i \left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right) } \braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) e^{i \vec q \cdot \left( \vec R_j - \vec R_i \right)} \ket{\vec q}\bra{\vec q} \psi_\text{aux}\left( \vec R_0, \vec a \right)} \\
+						      &= \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{W}^2} \delta_{\vec k, \vec k^\prime}\sum_{\vec a, \vec a^\prime}\braket{\psi_\text{aux}\left( \vec R_0, \vec a^\prime \right) \ket{\vec k}\bra{\vec k} \psi_\text{aux}\left( \vec R_0, \vec a \right)}\\
 \end{aligned}\end{equation}
 At the last step, we used the summation form of the Kronecker delta function: \(\sum_{\vec R_i}e^{i \vec R_i \left( \vec k - \vec q \right) }\sum_{\vec R_j}e^{i \vec R_j \left( \vec q - \vec k^\prime \right) } = N \delta_{\vec k,\vec q}N \delta_{\vec k^\prime,\vec q}\). The final remaining step is to identify that the inner products inside the summation are actually independent of the direction \(\vec a, \vec a^\prime\) of the connecting vector, and both are equal to the normalisation factor \(\lambda_{\ket{\vec k}}\):
 \begin{equation}\begin{aligned}
-	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} = \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{Z}^2 } \delta_{\vec k, \vec k^\prime}\sum_{\vec a,\vec a^\prime} |\lambda_{\ket{\vec k}}|^2 = \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{Z}^2 } \delta_{\vec k, \vec k^\prime}w^2 |\lambda_{\ket{\vec k}}|^2 = \delta_{\vec k, \vec k^\prime}
+	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} = \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{W}^2 } \delta_{\vec k, \vec k^\prime}\sum_{\vec a,\vec a^\prime} |\lambda_{\ket{\vec k}}|^2 = \frac{1}{|\lambda_{\ket{\vec k}}|^2 \mathcal{W}^2 } \delta_{\vec k, \vec k^\prime}w^2 |\lambda_{\ket{\vec k}}|^2 = \delta_{\vec k, \vec k^\prime}
 \end{aligned}\end{equation}
 This concludes the proof of orthonormality.
 
 To demonstrate that these are indeed eigenstates of the bulk Hamiltonian, we will calculate the matrix elements of the full Hamiltonian between these states:
 \begin{equation}\begin{aligned}
-	&\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_j, \vec a^\prime\right)} H_\text{aux}\left(\vec R_k\right) \ket{\psi_\text{aux}\left(\vec R_i, \vec a\right)}\\
-	&= \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_0 - \vec R_j} T_{\vec R_0 - \vec R_k} H_\text{aux}\left(\vec R_0\right) T^\dagger_{\vec R_0 - \vec R_k} T_{\vec R_0 - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
-	&= \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}
+	&\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_j, \vec a^\prime\right)} H_\text{aux}\left(\vec R_k\right) \ket{\psi_\text{aux}\left(\vec R_i, \vec a\right)}\\
+	&= \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_0 - \vec R_j} T_{\vec R_0 - \vec R_k} H_\text{aux}\left(\vec R_0\right) T^\dagger_{\vec R_0 - \vec R_k} T_{\vec R_0 - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+	&= \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i} \ket{\psi_\text{aux}\left(\vec R_0, \vec a\right)}
 \end{aligned}\end{equation}
 To resolve the translation operators, we will now insert the momentum eigenstates \(\ket{\vec k}\) of the full model: \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) in between the operators.
 \begin{equation}\begin{aligned}
-	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} &= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime}\bra{\vec q^\prime} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i}  \ket{\vec q}\braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
-								   &= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} e^{-i \vec q^\prime \cdot \left(\vec R_k - \vec R_j\right) } e^{i \vec q \cdot \left(\vec R_k - \vec R_i\right)} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
-								   &= \frac{N}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{Z}^2}\sum_{\vec a, \vec a^\prime, \vec q, \vec q^\prime} \delta_{\vec k, \vec q} \delta_{\vec q,\vec q^\prime} \delta_{\vec q^\prime,\vec k} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
-								   &= \frac{N}{|\lambda_{\ket{\vec k}}|^2 \mathcal{Z}^2}\delta_{kk^\prime}\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}  \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
-								   &= \frac{N}{|\lambda_{\ket{\vec k}}|^2 \mathcal{Z}^2}\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k} \underbrace{\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}}_{w^2 |\lambda_{\ket{\vec k}}|^2}\\
+	\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} &= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime}\bra{\vec q^\prime} T^\dagger_{\vec R_k - \vec R_j} H_\text{aux}\left(\vec R_0\right) T_{\vec R_k - \vec R_i}  \ket{\vec q}\braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+								   &= \sum_{\vec R_i, \vec R_j, \vec R_k, \atop{\vec a, \vec a^\prime, \vec q, \vec q^\prime}}\frac{e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)}}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} e^{-i \vec q^\prime \cdot \left(\vec R_k - \vec R_j\right) } e^{i \vec q \cdot \left(\vec R_k - \vec R_i\right)} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+								   &= \frac{N}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2}\sum_{\vec a, \vec a^\prime, \vec q, \vec q^\prime} \delta_{\vec k, \vec q} \delta_{\vec q,\vec q^\prime} \delta_{\vec q^\prime,\vec k} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec q^\prime} \braket{\vec q^\prime | H_\text{aux}\left(\vec R_0\right) | \vec q}  \braket{\vec q | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+								   &= \frac{N}{|\lambda_{\ket{\vec k}}|^2 \mathcal{W}^2}\delta_{kk^\prime}\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}  \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}\\
+								   &= \frac{N}{|\lambda_{\ket{\vec k}}|^2 \mathcal{W}^2}\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k} \underbrace{\sum_{\vec a, \vec a^\prime} \braket{\psi_\text{aux}\left(\vec R_0, \vec a^\prime\right)| \vec k} \braket{\vec k | \psi_\text{aux}\left(\vec R_0, \vec a\right)}}_{w^2 |\lambda_{\ket{\vec k}}|^2}\\
 	&= N\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}
 \end{aligned}\end{equation}
 The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position eigenkets at varying distances from \(\vec R_0\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the state at \(\vec R_0\), and improvements are then made by considering auxiliary models at further distances. 
@@ -344,31 +344,31 @@ We will now express the ground-state in terms of the auxiliary model states, fol
 where we have brought back the explicit sum over the nearest neighbours \(\vec a\) of the impurity site (following eq.~\ref{zeroth_site_average}).
 We again simplify the wavefunction by keeping only the uniform piece and dropping the difference pieces.
 \begin{equation}\begin{aligned}
-	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{Z}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
+	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{W}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
 \end{aligned}\end{equation}
 where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\).
-Specifically, for the local Greens function, we keep the states with \(\vec R_j = \vec R_0\), leading to the expression
+Specifically, for the local Greens function \(G_\text{H-H}(\vec r=0, t)\), we keep the states with \(\vec R_j = \vec R_0\), leading to the expression
 \begin{equation}\begin{aligned}\label{greens_func_approx}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}^2}i\theta(t) \sum_{\vec a_1, \vec a_2}\braket{\psi_\text{aux}(\vec R_0, \vec a_2) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \sum_{\vec a_1, \vec a_2}\braket{\psi_\text{aux}(\vec R_0, \vec a_2) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
 \end{aligned}\end{equation}
-Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a_1\) and \(\vec a_2\) are equal to their mean:
+Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a_1\) and \(\vec a_2\) are equal to their mean, and the local Greens function simplifies to
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
 \end{aligned}\end{equation}
 In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r=0, t)\) is therefore captured by the impurity Greens function \(\mathcal{G}\) in the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\):
 \begin{equation}\begin{aligned}
 	\label{greens_func_relation}
-	G_\text{H-H}(\vec r=0, t) &= \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}_{dd}(t)~.
+	G_\text{loc}(t) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}_{dd}(t)~.
 \end{aligned}\end{equation}
 The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impurity Greens function for the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\).
 
 For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2\) in the summation of eq.~\ref{greens_func_approx}:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}^2}i\theta(t) \sum_{\vec a_1}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \sum_{\vec a_1}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
 \end{aligned}\end{equation}
 Again, because of the lattice symmetry, all values of \(\vec a_1\) lead to the same impurity-bath Greens function \(\mathcal{G}_{dz}\) on the auxiliary model:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{Z}} \mathcal{G}_{dz}(t)~.
+	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
 \end{aligned}\end{equation}
 
 
@@ -393,10 +393,10 @@ where $\vec{r_i}$ is the position vector of a particular lattice site. Because o
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
 \end{aligned}\end{equation}
-The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{Z}\right]\right\}$.
+The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{W}\right]\right\}$.
 \begin{equation}\begin{aligned}
 	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^{\mathcal{Z}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{Z}}\mathcal{G}_{dz}(\omega) \xi_{\vec k}\right]~,
+	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^{\mathcal{W}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]~,
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\), it being essentially the disperson in units of the hopping strength \(t\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -406,28 +406,22 @@ leading to \(2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}
 
 The spectral function is simply the imaginary part of the Greens function: \(A_\text{H-H} = -\frac{1}{\pi}\text{Im}\left[G_{H-H}\right] \); as a result, they have similar relations with their auxiliary model counterparts:
 \begin{equation}\begin{aligned}
-	\left(A_\text{H-H}\right)_\text{loc}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dd}~,\\
-	A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \xi_{\vec k} \frac{1}{\mathcal{Z}^2}\mathcal{A}_{dz} \right]~,
+	\left(A_\text{H-H}\right)_\text{loc}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dd}~,\qquad A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{A}_{dz} \right]~,
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 
-From the local Greens function, we can write down the local self-energy using Dyson's equation: \(\Sigma = \left(G^{(0)}\right)^{-1} - G^{-1}\). \(G^{(0)}\) is the non-interacting Greens function. Here, non-interacting is defined as the absence of \(U,J\) in the bulk model, and hence the absence of \(U,U_b,J\) in the auxiliary model. In real space, the local and nearest-neighbour self-energies are therefore
-\begin{equation}\begin{aligned}
-	\left(\Sigma_\text{H-H}(\omega)\right)_\text{loc} = \left(\left(G_{H-H}(\omega)\right)_\text{loc}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_\text{loc}\right)^{-1} = \left(G(\omega)_\text{aux,dd}^{(0)}\right)^{-1} - \frac{1}{\mathcal{Z}}\left(G(\omega)_\text{aux,dd}\right)^{-1} \\
-	\left(\Sigma_\text{H-H}(\omega)\right)_\text{n-n} = \left(\left(G_{H-H}(\omega)\right)_\text{n-n}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_\text{n-n}\right)^{-1} = \left(G(\omega)_\text{aux,dz}^{(0)}\right)^{-1} - \frac{1}{\mathcal{Z}}\left(G(\omega)_\text{aux,dz}\right)^{-1}\\
-\end{aligned}\end{equation}
-
-The \(k-\)space self-energy can be similarly obtained from the \(k-\)space Greens functions
-\begin{equation}\begin{aligned}
-	\label{self-energy1}
-	\Sigma_{H-H}(\vec k,\omega) = \left(\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)}\right)^{-1} - \left(\left(G_{H-H}(\omega)\right)_{\vec k}\right)^{-1} = \frac{1}{G(\omega)_\text{aux,dd}^{(0)} + \frac{\xi_{\vec k}}{\mathcal{Z}}G(\omega)_\text{aux,dz}^{(0)}} -  \frac{1}{G(\omega)_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{Z}}G(\omega)_\text{aux,dz}}
-\end{aligned}\end{equation}
-Just to clarify the notation, we reiterate that bulk quantities with a superscript \((0)\) are for the non-interacting Hamiltonian and defined at \(U_\text{H-H}=J_\text{H-H}=0\), while the auxiliary model quantities with that superscript are evaluated in the non-interacting auxiliary model at \(U=J=U_b=0\). The non-interacting model is simply a resonant-level model with the impurity level at zero energy. Such a model is exactly solvable, and the corresponding Greens functions are given by
+From the knowledge of Greens function, one can write down self-energies using Dyson's equation \(\Sigma = \left(G^{(0)}\right)^{-1} - G^{-1}\), where \(G^{(0)}\) is the non-interacting Greens function. The non-interacting model is simply a resonant-level model with the impurity level at zero energy. Such a model is exactly solvable, and the corresponding Greens functions are given by
 \begin{equation}\begin{aligned}
 	G(\omega + i\eta)_\text{aux,dd}^{(0)} = \frac{1}{\omega + i\left(\Delta + \eta\right)}, ~ ~ ~ G(\omega + i\eta)_\text{aux,dz}^{(0)} = \sum_{\vec k} G(\omega)^{(0)}_{\vec k} V G(\omega + i\eta)_\text{aux,dd}^{(0)}
 \end{aligned}\end{equation}
-where \(\Delta = \pi \rho V^2\) is the hybridisation parameter, assuming a uniform density of states \(\rho\), and \(G(\omega)^{(0)}_{\vec k}\) is the free electron Greens function at momentum \(\vec k\).
+where \(\Delta = \pi \rho V^2\) is the hybridisation parameter, assuming a uniform density of states \(\rho\), and \(G(\omega)^{(0)}_{\vec k}\) is the free electron Greens function at momentum \(\vec k\). 
 
+Following Dyson's equation, the \(k-\)space self-energy can be obtained from the \(k-\)space Greens functions:
+\begin{equation}\begin{aligned}
+	\label{self-energy1}
+	\Sigma_{H-H}(\vec k,\omega) = 1/\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)} - 1/\left(G_{H-H}(\omega)\right)_{\vec k} = \left(\frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}\right)^{(0)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}~,
+\end{aligned}\end{equation}
+where the superscript \((0)\) indicates that the entire term has to be calculated from the non-interacting auxiliary model.
 
 \section{Evidence for the Mott MIT}
 Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_attr}) shown in chapter \ref{siam-attr-chap}, we can conclude the following about that model:
@@ -441,7 +435,7 @@ Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_at
 	\label{spec_func_mit}
 \end{figure}
 
-\item The impurity spectral function \(A_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(A_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). The gap in the diagonal spectral function shows that the impurity site cannot fluctuate through gapless excitations, while the vanishing of the off-diagonal spectral function shows that an electron on the impurity site cannot delocalise out of that site.  Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
+\item The impurity spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(\mathcal{A}_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the diagonal spectral function show the absence of any gapless excitations that can allow the impurity configuration to, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been pinched out. Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
 
 \begin{figure}[!htb]
 \centering
@@ -459,9 +453,9 @@ On the other side \(r > r^{*}\) of the critical point, we know that the impurity
 
 Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
 \begin{eqnarray}
-	r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{\mathcal{Z}}{4}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)
+	r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{\mathcal{W}}{4}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)
 \end{eqnarray}
-where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the generalised SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 2$ for the 2D square lattice Hubbard-Heisenberg model (with coordination number $w=4$). In general, $w=2d$ for the $d$-dimensional hypercubic lattice, and 
+where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the generalised SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 2$ for the 2D square lattice Hubbard-Heisenberg model (with coordination number $\mathcal{W}=4$). In general, $\mathcal{W}=2d$ for the $d$-dimensional hypercubic lattice, and 
 $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
 \end{itemize}
 
@@ -497,21 +491,7 @@ These plots are available as videos \href{https://abhirup-m.github.io/misc-sigma
 
 \section{Some important remarks}
 \subsection{Entanglement as an order parameter for the transition}
-The spectral weights in the diagonal Greens function can be written in terms of a geometric measure of entanglement:
-\begin{equation}\begin{aligned}
-	d_n^p = \braket{\Phi_n | c^\dagger_{d\sigma} | \Phi_0} = \braket{\Phi_n | c^\dagger_{d\sigma} \sum_n \ket{\phi_m} \bra{\phi_m} | \Phi_0}
-\end{aligned}\end{equation}
-where, \(\ket{\phi_m}\) are the eigenstates of the Hamiltonian composed of a two-site system (formed by the impurity site and the zeroth site) in direct product with the rest of the lattice sites. The two site system interacts only via a spin-exchange coupling \(J\), and the impurity and bath sites have local correlations \(U\) and \(U_b\) respectively. The ground state is the spin-singlet in direct product with the ground state of the tight-binding chain formed by the remaining sites. The summation involves inner products of the ground state \(\ket{\Phi_0}\) with the eigenstates \(\ket{\phi_m}\). Only two states out of all \(\ket{\phi_m}\) give non-zero overlap - the spin singlet state \(\ket{SS}\) and the charge triplet-zero state \(\ket{CT}\). These two non-zero overlaps give rise to non-zero entanglement: \(\varepsilon_\text{SS} = 1 - |\braket{\Phi_0 | SS}|^2, \varepsilon_\text{CT} = 1 - |\braket{\Phi_0 | CT}|^2\). The spectral weight becomes
-\begin{equation}\begin{aligned}
-	d_n^p = \bra{\Phi_n} | c^\dagger_{d\sigma} \left(\ket{SS} + \ket{CT} \right) \left(\sqrt{1 - \varepsilon_\text{SS}} + \sqrt{1 - \varepsilon_\text{CT}}\right)
-\end{aligned}\end{equation}
-The total spectral weight can be written as
-\begin{equation}\begin{aligned}
-	|d_n^p|^2 = |\bra{\Phi_n} | c^\dagger_{d\sigma} \left(\ket{SS} + \ket{CT} \right)|^2 \left(2 - \varepsilon_\text{SS} - \varepsilon_\text{CT} + 2\sqrt{1 - \varepsilon_\text{SS}}\sqrt{1 - \varepsilon_\text{CT}}\right)
-\end{aligned}\end{equation}
-Near the metal, the ground state is, to a very good approximation, the state \(\ket{SS}\). One can then say that the entanglement \(\varepsilon_\text{SS}\) is poor - the entangled state is very close to the "separable" state. The term separable is used here in the sense that the metallic state defines a limit of the system. As \(U_b\) increases, \(\varepsilon_\text{SS}\) increases. On the other hand, the entanglement with the charge triplet is maximum in the metal, because the ground state does not have much of the charge triplet. Towards the MIT, this contribution increases, and the entanglement decreases.
-
-
+More refined version exists in the e-SIAM manuscript.
 
 \subsection{Topological nature of the transition}
 As shown in section~\ref{lutt_theorem}, there is a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
@@ -628,9 +608,9 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-One can apply a test to this method: it involves considering the case of infinite number of nearest-neighbours $w\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{Z}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
+We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $\mathcal{W}\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
-	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{Z}} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
+	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{W}} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
 \end{aligned}\end{equation}
 where \(G^{(0)}(\vec k,\omega)\) is the non-interacting Greens function and \(G_\text{aux,dd}(\omega)\) is the site-diagonal Greens function of the auxiliary model. It is clear from the final form that only the diagonal term \(G_\text{aux,dd}(\omega)\) of the interacting Greens function affects the self-energy while the off-diagonal part \(G_\text{aux,dz}\) fails to contribute as \(w \to \infty\). Even the non-interacting part Greens function can be shown to be diagonal in the limit of \(w\to\infty\)~\cite{kuramoto_manybody}. From its definition in time domain, we have
 \begin{equation}\begin{aligned}
@@ -648,7 +628,7 @@ From the inequality \(|G^{(0)}(\vec k, t)| \leq 1\), we get
 \begin{equation}\begin{aligned}
 	1 \geq \frac{1}{N}\sum_k |G^{(0)}(\vec k, t)|^2 = \frac{1}{N d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* \underbrace{\sum_k e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}}_{N \delta_{\vec r_i = \vec r_j}} = \frac{1}{d_N^2}\sum_{\vec r_i} |G^{(0)}(\vec r_i, t)|^2
 \end{aligned}\end{equation}
-For a coordination number of \(\mathcal{Z}\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{\mathcal{Z}}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
+For a coordination number of \(\mathcal{W}\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{\mathcal{W}}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
 \begin{equation}\begin{aligned}
 	\lim_{w\to \infty}G^{(0)}(\vec k,\omega) = G^{(0)}(\vec r=0,\omega)
 \end{aligned}\end{equation}
@@ -837,17 +817,17 @@ As before, the kinetic energy part sums over all nearest neighbour pairs that in
 
 The Hamiltonian for an arm \(i-j\) is then obtained by averaging over these squares:
 \begin{equation}\begin{aligned}
-	H_\text{aux}(i,j) = \frac{1}{\mathcal{Z} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
+	H_\text{aux}(i,j) = \frac{1}{\mathcal{W} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
 \end{aligned}\end{equation}
 The final step is to sum over all nearest neighbour arms \(i-j\):
 \begin{equation}\begin{aligned}
 	\label{22siam_to_hubb}
-	H_\text{full} = \sum_{\left<i,j\right>}\frac{1}{\mathcal{Z} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
+	H_\text{full} = \sum_{\left<i,j\right>}\frac{1}{\mathcal{W} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)
 \end{aligned}\end{equation}
 
 There are four kinds of terms:
 \begin{itemize}
-	\item the first kind, \(A(i), A(j)\), depend only on either \(i\) or \(j\). They can be summed over easily by noting that the internal summation gives a constant factor of \(w-2\) which is canceled by the factor of \(1/(w-2)\) in the front, and the external summation gives \(\sum_{i,j}A(i) = \frac{\mathcal{Z}}{2} \sum_i A(i)\), because \(i\) is a member of \(w/2\) distinct nearest-neighbour pairs. 
+	\item the first kind, \(A(i), A(j)\), depend only on either \(i\) or \(j\). They can be summed over easily by noting that the internal summation gives a constant factor of \(w-2\) which is canceled by the factor of \(1/(w-2)\) in the front, and the external summation gives \(\sum_{i,j}A(i) = \frac{\mathcal{W}}{2} \sum_i A(i)\), because \(i\) is a member of \(w/2\) distinct nearest-neighbour pairs. 
 	\item The second kind, \(B(i,j)\) depends on both \(i\) and \(j\). The internal summation is again cancelled by the prefactor. The external summation simply sums over all nearest-neighbour values of \(A(i,j)\).
 	\item The third kind, \(C(i,k), C(j,l)\), depend on \(i\) and \(k\). Here, the total summation \(\sum_{i,j,k}C(i,k)\) gives \((w-2)\sum_{\left<i,k\right>}\left(C(i,k) + C(k,i)\right)\), because the pair \((i,k)\) occurs \(w-2\) times corresponding to the \(w-2\) vectors \(\vec r_j - \vec r_i\) that are perpendicular to \(\vec r_i - \vec r_k\). The factor is again cancelled by the existing prefactor. 
 	\item The fourth kind, \(D(k), D(l), E(k,l)\), depend on just \(k\), just \(l\) or both \(k\) and \(l\). For each pair \(i-j\) in the external summation, the particular pair \(k-l\) appears only once. When \(i-j\) is summed over, a factor of \(2(w/2-1)\) is generated because there are that many squares that involve \(k-l\). This factor cancels the inverse factor in front, giving \(\sum_{\left<k\right>} D(k), \sum_{\left<k,l \right>}E(k,l)\).
@@ -862,7 +842,7 @@ There are four kinds of terms:
 The bulk model hence obtained is again a Hubbard-Heisenberg model. In eq.~\ref{2siam_to_hubb}, the total number of terms in the outer summation is \(Nw/2\). In order to make sure that this full Hamiltonian scales as \(N\), we divide this by \(w/2\):
 \begin{equation}\begin{aligned}
 	\label{2siam_to_hubb}
-	H_\text{full} &= \frac{2}{\mathcal{Z}}\sum_{\left<i,j\right>} H_\text{aux}(i,j) = \frac{2}{\mathcal{Z}}\sum_{\left<i,j\right>}\frac{1}{\mathcal{Z} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
+	H_\text{full} &= \frac{2}{\mathcal{W}}\sum_{\left<i,j\right>} H_\text{aux}(i,j) = \frac{2}{\mathcal{W}}\sum_{\left<i,j\right>}\frac{1}{\mathcal{W} - 2}\sum_{\vec r_k = \vec r_i + \vec a \atop{\vec r_l = \vec r_j + \vec a}}^{\vec a \times \left(\vec r_j - \vec r_i\right) \neq 0}H_\text{aux}(i,j,k,l)\\
 		      &= -\frac{1}{2}\left(2U + 8U_b/w\right)\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - \left(\frac{N}{w-2}t + 2t/w - 8V/w\right) \sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}\right) + 8J/w \sum_{\left<i,j \right>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
 The mappings between the parameters of the auxiliary model and the bulk are
@@ -877,7 +857,7 @@ We could have also inserted a spin-exchange interaction between the two impuriti
 \end{aligned}\end{equation}
 In the presence of this term, the bulk Hamiltonian remains the same, but the expression of \(J_\text{H-H}\) changes. Since this term is similar in form to the term preceding it, we can easily obtain the updated expression:
 \begin{equation}\begin{aligned}
-	J_\text{H-H} = \frac{2}{\mathcal{Z}}\left(4J + 2J_d\right)
+	J_\text{H-H} = \frac{2}{\mathcal{W}}\left(4J + 2J_d\right)
 \end{aligned}\end{equation}
 
 
@@ -888,7 +868,7 @@ We now define the Greens function {\it operators}:
 \end{aligned}\end{equation}
 Here, \(E_\text{gs}\) and \(\omega\) are the ground state energy and frequency scale for the auxiliary model Hamiltonian, while the primed quantities \(E_\text{gs}^\prime\) and \(\omega^\prime\) are the same quantities but for the full model \(\mathcal{H}_{H-H}\). While the auxiliary model is intensive, the full Hamiltonian is extensive and scales as \(N\):
 \begin{equation}\begin{aligned}
-	H_\text{full} &= \frac{2}{\mathcal{Z}}\sum_{\left<i,j\right>} H_\text{aux}(i,j) \sim N H_\text{aux}(d_1,d_2)~.
+	H_\text{full} &= \frac{2}{\mathcal{W}}\sum_{\left<i,j\right>} H_\text{aux}(i,j) \sim N H_\text{aux}(d_1,d_2)~.
 \end{aligned}\end{equation}
 This means that we must have \(\omega^\prime = N\omega\) and \(E_\text{gs}^\prime = N E_\text{gs}\).
 Rewriting eq.~\ref{2siam_to_hubb} in terms of the operators \(\mathcal{G}\), we get
@@ -908,7 +888,7 @@ The superscript \(p\) indicates that this is the particle propagation matrix ele
 \end{figure}
 
 \begin{equation}\begin{aligned}
-	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{2}{\mathcal{Z}} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = 2\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
+	\left(\mathcal{G}^{-1}_{H-H}\right)^p_{ii} = \sum_{\left<k,l\right>} \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(k,l) c^\dagger_{i\sigma} | \Phi_0} = \frac{2}{\mathcal{W}} \times w \times \braket{\Phi_0 | c_{i\sigma} \mathcal{G}^{-1}_\text{aux}(i, i+1) c^\dagger_{i\sigma} | \Phi_0} = 2\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0}
 \end{aligned}\end{equation}
 where we have identified site \(i\) in the auxiliary model as one of the impurities \(d_1\). We could very well have chosen \(d_2\) since the model is symmetric in \(d_1,d_2\). \(\mathcal{G}^{-1}_\text{aux}(d_1,d_2)\) is the Greens operator corresponding to the Hamiltonian in eq.~\ref{dimer_ham}.
 
@@ -927,16 +907,16 @@ The off-diagonal matrix elements between two nearest-neighbour sites \(i\) and \
 	\item those auxiliary models that have \(i\) and \(i+1\) as the two impurities. These give the contribution \\
 		\(\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0}\). 
 	\begin{equation}\begin{aligned}
-		\frac{2}{\mathcal{Z}}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0} = \frac{2}{\mathcal{Z}}\sum_{n} \left(d^p_{1,n}\right)^*d^p_{2,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		\frac{2}{\mathcal{W}}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_2\sigma} | \Phi_0} = \frac{2}{\mathcal{W}}\sum_{n} \left(d^p_{1,n}\right)^*d^p_{2,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{aligned}\end{equation}
 	\item those that have \(i\) as an impurity and \(i+1\) as the corresponding bath site. There will be \(w-2\) of these in number:
 	\begin{equation}
-		(w-2) \times \frac{2}{\mathcal{Z}}\frac{1}{\mathcal{Z}-2}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{0_1\sigma} | \Phi_0} = \frac{2}{\mathcal{Z}}\left(d^p_{1,n}\right)^* z^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		(w-2) \times \frac{2}{\mathcal{W}}\frac{1}{\mathcal{W}-2}\braket{\Phi_0 | c_{d_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{0_1\sigma} | \Phi_0} = \frac{2}{\mathcal{W}}\left(d^p_{1,n}\right)^* z^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{equation}
 		where \(z^p_{i,n} = \braket{\Phi_n | c^\dagger_{0_i,\sigma} | \Phi_0}\).
 	\item those that have \(i+1\) as an impurity site and \(i\) as the corresponding bath site. There are again \(w-2\) of these:
 	\begin{equation}
-		(w-2) \times \frac{2}{w}\frac{1}{\mathcal{Z}-2}\braket{\Phi_0 | c_{0_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0} = \frac{2}{w}\left(z^p_{1,n}\right)^* d^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
+		(w-2) \times \frac{2}{w}\frac{1}{\mathcal{W}-2}\braket{\Phi_0 | c_{0_1\sigma} \mathcal{G}^{-1}_\text{aux}(d_1,d_2) c^\dagger_{d_1\sigma} | \Phi_0} = \frac{2}{w}\left(z^p_{1,n}\right)^* d^p_{1,n} \left(\mathcal{G}^{-1}\left(\omega\right) _\text{aux}\right)_{nn}
 	\end{equation}
 \end{itemize}
 These choices are shown in fig.~\ref{off-diag-contrib}.
@@ -1068,7 +1048,7 @@ where $\left(G^{(0)}(\vec k,\omega)\right)^{-1}  = \omega -\epsilon_{k} = \omega
 This allows us to calculate the full self-energy $\Sigma (\vec{k},\omega)$ for the Hubbard model on the 2D square lattice.
 
 \section{Analytic consistency check - On the Bethe lattice}
-Another test involves considering the case of a Bethe lattice with infinite number of nearest neighbours $w\to\infty$ (the coordination number). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $w\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy}. Applying the limit of \(w\to \infty\) on that equation gives
+Another test involves considering the case of a Bethe lattice with infinite number of nearest neighbours $\mathcal{W}\to\infty$ (the coordination number). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{w}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $\mathcal{W}\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
 	&\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left[G^{(0)}(\vec k,\omega)\right]^{-1} -\right.\\
 	&\left.\left [G_\text{aux}(d_1,d_1;\omega) + \frac{2\xi_{\vec k}}{w}\left[G_\text{aux}(d_1,d_2;\omega) + G_\text{aux}(d_1,0_1;\omega) + G_\text{aux}(0_1,d_1;\omega)\right] + \frac{2\xi^\prime_{\vec k}}{w(w-2)} \left[G_\text{aux}(d_1,0_2;\omega) + G_\text{aux}(0_2,d_1;\omega)\right]\right]^{-1}\right\}\\
@@ -1090,7 +1070,7 @@ From the inequality \(|G^{(0)}(\vec k, t)| \leq 1\), we get
 \begin{equation}\begin{aligned}
 	1 \geq \frac{1}{N}\sum_k |G^{(0)}(\vec k, t)|^2 = \frac{1}{N d_N^2}\sum_{\vec r_i, \vec r_j} G^{(0)}(\vec r_i, t)\left(G^{(0)}(\vec r_j, t)\right)^* \underbrace{\sum_k e^{i \vec k \cdot \left(\vec r_i - \vec r_j\right) t}}_{N \delta_{\vec r_i = \vec r_j}} = \frac{1}{d_N^2}\sum_{\vec r_i} |G^{(0)}(\vec r_i, t)|^2
 \end{aligned}\end{equation}
-For a coordination number of \(w\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{\mathcal{Z}}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
+For a coordination number of \(w\), there are \(w\) number of \(\vec r_i\) that are equivalent: \(\sum_{\vec r_i \in \text{NN}}|G^{(0)}(\vec r_i, t)|^2\). Adding these equal Greens functions and ignoring the \(w-\)independent prefactor in front, we obtain \(|G^{(0)}(\vec r_i, t)|^2 \sim \frac{1}{\mathcal{W}}\). In contrast, there is only one local Greens function, that for \(\vec r_i=0\). The local Greens function therefore scales independent of \(w\). This implies that 
 \begin{equation}\begin{aligned}
 	\lim_{w\to \infty}G^{(0)}(\vec k,\omega) = G^{(0)}(\vec r=0,\omega)
 \end{aligned}\end{equation}

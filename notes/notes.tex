@@ -248,7 +248,7 @@ where \(N\) is the total number of lattice sites. The interpretation is that the
 where \(\lambda_{\ket{\vec k}}\) is a normalisation factor. 
 
 
-\section{Single-particle Green's function}
+\section{Mapping greens functions from the bulk to the auxiliary model}
 In the previous part, we obtained, among other states, the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{aux}}\) of the auxiliary models.
 In this section, we will relate real-sapce Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model.
 We define the time-domain Greens function between two points \(\vec R\) and \(\vec R + \vec r\) as
@@ -323,7 +323,14 @@ The difference in the COM wavefunction and the full wavefunction can be estimate
 \end{aligned}\end{equation}
 By choosing an appropriate auxiliary model, the overlap factor \(\lambda_{\vec k_0}\) can be brought close to unity, leading to a smaller difference.
 
-The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. Moreover, this approach holds for any \(n-\)-particle Greens function; we just need to compute the corresponding correlator in the auxiliary model. 
+The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. Moreover, this approach holds for any \(n-\)-particle Greens function; we just need to compute the corresponding correlator in the auxiliary model.
+
+A particular example of this relation between the Greens functions is the following: static correlation functions of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger \mathcal{O}_2 | \Psi_\text{gs}}\) can be written in terms of auxiliary model correlations:
+\begin{equation}\begin{aligned}
+	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq \frac{1}{\lambda_{\vec k_0}^2}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(d) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}\\
+	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}~,
+\end{aligned}\end{equation}
+where \(\mathcal{O}_{1,2}\) are operators that describe the correlation we are computing, and the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively.
 
 \section{Spectral functions and self-energies}
 

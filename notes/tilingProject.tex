@@ -159,37 +159,37 @@ We will use this as the auxiliary model to study the Hubbard model. We do this b
 
 To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity as a particular site \(i\) of the lattice, and the bath coupled to the impurity as the set of remaining \(N-1\) sites in the lattice. We will also identity the zeroth site of the SIAM lattice as one of the nearest neighbours \(j\) of \(i\):
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
+	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
 \end{aligned}\end{equation}
 The tight-binding term sums over all nearest pairs \((m,n)\) that do not involve the site \(i\).
 In general \(i\) will have \(\mathcal{W}\) nearest neighbours for a lattice with coordination number \(\mathcal{W}\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
 \begin{equation}\begin{aligned}
 	\mathcal{H}_\text{aux}(i) &= \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right)  \right.\\
-				  &\left. +J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
+				  &\left. +J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
 				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j \right.\\
-				  &\left.- U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
+				  &\left.- \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
 \end{aligned}\end{equation}
 Once we have this local Hamiltonian for a particular site, we translate this over all sites \(i\):
 \begin{equation}\begin{aligned}
 	\mathcal{H}_\text{full} =& \sum_i \mathcal{H}_\text{aux}(i) = \sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
-				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
-	=& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
+				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
+	=& -\frac{1}{2}\left(U + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{W}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
 				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j\right]\right]
 \end{aligned}\end{equation}
 In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\), each pair will appear \(N-2\) times, because that is the total number of sites that do not involve either \(m\) or \(n\).
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& -\left(\frac{U}{2} + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - 2t\left(N-2\right)\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{\mathcal{W}}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
+	\mathcal{H}_\text{full} =& -\frac{1}{2}\left(U + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - 2t\left(N-2\right)\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{\mathcal{W}}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\\
 				  &+ \left. J \vec{S_i}\cdot\vec{S}_j\right]\\
-				  &=-\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{W}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
+				  &=-\frac{1}{2}\left(U + U_b\right)\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{W}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
 \end{aligned}\end{equation}
 We end up with a Hubbard-Heisenberg model, of the form:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
+	\mathcal{H}_{H-H} = - \frac{1}{2}U_\text{H-H}\sum_{i} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
 where the bulk parameters are related to the auxiliary model couplings through the mapping:
 \begin{equation}\begin{aligned}
 	\label{map_aux_bulk}
-	t_{H-H} = \left(2t \mathcal{W}(N-2) - 2V\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = 2J
+	t_{H-H} = \left(2t \mathcal{W}(N-2) - 2V\right),~ ~ U_{H-H} = U + U_b, ~ ~ J_{H-H} = 2J
 \end{aligned}\end{equation}
 The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
 \begin{equation}\begin{aligned}
@@ -203,7 +203,7 @@ As mentioned before, no chemical potential \(\mu\) is generated becuase the auxi
 \end{aligned}\end{equation}
 The first term is the particle-hole asymmetry term, and tuning that term moves the impurity away from half-filling. The second term is the usual chemical potential in the bath. Introducing these terms in the auxiliary model changes the bulk model into:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j + \mu_\text{H-H}\sum_{i\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right) 
+	\mathcal{H}_{H-H} = -\frac{1}{2}U_\text{H-H} \sum_{i} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j + \mu_\text{H-H}\sum_{i\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right) 
 \end{aligned}\end{equation}
 The only change is the generation of the last term. The mappings between the existing parameters and their auxiliary model counterparts remain the same, while \(\mu_\text{H-H}\) is given by
 \begin{equation}\begin{aligned}
@@ -381,8 +381,8 @@ Through the URG study of the extended SIAM with correlation (eq.~\ref{siam_attr}
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.48\textwidth]{../figures/phase-map-MIT.pdf}
-	\includegraphics[width=0.48\textwidth]{../figures/spectral-function.pdf}
-	\caption{{\it Left:} Phase diagram. {\it Right:} Local spectral function}
+	\includegraphics[width=0.48\textwidth]{../figures/spectral-function-(0, 0).pdf}
+	\caption{{\it Left:} Phase diagram. {\it Right:} Local spectral function on impurity site}
 	\label{spec_func_mit}
 \end{figure}
 \begin{figure}[htpb]
@@ -409,11 +409,15 @@ Using the mappings between the auxiliary model parameters and the bulk parameter
 
 On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, leading to the transformation of poles into zeros in the Greens functions. This is demonstrated through the gapping of the impurity spectral function in fig.~\ref{spec_func_mit}, and it describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped.
 
-Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
-\begin{eqnarray}
-	r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{1}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{4}\right)
-\end{eqnarray}
-where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the extended SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 2$ for the 2D square lattice Hubbard-Heisenberg model.
+Finally, using relations \eqref{map_aux_bulk} between the auxiliary model couplings and the bulk parameters, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$. Using \(U_{H-H}^{*} = U^* + U_b\) and \(J_{H-H}^{*} = 2J^*\) (following \eqref{map_aux_bulk}), we get
+\begin{equation}\begin{aligned}
+	r^{*} &=& \frac{1}{2}\left(\frac{U^{*}}{J^{*}} + \frac{U_b}{J^*}\right)
+\end{aligned}\end{equation}
+where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the extended SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. By using the auxiliary model criticality condition \(-4U_b = J^*\), the bulk criticality parameter \(r^*\) takes the form
+\begin{equation}\begin{aligned}
+	r^{*} &=& \frac{1}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{4}\right)
+\end{aligned}\end{equation}
+Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 9/8$ for the 2D square lattice Hubbard-Heisenberg model. The reduction in the value of \(r\) from \(2.5\) in the auxiliary model to \(~1.1\) in the bulk model can be attributed to (i) the reduction in the effective bulk repulsion \(U\) due to the competition coming from the attractive \(U_b\), and (ii) increased hybdridisation through \(J\) due to the presence of multiple auxiliary models that connect two lattice sites.
 % In general, $\mathcal{W}=2d$ for the $d$-dimensional hypercubic lattice, and 
 % $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
 \end{itemize}

@@ -1,5 +1,5 @@
 \documentclass{report}
-\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,enumitem}
+\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,enumitem,cite,graphicx}
 % \usepackage[draft]{graphicx}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
@@ -11,7 +11,7 @@
 \allowdisplaybreaks
 \bibliographystyle{unsrt}
 
-\title{\bf An Unitary RG-based Auxiliary Model Approach\\ to Strongly-Correlated Systems}
+\title{\bf An Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Electronic Systems}
 \author{Abhirup Mukherjee, Siddhartha Lal}
 \affil{Indian Institute of Science Education and Research Kolkata, Mohanpur}
 \date{\today}
@@ -109,8 +109,8 @@ The stopping condition is the consistency relation that makes the bath and impur
 \end{figure}
 
 
-\section{A "bottoms-up" approach to using auxiliary models}
-As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}, and this analysis is shown in chapters~\ref{chap:urg1}~and~\ref{siam-attr-chap}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process is shown in chapter~\ref{chap:tile}. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
+\section{A ``bottoms-up" approach to using auxiliary models}
+As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process is shown in chapter~\ref{chap:tile}. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
 
 In our approach, the auxiliary models can be chosen in various ways. The simplest choice is of course the single-impurity Anderson model of eq.~\ref{clus_bath_siam}:
 \begin{equation}
@@ -140,7 +140,9 @@ The first example has a spin-exchange interaction between the impurity site and 
  \begin{equation}\begin{aligned}
 	 \tilde H = \sum_{\left\{i_1,i_2,...\right\}} \mathcal{H}_\text{aux}\left(\left\{i_1,i_2,...\right\}\right)
  \end{aligned}\end{equation}
-where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of the cluster. To reiterate, what that means is that we have placed the cluster+bath system at all lattice point sets \(\left\{i_1,i_2,...\right\}\) to reconstruct a new model of correlated electrons. The answer to how closely $\tilde H$ approximates a target model of correlated electrons lies in (i) the choice of the cluster-bath construction of the auxiliary model, and (ii) the accuracy of the URG procedure on the auxiliary model. 
+where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of the cluster. To reiterate, what that means is that we have placed the cluster+bath system at all lattice point sets \(\left\{i_1,i_2,...\right\}\) to reconstruct a new model of correlated electrons. The answer to how closely $\tilde H$ approximates a target model of correlated electrons lies in (i) the choice of the cluster-bath construction of the auxiliary model, and (ii) the accuracy of the URG procedure on the auxiliary model.
+
+The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
 
 \chapter{From the auxiliary model to the bulk - single site approach}
 \label{chap:tile}
@@ -180,14 +182,14 @@ In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\)
 				  &+ \left. J \vec{S_i}\cdot\vec{S}_j\right]\\
 				  &=-\left(\frac{U}{2} + U_b\right) \sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{W}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
 \end{aligned}\end{equation}
-We end up with a Hubbard-Heisenberg model:
+We end up with a Hubbard-Heisenberg model, of the form:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
+	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j
 \end{aligned}\end{equation}
-The mapping between the parameters is
+where the bulk parameters are related to the auxiliary model couplings through the mapping:
 \begin{equation}\begin{aligned}
 	\label{map_aux_bulk}
-	t_{H-H} = \left(2t (N-2) - \frac{2V}{\mathcal{W}}\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = \frac{2J}{\mathcal{W}}
+	t_{H-H} = \left(2t \mathcal{W}(N-2) - 2V\right),~ ~ U_{H-H} = \left(\frac{U}{2} + U_b\right), ~ ~ J_{H-H} = 2J
 \end{aligned}\end{equation}
 The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
 \begin{equation}\begin{aligned}
@@ -201,7 +203,7 @@ As mentioned before, no chemical potential \(\mu\) is generated becuase the auxi
 \end{aligned}\end{equation}
 The first term is the particle-hole asymmetry term, and tuning that term moves the impurity away from half-filling. The second term is the usual chemical potential in the bath. Introducing these terms in the auxiliary model changes the bulk model into:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j + \mu_\text{H-H}\sum_{i\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right) 
+	\mathcal{H}_{H-H} = -\sum_{i} U_\text{H-H} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{W}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{W}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j + \mu_\text{H-H}\sum_{i\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right) 
 \end{aligned}\end{equation}
 The only change is the generation of the last term. The mappings between the existing parameters and their auxiliary model counterparts remain the same, while \(\mu_\text{H-H}\) is given by
 \begin{equation}\begin{aligned}
@@ -373,15 +375,22 @@ Following Dyson's equation, the \(k-\)space self-energy can be obtained from the
 where the superscript \((0)\) indicates that the entire term has to be calculated from the non-interacting auxiliary model.
 
 \section{Evidence for the Mott MIT}
-Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_attr}) shown in chapter \ref{siam-attr-chap}, we can conclude the following about that model:
+Through the URG study of the extended SIAM with correlation (eq.~\ref{siam_attr}), we can conclude the following about that model:
 \begin{itemize}
 	\item For \(U_b > J/4\), the couplings \(J\) and \(V\) become irrelevant while \(U\) is relevant, which means that \textbf{the impurity gets cut off from the bath at low energies}.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.48\textwidth]{../figures/phase-map-MIT.pdf}
 	\includegraphics[width=0.48\textwidth]{../figures/spectral-function.pdf}
-	\caption{{\it Left:} Phase diagram. {\it Right:} Impurity spectral function}
+	\caption{{\it Left:} Phase diagram. {\it Right:} Local spectral function}
 	\label{spec_func_mit}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.32\textwidth]{../figures/kspace_specfunc_0.0000_0.0000.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/kspace_specfunc_0.0000_1.5708.pdf}
+	\includegraphics[width=0.32\textwidth]{../figures/kspace_specfunc_1.5708_1.5708.pdf}
+	\caption{Momentum-space spectral functions \(A_{\vec k}(\omega)\)}
 \end{figure}
 
 \item The impurity spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal Greens function \(\mathcal{A}_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the diagonal spectral function show the absence of any gapless excitations that can allow the impurity configuration to, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been pinched out. Other measures like mutual information and spin-spin correlations also show a sharp change on crossing that value, demonstrating \textbf{the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity}.
@@ -396,16 +405,17 @@ Through the URG study of the generalised SIAM with correlation (eq.~\ref{siam_at
 
 	\item In the context of the auxiliary model, this represents an \textbf{impurity phase transition} from the completely-screened spin-singlet phase to the unscreened local moment phase.
 
-Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled, and the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) are non-zero at low \(\omega\). This means that both the local and the nearest-neighbour Greens functions, that are related to these parameters via eq.~\ref{greens_func_siam}, have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model (eq.\eqref{main}), the former also shows the same zero-energy resonance.
+Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled. This means that both the local and the nearest-neighbour Greens functions have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model, the former also shows the same zero-energy resonance. 
 
-On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, such that the weighted poles \(\left(|d^p_n|^2 + \left(d^p_n\right)^* z^p_n\right) \left(\mathcal{G}_\text{aux}(d, \omega)\right)_{nn}\) and \(\left(|d^h_n|^2 + \left(z^h_n\right)^* d^h_n\right)\left(\mathcal{G}_\text{aux}(d, -\omega)\right)_{nn}\) vanish. This is simply the loss of spectral weight at low-\(\omega\) because of the removal of the gapless excitations, and is demonstrated through the impurity spectral function in fig.~\ref{spec_func_mit}. This then implies that the bulk Greens functions will also gap out at low energies, and that describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped (see eq.\eqref{main}).
+On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, leading to the transformation of poles into zeros in the Greens functions. This is demonstrated through the gapping of the impurity spectral function in fig.~\ref{spec_func_mit}, and it describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped.
 
 Finally, using eqs.\eqref{map_aux_bulk} and the criticality condition $U_{b}^{*}=-\frac{J^{*}}{4}$, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$
 \begin{eqnarray}
-	r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{\mathcal{W}}{4}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)
+	r^{*} &=& \frac{U_{H-H}^{*}}{J_{H-H}^{*}} = \frac{1}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{4}\right)
 \end{eqnarray}
-where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the generalised SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 2$ for the 2D square lattice Hubbard-Heisenberg model (with coordination number $\mathcal{W}=4$). In general, $\mathcal{W}=2d$ for the $d$-dimensional hypercubic lattice, and 
-$r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
+where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the extended SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 2$ for the 2D square lattice Hubbard-Heisenberg model.
+% In general, $\mathcal{W}=2d$ for the $d$-dimensional hypercubic lattice, and 
+% $r^{*}_\text{hyperc.} = \frac{d}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{2}\right)$. The growth of $r^{*}$ with $d$ indicates that the MIT is increasingly rendered difficult in a higher dimensional hypercubic lattice, as it is easier for electrons to delocalise and a very large on-site repulsion is needed to overcome this.
 \end{itemize}
 
 \comment{
@@ -443,7 +453,7 @@ These plots are available as videos \href{https://abhirup-m.github.io/misc-sigma
 More refined version exists in the e-SIAM manuscript.
 
 \subsection{Topological nature of the transition}
-As shown in section~\ref{lutt_theorem}, there is a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
+Since the impurity charge hybridising with the bath contributes to the total Luttinger volume of the system~\cite{martin1982fermi}, decoupling of the impurity from the conduction bath leads to a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
 \begin{equation}\begin{aligned}
 	\label{lutt_change}
 	\mathcal{N}_L^\text{lm} - \mathcal{N}_L^\text{sc} = 1
@@ -479,7 +489,7 @@ In order to connect this impurity topological change with the bulk model, we wri
 	\label{bulk_total}
 	\mathcal{N} = \sum_i \mathcal{N}_i + \mathcal{N}_\text{L}
 \end{aligned}\end{equation}
-From eq.~\ref{greens_func_siam}, we know that the bulk local Greens function is equal to that of the auxiliary model, and that gives \(\sum_i \mathcal{N}_i = \mathcal{N}_\text{imp}\sum_i = \mathcal{N} \mathcal{N}_\text{imp}\). There we used the fact that for a half-filled system, the total number of sites is equal to the total number of particles in the system. Substituting this into eq.~\ref{bulk_total} and again using \(\Delta \mathcal{N} = 0\) gives
+From eq.~\ref{greens_func_relation}, we know that the bulk local Greens function is proportional to that of the auxiliary model, and that gives \(\sum_i \mathcal{N}_i = \mathcal{N}_\text{imp}\sum_i = \mathcal{N} \mathcal{N}_\text{imp}\). There we used the fact that for a half-filled system, the total number of sites is equal to the total number of particles in the system. Substituting this into eq.~\ref{bulk_total} and again using \(\Delta \mathcal{N} = 0\) gives
 \begin{equation}\begin{aligned}
 	\mathcal{N} = \mathcal{N} \mathcal{N}_\text{imp} + \mathcal{N}_\text{L} \implies \Delta \mathcal{N}_\text{L} = - \mathcal{N} \Delta \mathcal{N}_\text{imp}
 \end{aligned}\end{equation}
@@ -635,7 +645,7 @@ The spectral function at zero temperature can then be written as
 
 \chapter{Some analytic results for the Hubbard dimer and the Hubbard model}
 \section{Spectrum of the Hubbard dimer}
-Here we document the spectrum of the Hubbard dimer Hamiltonian in eqs.~\ref{hubb_dimer}.
+Here we document the spectrum of the Hubbard dimer Hamiltonian.
 \begin{center}
 	\begin{tabular}{|c|c|c|}
 	\hline
@@ -965,5 +975,5 @@ The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position e
 
 \end{appendices}
 
-\bibliography{notes}
+\bibliography{tilingProject}
 \end{document}

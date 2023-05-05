@@ -374,6 +374,25 @@ Following Dyson's equation, the \(k-\)space self-energy can be obtained from the
 \end{aligned}\end{equation}
 where the superscript \((0)\) indicates that the entire term has to be calculated from the non-interacting auxiliary model.
 
+\section{Correlation functions in momentum space}
+Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearst-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
+\begin{equation}\begin{aligned}
+	\chi(\vec r) = \left<\mathcal{O}_1^\dagger (\vec R + \vec r) \mathcal{O}_2(\vec R)\right> = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\left<\mathcal{O}_1^\dagger (\vec q) \mathcal{O}_2(\vec k)\right>
+\end{aligned}\end{equation}
+Since the response should not depend on \(\vec R\) (owing to translation invariance), we have
+\begin{equation}\begin{aligned}
+	\chi(\vec r) = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\delta_{\vec k + \vec q, 0}\left<\mathcal{O}_1^\dagger (\vec q) \mathcal{O}_2(\vec k)\right> = \frac{1}{N}\sum_{\vec k} e^{-i \vec k \cdot \vec r}\left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right>
+\end{aligned}\end{equation}
+By inverting the Fourier transform, we therefore get
+\begin{equation}\begin{aligned}
+	\chi(\vec k) &\equiv \left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{\vec r}e^{i \vec{k}\cdot\vec{r}} \chi(\vec r) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} \\
+	&= \frac{1}{\lambda_{\vec k_0}^2}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(d) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)} + \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}
+\end{aligned}\end{equation}
+
+
+
+
+
 \section{Evidence for the Mott MIT}
 Through the URG study of the extended SIAM with correlation (eq.~\ref{siam_attr}), we can conclude the following about that model:
 \begin{itemize}

@@ -290,29 +290,28 @@ We again simplify the wavefunction by keeping only the uniform piece and droppin
 \begin{equation}\begin{aligned}
 	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{W}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
 \end{aligned}\end{equation}
-where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\).
-Specifically, for the local Greens function \(G_\text{H-H}(\vec r=0, t)\), we keep the states with \(\vec R_j = \vec R_0\), leading to the expression
-\begin{equation}\begin{aligned}\label{greens_func_approx}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \sum_{\vec a_1, \vec a_2}\braket{\psi_\text{aux}(\vec R_0, \vec a_2) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
-\end{aligned}\end{equation}
-Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a_1\) and \(\vec a_2\) are equal to their mean, and the local Greens function simplifies to
+where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\). The Greens funtion takes the form
 \begin{equation}\begin{aligned}
-	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+G_\text{H-H}(\vec r, t) =  \frac{-i\theta(t)}{\mathcal{W}^2 \lambda_{\vec k_0}^2}\sum_{\vec a_1, \vec a_2 \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_2)}~.
 \end{aligned}\end{equation}
-In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r=0, t)\) is therefore captured by the impurity Greens function \(\mathcal{G}\) in the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\):
+Specifically, for the local Greens function \(G_\text{H-H}(\vec r=0, t)\), we keep the states with \(\vec a_1 = \vec a_2\), leading to the expression
+\begin{equation}\begin{aligned}\label{greens_func_approx}
+	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) =  \frac{-i\theta(t)}{\mathcal{W}^2 \lambda_{\vec k_0}^2}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)}~.
+\end{aligned}\end{equation}
+Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a\) are equal, and the local Greens function simplifies to
+\begin{equation}\begin{aligned}
+	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\mathcal{W}\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+\end{aligned}\end{equation}
+In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r=0, t)\) is therefore captured by the impurity Greens function \(\mathcal{G}\) in the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\) with ground-state \(\ket{\psi_\text{aux}(\vec R_0)}\):
 \begin{equation}\begin{aligned}
 	\label{greens_func_relation}
-	G_\text{loc}(t) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}_{dd}(t)~.
+	G_\text{loc}(t) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{G}_{dd}(t)~,\quad \mathcal{G}_{dd}(t) = -i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
 \end{aligned}\end{equation}
 The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impurity Greens function for the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\).
 
-For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2\) in the summation of eq.~\ref{greens_func_approx}:
+For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2 = \vec a\) in the summation of eq.~\ref{greens_func_approx}:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \sum_{\vec a_1}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_1)}~.
-\end{aligned}\end{equation}
-Again, because of the lattice symmetry, all values of \(\vec a_1\) lead to the same impurity-bath Greens function \(\mathcal{G}_{dz}\) on the auxiliary model:
-\begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
+	G_\text{H-H}(\vec r=\vec a, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2} \mathcal{G}_{dz}(t)~.
 \end{aligned}\end{equation}
 
 
@@ -323,16 +322,40 @@ The difference in the COM wavefunction and the full wavefunction can be estimate
 	&=|1 + \frac{1}{\lambda_{\vec k_0}^2} - \frac{1}{\lambda_{\vec k_0}^2 N}\sum_{\vec R_j,\vec q} \left(e^{i \left(\vec k_0 - \vec q\right)\cdot \left( \vec R_j - \vec R_0 \right)}\lambda_{\vec q}^2 + \text{h.c.}\right)|\\
 	&= |1 - \frac{1}{\lambda_{\vec k_0}^2}|
 \end{aligned}\end{equation}
-By choosing an appropriate auxiliary model, the overlap factor \(\lambda_{\vec k_0}\) can be brought close to unity, leading to a smaller difference.
+By choosing an appropriate auxiliary model, the overlap factor \(\lambda_{\vec k_0}\) can be brought close to unity, leading to a smaller difference. The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. 
 
-The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. Moreover, this approach holds for any \(n-\)-particle Greens function; we just need to compute the corresponding correlator in the auxiliary model.
-
-A particular example of this relation between the Greens functions is the following: static correlation functions of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger \mathcal{O}_2 | \Psi_\text{gs}}\) can be written in terms of auxiliary model correlations:
+\section{Static correlation functions}
+This approach also holds for higher-order static correlation functions. For example, a general local correlation of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\) corresponding to operators \(\mathcal{O}_1\) and \(\mathcal{O}_2\) can be estimated, using this method, in terms of auxiliary model quantities. For that, we first express the correlation at sites \(\vec R_0\) as well as its nearest neighbours: 
 \begin{equation}\begin{aligned}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq \frac{1}{\lambda_{\vec k_0}^2}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(d) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}\\
-	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}~,
+	\frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} + \frac{1}{\mathcal{W}}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}}\right]
 \end{aligned}\end{equation}
-where \(\mathcal{O}_{1,2}\) are operators that describe the correlation we are computing, and the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively.
+This is enabled by the translation symmetry of the problem, and it allows us to involve both the impurity site and the bath zeroth site in the relations. By keeping only the uniform part of the ground-state wavefunction, we get
+\begin{equation}\begin{aligned}
+	\label{local_correlation}
+	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{W} }\braket{\psi_\text{aux}(\vec R_0) | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \psi_\text{aux}(\vec R_0)} \right. \\
+													   &+ \left.\frac{1}{\mathcal{W}^3}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \psi_\text{aux}(\vec R_0, \vec a)}\right]\\
+	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1^\dagger(z) \mathcal{O}_2(z)}_\text{aux}\right]
+\end{aligned}\end{equation}
+In the above expression, where the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively, and the subscript \(\text{aux}\) indicates that the averaging is carried out in the impurity model.
+
+Similar expressions hold for non-local correlation functions.
+\begin{equation}\begin{aligned}
+	\label{nonlocal_correlation}
+	&\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}} \\
+	=& \frac{1}{4}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) + \mathcal{O}_1^\dagger(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1^\dagger(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \Psi_\text{gs}}\right]\\
+	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) | \psi_\text{aux}(\vec R_0, \vec a)} \right. \\
+	      &\left.\braket{\psi_\text{aux}(\vec R_0, -\vec a) | \mathcal{O}_1^\dagger(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1^\dagger(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \psi_\text{aux}(\vec R_0, -\vec a)}\right]\\
+	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(z) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(z)}_\text{aux}\right]
+\end{aligned}\end{equation}
+In the first equation, the first two terms were introduced to incorporate effects arisingfrom the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \(\vec R_0\) as \(d\) and \(\vec R_0 + \vec a\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that theu act at the first site of the bath (beyond the bath zeroth site).
+
+The next-nearest correlation function is relatively simpler, becuase only those terms contribute that involve both the impurity as well as the first site. If \(\vec a^\prime\) denotes the relative vector between a given site and one of its next-nearest neighbours, we can write
+\begin{equation}\begin{aligned}
+	\label{nnn_correlation}
+	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) + \mathcal{O}_1^\dagger(\vec R_0 - \vec a^\prime) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\right]\\
+	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(d)}_\text{aux}\right]
+\end{aligned}\end{equation}
+
 
 \section{Spectral functions and self-energies}
 
@@ -385,13 +408,14 @@ Since the response should not depend on \(\vec R\) (owing to translation invaria
 \end{aligned}\end{equation}
 By inverting the Fourier transform, we therefore get
 \begin{equation}\begin{aligned}
-	\chi(\vec k) &\equiv \left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{\vec r}e^{i \vec{k}\cdot\vec{r}} \chi(\vec r) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} \\
-	&= \frac{1}{\lambda_{\vec k_0}^2}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(d) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)} + \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) | \psi_\text{aux}(\vec R_0, \vec a)}
+	\chi(\vec k) &\equiv \left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{\vec r}e^{i \vec{k}\cdot\vec{r}} \chi(\vec r) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} + \Xi_{\vec k}\chi_\text{nnn}~,
 \end{aligned}\end{equation}
-
-
-
-
+where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neighbour and next-nearest-neighbour correlation functions, with dispersions \(\xi_{\vec k} = 2\left[\cos(k_x a) + \cos\left(k_y a\right)\right] \) and \(\Xi_{\vec k} = 2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right] \). Following eqs.~\ref{local_correlation} through \ref{nnn_correlation}, these can be cast into impurity model correlation functions:
+\begin{equation}\begin{aligned}
+	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1^\dagger(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
+		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(z) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
+		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(d)}_\text{aux}\right] 
+\end{aligned}\end{equation}
 
 \section{Evidence for the Mott MIT}
 Through the URG study of the extended SIAM with correlation (eq.~\ref{siam_attr}), we can conclude the following about that model:

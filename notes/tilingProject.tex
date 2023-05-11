@@ -325,35 +325,35 @@ The difference in the COM wavefunction and the full wavefunction can be estimate
 By choosing an appropriate auxiliary model, the overlap factor \(\lambda_{\vec k_0}\) can be brought close to unity, leading to a smaller difference. The local and nearest-neighbour Greens functions of the full model can thus be computed from the impurity local Greens function \(\mathcal{G}_{dd}\) and the impurity-bath zeroth site Greens function \(\mathcal{G}_{dz}\) on the COM auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\). By using these real-space Greens functions, one can then compute \(k-\)space Greens functions of the full model. 
 
 \section{Static correlation functions}
-This approach also holds for higher-order static correlation functions. For example, a general local correlation of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\) corresponding to operators \(\mathcal{O}_1\) and \(\mathcal{O}_2\) can be estimated, using this method, in terms of auxiliary model quantities. For that, we first express the correlation at sites \(\vec R_0\) as well as its nearest neighbours: 
+This approach also holds for higher-order static correlation functions. For example, a general local correlation of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\) corresponding to operators \(\mathcal{O}_1\) and \(\mathcal{O}_2\) can be estimated, using this method, in terms of auxiliary model quantities. For that, we first express the correlation at sites \(\vec R_0\) as well as its nearest neighbours: 
 \begin{equation}\begin{aligned}
-	\frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} + \frac{1}{\mathcal{W}}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}}\right]
+	\frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} + \frac{1}{\mathcal{W}}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}}\right]
 \end{aligned}\end{equation}
 This is enabled by the translation symmetry of the problem, and it allows us to involve both the impurity site and the bath zeroth site in the relations. By keeping only the uniform part of the ground-state wavefunction, we get
 \begin{equation}\begin{aligned}
 	\label{local_correlation}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{W} }\braket{\psi_\text{aux}(\vec R_0) | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0) | \psi_\text{aux}(\vec R_0)} \right. \\
-													   &+ \left.\frac{1}{\mathcal{W}^3}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \psi_\text{aux}(\vec R_0, \vec a)}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1^\dagger(z) \mathcal{O}_2(z)}_\text{aux}\right]
+	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{W} }\braket{\psi_\text{aux}(\vec R_0) | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \psi_\text{aux}(\vec R_0)} \right. \\
+													   &+ \left.\frac{1}{\mathcal{W}^3}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \psi_\text{aux}(\vec R_0, \vec a)}\right]\\
+	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]
 \end{aligned}\end{equation}
 In the above expression, where the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively, and the subscript \(\text{aux}\) indicates that the averaging is carried out in the impurity model.
 
 Similar expressions hold for non-local correlation functions.
 \begin{equation}\begin{aligned}
 	\label{nonlocal_correlation}
-	&\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}} \\
-	=& \frac{1}{4}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) + \mathcal{O}_1^\dagger(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1^\dagger(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \Psi_\text{gs}}\right]\\
-	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1^\dagger(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) | \psi_\text{aux}(\vec R_0, \vec a)} \right. \\
-	      &\left.\braket{\psi_\text{aux}(\vec R_0, -\vec a) | \mathcal{O}_1^\dagger(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1^\dagger(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \psi_\text{aux}(\vec R_0, -\vec a)}\right]\\
-	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(z) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(z)}_\text{aux}\right]
+	&\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}} \\
+	=& \frac{1}{4}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) + \mathcal{O}_1(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \Psi_\text{gs}}\right]\\
+	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) | \psi_\text{aux}(\vec R_0, \vec a)} \right. \\
+	      &\left.\braket{\psi_\text{aux}(\vec R_0, -\vec a) | \mathcal{O}_1(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \psi_\text{aux}(\vec R_0, -\vec a)}\right]\\
+	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right]
 \end{aligned}\end{equation}
 In the first equation, the first two terms were introduced to incorporate effects arisingfrom the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \(\vec R_0\) as \(d\) and \(\vec R_0 + \vec a\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that theu act at the first site of the bath (beyond the bath zeroth site).
 
 The next-nearest correlation function is relatively simpler, becuase only those terms contribute that involve both the impurity as well as the first site. If \(\vec a^\prime\) denotes the relative vector between a given site and one of its next-nearest neighbours, we can write
 \begin{equation}\begin{aligned}
 	\label{nnn_correlation}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1^\dagger(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) + \mathcal{O}_1^\dagger(\vec R_0 - \vec a^\prime) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(d)}_\text{aux}\right]
+	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) + \mathcal{O}_1(\vec R_0 - \vec a^\prime) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\right]\\
+	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right]
 \end{aligned}\end{equation}
 
 
@@ -400,22 +400,46 @@ where the superscript \((0)\) indicates that the entire term has to be calculate
 \section{Correlation functions in momentum space}
 Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearst-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
 \begin{equation}\begin{aligned}
-	\chi(\vec r) = \left<\mathcal{O}_1^\dagger (\vec R + \vec r) \mathcal{O}_2(\vec R)\right> = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\left<\mathcal{O}_1^\dagger (\vec q) \mathcal{O}_2(\vec k)\right>
+	\chi(\vec r) = \left<\mathcal{O}_1 (\vec R + \vec r) \mathcal{O}_2(\vec R)\right> = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\left<\mathcal{O}_1 (\vec q) \mathcal{O}_2(\vec k)\right>
 \end{aligned}\end{equation}
 Since the response should not depend on \(\vec R\) (owing to translation invariance), we have
 \begin{equation}\begin{aligned}
-	\chi(\vec r) = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\delta_{\vec k + \vec q, 0}\left<\mathcal{O}_1^\dagger (\vec q) \mathcal{O}_2(\vec k)\right> = \frac{1}{N}\sum_{\vec k} e^{-i \vec k \cdot \vec r}\left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right>
+	\chi(\vec r) = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\delta_{\vec k + \vec q, 0}\left<\mathcal{O}_1 (\vec q) \mathcal{O}_2(\vec k)\right> = \frac{1}{N}\sum_{\vec k} e^{-i \vec k \cdot \vec r}\left<\mathcal{O}_1 (-\vec k) \mathcal{O}_2(\vec k)\right>
 \end{aligned}\end{equation}
 By inverting the Fourier transform, we therefore get
 \begin{equation}\begin{aligned}
-	\chi(\vec k) &\equiv \left<\mathcal{O}_1^\dagger (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{\vec r}e^{i \vec{k}\cdot\vec{r}} \chi(\vec r) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} + \Xi_{\vec k}\chi_\text{nnn}~,
+	\chi(\vec k) &\equiv \left<\mathcal{O}_1 (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{\vec r}e^{i \vec{k}\cdot\vec{r}} \chi(\vec r) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} + \Xi_{\vec k}\chi_\text{nnn}~,
 \end{aligned}\end{equation}
 where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neighbour and next-nearest-neighbour correlation functions, with dispersions \(\xi_{\vec k} = 2\left[\cos(k_x a) + \cos\left(k_y a\right)\right] \) and \(\Xi_{\vec k} = 2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right] \). Following eqs.~\ref{local_correlation} through \ref{nnn_correlation}, these can be cast into impurity model correlation functions:
 \begin{equation}\begin{aligned}
-	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1^\dagger(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
-		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(z) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(z) \mathcal{O}_2(d) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
-		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1^\dagger(d) \mathcal{O}_2(1) + \mathcal{O}_1^\dagger(1) \mathcal{O}_2(d)}_\text{aux}\right] 
+	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
+		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
+		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right] 
 \end{aligned}\end{equation}
+
+\section{Momentum-space entanglement}
+The density matrix of the full Hamiltonian in ground-state is simply \(\rho = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model computables. The reduced density matrix for the momentum state involves a partial trace over its configurations:
+\begin{equation}\begin{aligned}
+	\rho_{\vec k,\sigma} = \sum_{n_{\vec k,\sigma}=0,1}\braket{n_{k,\sigma} | \Psi_\text{gs}}\braket{\Psi_\text{gs} | n_{\vec k,\sigma}} = \sum_{n_{\vec k,\sigma}=0,1}|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2
+\end{aligned}\end{equation}
+where \(\ket{n_{\vec k,\sigma}}\) represents a state in Fock space with \(n_{\vec k,\sigma}\) number of particles in the single particle state with momentum \(\vec k\) and spin \(\sigma\). We now Fourier transform the overlap and retain terms up to the next-nearest neighbour:
+\begin{equation}\begin{aligned}
+	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq \braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}} + \xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} + \Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}}
+\end{aligned}\end{equation}
+where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour sites to \(\vec R_0\), and \(\xi_{\vec k}\) and \(\Xi_{\vec k}\) have been defined above. Following the eqs.~\ref{local_correlation} through \ref{nnn_correlation}, we can identify \(\hat O_1^\dagger(\vec R) = \hat O_2(\vec R) = \ket{n_{\vec R_0,\sigma}}\bra{n_{\vec R,\sigma}}\), so that we have, for example, \(\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} = \braket{\hat O_1(\vec R_0) \hat O_2(\vec R_0 + \vec a)}\). The, using eqs.~\ref{local_correlation} through \ref{nnn_correlation}, the Fourier transform becomes:
+\begin{equation}\begin{aligned}
+	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} | n_{d,\sigma}}\braket{n_{d,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{z,\sigma}}\braket{n_{z,\sigma} | \psi_\text{aux}}\right]\\
+							      &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{z,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{d,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{z,\sigma}}\right) \psi_\text{aux}}\right] \\
+		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{d,\sigma}}\right) \psi_\text{aux}}\right]
+\end{aligned}\end{equation}
+The \(k-\)space reduced density matrix takes the form
+\begin{equation}\begin{aligned}
+	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} | n_{d,\sigma}}\braket{n_{d,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{z,\sigma}}\braket{n_{z,\sigma} | \psi_\text{aux}}\right]\\
+							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{z,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{d,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{z,\sigma}}\right) \psi_\text{aux}}\right] \\
+		    &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{d,\sigma}}\right) \psi_\text{aux}}\right]
+\end{aligned}\end{equation}
+The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k,\sigma}\ln \rho_{\vec k,\sigma}\).
+
 
 \section{Evidence for the Mott MIT}
 Through the URG study of the extended SIAM with correlation (eq.~\ref{siam_attr}), we can conclude the following about that model:

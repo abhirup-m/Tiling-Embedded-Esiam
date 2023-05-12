@@ -434,11 +434,11 @@ where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour si
 \end{aligned}\end{equation}
 The \(k-\)space reduced density matrix takes the form
 \begin{equation}\begin{aligned}
-	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} | n_{d,\sigma}}\braket{n_{d,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{z,\sigma}}\braket{n_{z,\sigma} | \psi_\text{aux}}\right]\\
-							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{z,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{d,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{z,\sigma}}\right) \psi_\text{aux}}\right] \\
-		    &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{d,\sigma}}\right) \psi_\text{aux}}\right]
+	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{d\sigma}} + \frac{1}{\mathcal{W}}|\alpha_{n_{z\sigma}}|^2\right]\\
+							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{1\sigma}}\right] \\
+		    &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{1\sigma}}\right]
 \end{aligned}\end{equation}
-The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k,\sigma}\ln \rho_{\vec k,\sigma}\).
+where \(\bar\psi_{n_{d\sigma}} = \braket{n_{d,\sigma} | \psi_\text{aux}}\) and similar definitions exist for \(\alpha_{n_{z\sigma}}\) and \(\alpha_{n_{1\sigma}}\). The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k,\sigma}\ln \rho_{\vec k,\sigma}\).
 
 
 \section{Evidence for the Mott MIT}

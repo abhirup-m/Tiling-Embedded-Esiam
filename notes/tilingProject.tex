@@ -240,12 +240,12 @@ with the impurity position \(\vec R_i\) and zeroth site position \(\vec R_i + \v
 
 The following un-normalised combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi^n_{\vec k}} = \frac{1}{\mathcal{W} \sqrt N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
+	\ket{\Psi^n_{\vec k}} = \frac{1}{\sqrt{\mathcal{W} N}}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
 \end{aligned}\end{equation}
 where \(N\) is the total number of lattice sites. The interpretation is that the set of \(n=0\) states form the lowest band in the spectrum of the lattice. Higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \(\vec k\) and \(n\) to 0: \(\ket{\Psi_{\vec k=0}^{n=0}} \equiv \ket{\Psi_\text{gs}}\). We will actually work only in the lowest band \(n=0\), so we will drop the band index from now on and keep in mind that only the auxiliary model ground states appear in the formulation:
 \begin{equation}\begin{aligned}
 	\label{bloch-states}
-	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i, \vec a\right)~,
+	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\ket{\vec k}} \sqrt{\mathcal{W} N}}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i, \vec a\right)~,
 \end{aligned}\end{equation}
 where \(\lambda_{\ket{\vec k}}\) is a normalisation factor. 
 
@@ -283,24 +283,24 @@ Because of translation symmetry of the bulk lattice, the initial point \(\vec R\
 \end{aligned}\end{equation}
 We will now express the ground-state in terms of the auxiliary model states, following eq.~\ref{bloch-states}:
 \begin{equation}\begin{aligned}
-	\ket{\Psi_\text{gs}} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j, \vec a \in \text{NN of }\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j, \vec a)}~,
+	\ket{\Psi_\text{gs}} = \frac{1}{\lambda_{\vec k_0} \sqrt{\mathcal{W} N}}\sum_{\vec R_j, \vec a \in \text{NN of }\vec R_j} e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j, \vec a)}~,
 \end{aligned}\end{equation}
 where we have brought back the explicit sum over the nearest neighbours \(\vec a\) of the impurity site (following eq.~\ref{zeroth_site_average}).
 We again simplify the wavefunction by keeping only the uniform piece and dropping the difference pieces.
 \begin{equation}\begin{aligned}
-	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\mathcal{W}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
+	\ket{\Psi_\text{gs}} = \sum_{\vec a \in \text{NN of}\vec R_0}\frac{1}{\sqrt \mathcal{W}\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0, \vec a)} + \ket{\psi_\text{diff}(\vec k_0)}
 \end{aligned}\end{equation}
-where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{1}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)} = \frac{1}{\lambda_{\vec k_0} N}\sum_{\vec R_j} \left[e^{i \vec{k}_0\cdot\vec{R}_j} \ket{\psi_\text{aux}(\vec R_j)} - e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\right]\). The Greens funtion takes the form
+where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{\sqrt \mathcal{W}}{\lambda_{\vec k_0}} e^{i\vec{k}_0\cdot\vec{R}_0} \ket{\psi_\text{aux}(\vec R_0)}\). The Greens funtion takes the form
 \begin{equation}\begin{aligned}
-G_\text{H-H}(\vec r, t) =  \frac{-i\theta(t)}{\mathcal{W}^2 \lambda_{\vec k_0}^2}\sum_{\vec a_1, \vec a_2 \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_2)}~.
+G_\text{H-H}(\vec r, t) =  \frac{-i\theta(t)}{\mathcal{W} \lambda_{\vec k_0}^2}\sum_{\vec a_1, \vec a_2 \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_2)}~.
 \end{aligned}\end{equation}
 Specifically, for the local Greens function \(G_\text{H-H}(\vec r=0, t)\), we keep the states with \(\vec a_1 = \vec a_2\), leading to the expression
 \begin{equation}\begin{aligned}\label{greens_func_approx}
-	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) =  \frac{-i\theta(t)}{\mathcal{W}^2 \lambda_{\vec k_0}^2}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)}~.
+	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) =  \frac{-i\theta(t)}{\mathcal{W} \lambda_{\vec k_0}^2}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)}~.
 \end{aligned}\end{equation}
 Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a\) are equal, and the local Greens function simplifies to
 \begin{equation}\begin{aligned}
-	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\mathcal{W}\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
+	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) &= -\frac{1}{\lambda_{\vec k_0}^2 }i\theta(t) \braket{\psi_\text{aux}(\vec R_0) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0)}~.
 \end{aligned}\end{equation}
 In this form, the only Hamiltonian involved in the expression is the COM Hamiltonian at \(\vec R_0\), and \(G_\text{H-H}(\vec r=0, t)\) is therefore captured by the impurity Greens function \(\mathcal{G}\) in the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\) with ground-state \(\ket{\psi_\text{aux}(\vec R_0)}\):
 \begin{equation}\begin{aligned}
@@ -311,7 +311,7 @@ The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impur
 
 For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2 = \vec a\) in the summation of eq.~\ref{greens_func_approx}:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r=\vec a, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}^2} \mathcal{G}_{dz}(t)~.
+	G_\text{H-H}(\vec r=\vec a, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
 \end{aligned}\end{equation}
 
 
@@ -332,9 +332,9 @@ This approach also holds for higher-order static correlation functions. For exam
 This is enabled by the translation symmetry of the problem, and it allows us to involve both the impurity site and the bath zeroth site in the relations. By keeping only the uniform part of the ground-state wavefunction, we get
 \begin{equation}\begin{aligned}
 	\label{local_correlation}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{W} }\braket{\psi_\text{aux}(\vec R_0) | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \psi_\text{aux}(\vec R_0)} \right. \\
-													   &+ \left.\frac{1}{\mathcal{W}^3}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \psi_\text{aux}(\vec R_0, \vec a)}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]
+	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{W} }\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0, \vec a) \mathcal{O}_2(\vec R_0) | \psi_\text{aux}(\vec R_0)} \right. \\
+													   &+ \left.\frac{1}{\mathcal{W}^2}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + \vec a) | \psi_\text{aux}(\vec R_0, \vec a)}\right]\\
+	=& \frac{1}{2\lambda_{\vec k_0}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]
 \end{aligned}\end{equation}
 In the above expression, where the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively, and the subscript \(\text{aux}\) indicates that the averaging is carried out in the impurity model.
 
@@ -343,9 +343,9 @@ Similar expressions hold for non-local correlation functions.
 	\label{nonlocal_correlation}
 	&\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) | \Psi_\text{gs}} \\
 	=& \frac{1}{4}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) + \mathcal{O}_1(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \Psi_\text{gs}}\right]\\
-	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) | \psi_\text{aux}(\vec R_0, \vec a)} \right. \\
+	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux}(\vec R_0, \vec a) | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a) + \mathcal{O}_1(\vec R_0 + \vec a) \mathcal{O}_2(\vec R_0 + 2\vec a) | \psi_\text{aux}(\vec R_0, \vec a)} \right. \\
 	      &\left.\braket{\psi_\text{aux}(\vec R_0, -\vec a) | \mathcal{O}_1(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \psi_\text{aux}(\vec R_0, -\vec a)}\right]\\
-	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right]
+	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right]
 \end{aligned}\end{equation}
 In the first equation, the first two terms were introduced to incorporate effects arisingfrom the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \(\vec R_0\) as \(d\) and \(\vec R_0 + \vec a\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that theu act at the first site of the bath (beyond the bath zeroth site).
 
@@ -353,7 +353,7 @@ The next-nearest correlation function is relatively simpler, becuase only those 
 \begin{equation}\begin{aligned}
 	\label{nnn_correlation}
 	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) + \mathcal{O}_1(\vec R_0 - \vec a^\prime) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right]
+	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right]
 \end{aligned}\end{equation}
 
 
@@ -434,7 +434,7 @@ where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour si
 \end{aligned}\end{equation}
 The \(k-\)space reduced density matrix takes the form
 \begin{equation}\begin{aligned}
-	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{d\sigma}} + \frac{1}{\mathcal{W}}|\alpha_{n_{z\sigma}}|^2\right]\\
+	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{d\sigma}} + \frac{1}{\mathcal{W}}\bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{z\sigma}}\right]\\
 							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{1\sigma}}\right] \\
 		    &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{1\sigma}}\right]
 \end{aligned}\end{equation}

@@ -13,5 +13,6 @@
 *.qu
 *.npy
 *.ipynb_checkpoint*
+*.gif
 esiam-spectrum/
 esiam-phases-data/

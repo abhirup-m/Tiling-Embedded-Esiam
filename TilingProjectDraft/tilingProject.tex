@@ -1,6 +1,5 @@
 \documentclass{report}
-\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,authblk,enumitem,cite,graphicx}
-\graphicspath{{figures}}
+\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,enumitem,cite,graphicx}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=0.7in,bottom=1in]{geometry}
 
@@ -420,28 +419,30 @@ where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neig
 \end{aligned}\end{equation}
 
 \section{Momentum-space entanglement}
-The density matrix of the full Hamiltonian in ground-state is simply \(\rho = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model computables. The reduced density matrix for the momentum state involves a partial trace over its configurations:
+\subsection{\(k-\)space von-Neumann entropy}
+The density matrix of the full Hamiltonian in ground-state is simply \(\rho = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities. The reduced density matrix for the momentum state involves a partial trace over its configurations:
 \begin{equation}\begin{aligned}
 	\rho_{\vec k,\sigma} = \sum_{n_{\vec k,\sigma}=0,1}\braket{n_{k,\sigma} | \Psi_\text{gs}}\braket{\Psi_\text{gs} | n_{\vec k,\sigma}} = \sum_{n_{\vec k,\sigma}=0,1}|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2
 \end{aligned}\end{equation}
 where \(\ket{n_{\vec k,\sigma}}\) represents a state in Fock space with \(n_{\vec k,\sigma}\) number of particles in the single particle state with momentum \(\vec k\) and spin \(\sigma\). We now Fourier transform the overlap and retain terms up to the next-nearest neighbour:
 \begin{equation}\begin{aligned}
-	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq \braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}} + \xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} + \Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}}
+	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& |\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}}|^2  + \xi_{\vec k}^2|\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}|^2 + \Xi_{\vec k}^2|\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}}|^2 + 2\xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}\\
+							      & + 2\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}} + 2\xi_{\vec k}\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0 + \vec a^\prime,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}\\
+	=& \left(1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2\right)|\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}}|^2 + 2\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} \\
+							      & + 2\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}} 
 \end{aligned}\end{equation}
-where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour sites to \(\vec R_0\), and \(\xi_{\vec k}\) and \(\Xi_{\vec k}\) have been defined above. Following the eqs.~\ref{local_correlation} through \ref{nnn_correlation}, we can identify \(\hat O_1^\dagger(\vec R) = \hat O_2(\vec R) = \ket{n_{\vec R_0,\sigma}}\bra{n_{\vec R,\sigma}}\), so that we have, for example, \(\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} = \braket{\hat O_1(\vec R_0) \hat O_2(\vec R_0 + \vec a)}\). The, using eqs.~\ref{local_correlation} through \ref{nnn_correlation}, the Fourier transform becomes:
+where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour sites to \(\vec R_0\), and \(\xi_{\vec k}\) and \(\Xi_{\vec k}\) have been defined above. Following the eqs.~\ref{local_correlation} through \ref{nnn_correlation}, we can identify \(\hat O_1^\dagger(\vec R) = \hat O_2(\vec R) = \ket{n_{\vec R_0,\sigma}}\bra{n_{\vec R,\sigma}}\), so that we have, for example, \(\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} = \braket{\hat O_1(\vec R_0) \hat O_2(\vec R_0 + \vec a)}\). Then, using eqs.~\ref{local_correlation} through \ref{nnn_correlation}, the Fourier transform becomes:
 \begin{equation}\begin{aligned}
-	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} | n_{d,\sigma}}\braket{n_{d,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{z,\sigma}}\braket{n_{z,\sigma} | \psi_\text{aux}}\right]\\
-							      &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{z,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{d,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{z,\sigma}}\right) \psi_\text{aux}}\right] \\
-		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{d,\sigma}}\right) \psi_\text{aux}}\right]
+	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& \frac{1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2}{3\lambda_{\vec k_0}^2}\left[\braket{\psi_\text{aux} | n_{d,\sigma}}\braket{n_{d,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{z,\sigma}}\braket{n_{z,\sigma} | \psi_\text{aux}} + \frac{1}{\mathcal{W}}\braket{\psi_\text{aux} | n_{1,\sigma}}\braket{n_{1,\sigma} | \psi_\text{aux}}\right]\\
+							      &+ \frac{2\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{z,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{z,\sigma}}\bra{n_{d,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{z,\sigma}}\right) \psi_\text{aux}}\right] \\
+							      &+ \frac{2\Xi_{\vec k}}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\psi_\text{aux} \left(\ket{n_{d,\sigma}}\bra{n_{1,\sigma}} + \ket{n_{1,\sigma}}\bra{n_{d,\sigma}}\right) \psi_\text{aux}}\right]
 \end{aligned}\end{equation}
 The \(k-\)space reduced density matrix takes the form
 \begin{equation}\begin{aligned}
-	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{d\sigma}} + \frac{1}{\mathcal{W}}\bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{z\sigma}}\right]\\
-							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{1\sigma}}\right] \\
-		    &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{1\sigma}}\right]
+	\rho_{\vec k,\sigma} =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2}{3\lambda_{\vec k_0}^2}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{d\sigma}} + \frac{1}{\mathcal{W}}\bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{z\sigma}} + \frac{1}{\mathcal{W}}\bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{1\sigma}}\right] + \sum_{n_{(d,1),\sigma}=0,1}\frac{\Xi_{\vec k}}{\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{1\sigma}}\right]\\
+							      &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\bar\psi^\dagger_{n_{d\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{d\sigma}} + \bar\psi^\dagger_{n_{1\sigma}}\bar\psi_{n_{z\sigma}} + \bar\psi^\dagger_{n_{z\sigma}}\bar\psi_{n_{1\sigma}}\right]
 \end{aligned}\end{equation}
-where \(\bar\psi_{n_{d\sigma}} = \braket{n_{d,\sigma} | \psi_\text{aux}}\) and similar definitions exist for \(\alpha_{n_{z\sigma}}\) and \(\alpha_{n_{1\sigma}}\). The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k,\sigma}\ln \rho_{\vec k,\sigma}\).
-
+where \(\bar\psi_{n_{d\sigma}} = \braket{n_{d,\sigma} | \psi_\text{aux}}\) and similar definitions exist for \(\bar\psi_{n_{z\sigma}}\) and \(\bar\psi_{n_{1\sigma}}\). The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k,\sigma}\ln \rho_{\vec k,\sigma}\).
 
 \section{The Mott MIT: a local perspective}
 \subsection{Gapping of the local spectral function and vanishing of correlations}

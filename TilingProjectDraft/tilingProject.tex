@@ -413,61 +413,81 @@ By inverting the Fourier transform, we therefore get
 \end{aligned}\end{equation}
 where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neighbour and next-nearest-neighbour correlation functions, with dispersions \(\xi_{\vec k} = 2\left[\cos(k_x a) + \cos\left(k_y a\right)\right] \) and \(\Xi_{\vec k} = 2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right] \). Following eqs.~\ref{local_correlation} through \ref{nnn_correlation}, these can be cast into impurity model correlation functions:
 \begin{equation}\begin{aligned}
-	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
-		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
-		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right] 
+	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{W}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
+		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
+		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right] 
 \end{aligned}\end{equation}
 
 \section{Momentum-space entanglement}
+
+\begin{itemize}
+	\item \(n_{\vec R_0}\rho n_{\vec R_0}\) + \(n_{\vec R_0 + \vec a}\rho n_{\vec R_0 + \vec a}\)
+	\item \(e^{i \vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\rho n_{\vec R_0}\) + h.c. + 
+	      \(e^{-i \vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\rho n_{\vec R_0}\) + h.c.
+	\item \(c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0 + \vec a}\rho n_{\vec R_0}\) + h.c.
+	\item   \(e^{2i\vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c. + 
+		\(c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c.
+	\item \(e^{i \vec{q}\cdot\vec{a}} n_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c. + \(e^{-i \vec{q}\cdot\vec{a}} n_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\) + h.c.
+\end{itemize}
 \subsection{\(k-\)space von-Neumann entropy}
-The density matrix of the full Hamiltonian in ground-state is simply \(\rho = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities. The reduced density matrix for the momentum state involves a partial trace over its configurations:
+The density matrix of the full Hamiltonian in ground-state is simply \(\rho_\text{gs} = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities. 
+The full ground state \(\ket{\Psi_\text{gs}}\) can be written in the basis of the Fock states of momentum \(\vec k\sigma\):
 \begin{equation}\begin{aligned}
-	\rho\left(\vec k\sigma\right) = \sum_{n_{\vec k,\sigma}=0,1}\braket{n_{k,\sigma} | \Psi_\text{gs}}\braket{\Psi_\text{gs} | n_{\vec k,\sigma}} = \sum_{n_{\vec k,\sigma}=0,1}|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2
+	\Psi_\text{gs} = \sin\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 0}\otimes\ket{\phi_{\vec k\sigma}} + \cos\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 1}\otimes\ket{\bar\phi_{\vec k\sigma}}
 \end{aligned}\end{equation}
-where \(\ket{n_{\vec k,\sigma}}\) represents a state in Fock space with \(n_{\vec k,\sigma}\) number of particles in the single particle state with momentum \(\vec k\) and spin \(\sigma\). We now Fourier transform the overlap and retain terms up to the next-nearest neighbour, by expanding \(\ket{n_{\vec k\sigma}}\) as \(\ket{n_{\vec R_0,\sigma}} + \xi_{\vec k}\ket{n_{\vec R_0 + \vec a,\sigma}} + \Xi_{\vec k}\ket{n_{\vec R_0 + \vec a^\prime,\sigma}}\), where \(\vec a\) and \(\vec a^\prime\) are nearest and next-nearest neighbour sites to \(\vec R_0\), and \(\xi_{\vec k}\) and \(\Xi_{\vec k}\) have been defined above. The overlap takes the form
+where \(\ket{n_{\vec k\sigma}}\) is the state with occupancy \(n_{\vec k\sigma}\) from the Hilbert space of \(\vec k\sigma\). \(\ket{\phi_{\vec k\sigma}}\) and \(\ket{\bar\phi_{\vec k\sigma}}\) are the normalised states representing the configuration of the remaining degrees of freedom in the full state \(\Psi_\text{gs}\) when \(\hat n_{k\sigma}\) is 0 and 1 respectively. \(\sin \theta_{\vec k}\) and \(\cos\theta_{\vec k\sigma}\) are the probabilities of obtaining \(n_{\vec k\sigma}\) to be 0 and 1 respectively, in the full ground state.
+
+The reduced density matrix for the momentum state \(\vec k\sigma\) is then obtained simply by tracing over the states \(\ket{n_{\vec k\sigma}}\):
 \begin{equation}\begin{aligned}
-	|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& |\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}}|^2  + \xi_{\vec k}^2|\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}|^2 + \Xi_{\vec k}^2|\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}}|^2 + 2\xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}\\
-							      & + 2\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}} + 2\xi_{\vec k}\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0 + \vec a^\prime,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}}\\
-	=& \left(1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2\right)|\braket{n_{\vec R_0,\sigma} | \Psi_\text{gs}}|^2 + 2\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} \\
-	 & + 2\Xi_{\vec k}\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a^\prime,\sigma} | \Psi_\text{gs}}~.\label{overlap_ftransform}
+	\rho_{\vec k\sigma} = \sum_{n_{\vec k\sigma}=0,1} \braket{n_{\vec k\sigma} | \rho_\text{gs} | n_{\vec k\sigma}} = \sin^2\theta_{\vec k\sigma} \ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} + \cos^2\theta_{\vec k\sigma} \ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\label{red_matrix}
 \end{aligned}\end{equation}
-Following the eqs.~\ref{local_correlation} through \ref{nnn_correlation}, we can identify \(\hat O_1^\dagger(\vec R) = \hat O_2(\vec R) = \ket{n_{\vec R_0,\sigma}}\bra{n_{\vec R,\sigma}}\), so that we have, for example, \(\braket{\Psi_\text{gs} | n_{\vec R_0,\sigma}}\braket{n_{\vec R_0 + \vec a,\sigma} | \Psi_\text{gs}} = \braket{\hat O_1(\vec R_0) \hat O_2(\vec R_0 + \vec a)}\). Then, using eqs.~\ref{local_correlation} through \ref{nnn_correlation}, the Fourier transform becomes:
+If the eigenvalues of the operators \(\ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}}\) and \(\ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\) are \(\left\{ \lambda_n \right\} \) and \(\left\{ \bar\lambda_n \right\} \) respectively, the von-Neumann entropy is given by
 \begin{equation}\begin{aligned}
-|\braket{\Psi_\text{gs} | n_{\vec k,\sigma}}|^2 \simeq& \frac{1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2}{3\lambda_{\vec k_0}^2}\left[\braket{n_{d,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{z,\sigma} | \rho_\text{aux} | n_{z,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{1,\sigma} | \rho_\text{aux} | n_{1,\sigma}}\right]\\
-							      &+ \frac{2\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{d,\sigma} | \rho_\text{aux} | n_{z,\sigma}} + \braket{n_{z,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \braket{n_{z,\sigma} | \rho_\text{aux} | n_{1,\sigma}} + \braket{n_{1,\sigma} | \rho_\text{aux} | n_{z,\sigma}} \right] \\
-							      &+ \frac{2\Xi_{\vec k}}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{1,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \braket{n_{d,\sigma} | \rho_\text{aux} | n_{1,\sigma}}\right]
+	S_\text{EE}\left(\rho_{\vec k\sigma}\right) = \sum_n \left( \sin^2\theta_{\vec k\sigma}\lambda_n + \cos^2\theta_{\vec k\sigma}\bar\lambda_n \right) 
 \end{aligned}\end{equation}
-where \(\rho_\text{aux} \equiv \ket{\psi_\text{aux}}\bra{\psi_\text{aux}}\) is the density matrix corresponding to the auxiliary model ground state. The \(k-\)space reduced density matrix takes the form
+
+In order to connect with the auxiliary model, we will need to obtain the reduced density matrix without tracing out any states. We will, instead, project on to the appropriate states with the particle number operator \(\hat n_{\vec k\sigma}\) and the hole number operator \(\hat h_{\vec k\sigma} = 1 - \hat n_{\vec k\sigma}\). The reduced density matrix can be obtained by applying such projectors:
 \begin{equation}\begin{aligned}
-	\rho\left(\vec k\sigma\right) =& \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2}{3\lambda_{\vec k_0}^2}\left[\braket{n_{d,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{z,\sigma} | \rho_\text{aux} | n_{z,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{1,\sigma} | \rho_\text{aux} | n_{1,\sigma}}\right] \\
-				       &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{d,\sigma} | \rho_\text{aux} | n_{z,\sigma}} + \braket{n_{z,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \braket{n_{z,\sigma} | \rho_\text{aux} | n_{1,\sigma}} + \braket{n_{1,\sigma} | \rho_\text{aux} | n_{z,\sigma}} \right]\label{density_matrix_ksapce}\\
-				       &+ \sum_{n_{(d,1),\sigma}=0,1}\frac{\Xi_{\vec k}}{\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{1,\sigma} | \rho_\text{aux} | n_{d,\sigma}} + \braket{n_{d,\sigma} | \rho_\text{aux} | n_{1,\sigma}}\right]~.
+	\rho_{\vec k\sigma} \equiv \hat n_{\vec k\sigma}\rho_\text{gs} \hat n_{\vec k\sigma} + \hat h_{\vec k\sigma}\rho_\text{gs} \hat h_{\vec k\sigma} = \sin^2\theta_{\vec k\sigma} \ket{0}\bra{0}\otimes\ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} + \cos^2\theta_{\vec k\sigma} \ket{1}\bra{1}\otimes\ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\label{red_matrix_projection}
 \end{aligned}\end{equation}
-The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho\left(\vec k\sigma\right)\ln \rho\left(\vec k\sigma\right)\).
+where \(\ket{1}\) and \(\ket{0}\) are the \(n_{\vec k\sigma}=1\) and 0 states respectively. In the basis \(\left\{ \ket{0}, \ket{1} \right\} \), the reduced density matrix can be represented as
+\begin{equation}\begin{aligned}
+	\rho_{\vec k\sigma} = \begin{pmatrix}\sin^2\theta_{\vec k\sigma} \ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} & 0 \\ \\
+	0 & \cos^2\theta_{\vec k\sigma} \ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}
+	\end{pmatrix} ~,
+\end{aligned}\end{equation}
+such that the eigenvalues of this matrix are the same as those of the operator in eq.~\ref{red_matrix}; the projection method would therefore give the same von-Neumann entropy as that obtained using the partial traces.
+
+We will now Fourier transform the reduced matrix from the definition in eq.~\ref{red_matrix_projection}, and retain terms up to the nearest neighbour, by expanding \(c_{\vec k\sigma}\) as \(c_{\vec R_0,\sigma} + \xi_{\vec k}c_{\vec R_0 + \vec a,\sigma}\), where \(\vec a\) is the nearest neighbour site to \(\vec R_0\), and \(\xi_{\vec k}\) has been defined above.
+\begin{equation}\begin{aligned}
+	\hat n_{\vec k\sigma}\ket{\Psi_\text{gs}} \to  \left[ \hat n_{\vec R_0,\sigma} + \sum_{\vec a} \hat n_{\vec R_0 + \vec a,\sigma} + \sum_{\vec a}\left( e^{i \vec{k}\cdot\vec{a}}c^\dagger_{\vec R_0,\sigma}c_{\vec R_0 + \vec a,\sigma} + \text{h.c.} \right) \right]\ket{\Psi_\text{gs}}
+\end{aligned}\end{equation}
+We also expand the ground state wavefunction: \(\ket{\Psi}_\text{gs} \simeq \ket{\psi_\text{aux}} = \frac{1}{\sqrt \mathcal{W}}\sum_{\vec a \in \text{NN of }\vec R_0}\ket{\psi_\text{aux}(\vec R_0,\vec a)}\), so that we get
+\begin{equation}\begin{aligned}
+	\hat n_{\vec k\sigma}\ket{\Psi_\text{gs}} &= \frac{1}{\sqrt \mathcal{W}}\left[ \hat n_{\vec R_0,\sigma} \sum_{\vec a}\ket{\psi_\text{aux}(\vec R_0,\vec a)} + \sum_{\vec a} \hat n_{\vec R_0 + \vec a,\sigma}\ket{\psi_\text{aux}(\vec R_0,\vec a)} + \sum_{\vec a}\left( e^{i \vec{k}\cdot\vec{a}}c^\dagger_{\vec R_0,\sigma}c_{\vec R_0 + \vec a,\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}(\vec R_0,\vec a)}\right]\\
+						  &=\hat n_{d,\sigma} \ket{\psi_\text{aux}} + \hat n_{z,\sigma}\ket{\psi_\text{aux}} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}}
+\end{aligned}\end{equation}
+By taking the outer product with its hermitian conjugate, we get the reduced density matrix:
+\begin{equation}\begin{aligned}
+	\rho_{\vec k\sigma} \simeq \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\label{density_matrix_kspace}
+\end{aligned}\end{equation}
+The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k\sigma}\ln \rho_{\vec k\sigma}\).
 
 \subsection{\(k-\)space mutual information}
-Another measure of manybody correlations would be the mutual information between two momentum-space states. For eg., the mutual information \(I_2\) between the states \(\ket{\vec k, \sigma}\) and \(\ket{-\vec k, \sigma}\) is defined as
+Another measure of many-body correlations would be the mutual information between two momentum-space states. The mutual information \(I_2\) between the states \(\ket{\vec k, \sigma}\) and \(\ket{-\vec k, \sigma}\) is defined as
 \begin{equation}\begin{aligned}
-	I_2(\vec :-\vec k) = S_\text{EE}(\vec k) + S_\text{EE}(-\vec k) - S_\text{EE}(\vec k,-\vec k)~,
+	I_2(\vec k\sigma:-\vec k\sigma) = S_\text{EE}(\rho_{\vec k\sigma}) + S_\text{EE}(\rho_{-\vec k\sigma}) - S_\text{EE}(\rho_{\vec k\sigma, -\vec k\sigma})~,
 \end{aligned}\end{equation}
-where \(S_\text{EE}(\pm\vec k)\) is the von-Neumann entropy associated with the reduced density matrix \(\rho\left(\vec k\sigma\right)\) that has \(\pm \vec k\) traced out, and \(S_\text{EE}(\vec k,-\vec k)\) is associated with the density matrix \(\rho\left(\vec k \sigma, -\vec k \sigma\right)\) that has both \(\vec k\) and \(-\vec k\) traced out. \(\rho\left(\vec k\sigma\right)\) has already been computed in eq.~\ref{density_matrix_ksapce}. In order to calculate \(\rho\left(\vec k \sigma, -\vec k \sigma\right)\), we trace out the configurations of \(-\vec k\) from the density matrix \(\rho\left(\vec k\sigma\right)\):
+where \(S_\text{EE}(\rho)\) is the von-Neumann entropy associated with the density matrix \(\rho\). The reduced density matrices \(\rho_{\pm\vec k\sigma}\) can be computed using eq.~\ref{density_matrix_kspace}; the reduced density matrix \(\rho_{\vec k\sigma, \vec k\sigma}\) has both the states \(\pm \vec k\) traced out, and it can be obtained by substituting \(\rho_{\vec k\sigma}\) back into eq.~\ref{density_matrix_kspace}:
 \begin{equation}\begin{aligned}
-	\rho\left(\vec k \sigma, -\vec k \sigma\right) = \sum_{n_{-\vec k\sigma}=0,1} \braket{n_{-\vec k\sigma}| \rho\left(\vec k\sigma\right) | n_{-\vec k\sigma}}
-\end{aligned}\end{equation}
-By following an approach similar to the one that led to eq.~\ref{overlap_ftransform}, we Fourier transform the \(k-\)space terms:
-\begin{equation}\begin{aligned}
-	&\rho\left(\vec k \sigma, -\vec k \sigma\right) \\
-	&= \sum_{n_{(\vec R_0,\vec R_0 + \vec a,\vec R_0  +\vec a^\prime),\sigma}=0,1}\left[\braket{n_{\vec R_0,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0, \sigma}} + \xi_{-\vec k}^2\braket{n_{\vec R_0 + \vec a,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0 + \vec a, \sigma}} + \Xi_{-\vec k}^2\braket{n_{\vec R_0 + \vec a^\prime,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0 + \vec a^\prime, \sigma}} \right.\\
-	&\left.+ 2\xi_{-\vec k}\braket{n_{\vec R_0 + \vec a,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0, \sigma}} + 2\Xi_{-\vec k}\braket{n_{\vec R_0 + \vec a^\prime,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0, \sigma}} + 2\xi_{-\vec k}\Xi_{-\vec k}\braket{n_{\vec R_0 + \vec a^\prime,\sigma}| \rho\left(\vec k\sigma\right) | n_{\vec R_0 + \vec a, \sigma}}\right]\\
-	&= \sum_{n_{(d,z,1),\sigma}=0,1}\frac{1 + \xi_{\vec k}^2 + \Xi_{\vec k}^2}{3\lambda_{\vec k_0}^2}\left[\braket{n_{d,\sigma} | \rho\left(\vec k\sigma\right) | n_{d,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{z,\sigma} | \rho\left(\vec k\sigma\right) | n_{z,\sigma}} + \frac{1}{\mathcal{W}}\braket{n_{1,\sigma} | \rho\left(\vec k\sigma\right) | n_{1,\sigma}}\right] \\
-				       &+ \sum_{n_{(d,z,1),\sigma}=0,1}\frac{\xi_{\vec k}\left(1 + \Xi_{\vec k}\right)}{2\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{d,\sigma} | \rho\left(\vec k\sigma\right) | n_{z,\sigma}} + \braket{n_{z,\sigma} | \rho\left(\vec k\sigma\right) | n_{d,\sigma}} + \braket{n_{z,\sigma} | \rho\left(\vec k\sigma\right) | n_{1,\sigma}} + \braket{n_{1,\sigma} | \rho\left(\vec k\sigma\right) | n_{z,\sigma}} \right]\\
-				       &+ \sum_{n_{(d,1),\sigma}=0,1}\frac{\Xi_{\vec k}}{\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{n_{1,\sigma} | \rho\left(\vec k\sigma\right) | n_{d,\sigma}} + \braket{n_{d,\sigma} | \rho\left(\vec k\sigma\right) | n_{1,\sigma}}\right]~.
+	\rho_{\vec k\sigma, -\vec k\sigma} &= \hat n_{-\vec k\sigma}\rho_{\vec k\sigma}\hat n_{-\vec k\sigma} + \hat h_{-\vec k\sigma}\rho_{\vec k\sigma}\hat h_{-\vec k\sigma} \\
+					   &= \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{-\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{-\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]
 \end{aligned}\end{equation}
 
 
 \section{The Mott MIT: a local perspective}
 \subsection{Gapping of the local spectral function and vanishing of correlations}
-At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath zeroth site, the couplings \(J\) and \(V\) of the auxiliary model become irrelevant while \(U\) becomes remains non-zero, leading to a low-energy phase where the impurity is cutt off from the conduction bath. This is the local moment phase, where low-energy excitations have been gapped out.
+At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath zeroth site, the couplings \(J\) and \(V\) of the auxiliary model become irrelevant while \(U\) becomes remains non-zero, leading to a low-energy phase where the impurity is cut off from the conduction bath. This is the local moment phase, where low-energy excitations have been gapped out.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.48\textwidth]{phase-map-MIT.pdf}

@@ -467,21 +467,27 @@ We also expand the ground state wavefunction: \(\ket{\Psi}_\text{gs} \simeq \ket
 	\hat n_{\vec k\sigma}\ket{\Psi_\text{gs}} &= \frac{1}{\sqrt \mathcal{W}}\left[ \hat n_{\vec R_0,\sigma} \sum_{\vec a}\ket{\psi_\text{aux}(\vec R_0,\vec a)} + \sum_{\vec a} \hat n_{\vec R_0 + \vec a,\sigma}\ket{\psi_\text{aux}(\vec R_0,\vec a)} + \sum_{\vec a}\left( e^{i \vec{k}\cdot\vec{a}}c^\dagger_{\vec R_0,\sigma}c_{\vec R_0 + \vec a,\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}(\vec R_0,\vec a)}\right]\\
 						  &=\hat n_{d,\sigma} \ket{\psi_\text{aux}} + \hat n_{z,\sigma}\ket{\psi_\text{aux}} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}}
 \end{aligned}\end{equation}
-By taking the outer product with its hermitian conjugate, we get the reduced density matrix:
+By taking the outer product with its hermitian conjugate and then adding the hole counterpart \(\hat h_{\vec k\sigma}\rho_\text{gs} \hat h_{\vec k\sigma}\), we get the reduced density matrix:
 \begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma} \simeq \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\label{density_matrix_kspace}
+	\rho_{\vec k\sigma} \simeq& \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\\
+				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]\label{density_matrix_kspace}
 \end{aligned}\end{equation}
 The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k\sigma}\ln \rho_{\vec k\sigma}\).
 
 \subsection{\(k-\)space mutual information}
-Another measure of many-body correlations would be the mutual information between two momentum-space states. The mutual information \(I_2\) between the states \(\ket{\vec k, \sigma}\) and \(\ket{-\vec k, \sigma}\) is defined as
+Another measure of many-body correlations would be the mutual information between two momentum-space states. The mutual information \(I_2\) between the states \(\ket{\vec k, \sigma}\) and \(\ket{\vec q, \sigma}\) is defined as
 \begin{equation}\begin{aligned}
-	I_2(\vec k\sigma:-\vec k\sigma) = S_\text{EE}(\rho_{\vec k\sigma}) + S_\text{EE}(\rho_{-\vec k\sigma}) - S_\text{EE}(\rho_{\vec k\sigma, -\vec k\sigma})~,
+	I_2(\vec k\sigma:\vec q\sigma) = S_\text{EE}(\rho_{\vec k\sigma}) + S_\text{EE}(\rho_{\vec q\sigma}) - S_\text{EE}(\rho_{\vec k\sigma, \vec q\sigma})~,
 \end{aligned}\end{equation}
-where \(S_\text{EE}(\rho)\) is the von-Neumann entropy associated with the density matrix \(\rho\). The reduced density matrices \(\rho_{\pm\vec k\sigma}\) can be computed using eq.~\ref{density_matrix_kspace}; the reduced density matrix \(\rho_{\vec k\sigma, \vec k\sigma}\) has both the states \(\pm \vec k\) traced out, and it can be obtained by substituting \(\rho_{\vec k\sigma}\) back into eq.~\ref{density_matrix_kspace}:
+where \(S_\text{EE}(\rho)\) is the von-Neumann entropy associated with the density matrix \(\rho\). The reduced density matrices \(\rho_{\vec k\sigma}\) and \(\rho_{\vec q\sigma}\) can be computed using eq.~\ref{density_matrix_kspace}; the reduced density matrix \(\rho_{\vec q\sigma, \vec k\sigma}\) has both the states \(\vec k\sigma\) and \(\vec q\sigma\) traced out, and it can be obtained by substituting \(\rho_{\vec k\sigma}\) back into eq.~\ref{density_matrix_kspace}:
 \begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma, -\vec k\sigma} &= \hat n_{-\vec k\sigma}\rho_{\vec k\sigma}\hat n_{-\vec k\sigma} + \hat h_{-\vec k\sigma}\rho_{\vec k\sigma}\hat h_{-\vec k\sigma} \\
-					   &= \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{-\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{-\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]
+	&\rho_{\vec k\sigma, \vec q\sigma} \\
+	=& \hat n_{\vec q\sigma}\rho_{\vec k\sigma}\hat n_{\vec q\sigma} + \hat h_{\vec q\sigma}\rho_{\vec k\sigma}\hat h_{\vec q\sigma}\\
+	=& \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\\
+				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]\\
+	=& \left[\left(\hat n_{d,\sigma} + \hat n_{z,\sigma}\right)^2 + \frac{\xi_{\vec q} + \xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)+ \frac{\xi_{\vec q} \xi_{\vec k}}{\mathcal{W}}\left( \hat n_{d\sigma} - \hat n_{0\sigma} \right)^2 \right] \rho_{\vec k\sigma} \times\\
+	 &\left[\left(\hat n_{d,\sigma} + \hat n_{z,\sigma}\right)^2 + \frac{\xi_{\vec q} + \xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)+ \frac{\xi_{\vec q} \xi_{\vec k}}{\mathcal{W}}\left( \hat n_{d\sigma} - \hat n_{0\sigma} \right)^2 \right]\\
+				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]
 \end{aligned}\end{equation}
 
 

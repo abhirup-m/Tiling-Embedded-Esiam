@@ -419,18 +419,9 @@ where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neig
 \end{aligned}\end{equation}
 
 \section{Momentum-space entanglement}
+The density matrix of the full Hamiltonian in ground-state is simply \(\rho_\text{gs} = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities.
 
-\begin{itemize}
-	\item \(n_{\vec R_0}\rho n_{\vec R_0}\) + \(n_{\vec R_0 + \vec a}\rho n_{\vec R_0 + \vec a}\)
-	\item \(e^{i \vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\rho n_{\vec R_0}\) + h.c. + 
-	      \(e^{-i \vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\rho n_{\vec R_0}\) + h.c.
-	\item \(c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0 + \vec a}\rho n_{\vec R_0}\) + h.c.
-	\item   \(e^{2i\vec{q}\cdot\vec{a}}c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c. + 
-		\(c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c.
-	\item \(e^{i \vec{q}\cdot\vec{a}} n_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0 + \vec a}c_{\vec R_0}\) + h.c. + \(e^{-i \vec{q}\cdot\vec{a}} n_{\vec R_0 + \vec a}\rho c^\dagger_{\vec R_0}c_{\vec R_0 + \vec a}\) + h.c.
-\end{itemize}
 \subsection{\(k-\)space von-Neumann entropy}
-The density matrix of the full Hamiltonian in ground-state is simply \(\rho_\text{gs} = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities. 
 The full ground state \(\ket{\Psi_\text{gs}}\) can be written in the basis of the Fock states of momentum \(\vec k\sigma\):
 \begin{equation}\begin{aligned}
 	\Psi_\text{gs} = \sin\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 0}\otimes\ket{\phi_{\vec k\sigma}} + \cos\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 1}\otimes\ket{\bar\phi_{\vec k\sigma}}
@@ -575,6 +566,52 @@ In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show th
 \end{figure}
 
 {\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colormap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colormap} as \(r\) is tuned towards and into the transition.}
+
+\section{Emergence of effectively pseudogapped Anderson model at the MIT}
+\begin{itemize}
+\item The RG equation (in the weak coupling limit) of the \(J-U_b\) model that emerges in the Kondo limit of the eSIAM is similar to that of the pseudogapped Anderson model~\cite{fritzvojta2004} that has a bath density of states of the form \(|\omega|^\alpha\). If we define the dimensionless Kondo coupling \(g = \rho J\) and the dimensionless bath coupling \(u = \rho U_b\), the RG equation for \(g\),
+\begin{equation}\begin{aligned}
+	g \simeq g^2 + 4gu~,
+\end{aligned}\end{equation}
+can be mapped to the corresponding RG equation for the pseudogapped Kondo model,
+\begin{equation}\begin{aligned}
+	g = g^2 - \alpha g~,
+\end{aligned}\end{equation}
+with the identification \(\alpha = -4u = -4\rho U_b\).
+\item Following the work by Si and Kotliar~\cite{kotliarsi_1993}, the impurity self-energy of the \(J-U_b\) model takes the form
+	\begin{equation}\begin{aligned}
+		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}}~,
+	\end{aligned}\end{equation}
+	where the exponent \(\gamma_{dd}\) can be written in terms of the phase shifts (at the RG fixed point) \(\delta^*_\text{sp}\) and \(\delta^*_\text{ch}\) suffered by the conduction electrons due to the potentials \(J\) and \(U_b\) respectively in the Hamiltonian:
+	\begin{equation}\begin{aligned}
+		\gamma_{dd} = \frac{5}{4} - \left[ \frac{1}{\pi}\left( \delta^*_\text{sp} + \delta^*_\text{ch} \right) - \frac{1}{2}  \right]^2 - \left( \frac{\delta^*_\text{ch}}{\pi} \right)^2~.
+	\end{aligned}\end{equation}
+	The phase shifts are given by \(\delta^*_\text{sp}=\arctan\left( \pi g/2 \right) \) and \(\delta^*_\text{ch}=\arctan\left( \pi u/2 \right) \). In the small coupling limit, these can be approximated as \(\delta^*_\text{sp}=\pi g/2\) and \(\delta^*_\text{ch}=\pi u/2\).
+\item We now focus on the critical point \(g = -4u\) of our model. At this point, the phase shifts get related to each other: \(\delta^*_\text{sp} = -4\delta^*_\text{ch}\), so that the exponent of the self-energy takes the form
+	\begin{equation}\begin{aligned}
+		\gamma_{dd} \simeq 1 - \frac{3}{\pi}\delta^*_\text{ch} = 1 + \frac{3}{8}\alpha
+	\end{aligned}\end{equation}
+	where we have used the fact that for our model, the effective pseudogap parameter \(\alpha\) is set to \(-4u\). The local self-energy then vanishes as
+	\begin{equation}\begin{aligned}
+		\Sigma_{dd} \sim |\omega|^{1 + \frac{3}{8}\alpha}
+	\end{aligned}\end{equation}
+	This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004}.
+\item In a similar manner, the self-energy \(\Sigma_{d0}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{d0}\) for this self-energy is given by \(\gamma_{d0} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
+	\begin{equation}\begin{aligned}
+		\Sigma_{d0} \sim |\omega|^{- \frac{3}{4}\alpha}
+	\end{aligned}\end{equation}
+\item By using our tiling approach, the \(k-\)space self-energy at the critical point can be written as
+	\begin{equation}\begin{aligned}
+		\Sigma(\vec k,\omega) = \Sigma_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\Sigma_{d0}
+	\end{aligned}\end{equation}
+	This expression suggests that at the critical point, all points in the Brillouin zone except those at the Fermi surface get gapped out.
+	
+	
+	
+
+	
+\end{itemize}
+
 
 \section{Topological nature of the transition}
 Since the impurity charge hybridising with the bath contributes to the total Luttinger volume of the system~\cite{martin1982fermi}, decoupling of the impurity from the conduction bath leads to a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write

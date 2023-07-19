@@ -10,7 +10,6 @@
 
 \title{\bf A Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Electronic Systems}
 \author{Abhirup Mukherjee, N.S. Vidhyadhiraja, A. Taraphder, Siddhartha Lal}
-% \affil{Indian Institute of Science Education and Research Kolkata, Mohanpur}
 \date{\today}
 
 \begin{document}
@@ -145,7 +144,7 @@ The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence corr
 
 \section{Creating a Hubbard-Heisenberg Hamiltonian from an extended Anderson impurity model}
 
-Previously, we have worked out the grounstate phases of a single-impurity model with an interacting bath:
+Previously, we have worked out the ground-state phases of a single-impurity model with an interacting bath:
 \begin{equation}\begin{aligned}
 	\label{siam_attr}
 	\mathcal{H}_\text{aux} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + \sum_{k\sigma} \left(V_{k} c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2 
@@ -193,7 +192,7 @@ The conclusion is that we can tile Anderson models with interacting baths into a
 	\sum_i \mathcal{H}_\text{aux}(i) = \mathcal{H}_{H-H}
 \end{aligned}\end{equation}
 
-As mentioned before, no chemical potential \(\mu\) is generated becuase the auxiliary model was at half-filling, both in the impurity as well as in the bath. We can change the chemical potential by introducing two terms:
+As mentioned before, no chemical potential \(\mu\) is generated because the auxiliary model was at half-filling, both in the impurity as well as in the bath. We can change the chemical potential by introducing two terms:
 \begin{equation}\begin{aligned}
 	\eta \sum_\sigma\left(n_{d\sigma} - \frac{1}{2}\right), \mu \sum_{i,\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right)
 \end{aligned}\end{equation}
@@ -272,7 +271,7 @@ In order to simplify this expression, we rewrite the sum over the auxiliary mode
 \begin{equation}\begin{aligned}
 	\sum_{\vec R_i} \mathcal{H}_\text{aux}(\vec R_i) = \sum_{\vec R_i} \left[\mathcal{H}_\text{aux}(\vec R_0) + \Delta(\vec R_i)\right] = N \left[\mathcal{H}_\text{aux}(\vec R_0) + \frac{1}{N}\sum_{\vec R_i} \Delta(\vec R_i)\right];
 \end{aligned}\end{equation}
-\(\vec R_0\) is the origin of the lattice, and \(N\) is the number of lattice sites. The uniform piece \(\sum_{i}\mathcal{H}_\text{aux}(\vec R_0)\) acts as the "center-of-mass" Hamiltonian - it responds to spectral flow brought about by changes in boundary conditions. The other piece acts as a "relative motion" Hamiltonian and is insensitive to changes in the boundary conditions, because any spectral flow of the auxiliary model Hamiltonians gets cancelled out in the difference operation. While the COM Hamiltonian is a thermodynamically large object, the number of terms in teh difference piece is only of the order of unity (the sum over \(\vec R_i\) is cancelled out by the \(1/N\) factor). We can therefore expand the exponential in the ratio of the relative piece to the COM piece:
+\(\vec R_0\) is the origin of the lattice, and \(N\) is the number of lattice sites. The uniform piece \(\sum_{i}\mathcal{H}_\text{aux}(\vec R_0)\) acts as the ``center-of-mass" Hamiltonian - it responds to spectral flow brought about by changes in boundary conditions. The other piece acts as a "relative motion" Hamiltonian and is insensitive to changes in the boundary conditions, because any spectral flow of the auxiliary model Hamiltonians gets cancelled out in the difference operation. While the COM Hamiltonian is a thermodynamically large object, the number of terms in the difference piece is of the order of unity (the sum over \(\vec R_i\) is cancelled out by the \(1/N\) factor). We can therefore expand the exponential in the ratio of the relative piece to the COM piece:
 \begin{equation}\begin{aligned}
 	e^{i H_\text{H-H} t} = e^{i t N \mathcal{H}_\text{aux}(\vec R_0)}\left[1 + \frac{1}{N \mathcal{H}_\text{aux}(\vec R_0)}\sum_{\vec R_i} \Delta(\vec R_i) + \ldots\right];
 \end{aligned}\end{equation}
@@ -354,9 +353,9 @@ Similar expressions hold for non-local correlation functions.
 	      &\left.\braket{\psi_\text{aux}(\vec R_0, -\vec a) | \mathcal{O}_1(\vec R_0 - \vec a) \mathcal{O}_2(\vec R_0) + \mathcal{O}_1(\vec R_0 - 2\vec a) \mathcal{O}_2(\vec R_0 - \vec a) | \psi_\text{aux}(\vec R_0, -\vec a)}\right]\\
 	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{W}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right]
 \end{aligned}\end{equation}
-In the first equation, the first two terms were introduced to incorporate effects arisingfrom the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \(\vec R_0\) as \(d\) and \(\vec R_0 + \vec a\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that theu act at the first site of the bath (beyond the bath zeroth site).
+In the first equation, the first two terms were introduced to incorporate effects arising from the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \(\vec R_0\) as \(d\) and \(\vec R_0 + \vec a\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that they act at the first site of the bath (beyond the bath zeroth site).
 
-The next-nearest correlation function is relatively simpler, becuase only those terms contribute that involve both the impurity as well as the first site. If \(\vec a^\prime\) denotes the relative vector between a given site and one of its next-nearest neighbours, we can write
+The next-nearest correlation function is relatively simpler, because only those terms contribute that involve both the impurity as well as the first site. If \(\vec a^\prime\) denotes the relative vector between a given site and one of its next-nearest neighbours, we can write
 \begin{equation}\begin{aligned}
 	\label{nnn_correlation}
 	\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1(\vec R_0) \mathcal{O}_2(\vec R_0 + \vec a^\prime) + \mathcal{O}_1(\vec R_0 - \vec a^\prime) \mathcal{O}_2(\vec R_0) | \Psi_\text{gs}}\right]\\
@@ -370,7 +369,7 @@ The momentum space Greens function can be expressed as a Fourier transform of th
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) = \frac{1}{N}\sum_{\vec r, \vec r_j}e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_{H-H} (|\vec{r_i} - \vec {r_j}|, \omega)
 \end{aligned}\end{equation}
-where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). Given that our auxiliary model shows an emergent self-consistency on the impurity site and on the link between the impurity and the zeroth site, we approximate the \(k-\)space Greens functions from the local and nearest-neighbour contributions, by usingthe mapping between the bulk Greens function \(G\) and auxiliary model Greens functions \(\mathcal{G}\)(eq.~\ref{greens_func_relation}):
+where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). Given that our auxiliary model shows an emergent self-consistency on the impurity site and on the link between the impurity and the zeroth site, we approximate the \(k-\)space Greens functions from the local and nearest-neighbour contributions, by using the mapping between the bulk Greens function \(G\) and auxiliary model Greens functions \(\mathcal{G}\)(eq.~\ref{greens_func_relation}):
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
 \end{aligned}\end{equation}
@@ -379,7 +378,7 @@ The first summation produces a factor of $N$, while the second summation can be 
 	\label{k_Gf_siam}
 	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^{\mathcal{W}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]~,
 \end{aligned}\end{equation}
-where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\), it being essentially the disperson in units of the hopping strength \(t\). For example, on a d-dimensional hypercubic lattice, we obtain
+where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\), it being essentially the dispersion in units of the hopping strength \(t\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
 	\xi_{\vec k} = \sum_{i=1}^d \left(e^{i k_i {a_i}} + e^{-i k_i {a_i}}\right) = 2\sum_{i=1}^d \cos k_i a_i~,
 \end{aligned}\end{equation}
@@ -399,7 +398,7 @@ From the knowledge of Greens function, one can write down self-energies using Dy
 where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model.
 
 \section{Correlation functions in momentum space}
-Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearst-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
+Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearest-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
 \begin{equation}\begin{aligned}
 	\chi(\vec r) = \left<\mathcal{O}_1 (\vec R + \vec r) \mathcal{O}_2(\vec R)\right> = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot \vec r}e^{i \left(\vec k + \vec q\right) \cdot \vec R}\left<\mathcal{O}_1 (\vec q) \mathcal{O}_2(\vec k)\right>
 \end{aligned}\end{equation}
@@ -541,20 +540,20 @@ In Fig.~\ref{kspace_selfenergy}, we plot the momentum dependence of the single-p
 In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show the momentum dependence of two-particle correlation functions. In every figure, each panel shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left panel to the right is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each panel, moving upwards amounts to tuning the system towards the transition. The spin-spin correlations (in Fig.~\ref{spin_kspace}) are large near the \(\vec k = \left( 0,0 \right) \) point, presumably because of the dominance of the Kondo cloud at long wavelengths. They vanish in the local moment phase (flat blue region near the top). The charge and pairing correlations (Figs.~\ref{charge_kspace} and \ref{pair_kspace}) disappear as the system moves into the Kondo regime, but reappear exactly at the transition. This is tied to the non-Fermi liquid theory at the QCP, as seen in the auxiliary model.
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{spin_kspace_all.pdf}
+\includegraphics[width=\textwidth]{spin_rspace_all.pdf}
 \caption{Momentum dependence of spin-spin correlation \(\left<\vec{S}_{-\vec k}\cdot\vec{S}_{\vec k} \right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
 \label{spin_kspace}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{charge_kspace_all.pdf}
+\includegraphics[width=\textwidth]{charge_rspace_all.pdf}
 \caption{Momentum dependence of charge-charge correlation \(\left<\vec{C}_{-\vec k}\cdot\vec{C}_{\vec k} \right>\), where \(\vec C\) is the charge isospin associated with the doublet formed by the doublon and holon states. Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
 \label{charge_kspace}
 \end{figure}
 
 \begin{figure}[!htb]
-\includegraphics[width=\textwidth]{pair_kspace_all.pdf}
+\includegraphics[width=\textwidth]{pair_rspace_all.pdf}
 \caption{Momentum dependence of pairing correlation \(\left<c^\dagger_{-k\uparrow}c^\dagger_{-k\downarrow}c_{k\downarrow}c_{k\uparrow}\right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
 \label{pair_kspace}
 \end{figure}
@@ -568,17 +567,19 @@ In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show th
 {\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colormap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colormap} as \(r\) is tuned towards and into the transition.}
 
 \section{Emergence of effectively pseudogapped Anderson model at the MIT}
-\begin{itemize}
-\item The RG equation (in the weak coupling limit) of the \(J-U_b\) model that emerges in the Kondo limit of the eSIAM is similar to that of the pseudogapped Anderson model~\cite{fritzvojta2004} that has a bath density of states of the form \(|\omega|^\alpha\). If we define the dimensionless Kondo coupling \(g = \rho J\) and the dimensionless bath coupling \(u = \rho U_b\), the RG equation for \(g\),
+%\begin{itemize}
+%\item 
+We begin by recalling that the RG equation (in the weak coupling limit) of the \(J-U_b\) model that emerges in the Kondo limit of the eSIAM is similar to that of the pseudogapped Anderson model~\cite{fritzvojta2004} that has a bath density of states of the form \(\rho\sim |\omega|^\alpha\). If we define the dimensionless Kondo coupling \(g = \rho J\) and the dimensionless bath coupling \(u = \rho U_b\), the RG equation for \(g\),
 \begin{equation}\begin{aligned}
-	g \simeq g^2 + 4gu~,
+	\Delta g \simeq g^2 + 4gu~,
 \end{aligned}\end{equation}
 can be mapped to the corresponding RG equation for the pseudogapped Kondo model,
 \begin{equation}\begin{aligned}
-	g = g^2 - \alpha g~,
+	\Delta g = g^2 - \alpha g~,
 \end{aligned}\end{equation}
-with the identification \(\alpha = -4u = -4\rho U_b\).
-\item Following the work by Si and Kotliar~\cite{kotliarsi_1993}, the impurity self-energy of the \(J-U_b\) model takes the form
+with the identification \(\alpha = -4u = -4\rho U_b\). Specifically, this corresponds to a Kondo model that is coupled to a conduction bath with a single-particle density of states that is vanishing (pseudogapped): $\rho\sim |\omega|^{\alpha}$~.
+\par
+Now, following the work by Si and Kotliar~\cite{kotliarsi_1993}, the impurity self-energy of the \(J-U_b\) model takes the form
 	\begin{equation}\begin{aligned}
 		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}}~,
 	\end{aligned}\end{equation}
@@ -587,30 +588,34 @@ with the identification \(\alpha = -4u = -4\rho U_b\).
 		\gamma_{dd} = \frac{5}{4} - \left[ \frac{1}{\pi}\left( \delta^*_\text{sp} + \delta^*_\text{ch} \right) - \frac{1}{2}  \right]^2 - \left( \frac{\delta^*_\text{ch}}{\pi} \right)^2~.
 	\end{aligned}\end{equation}
 	The phase shifts are given by \(\delta^*_\text{sp}=\arctan\left( \pi g/2 \right) \) and \(\delta^*_\text{ch}=\arctan\left( \pi u/2 \right) \). In the small coupling limit, these can be approximated as \(\delta^*_\text{sp}=\pi g/2\) and \(\delta^*_\text{ch}=\pi u/2\).
-\item We now focus on the critical point \(g = -4u\) of our model. At this point, the phase shifts get related to each other: \(\delta^*_\text{sp} = -4\delta^*_\text{ch}\), so that the exponent of the self-energy takes the form
+\par 
+We now focus on the quantum critical point \(g = -4u\) of our model. At this point, the phase shifts get related to each other: \(\delta^*_\text{sp} = -4\delta^*_\text{ch}\), so that the exponent of the self-energy takes the form
 	\begin{equation}\begin{aligned}
 		\gamma_{dd} \simeq 1 - \frac{3}{\pi}\delta^*_\text{ch} = 1 + \frac{3}{8}\alpha
 	\end{aligned}\end{equation}
 	where we have used the fact that for our model, the effective pseudogap parameter \(\alpha\) is set to \(-4u\). The local self-energy then vanishes as
 	\begin{equation}\begin{aligned}
-		\Sigma_{dd} \sim |\omega|^{1 + \frac{3}{8}\alpha}
+		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}}\simeq |\omega|^{1 + \frac{3}{8}\alpha}
 	\end{aligned}\end{equation}
-	This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004}.
-\item In a similar manner, the self-energy \(\Sigma_{d0}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{d0}\) for this self-energy is given by \(\gamma_{d0} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
+The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following range: $1\leq \gamma_{dd} \leq 2$. This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004} where the power law exponent ranges between $1/2$ and $2$. In a similar manner, the self-energy \(\Sigma_{d0}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{d0}\) for this self-energy is given by \(\gamma_{d0} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
 	\begin{equation}\begin{aligned}
-		\Sigma_{d0} \sim |\omega|^{- \frac{3}{4}\alpha}
+		\Sigma_{d0} \sim |\omega|^{- \frac{3}{4}\alpha}~.
 	\end{aligned}\end{equation}
-\item By using our tiling approach, the \(k-\)space self-energy at the critical point can be written as
+\par 
+By using our tiling approach, the \(k-\)space self-energy at the critical point can be written as
 	\begin{equation}\begin{aligned}
 		\Sigma(\vec k,\omega) = \Sigma_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\Sigma_{d0}
 	\end{aligned}\end{equation}
-	This expression suggests that at the critical point, all points in the Brillouin zone except those at the Fermi surface get gapped out.
+	%This expression suggests that at the critical point, all points in the Brillouin zone except those at the Fermi surface get gapped out. 
+	It is clear that the divergent $\Sigma_{d0}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ precisely at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$; $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else. Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
+\begin{equation}
+A(\omega,\vec{k}) \sim \frac{1}{\mathcal{W}}\xi_{\vec k}|\omega|^{\frac{3}{4}\alpha}~.
+\end{equation}	
+This clearly corresponds to the vanishing of the residue of the Landau quasiparticle precisely at the metal-insulator transition, and the emergence of a gapless non-Fermi liquid ``local quantum critical" metal~\cite{Si2001}. Further, the fact that the single-particle self-energy $\Sigma$ vanishes precisely at the Fermi surface signals the fact that the Luttinger's count for states on the Fermi surface is preserved and identical to that in the Fermi liquid phase. 
+%This guarantees that the system at the QCP remains gapless, and corresponds to a ``local quantum critical" metal~\cite{Si2001}.	
 	
 	
-	
-
-	
-\end{itemize}
+%\end{itemize}
 
 
 \section{Topological nature of the transition}
@@ -710,7 +715,7 @@ A more accurate picture of the insulating and metallic phases can be obtained by
 \end{figure}
 
 \section{Presence of two self-energies under symmetry-breaking}
-The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity, leading to two kinds of self-energies, one for each spin state~\cite{logan_2014,Logan_2015}. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique groundstate is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
+The effective Hamiltonian that describes either the metallic or the insulating phase has $\mathrm{SU}(2)$ symmetry in both the spin and charge sectors. Since the repulsive correlation on the impurity picks out the spin sector, we focus on that for now. Applying a small magnetic field on the impurity breaks this spin-rotation symmetry and picks out either the up or the down state on the impurity, leading to two kinds of self-energies, one for each spin state~\cite{logan_2014,Logan_2015}. The Hamiltonian has the form \(H(h)_i = -\frac{U}{2}\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2 - h\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)\). The unique ground-state is \(\ket{\hat n_{i,\sigma = \text{sgn}(h)}=1,\hat n_{i,\sigma = -\text{sgn}(h)}=0}\), with an energy of \(E_\text{gs} = -\frac{U}{2} - h\). The Greens function is easiest to obtain from the Lehmann-Kallen representation (eq.~\ref{Gf_lk}):
 \begin{equation}\begin{aligned}
 	G_{i,\sigma} = \sum_{n}\left[||\bra{\text{GS}}c_{i\sigma}\ket{n}||^2\frac{1}{\omega + E_\text{GS} - E_n} + ||\bra{n}c_{i\sigma}\ket{\text{GS}}||^2\frac{1}{\omega - E_\text{GS} + E_n}\right]\\
 \end{aligned}\end{equation}
@@ -728,12 +733,13 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $\mathcal{W}\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens functin can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
+We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $\mathcal{W}\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens function can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
 \begin{equation}\begin{aligned}
 	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{W}} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
 \end{aligned}\end{equation}
 where \(G^{(0)}(\vec k,\omega)\) is the non-interacting Greens function and \(G_\text{aux,dd}(\omega)\) is the site-diagonal Greens function of the auxiliary model. It is clear from the final form that only the diagonal term \(G_\text{aux,dd}(\omega)\) of the interacting Greens function affects the self-energy while the off-diagonal part \(G_\text{aux,dz}\) fails to contribute as \(w \to \infty\). 
-
+\par
+\textbf{MAKE CONNECTION BETWEEN COM and Q.IMP PROBLEM}
 \begin{appendices}
 
 \appendixtitleon

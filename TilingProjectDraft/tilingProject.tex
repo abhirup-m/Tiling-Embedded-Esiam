@@ -24,9 +24,9 @@ The Hubbard model is one of the fundamental models for strong electronic correla
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
 The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
-There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Neel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
+There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Néel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
 
-One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For eg, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
+One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For example, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
 \begin{equation}
 \label{clus_bath_siam}
 \mathcal{H}_\text{SIAM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow} - t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
@@ -301,7 +301,8 @@ where \(\ket{\psi_\text{diff}(\vec k_0)} = \ket{\Psi_\text{gs}} - \frac{\sqrt \m
 G_\text{H-H}(\vec r, t) =  \frac{-i\theta(t)}{\mathcal{W} \lambda_{\vec k_0}^2}\sum_{\vec a_1, \vec a_2 \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a_1) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a_2)}~.
 \end{aligned}\end{equation}
 Specifically, for the local Greens function \(G_\text{H-H}(\vec r=0, t)\), we keep the states with \(\vec a_1 = \vec a_2\), leading to the expression
-\begin{equation}\begin{aligned}\label{greens_func_approx}
+\begin{equation}\begin{aligned}
+	\label{greens_func_approx}
 	G_\text{loc}(t) \equiv G_\text{H-H}(\vec r=0, t) =  \frac{-i\theta(t)}{\mathcal{W} \lambda_{\vec k_0}^2}\sum_{\vec a \in \text{NN of }\vec R_0}\braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + r)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)}~.
 \end{aligned}\end{equation}
 Because of the symmetry of the lattice, all Greens functions obtained for various positions of the zeroth site \(\vec a\) are equal, and the local Greens function simplifies to
@@ -315,9 +316,10 @@ In this form, the only Hamiltonian involved in the expression is the COM Hamilto
 \end{aligned}\end{equation}
 The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impurity Greens function for the auxiliary model \(N \mathcal{H}_\text{aux}(\vec R_0)\).
 
-For the nearest neighbour Greens function \(G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2 = \vec a\) in the summation of eq.~\ref{greens_func_approx}:
+For the nearest neighbour Greens function \(G_\text{near-n} \equiv G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2 = \vec a\) in the summation of eq.~\ref{greens_func_approx}:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec r=\vec a, t) &= -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} = \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
+	G_\text{near-n} \equiv G_\text{H-H}(\vec r=\vec a, t) = -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} \\
+	= \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
 \end{aligned}\end{equation}
 
 
@@ -367,16 +369,18 @@ The next-nearest correlation function is relatively simpler, because only those 
 
 The momentum space Greens function can be expressed as a Fourier transform of the real space Greens functions:
 \begin{equation}\begin{aligned}
-	G_{H-H} (\vec k, \omega) = \frac{1}{N}\sum_{\vec r, \vec r_j}e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}G_{H-H} (|\vec{r_i} - \vec {r_j}|, \omega)
+	G_{H-H} (\vec k, \omega) = \frac{1}{N \mathcal{W}}\sum_{\vec r, \vec R}e^{i \vec{k}\cdot\left(\vec r + \vec R\right)}G_{H-H} (\vec r + \vec R, \omega)
 \end{aligned}\end{equation}
-where $\vec{r_i}$ is the position vector of a particular lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between any two sites. As a result, $\vec r=0$ gives the local Greens function, $|\vec r|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). Given that our auxiliary model shows an emergent self-consistency on the impurity site and on the link between the impurity and the zeroth site, we approximate the \(k-\)space Greens functions from the local and nearest-neighbour contributions, by using the mapping between the bulk Greens function \(G\) and auxiliary model Greens functions \(\mathcal{G}\)(eq.~\ref{greens_func_relation}):
+where $\vec R$ sums over all lattice sites and \(\vec r\) sums over all nearest-neighbours of that site, such that \(\vec R + \vec r\) sums over all possible real space Greens functions. The distance \(\vec r + \vec R\) has been measured with respect to some chosen central lattice site. Because of translation invariance, the real space Greens function depends only on the relative vector between two sites. As a result, $\vec r + \vec R = 0$ gives the local Greens function, $|\vec r + \vec R|=a$ gives the nearest-neighbour Greens function and so on ($a$ being the lattice spacing). Given that our auxiliary model shows an emergent self-consistency on the impurity site and on the link between the impurity and the zeroth site, we approximate the \(k-\)space Greens functions from the local and nearest-neighbour contributions:
 \begin{equation}\begin{aligned}
-	G_{H-H} (\vec k, \omega) \simeq \frac{1}{N}\sum_{\vec{r_i} = \vec {r_j}}\left(G_{H-H} (\omega)\right) _\text{loc} + \frac{1}{N}\sum_{|\vec{r_i} - \vec {r_j}|=a} e^{i \vec{k}\cdot\left(\vec{r_i} - \vec {r_j}\right)}\left(G_{H-H} (\omega)\right)_\text{n-n}
+	G_{H-H} (\vec k, \omega) &= \frac{1}{N \mathcal{W}}\sum_{\vec r, \vec R}\left[e^{i \vec{k}\cdot\left(\vec r + \vec R\right)}G_{H-H} (\vec r + \vec R, \omega) - G_\text{H-H}(0,\omega) - e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega) + G_\text{H-H}(0,\omega) + e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega)\right]\\
+				 &= G_\text{H-H}(0,\omega) + \sum_r e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega) + \frac{1}{N \mathcal{W}}\sum_{\vec r, \vec R}\left[e^{i \vec{k}\cdot\left(\vec r + \vec R\right)}G_{H-H} (\vec r + \vec R, \omega) - G_\text{H-H}(0,\omega) - e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega)\right]
 \end{aligned}\end{equation}
-The first summation produces a factor of $N$, while the second summation can be factorized into a sum over all sites (which again returns $N$) and a sum over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{W}\right]\right\}$.
+The difference term in the square brackets is smaller than the sum outside, so we drop the former. We identify the first term \(G_\text{H-H}(0,\omega)\) as the local Greens function \(G_\text{loc}\) and those inside the second term, \(G_\text{H-H}(\vec r, \omega)\) as the nearest neighbour Greens function \(G_\text{near-n}\) (assuming symmetry under rotation by \(\pi/2\)).
+The second sum is over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{W}\right]\right\}$. Combining all this and by using the mappings to the auxiliary model (eqs.~\ref{greens_func_relation} and \ref{greens_func_approx}), we get
 \begin{equation}\begin{aligned}
 	\label{k_Gf_siam}
-	G_{H-H} (\vec k, \omega) &\simeq G_{H-H} (\omega)_\text{loc} + G_{H-H} (\omega)_\text{n-n}\sum_{i=1}^{\mathcal{W}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]~,
+	G_{H-H} (\vec k, \omega) &\simeq G_\text{loc}(\omega) + G_\text{near-n}(\omega)\sum_{i=1}^{\mathcal{W}} e^{i \vec{k}\cdot\vec {a_i}} = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]~,
 \end{aligned}\end{equation}
 where we defined \(\xi_{\vec k} \equiv \sum_{i=1}^w e^{i \vec{k}\cdot\vec {a_i}}\), it being essentially the dispersion in units of the hopping strength \(t\). For example, on a d-dimensional hypercubic lattice, we obtain
 \begin{equation}\begin{aligned}
@@ -386,7 +390,7 @@ leading to \(2(\cos q_{x}a + \cos q_{y}a)\equiv \frac{-\epsilon_{\vec{q}}}{t^{H}
 
 The spectral function is simply the imaginary part of the Greens function: \(A_\text{H-H} = -\frac{1}{\pi}\text{Im}\left[G_{H-H}\right] \); as a result, they have similar relations with their auxiliary model counterparts:
 \begin{equation}\begin{aligned}
-	\left(A_\text{H-H}\right)_\text{loc}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dd}~,\qquad A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{A}_{dz} \right]~,
+	A_\text{loc}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dd}~,\qquad A_\text{near-n}(\omega) = \frac{1}{\lambda_{\vec k_0}^2}\mathcal{A}_{dz}~,\qquad A_\text{H-H}(\vec{k},\omega) = \frac{1}{\lambda_{\vec k_0}^2}\left[\mathcal{A}_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{A}_{dz} \right]~,
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 
@@ -492,7 +496,7 @@ At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath 
 	\label{spec_func_mit}
 \end{figure}
 
-The impurity local spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal spectral function \(\mathcal{A}_{d0}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the former shows the absence of any gapless excitations that can allow the impurity configuration to fluctuate, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been quenched. 
+The impurity local spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal spectral function \(\mathcal{A}_{dz}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the former shows the absence of any gapless excitations that can allow the impurity configuration to fluctuate, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been quenched. 
 
 In Fig.~\ref{spin-charge-correlations}, we show the behaviour of the spin-flip and charge isospin-flip correlations between two neighbouring real space sites, as well as the mutual real space entanglement and mutual information. Both show a sharp fall on crossing the transition, demonstrating the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity. Importantly, they charge correlations show a rise very close to the transition (can be seen as a single elevated blue point near \(r = 0.25\) in the left panel of Fig.~\ref{spin-charge-correlations}); this indicates that the transition is precipitated by the growth of pairing correlations.
 
@@ -595,27 +599,28 @@ We now focus on the quantum critical point \(g = -4u\) of our model. At this poi
 	\end{aligned}\end{equation}
 	where we have used the fact that for our model, the effective pseudogap parameter \(\alpha\) is set to \(-4u\). The local self-energy then vanishes as
 	\begin{equation}\begin{aligned}
-		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}}\simeq |\omega|^{1 + \frac{3}{8}\alpha}
+		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}} = |\omega|^{1 + \frac{3}{8}\alpha}
 	\end{aligned}\end{equation}
-The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following range: $1\leq \gamma_{dd} \leq 2$. This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004} where the power law exponent ranges between $1/2$ and $2$. In a similar manner, the self-energy \(\Sigma_{d0}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{d0}\) for this self-energy is given by \(\gamma_{d0} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
-	\begin{equation}\begin{aligned}
-		\Sigma_{d0} \sim |\omega|^{- \frac{3}{4}\alpha}~.
-	\end{aligned}\end{equation}
-\par 
-By using our tiling approach, the \(k-\)space self-energy at the critical point can be written as
-	\begin{equation}\begin{aligned}
-		\Sigma(\vec k,\omega) = \Sigma_{dd} + \frac{1}{\mathcal{W}}\xi_{\vec k}\Sigma_{d0}
-	\end{aligned}\end{equation}
-	%This expression suggests that at the critical point, all points in the Brillouin zone except those at the Fermi surface get gapped out. 
-	It is clear that the divergent $\Sigma_{d0}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ precisely at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$; $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else. Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
+The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following range: $1\leq \gamma_{dd} \leq 2$. This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004} where the power law exponent ranges between $1/2$ and $2$. In a similar manner, the self-energy \(\Sigma_{dz}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{dz}\) for this self-energy is given by \(\gamma_{dz} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
+\begin{equation}\begin{aligned}
+	\Sigma_{dz} \sim |\omega|^{- \frac{3}{4}\alpha}~.
+\end{aligned}\end{equation}
+The divergence of the non-local self-energy \(\Sigma_{dz}\) leads to the vanishing of the nearest-neighbour Greens function \(\mathcal{G}_{dz}\) as \(\omega \to 0\): 
+\begin{equation}\begin{aligned}
+	\mathcal{G}_{dz}(\omega)  \sim 1/(\mathcal{G}_{dz}^{-1} - \Sigma_{dz}(\omega)) \sim \omega^{3\alpha/4}.
+\end{aligned}\end{equation}
+
+By using our tiling approach (eq.~\ref{k_Gf_siam}), the \(k-\)space Greens function of the lattice problem, at the critical point, can be shown to become independent of the momentum, through the vanishing of the momentum dependent contribution coming from \(\mathcal{G}_{dz}\):
+\begin{equation}\begin{aligned}
+	G_\text{H-H}(\vec k,\omega) = G_\text{loc}(\omega) + \frac{\xi_{\vec k}}{\lambda_{\vec k_0}^2\mathcal{W}}\mathcal{G}_{dz}(\omega) = G_\text{loc}(\omega)
+\end{aligned}\end{equation}
+This leads to the spectral function \(A(\omega,\vec k)\) losing all momentum dependence for the gapless excitations. Moreover, the self-energies vanish 
+
+It is clear that the divergent $\Sigma_{dz}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ precisely at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$; $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else. Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
 \begin{equation}
 A(\omega,\vec{k}) \sim \frac{1}{\mathcal{W}}\xi_{\vec k}|\omega|^{\frac{3}{4}\alpha}~.
 \end{equation}	
 This clearly corresponds to the vanishing of the residue of the Landau quasiparticle precisely at the metal-insulator transition, and the emergence of a gapless non-Fermi liquid ``local quantum critical" metal~\cite{Si2001}. Further, the fact that the single-particle self-energy $\Sigma$ vanishes precisely at the Fermi surface signals the fact that the Luttinger's count for states on the Fermi surface is preserved and identical to that in the Fermi liquid phase. 
-%This guarantees that the system at the QCP remains gapless, and corresponds to a ``local quantum critical" metal~\cite{Si2001}.	
-	
-	
-%\end{itemize}
 
 
 \section{Topological nature of the transition}

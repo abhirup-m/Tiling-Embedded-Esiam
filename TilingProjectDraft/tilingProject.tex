@@ -318,10 +318,14 @@ The cursive script symbol \(\mathcal{G}_{dd}\) has been used to denote the impur
 
 For the nearest neighbour Greens function \(G_\text{near-n} \equiv G_\text{H-H}(\vec r=\vec a, t)\), we keep only the terms with \(\vec a_1 = \vec a_2 = \vec a\) in the summation of eq.~\ref{greens_func_approx}:
 \begin{equation}\begin{aligned}
-	G_\text{near-n} \equiv G_\text{H-H}(\vec r=\vec a, t) = -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} \\
+	\label{greens_func_relation_near}
+	G_\text{near-n}(t) \equiv G_\text{H-H}(\vec r=\vec a, t) = -\frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}}i\theta(t) \braket{\psi_\text{aux}(\vec R_0, \vec a) | \left\{ e^{i N \mathcal{H}_\text{aux}(\vec R_0) t}c(\vec R_0 + \vec a)e^{-i N \mathcal{H}_\text{aux}(\vec R_0) t}, c^\dagger(\vec R_0) \right\} | \psi_\text{aux}(\vec R_0, \vec a)} \\
 	= \frac{1}{\lambda_{\vec k_0}^2 \mathcal{W}} \mathcal{G}_{dz}(t)~.
 \end{aligned}\end{equation}
-
+These relations can be easily carried over to frequency domain: 
+\begin{equation}\begin{aligned}
+	G_\text{loc}(\omega) = \int \mathrm{dt}~e^{-i\omega t} G_\text{loc}(t) = \frac{1}{\lambda_{\vec k_0}^2}\int \mathrm{dt}~e^{-i\omega t} \mathcal{G}_{dd}(t) = \frac{1}{\lambda_{\vec k_0}^2} \mathcal{G}_{dd}(\omega)~.
+\end{aligned}\end{equation}
 
 The difference in the COM wavefunction and the full wavefunction can be estimated by calculating the norm of the difference piece:
 \begin{equation}\begin{aligned}
@@ -365,7 +369,7 @@ The next-nearest correlation function is relatively simpler, because only those 
 \end{aligned}\end{equation}
 
 
-\section{Spectral functions and self-energies}
+\section{\(k-\)space Greens functions and self-energies}
 
 The momentum space Greens function can be expressed as a Fourier transform of the real space Greens functions:
 \begin{equation}\begin{aligned}
@@ -394,12 +398,26 @@ The spectral function is simply the imaginary part of the Greens function: \(A_\
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 
-From the knowledge of Greens function, one can write down self-energies using Dyson's equation \(\Sigma = \left(G^{(0)}\right)^{-1} - G^{-1}\), where \(G^{(0)}\) is the non-interacting Greens function. The non-interacting model is simply a resonant-level model with the impurity level at zero energy. Following Dyson's equation, the \(k-\)space self-energy can be obtained from the \(k-\)space Greens functions:
+A similar decomposition can be used to map the self-energies of the lattice model to those of the impurity model. We approximate the full \(k-\)space self-energy as
 \begin{equation}\begin{aligned}
-	\label{self-energy1}
-	\Sigma_{H-H}(\vec k,\omega) = 1/\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)} - 1/\left(G_{H-H}(\omega)\right)_{\vec k} = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}^{(0)}_{dz}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}~,
+	\label{selfenergykspace}
+	\Sigma(\vec k,\omega) \simeq \Sigma_\text{loc}(\omega) + \xi_{\vec k}\Sigma_\text{near-n}(\omega)~,
 \end{aligned}\end{equation}
-where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model.
+where \(\Sigma_\text{loc}(\omega) = \Sigma_\text{H-H}(\vec r=0,\omega)\) is the local self-energy and \(\Sigma_\text{near-n}(\omega) = \Sigma_\text{H-H}(\vec r=a, \omega)\) is the self-energy arising from processes that connect a site with its nearest neighbour. Following Dyson's equation, these self-energies can be written in terms of the real space Greens functions:
+\begin{equation}\begin{aligned}
+	\Sigma_\text{loc}(\omega) = \left( G_\text{loc}^{(0)} \right) ^{-1} - \left( G_\text{loc} \right) ^{-1} = \lambda_{\vec k_0}^2\left[\left( \mathcal{G}_{dd}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dd} \right) ^{-1}\right]~,
+\end{aligned}\end{equation}
+where \(G_\text{loc}^{(0)}\) and \(\mathcal{G}_{dd}^{(0)}\) are the local non-interacting Greens functions of the full model and the impurity model respectively, and we have used eq.~\ref{greens_func_relation}. In the same way, following eq.~\ref{greens_func_relation_near}, the nearest-neighbour self-energy can be written as
+\begin{equation}\begin{aligned}
+	\Sigma_\text{near-n}(\omega) = \mathcal{W}\lambda_{\vec k_0}^2\left[\left( \mathcal{G}_{dz}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dz} \right) ^{-1}\right]~,
+\end{aligned}\end{equation}
+where \(\mathcal{G}_{dz}^{(0)}\) is the nearest-neighbour non-interacting Greens functions of impurity model.
+
+Substituting these in eq.~\ref{selfenergykspace} allows us to express the \(k-\)space self-energy in terms of auxiliary model objects:
+\begin{equation}\begin{aligned}
+	\Sigma(\vec k,\omega) = \lambda_{\vec k_0}^2\left[ \left( \mathcal{G}_{dd}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dd} \right) ^{-1} + \xi_{\vec k}\left( \mathcal{G}_{dz}^{(0)} \right) ^{-1} - \xi_{\vec k}\left( \mathcal{G}_{dz} \right) ^{-1} \right] = \lambda_{\vec k_0}^2\left[ \Sigma_{dd}(\omega) + \xi_{\vec k}\Sigma_{dz}(\omega) \right]~,
+\end{aligned}\end{equation}
+where \(\Sigma_{dd}\) and \(\Sigma_{dz}\) are the impurity and impurity-zeroth site self-energies of the impurity model.
 
 \section{Correlation functions in momentum space}
 Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearest-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
@@ -614,7 +632,7 @@ By using our tiling approach (eq.~\ref{k_Gf_siam}), the \(k-\)space Greens funct
 \begin{equation}\begin{aligned}
 	G_\text{H-H}(\vec k,\omega) = G_\text{loc}(\omega) + \frac{\xi_{\vec k}}{\lambda_{\vec k_0}^2\mathcal{W}}\mathcal{G}_{dz}(\omega) = G_\text{loc}(\omega)
 \end{aligned}\end{equation}
-This leads to the spectral function \(A(\omega,\vec k)\) losing all momentum dependence for the gapless excitations. Moreover, the self-energies vanish 
+This leads to the spectral function \(A(\omega,\vec k)\) losing all momentum dependence for the gapless excitations. Moreover, the self-energies vanish .
 
 It is clear that the divergent $\Sigma_{dz}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ precisely at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$; $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else. Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
 \begin{equation}

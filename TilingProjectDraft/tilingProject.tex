@@ -398,14 +398,14 @@ The spectral function is simply the imaginary part of the Greens function: \(A_\
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 
-A similar decomposition can be used to map the self-energies of the lattice model to those of the impurity model. We approximate the full \(k-\)space self-energy as
+A similar decomposition can be used to map the single-particle \(k-\)space self-energy \(\Sigma(\vec k,\omega)\) of the lattice model to impurity model quantities. We approximate \(\Sigma(\vec k,\omega)\) as
 \begin{equation}\begin{aligned}
 	\label{selfenergykspace}
 	\Sigma(\vec k,\omega) \simeq \Sigma_\text{loc}(\omega) + \xi_{\vec k}\Sigma_\text{near-n}(\omega)~,
 \end{aligned}\end{equation}
-where \(\Sigma_\text{loc}(\omega) = \Sigma_\text{H-H}(\vec r=0,\omega)\) is the local self-energy and \(\Sigma_\text{near-n}(\omega) = \Sigma_\text{H-H}(\vec r=a, \omega)\) is the self-energy arising from processes that connect a site with its nearest neighbour. Following Dyson's equation, these self-energies can be written in terms of the real space Greens functions:
+where \(\Sigma_\text{loc}(\omega) = \Sigma_\text{H-H}(\vec r=0,\omega)\) is the local self-energy and \(\Sigma_\text{near-n}(\omega) = \Sigma_\text{H-H}(\vec r=a, \omega)\) is the self-energy arising from processes that connect a site with its nearest neighbour. Following Dyson's equation, \(\Sigma(\vec k,\omega)\) can be written in terms of the momentum-space Greens functions, which can be mapped to the auxiliary model Greens functions following eq.~\ref{k_Gf_siam}:
 \begin{equation}\begin{aligned}
-	\Sigma_\text{loc}(\omega) = \left( G_\text{loc}^{(0)} \right) ^{-1} - \left( G_\text{loc} \right) ^{-1} = \lambda_{\vec k_0}^2\left[\left( \mathcal{G}_{dd}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dd} \right) ^{-1}\right]~,
+	\Sigma(\vec k,\omega) = \left[ G_{H-H}^{(0)}(\vec k, \omega) \right]^{-1} - \left[ G_{H-H}(\vec k, \omega) \right]^{-1} = \left[ \mathcal{G}^{(0)}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}^{(0)}_{dz}(\omega) \right]^{-1} - \left[ \mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]^{-1}~,
 \end{aligned}\end{equation}
 where \(G_\text{loc}^{(0)}\) and \(\mathcal{G}_{dd}^{(0)}\) are the local non-interacting Greens functions of the full model and the impurity model respectively, and we have used eq.~\ref{greens_func_relation}. In the same way, following eq.~\ref{greens_func_relation_near}, the nearest-neighbour self-energy can be written as
 \begin{equation}\begin{aligned}
@@ -586,7 +586,7 @@ In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show th
 \label{entanglement_kspace}
 \end{figure}
 
-{\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colormap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colormap} as \(r\) is tuned towards and into the transition.}
+{\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colourmap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colourmap} as \(r\) is tuned towards and into the transition.}
 
 \section{Emergence of effectively pseudogapped Anderson model at the MIT}
 %\begin{itemize}

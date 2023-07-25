@@ -1,25 +1,16 @@
-\documentclass{report}
-\usepackage{amsthm,amsmath,amssymb,braket,multirow,caption,relsize,tocbibind,color,appendix,enumitem,cite,graphicx}
-\usepackage[hidelinks]{hyperref}
-\usepackage[margin=0.7in,bottom=1in]{geometry}
+\documentclass[prb]{revtex4-2}
 
-\setcounter{tocdepth}{1}
-\numberwithin{equation}{section}
-\allowdisplaybreaks
-\bibliographystyle{unsrt}
+\usepackage{braket,amsmath,amssymb,color,graphicx,hyperref,bookmark}
+\bibliographystyle{apsrev4-2}
+
+\begin{document}
 
 \title{\bf A Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Electronic Systems}
 \author{Abhirup Mukherjee, N.S. Vidhyadhiraja, A. Taraphder, Siddhartha Lal}
-\date{\today}
-
-\begin{document}
 \maketitle
-\tableofcontents
-\newpage
-\chapter{Introduction}
 
 \section{What is the minimal impurity model for a Mott metal-insulator transition?}
-\label{sec:min_model}
+
 The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
 The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
@@ -106,7 +97,7 @@ The stopping condition is the consistency relation that makes the bath and impur
 
 
 \section{A ``bottoms-up" approach to using auxiliary models}
-As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process is shown in chapter~\ref{chap:tile}. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
+As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
 
 In our approach, the auxiliary models can be chosen in various ways. The simplest choice is of course the single-impurity Anderson model of eq.~\ref{clus_bath_siam}:
 \begin{equation}
@@ -138,9 +129,6 @@ The additional terms are (i) a spin-exchange interaction between the impurity si
 where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of the cluster. To reiterate, what that means is that we have placed the cluster+bath system at all lattice point sets \(\left\{i_1,i_2,...\right\}\) to reconstruct a new model of correlated electrons. The answer to how closely $\tilde H$ approximates a target model of correlated electrons lies in (i) the choice of the cluster-bath construction of the auxiliary model, and (ii) the accuracy of the URG procedure on the auxiliary model.
 
 The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
-
-\chapter{From the auxiliary model to the bulk - single site approach}
-\label{chap:tile}
 
 \section{Creating a Hubbard-Heisenberg Hamiltonian from an extended Anderson impurity model}
 
@@ -398,26 +386,12 @@ The spectral function is simply the imaginary part of the Greens function: \(A_\
 \end{aligned}\end{equation}
 where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k},\omega)\) are the local and \(k-\)space spectral functions, respectively, of the bulk model, and \(\mathcal{A}_{dd}\) and \(\mathcal{A}_{dz}\) are the auxiliary model spectral functions for local and nearest neighbour fluctuations respectively.
 
-A similar decomposition can be used to map the single-particle \(k-\)space self-energy \(\Sigma(\vec k,\omega)\) of the lattice model to impurity model quantities. We approximate \(\Sigma(\vec k,\omega)\) as
+From the knowledge of the momentum-space Greens function, one can write down the lattice self-energy \(\Sigma(\vec k,\omega)\) using Dyson's equation:
 \begin{equation}\begin{aligned}
-	\label{selfenergykspace}
-	\Sigma(\vec k,\omega) \simeq \Sigma_\text{loc}(\omega) + \xi_{\vec k}\Sigma_\text{near-n}(\omega)~,
+	\label{self-energy1}
+	\Sigma_{H-H}(\vec k,\omega) = 1/\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)} - 1/\left(G_{H-H}(\omega)\right)_{\vec k} = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}^{(0)}_{dz}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}~,
 \end{aligned}\end{equation}
-where \(\Sigma_\text{loc}(\omega) = \Sigma_\text{H-H}(\vec r=0,\omega)\) is the local self-energy and \(\Sigma_\text{near-n}(\omega) = \Sigma_\text{H-H}(\vec r=a, \omega)\) is the self-energy arising from processes that connect a site with its nearest neighbour. Following Dyson's equation, \(\Sigma(\vec k,\omega)\) can be written in terms of the momentum-space Greens functions, which can be mapped to the auxiliary model Greens functions following eq.~\ref{k_Gf_siam}:
-\begin{equation}\begin{aligned}
-	\Sigma(\vec k,\omega) = \left[ G_{H-H}^{(0)}(\vec k, \omega) \right]^{-1} - \left[ G_{H-H}(\vec k, \omega) \right]^{-1} = \left[ \mathcal{G}^{(0)}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}^{(0)}_{dz}(\omega) \right]^{-1} - \left[ \mathcal{G}_{dd}(\omega) + \frac{1}{\mathcal{W}}\xi_{\vec k}\mathcal{G}_{dz}(\omega) \right]^{-1}~,
-\end{aligned}\end{equation}
-where \(G_\text{loc}^{(0)}\) and \(\mathcal{G}_{dd}^{(0)}\) are the local non-interacting Greens functions of the full model and the impurity model respectively, and we have used eq.~\ref{greens_func_relation}. In the same way, following eq.~\ref{greens_func_relation_near}, the nearest-neighbour self-energy can be written as
-\begin{equation}\begin{aligned}
-	\Sigma_\text{near-n}(\omega) = \mathcal{W}\lambda_{\vec k_0}^2\left[\left( \mathcal{G}_{dz}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dz} \right) ^{-1}\right]~,
-\end{aligned}\end{equation}
-where \(\mathcal{G}_{dz}^{(0)}\) is the nearest-neighbour non-interacting Greens functions of impurity model.
-
-Substituting these in eq.~\ref{selfenergykspace} allows us to express the \(k-\)space self-energy in terms of auxiliary model objects:
-\begin{equation}\begin{aligned}
-	\Sigma(\vec k,\omega) = \lambda_{\vec k_0}^2\left[ \left( \mathcal{G}_{dd}^{(0)} \right) ^{-1} - \left( \mathcal{G}_{dd} \right) ^{-1} + \xi_{\vec k}\left( \mathcal{G}_{dz}^{(0)} \right) ^{-1} - \xi_{\vec k}\left( \mathcal{G}_{dz} \right) ^{-1} \right] = \lambda_{\vec k_0}^2\left[ \Sigma_{dd}(\omega) + \xi_{\vec k}\Sigma_{dz}(\omega) \right]~,
-\end{aligned}\end{equation}
-where \(\Sigma_{dd}\) and \(\Sigma_{dz}\) are the impurity and impurity-zeroth site self-energies of the impurity model.
+where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model.
 
 \section{Correlation functions in momentum space}
 Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearest-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
@@ -620,25 +594,47 @@ We now focus on the quantum critical point \(g = -4u\) of our model. At this poi
 		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}} = |\omega|^{1 + \frac{3}{8}\alpha}
 	\end{aligned}\end{equation}
 The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following range: $1\leq \gamma_{dd} \leq 2$. This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004} where the power law exponent ranges between $1/2$ and $2$. In a similar manner, the self-energy \(\Sigma_{dz}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{dz}\) for this self-energy is given by \(\gamma_{dz} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
-\begin{equation}\begin{aligned}
+\begin{equation}\begin{aligned}\label{selfenergydivergence}
 	\Sigma_{dz} \sim |\omega|^{- \frac{3}{4}\alpha}~.
 \end{aligned}\end{equation}
-The divergence of the non-local self-energy \(\Sigma_{dz}\) leads to the vanishing of the nearest-neighbour Greens function \(\mathcal{G}_{dz}\) as \(\omega \to 0\): 
-\begin{equation}\begin{aligned}
-	\mathcal{G}_{dz}(\omega)  \sim 1/(\mathcal{G}_{dz}^{-1} - \Sigma_{dz}(\omega)) \sim \omega^{3\alpha/4}.
-\end{aligned}\end{equation}
 
-By using our tiling approach (eq.~\ref{k_Gf_siam}), the \(k-\)space Greens function of the lattice problem, at the critical point, can be shown to become independent of the momentum, through the vanishing of the momentum dependent contribution coming from \(\mathcal{G}_{dz}\):
+We will now relate the auxiliary model self-energies \(\Sigma_{dd}\) and \(\Sigma_{dz}\) with their auxiliary model counterparts using the lattice Dyson equation. We consider self-energy matrices \(\Sigma\) and \(\Sigma_\text{aux}\) constructed out of real-space self-energies:
 \begin{equation}\begin{aligned}
-	G_\text{H-H}(\vec k,\omega) = G_\text{loc}(\omega) + \frac{\xi_{\vec k}}{\lambda_{\vec k_0}^2\mathcal{W}}\mathcal{G}_{dz}(\omega) = G_\text{loc}(\omega)
+	\Sigma(\omega) = \begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} ,\quad \Sigma_\text{aux}(\omega) = \begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix}~,
 \end{aligned}\end{equation}
-This leads to the spectral function \(A(\omega,\vec k)\) losing all momentum dependence for the gapless excitations. Moreover, the self-energies vanish .
+where \(\Sigma_\text{loc}\) is the real-space local self-energy and \(\Sigma_\text{near-n}\) is the self-energy for nearest-neighbour scattering processes. Using Dyson's equation, we can write
+\begin{equation}\begin{aligned}
+	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} = \begin{bmatrix} G^{(0)}_\text{loc}(\omega) && G^{(0)}_\text{near-n}(\omega) \\ G^{(0)}_\text{near-n}(\omega) && G^{(0)}_\text{loc}(\omega)\end{bmatrix}^{-1} - \begin{bmatrix} G_\text{loc}(\omega) && G_\text{near-n}(\omega) \\ G_\text{near-n}(\omega) && G_\text{loc}(\omega)\end{bmatrix}^{-1}~,
+\end{aligned}\end{equation}
+and
+\begin{equation}\begin{aligned}
+	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} = \begin{bmatrix} \mathcal{G}^{(0)}_{dd}(\omega) && \mathcal{G}^{(0)}_{dz}(\omega) \\ \mathcal{G}^{(0)}_{dz}(\omega) && \mathcal{G}^{(0)}_{dd}(\omega)\end{bmatrix}^{-1} - \begin{bmatrix} \mathcal{G}_{dd}(\omega) && \mathcal{G}_{dz}(\omega) \\ \mathcal{G}_{dz}(\omega) && \mathcal{G}_{dd}(\omega)\end{bmatrix}^{-1}~,
+\end{aligned}\end{equation}
+where the superscript \((0)\) indicates that the corresponding quantity has to be calculated from the non-interacting model. We now evaluate the second inverse matrix in each of the two equations, and expression the lattice Greens functions in terms of the auxiliary mode Greens functions (using eqs.~\ref{greens_func_relation} and \ref{greens_func_relation_near}). We get
+\begin{equation}\begin{aligned}
+	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} &= 1/\mathcal{G}^{(0)} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2}\begin{bmatrix} \mathcal{G}_{dd} && \mathcal{G}_{dz} \\ \mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}^{-1}~,\\
+	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{1}{\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2}\begin{bmatrix} \mathcal{G}_{dd} && \frac{1}{\mathcal{W}}\mathcal{G}_{dz} \\ \frac{1}{\mathcal{W}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}^{-1}~.
+\end{aligned}\end{equation}
+This allows us to write down expressions for the off-diagonal self-energies, in terms of Greens functions, without evaluating the non-singular contribution coming from the non-interacting matrix:
+\begin{equation}\begin{aligned}
+	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} - \frac{1}{\mathcal{W}\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2} \mathcal{G}_{dz}
+\end{aligned}\end{equation}
+The divergence of \(\Sigma_{dz}\) shown in eq.~\ref{selfenergydivergence} as \(\omega \to 0\) has to arise from the second term in the expression for \(\Sigma_{dz}\) in the last equation, because the non-interacting Greens function has well-defined poles which kill the first term. The second term in the expression for \(\Sigma_\text{near-n}\) is very similar to this diverging term in \(\Sigma_{dz}\), differing only through the presence of some finite non-zero factors of \(\lambda_{\vec k_0}^2\) and \(\mathcal{W}\). We therefore conclude that the non-local self-energy of the lattice model is also divergent:
+\begin{equation}\begin{aligned}
+	\Sigma_\text{near-n}\left( \omega \right) \sim \omega^{-3\alpha/4}~.
+\end{aligned}\end{equation}
+By a similar argument, the local self-energy is found to vanish as \(\omega \to 0\). Using our tiling approach, we can approximate the \(k-\)space self-energy in terms of these two self-energies:
+\begin{equation}\begin{aligned}
+	\Sigma(\vec k, \omega) \simeq \Sigma_\text{loc} + \xi_{\vec k}\Sigma_\text{near-n}
+\end{aligned}\end{equation}
+It is clear from the expression that the divergent $\Sigma_\text{near-n}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$, but $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else.
 
-It is clear that the divergent $\Sigma_{dz}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ precisely at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$; $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else. Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
+Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
 \begin{equation}
-A(\omega,\vec{k}) \sim \frac{1}{\mathcal{W}}\xi_{\vec k}|\omega|^{\frac{3}{4}\alpha}~.
+A(\vec{k},\omega) \sim |\omega|^{\frac{3}{4}\alpha}~.
 \end{equation}	
-This clearly corresponds to the vanishing of the residue of the Landau quasiparticle precisely at the metal-insulator transition, and the emergence of a gapless non-Fermi liquid ``local quantum critical" metal~\cite{Si2001}. Further, the fact that the single-particle self-energy $\Sigma$ vanishes precisely at the Fermi surface signals the fact that the Luttinger's count for states on the Fermi surface is preserved and identical to that in the Fermi liquid phase. 
+This corresponds to the vanishing of the residue of the Landau quasiparticle precisely at the metal-insulator transition, and the emergence of a gapless non-Fermi liquid ``local quantum critical" metal~\cite{Si2001}. Further, the fact that the single-particle self-energy $\Sigma(\vec k, \omega)$ vanishes precisely at the Fermi surface signals the fact that the Luttinger's count for states on the Fermi surface is preserved and identical to that in the Fermi liquid phase. 
+
 
 
 \section{Topological nature of the transition}
@@ -761,13 +757,10 @@ We now apply our approach to the case of infinite number of nearest-neighbours $
 	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{W}} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
 \end{aligned}\end{equation}
 where \(G^{(0)}(\vec k,\omega)\) is the non-interacting Greens function and \(G_\text{aux,dd}(\omega)\) is the site-diagonal Greens function of the auxiliary model. It is clear from the final form that only the diagonal term \(G_\text{aux,dd}(\omega)\) of the interacting Greens function affects the self-energy while the off-diagonal part \(G_\text{aux,dz}\) fails to contribute as \(w \to \infty\). 
-\par
-\textbf{MAKE CONNECTION BETWEEN COM and Q.IMP PROBLEM}
-\begin{appendices}
 
-\appendixtitleon
+\appendix
 
-\chapter{Zero temperature Greens function in frequency domain}
+\section{Zero temperature Greens function in frequency domain}
 
 \label{appx-spectral-func}
 The impurity retarded Green's function (assuming the Hamiltonian to be time-independent, which it is) is defined as
@@ -833,7 +826,6 @@ The spectral function at zero temperature can then be written as
 			    &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\delta\left(\omega - E_0 + E_n\right)\right]\\
 \end{aligned}\end{equation}
 
-\chapter{Some analytic results for the Hubbard dimer and the Hubbard model}
 \section{Spectrum of the Hubbard dimer}
 Here we document the spectrum of the Hubbard dimer Hamiltonian.
 \begin{center}
@@ -852,7 +844,7 @@ Here we document the spectrum of the Hubbard dimer Hamiltonian.
 	$\ket{2,2}$ & $\ket{4}$ & \( \frac{U^H}{2}\)\\
 \hline
 	\end{tabular}
-	\captionof{table}{Spectrum of Hubbard dimer at half-filling}
+	%\captionof{table}{Spectrum of Hubbard dimer at half-filling}
 	\label{hubb_dim_spectrum}
 \end{center}
 
@@ -966,7 +958,6 @@ Using the diagonal and off-diagonal real space Greens functions, we can now comp
 	G(k=\pi, \sigma) = \sum_r e^{ikr} G(r, \sigma) = G(r=0, \sigma) - G(r=a, \sigma) = \frac{1/2 + 2t/\Delta}{\omega + t - \Delta/2} + \frac{1/2 - 2t/\Delta}{\omega + t + \Delta/2}\\
 \end{aligned}\end{equation}
 
-\section{Contributions of various excitations to the site local spectral function}
 The site local spectral function is
 \begin{equation}\begin{aligned}
 	A(0\uparrow, \omega) = \left( \frac{1}{4} - \frac{t}{\Delta} \right)\left[\delta(\omega - \frac{\Delta}{2} - t) + \delta(\omega + \frac{\Delta}{2} + t)\right]\nonumber + \left( \frac{1}{4} + \frac{t}{\Delta} \right) \left[\delta(\omega - \frac{\Delta}{2} + t) + \delta(\omega + \frac{\Delta}{2} - t)\right]
@@ -982,7 +973,6 @@ If the eigenstates of the $N=1, S^z = - \frac{1}{2}$ sector are $\ket{1 \pm \dow
 	\caption{Position, weight and nature of each of the peaks in the Hubbard dimer site local spectral function}
 \end{figure}
 
-\chapter{Simple results for the Greens functions}
 \section{Relation between single-particle Greens function and the Greens operator $(T=0)$}
  The single-particle Greens function is defined as the solution of the equation:
  \begin{equation}\begin{aligned}
@@ -1064,7 +1054,7 @@ The particle excitation momentum space kets are $\ket{k_0} = \frac{1}{\sqrt 2}\l
 \end{aligned}\end{equation}
 At the final step, we used $\braket{+,+} = 1$ and $\braket{+|H_D|+} = t$.
 
-\chapter{Topological interpretation of the Wilson ratio}
+\section{Topological interpretation of the Wilson ratio}
 From the Friedel sum rule\cite{langer1961friedel}, we can relate the phase shift \(\delta(0)\) due to scattering (at the Fermi surface) off a local impurity to the number of electrons bound in the potential well produced by that impurity:
 \begin{equation}\begin{aligned}
 \widetilde N = \frac{1}{2\pi i}\text{Tr }\ln S(0) = \int_\Gamma dz\partial_z \frac{1}{2\pi i}\text{Tr }\ln S(0)
@@ -1101,9 +1091,9 @@ R &= 1 + \sin^2 \left(\frac{\pi}{2}\widetilde N\right)\\
 \end{aligned}\end{equation}
 We note that this connection between \(R\) and \(\Delta V_L\) has not been obtained in the existing literature thus far. In the unitary limit, \(\delta(0) = \frac{\pi}{2}\), giving \(\Delta V_L = -1 = -\tilde N\) \cite{martin1982fermi} (i.e., one electronic state from the impurity has been absorbed into the Luttinger volume of the conduction bath), such that \(R = 2\) in this limit. In this way, we see that a change in the topological quantum number \(\tilde N\) causes the well known renormalisation of the Wilson ratio R from its non-interacting value \((1)\) to the value \((2)\) obtained for the local Fermi liquid \cite{nozieres1974fermi}.
 
-\chapter{Properties of the Bloch states}
+\section{Properties of the Bloch states}
 
-\section{Translation invariance}
+\subsection{Translation invariance}
 It is easy to verify that \(\Psi_{\vec k}\left(\left\{ \vec r_k \right\}  \right) \) transforms like Bloch functions under translation by a displacement \(\vec R\):
 \begin{equation}\begin{aligned}
 	\Psi_{\vec k}\left(\left\{\vec r_k + \vec R\right\} \right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i,\vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left(\vec R_i - \vec R, \vec a\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_j, \vec a} e^{i \vec{k}\cdot\left(\vec{R}_j + \vec R\right)} \psi_\text{aux}\left(\vec R_j, \vec a\right) = e^{i \vec{k}\cdot\vec{R}} \Psi_{\vec k}\left(\left\{ \vec r_k \right\} \right)
@@ -1117,7 +1107,7 @@ The wavefunction can be even brought into the familiar Bloch function form:
 \end{aligned}\end{equation}
 where \(\vec r_\text{COM} = \frac{1}{N}\sum_k \vec r_k\) is the center-of-mass coordinate and \(\eta_{\vec k}\left(\left\{\vec r_k\right\}\right) = \frac{1}{\lambda_{\ket{\vec k}} \mathcal{W} N}\sum_{\vec R_i} e^{-i \vec{k}\cdot\left(\frac{1}{N}\sum_k\vec r_k - \vec{R}_i\right)} \psi^n_\text{aux}\left(\left\{\vec r_k - \vec R_i\right\}\right)\) is the translation symmetric function. This form of the eigenstate allows the interpretation that tuning the Bloch momentum \(\vec k\) corresponds to a translation of the center of mass of the system (or in this case, of the auxiliary models that comprise the system).
 
-\section{Orthonormality}
+\subsection{Orthonormality}
 It is straightforward to show that these states form an orthonormal basis. We start by writing down the inner product of two distinct such states:
 \begin{equation}\begin{aligned}
 	\braket{\Psi_{\vec k^\prime} | \Psi_{\vec k}} 
@@ -1136,7 +1126,7 @@ At the last step, we used the summation form of the Kronecker delta function: \(
 \end{aligned}\end{equation}
 This concludes the proof of orthonormality.
 
-\section{Eigenstates}
+\subsection{Eigenstates}
 To demonstrate that these are indeed eigenstates of the bulk Hamiltonian, we will calculate the matrix elements of the full Hamiltonian between these states:
 \begin{equation}\begin{aligned}
 	&\bra{\Psi_{\vec k^\prime}}H_\text{H-H} \ket{\Psi_{\vec k}} = \frac{1}{\lambda^*_{\ket{\vec k^\prime}} \lambda_{\ket{\vec k}} \mathcal{W}^2 N^2}\sum_{\vec R_i, \vec R_j, \vec R_k, \vec a, \vec a^\prime}e^{i\left(\vec{k}\cdot\vec{R}_i - \vec{k}^\prime\cdot\vec{R}_j\right)} \bra{\psi_\text{aux}\left(\vec R_j, \vec a^\prime\right)} H_\text{aux}\left(\vec R_k\right) \ket{\psi_\text{aux}\left(\vec R_i, \vec a\right)}\\
@@ -1153,8 +1143,6 @@ To resolve the translation operators, we will now insert the momentum eigenstate
 	&= N\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left(\vec R_0\right) | \vec k}
 \end{aligned}\end{equation}
 The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position eigenkets at varying distances from \(\vec R_0\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the state at \(\vec R_0\), and improvements are then made by considering auxiliary models at further distances. 
-
-\end{appendices}
 
 \bibliography{tilingProject}
 \end{document}

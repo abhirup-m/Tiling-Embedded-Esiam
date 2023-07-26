@@ -1,5 +1,4 @@
 \documentclass[prb]{revtex4-2}
-
 \usepackage{braket,amsmath,amssymb,color,graphicx,hyperref,bookmark}
 \bibliographystyle{apsrev4-2}
 
@@ -626,11 +625,11 @@ and
 where the superscript \((0)\) indicates that the corresponding quantity has to be calculated from the non-interacting model. We now evaluate the second inverse matrix in each of the two equations, and expression the lattice Greens functions in terms of the auxiliary mode Greens functions (using eqs.~\ref{greens_func_relation} and \ref{greens_func_relation_near}). We get
 \begin{equation}\begin{aligned}
 	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} &= 1/\mathcal{G}^{(0)} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\mathcal{G}_{dz} \\ -\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~,\\
-	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{1}{\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} \\ -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~.
+	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} \\ -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~.
 \end{aligned}\end{equation}
 This allows us to write down expressions for the off-diagonal self-energies, in terms of Greens functions, without evaluating the non-singular contribution coming from the non-interacting matrix:
 \begin{equation}\begin{aligned}
-	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} + \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{1}{\mathcal{W}\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2} \mathcal{G}_{dz}
+	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} + \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{\lambda_{\vec k_0}^2}{\mathcal{W}}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2} \mathcal{G}_{dz}
 \end{aligned}\end{equation}
 The divergence of \(\Sigma_{dz}\) shown in eq.~\ref{selfenergydivergence} as \(\omega \to 0\) has to arise from the second term in the expression for \(\Sigma_{dz}\) above as it contains the effects of inter-particle correlations.
 %, because the non-interacting Greens function has well-defined poles which kill the first term. 
@@ -767,11 +766,11 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension). In such a model, the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that the kinetic energy of the associated tight-binding lattice model remains finite and in competition with the localising physics of \(U\) and the magnetic ordering physics of \(J\). This allows a metal-insulator transition in the limit of $\mathcal{W}\to\infty$ as well. In this limit, the dependence of the self-energy on the interacting Greens function can be shown to arise from only the site-diagonal terms~\cite{Muller-Hartmann1989,georges_kotliar_1992}. This can be demonstrated from the present formalism as well, using eq.\eqref{self-energy1}. Applying the limit of \(w\to \infty\) on that equation gives
+We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension), where the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that DMFT obtains a metal-insulator transition in that limit~\cite{georges1996}. It is well known from the works of Müller-Hartmann as well as Metzner and Vollhardt that self-energy arising from the correlations loses all momentum-dependence and becomes purely local~\cite{Muller-Hartmann1989,metzner_volhardt_1989}. This simplification is what makes DMFT exact in the limit of infinite dimensions. This simplification is also explicit in our formalism, as can be seen in the expression of the self-energy (eq.~\ref{selfenergy1}). Upon taking the limit of \(\mathcal{W}\to\infty\), the non-local terms drop out:
 \begin{equation}\begin{aligned}
-	\Sigma_{H-H}(\vec k,\omega) = \lim_{w\to \infty} \left\{\left(G^{(0)}(\vec k,\omega)\right)^{-1} - \left [G_\text{aux,dd} + \frac{\xi_{\vec k}}{\mathcal{W}} G_\text{aux,dz}\right]^{-1}\right\} = \lim_{w\to \infty}\left\{G^{(0)}(\vec k,\omega) - G_\text{aux,dd}(\omega)\right\}^{-1} 
+	\lim_{\mathcal{W}\to\infty}\Sigma_{H-H}(\vec k,\omega) = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega)} = \Sigma_\text{loc}(\omega)~,
 \end{aligned}\end{equation}
-where \(G^{(0)}(\vec k,\omega)\) is the non-interacting Greens function and \(G_\text{aux,dd}(\omega)\) is the site-diagonal Greens function of the auxiliary model. It is clear from the final form that only the diagonal term \(G_\text{aux,dd}(\omega)\) of the interacting Greens function affects the self-energy while the off-diagonal part \(G_\text{aux,dz}\) fails to contribute as \(w \to \infty\). 
+making the self-energy completely local.
 
 \appendix
 

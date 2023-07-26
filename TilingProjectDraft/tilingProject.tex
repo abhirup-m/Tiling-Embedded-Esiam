@@ -7,10 +7,11 @@
 
 \title{\bf A Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Electronic Systems}
 \author{Abhirup Mukherjee, N.S. Vidhyadhiraja, A. Taraphder, Siddhartha Lal}
+\date{\today}
 \maketitle
+\tableofcontents
 
 \section{What is the minimal impurity model for a Mott metal-insulator transition?}
-
 The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
 The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
@@ -221,7 +222,7 @@ We can use the auxiliary model zero-bandwidth wavefunctions
 \end{aligned}\end{equation}
 with the impurity position \(\vec R_i\) and zeroth site position \(\vec R_i + \vec a\), to construct eigenstates of the bulk Hamiltonian. \(\vec R_i\) is a lattice vector, while \(\vec a\) is one of the \(\mathcal{W}\) vectors that connect a lattice site with its nearest neighbours. This two site wavefunction can be obtained by first studying the full auxiliary model \(\mathcal{H}_\text{aux}\) under a renormalisation group, obtaining a fixed-point Hamiltonian in the IR, obtaining the IR eigenstate and then tracing out all lattice sites except the impurity and the zeroth site from this eigenstate. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states.
 
-The following un-normalised combination of the auxiliary model eigenstates satisfies Bloch's theorem~\cite{stoyanova}:
+The following un-normalised combination of the auxiliary model eigenstates satisfies a many-particle equivalent of Bloch's theorem~\cite{stoyanova}:
 \begin{equation}\begin{aligned}
 	\ket{\Psi^n_{\vec k}} = \frac{1}{\sqrt{\mathcal{W} N}}\sum_{\vec R_i, \vec a} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left(\vec R_i, \vec a\right)
 \end{aligned}\end{equation}
@@ -367,6 +368,7 @@ where $\vec R$ sums over all lattice sites and \(\vec r\) sums over all nearest-
 \begin{equation}\begin{aligned}
 	G_{H-H} (\vec k, \omega) &= \frac{1}{N \mathcal{W}}\sum_{\vec r, \vec R}\left[e^{i \vec{k}\cdot\left(\vec r + \vec R\right)}G_{H-H} (\vec r + \vec R, \omega) - G_\text{H-H}(0,\omega) - e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega) + G_\text{H-H}(0,\omega) + e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega)\right]\\
 				 &= G_\text{H-H}(0,\omega) + \sum_r e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega) + \frac{1}{N \mathcal{W}}\sum_{\vec r, \vec R}\left[e^{i \vec{k}\cdot\left(\vec r + \vec R\right)}G_{H-H} (\vec r + \vec R, \omega) - G_\text{H-H}(0,\omega) - e^{i\vec{k}\cdot\vec{r}}G_\text{H-H}(\vec r,\omega)\right]
+\label{auxGreen}
 \end{aligned}\end{equation}
 The difference term in the square brackets is smaller than the sum outside, so we drop the former. We identify the first term \(G_\text{H-H}(0,\omega)\) as the local Greens function \(G_\text{loc}\) and those inside the second term, \(G_\text{H-H}(\vec r, \omega)\) as the nearest neighbour Greens function \(G_\text{near-n}\) (assuming symmetry under rotation by \(\pi/2\)).
 The second sum is over all the primitive vectors connecting any single site with all its nearest neighbours, $\left\{ \vec a_i: i \in \left[1, \mathcal{W}\right]\right\}$. Combining all this and by using the mappings to the auxiliary model (eqs.~\ref{greens_func_relation} and \ref{greens_func_approx}), we get
@@ -391,7 +393,18 @@ From the knowledge of the momentum-space Greens function, one can write down the
 	\label{self-energy1}
 	\Sigma_{H-H}(\vec k,\omega) = 1/\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)} - 1/\left(G_{H-H}(\omega)\right)_{\vec k} = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}^{(0)}_{dz}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}~,
 \end{aligned}\end{equation}
-where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model.
+where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model. 
+
+By expanding in terms of the small parameter $\frac{\lambda_{\vec k_0}^2}{\mathcal{W}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}}$, this expression for $\Sigma_{H-H}(\vec k,\omega)$ can be recast in the following form:
+\begin{equation}\begin{aligned}
+	\Sigma_{H-H}(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~\label{selfenergy1}
+\end{aligned}\end{equation}
+where $\Sigma_\text{loc}$ and $\Sigma_\text{near-n}$ correspond to the local and nearest-neighbour self-energies defined on the real-space lattice 
+\begin{eqnarray}
+\Sigma_\text{loc}(\omega) &=& \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}^{(0)}} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}}~,\\ 
+\tilde{\Sigma}(\vec k, \omega)&=&\xi_{\vec k}\Sigma_\text{near-n}~,~\Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{\lambda_{\vec k_0}^2}{\mathcal{W}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}^2}~.
+\end{eqnarray}
+We note that the form of $\Sigma(\vec k, \omega)$ obtained by us is similar to the form proposed on phenomenological grounds in the generalised DMFT + $\Sigma$ approach~\cite{sadovskii2012}.
 
 \section{Correlation functions in momentum space}
 Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearest-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi(\vec r)\) corresponding to the operator \(\mathcal{O}\):
@@ -598,7 +611,7 @@ The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following
 	\Sigma_{dz} \sim |\omega|^{- \frac{3}{4}\alpha}~.
 \end{aligned}\end{equation}
 
-We will now relate the auxiliary model self-energies \(\Sigma_{dd}\) and \(\Sigma_{dz}\) with their auxiliary model counterparts using the lattice Dyson equation. We consider self-energy matrices \(\Sigma\) and \(\Sigma_\text{aux}\) constructed out of real-space self-energies:
+We will now relate the auxiliary model self-energies \(\Sigma_{dd}\) and \(\Sigma_{dz}\) with their bulk (or lattice) model counterparts using the lattice Dyson equation. We consider self-energy matrices \(\Sigma\) and \(\Sigma_\text{aux}\) constructed out of real-space self-energies:
 \begin{equation}\begin{aligned}
 	\Sigma(\omega) = \begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} ,\quad \Sigma_\text{aux}(\omega) = \begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix}~,
 \end{aligned}\end{equation}
@@ -612,24 +625,26 @@ and
 \end{aligned}\end{equation}
 where the superscript \((0)\) indicates that the corresponding quantity has to be calculated from the non-interacting model. We now evaluate the second inverse matrix in each of the two equations, and expression the lattice Greens functions in terms of the auxiliary mode Greens functions (using eqs.~\ref{greens_func_relation} and \ref{greens_func_relation_near}). We get
 \begin{equation}\begin{aligned}
-	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} &= 1/\mathcal{G}^{(0)} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2}\begin{bmatrix} \mathcal{G}_{dd} && \mathcal{G}_{dz} \\ \mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}^{-1}~,\\
-	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{1}{\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2}\begin{bmatrix} \mathcal{G}_{dd} && \frac{1}{\mathcal{W}}\mathcal{G}_{dz} \\ \frac{1}{\mathcal{W}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}^{-1}~.
+	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} &= 1/\mathcal{G}^{(0)} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\mathcal{G}_{dz} \\ -\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~,\\
+	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{1}{\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} \\ -\frac{1}{\mathcal{W}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~.
 \end{aligned}\end{equation}
 This allows us to write down expressions for the off-diagonal self-energies, in terms of Greens functions, without evaluating the non-singular contribution coming from the non-interacting matrix:
 \begin{equation}\begin{aligned}
-	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} - \frac{1}{\mathcal{W}\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2} \mathcal{G}_{dz}
+	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} + \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{1}{\mathcal{W}\lambda_{\vec k_0}^2}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{W}^2} \mathcal{G}_{dz}
 \end{aligned}\end{equation}
-The divergence of \(\Sigma_{dz}\) shown in eq.~\ref{selfenergydivergence} as \(\omega \to 0\) has to arise from the second term in the expression for \(\Sigma_{dz}\) in the last equation, because the non-interacting Greens function has well-defined poles which kill the first term. The second term in the expression for \(\Sigma_\text{near-n}\) is very similar to this diverging term in \(\Sigma_{dz}\), differing only through the presence of some finite non-zero factors of \(\lambda_{\vec k_0}^2\) and \(\mathcal{W}\). We therefore conclude that the non-local self-energy of the lattice model is also divergent:
+The divergence of \(\Sigma_{dz}\) shown in eq.~\ref{selfenergydivergence} as \(\omega \to 0\) has to arise from the second term in the expression for \(\Sigma_{dz}\) above as it contains the effects of inter-particle correlations.
+%, because the non-interacting Greens function has well-defined poles which kill the first term. 
+Importantly, we note that the second term in the expression for \(\Sigma_\text{near-n}\) is very similar to the diverging term in \(\Sigma_{dz}\), differing only through the presence of some finite (i.e., non-divergent) non-zero factors of \(\lambda_{\vec k_0}^2\) and \(\mathcal{W}\). We therefore conclude that the non-local self-energy of the lattice model $\Sigma_\text{near-n}$ contains the same power-law divergence  as $\Sigma_{dz}$ upon taking the limit $\omega\to 0$:
 \begin{equation}\begin{aligned}
 	\Sigma_\text{near-n}\left( \omega \right) \sim \omega^{-3\alpha/4}~.
 \end{aligned}\end{equation}
-By a similar argument, the local self-energy is found to vanish as \(\omega \to 0\). Using our tiling approach, we can approximate the \(k-\)space self-energy in terms of these two self-energies:
+By a similar argument, the local self-energy is found to vanish as \(\omega \to 0\). We have seen above that we can approximate the \(k-\)space self-energy in terms of these two real-space self-energies (eq.\eqref{selfenergy1}):
 \begin{equation}\begin{aligned}
-	\Sigma(\vec k, \omega) \simeq \Sigma_\text{loc} + \xi_{\vec k}\Sigma_\text{near-n}
+	\Sigma(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~~\textrm{where}~\tilde{\Sigma}(\vec k, \omega)=\xi_{\vec k}\Sigma_\text{near-n}~,
 \end{aligned}\end{equation}
-It is clear from the expression that the divergent $\Sigma_\text{near-n}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$, but $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else.
+and $\xi_{\vec{k}}$ is the electronic lattice dispersion (in units of the hopping amplitude $t$). It is clear from the expression that the divergent $\Sigma_\text{near-n}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$, but $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else.
 
-Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from the Fermi surface
+Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from a critical Fermi surface~(see Chapter 8 of Ref.\cite{carr2010})
 \begin{equation}
 A(\vec{k},\omega) \sim |\omega|^{\frac{3}{4}\alpha}~.
 \end{equation}	

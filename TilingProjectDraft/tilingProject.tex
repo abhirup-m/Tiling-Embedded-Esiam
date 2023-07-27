@@ -132,7 +132,7 @@ The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence corr
 
 \section{Creating a Hubbard-Heisenberg Hamiltonian from an extended Anderson impurity model}
 
-The standard Anderson model consists of a correlated impurity site coupled with a non-interacting conduction bath. The double occupancy cost on the impurity is \(U\), while the single-particle hopping strength between the impurity and the conduction bath is \(V\). Such a model does not exhibit a phase transition; the low-energy phase is one of strong-coupling for all parameter regimes. We have recently studied an extended Anderson impurity model (e-SIAM) where we introduced an explicit Kondo coupling \(J\) and a local correlation \(U_b\) on the bath site connected to the impurity. The Hamiltonian of the e-SIAM for a half-filled impurity site is of the form
+The standard Anderson model consists of a correlated impurity site coupled with a non-interacting conduction bath. The double occupancy cost on the impurity is \(U\), while the single-particle hopping strength between the impurity and the conduction bath is \(V\). Such a model does not exhibit a phase transition; the low-energy phase is one of strong-coupling for all parameter regimes. We have recently studied an extended Anderson impurity model (e-SIAM) where we introduced an explicit Kondo coupling \(J\) and a local correlation \(U_b\) on the bath site connected to the impurity (see \cite{gazizovaleblanc2023} for some recent findings of non-local effective attractive interactions within the Hubbard model). The Hamiltonian of the e-SIAM for a half-filled impurity site is of the form
 \begin{equation}\begin{aligned}
 	\label{siam_attr}
 	\mathcal{H}_\text{aux} = \sum_{k\sigma}\epsilon_k \tau_{k\sigma} - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2 + V \sum_{k\sigma} \left(c^\dagger_{k\sigma} c_{d\sigma} + h.c.\right) +J \vec{S_d}\cdot\vec{s} - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2~,
@@ -390,14 +390,14 @@ where \(\left(A_\text{H-H}\right)_\text{loc}(\omega)\) and \(A_\text{H-H}(\vec{k
 
 From the knowledge of the momentum-space Greens function, one can write down the lattice self-energy \(\Sigma(\vec k,\omega)\) using Dyson's equation:
 \begin{equation}\begin{aligned}
-	\label{self-energy1}
+	\label{selfenergy1}
 	\Sigma_{H-H}(\vec k,\omega) = 1/\left(G_{H-H}(\omega)\right)_{\vec k}^{(0)} - 1/\left(G_{H-H}(\omega)\right)_{\vec k} = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}^{(0)}_{dz}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega) + \frac{\xi_{\vec k}}{\mathcal{W}}\mathcal{G}_{dz}(\omega)}~,
 \end{aligned}\end{equation}
 where the superscript \((0)\) indicates that the corresponding term has to be calculated from the non-interacting auxiliary model. 
 
 By expanding in terms of the small parameter $\frac{\lambda_{\vec k_0}^2}{\mathcal{W}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}}$, this expression for $\Sigma_{H-H}(\vec k,\omega)$ can be recast in the following form:
 \begin{equation}\begin{aligned}
-	\Sigma_{H-H}(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~\label{selfenergy1}
+	\Sigma_{H-H}(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~\label{selfenergy2}
 \end{aligned}\end{equation}
 where $\Sigma_\text{loc}$ and $\Sigma_\text{near-n}$ correspond to the local and nearest-neighbour self-energies defined on the real-space lattice 
 \begin{eqnarray}
@@ -770,7 +770,7 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \end{aligned}\end{equation}
 
 \section{Analytic consistency check - On the Bethe lattice}
-We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension), where the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that DMFT obtains a metal-insulator transition in that limit~\cite{georges1996}. It is well known from the works of Müller-Hartmann as well as Metzner and Vollhardt that self-energy arising from the correlations loses all momentum-dependence and becomes purely local~\cite{Muller-Hartmann1989,metzner_volhardt_1989}. This simplification is what makes DMFT exact in the limit of infinite dimensions. This simplification is also explicit in our formalism, as can be seen in the expression of the self-energy (eq.~\ref{selfenergy1}). Upon taking the limit of \(\mathcal{W}\to\infty\), the non-local terms drop out:
+We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{W}\to\infty$ (the coordination number, and effectively the dimension), where the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{W}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that DMFT obtains a metal-insulator transition in that limit~\cite{georges1996}. It is well known from the works of Müller-Hartmann as well as Metzner and Vollhardt that self-energy arising from the correlations loses all momentum-dependence and becomes purely local~\cite{Muller-Hartmann1989,metzner_volhardt_1989}. This simplification is what makes DMFT exact in the limit of infinite dimensions. This simplification is also explicit in our formalism, as can be seen in the expression of the Self-energy (eq.~\eqref{selfenergy1}). Upon taking the limit of \(\mathcal{W}\to\infty\), the non-local terms drop out:
 \begin{equation}\begin{aligned}
 	\lim_{\mathcal{W}\to\infty}\Sigma_{H-H}(\vec k,\omega) = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega)} = \Sigma_\text{loc}(\omega)~,
 \end{aligned}\end{equation}

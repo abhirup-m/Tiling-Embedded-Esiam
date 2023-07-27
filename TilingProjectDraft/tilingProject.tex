@@ -482,9 +482,6 @@ where \(S_\text{EE}(\rho)\) is the von-Neumann entropy associated with the densi
 	&\rho_{\vec k\sigma, \vec q\sigma} \\
 	=& \hat n_{\vec q\sigma}\rho_{\vec k\sigma}\hat n_{\vec q\sigma} + \hat h_{\vec q\sigma}\rho_{\vec k\sigma}\hat h_{\vec q\sigma}\\
 	=& \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\\
-				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]\\
-	=& \left[\left(\hat n_{d,\sigma} + \hat n_{z,\sigma}\right)^2 + \frac{\xi_{\vec q} + \xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)+ \frac{\xi_{\vec q} \xi_{\vec k}}{\mathcal{W}}\left( \hat n_{d\sigma} - \hat n_{0\sigma} \right)^2 \right] \rho_{\vec k\sigma} \times\\
-	 &\left[\left(\hat n_{d,\sigma} + \hat n_{z,\sigma}\right)^2 + \frac{\xi_{\vec q} + \xi_{\vec k}}{\sqrt \mathcal{W}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)+ \frac{\xi_{\vec q} \xi_{\vec k}}{\mathcal{W}}\left( \hat n_{d\sigma} - \hat n_{0\sigma} \right)^2 \right]\\
 				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{W}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]
 \end{aligned}\end{equation}
 
@@ -568,8 +565,14 @@ In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show th
 
 \begin{figure}[!htb]
 \includegraphics[width=\textwidth]{vne_kspace_all.pdf}
-\caption{Momentum dependence of \(k-\)space von Neumann entanglement entropy \(S_\text{EE}(\vec k)\) and \(k-\)space mutual information \(I_2(\vec k:-\vec k)\). The first two frames (from the left) show the variation in entanglement of a \(k-\)space in the \(k_x\) direction as the transition parameter \(r\) is tuned through the metal-insulator transition, for two values of \(k_y\). The last two frames show the distribution of mutual information between two states \(\vec k\) and \(-\vec k\), in the \(k_x-k_y\) plane, for two values of \(r\). \(r/r_c=0.9\) represents a highly correlated metal, while \(r/r_c=1\) represents the non-Fermi liquid metal formed at the transition.}
+\caption{Momentum dependence of \(k-\)space von Neumann entanglement entropy \(S_\text{EE}(\vec k)\). The four frames (from the left) show the variation in entanglement of a \(k-\)space in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
 \label{entanglement_kspace}
+\end{figure}
+
+\begin{figure}[!htb]
+\includegraphics[width=\textwidth]{mutinfo_kspace_all.pdf}
+\caption{Momentum dependence of \(k-\)space mutual information \(I_2(\vec k: -\vec k)\). The four frames (from the left) show the variation in entanglement between the \(\vec k\) and \(-\vec k\) states in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
+\label{mutinfo_kspace}
 \end{figure}
 
 {\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colourmap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colourmap} as \(r\) is tuned towards and into the transition.}

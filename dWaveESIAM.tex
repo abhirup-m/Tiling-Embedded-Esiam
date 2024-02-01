@@ -1,5 +1,5 @@
 \documentclass{revtex4-2}
-\usepackage{amsmath}
+\usepackage{amsmath,hyperref}
 \begin{document}
 \title{URG analysis of the extended Kondo model with d-wave interaction}
 \author{Abhirup Mukherjee, Siddhartha Lal}
@@ -40,7 +40,7 @@ The coupling \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4}\) has certain symmetries.
 \section{RG scheme}
 At any given step \(j\) of the RG procedure, we decouple the states \(\left\{ \vec q \right\} \) on the isoenergetic surface of energy \(\varepsilon_j\). The diagonal Hamiltonian \(H_D\) for this step consists of all terms that do not change the occupancy of the states \(\left\{\vec q\right\}\):
 \begin{equation}\begin{aligned}
-	H_D^{(j)} = \varepsilon_j\sum_{q,\sigma}\tau_{q,\sigma} + \sum_{\vec q}J_{\vec q, \vec q}S_d^z\left(\hat n_{\vec q, \uparrow} - \hat n_{\vec q, \downarrow}\right) - \frac{1}{2}\sum_{\vec q_1}W_{\vec q_1, \vec q_1, \vec q_1, \vec q_1}\left(\hat n_{\vec q_1, \uparrow} - \hat n_{\vec q_1, \downarrow}\right)^2~.
+	H_D^{(j)} = \varepsilon_j\sum_{q,\sigma}\tau_{q,\sigma} + \frac{1}{2}\sum_{\vec q}J_{\vec q, \vec q}S_d^z\left(\hat n_{\vec q, \uparrow} - \hat n_{\vec q, \downarrow}\right) - \frac{1}{2}\sum_{\vec q_1}W_{\vec q_1, \vec q_1, \vec q_1, \vec q_1}\left(\hat n_{\vec q_1, \uparrow} - \hat n_{\vec q_1, \downarrow}\right)^2~.
 \end{aligned}\end{equation}
 where \(\tau = \hat n - 1/2\). The three terms, respectively, are the kinetic energy of the momentum states on the isoenergetic shell that we are decoupling, the Ising interaction energy between the impurity spin and the spins formed by these momentum states and, finally, the local correlation energy associated with these states arising from the \(W\) term.
 
@@ -51,7 +51,8 @@ The off-diagonal part of the Hamiltonian on the other hand leads to scattering i
 		   &\underbrace{- \frac{1}{2}\sum_{\vec q_1,\vec k_2, \vec q_2, \vec k_4,\sigma,\sigma^\prime}W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime \left[c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} + \text{h.c.}\right]}_{T_3^\dagger + T_3}\\
 		   &\underbrace{- \frac{1}{2}\sum_{\vec q_1,\vec k_2,\vec k_3,\vec q_2,\sigma,\sigma^\prime}W_{\vec q_1,\vec k_2,\vec k_3,\vec q_2} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_3,\sigma^\prime}c_{\vec q_2,\sigma^\prime}}_{T_4}\\
 		   &\underbrace{- \frac{1}{2}\sum_{\vec q_1,\vec k_2,\vec k_3,\vec q_2,\sigma,\sigma^\prime}W_{\vec q_1,\vec k_2,\vec k_3,\vec q_2} \sigma\sigma^\prime c^\dagger_{\vec k_3,\sigma^\prime}c_{\vec q_2,\sigma^\prime}c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}}_{T_5}\\
-		   &\underbrace{- \frac{1}{2}\sum_{\vec q_1,\vec k_2, \vec q_2, \vec q_3,\sigma,\sigma^\prime}W_{\vec q_1,\vec k_2, \vec q_2, \vec q_3} \sigma\sigma^\prime \left[c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec q_3,\sigma^\prime} + \text{h.c.}\right]}_{T_6 + T_6^\dagger}~.
+		   &\underbrace{- \frac{1}{2}\sum_{\vec q_1,\vec k_2, \vec q_2, \vec q_3,\sigma,\sigma^\prime}W_{\vec q_1,\vec k_2, \vec q_2, \vec q_3} \sigma\sigma^\prime \left[c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec q_3,\sigma^\prime}c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma} + \text{h.c.}\right]}_{T_6^\dagger + T_6}~,\\
+		   & \underbrace{+\sum_{\vec k, \vec q, \sigma,\sigma^\prime}J_{\vec q^\prime, \vec q} \vec{S}_d\cdot\vec{\tau}_{\sigma,\sigma^\prime}\left[c^\dagger_{\vec q\sigma}c_{\vec q^\prime,\sigma}\right]}_{T_7}~.\\
 \end{aligned}\end{equation}
 The first term \(T_1\) is an impurity-mediated scattering between the states \(\vec q\) at energy \(\varepsilon_j\) and the states \(\vec k\) at energies below \(\varepsilon_j\). Terms \(T_2\) through \(T_6\) involve two-particle scattering between these momentum states involving an increasing number of participating states from the isoenergetic shell \(\varepsilon_j\), through the Hubbard-like local term \(W\). The renormalisation of the Hamiltonian is constructed from the general expression
 \begin{equation}\begin{aligned}
@@ -61,32 +62,64 @@ The first term \(T_1\) is an impurity-mediated scattering between the states \(\
 \section{Renormalisation of the bath correlation term \(W\)}
 In order to lead to a renormalisation of the \(W-\)term, there must be a total of four uncontracted momentum indices \(k_i\) and two contracted indices \(q_1, q_2\). The following combinations of scattering processes are compatible: (i) \(T_2^\dagger G T_6 + T_6^\dagger G T_2\), (ii) \(T_3^\dagger G T_3 + T_3 G T_3^\dagger\), (iii) \(T_4 G T_4\), (iv) \(T_5 G T_5\) and (v) \(T_4 G T_5 + T_5 G T_4\).
 
+\subsection{Correlated scattering involve one electron on the shell \(\varepsilon_j\)}
 The first term is of the form
 \begin{equation}\begin{aligned}
-	T_2^\dagger G T_6 = \sum \sigma_1\sigma_1^\prime W_{\vec q_1,\vec k_2,\vec k_3,\vec k_4} c^\dagger_{\vec q_1, \sigma_1}c_{\vec k_2,\sigma_1}c^\dagger_{\vec k_3,\sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime} \frac{1}{\omega - H_D}\sigma_1\sigma_2^\prime W_{\vec q_1,\vec q_2,\vec q_2,\vec k_2^\prime} \hat n_{\vec q_2,\sigma_2^\prime}c^\dagger_{\vec k_2^\prime,\sigma_1}c_{\vec q_1,\sigma_1}~.
+	T_6^\dagger G T_2 = \sum \sigma_1\sigma_1^\prime W_{\vec k_3,\vec k_4,\vec k_1,\vec q_1} c^\dagger_{\vec k_3, \sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime}c^\dagger_{\vec k_1,\sigma_1}c_{\vec q_1,\sigma_1} \frac{1}{\omega - H_D}W_{\vec q_1,\vec q_2,\vec q_2,\vec k_2} \left(-\hat n_{\vec q_2,\bar\sigma_1}c^\dagger_{\vec q_1,\sigma_1}c_{\vec k_2,\sigma_1} + \hat n_{\vec q_2,\sigma_1}c^\dagger_{\vec q_1,\sigma_1}c_{\vec k_2,\sigma_1} \right.\\
+	\left.+ c^\dagger_{\vec q_1,\sigma_1}\left(1 - \hat n_{\vec q_2,\bar\sigma_1}\right) c_{\vec k_2,\sigma_1}\right)~.
 \end{aligned}\end{equation}
-The change in occupancy of the state \(\vec q_1\sigma_1\) from 1 to 0 leads to an excited state energy \(H_D = \varepsilon(q_1)\tau_{q_1\sigma_1} - \frac{1}{2}W_{\vec q_1}\left(\hat n_{\vec q_1, \uparrow} - \hat n_{\vec q_1, \uparrow}\right)^2 = -\frac{1}{2}\varepsilon(q_1) - \frac{1}{2}W_{\vec q_1}\), where \(W_{\vec q_1}\) is a shorthand for \(W_{\vec q_1,\vec q_1,\vec q_1,\vec q_1}\). The number operator \(\hat n_{\vec q_2,\sigma_2^\prime}\) projects the initial state to that in which \(\vec q_2\) is occupied. The operator \(c_{\vec q_1,\sigma_1}\) can be combined with its hermitian conjugate on the other side to give another number operator, leading to another projection. Both the number operators reduce to unity upon acting on the projected states:
-\begin{equation}\begin{aligned}
-	T_2^\dagger G T_6 = \sum \sigma_1^2\sigma_1^\prime W_{\vec q_1,\vec k_2,\vec k_3,\vec k_4} W_{\vec q_1,\vec q_2,\vec q_2,\vec k_2^\prime} c_{\vec k_2,\sigma_1}c^\dagger_{\vec k_3,\sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime} c^\dagger_{\vec k_2^\prime,\sigma_1}\frac{1}{\omega + \frac{1}{2}\varepsilon(q_1) + \frac{1}{2}W_{\vec q_1}}\sum_{\sigma_2^\prime}\sigma_2^\prime  ~.
+The change in occupancy of the state \(\vec q_1\sigma_1\) from 1 to 0 leads to an excited state energy \(H_D = \varepsilon(q_1)\tau_{q_1\sigma_1} - \frac{1}{2}W_{\vec q_1}\left(\hat n_{\vec q_1, \uparrow} - \hat n_{\vec q_1, \uparrow}\right)^2 = -\frac{1}{2}\varepsilon(q_1) - \frac{1}{2}W_{\vec q_1}\), where \(W_{\vec q_1}\) is a shorthand for \(W_{\vec q_1,\vec q_1,\vec q_1,\vec q_1}\). We consider the first two terms for now. The number operators \(\hat n_{\vec q_2,\sigma_1}, \hat n_{\vec q_2,\bar\sigma_1}\) project the initial state to that in which \(\vec q_2\) is occupied, henceforth referred to as the particle sector (PS). The operator \(c_{\vec q_1,\sigma_1}\) can be combined with its Hermitian conjugate on the other side to give another number operator, leading to another projection. Since the two terms are otherwise identical, their opposite signs lead to them cancelling each other. The remaining term involves the hole projection operator \(1 - \hat n_{\vec q_2,\sigma_1}\) which projects onto the set of initial states in which the momentum state \(\vec q_2\) is unoccupied, henceforth referred to as the hole sector (HS). Evaluating this term in the same way leads to
+\begin{equation}\begin{aligned}\label{t2t61}
+	T_2^\dagger G T_6 = -\sum_{\left\{\vec k_i\right\}, \sigma_1\sigma_1^\prime}  c^\dagger_{\vec k_3,\sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime} c^\dagger_{\vec k_1,\sigma_1} c_{\vec k_2,\sigma_1}\sum_{\vec q_1\in\text{PS},\atop{\vec q_2 \in \text{HS}}}\frac{W_{\vec q_1,\vec k_2,\vec k_3,\vec k_4} W_{\vec q_1,\vec q_2,\vec q_2,\vec k_1}}{\omega + \frac{1}{2}\varepsilon(q_1) + \frac{1}{2}W_{\vec q_1}}  ~.
 \end{aligned}\end{equation}
-Since there is a sum over the spin factor \(\sigma_2^\prime = \pm 1\), this term vanishes identically. The particle-hole transformed term \(T_6^\dagger G T_2\) vanishes for the same reason.
+The particle-hole transformed term \(T_6^\dagger G T_2\) can be evaluated in the same way:
+\begin{equation}\begin{aligned}\label{t6dagt2}
+	T_6^\dagger G T_2 = \sum W_{\vec q_1,\vec q_2,\vec q_2,\vec k_2}\left(-c^\dagger_{\vec q_1,\sigma_1}c_{\vec k_2,\sigma_1}\hat n_{\vec q_2,\bar\sigma_1} + c^\dagger_{\vec q_1,\sigma_1}c_{\vec k_2,\sigma_1}\hat n_{\vec q_2,\sigma_1} + c^\dagger_{\vec q_1,\sigma_1}\left(1 - \hat n_{\vec q_2,\bar\sigma_1}\right) c_{\vec k_2,\sigma_1}\right) \frac{1}{\omega - H_D}\times \\
+	\sigma_1\sigma_1^\prime W_{\vec k_3,\vec k_4,\vec k_1,\vec q_1} c^\dagger_{\vec k_3, \sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime}c^\dagger_{\vec k_1,\sigma_1}c_{\vec q_1,\sigma_1} ~.
+\end{aligned}\end{equation}
+For such a scattering process, the excited energy is given by \(H_D = \varepsilon(q_1)\tau_{q_1\sigma_1} - \frac{1}{2}W_{\vec q_1}\left(\hat n_{\vec q_1, \uparrow} - \hat n_{\vec q_1, \uparrow}\right)^2 = \frac{1}{2}\varepsilon(q_1) - \frac{1}{2}W_{\vec q_1}\). The change of the sign in front of \(\varepsilon(\vec q_1)\) arises from the fact that in this process, the state \(\vec q_1\) is occupied in the intermediate excited state, owing to the \(c^\dagger_{\vec q_1,\sigma_1}\) operator to the right of the Greens function. Cancelling the first two terms in eq.~\ref{t6dagt2} (just as in the previous process) and evaluating the last term gives
+\begin{equation}\begin{aligned}\label{t2t62}
+	T_6^\dagger G T_2 = \sum_{\left\{\vec k_i\right\}, \sigma_1\sigma_1^\prime}  c^\dagger_{\vec k_3, \sigma_1^\prime}c_{\vec k_4,\sigma_1^\prime}c^\dagger_{\vec k_1,\sigma_1} c_{\vec k_2,\sigma_1}\sum_{\vec q_1, \vec q_2\in\text{HS}}\frac{W_{\vec k_3,\vec k_4,\vec k_1,\vec q_1} W_{\vec q_1,\vec q_2,\vec q_2,\vec k_2}}{\omega - \frac{1}{2}\varepsilon(q_1) + \frac{1}{2}W_{\vec q_1}}~.
+\end{aligned}\end{equation}
 
+We now assume that the Brillouin zone of the lattice in which our conduction bath is embedded is symmetrical about the Fermi surface. This essentially amounts to working at particle-hole symmetry, by setting the chemical potential of the bath to zero. This symmetry leads to two consequences:
+\begin{itemize}
+	\item If this is the case, the states in the particle sector will reside on the isoenergetic shell of energy \(-|\varepsilon_j|\), while those in the hole sector will reside at energy \(|\varepsilon_j|\), at equal distances from the Fermi surface (which lies at zero energy). This ensures that in the denominators of the RG equation, we have the simplification 
+\begin{equation}\begin{aligned}
+	\varepsilon(\vec q_1)\bigg|_\text{PS} = -\varepsilon(\vec q_2)\bigg|_\text{HS} = -|\varepsilon_j|~.
+\end{aligned}\end{equation}
+\item We also consider the symmetry of of the coupling \(W_{\vec q_1,\vec k_1, \vec q_2, \vec k_2}\) to reflections about the nodal point in the same quadrant of the Brillouin zone. For any momentum \(\vec q_1\) in the hole sector, we can find a corresponding point \(\vec \tilde q_1\) in the particle sector by reflecting about the nodal point. This corresponds to the transformation \(q_x \to \pi - q_x, q_y \to \pi - q_y\), leading to a sign change of the factor \(\left[\cos\left( aq_1^x \right) - \cos\left( aq_1^y \right) \right]\). This leaves the product \(W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}\) unchanged. The diagonal coupling \(W_{\vec q_1}\) also remains unchanged by themselves, since it involves a product of four copies of the factor.
+\end{itemize}
+These two features ensure that the inner summations over \(\vec q_1,\vec q_2\) are identical in eqs.~\ref{t2t61} and \ref{t2t62}, leading to the vanishing of the total renormalisation \(T_6^\dagger G T_2 + T_2^\dagger G T_6\).
+
+\subsection{Scattering across the Fermi surface involving two electrons on the shell \(\varepsilon_j\)}
 We now consider the second term \(T_3^\dagger G T_3\):
 \begin{equation}\begin{aligned}
-	T_3^\dagger G T_3 &= \frac{1}{4}\sum W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} \frac{1}{\omega - H_D} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime} \sigma\sigma^\prime c^\dagger_{\vec k^\prime_4,\sigma^\prime} c_{\vec q_2,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma} c_{\vec q_1,\sigma}\\
-			  &= \frac{1}{4}\sum  \hat n_{\vec q_1,\sigma} \hat n_{\vec q_2,\sigma^\prime} c_{\vec k_2,\sigma} c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k^\prime_4,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma} \frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}\\
-			  &= \frac{1}{4}\sum_{4^\prime,4,2^\prime,2,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k^\prime_4,\sigma^\prime} c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma}c_{\vec k_2,\sigma}  \sum_{\vec q_1, \vec q_2 \in \text{PS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
+	T_3^\dagger G T_3 &= \frac{1}{4}\sum W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} \frac{1}{\omega - H_D} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime} \sigma\sigma^\prime c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec q_2,\sigma^\prime} c^\dagger_{\vec k_3,\sigma} c_{\vec q_1,\sigma}\\
+			  &= \frac{1}{4}\sum  \hat n_{\vec q_1,\sigma} \hat n_{\vec q_2,\sigma^\prime} c_{\vec k_2,\sigma} c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k_1,\sigma^\prime} c^\dagger_{\vec k_3,\sigma} \frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}\\
+			  &= \frac{1}{4}\sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k_3,\sigma}c_{\vec k_2,\sigma}  \sum_{\vec q_1, \vec q_2 \in \text{PS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
 \end{aligned}\end{equation}
 where \(\vec q_1, \vec q_2\) are summed over all momentum states in the isoenergetic shell and in the particle sector (PS) (states are occupied in the ground state).
 
 The particle-hole transformed term is \(T_3 G T_3^\dagger\):
 \begin{equation}\begin{aligned}
-	T_3 G T_3^\dagger &= \frac{1}{4}\sum  W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime} \sigma\sigma^\prime c^\dagger_{\vec k^\prime_4,\sigma^\prime} c_{\vec q_2,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma} c_{\vec q_1,\sigma}\frac{1}{\omega - H_D}W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} \\
-			  &= \frac{1}{4}\sum \left(1 - \hat n_{\vec q_1,\sigma}\right) \left(1 - \hat n_{\vec q_2,\sigma^\prime}\right) c^\dagger_{\vec k^\prime_4,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma}  c_{\vec k_2,\sigma} c_{\vec k_4,\sigma^\prime}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}\\
-			  &= \frac{1}{4}\sum_{4^\prime,4,2^\prime,2,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k^\prime_4,\sigma^\prime}  c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k^\prime_2,\sigma}  c_{\vec k_2,\sigma} \sum_{\vec q_1, \vec q_2 \in \text{HS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
+	T_3 G T_3^\dagger &= \frac{1}{4}\sum  W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1} \sigma\sigma^\prime c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec q_2,\sigma^\prime} c^\dagger_{\vec k_3,\sigma} c_{\vec q_1,\sigma}\frac{1}{\omega - H_D}W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} \\
+			  &= \frac{1}{4}\sum \left(1 - \hat n_{\vec q_1,\sigma}\right) \left(1 - \hat n_{\vec q_2,\sigma^\prime}\right) c^\dagger_{\vec k_1,\sigma^\prime} c^\dagger_{\vec k_3,\sigma}  c_{\vec k_2,\sigma} c_{\vec k_4,\sigma^\prime}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}\\
+			  &= \frac{1}{4}\sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_1,\sigma^\prime}  c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k_3,\sigma}  c_{\vec k_2,\sigma} \sum_{\vec q_1, \vec q_2 \in \text{HS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
 \end{aligned}\end{equation}
-where the hole projectors \(\left(1 - \hat n_{\vec q_1,\sigma}\right) \left(1 - \hat n_{\vec q_2,\sigma^\prime}\right)\) force the momenta \(\vec q_1,\vec q_2\) to extend over all states in the hole sector (states that are unoccupied in the ground state). The change in the sign of \(\left[\varepsilon(q_1) + \varepsilon(q_2)\right]\) in the denominator compared to the denominator in \(T_3^\dagger G T_3\) is for the same reason.
+where the hole projectors \(\left(1 - \hat n_{\vec q_1,\sigma}\right) \left(1 - \hat n_{\vec q_2,\sigma^\prime}\right)\) force the momenta \(\vec q_1,\vec q_2\) to extend over the states only in the hole sector (states that are unoccupied in the ground state). The change in the sign of \(\left[\varepsilon(q_1) + \varepsilon(q_2)\right]\) in the denominator compared to the denominator in \(T_3^\dagger G T_3\) is for the same reason.
 
+We can obtain two additional terms by switching the sequence of operators on the right hand side of the propagator:
+\begin{equation}\begin{aligned}
+	T_3^\dagger G \overline T_3 &= \frac{1}{4}\sum W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} \frac{1}{\omega - H_D} W_{\vec q_1,\vec k_2^\prime, \vec q_2, \vec k_4^\prime} \sigma\sigma^\prime c^\dagger_{\vec k_3,\sigma} c_{\vec q_1,\sigma} c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec q_2,\sigma^\prime}\\
+			  &= \frac{1}{4}\sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k_3,\sigma}c_{\vec k_2,\sigma}  \sum_{\vec q_1, \vec q_2 \in \text{PS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+	T_3 G \overline T_3^\dagger &= \frac{1}{4}\sum  W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1} \sigma\sigma^\prime c^\dagger_{\vec k_1,\sigma^\prime} c_{\vec q_2,\sigma^\prime} c^\dagger_{\vec k_3,\sigma} c_{\vec q_1,\sigma}\frac{1}{\omega - H_D}W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma} \\
+			  &= \frac{1}{4}\sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_1,\sigma^\prime}  c_{\vec k_4,\sigma^\prime} c^\dagger_{\vec k_3,\sigma}  c_{\vec k_2,\sigma} \sum_{\vec q_1, \vec q_2 \in \text{HS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~,
+\end{aligned}\end{equation}
+
+\subsection{Forward and tangential scattering involving two electrons on the shell \(\varepsilon_j\)}
 The remaining sets of terms that we need to consider are:
 \begin{equation}\begin{aligned}
 	T_4 G T_4 &= \frac{1}{4}\sum  W_{\vec q_1,\vec k_1, \vec q_2, \vec k_2} \sigma\sigma^\prime c^\dagger_{\vec q_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_1,\sigma^\prime}c_{\vec q_2,\sigma^\prime} \frac{1}{\omega - H_D}W_{\vec q_1, \vec k_3, \vec q_2, \vec k_4} \sigma\sigma^\prime c^\dagger_{\vec q_2,\sigma^\prime}c_{\vec k_4,\sigma^\prime}c^\dagger_{\vec k_3,\sigma}c_{\vec q_1,\sigma}\\
@@ -111,5 +144,65 @@ The remaining sets of terms that we need to consider are:
 		  &= -\frac{1}{4}\sum \hat n_{\vec q_1,\sigma} \left(1 - \hat n_{\vec q_2,\sigma^\prime}\right) c^\dagger_{\vec k_3,\sigma}c_{\vec k_4,\sigma^\prime} c_{\vec k_2,\sigma} c^\dagger_{\vec k_1,\sigma^\prime} \frac{W_{\vec q_1,\vec k_1, \vec q_2, \vec k_2} W_{\vec q_1, \vec k_3, \vec q_2, \vec k_4}}{\omega + \frac{1}{2}\varepsilon\left(q_1\right) - \frac{1}{2}\varepsilon\left(q_2\right) + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}  \\
 		  &= -\frac{1}{4}\sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_3,\sigma} c_{\vec k_2,\sigma} c^\dagger_{\vec k_1,\sigma^\prime}c_{\vec k_4,\sigma^\prime}\sum_{\vec q_1 \in \text{PS}, \atop{\vec q_2 \in \text{HS}}}\frac{W_{\vec q_1,\vec k_1, \vec q_2, \vec k_2} W_{\vec q_1, \vec k_3, \vec q_2, \vec k_4}}{\omega + \frac{1}{2}\varepsilon\left(q_1\right) - \frac{1}{2}\varepsilon\left(q_2\right) + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)}~.
 \end{aligned}\end{equation}
+
+\subsection{Net renormalisation for the bath correlation term}
+Adding contributions from all these terms, the total renormalisation in the Hamiltonian in the context of \(W\) comes out to be
+\begin{equation}\begin{aligned}
+	\Delta H = \sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_3,\sigma} c_{\vec k_2,\sigma} c^\dagger_{\vec k_1,\sigma^\prime}c_{\vec k_4,\sigma^\prime}&\left[\frac{1}{2}\sum_{\vec q_1, \vec q_2 \in \text{PS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} \right. \\
+		  &\left. + \frac{1}{2}\sum_{\vec q_1, \vec q_2 \in \text{HS}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega - \frac{1}{2}\left[\varepsilon(q_1) + \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} \right. \\
+		  &\left. - \sum_{\vec q_1 \in \text{PS}, \atop{\vec q_2 \in \text{HS}}}\frac{W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}}{\omega + \frac{1}{2}\left[\varepsilon(q_1) - \varepsilon(q_2)\right] + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} \right]
+\end{aligned}\end{equation}
+
+Following the arguments laid down below eq.~\ref{t2t62}, we know that the following relation holds:
+\begin{equation}\begin{aligned}
+	\varepsilon(\vec q_1)\bigg|_\text{PS} = -\varepsilon(\vec q_2)\bigg|_\text{HS} = -|\varepsilon_j|~.
+\end{aligned}\end{equation}
+Following the same arguments, we also know that the product coupling \(W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}\) and the diagonal couplings \(W_{\vec q_1}\) and \(W_{\vec q_2}\) remain unchanged if \(\vec q_2\) is transformed between the particle and hole sectors. Using these properties, we get
+\begin{equation}\begin{aligned}
+	\Delta H &= \sum_{1,2,3,4,\atop{\sigma,\sigma^\prime}} c^\dagger_{\vec k_3,\sigma} c_{\vec k_2,\sigma} c^\dagger_{\vec k_1,\sigma^\prime}c_{\vec k_4,\sigma^\prime}\sum_{\vec q_1, \vec q_2 \in \text{HS}}W_{\vec q_1,\vec k_2, \vec q_2, \vec k_4} W_{\vec q_1,\vec k_3, \vec q_2, \vec k_1}\\
+		 &\times\left[\frac{1/2}{\omega - |\varepsilon_j| + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} + \frac{1/2}{\omega - |\varepsilon_j| + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} - \frac{1}{\omega - |\varepsilon_j| + \frac{1}{2}\left(W_{\vec q_1} + W_{\vec q_2}\right)} \right]\\
+		 &= 0~.
+\end{aligned}\end{equation}
+
+\section{Renormalisation of the Kondo scattering term \(J\)}
+We take a closer look at the Kondo scattering terms \(T_1\) and \(T_7\) in \(H_X\):
+\begin{equation}\begin{aligned}
+	T_1^\dagger + T_7 =& \frac{1}{2}\underbrace{\sum_{\vec k,\vec q,\sigma}J_{\vec k,\vec q}S_d^z \sigma c^\dagger_{\vec q,\sigma} c_{\vec k,\sigma}}_{T_{1,z}^\dagger} + \frac{1}{2}\underbrace{\sum_{\vec k,\vec q}J_{\vec k,\vec q} S_d^+ c^\dagger_{\vec q,\downarrow} c_{\vec k,\uparrow}}_{T_{1,+-}^\dagger} + \frac{1}{2}\underbrace{\sum_{\vec k,\vec q}S_d^- c^\dagger_{\vec q,\uparrow} c_{\vec k,\downarrow}}_{T_{1,-+}^\dagger} \\
+			   &\frac{1}{2}\underbrace{\sum_{\vec q^\prime,\vec q,\sigma}J_{\vec q^\prime,\vec q}S_d^z \sigma c^\dagger_{\vec q,\sigma} c_{\vec q^\prime,\sigma}}_{T_{7,z}^\dagger} + \frac{1}{2}\underbrace{\sum_{\vec q^\prime,\vec q}J_{\vec q^\prime,\vec q} S_d^+ c^\dagger_{\vec q,\downarrow} c_{\vec q^\prime,\uparrow}}_{T_{7,+-}^\dagger} + \frac{1}{2}\underbrace{\sum_{\vec q^\prime,\vec q}S_d^- c^\dagger_{\vec q,\uparrow} c_{\vec q^\prime,\downarrow}}_{T_{7,-+}^\dagger}
+\end{aligned}\end{equation}
+We note that scattering processes involving the pairs \(\left(T_{1,\pm \mp}^\dagger, T_{1,\pm \mp}\right)\), \(\left(T_{1,z}, T_6\right)\) and \(\left(T_{7,z}, T_6\right) \) will renormalise the \(S_d^z\) term, while those involving the pairs \(\left(T_{1,z}, T_{1,\pm \mp}\right)\) and \(\left(T_{1,\pm \mp}, T_6\right)\) will renormalise the \(S_d^\pm\) terms. 
+
+We first consider the renormalisation to the \(S_d^z\) term, arising purely from the Kondo terms:
+\begin{equation}\begin{aligned}
+	\sum_{\sigma=\pm}T_{1,\sigma\bar\sigma}^\dagger G T_{1,\sigma\bar\sigma} = \sum_{\sigma=\pm}\frac{1}{4}\sum_{\vec k_2,\vec q}J_{\vec k_2,\vec q} S_d^\sigma c^\dagger_{\vec q,\bar\sigma} c_{\vec k_2,\sigma} \frac{1}{\omega - H_D}\sum_{\vec k_1,\vec q}J_{\vec k_1,\vec q} S_d^{\bar\sigma} c^\dagger_{\vec k_1,\sigma} c_{\vec q,\bar\sigma}~,
+\end{aligned}\end{equation}
+where \(c_{k,+(-)} \equiv c_{k,\uparrow(\downarrow)}\). The excitation energy for such processes is given by \(H_D = |\varepsilon_j| - J_{\vec q}/4 - W_{\vec q}/2\), due to the fact that the impurity spin flip and the spin flip of the conduction bath state \(\vec q\) occurs in an anti-parallel fashion. Substituting this, performing the usual contraction and projection of the state \(\vec q\) and carrying out the spin manipulation \(S_d^\sigma S_d^{\bar\sigma} = \frac{1}{2} + \sigma S_d^z\) results in the expression
+\begin{equation}\begin{aligned}
+	\sum_{\sigma=\pm}T_{1,\sigma\bar\sigma}^\dagger G T_{1,\sigma\bar\sigma} &= \sum_{\sigma=\pm}\frac{1}{4}\sum_{\vec k_2,\vec k_1} \left(\frac{1}{2} + \sigma S_d^z\right) c_{\vec k_2,\sigma} c^\dagger_{\vec k_1,\sigma}\sum_{\vec q}  \hat n_{\vec q,\bar\sigma} \frac{J_{\vec k_2,\vec q} J_{\vec k_1,\vec q}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2}\\
+										 &= -\frac{1}{4}\sum_{\vec k_2,\vec k_1} S_d^z \left(c^\dagger_{\vec k_1,\uparrow}c_{\vec k_2,\uparrow} - c^\dagger_{\vec k_1,\downarrow}c_{\vec k_2,\downarrow}\right)\sum_{\vec q \in \text{PS}} \frac{J_{\vec k_2,\vec q} J_{\vec k_1,\vec q}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2} + \bigg[\text{pot. scatt. terms}\bigg]~.
+\end{aligned}\end{equation}
+The particle-hole exchanged partner is
+\begin{equation}\begin{aligned}
+	\sum_{\sigma=\pm}T_{1,\sigma\bar\sigma} G T^\dagger_{1,\sigma\bar\sigma} &= \sum_{\sigma=\pm}\frac{1}{4} \sum_{\vec k_1,\vec q}J_{\vec k_1,\vec q} S_d^{\bar\sigma} c^\dagger_{\vec k_1,\sigma} c_{\vec q,\bar\sigma} \frac{1}{\omega - H_D}\sum_{\vec k_2,\vec q}J_{\vec k_2,\vec q} S_d^\sigma c^\dagger_{\vec q,\bar\sigma} c_{\vec k_2,\sigma}\\
+										 &= \sum_{\sigma=\pm}\frac{1}{4}\sum_{\vec k_2,\vec k_1} \left(\frac{1}{2} + \bar\sigma S_d^z\right) c^\dagger_{\vec k_1,\sigma} c_{\vec k_2,\sigma} \sum_{\vec q} \left(1 - \hat n_{\vec q,\bar\sigma}\right) \frac{J_{\vec k_2,\vec q} J_{\vec k_1,\vec q}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2}\\
+										 &= -\frac{1}{4}\sum_{\vec k_2,\vec k_1, \sigma} S_d^z \sigma c^\dagger_{\vec k_1,\sigma}c_{\vec k,\sigma} \sum_{\vec q \in \text{HS}} \frac{J_{\vec k_2,\vec q} J_{\vec k_1,\vec q}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2} + \bigg[\text{pot. scatt. terms}\bigg]~.
+\end{aligned}\end{equation}
+
+Next, we consider scattering processes involving \(T_6\):
+\begin{equation}\begin{aligned}
+	T_{1,z}^\dagger G T_6 = \frac{1}{4}\sum_{\vec k_1,\vec k_2,\vec q,\sigma}\sigma J_{\vec k_2,\vec q}S_d^z c^\dagger_{\vec q,\sigma} c_{\vec k_2,\sigma} \frac{1}{\omega - H_D}W_{\vec q,\vec q,\vec q,\vec k_1} \left[-c^\dagger_{\vec k_1,\sigma}c_{\vec q,\sigma}\hat n_{\vec q,\bar\sigma} + c^\dagger_{\vec k_1,\sigma}c_{\vec q,\sigma}\hat n_{\vec q,\sigma} + c^\dagger_{\vec k_1,\sigma}\left(1 - \hat n_{-\vec q,\sigma}\right) c_{\vec q,\sigma}\right]~.
+\end{aligned}\end{equation}
+For the same reasons as those outlined above eq.~\ref{t2t61}, the first two terms on the right-hand side of the Greens function cancel each other. The remaining term evaluates to
+\begin{equation}\begin{aligned}
+	T_{1,z}^\dagger G T_6 = \frac{1}{4}\sum_{\vec k_1,\vec k_2,\sigma}\sigma  S_d^z c_{\vec k_2,\sigma}c^\dagger_{\vec k_1,\sigma} \sum_{\vec q\in\text{PS}}\frac{J_{\vec k_2,\vec q} W_{\vec q,\vec q,\vec q,\vec k_1}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2} = -\frac{1}{4}\sum_{\vec k_1,\vec k_2,\sigma} S_d^z \sigma c^\dagger_{\vec k_1,\sigma} c_{\vec k_2,\sigma} \sum_{\vec q\in\text{PS}}\frac{J_{\vec k_2,\vec q} W_{\vec q,\vec q,\vec q,\vec k_1}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2}~.
+\end{aligned}\end{equation}
+Another scattering process is obtained by switching the operators \(T_1\) and \(T_6\):
+\begin{equation}\begin{aligned}
+	T_{6}^\dagger G T_{1,z} &= \frac{1}{4} \sum_{\vec k_1,\vec k_2,\vec q,\sigma} \left[-c^\dagger_{\vec q,\sigma_1}c_{\vec k_2,\sigma_1}\hat n_{-\vec q,\bar\sigma_1} + c^\dagger_{\vec q,\sigma_1}c_{\vec k_2,\sigma_1}\hat n_{-\vec q,\sigma_1} + c^\dagger_{\vec q,\sigma_1}\left(1 - \hat n_{-\vec q,\sigma_1}\right) c_{\vec k_2,\sigma_1}\right] \frac{W_{\vec q,\vec q,\vec q,\vec k_2} J_{\vec k_1,\vec q}}{\omega - H_D} \sigma S_d^z c^\dagger_{\vec k_1,\sigma} c_{\vec q,\sigma}\\
+				&=-\frac{1}{4}\sum_{\vec k_1,\vec k_2,\sigma} S_d^z \sigma c^\dagger_{\vec k_1,\sigma} c_{\vec k_2,\sigma} \sum_{\vec q\in\text{PS}}\frac{J_{\vec k_1,\vec q} W_{\vec q,\vec q,\vec q,\vec k_2}}{\omega - |\varepsilon_j| + J_{\vec q}/4 + W_{\vec q}/2}
+\end{aligned}\end{equation}
+One can also construct 
+
+
 
 \end{document}

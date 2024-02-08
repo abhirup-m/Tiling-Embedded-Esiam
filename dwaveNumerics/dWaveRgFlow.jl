@@ -46,7 +46,8 @@ function getDOS(num_kspace, dispersionArray)
         end
     end
     replace!(densityOfStates, Inf=>maximum(densityOfStates[densityOfStates .≠ Inf]))
-    return densityOfStates
+	normalisation = sum([dos * abs(dispersionArray[i % num_kspace + 1] - dispersionArray[i]) for (i, dos) in enumerate(densityOfStates)]) / num_kspace^2
+    return densityOfStates / normalisation
 end
 
 
@@ -97,7 +98,7 @@ function main(num_kspace_half, t, J_init, W_val)
 				end
                 for qpoint in cutoffPoints
 				    denominator = omega - abs(energyCutoff) / 2 + kondoJArray[qpoint, qpoint, stepIndex] / 4 + bathInt(qpoint, qpoint, qpoint) / 2
-                    kondoJArray[innerIndex1,innerIndex2,stepIndex+1] += -4 * deltaD * densityOfStates[qpoint] * (kondoJArray[innerIndex1, qpoint, stepIndex] * kondoJArray[innerIndex2, qpoint, stepIndex] + 4 * kondoJArray[qpoint, qpoint, stepIndex] * bathInt(innerIndex1,innerIndex2,qpoint)) / denominator
+					kondoJArray[innerIndex1,innerIndex2,stepIndex+1] += -4 * deltaD * densityOfStates[qpoint] * (kondoJArray[innerIndex1, qpoint, stepIndex] * kondoJArray[innerIndex2, qpoint, stepIndex] + 4 * kondoJArray[qpoint, qpoint, stepIndex] * bathInt(innerIndex1,innerIndex2,qpoint)) / denominator
                 end
                 if kondoJArray[innerIndex1,innerIndex2,stepIndex+1] * kondoJArray[innerIndex1,innerIndex2,stepIndex] < 0
                     kondoJArray[innerIndex1,innerIndex2,stepIndex+1] = kondoJArray[innerIndex1,innerIndex2,stepIndex]

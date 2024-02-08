@@ -57,7 +57,8 @@ function getIsoEnergeticContour(dispersionArray, num_kspace, energy)
         energyDiffArr = dispersionArray[j * num_kspace + 1: (j + 1) * num_kspace] .- energy
         for i in 1:num_kspace
             if energyDiffArr[i] * energyDiffArr[i % num_kspace + 1] <= 0
-                push!(contourPoints[j+1], j * num_kspace + i)
+                push!(contourPoints[j+1], j * num_kspace + i + 1)
+				break
             end
         end
     end
@@ -81,6 +82,7 @@ function main(num_kspace_half, t, J_init, W_val)
 
     flags = fill(1, num_kspace^2, num_kspace^2)
     energyCutoff = maximum(dispersionArray) + deltaD
+    denominatorSign = -1
     @showprogress for stepIndex in 1:num_kspace_half
         energyCutoff -= deltaD
 		kondoJArray[:,:,stepIndex+1:end] .= kondoJArray[:,:,stepIndex]
@@ -92,24 +94,28 @@ function main(num_kspace_half, t, J_init, W_val)
 
 		innerIndicesArr = [point for (point, energy) in enumerate(dispersionArray) if abs(energy) < abs(energyCutoff) && point in quadrantIndices]
         omega = -abs(energyCutoff) / 2
-		Threads.@threads for (innerIndex1,innerIndex2) in collect(Iterators.product(innerIndicesArr, innerIndicesArr))
+		Threads.@threads for innerIndex1 in innerIndicesArr
+		    for innerIndex2 in innerIndicesArr
+				denominators = [omega - abs(energyCutoff) / 2 + kondoJArray[qpoint, qpoint, stepIndex] / 4 + bathInt(qpoint, qpoint, qpoint) / 2 for qpoint in cutoffPoints]
+				if ! all(<(0), denominators)
+                    flags[innerIndex1,innerIndex2] = 0
+			    end
 				if flags[innerIndex1,innerIndex2] == 0
 				    continue
 				end
-                for qpoint in cutoffPoints
-				    denominator = omega - abs(energyCutoff) / 2 + kondoJArray[qpoint, qpoint, stepIndex] / 4 + bathInt(qpoint, qpoint, qpoint) / 2
+				for (qpoint, denominator) in zip(cutoffPoints, denominators)
 					kondoJArray[innerIndex1,innerIndex2,stepIndex+1] += -4 * deltaD * densityOfStates[qpoint] * (kondoJArray[innerIndex1, qpoint, stepIndex] * kondoJArray[innerIndex2, qpoint, stepIndex] + 4 * kondoJArray[qpoint, qpoint, stepIndex] * bathInt(innerIndex1,innerIndex2,qpoint)) / denominator
                 end
-                if kondoJArray[innerIndex1,innerIndex2,stepIndex+1] * kondoJArray[innerIndex1,innerIndex2,stepIndex] < 0
+                if kondoJArray[innerIndex1,innerIndex2,stepIndex+1] * kondoJArray[innerIndex1,innerIndex2,stepIndex] <= 0
                     kondoJArray[innerIndex1,innerIndex2,stepIndex+1] = kondoJArray[innerIndex1,innerIndex2,stepIndex]
                     flags[innerIndex1,innerIndex2] = 0
                 end
-				antinode = num_kspace_half + 1
 				telePoints1 = teleportToAllQuads(innerIndex1, num_kspace)
 				telePoints2 = teleportToAllQuads(innerIndex2, num_kspace)
 				for (point1, point2) in Iterators.product(telePoints1, telePoints2)
 					kondoJArray[point1,point2,stepIndex+1] = kondoJArray[innerIndex1,innerIndex2,stepIndex+1]
 				end
+		    end
         end
     end
     return kondoJArray, dispersionArray

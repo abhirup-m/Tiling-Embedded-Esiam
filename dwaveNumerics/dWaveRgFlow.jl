@@ -67,6 +67,7 @@ end
 
 
 function main(num_kspace_half, t, J_init, W_val)
+    @assert num_kspace_half % 2 == 0
     num_kspace = 2 * num_kspace_half + 1
     kx_arr = range(-pi, stop=pi, length=num_kspace)
     ky_arr = copy(kx_arr)
@@ -97,16 +98,18 @@ function main(num_kspace_half, t, J_init, W_val)
 		Threads.@threads for innerIndex1 in innerIndicesArr
 		    for innerIndex2 in innerIndicesArr
 				denominators = [omega - abs(energyCutoff) / 2 + kondoJArray[qpoint, qpoint, stepIndex] / 4 + bathInt(qpoint, qpoint, qpoint) / 2 for qpoint in cutoffPoints]
-				if ! all(<(0), denominators)
-                    flags[innerIndex1,innerIndex2] = 0
-			    end
+				# if ! all(<(0), denominators)
+                #     flags[innerIndex1,innerIndex2] = 0
+			    # end
 				if flags[innerIndex1,innerIndex2] == 0
 				    continue
 				end
 				for (qpoint, denominator) in zip(cutoffPoints, denominators)
-					kondoJArray[innerIndex1,innerIndex2,stepIndex+1] += -4 * deltaD * densityOfStates[qpoint] * (kondoJArray[innerIndex1, qpoint, stepIndex] * kondoJArray[innerIndex2, qpoint, stepIndex] + 4 * kondoJArray[qpoint, qpoint, stepIndex] * bathInt(innerIndex1,innerIndex2,qpoint)) / denominator
+				    if  denominator < 0
+							kondoJArray[innerIndex1,innerIndex2,stepIndex+1] += -4 * deltaD * densityOfStates[qpoint] * (kondoJArray[innerIndex1, qpoint, stepIndex] * kondoJArray[innerIndex2, qpoint, stepIndex] + 4 * kondoJArray[qpoint, qpoint, stepIndex] * bathInt(innerIndex1,innerIndex2,qpoint)) / denominator
+					end
                 end
-                if kondoJArray[innerIndex1,innerIndex2,stepIndex+1] * kondoJArray[innerIndex1,innerIndex2,stepIndex] <= 0
+                if kondoJArray[innerIndex1,innerIndex2,stepIndex+1] * kondoJArray[innerIndex1,innerIndex2,stepIndex] <= 0 && stepIndex > 1
                     kondoJArray[innerIndex1,innerIndex2,stepIndex+1] = kondoJArray[innerIndex1,innerIndex2,stepIndex]
                     flags[innerIndex1,innerIndex2] = 0
                 end

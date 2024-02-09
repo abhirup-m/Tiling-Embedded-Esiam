@@ -9,33 +9,33 @@ We consider an impurity spin \(\vec S_d\) interacting with a two-dimensional tig
 \begin{equation}\begin{aligned}
 	J \vec{S}_d\cdot\vec{S_f},\quad \vec S_f = \frac{1}{2}\sum_{\sigma,\sigma^\prime}\vec \tau_{\sigma,\sigma^\prime}f^\dagger_{\sigma}f_{\sigma^\prime}.
 \end{aligned}\end{equation}
-where \(\vec \tau\) is the vector of sigma matrices. The spin \(\vec S_f\) is constructed in terms of the d-wave electron \(f_{\sigma} = \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} - c^\dagger_{U\sigma} - c^\dagger_{D\sigma}\right) \), where \(L,R,U\) and \(D\) indicate electrons at the positions \((x,y)=\left(-a,0\right), \left( a,0 \right) , \left( 0,a \right) \) and \(\left( 0,-a \right) \) respectively, \(a\) being the lattice spacing of the conduction bath lattice. We also consider local bath correlations in the \(d-\)wave channel:
-\begin{equation}\begin{aligned}
-	-\frac{W}{2}\left(f^\dagger_{\uparrow}f_{\uparrow} - f^\dagger_{\downarrow}f_{\downarrow}\right)^2.
-\end{aligned}\end{equation}
-In order to facilitate a momentum-space decoupling RG scheme, we Fourier transform the \(d-\)wave operator to momentum space:
+where \(\vec \tau\) is the vector of sigma matrices. The spin \(\vec S_f\) is constructed in terms of the d-wave electron \(f_{\sigma} = \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} - c^\dagger_{U\sigma} - c^\dagger_{D\sigma}\right) \), where \(L,R,U\) and \(D\) indicate electrons at the positions \((x,y)=\left(-a,0\right), \left( a,0 \right) , \left( 0,a \right) \) and \(\left( 0,-a \right) \) respectively, \(a\) being the lattice spacing of the conduction bath lattice. In order to facilitate a momentum-space decoupling RG scheme, we Fourier transform the \(d-\)wave operator to momentum space:
 \begin{equation}\begin{aligned}
 	f_{\sigma} = \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} - c^\dagger_{U\sigma} - c^\dagger_{D\sigma}\right) = \frac{1}{2}\sum_{\vec k}c^\dagger_{\vec k,\sigma}\left[e^{-ik^x a} + e^{ik^x a} - e^{-ik^y a} - e^{ik^y a}\right] =\sum_{\vec k}\left[\cos\left( ak^x \right) - \cos\left( ak^y \right) \right] c^\dagger_{\vec k,\sigma}~.
 \end{aligned}\end{equation}
 The Kondo interaction term takes the following form in momentum space:
 \begin{equation}\begin{aligned}
-	J \vec{S}_d\cdot\vec{S_f} = \frac{1}{2}J \sum_{\vec k_1, \vec k_2, \sigma,\sigma^\prime}\vec{S}_d\cdot\vec{\tau}_{\sigma,\sigma^\prime}c^\dagger_{\vec k_1\sigma}c_{\vec k_2,\sigma^\prime}\prod_{i=1,2}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]~.
+	J \vec{S}_d\cdot\vec{S_f} = \frac{1}{2}J \sum_{\vec k_1, \vec k_2, \sigma,\sigma^\prime}\vec{S}_d\cdot\vec{\tau}_{\sigma,\sigma^\prime}c^\dagger_{\vec k_1\sigma}c_{\vec k_2,\sigma^\prime}\prod_{i=1,2}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right] = \frac{1}{2}\sum_{\vec k_1, \vec k_2, \sigma,\sigma^\prime}J_{\vec k_1, \vec k_2}\vec{S}_d\cdot\vec{\tau}_{\sigma,\sigma^\prime}c^\dagger_{\vec k_1\sigma}c_{\vec k_2,\sigma^\prime}~,
 \end{aligned}\end{equation}
-The local correlation term can be similarly written in momentum space:
+where \(J_{\vec k_1, \vec k_2} = J\prod_{i=1,2}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]\).
+We also consider correlation terms on the bath sites \(L,R,U\) and \(D\) of the general form:
 \begin{equation}\begin{aligned}
-	-\frac{W}{2}\left(f^\dagger_{\uparrow}f_{\uparrow} - f^\dagger_{\downarrow}f_{\downarrow}\right)^2 = -\frac{W}{2}\sum_{\vec k_1,\vec k_2, \vec k_3, \vec k_4,\sigma}\left(c^\dagger_{\vec k_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_3,\sigma}c_{\vec k_4,\sigma} - c^\dagger_{\vec k_1\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_3\bar\sigma}c_{\vec k_4,\bar\sigma}\right)\prod_{i=1,2,3,4}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]~.
+-\frac{1}{2}\sum_{\vec k_1,\vec k_2, \vec k_3, \vec k_4,\sigma,\sigma^\prime}W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4} \sigma\sigma^\prime c^\dagger_{\vec k_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_3,\sigma^\prime}c_{\vec k_4,\sigma^\prime}~,
 \end{aligned}\end{equation}
-Combining all the terms, the Hamiltonian can be formally written as
+where the momentum-dependent coupling can take various forms depending on the bath orbital that is chosen to host the local interaction. We will consider the following three cases:
+\begin{itemize}
+		\item \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4} = W\prod_{i=1,2,3,4}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]\):~interaction in the d-wave channel with off-site hopping
+		\item \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4} = W\prod_{i=1,2,3,4}\left[\cos\left( ak_i^x \right) + \cos\left( ak_i^y \right) \right]\):~interaction in the p-wave channel without off-site hopping
+		\item \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4} = \frac{1}{2}W\left[\cos\left(a\left(k_1^x - k_2^x + k_3^x - k_4^x\right)\right) + x \to y\right]\):~interaction in the p-wave channel without off-site hopping~,
+\end{itemize}
+where \(W\) is a constant that tunes the strength of the interaction.
+
+Combining all the terms with a tight-binding kinetic energy \(\varepsilon_{\vec k} = -2t\left[\cos\left(ak^x\right) + \cos\left(ak^y\right)\right]\), the Hamiltonian can be formally written as
 \begin{equation}\begin{aligned}
 	H = \sum_{\vec k,\sigma}\varepsilon_{\vec k}c^\dagger_{\vec k,\sigma}c_{\vec k,\sigma} + \frac{1}{2}\sum_{\vec k_1, \vec k_2, \sigma,\sigma^\prime}J_{\vec k_1, \vec k_2}\vec{S}_d\cdot\vec{\tau}_{\sigma,\sigma^\prime}c^\dagger_{\vec k_1\sigma}c_{\vec k_2,\sigma^\prime} - \frac{1}{2}\sum_{\vec k_1,\vec k_2, \vec k_3, \vec k_4,\sigma,\sigma^\prime}W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4} \sigma\sigma^\prime c^\dagger_{\vec k_1,\sigma}c_{\vec k_2,\sigma}c^\dagger_{\vec k_3,\sigma^\prime}c_{\vec k_4,\sigma^\prime}~.
 \end{aligned}\end{equation}
-with 
-\begin{equation}\begin{aligned}
-	\varepsilon_{\vec k} &= -2t\left[\cos\left(ak^x\right) + \cos\left(ak^y\right)\right], \\
-	J_{\vec k_1, \vec k_2} &= J\prod_{i=1,2}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right], \\
-	W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4}  &= W\prod_{i=1,2,3,4}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right].
-\end{aligned}\end{equation}
-The coupling \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4}\) has certain symmetries. It is independent of the sequence of momentum indices. It remains invariant if any number of the momenta undergo rotation by an integer multiple of \(\pi/2\). It also remains invariant if an even number of momenta are reflected about the nodal point in the corresponding quadrant.
+
+We now mention symmetries of the couplings \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4}\) (in all three forms) and \(J_{\vec k_1, \vec k_2}\) under momentums-space transformations. All the couplings except the final form of \(W_{\vec k_1,\vec k_2,\vec k_3,\vec k_4}\) are independent of the sequence of momentum indices. The final form of the bath interaction remains invariant only under the transformations \(1 \leftrightarrow 3, 2 \leftrightarrow 4\). All of them are also invariant if any of the momenta are reflected about the one of both of the lines \(k_x=0\) and \(k_y=0\). This is because, such a reflection is equivalent to the transformation \(k_x \to 2\pi - k_x, k_y \to 2\pi - k_y\), and It remains invariant if any number of the momenta undergo rotation by an integer multiple of \(\pi/2\). It also remains invariant if an even number of momenta are reflected about the nodal point in the corresponding quadrant.
 
 \section{RG scheme}
 At any given step \(j\) of the RG procedure, we decouple the states \(\left\{ \vec q \right\} \) on the isoenergetic surface of energy \(\varepsilon_j\). The diagonal Hamiltonian \(H_D\) for this step consists of all terms that do not change the occupancy of the states \(\left\{\vec q\right\}\):
@@ -212,16 +212,6 @@ Owing to spin-rotation symmetry of the Kondo interaction, it suffices to calcula
 \begin{equation}\begin{aligned}
 	\Delta J^{(j)}_{\vec k_1, \vec k_2} = -\sum_{\vec q \in \text{PS}} \frac{J^{(j)}_{\vec k_2,\vec q} J^{(j)}_{\vec k_1,\vec q} + 4J^{(j)}_{-\vec q,\vec q} W^{(j)}_{\vec q,-\vec q,\vec k_1, \vec k_2}}{\omega - |\varepsilon_j| + J^{(j)}_{\vec q}/4 + W^{(j)}_{\vec q}/2}
 \end{aligned}\end{equation}
-We assume that the Kondo interaction and the bath interaction terms can be expressed, at any step \(j\), in the forms 
-\begin{equation}\begin{aligned}
-J^{(j)}_{\vec k_1, \vec k_2} = J \alpha_{\vec k_1}\alpha_{\vec k_2},\quad
-W^{(j)}_{\vec k_1, \vec k_2, \vec k_3, \vec k_4} = W \beta_{\vec k_1}\beta_{\vec k_2}\beta_{\vec k_3}\beta_{\vec k_4}~.
-\end{aligned}\end{equation}
-The RG equation can then be expressed as
-\begin{equation}\begin{aligned}
-	\Delta J^{(j)}_{\vec k_1, \vec k_2} = -J \sum_{\vec q \in \text{PS}} \frac{J^{(j)}_{\vec k_2,\vec q} J^{(j)}_{\vec k_1,\vec q} + 4J^{(j)}_{-\vec q,\vec q} W^{(j)}_{\vec q,-\vec q,\vec k_1, \vec k_2}}{\omega - |\varepsilon_j| + J^{(j)}_{\vec q}/4 + W^{(j)}_{\vec q}/2}
-\end{aligned}\end{equation}
-
 
 
 \end{document}

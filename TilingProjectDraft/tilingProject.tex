@@ -12,7 +12,9 @@
 
 \section{What is the minimal impurity model for a Mott metal-insulator transition?}
 The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}\]
+\begin{equation}\begin{aligned}
+	H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}~.
+\end{aligned}\end{equation}
 The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
 \[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
 There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Néel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
@@ -142,14 +144,14 @@ The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence corr
 \section{Creating a Hubbard-Heisenberg Hamiltonian from an extended Anderson impurity model}
 
 \subsection{Formal description of the tiling procedure}
-We will now define the {\it tiling} procedure by which we can recreate the complete lattice model by using instances of an auxiliary model Hamiltonian. The first step is of course to identify an impurity model that can act as a good auxiliary model for out lattice model. The local behaviour of this impurity model should reflect the essential local physics of the lattice model. Typically, we will consider impurity model geometries where the real-space bath site connected directly to the impurity also harbours some kind of local interaction. We will henceforth refer to this site as the zeroth site. In the case where multiple sites are connected directly to the impurity, we will choose one of these sites for reference and call that the {\it bath zeroth site} throughout. In order to identify a {\it unit cell} for our tiling procedure, we place the impurity site at a reference site \({\bf r}_d\) of our lattice, and the bath zeroth site at a nearest-neighbour site \({\bf z}_1\), and label the corresponding auxiliary model Hamiltonian as \(\mathcal{H}_\text{aux}({\bf r}_d, {\bf z}_1)\). The subscript \(1\) indicates that \({\bf z}_1\) is the first zeroth site, and that there can be multiple such zeroth sites \(\left\{ {\bf z}_i \right\} \), depending on the lattice geometry. The unit cell at the position \({\bf r}_d\) is then obtained by placing the zeroth site on all nearest-neighbours of \({\bf r}_d\) and averaging over these configurations:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}({\bf r}_d) = \frac{1}{\mathcal{Z}}\sum_{{\bf z}_1\in\text{NN}({\bf r}_d)}\mathcal{H}_\text{aux}({\bf r}_d, {\bf z}_1)~,
+We will now define the {\it tiling} procedure by which we can recreate the complete lattice model by using instances of an auxiliary model Hamiltonian. The first step is of course to identify an impurity model that can act as a good auxiliary model for out lattice model. The local behaviour of this impurity model should reflect the essential local physics of the lattice model. Typically, we will consider impurity model geometries where the real-space bath site connected directly to the impurity also harbours some kind of local interaction. We will henceforth refer to this site as the zeroth site. In the case where multiple sites are connected directly to the impurity, we will choose one of these sites for reference and call that the {\it bath zeroth site} throughout. In order to identify a {\it unit cell} for our tiling procedure, we place the impurity site at a reference site \({\bf r}_d\) of our lattice, and the bath zeroth site at a nearest-neighbour site \({\bf z}\), and label the corresponding auxiliary model Hamiltonian as \(\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})\). The unit cell at the position \({\bf r}_d\) is then obtained by placing the zeroth site on all nearest-neighbours of \({\bf r}_d\) and averaging over these configurations:
+\begin{equation}\begin{aligned}\label{unitCellHamiltonian}
+	\mathcal{H}_\text{aux}({\bf r}_d) = \frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})~,
 \end{aligned}\end{equation}
-where \({\bf z}_1\) is summed over all nearest-neighbours of \({\bf r}_d\) and \(\mathcal{Z}\) is the number of such nearest-neighbours.
+where \({\bf z}\) is summed over all nearest-neighbours of \({\bf r}_d\) and \(\mathcal{Z}\) is the number of such nearest-neighbours.
 
 In order to create the bulk model, we now need to translate this auxiliary model over the entire lattice. For this, we define {\it many-particle global} translation operators \(T({\bf a})\) that translate all positions by a vector \({\bf a}\). In terms of manybody states and operators, their action is defined as 
-\begin{equation}\begin{aligned}
+\begin{equation}\begin{aligned}\label{translationDefinition}
 	T^\dagger({\bf a}) \ket{\bf r_1, \bf r_2,\ldots} &= \ket{\bf r_1 + a, \bf r_2 + a,\ldots}\\
 	T^\dagger({\bf a}) \mathcal{O}\left(\bf r_1, \bf r_2,\ldots\right)T({\bf a}) &= \mathcal{O}\left(\bf r_1 + a, \bf r_2 + a,\ldots\right)~,
 \end{aligned}\end{equation}
@@ -165,9 +167,9 @@ It acts similarly on the auxiliary model Hamiltonian:
 translating all sites by the vector \({\bf a}\). The auxiliary model, being an impurity model, lacks translation symmetry. The lattice model does remain invariant under global translation operations. In order to reconstruct the full lattice model and restore its translation invariance, we translate the unit cell across all sites of the lattice:
 \begin{equation}\begin{aligned}
 	\label{tilingPrescription}
-	\mathcal{H}_\text{full} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})\\
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})\\
 				&= \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d)T({\bf r} - {\bf r}_d)~ \\
-				&= \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}_1\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d, {\bf z}_1)T({\bf r} - {\bf r}_d)~ \\
+				&= \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d)~ \\
 \end{aligned}\end{equation}
 where \({\bf r}\) sums over all lattice sites.
 
@@ -177,281 +179,144 @@ The standard Anderson model consists of a correlated impurity site coupled with 
 	\label{siam_attr}
 	\mathcal{H}_\text{E-S} = \mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} + \mathcal{H}_\text{imp-cbath}~,
 \end{aligned}\end{equation}
-where \(\mathcal{H}_\text{cbath} = -t\sum_{i=0,1,\ldots;\sigma}\left(c^\dagger_{i,\sigma}c_{i+1,\sigma} + \text{h.c.}\right) - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2\) is the Hamiltonian of the mostly non-interacting conduction bath consisting of a kinetic energy term and some local interaction terms on the zeroth site, \(\mathcal{H}_\text{imp} = - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2\) is the Hamiltonian for the localised impurity site, and \(\mathcal{H}_\text{imp-bath} = J {\bf S}_d\cdot{\bf S}_0 + V \sum_{\sigma} \left(c^\dagger_{0\sigma} c_{d\sigma} + h.c.\right)\) describes the interaction between the impurity orbitals and the conduction bath. Here, \(c_{d\sigma}\) is the impurity electron operator, \(c_{i\sigma}\) is the conduction bath electron operator, \(c_{0,\sigma}\) is the bath zeroth site operator, \({\bf S}_d\) is the impurity spin operator and \({\bf S}_0 = \sum_{\alpha,\beta}{\bf \sigma}c^\dagger_{0,\alpha}c_{0,\beta}\) is the operator for the local spin in the conduction bath. We have found that the e-SIAM has a stable local moment phase for \(U_b < -J/4\) with an antiferromagnetic Kondo coupling (\(J > 0\)). We have also shown that this model captures much of the phenomenology of the infinite dimensional Hubbard model (as discovered via DMFT), such as a second-order phase transition at \(T=0\) and the presence of an optical gap in the local spectral function beyond a certain value of interaction strength. Note that the impurity site and the conduction bath are both at half-filling.
+where \(\mathcal{H}_\text{cbath} = -\frac{1}{\mathcal{Z}}t\sum_{i=0,1,\ldots;\sigma}\left(c^\dagger_{i,\sigma}c_{i+1,\sigma} + \text{h.c.}\right) - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2\) is the Hamiltonian of the mostly non-interacting conduction bath consisting of a kinetic energy term and some local interaction terms on the zeroth site, \(\mathcal{H}_\text{imp} = - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2\) is the Hamiltonian for the localised impurity site, and \(\mathcal{H}_\text{imp-bath} = J {\bf S}_d\cdot{\bf S}_0 - V \sum_{\sigma} \left(c^\dagger_{0\sigma} c_{d\sigma} + h.c.\right)\) describes the interaction between the impurity orbitals and the conduction bath. Here, \(c_{d\sigma}\) is the impurity electron operator, \(c_{i\sigma}\) is the conduction bath electron operator, \(c_{0,\sigma}\) is the bath zeroth site operator, \({\bf S}_d\) is the impurity spin operator and \({\bf S}_0 = \sum_{\alpha,\beta}{\bf \sigma}c^\dagger_{0,\alpha}c_{0,\beta}\) is the operator for the local spin in the conduction bath. We have found that the e-SIAM has a stable local moment phase for \(U_b < -J/4\) with an antiferromagnetic Kondo coupling (\(J > 0\)). We have also shown that this model captures much of the phenomenology of the infinite dimensional Hubbard model (as discovered via DMFT), such as a second-order phase transition at \(T=0\) and the presence of an optical gap in the local spectral function beyond a certain value of interaction strength. Note that the impurity site and the conduction bath are both at half-filling.
 
-\subsection{Tiling towards a Hubbard-Heisenberg model}
-In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, and show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. In order to generalise the extended SIAM, we make the following changes. We allow the possibility of multiple zeroth sites (bath sites that harbour local interaction) \({\bf z}_i\). This can lead to various kinds of interactions with the impurity site, as well as purely on the zeroth sites. We allow the conduction bath to reside in a lattice of arbitrary geometry:
+\subsection{Tiling towards a Hubbard-Heisenberg model with an s-wave impurity model}
+In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, where the impurity site couples to the conduction bath purely through the s-wave channel. We will show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. The generalisation involve allowing an arbitrary filling on the impurity site and in the conduction bath, through two additional parameter: (i) a particle-hole assymetry parameter \(\eta\) for the impurity site, and (ii) a chemical potential for the conduction bath. The first term modifies the impurity Hamiltonian \(\mathcal{H}_\text{imp}\) into
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{cbath} = -t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
-	- \frac{1}{2  Z}\sum_{{\bf z}_i \in \text{NN}({\bf r}_d)}U_b({\bf z}_i)\left(\hat n_{{\bf z}_i, \uparrow} - \hat n_{{\bf z}_i, \downarrow}\right)^2~,
+	\mathcal{H}_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~.
 \end{aligned}\end{equation}
-where \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\), and \({\bf z}_i={\bf z}_1, {\bf z}_2, \ldots\) is summed over all the bath zeroth sites (\(Z\) in number). Note that the auxiliary coordination number \(Z\) can in general be different from the lattice model coordination number \(\mathcal{Z}\). We also allow the impurity site \({\bf r}_d\) to have arbitrary filling, by introducing an assymetry parameter \(\eta\) which quantifies the amount of doping:
+where we have placed the impurity site at the position \({\bf r}_d\). The second term modifies the conduction bath Hamiltonian \(\mathcal{H}_\text{cbath}\):
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 + \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~.
+	\mathcal{H}_\text{cbath} = -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
+	- \frac{1}{2}U_b\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
 \end{aligned}\end{equation}
-The interaction Hamiltonian can also be generalised to:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{imp-cbath} &= \sum_{{\bf z}_i,{\bf z}_j}\sum_{\alpha,\alpha^\prime}\frac{1}{ Z}J({\bf z}_i - {\bf z}_j) {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \sigma}_{\alpha,\alpha^\prime}c^\dagger_{{\bf z}_i,\alpha}c_{{\bf z}_j,\alpha^\prime} \\
-				     &+  \sum_{\sigma, {\bf z}_i} \frac{1}{\sqrt Z}V\left({\bf r}_d - {\bf z}_i\right) \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}_i}\sigma} + h.c.\right)
-\end{aligned}\end{equation}
-where \({\bf z}_i\) and \({\bf z}_j\) sum over the bath zeroth sites of the impurity model, and \(\boldsymbol \sigma\) is the vector of Pauli matrices.% The bath zeroth sites, being locally connected to the impurity, typically reside on the sites that are nearest to the impurity. This means that we can write \({\bf r}_0 = {\bf r}_d + {\bf a}\), where \({\bf a}\) is a primitive lattice vector that connects \({\bf r}_d\) with its nearest neighbours.
+where \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\).
 
+In this notation, the interaction Hamiltonian can be written as
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{imp-cbath} &= \sum_{\sigma,\sigma^\prime}\frac{1}{ Z}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \\
+				     &-  \sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)
+\end{aligned}\end{equation}
+where \(\boldsymbol \tau = \left( \tau_x, \tau_y, \tau_z \right) \) is the vector of Pauli matrices. \(\sigma\) and \(\sigma^\prime\) can be \(\pm 1\) and represent up and down configurations.
 
 We now follow the prescription laid out in eq.~\ref{tilingPrescription}. The tiled Hamiltonian can be written as 
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} = \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}_1\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} \right.\\
+	\mathcal{H}_\text{tiled} = \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} \right.\\
 \left.+ \mathcal{H}_\text{imp-cbath}\right]T({\bf r} - {\bf r}_d)~.
 \end{aligned}\end{equation}
 We consider the effect of the translation operations on each part of the Hamiltonian. We first have
 \begin{equation}\begin{aligned}
-	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}_1\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z}_1)T({\bf r} - {\bf r}_d) \\
-	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\right.\\
-	 &\left.- \sum_{{\bf z}_1\in\text{NN}({\bf r}_d)}\sum_{{\bf z}_i}\frac{U_b({\bf z}_i)}{2Z \mathcal{Z}}\left(\hat n_{{\bf z}_i, \uparrow} - \hat n_{{\bf z}_i, \downarrow}\right)^2\right]T({\bf r} - {\bf r}_d) \\
-	=& -t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
-	 &- \frac{1}{2\mathcal{Z}Z}\sum_{\bf r}\sum_{{\bf z}_1\in\text{NN}\left({\bf r}\right) }\sum_{{\bf z}_i \in \text{NN}({\bf r})} U_b({\bf z}_i)  \left(\hat n_{{\bf z}_i, \uparrow} - \hat n_{{\bf z}_i, \downarrow}\right)^2 \\
-	=& -t(N-2)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
-	 &- \frac{1}{2}\overline{U_b}\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2\\
+	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d) \\
+	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \right.\\
+	 &\left.- \frac{U_b}{2\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}\right]T({\bf r} - {\bf r}_d) \\
+	=& -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
+	 &- \frac{U_b}{2\mathcal{Z}}\sum_{\bf r}\sum_{{\bf z}\in\text{NN}\left({\bf r}\right)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i}\sum_{{\bf r} \neq {\bf r}_i}\hat n_{{\bf r}_i,\sigma}\\
+	=& -\frac{1}{\mathcal{Z}}(N-2)t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
+	 &- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
 \end{aligned}\end{equation}
-where \(\overline{U_b} = \sum_{\bf a} \frac{1}{z}U_b({\bf a})\) is the average of \(U_b({\bf a})\) over the bath zeroth sites in the auxliary model. The inequality \(\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}\) ensures that each nearest-neighbour pair appears in \(N-2\) instances of the auxiliary model, \(N\) being the total number of lattice sites. The two instances that do not contribute are the ones in which the impurity site itself is at \({\bf r}_i\) or \({\bf r}_j\). In the first step, the factor of \(\mathcal{Z}\) is cancelled out by the trivial sum over \({\bf r}_0\).
+In the first step, the factor of \(\mathcal{Z}\) is cancelled out by the trivial sum over \({\bf r}_0\) in the first and third terms. At the last step, the three terms simplified for the following reasons. The inequality \(\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}\) in the first term ensures that each nearest-neighbour pair appears in \(N-2\) instances of the auxiliary model, \(N\) being the total number of lattice sites; the two instances that do not contribute are the ones in which the impurity site itself is at \({\bf r}_i\) or \({\bf r}_j\). For the second term, the double sum \(\sum_{\bf r}\sum_{{\bf z} \in \text{NN}({\bf r})}\) evaluates to \(\mathcal{Z}\sum_{\bf r}\), because each point on the lattice appears \(\mathcal{W}\) times in the summation. This factor of \(\mathcal{W}\) cancels the one in the denominator. In the third term, the inner summation simply evaluates to \(N-1\), and we finally replace the dummy index \({\bf r}_i\) with \({\bf r}\). 
 
 The next part is
 \begin{equation}\begin{aligned}
 	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf r}_0\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp}T({\bf r} - {\bf r}_d) \\
-	=& -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 + \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~.
+	=& -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~.
 \end{aligned}\end{equation}
 This is obtained simply by replacing the impurity position \({\bf r}_d\) with the translated position \({\bf r}\), generating a translation-invariant Hubbard term (the first term) and a finite chemical potential (second term).
 
 We now consider the final term:
-\begin{widetext}
 \begin{equation}\begin{aligned}
-	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf r}_0\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}T({\bf r} - {\bf r}_d)\\
-	&=\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf r}_0\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\sum_{{\bf a},{\bf a}^\prime}\sum_{\alpha,\alpha^\prime}\frac{1}{Z}J({\bf a} - {\bf a}^\prime) {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \sigma}c^\dagger_{{\bf r}_d + {\bf a},\alpha}c_{{\bf r}_d + {\bf a}^\prime,\alpha^\prime} + \sum_{{\bf a}, \sigma} \frac{1}{\sqrt Z}V\left({\bf a}\right) \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf r}_d + {\bf a}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)
+	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}T({\bf r} - {\bf r}_d)\\
+	&=\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
+				     &-  \left.\sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)\\
+	&=\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r})}\left[\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
+				     &-  \left.\sum_{\sigma} V\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]\\
+					 &=\frac{2}{\mathcal{Z}}\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]\\
 \end{aligned}\end{equation}
-\end{widetext}
-\clearpage
+At the last step, each nearest-neighbour pair of sites \({\bf r}_i, {\bf r}_j\) appear 2 times in the summation, because any site is a member of two distinct nearest-neighbour pairs. We have also defined \({\bf S}_{{\bf r}_j} =\sum_{\sigma,\sigma^\prime} {\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime}\) as the local spin operator.
 
+The total tiled Hamiltonian is therefore
+\begin{equation}\begin{aligned}
+	&\mathcal{H}_\text{tiled} \\
+	&= -\frac{N-2}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>,\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
+	&- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}\\
+	& + \frac{2}{\mathcal{Z}}\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]
+\end{aligned}\end{equation}
+While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms). Upon removing these repeated terms, the tiled Hamiltonian becomes
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - (N-3)\mathcal{H}_\text{cbath-nint}\\
+							 &= -\frac{1}{\mathcal{Z}}(t + 2V)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
+							 &- \frac{1}{2}\left(U + U_b\right)\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \left(\eta + 2\mu\right) \sum_{{\bf r}}\hat n_{{\bf r},\sigma} \\
+							 &+ \frac{2}{\mathcal{Z}}J\sum_{\left< {\bf r}_i, {\bf r}_j\right>} {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j}
+\end{aligned}\end{equation}
 
-
-To begin this procedure, we first create the unit of tiling - this is done by identifying the impurity as a particular site \(i\) of the lattice, and the bath coupled to the impurity as the set of remaining \(N-1\) sites in the lattice. We will also identity the zeroth site of the SIAM lattice as one of the nearest neighbours \(j\) of \(i\):
+The result of the tiling operations is a Hubbard-Heisenberg model, of the form
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i,j) = -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n} \left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right) ^2 \\
-	+ V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2 
+	\mathcal{H}_\text{HH} &= -\frac{1}{\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 \\
+						  &- \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma} + \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j}~,
 \end{aligned}\end{equation}
-The tight-binding term sums over all nearest pairs \((m,n)\) that do not involve the site \(i\).
-In general \(i\) will have \(\mathcal{Z}\) nearest neighbours for a lattice with coordination number \(\mathcal{Z}\). The total local Hamiltonian for the site \(i\) is obtained by averaging over the Hamiltonians \(\mathcal{H}_\text{aux}(i,j)\) for all nearest neighbours \(j\) of \(i\):
-\begin{widetext}
+where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux}(i) &= \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}} \mathcal{H}_\text{aux}(i,j) = - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right)  \right.\\
-				  &\left. +J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\\
-				  &= - \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) +J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]
+	\tilde t = t+2V,~~ \tilde U = U + U_b, ~ ~ \tilde \mu = 2\mu + \eta,~ ~ \tilde J = 2J~.
 \end{aligned}\end{equation}
-Once we have this local Hamiltonian for a particular site, we translate this over all sites \(i\):
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& \sum_i \mathcal{H}_\text{aux}(i) = \sum_i\left[- \frac{U}{2}\left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 -2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) \right.\right.\\
-				  &\left.\left. + J \vec{S_i}\cdot\vec{S}_j - \frac{1}{2}U_b\left(\hat n_{j \uparrow} - \hat n_{j \downarrow}\right)^2\right]\right]\\
-	=& -\frac{1}{2}\left(U + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \sum_i\left[-2t\sum_{<m,n>,\sigma}^{m \neq i \neq n}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) +  \frac{1}{\mathcal{Z}}\sum_{j \in \text{NN of i}}\left[V \sum_{\sigma} \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) + J \vec{S_i}\cdot\vec{S}_j\right]\right]
+In summary, the appropriate method for reconstructing the lattice model Hamiltonian is therefore
+\begin{equation}\begin{aligned}\label{tilingPrescriptionFinal}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - (N-3)\mathcal{H}_\text{cbath-nint}~,
 \end{aligned}\end{equation}
-In the entire tight-binding term \(\sum_i\sum_{<m,n>,\sigma}^{m \neq i \neq n}\), each pair will appear \(N-2\) times, because that is the total number of sites that do not involve either \(m\) or \(n\).
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{full} =& -\frac{1}{2}\left(U + U_b\right) \sum_i \left( \hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - 2t\left(N-2\right)\sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2}{\mathcal{Z}}\sum_{<i,j>}\left[\sum_\sigma V \left(c^\dagger_{j\sigma} c_{i\sigma} + h.c.\right) + J \vec{S_i}\cdot\vec{S}_j\right]\\
-				  &=-\frac{1}{2}\left(U + U_b\right)\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \left(2t (N-2) - \frac{2V}{\mathcal{Z}}\right) \sum_{<m,n>,\sigma}\left(c^\dagger_{m\sigma}c_{n\sigma} + \text{h.c.}\right) + \frac{2J}{\mathcal{Z}} \sum_{<i,j>} \vec{S_i}\cdot\vec{S}_j 
-\end{aligned}\end{equation}
-\end{widetext}
-We end up with a Hubbard-Heisenberg model, of the form:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = - \frac{1}{2}U_\text{H-H}\sum_{i} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 + \frac{1}{\mathcal{Z}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j\\
-	- \frac{1}{\mathcal{Z}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) \\
-\end{aligned}\end{equation}
-where the bulk parameters are related to the auxiliary model couplings through the mapping:
-\begin{equation}\begin{aligned}
-	\label{map_aux_bulk}
-	t_{H-H} &= \left(2t \mathcal{Z}(N-2) - 2V\right),\\
-	U_{H-H} &= U + U_b,\\
-	J_{H-H} &= 2J
-\end{aligned}\end{equation}
-The conclusion is that we can tile Anderson models with interacting baths into a Hubbard-Heisenberg model:
-\begin{equation}\begin{aligned}
-	\label{siam_to_hubb}
-	\sum_i \mathcal{H}_\text{aux}(i) = \mathcal{H}_{H-H}
-\end{aligned}\end{equation}
+using which the extended-SIAM gets ``expanded" into a Hubbard-Heisenberg model.
 
 \subsection{Translation symmetry and a conserved total momentum}
-From the form in eq.~\ref{tilingPrescription}, the tiled Hamiltonian is symmetric under discrete many-body translations:
+From the form in eq.~\ref{tilingPrescriptionFinal}, the tiled Hamiltonian is symmetric under global many-body translations of the kind defined in eq.~\ref{translationDefinition}, by arbitrary lattice spacings:
 \begin{equation}\begin{aligned}\label{translationSymmetry}
-	T({\bf r})\mathcal{H}_\text{full}T^\dagger({\bf r}) = \sum_{{\bf r}^\prime}T({\bf r} + {\bf r}^\prime)\mathcal{H}_\text{aux}({\bf r_0})T^\dagger({\bf r} + {\bf r}^\prime) = \sum_{{\bf r}^\prime}T({\bf r}^\prime)\mathcal{H}_\text{aux}({\bf r_0})T^\dagger({\bf r}^\prime) = \mathcal{H}_\text{full}~.
+	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})T({\bf a}) = \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r + a}) = \sum_{{\bf r}^\prime}\mathcal{H}_\text{aux}({\bf r}^\prime)\\
+	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{cbath-nint}T({\bf a}) = \mathcal{H}_\text{cbath-nint}\\
+	&\implies T({\bf a})^\dagger\mathcal{H}_\text{tiled}T({\bf a}) = \mathcal{H}_\text{tiled}~.
 \end{aligned}\end{equation}
-There we used the fact that \({\bf r} + {\bf r}^\prime\) simply translates the auxiliary model defined by the coordinate \({\bf r}^\prime + {\bf r_0}\) to a new auxiliary model at the modified coordinate \({\bf r} + {\bf r}^\prime + {\bf r_0}\). Since this transformation from one auxiliary model to another simply shuffles the group of all auxiliary models, the sum over the group remains the sum, and we recover the same bulk model.
-
-The fact that the Hamiltonian \(\mathcal{H}_\text{full}\) commutes with the many-body translation operator implies that the total momentum \(\vec k\) is a conserved quantity. This is in fact because the many-body translation operators can be obtained in terms of \(\vec k\): \(T({\bf r}) = \exp\left\{ i \vec{k}\cdot\vec{r} \right\} \).
-
-\subsection{Moving away from half-filling}
-As mentioned before, no chemical potential \(\mu\) is generated because the auxiliary model was at half-filling, both in the impurity as well as in the bath. We can change the chemical potential by introducing two terms:
-\begin{equation}\begin{aligned}
-	\eta \sum_\sigma\left(n_{d\sigma} - \frac{1}{2}\right), \mu \sum_{i,\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right)
-\end{aligned}\end{equation}
-The first term is the particle-hole asymmetry term, and tuning that term moves the impurity away from half-filling. The second term is the usual chemical potential in the bath. Introducing these terms in the auxiliary model changes the bulk model into:
-\begin{equation}\begin{aligned}
-	\mathcal{H}_{H-H} = -\frac{1}{2}U_\text{H-H} \sum_{i} \left(\hat n_{i \uparrow} - \hat n_{i \downarrow} \right)^2 - \frac{1}{\mathcal{Z}}t_\text{H-H}\sum_{<i,j>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) + \frac{1}{\mathcal{Z}}J_\text{H-H}\sum_{<i,j>} \vec{S}_i\cdot\vec{S}_j + \mu_\text{H-H}\sum_{i\sigma}\left(\hat n_{i\sigma} - \frac{1}{2}\right) 
-\end{aligned}\end{equation}
-The only change is the generation of the last term. The mappings between the existing parameters and their auxiliary model counterparts remain the same, while \(\mu_\text{H-H}\) is given by
-\begin{equation}\begin{aligned}
-	\mu_\text{H-H} = \eta + \left(N-1\right) \mu
-\end{aligned}\end{equation}
-In the discussion henceforth, we will assume all the models are at half-filling. We will come back to the doped case at a later point in time.
-
-\section{Effective action for the Hubbard-Heisenberg model and the eSIAM}
-In order to better understand the similarities and differences between the tiling approach outlined here and the approach adopted in dynamical mean-field approximations, we compute the effective action for the local impurity as well as the impurity-zeroth site system, in both the auxiliary and bulk models. This will be done in the limit of infinite coordination number, in order to create a tractable effective theory.
-
-\subsection{Local theory for the Hubbard-Heisenberg model}
-We will first work with the Hubbard-Heisenberg model. Let us recall that within the eSIAM, most of the dynamics is governed by the physics of the impurity site and the bath site coupled to the impurity. Accordingly, we will first obtain an effective action within the Hubbard-Heisenberg model for the small system consisting of a local site and all its nearest-neighbours. 
-
-We choose a certain local site that we call \(0\), whose nearest-neighbours will be denoted as \(\left\{ {\bar 0} \right\} \). The action for the full Hubbard-Heisenberg model can be formally separated into three parts:
-\begin{equation}\begin{aligned}
-S_\text{H-H} = S_{0,{\bar 0}} + S^{(0,{\bar 0})} + S_\text{int}~,
-\end{aligned}\end{equation}
-where \(S_{0,{\bar 0}}\) represents the part of the action that involves only the sites \(0\) and $\left\{ {\bar 0} \right\}$, \(S^{(0,{\bar 0})}\) represents the part that has all the sites apart from \(0\) and \(\left\{ {\bar 0} \right\} \), while \(S_\text{int}\) contains all terms that connect these two parts. These three parts have the forms
-\begin{equation}\begin{aligned}
-S_{0,{\bar 0}} = \sum_{i=0,{\bar 0}}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau)  - t\sum_{{\bar 0},\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{0\sigma}(\tau)c_{{\bar 0}\sigma}(\tau) + \text{h.c.}\right] \\
-- \frac{U}{2}\sum_{i=0,{\bar 0}}\int_0^\beta\mathrm{d\tau}~\left(n_{i \uparrow}(\tau) - n_{i \downarrow}(\tau)\right)^2 + J\sum_{{\bar 0}}\int_0^\beta\mathrm{d\tau} \vec{S}_0(\tau)\cdot\vec{S}_{{\bar 0}}(\tau)~,
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-S^{(0,{\bar 0})} = \sum_{j\neq(0,{\bar 0})}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{j\sigma}(\tau)\partial_\tau c_{j\sigma}(\tau)  - t\sum_{\left<j,l\right>\neq (0,{\bar 0}),\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{j\sigma}(\tau)c_{l\sigma}(\tau) + \text{h.c.}\right] \\
-- \frac{U}{2}\sum_{j\neq(0,{\bar 0})}\int_0^\beta\mathrm{d\tau}~\left(n_{j\uparrow}(\tau) - n_{j\downarrow}(\tau)\right)^2 + J\sum_{\left<j,l\right>\neq(0,{\bar 0})}\int_0^\beta\mathrm{d\tau} \vec{S}_l(\tau)\cdot\vec{S}_j(\tau)~,
-\end{aligned}\end{equation}
-\begin{equation}\begin{aligned}
-S_\text{int} = -t\sum_{i \in {\bar 0}}\sum_{j \in \text{NN of}~i}\sum_\sigma \int_0^\beta\mathrm{d\tau}~\left(c^\dagger_{i\sigma}(\tau) c_{j\sigma}(\tau) + \text{h.c.}\right) + J\sum_{i \in {\bar 0}}\sum_{j \in \text{NN of}~i}\int_0^\beta\mathrm{d\tau}\vec{S}_i(\tau)\cdot\vec{S}_j(\tau) = S_\text{int}^\text{hop} + S_\text{int}^\text{spin} 
-\end{aligned}\end{equation}
-
-In order to obtain an effective theory \(S^{0,{\bar 0}}_\text{eff}\) purely for the local system \((0,{\bar 0})\), we need to trace over all the other degrees of freedom. This partial trace will be carried out over the states of the so-called ``cavity" system \(S^{(0,{\bar 0})}\). The effective action can be constructed by tracing over scattering processes of all orders that leave the final action diagonal in the system \((0,{\bar 0})\). The formal expression can be written as
-\begin{equation}\begin{aligned}
-	S^{0,{\bar 0}}_\text{eff} = S_{0,{\bar 0}} + \sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{hop}\right)^{2n}}_{(0,{\bar 0})} + \sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{spin}\right)^{2n}}_{(0,{\bar 0})}
-\end{aligned}\end{equation}
-where, as mentioned before, the average is carried out in the cavity system \(S^{(0,{\bar 0})}\). Each hopping term in the expansion is of the form
-\begin{equation}\begin{aligned}
-	\left(S_\text{int}^\text{hop}\right)^{2n} =& t^{2n}\sum_\sigma\sum_{(i_1, i_1^\prime)\ldots, (i_n, i_n^\prime)} ~\sum_{(j_1, j_1^\prime)\ldots, (j_n, j_n^\prime)} \int_0^\beta d\tau_{1}\ldots d\tau_{n}d\tau_{1}^\prime\ldots d\tau_{j_n}^\prime\\
-			   &c^\dagger_{i_1\sigma}(\tau_{i_1})c^\dagger_{i_2\sigma}(\tau_{2})\ldots c^\dagger_{i_n\sigma}(\tau_{n}) c_{i_1^\prime\sigma}(\tau_{1}^\prime)c_{i_2^\prime\sigma}(\tau_{2}^\prime)\ldots c_{i_n^\prime\sigma}(\tau_{n}^\prime)\left<c_{j_1\sigma}(\tau_{1})c_{j_2\sigma}(\tau_{2})\ldots c_{j_n\sigma} ~ c^\dagger_{j_1^\prime\sigma}(\tau_{1}^\prime)\ldots c^\dagger_{j_n^\prime\sigma}(\tau_{n}^\prime) \right>_{(0,{\bar 0})}\\
-	=& t^{2n}\sum_\sigma\sum_{(i_1, i_1^\prime)\ldots, (i_n, i_n^\prime)} ~\sum_{(j_1, j_1^\prime)\ldots, (j_n, j_n^\prime)} \int_0^\beta d\tau_{1}\ldots d\tau_{j_n}^\prime c^\dagger_{i_1\sigma}(\tau_{i_1})\ldots c^\dagger_{i_n\sigma}(\tau_{n})~c_{i_1^\prime\sigma}(\tau_{1}^\prime)\ldots c_{i_n^\prime\sigma}(\tau_{n}^\prime)\\
-	 &G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right)~,
-\end{aligned}\end{equation}
-where the indices \(i_1\) through \(i_n\) and their primed counterparts run through \(\bar 0\), while \(j_l\) (\(\in \left\{j_1,\ldots,j_n^\prime\right\}\)) runs through the nearest-neighbours of the corresponding \(i_l\) index. The \(n-\)particle Greens function \(G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right)\) for the cavity system is defined in the usual fashion
-\begin{equation}\begin{aligned}
-	G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right) = \left<c_{j_1\sigma}(\tau_{1})c_{j_2\sigma}(\tau_{2})\ldots c_{j_n\sigma} ~ c^\dagger_{j_1^\prime\sigma}(\tau_{1}^\prime)\ldots c^\dagger_{j_n^\prime\sigma}(\tau_{n}^\prime) \right>_{(0,{\bar 0})} 
-\end{aligned}\end{equation}
-In the limit of infinite coordination number, only the \(n=1\) term survives:
-\begin{equation}\begin{aligned}
-	\lim_{\mathcal{Z}\to \infty}\sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{hop}\right)^{2n}}_{(0,{\bar 0})} = t^2\sum_{\sigma}\sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime)\sum_{j,j^\prime}G_1^{(0,\bar 0)}\left(j\tau; j^\prime\tau^\prime\right) \\
-	= \sum_{\sigma}\sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime)~,
-\end{aligned}\end{equation}
-where we have defined the bath hybridisation function \(\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)\) as
-\begin{equation}\begin{aligned}
-	\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime) = t^2\sum_{j \in \text{NN of}~i}\sum_{j^\prime \in \text{NN of}~i^\prime}G_1^{(0,\bar 0)}\left(j\sigma\tau; j^\prime\sigma\tau^\prime\right)~.
-\end{aligned}\end{equation}
-
-Under similar approximations, the spin term in the action reduces to
-\begin{equation}\begin{aligned}
-	\lim_{\mathcal{Z}\to \infty}\sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{spin}\right)^{2n}}_{(0,{\bar 0})} = \sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\chi(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)~,
-\end{aligned}\end{equation}
-where the susceptibility \(\chi_{ii^\prime}(\tau - \tau^\prime)\) is defined as 
-\begin{equation}\begin{aligned}
-	\chi_{ii^\prime}(\tau - \tau^\prime) = J^2\sum_{j \in \text{NN of}~i}\sum_{j^\prime \in \text{NN of}~i^\prime}\vec{S}_{j}(\tau)\cdot\vec{S}_{j^\prime}(\tau^\prime)~.
-\end{aligned}\end{equation}
-The effective action for the \(0,\bar 0\) system, in the limit of large coordination number, simplifies to
-\begin{equation}\begin{aligned}
-	S^{0,{\bar 0}}_\text{eff} =& \sum_{i=0,{\bar 0}}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau)  - t\sum_{{\bar 0},\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{0\sigma}(\tau)c_{{\bar 0}\sigma}(\tau) + \text{h.c.}\right] - \frac{U}{2}\sum_{i=0,{\bar 0}}\int_0^\beta\mathrm{d\tau}~\left(n_{i \uparrow}(\tau) - n_{i \downarrow}(\tau)\right)^2 \\
-				   &+ J\sum_{{\bar 0}}\int_0^\beta\mathrm{d\tau} \vec{S}_0(\tau)\cdot\vec{S}_{{\bar 0}}(\tau) + \sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{ii^\prime}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
-\end{aligned}\end{equation}
-
-One can also write down an effective action purely for the local site \(0\). The sites \(\bar 0\) will now be a part of the environment action \(S^{(0)}\) instead of the system action, but since the system is thermodynamically large, the cavity action can be assumed to remain the same, such the expectation values are calculated in the same system. As a result, the hybridisation and susceptibility functions remain unchanged. \(S_\text{int}\) is now made of terms that connect \(0\) and \(\bar 0\), so the transformation from \(S^{(0,\bar 0)}\) can be made by replacing the set \(\left\{ j \right\} \) with the set \(\bar 0\), and the set \(\bar 0\) itself will be replaced by the local site \(0\). We quote the final form of the local effective action:
-\begin{equation}\begin{aligned}
-	S^{0}_\text{eff} =& \sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{0\sigma}(\tau)\partial_\tau c_{0\sigma}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{0\uparrow}(\tau) - n_{0\downarrow}(\tau)\right)^2 \\
-			  &+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\Delta_{00,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{00}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
-\end{aligned}\end{equation}
-
-\subsection{Local theory for the extended SIAM}
-The Hamiltonian for the extended SIAM model is shown in eq.~\ref{siam_attr}. We will denote the impurity with the label \(d\) and the bath sites with the label \(c\). Among the bath sites, we will represent the site coupled to the impurity with \(z\). The full action has the form
-\begin{equation}\begin{aligned}
-	S_\text{ES} = \sum_{d,c}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau) - t\sum_{\left<i,j \right> \in c,\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{i\sigma}(\tau)c_{j\sigma}(\tau) + \text{h.c.}\right] - V\sum_{\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{d\sigma}(\tau)c_{z\sigma}(\tau) + \text{h.c.}\right]\\
-+ J\int_0^\beta\mathrm{d\tau} \vec{S}_d(\tau)\cdot\vec{S}_{z}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 - \frac{U_b}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{z\uparrow}(\tau) - n_{z\downarrow}(\tau)\right)^2 ~,
-\end{aligned}\end{equation}
-As in the Hubbard-Heisenberg model, we first obtain an effective action for the pair of sites \((d,z)\). As in the previous calculation, this will again generate a hybridisation function \(\Delta_{zz,\sigma}\) for the bath site nearest to the zeroth site. No susceptibility will be generated however, because there is no spin-exchange coupling within the bath. The net result is
-\begin{equation}\begin{aligned}
-	S^{d,z}_\text{eff} =& \sum_{d,c}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau) - V\sum_{\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{d\sigma}(\tau)c_{z\sigma}(\tau) + \text{h.c.}\right] + J\int_0^\beta\mathrm{d\tau} \vec{S}_d(\tau)\cdot\vec{S}_{z}(\tau) \\
-	&- \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 - \frac{U_b}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{z\uparrow}(\tau) - n_{z\downarrow}(\tau)\right)^2 \\
-	&+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\sum_{\sigma}\Delta_{zz,\sigma}(\tau - \tau^\prime)c^\dagger_{z\sigma}(\tau)c_{z\sigma}(\tau^\prime)
-\end{aligned}\end{equation}
-This hybridisation \(\Delta_{zz,\sigma}\) is calculated in the cavity model of the eSIAM, obtained by removing the impurity and the zeroth site from the full model; it is a completely non-interacting system.
-
-One can go one step further and also remove the zeroth site in order to obtain a theory for the impurity site. With this choice, the cavity model now also includes the zeroth site, and hence contains the correlation term associated with \(U_b\). The one-particle connection \(V\) will lead to a modified hybridisation \(\mathcal{F}\) for this effective theory; the Kondo terms will generate a susceptibility. The resultant action is
-\begin{equation}\begin{aligned}
-	S^{d}_\text{eff} =& \sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{d\sigma}(\tau)\partial_\tau c_{d\sigma}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 \\
-			  &+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\mathcal{F}_{\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{d}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
-\end{aligned}\end{equation}
-where \(\mathcal{F}\) is defined in terms of the local correlator of the zeroth site
-\begin{equation}\begin{aligned}
-	\mathcal{F}_\sigma(\tau - \tau^\prime) = V^2 G_1^{(d)}\left(z\sigma\tau; z\sigma\tau^\prime\right) = V^2 \left<c_{z\sigma}(\tau)c^\dagger_{z\sigma}(\tau^\prime)\right>_{(d)}
-\end{aligned}\end{equation}
-with the average computed in the interacting cavity model that has the impurity site removed. The interaction arises from the \(U_b-\)term. The susceptibility is also calculated in this interacting cavity model, and follows the same definition as in the bulk model:
-\begin{equation}\begin{aligned}
-	\chi_{d}(\tau - \tau^\prime) = J^2\vec{S}_{z}(\tau)\cdot\vec{S}_{z}(\tau^\prime)~.
-\end{aligned}\end{equation}
-
-
-
-
-
-
-
-
-
-
-
-
+In the first equation, we used the fact that the translation operator simply translates the auxiliary model at the position \({\bf r}\) into another one at the position \({\bf r} + {\bf a}\). Since both are part of the summation, the summation remains unchanged. The second equation uses the fact that the Hamiltonian \(\mathcal{H}_\text{cbath-nint}\) is that of a tight-binding model and is therefore translation-invariant. The fact that the Hamiltonian \(\mathcal{H}_\text{tiled}\) commutes with the many-body translation operator implies that the total crystal momentum \(\vec k\) is a conserved quantity.
 
 \section{Form of the eigenstates: Bloch's theorem}
-In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full eigenstate \(\ket{\Psi}\) is then obtained by constructing liner combinations of the eigenstates \(\ket{\psi_i}\) of the local Hamiltonians such that \(\ket{\Psi}\) satisfies Bloch's theorem: \(\ket{\Psi_{\vec k}({\bf r})} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \ket{\psi_i({\bf r} - {\bf r}_i)}\). Bloch's theorem ensures that eigenstates satisfy the following relation under a translation operation \(T({\bf r})\) by some lattice distance \({\bf r} = \sum_i n_i {\bf a}_i\):
+In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full eigenstate \(\ket{\Psi}\) is then obtained by constructing liner combinations of the eigenstates \(\ket{\psi_i}\) of the local Hamiltonians such that \(\ket{\Psi}\) satisfies Bloch's theorem: \(\ket{\Psi_{\bf k}({\bf r})} = \sum_{{\bf r}_i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_i({\bf r} - {\bf r}_i)}\). Bloch's theorem ensures that eigenstates satisfy the following relation under a translation operation \(T({\bf a})\) by some lattice distance \({\bf a}\):
 \begin{equation}\begin{aligned}
-	T({\bf r})\ket{\Psi_{\vec k}\left({\bf r}\right)} = \ket{\Psi_{\vec k}({\bf r} + {\bf r})} = \sum_i e^{i \vec{k}\cdot\vec{R}_i} \ket{\psi_i({\bf r} + {\bf r} - {\bf r}_i)} = e^{i \vec{k}\cdot\vec{R}}\sum_i e^{i \vec{k}\cdot\left(\vec{R}_i - {\bf r}\right)} \ket{\psi_i({\bf r} - ({\bf r}_i - {\bf r}))} = e^{\vec{k}\cdot\vec{R}}\ket{\Psi({\bf r})}
+	T({\bf a})\ket{\Psi_{{\bf k}}\left({\bf r}\right)} = \ket{\Psi_{{\bf k}}({\bf r} + {\bf a})} = e^{-i{\bf k}\cdot{\bf a}}\ket{\Psi({\bf r})}
 \end{aligned}\end{equation}
-At the end, we used the fact that \({\bf r}_i - {\bf r}\) is just another lattice vector \({\bf r}_j\). As mentioned before, these translation operators share eigenstates with the momentum operator:
+These translation operators share eigenstates with the crystal momentum operator:
 \begin{equation}\begin{aligned}
-	T\left( {\bf r} \right) \ket{\vec k} = \sum_{{\bf r}_i} e^{i \vec{k}\cdot\vec{r}_i}T\left( {\bf r} \right)\ket{{\bf r}_i} = e^{i \vec{k}\cdot\vec{R}}\sum_{{\bf r}_i} e^{i \vec{k}\cdot\left(\vec{r}_i - {\bf r}\right)}\ket{{\bf r}_i - {\bf r}} = e^{i \vec{k}\cdot\vec{R}} \ket{\vec k}
+	T\left( {\bf r} \right) \ket{{\bf k}} = e^{-i {\bf k}\cdot{\bf r}} \ket{{\bf k}}~.
+\end{aligned}\end{equation}
+As a result, the eigenstates can be labelled using the crystal momentum value \({\bf k}\), along with a band index \(n\). The eigenstates \(\ket{\Psi_{{\bf k},n}}\) of the lattice Hamiltonians obtained using eq.~\ref{tilingPrescriptionFinal} also enjoy a {\it many-body} Bloch's theorem~\cite{stoyanova}, because the tiling procedure restores the translation symmetry of the Hamiltonian (as shown in eq.~\ref{translationSymmetry}). This means that the eigenstates \(\psi_n\left({\bf r}_d\right)\) (with the impurity located at an arbitrary position \({\bf r}_d\)) of the unit cell auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) defined in eq.~\ref{unitCellHamiltonian} can be used to construct eigenstates of the lattice Hamiltonian. The index \(n(=0,1,\ldots)\) in the subscript indicates that it is the \(n^\text{th}\) eigenstate of the auxiliary model. 
+
+The state \(\psi_n\left({\bf r}_d\right)\) does not specify the position of the zeroth site, because the unit cell Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) itself is an averaged Hamiltonian over \(\mathcal{Z}\) zeroth sites. Accordingly, we can express the averaged eigenstate \(\psi_n\left({\bf r}_d\right)\) as
+\begin{equation}\begin{aligned}
+	\ket{\psi_n\left({\bf r}_d\right)} = \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z} \in \text{NN}({\bf r}_d)}\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}~,
+\end{aligned}\end{equation}
+where \(\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}\) is an auxiliary model eigenstate with the impurity and zeroth sites placed at \({\bf r}_d\) and \({\bf z}\). With this in mind, the following unnormalised combination of the auxiliary model eigenstates satisfies a many-particle equivalent of Bloch's theorem~\cite{stoyanova}:
+\begin{equation}\begin{aligned}
+	\ket{\Psi_{{\bf k}, n}} = \frac{1}{\sqrt N}\sum_{{\bf r}} e^{i {\bf k}\cdot{\bf r}} \ket{\psi_{n}\left({\bf r}\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}, {\bf a}} e^{i {\bf k}\cdot{\bf r}} \ket{\psi_{n}\left({\bf r}, {\bf a}\right)}
+\end{aligned}\end{equation}
+where \(N\) is the total number of lattice sites. The set of \(n=0\) states form the lowest band in the spectrum of the lattice, while higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \({\bf k}\) and \(n\) to 0:
+\begin{equation}\begin{aligned}
+	\ket{\Psi_\text{gs}} = \frac{1}{\sqrt N}\sum_{{\bf r}} e^{i {\bf k}\cdot{\bf r}} \ket{\psi_\text{gs}\left({\bf r}\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}, {\bf a}} e^{i {\bf k}\cdot{\bf r}} \ket{\psi_\text{gs}\left({\bf r}, {\bf a}\right)}
 \end{aligned}\end{equation}
 
-The eigenstates of bulk Hamiltonian obtained in eq.~\ref{siam_to_hubb} also enjoy a {\it many-body} Bloch's theorem~\cite{stoyanova}, because the tiling procedure restores the translation symmetry of the Hamiltonian (as shown in eq.~\ref{translationSymmetry}). This means that we can use the auxiliary model eigenstates
-\begin{equation}\begin{aligned}
-\psi^n_\text{aux}\left({\bf r}_i, {\bf a}\right)~,
-\end{aligned}\end{equation}
-with the impurity position \({\bf r}_i\) and zeroth site position \({\bf r}_i + {\bf a}\), to construct eigenstates of the bulk Hamiltonian. \({\bf r}_i\) is a lattice vector, while \({\bf a}\) is one of the \(\mathcal{Z}\) vectors that connect a lattice site with its nearest neighbours. The \(n\) in the superscript indicates that it is the \(n^\text{th}\) eigenstate of the auxiliary model. \(n=0\) is the ground state of the auxiliary model, and higher values denote the excited states. The following un-normalised combination of the auxiliary model eigenstates satisfies a many-particle equivalent of Bloch's theorem~\cite{stoyanova}:
-\begin{equation}\begin{aligned}
-	\ket{\Psi^n_{\vec k}} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}_i, {\bf a}} e^{i \vec{k}\cdot\vec{R}_i} \psi^n_\text{aux}\left({\bf r}_i, {\bf a}\right)
-\end{aligned}\end{equation}
-where \(N\) is the total number of lattice sites. The interpretation is that the set of \(n=0\) states form the lowest band in the spectrum of the lattice. Higher values of \(n\) produce the more energetic bands. The ground state is obtained by setting \(\vec k\) and \(n\) to 0: \(\ket{\Psi_{\vec k=0}^{n=0}} \equiv \ket{\Psi_\text{gs}}\). We will actually work only in the lowest band \(n=0\), so we will drop the band index from now on and keep in mind that only the auxiliary model ground states appear in the formulation:
-\begin{equation}\begin{aligned}
-	\label{bloch-states}
-	\ket{\Psi_{\vec k}} = \frac{1}{\lambda_{\ket{\vec k}} \sqrt{\mathcal{Z} N}}\sum_{{\bf r}_i, {\bf a}} e^{i \vec{k}\cdot\vec{R}_i} \psi_\text{aux}\left({\bf r}_i, {\bf a}\right)~,
-\end{aligned}\end{equation}
-where \(\lambda_{\ket{\vec k}}\) is a normalisation factor.
-
-To determine the normalisation factor, we compute the norm of the trial eigenstates:
-\begin{equation}\begin{aligned}
-	\braket{\Psi_{\vec k} | \Psi_{\vec k}} &= \frac{1}{\mathcal{Z}^2 \lambda_{\vec k}^2 N^2}\sum_{{\bf r}, {\bf r}^\prime, a, a^\prime}e^{i \vec{k}\cdot({\bf r} - {\bf r}^\prime)}\braket{\psi_\text{aux}({\bf r}^\prime, {\bf a}^\prime) | \psi_\text{aux}({\bf r}, {\bf a})} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{{\bf r}, {\bf r}^\prime, }e^{i \vec{k}\cdot({\bf r} - {\bf r}^\prime)}\braket{\psi_\text{aux}({\bf r}^\prime) | \psi_\text{aux}({\bf r})}\\
-					       &=\frac{1}{\lambda_{\vec k}^2 N^2}\sum_{{\bf r}, {\bf r}^\prime}e^{i \vec{k}\cdot({\bf r} - {\bf r}^\prime)}\braket{\psi_\text{aux}({\bf r_0}) | T^\dagger({\bf r} - {\bf r}^\prime) | \psi_\text{aux}({\bf r_0})} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{{\bf r}, {\bf r}^\prime, q}e^{i \vec{k}\cdot({\bf r} - {\bf r}^\prime)}\braket{\psi_\text{aux}({\bf r_0}) | T^\dagger({\bf r} - {\bf r}^\prime) \ket{\vec q}\bra{\vec q} \psi_\text{aux}({\bf r_0})}\\
-					       &= \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{{\bf r}, {\bf r}^\prime, q}e^{i (\vec{k} - \vec q)\cdot({\bf r} - {\bf r}^\prime)}\braket{\psi_\text{aux}({\bf r_0}) \ket{\vec q}\bra{\vec q} \psi_\text{aux}({\bf r_0})} = \frac{1}{\lambda_{\vec k}^2 N^2}\sum_{q} N^2 \delta_{\vec{k},\vec q}|\braket{\psi_\text{aux}({\bf r_0}) | \vec q}|^2\\
-\end{aligned}\end{equation}
-By requiring this norm to be unity, we obtain \(\lambda_{\vec k}^2 = |\braket{\psi_\text{aux}({\bf r_0}) | \vec k}|^2\). In the above exercise, we defined a state 
-\begin{equation}\begin{aligned}\label{zeroth_site_average}
-	\ket{\psi_\text{aux}({\bf r})} = (1/w)\sum_{{\bf a}}\ket{\psi_\text{aux}({\bf r}, {\bf a})}~,
-\end{aligned}\end{equation}
-by averaging over the neasest neighbours of \({\bf r}\), and inserted the total momentum basis \(1 = \sum_{\vec q}\ket{\vec q}\bra{\vec q}\) to resolve the translation operators. \({\bf r_0}\) is any particular lattice site which we define as the origin of the lattice. Because of the symmetry of the lattice, the inner product in the definition of \(\lambda\) will be the same irrespective of which \({\bf a}\) we choose among the \(\mathcal{Z}\) choices.
 
 \section{Mapping greens functions from the bulk to the auxiliary model}
-In the previous part, we obtained, among other states, the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{aux}}\) of the auxiliary models.
-In this section, we will relate real-sapce Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model.
-We define the time-domain Greens function between two points \({\bf r}\) and \({\bf r} + {\bf r}\) as
+In the previous part, we obtained, among other states, the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{gs}}\) of the auxiliary models.
+In this section, we will relate real-space Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model.
+We define the time-domain Greens function between two points \({\bf r}_1\) and \({\bf r}_2 \) at zero temperature as
 \begin{equation}\begin{aligned}
-	G_\text{H-H}({\bf r}, t) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c({\bf r} + r,t), c^\dagger({\bf r}) \right\} | \Psi_\text{gs}}~.
+	\tilde G({\bf r}_2 - {\bf r}_1, T) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c({\bf r}_2, T), c^\dagger({\bf r}_1) \right\} | \Psi_\text{gs}}~.
 \end{aligned}\end{equation}
-where the bulk Hamiltonian \(H_\text{H-H}\) leads to the dynamics of the annihilation operator: \(c({\bf r} + r,t) = e^{i H_\text{H-H} t}c({\bf r} + r)e^{-i H_\text{H-H} t}\). Following eq.~\ref{siam_to_hubb}, the exponential can be written as:
+where the bulk Hamiltonian \(H_\text{tiled}\) leads to the dynamics of the annihilation operators at time \(T\): \(c({\bf r},t) = e^{iT H_\text{tiled} }c({\bf r})e^{-i T H_\text{tiled}}\). By introducing the Fourier transform \(\tilde G({\bf r}_2 - {\bf r}_1, T) = \int d\omega~\tilde G({\bf r}_2 - {\bf r}_1, \omega)\), the frequency-domain Greens function can be cast in its spectral representation
+\begin{equation}\begin{aligned}
+	\tilde G({\bf r}_2 - {\bf r}_1, \omega) = \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0 \in \text{GS}}\sum_n \left[\frac{\braket{n_0|c({\bf r}_2)|n}\braket{n|c^\dagger({\bf r}_1)|n_0}}{\omega + E_\text{gs} - E_n} \right.\\
+\left.+ \frac{\braket{n_0|c^\dagger({\bf r}_1)|n}\braket{n|c({\bf r}_2)|n_0}}{\omega - E_\text{gs} + E_n}\right] ~,
+\end{aligned}\end{equation}
+where \(n_0\) sums over the ground state(s) of the system, \(n\) sums over all eigenstates and \(\mathcal{D}_\text{gs}\) is the groundstate degeneracy.
+
+
+\clearpage
+
+Following eq.~\ref{siam_to_hubb}, the exponential can be written as:
 \begin{equation}\begin{aligned}
 e^{i H_\text{H-H} t} = \exp\left[\sum_i t\mathcal{H}_\text{aux}({\bf r}_i)\right] 
 \end{aligned}\end{equation}
@@ -976,7 +841,102 @@ We now apply our approach to the case of infinite number of nearest-neighbours $
 making the self-energy completely local.
 
 \appendix
+\begin{widetext}
+\section{Effective action for the Hubbard-Heisenberg model and the eSIAM}
+In order to better understand the similarities and differences between the tiling approach outlined here and the approach adopted in dynamical mean-field approximations, we compute the effective action for the local impurity as well as the impurity-zeroth site system, in both the auxiliary and bulk models. This will be done in the limit of infinite coordination number, in order to create a tractable effective theory.
 
+\subsection{Local theory for the Hubbard-Heisenberg model}
+We will first work with the Hubbard-Heisenberg model. Let us recall that within the eSIAM, most of the dynamics is governed by the physics of the impurity site and the bath site coupled to the impurity. Accordingly, we will first obtain an effective action within the Hubbard-Heisenberg model for the small system consisting of a local site and all its nearest-neighbours. 
+
+We choose a certain local site that we call \(0\), whose nearest-neighbours will be denoted as \(\left\{ {\bar 0} \right\} \). The action for the full Hubbard-Heisenberg model can be formally separated into three parts:
+\begin{equation}\begin{aligned}
+S_\text{H-H} = S_{0,{\bar 0}} + S^{(0,{\bar 0})} + S_\text{int}~,
+\end{aligned}\end{equation}
+where \(S_{0,{\bar 0}}\) represents the part of the action that involves only the sites \(0\) and $\left\{ {\bar 0} \right\}$, \(S^{(0,{\bar 0})}\) represents the part that has all the sites apart from \(0\) and \(\left\{ {\bar 0} \right\} \), while \(S_\text{int}\) contains all terms that connect these two parts. These three parts have the forms
+\begin{equation}\begin{aligned}
+S_{0,{\bar 0}} = \sum_{i=0,{\bar 0}}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau)  - t\sum_{{\bar 0},\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{0\sigma}(\tau)c_{{\bar 0}\sigma}(\tau) + \text{h.c.}\right] \\
+- \frac{U}{2}\sum_{i=0,{\bar 0}}\int_0^\beta\mathrm{d\tau}~\left(n_{i \uparrow}(\tau) - n_{i \downarrow}(\tau)\right)^2 + J\sum_{{\bar 0}}\int_0^\beta\mathrm{d\tau} \vec{S}_0(\tau)\cdot\vec{S}_{{\bar 0}}(\tau)~,
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+S^{(0,{\bar 0})} = \sum_{j\neq(0,{\bar 0})}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{j\sigma}(\tau)\partial_\tau c_{j\sigma}(\tau)  - t\sum_{\left<j,l\right>\neq (0,{\bar 0}),\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{j\sigma}(\tau)c_{l\sigma}(\tau) + \text{h.c.}\right] \\
+- \frac{U}{2}\sum_{j\neq(0,{\bar 0})}\int_0^\beta\mathrm{d\tau}~\left(n_{j\uparrow}(\tau) - n_{j\downarrow}(\tau)\right)^2 + J\sum_{\left<j,l\right>\neq(0,{\bar 0})}\int_0^\beta\mathrm{d\tau} \vec{S}_l(\tau)\cdot\vec{S}_j(\tau)~,
+\end{aligned}\end{equation}
+\begin{equation}\begin{aligned}
+S_\text{int} = -t\sum_{i \in {\bar 0}}\sum_{j \in \text{NN of}~i}\sum_\sigma \int_0^\beta\mathrm{d\tau}~\left(c^\dagger_{i\sigma}(\tau) c_{j\sigma}(\tau) + \text{h.c.}\right) + J\sum_{i \in {\bar 0}}\sum_{j \in \text{NN of}~i}\int_0^\beta\mathrm{d\tau}\vec{S}_i(\tau)\cdot\vec{S}_j(\tau) = S_\text{int}^\text{hop} + S_\text{int}^\text{spin} 
+\end{aligned}\end{equation}
+
+In order to obtain an effective theory \(S^{0,{\bar 0}}_\text{eff}\) purely for the local system \((0,{\bar 0})\), we need to trace over all the other degrees of freedom. This partial trace will be carried out over the states of the so-called ``cavity" system \(S^{(0,{\bar 0})}\). The effective action can be constructed by tracing over scattering processes of all orders that leave the final action diagonal in the system \((0,{\bar 0})\). The formal expression can be written as
+\begin{equation}\begin{aligned}
+	S^{0,{\bar 0}}_\text{eff} = S_{0,{\bar 0}} + \sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{hop}\right)^{2n}}_{(0,{\bar 0})} + \sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{spin}\right)^{2n}}_{(0,{\bar 0})}
+\end{aligned}\end{equation}
+where, as mentioned before, the average is carried out in the cavity system \(S^{(0,{\bar 0})}\). Each hopping term in the expansion is of the form
+\begin{equation}\begin{aligned}
+	\left(S_\text{int}^\text{hop}\right)^{2n} =& t^{2n}\sum_\sigma\sum_{(i_1, i_1^\prime)\ldots, (i_n, i_n^\prime)} ~\sum_{(j_1, j_1^\prime)\ldots, (j_n, j_n^\prime)} \int_0^\beta d\tau_{1}\ldots d\tau_{n}d\tau_{1}^\prime\ldots d\tau_{j_n}^\prime\\
+			   &c^\dagger_{i_1\sigma}(\tau_{i_1})c^\dagger_{i_2\sigma}(\tau_{2})\ldots c^\dagger_{i_n\sigma}(\tau_{n}) c_{i_1^\prime\sigma}(\tau_{1}^\prime)c_{i_2^\prime\sigma}(\tau_{2}^\prime)\ldots c_{i_n^\prime\sigma}(\tau_{n}^\prime)\left<c_{j_1\sigma}(\tau_{1})c_{j_2\sigma}(\tau_{2})\ldots c_{j_n\sigma} ~ c^\dagger_{j_1^\prime\sigma}(\tau_{1}^\prime)\ldots c^\dagger_{j_n^\prime\sigma}(\tau_{n}^\prime) \right>_{(0,{\bar 0})}\\
+	=& t^{2n}\sum_\sigma\sum_{(i_1, i_1^\prime)\ldots, (i_n, i_n^\prime)} ~\sum_{(j_1, j_1^\prime)\ldots, (j_n, j_n^\prime)} \int_0^\beta d\tau_{1}\ldots d\tau_{j_n}^\prime c^\dagger_{i_1\sigma}(\tau_{i_1})\ldots c^\dagger_{i_n\sigma}(\tau_{n})~c_{i_1^\prime\sigma}(\tau_{1}^\prime)\ldots c_{i_n^\prime\sigma}(\tau_{n}^\prime)\\
+	 &G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right)~,
+\end{aligned}\end{equation}
+where the indices \(i_1\) through \(i_n\) and their primed counterparts run through \(\bar 0\), while \(j_l\) (\(\in \left\{j_1,\ldots,j_n^\prime\right\}\)) runs through the nearest-neighbours of the corresponding \(i_l\) index. The \(n-\)particle Greens function \(G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right)\) for the cavity system is defined in the usual fashion
+\begin{equation}\begin{aligned}
+	G_n^{(0,\bar 0)}\left(\tau_1\ldots \tau_n; \tau_1^\prime\ldots \tau_n^\prime\right) = \left<c_{j_1\sigma}(\tau_{1})c_{j_2\sigma}(\tau_{2})\ldots c_{j_n\sigma} ~ c^\dagger_{j_1^\prime\sigma}(\tau_{1}^\prime)\ldots c^\dagger_{j_n^\prime\sigma}(\tau_{n}^\prime) \right>_{(0,{\bar 0})} 
+\end{aligned}\end{equation}
+In the limit of infinite coordination number, only the \(n=1\) term survives:
+\begin{equation}\begin{aligned}
+	\lim_{\mathcal{Z}\to \infty}\sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{hop}\right)^{2n}}_{(0,{\bar 0})} = t^2\sum_{\sigma}\sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime)\sum_{j,j^\prime}G_1^{(0,\bar 0)}\left(j\tau; j^\prime\tau^\prime\right) \\
+	= \sum_{\sigma}\sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime)~,
+\end{aligned}\end{equation}
+where we have defined the bath hybridisation function \(\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)\) as
+\begin{equation}\begin{aligned}
+	\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime) = t^2\sum_{j \in \text{NN of}~i}\sum_{j^\prime \in \text{NN of}~i^\prime}G_1^{(0,\bar 0)}\left(j\sigma\tau; j^\prime\sigma\tau^\prime\right)~.
+\end{aligned}\end{equation}
+
+Under similar approximations, the spin term in the action reduces to
+\begin{equation}\begin{aligned}
+	\lim_{\mathcal{Z}\to \infty}\sum_{n=1}^\infty \braket{\left(S_\text{int}^\text{spin}\right)^{2n}}_{(0,{\bar 0})} = \sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\chi(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)~,
+\end{aligned}\end{equation}
+where the susceptibility \(\chi_{ii^\prime}(\tau - \tau^\prime)\) is defined as 
+\begin{equation}\begin{aligned}
+	\chi_{ii^\prime}(\tau - \tau^\prime) = J^2\sum_{j \in \text{NN of}~i}\sum_{j^\prime \in \text{NN of}~i^\prime}\vec{S}_{j}(\tau)\cdot\vec{S}_{j^\prime}(\tau^\prime)~.
+\end{aligned}\end{equation}
+The effective action for the \(0,\bar 0\) system, in the limit of large coordination number, simplifies to
+\begin{equation}\begin{aligned}
+	S^{0,{\bar 0}}_\text{eff} =& \sum_{i=0,{\bar 0}}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau)  - t\sum_{{\bar 0},\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{0\sigma}(\tau)c_{{\bar 0}\sigma}(\tau) + \text{h.c.}\right] - \frac{U}{2}\sum_{i=0,{\bar 0}}\int_0^\beta\mathrm{d\tau}~\left(n_{i \uparrow}(\tau) - n_{i \downarrow}(\tau)\right)^2 \\
+				   &+ J\sum_{{\bar 0}}\int_0^\beta\mathrm{d\tau} \vec{S}_0(\tau)\cdot\vec{S}_{{\bar 0}}(\tau) + \sum_{i,i^\prime}\int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\Delta_{ii^\prime,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{ii^\prime}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
+\end{aligned}\end{equation}
+
+One can also write down an effective action purely for the local site \(0\). The sites \(\bar 0\) will now be a part of the environment action \(S^{(0)}\) instead of the system action, but since the system is thermodynamically large, the cavity action can be assumed to remain the same, such the expectation values are calculated in the same system. As a result, the hybridisation and susceptibility functions remain unchanged. \(S_\text{int}\) is now made of terms that connect \(0\) and \(\bar 0\), so the transformation from \(S^{(0,\bar 0)}\) can be made by replacing the set \(\left\{ j \right\} \) with the set \(\bar 0\), and the set \(\bar 0\) itself will be replaced by the local site \(0\). We quote the final form of the local effective action:
+\begin{equation}\begin{aligned}
+	S^{0}_\text{eff} =& \sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{0\sigma}(\tau)\partial_\tau c_{0\sigma}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{0\uparrow}(\tau) - n_{0\downarrow}(\tau)\right)^2 \\
+			  &+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\Delta_{00,\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{00}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
+\end{aligned}\end{equation}
+
+\subsection{Local theory for the extended SIAM}
+The Hamiltonian for the extended SIAM model is shown in eq.~\ref{siam_attr}. We will denote the impurity with the label \(d\) and the bath sites with the label \(c\). Among the bath sites, we will represent the site coupled to the impurity with \(z\). The full action has the form
+\begin{equation}\begin{aligned}
+	S_\text{ES} = \sum_{d,c}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau) - t\sum_{\left<i,j \right> \in c,\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{i\sigma}(\tau)c_{j\sigma}(\tau) + \text{h.c.}\right] - V\sum_{\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{d\sigma}(\tau)c_{z\sigma}(\tau) + \text{h.c.}\right]\\
++ J\int_0^\beta\mathrm{d\tau} \vec{S}_d(\tau)\cdot\vec{S}_{z}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 - \frac{U_b}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{z\uparrow}(\tau) - n_{z\downarrow}(\tau)\right)^2 ~,
+\end{aligned}\end{equation}
+As in the Hubbard-Heisenberg model, we first obtain an effective action for the pair of sites \((d,z)\). As in the previous calculation, this will again generate a hybridisation function \(\Delta_{zz,\sigma}\) for the bath site nearest to the zeroth site. No susceptibility will be generated however, because there is no spin-exchange coupling within the bath. The net result is
+\begin{equation}\begin{aligned}
+	S^{d,z}_\text{eff} =& \sum_{d,c}\sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{i\sigma}(\tau)\partial_\tau c_{i\sigma}(\tau) - V\sum_{\sigma}\int_0^\beta\mathrm{d\tau}~\left[c^\dagger_{d\sigma}(\tau)c_{z\sigma}(\tau) + \text{h.c.}\right] + J\int_0^\beta\mathrm{d\tau} \vec{S}_d(\tau)\cdot\vec{S}_{z}(\tau) \\
+	&- \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 - \frac{U_b}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{z\uparrow}(\tau) - n_{z\downarrow}(\tau)\right)^2 \\
+	&+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\sum_{\sigma}\Delta_{zz,\sigma}(\tau - \tau^\prime)c^\dagger_{z\sigma}(\tau)c_{z\sigma}(\tau^\prime)
+\end{aligned}\end{equation}
+This hybridisation \(\Delta_{zz,\sigma}\) is calculated in the cavity model of the eSIAM, obtained by removing the impurity and the zeroth site from the full model; it is a completely non-interacting system.
+
+One can go one step further and also remove the zeroth site in order to obtain a theory for the impurity site. With this choice, the cavity model now also includes the zeroth site, and hence contains the correlation term associated with \(U_b\). The one-particle connection \(V\) will lead to a modified hybridisation \(\mathcal{F}\) for this effective theory; the Kondo terms will generate a susceptibility. The resultant action is
+\begin{equation}\begin{aligned}
+	S^{d}_\text{eff} =& \sum_\sigma \int_0^\beta\mathrm{d\tau}~c^\dagger_{d\sigma}(\tau)\partial_\tau c_{d\sigma}(\tau) - \frac{U}{2}\int_0^\beta\mathrm{d\tau}~\left(n_{d\uparrow}(\tau) - n_{d\downarrow}(\tau)\right)^2 \\
+			  &+ \int_0^\beta\mathrm{d\tau}\mathrm{d\tau^\prime}~\left[\sum_{\sigma}\mathcal{F}_{\sigma}(\tau - \tau^\prime)c^\dagger_{i\sigma}(\tau)c_{i^\prime\sigma}(\tau^\prime) + \chi_{d}(\tau - \tau^\prime)\vec{S}_{i}(\tau)\cdot\vec{S}_{i^\prime}(\tau^\prime)\right]
+\end{aligned}\end{equation}
+where \(\mathcal{F}\) is defined in terms of the local correlator of the zeroth site
+\begin{equation}\begin{aligned}
+	\mathcal{F}_\sigma(\tau - \tau^\prime) = V^2 G_1^{(d)}\left(z\sigma\tau; z\sigma\tau^\prime\right) = V^2 \left<c_{z\sigma}(\tau)c^\dagger_{z\sigma}(\tau^\prime)\right>_{(d)}
+\end{aligned}\end{equation}
+with the average computed in the interacting cavity model that has the impurity site removed. The interaction arises from the \(U_b-\)term. The susceptibility is also calculated in this interacting cavity model, and follows the same definition as in the bulk model:
+\begin{equation}\begin{aligned}
+	\chi_{d}(\tau - \tau^\prime) = J^2\vec{S}_{z}(\tau)\cdot\vec{S}_{z}(\tau^\prime)~.
+\end{aligned}\end{equation}
 \section{Zero temperature Greens function in frequency domain}
 
 \label{appx-spectral-func}
@@ -1360,6 +1320,6 @@ To resolve the translation operators, we will now insert the momentum eigenstate
 	&= N\delta_{kk^\prime}\braket{\vec k | H_\text{aux}\left({\bf r_0}\right) | \vec k}
 \end{aligned}\end{equation}
 The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position eigenkets at varying distances from \({\bf r_0}\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the state at \({\bf r_0}\), and improvements are then made by considering auxiliary models at further distances. 
-
+\end{widetext}
 \bibliography{tilingProject}
 \end{document}

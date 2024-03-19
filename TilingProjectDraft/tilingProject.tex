@@ -39,7 +39,7 @@ Above a critical \(U_c\), the impurity spectral function gets gapped out, and th
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.5\textwidth]{dos_diff.pdf}
+\includegraphics[width=0.45\textwidth]{dos_diff.pdf}
 \caption{Various kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
 \end{figure}
 
@@ -141,7 +141,7 @@ where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of t
 
 The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
 
-\section{Creating a Hubbard-Heisenberg Hamiltonian from an extended Anderson impurity model}
+\section{The Tiling Algorithm}
 
 \subsection{Formal description of the tiling procedure}\label{formalDescription}
 We will now define the {\it tiling} procedure by which we can recreate the complete lattice model by using instances of an auxiliary model Hamiltonian. The first step is of course to identify an impurity model that can act as a good auxiliary model for out lattice model. The local behaviour of this impurity model should reflect the essential local physics of the lattice model. Typically, we will consider impurity model geometries where the real-space bath site connected directly to the impurity also harbours some kind of local interaction. We will henceforth refer to this site as the zeroth site. In the case where multiple sites are connected directly to the impurity, we will choose one of these sites for reference and call that the {\it bath zeroth site} throughout. In order to identify a {\it unit cell} for our tiling procedure, we place the impurity site at a reference site \({\bf r}_d\) of our lattice, and the bath zeroth site at a nearest-neighbour site \({\bf z}\), and label the corresponding auxiliary model Hamiltonian as \(\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})\). The unit cell at the position \({\bf r}_d\) is then obtained by placing the zeroth site on all nearest-neighbours of \({\bf r}_d\) and averaging over these configurations:
@@ -317,42 +317,37 @@ where \(N\) is the total number of lattice sites and \({\bf r}_d\) is summed ove
 
 \section{Mapping greens functions from the bulk to the auxiliary model}
 In the previous part, we proposed a form for the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{gs}}\) of the auxiliary models.
-In this section, we will relate real-space Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model.
-We define the time-domain Greens function between two points \({\bf r}_1\) and \({\bf r}_2 \) at zero temperature as
+In this section, we will relate one-particle Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model.
+We define the time-domain Greens function between two quantum numbers \(\nu_1\) and \(\nu_2 \) at zero temperature as
 \begin{equation}\begin{aligned}
-	\tilde G({\bf r}_2 - {\bf r}_1, T) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c({\bf r}_2, T), c^\dagger({\bf r}_1) \right\} | \Psi_\text{gs}}~.
+	\tilde G(\nu_2, \nu_1; T) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c(\nu_2, T), c^\dagger(\nu_1) \right\} | \Psi_\text{gs}}~.
 \end{aligned}\end{equation}
 where the bulk Hamiltonian \(H_\text{tiled}\) leads to the dynamics of the annihilation operators at time \(T\): 
 \begin{equation}\begin{aligned}
-	c({\bf r},t) = e^{iT H_\text{tiled} }c({\bf r})e^{-i T H_\text{tiled}}~.
+	c(\nu,t) = e^{iT H_\text{tiled} }c(\nu)e^{-i T H_\text{tiled}}~.
 \end{aligned}\end{equation}
-By introducing the Fourier transform \(g(T) = \int d\omega~ e^{-i\omega T}f(\omega)\), the frequency-domain Greens function can be cast in its spectral representation
+The quantum number \(\nu\) typically refers to position or momentum: setting \(\nu_1={\bf r}_1, \nu_2={\bf r}_2\) will lead to a real-space Greens function between the two spatial points. By introducing the Fourier transform \(g(T) = \int d\omega~ e^{-i\omega T}f(\omega)\), the frequency-domain Greens function can be cast in its spectral representation
 \begin{equation}\begin{aligned}\label{spectralRepresentation}
-	&\tilde G({\bf r}_2 - {\bf r}_1, \tilde\omega) \\
-	&= \frac{1}{\mathcal{D}_\text{gs}}\sum_{s_0 \in \text{GS}}\sum_s \left[\frac{F_p^*(s, {\bf r}_2)F_p(s, {\bf r}_1)}{\tilde\omega - \left( \tilde E_s - \tilde E_\text{gs} \right) } + \frac{F_h(s, {\bf r}_1)F_h^*(s, {\bf r}_2)}{\tilde\omega + \left( \tilde E_s - \tilde E_\text{gs} \right) }\right] ~,
+	&\tilde G(\nu_2, \nu_1; \tilde\omega) \\
+	&= \frac{1}{\mathcal{D}_\text{gs}}\sum_{s_0 \in \text{GS}}\sum_s \left[\frac{F_p^*(s, \nu_2)F_p(s, \nu_1)}{\tilde\omega - \left( \tilde E_s - \tilde E_\text{gs} \right) } + \frac{F_h(s, \nu_1)F_h^*(s, \nu_2)}{\tilde\omega + \left( \tilde E_s - \tilde E_\text{gs} \right) }\right] ~,
 \end{aligned}\end{equation}
-where \(s_0=\left({\bf k}_0, n_0\right)\) sums over the ground state(s) of the system (with energy \(\tilde E_\text{gs}\) and degeneracy \(\mathcal{D}_\text{gs}\)) and \(s=\left({\bf k}, n\right)\) sums over all eigenstates (with energies \(\tilde E_s\)). The coefficients \(F_p(s, {\bf r}) = \braket{\Psi_{s}|c^\dagger({\bf r})|\Psi_{s_0}}\) and \(F_h(s, {\bf r}) = \braket{\Psi_{s}|c({\bf r})|\Psi_{s_0}}\) represent spectral weights for particle and hole excitations from the ground state \(\ket{s_0}\) into the excited state \(\ket{s}\). 
+where \(s_0=\left({\bf k}_0, n_0\right)\) sums over the ground state(s) of the system (with energy \(\tilde E_\text{gs}\) and degeneracy \(\mathcal{D}_\text{gs}\)) and \(s=\left({\bf k}, n\right)\) sums over all eigenstates (with energies \(\tilde E_s\)). The coefficients \(F_p(s, \nu) = \braket{\Psi_{s}|c^\dagger(\nu)|\Psi_{s_0}}\) and \(F_h(s, \nu) = \braket{\Psi_{s}|c(\nu)|\Psi_{s_0}}\) represent spectral weights for particle and hole excitations from the ground state \(\ket{s_0}\) into the excited state \(\ket{s}\). 
 
-In order to make contact with the auxiliary models, the first simplification  that we carry out is of the eigenenergies \(\tilde E_s\)in the denominators. The label \(s\) involves a total momentum \({\bf k}\) and a band index \(n\). Guided by the relation eq.~\ref{tilingPrescriptionFinal} between the Hamiltonians, we assume a separation of the total energy into an impurity model contribution \(E_n\) coming from \(\mathcal{H}_\text{aux}\) and a contribution \(\varepsilon({\bf k})\) coming from the non-interacting background Hamiltonian \(\mathcal{H}_\text{cbath-nint}\):
+In order to make contact with the auxiliary models, the first simplification  that we carry out is of the eigenenergies \(\tilde E_s\)in the denominators. The label \(s\) involves a total momentum \({\bf k}\) and a band index \(n\). Guided by the relation eq.~\ref{tilingPrescriptionFinal} between the Hamiltonians, we assume a separation of the total energy into an impurity model contribution \(E_n\) coming from \(\mathcal{H}_\text{aux}\) and a contribution \(\varepsilon({\bf k})\) coming from the non-interacting background Hamiltonian \(\mathcal{H}_\text{cbath-nint}\): \(E_s \simeq N E_n + (N-3) \varepsilon_{\bf k}\)~, where \(\varepsilon_{\bf k}\) are the eigenenergies of the non-interacting conduction bath \(\mathcal{H}_\text{cbath-nint}\). Replacing \(N-3\) with \(N\) for a system of large number of particles, the spectral representation can be written as
 \begin{equation}\begin{aligned}
-	E_s \simeq N E_n + (N-3) \varepsilon_{\bf k}~.
+	&\tilde G(\nu_2, \nu_1; \tilde\omega) \\
+	&= \frac{1}{\mathcal{D}_\text{gs}}\sum_{s_0 \in \text{GS}}\sum_s \left[\frac{F_p^*(s, \nu_2)F_p(s, \nu_1)}{\tilde\omega - N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
+	&\left. + \frac{F_h(s, \nu_1)F_h^*(s, \nu_2)}{\tilde\omega + N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,
 \end{aligned}\end{equation}
-where \(\varepsilon_{\bf k}\) are the eigenenergies of the non-interacting conduction bath \(\mathcal{H}_\text{cbath-nint}\). Replacing \(N-3\) with \(N\) for a system of large number of particles, the spectral representation can be written as
-\begin{equation}\begin{aligned}
-	&\tilde G({\bf r}_2 - {\bf r}_1, \tilde\omega) \\
-	&= \frac{1}{\mathcal{D}_\text{gs}}\sum_{s_0 \in \text{GS}}\sum_s \left[\frac{F_p^*(s, {\bf r}_2)F_p(s, {\bf r}_1)}{\tilde\omega - N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
-	&\left. + \frac{F_h(s, {\bf r}_1)F_h^*(s, {\bf r}_2)}{\tilde\omega + N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,
-\end{aligned}\end{equation}
-where the absence of the tilde in the denominators indicates that those energies arise from the auxiliary model Hamiltonian.
-
-In order to rewrite this expression in terms of quantities that can be computed purely from the auxiliary models, we replace the eigenstates with the forms given in eq.~\ref{eigenstateProposal}:
+where the absence of the tilde in the denominators indicates that those energies arise from the auxiliary model Hamiltonian. In order to rewrite this expression in terms of quantities that can be computed purely from the auxiliary models, we replace the eigenstates with the forms given in eq.~\ref{eigenstateProposal}:
 \begin{equation}\begin{aligned}\label{spectralWeightsAuxiliary}
-	F_p^*(s, {\bf r}_2) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{i {\bf k}\cdot{\bf r}_d - {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_{n_0}({\bf r}_d^\prime)|c({\bf r}_2)|\psi_{n}({\bf r}_d)}\\
-	F_p(s, {\bf r}_1) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{-i {\bf k}\cdot{\bf r}_d + {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_n({\bf r}_d)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_d^\prime)}~,
+	&F_p^*(s, \nu_2) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{i {\bf k}\cdot{\bf r}_d - {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_{n_0}({\bf r}_d^\prime)|c(\nu_2)|\psi_{n}({\bf r}_d)}\\
+	&F_p(s, \nu_1) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{-i {\bf k}\cdot{\bf r}_d + {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_n({\bf r}_d)|c^\dagger(\nu_1)|\psi_{n_0}({\bf r}_d^\prime)}~,
 \end{aligned}\end{equation}
 where \({\bf k}_0\) is the crystal momentum value in the ground state.
 
-Within the impurity model, the lattice site that most closely resembles the bulk lattice model is of course the impurity site; in order to ensure that all terms in eq.~\ref{spectralRepresentation} involve the impurity site, we approximate the states within \(F_p(s,{\bf r}_1)\) of eq.~\ref{spectralWeightsAuxiliary} purely in terms of the auxiliary model at \({\bf r}_1\):
+\subsection{Real-space Greens functions}
+We first consider one-particle Greens functions for the propagation of excitations between two spatial points \(\nu_1={\bf r}_1\) and \(\nu_2={\bf r}_2\). Within the impurity model, the lattice site that most closely resembles the bulk lattice model is of course the impurity site; in order to ensure that all terms in eq.~\ref{spectralRepresentation} involve the impurity site, we approximate the states within \(F_p(s,\nu_1) = F_p(s,{\bf r}_1)\) of eq.~\ref{spectralWeightsAuxiliary} purely in terms of the auxiliary model at \({\bf r}_1\):
 \begin{equation}\begin{aligned}
 	\ket{\Psi_s} &= \frac{1}{\sqrt N}\sum_{{\bf r}_d} \left[e^{i {\bf k}\cdot{\bf r}_1} \ket{\psi_{n}\left({\bf r}_1\right)} + \ket{\psi_{n}}_\text{diff}\right]\\
 		     &\simeq \sqrt N e^{i {\bf k}\cdot{\bf r}_1} \ket{\psi_{n}\left({\bf r}_1\right)}.
@@ -361,7 +356,7 @@ This amounts to retaining the spatially uniform part of the wavefunction and dro
 \begin{equation}\begin{aligned}
 	F_p(s, {\bf r}_1) \simeq N e^{-i \left({\bf k} - {\bf k}_0\right)\cdot{\bf r}_1} \braket{\psi_n({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_1)}~.
 \end{aligned}\end{equation}
-For the other term, we make the less drastic approximation of retaining the matrix elements between the same auxiliary models \({\bf r}_d = {\bf r}_d^\prime\), leading to
+For the other term \(F_p(s,\nu_2) = F_p(s,{\bf r}_2)\), we make the less drastic approximation of retaining the matrix elements between the same auxiliary models \({\bf r}_d = {\bf r}_d^\prime\), leading to
 \begin{equation}\begin{aligned}
 	F_p^*(s, {\bf r}_2) = \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot{\bf r}_d} \braket{\psi_{n_0}({\bf r}_d)|c({\bf r}_2)|\psi_{n}({\bf r}_d)}~.
 \end{aligned}\end{equation}
@@ -369,32 +364,109 @@ The summation can be transferred on to the annihilation operator by using transl
 \begin{equation}\begin{aligned}
 	&\braket{\psi_{n_0}({\bf r}_d)|c({\bf r}_2)|\psi_{n}({\bf r}_d)} \\
 	&= \braket{\psi_{n_0}({\bf r}_1)|T\left({\bf r}_d - {\bf r}_1\right) c({\bf r}_2) T^\dagger\left({\bf r}_d - {\bf r}_1\right) |\psi_{n}({\bf r}_1)}\\
-	&= \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_2 - {\bf r}_1 + {\bf r}_d) |\psi_{n}({\bf r}_1)}~,
+	&= \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_2 + {\bf r}_1 - {\bf r}_d) |\psi_{n}({\bf r}_1)}~,
 \end{aligned}\end{equation}
 leading to the more useful form
 \begin{equation}\begin{aligned}
 	&F_p^*(s, {\bf r}_2) \\
-	&= \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot{\bf r}_d} \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_2 - {\bf r}_1 + {\bf r}_d) |\psi_{n}({\bf r}_1)}\\
-	&= \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_1 - {\bf r}_2 + {\bf r}_d\right)} \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)}~.
+	&= \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot{\bf r}_d} \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_2 + {\bf r}_1 - {\bf r}_d) |\psi_{n}({\bf r}_1)}\\
+	&= \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_1 + {\bf r}_2 - {\bf r}_d\right)} \braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)}~.
 \end{aligned}\end{equation}
-In the second step, we redefined the dummy variable \({\bf r}_d \to {\bf r}_d - {\bf r}_2 + {\bf r}_1\). We make similar simplifications in the hole excitation coefficients \(F_h\) and \(F_h^*\) as well.
+In the second step, we redefined the dummy variable \({\bf r}_d \to {\bf r}_1 + {\bf r}_2 - {\bf r}_d\).
+
+Having obtained the particle spectral coefficients, we can obtain the hole counterparts by mapping them onto each other. This can be done by noting that under our assumptions of \({\bf r}_d = {\bf r}_d^\prime\) in eq.~\ref{spectralWeightsAuxiliary}, we have the following relations:
+\begin{equation}\begin{aligned}
+	F_h &= F_p^*\left({\bf k}\leftrightarrow{\bf k}_0, n \leftrightarrow n_0\right),\\
+	F_h^* &= F_p\left({\bf k}\leftrightarrow{\bf k}_0, n \leftrightarrow n_0\right)~.
+\end{aligned}\end{equation}
+Using these, we get
+\begin{equation}\begin{aligned}\label{spectralParticleHoleRelation}
+	F_h &= \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k}_0- {\bf k}\right)\cdot\left({\bf r}_1 + {\bf r}_2 - {\bf r}_d\right)} \braket{\psi_{n}({\bf r}_1)| c({\bf r}_d) |\psi_{n_0}({\bf r}_1)},\\
+	F_h^* &= N e^{-i \left({\bf k}_0 - {\bf k}\right)\cdot{\bf r}_1} \braket{\psi_{n_0}({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n}({\bf r}_1)}~.
+\end{aligned}\end{equation}
+
 
 The complete expression for \(\tilde G_\text{loc}(\tilde\omega)\) now looks like
 \begin{widetext}
 \begin{equation}\begin{aligned}
-	\tilde G({\bf r}_2 - {\bf r}_1, \tilde\omega) &= \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0,{\bf k}_0}\sum_{{\bf k}, n}\sum_{{\bf r}_d} e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_d - {\bf r}_2\right)} \left[\frac{\braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_1)}}{\tilde\omega - N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
-					  &\left.+ \frac{\braket{\psi_{n_0}({\bf r}_1)| c^\dagger({\bf r}_1) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c({\bf r}_d)|\psi_{n_0}({\bf r}_1)}}{\tilde\omega + N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,\\
-					  &= \frac{1}{N}\sum_{{\bf k}_0, {\bf k}}\sum_{{\bf r}_d} e^{-i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)} \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0,n}\left[\frac{\braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_1)}}{\omega - \left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
-					  &\left.+ \frac{\braket{\psi_{n_0}({\bf r}_1)| c^\dagger({\bf r}_1) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c({\bf r}_d)|\psi_{n_0}({\bf r}_1)}}{\omega + \left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,
+	\tilde G({\bf r}_2 - {\bf r}_1; \tilde\omega) &= \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0,{\bf k}_0}\sum_{{\bf k}, n}\sum_{{\bf r}_d}  \left[e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}\frac{\braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_1)}}{\tilde\omega - N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
+					  &\left.+ e^{-i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}\frac{\braket{\psi_{n_0}({\bf r}_1)| c^\dagger({\bf r}_1) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c({\bf r}_d)|\psi_{n_0}({\bf r}_1)}}{\tilde\omega + N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,\\
+					  &= \frac{1}{N}\sum_{{\bf k}_0, {\bf k}}\sum_{{\bf r}_d}  \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0,n}\left[e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}\frac{\braket{\psi_{n_0}({\bf r}_1)| c({\bf r}_d) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c^\dagger({\bf r}_1)|\psi_{n_0}({\bf r}_1)}}{\omega - \left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right.\\
+					  &\left.+ e^{-i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}\frac{\braket{\psi_{n_0}({\bf r}_1)| c^\dagger({\bf r}_1) |\psi_{n}({\bf r}_1)} \braket{\psi_n({\bf r}_1)|c({\bf r}_d)|\psi_{n_0}({\bf r}_1)}}{\omega + \left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~,
 \end{aligned}\end{equation}
 \end{widetext}
 where \(\omega = \tilde\omega/N\) is the frequency scale for the auxiliary model. We can define partial Greens functions \(G_p({\bf r}_d, {\bf r}_1)\) and \(G_h({\bf r}_d, {\bf r}_1)\) for the auxiliary model that involve only the positive and negative frequency poles respectively. In terms of these, the lattice model Greens function can be written in a more intuitive form. Assuming a unique momentum \({\bf k}_0\) for the ground state and adjusting the ground state non-interacting energy \(\varepsilon_{{\bf k}0}\) to zero, we get
-\begin{equation}\begin{aligned}
-	\tilde G({\bf r}_2 - {\bf r}_1, \tilde\omega) &= \frac{1}{N}\sum_{{\bf k}}\sum_{{\bf r}_d} e^{-i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)} \\
-					  &\times\left[G_p\left({\bf r}_d,{\bf r}_1;\omega - \varepsilon_{\bf k}\right) + G_h\left({\bf r}_d,{\bf r}_1;\omega + \varepsilon_{\bf k}\right)\right]
+\begin{equation}\begin{aligned}\label{GreensFunctionRealSpace}
+	&\tilde G({\bf r}_2 - {\bf r}_1; \tilde\omega) \\
+	&= \frac{1}{N}\sum_{{\bf k}}\sum_{{\bf r}_d}  \left[e^{i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}G_p\left({\bf r}_d,{\bf r}_1;\omega - \varepsilon_{\bf k}\right) \right.\\
+	&\left.+ e^{-i \left({\bf k}- {\bf k}_0\right)\cdot\left({\bf r}_2 - {\bf r}_d\right)}G_h\left({\bf r}_d,{\bf r}_1;\omega + \varepsilon_{\bf k}\right)\right]
 \end{aligned}\end{equation}
 
-\subsection{Nearest-neighbour Greens function}
+\subsection{Momentum-space Greens functions}
+We now consider Greens functions at a particular momentum \({\bf K}\), obtained by setting \(\nu_1=\nu_2={\bf K}\). The spectral coefficients are of the form
+\begin{equation}\begin{aligned}
+	F_p^*(s, {\bf K}) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{i {\bf k}\cdot{\bf r}_d - {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_{n_0}({\bf r}_d^\prime)|c({\bf K})|\psi_{n}({\bf r}_d)}\\
+	F_p(s, {\bf K}) = \frac{1}{N}\sum_{{\bf r}_d, {\bf r}_d^\prime} e^{-i {\bf k}\cdot{\bf r}_d + {\bf k}_0\cdot{\bf r}_d^\prime} \braket{\psi_n({\bf r}_d)|c^\dagger({\bf K})|\psi_{n_0}({\bf r}_d^\prime)}~.
+\end{aligned}\end{equation}
+Similar to the approach for the real-space Greens function, we simplify \(F^*_p(s, {\bf K})\) by retaining only the \({\bf r}_d = {\bf r}_d^\prime\) members, and then translating the arbitrary point \({\bf r}_d\) to a common reference point \({\bf r}_c\) in the lattice:
+\begin{equation}\begin{aligned}
+	&F_p^*(s, {\bf K}) = \frac{1}{N}\sum_{{\bf r}_d} e^{i \left({\bf k} - {\bf k}_0\right)\cdot{\bf r}_d} \braket{\psi_{n_0}({\bf r}_d)|c({\bf K})|\psi_{n}({\bf r}_d)}~,\\
+	&\braket{\psi_{n_0}({\bf r}_d)|c({\bf K})|\psi_{n}({\bf r}_d)}\\
+	&= \braket{\psi_{n_0}({\bf r}_c)| T\left({\bf r}_d - {\bf r}_c\right) c({\bf K}) T^\dagger\left({\bf r}_d - {\bf r}_c\right) |\psi_{n}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+The effect of the translation operators on the \(k-\)space annihilation operator can be easily deduced by transforming it to real-space, using the Fourier transform definition
+\begin{equation}\begin{aligned}\label{fourTransf}
+	c({\bf K}) = \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r})~.
+\end{aligned}\end{equation}
+Upon applying this, we get
+\begin{equation}\begin{aligned}
+	&T\left({\bf r}_d - {\bf r}_c\right) c({\bf K}) T^\dagger\left({\bf r}_d - {\bf r}_c\right)\\
+	&= \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}T\left({\bf r}_d - {\bf r}_c\right) c({\bf r}) T^\dagger\left({\bf r}_d - {\bf r}_c\right)\\
+	&= \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r} - {\bf r}_d + {\bf r}_c)\\
+	&= e^{-i{\bf K}\cdot\left({\bf r}_d - {\bf r}_c\right)}c({\bf K})~.
+\end{aligned}\end{equation}
+With this, the final form of \(F_p^*(s, {\bf K})\) becomes
+\begin{equation}\begin{aligned}
+	F_p^*(s, {\bf K}) = \frac{1}{N}e^{i {\bf K}\cdot{\bf r}_c}\braket{\psi_{n_0}({\bf r}_c)|c({\bf K})|\psi_{n}({\bf r}_c)}\\
+	\times\sum_{{\bf r}_d}e^{i \left(-{\bf K} + {\bf k} - {\bf k}_0\right)\cdot{\bf r}_d}
+\end{aligned}\end{equation}
+The sum over \({\bf r}_d\) evaluates to \(\sum_{{\bf r}_d}e^{i \left({\bf K} + {\bf k} - {\bf k}_0\right)\cdot{\bf r}_d} = N \delta_{{\bf K}, {\bf k} - {\bf k}_0}\), leading to
+\begin{equation}\begin{aligned}
+	F_p^*(s, {\bf K}) = e^{i {\bf K}\cdot{\bf r}_c}\delta_{{\bf K}, {\bf k} - {\bf k}_0}\braket{\psi_{n_0}({\bf r}_c)|c({\bf K})|\psi_{n}({\bf r}_c)}
+\end{aligned}\end{equation}
+
+For the other coefficient \(F_p(s, {\bf K})\), we again proceed similar to the previous subsection: we retain only the uniform part of the wavefunction, placing all the impurity models at the reference point \({\bf r}_c\):
+\begin{equation}\begin{aligned}
+	F_p(s, {\bf K}) = Ne^{-i \left({\bf k} - {\bf k}_0\right)\cdot{\bf r}_c} \braket{\psi_n({\bf r}_c)|c^\dagger({\bf K})|\psi_{n_0}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+In order to introduce the impurity site operator in the expression, we Fourier transform \(c^\dagger({\bf K})\) (following eq.~\ref{fourTransf}), and keep only that real-space mode that lies on the impurity reference point \({\bf r}_c\):
+\begin{equation}\begin{aligned}
+	F_p(s, {\bf K}) = e^{-i \left({\bf k} - {\bf k}_0 + {\bf K}\right)\cdot{\bf r}_c} \braket{\psi_n({\bf r}_c)|c^\dagger({\bf r}_c)|\psi_{n_0}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+
+Using eq.~\ref{spectralParticleHoleRelation}, we obtain the hole transition coefficients:
+\begin{equation}\begin{aligned}
+	F_h(s, {\bf K}) &= e^{i {\bf K}\cdot{\bf r}_c}\delta_{-{\bf K}, {\bf k} - {\bf k}_0}\braket{\psi_{n}({\bf r}_c)|c({\bf K})|\psi_{n_0}({\bf r}_c)},\\
+	F_h^*(s, {\bf K}) &= e^{-i \left({\bf k}_0 - {\bf k} + {\bf K}\right)\cdot{\bf r}_c} \braket{\psi_{n_0}({\bf r}_c)|c^\dagger({\bf r}_c)|\psi_{n}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+
+The complete expression for the momentum space Greens function is therefore
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}; \tilde\omega) = \frac{1}{\mathcal{D}_\text{gs}}\sum_{n_0,{\bf k}_0 \in \text{GS}}\sum_{n,{\bf k}} e^{-i {\bf K}\cdot{\bf r}_c}\left[\delta_{{\bf K}, {\bf k} - {\bf k}_0}\frac{\braket{\psi_{n_0}({\bf r}_c)|c({\bf K})|\psi_{n}({\bf r}_c)}\braket{\psi_n({\bf r}_c)|c^\dagger({\bf r}_c)|\psi_{n_0}({\bf r}_c)}}{\tilde\omega - N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) } \right. \\
+	+ \left.\delta_{{\bf K}, -{\bf k} + {\bf k}_0}\frac{\braket{\psi_{n}({\bf r}_c)|c({\bf K})|\psi_{n_0}({\bf r}_c)}\braket{\psi_{n_0}({\bf r}_c)|c^\dagger({\bf r}_c)|\psi_{n}({\bf r}_c)}}{\tilde\omega + N\left( E_n - E_{n_0} + \varepsilon_{\bf k} - \varepsilon_{{\bf k}0}\right) }\right] ~.
+\end{aligned}\end{equation}
+\end{widetext}
+Once again assuming the uniqueness of \({\bf k}_0\), setting \(\varepsilon_{{\bf k}0}\) to zero and choosing the reference point \({\bf r}_c\) such that \({\bf K}\cdot{\bf r}_c = 0\), we have
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}; \tilde\omega) = G_p\left({\bf r}_c, {\bf K}; \omega - \varepsilon_{{\bf k}_0 + {\bf K}}\right) + G_h\left({\bf r}_c, {\bf K}; \omega + \varepsilon_{{\bf k}_0 - {\bf K}}\right).
+\end{aligned}\end{equation}
+As a consistency check, one can Fourier transform the expression in eq.~\ref{GreensFunctionRealSpace} to recover the above expression.
+
+
+
+
+
 
 \clearpage
 

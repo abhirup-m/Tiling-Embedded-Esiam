@@ -496,32 +496,39 @@ where \(\text{Im}[\cdot]\) is the imaginary part, and \(\tilde G^{(0)}\) is the 
 \section{Two-particle static correlators}
 Properties of the ground state can be probed using static correlation functions that are expectation values of two-particle excitation operators. A general correlation function in real space is of the form
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{C}}_{\left\{ \sigma_i \right\} }({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
+	&\tilde{G}^{(2)}_{\left\{ \sigma_i \right\} }({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
 	&= \braket{c^\dagger_{\sigma_4}\left({\bf r}_c + {\bf r}_3\right)c_{\sigma_3}^\dagger\left({\bf r}_c + {\bf r}_2\right)c_{\sigma_2}\left({\bf r}_c + {\bf r}_1\right)c_{\sigma_1}\left({\bf r}_c\right)}~,
 \end{aligned}\end{equation}
 where the expectation value is in the ground state \(\ket{\Psi_\text{gs}}\). We replace the full ground state with the ground state of the auxiliary model at \({\bf r}_c\):
 \begin{equation}\begin{aligned}
-	\tilde{\mathcal{C}}_{\left\{ \sigma_i \right\} }&({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
+	\tilde{G}^{(2)}_{\left\{ \sigma_i \right\} }&({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
 	=& \langle\psi_\text{gs}({\bf r}_c) | c^\dagger_{\sigma_4}\left({\bf r}_c + {\bf r}_3\right)c_{\sigma_3}^\dagger\left({\bf r}_c + {\bf r}_2\right)c_{\sigma_2}\left({\bf r}_c + {\bf r}_1\right)\\
 	&c_{\sigma_1}\left({\bf r}_c\right) | \psi_\text{gs}({\bf r}_c)\rangle~.
 \end{aligned}\end{equation}
 
-One can also look at \(k-\)space correlations, of the spin or charge kind. The spin-spin correlations are of the form
+One can also look at \(k-\)space correlations, of the spin or charge kind. The spin-flip correlations are of the form
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{C}}_{\sigma_1,\sigma_2}({\bf K}_1, {\bf K}_2) \\
-	&= \braket{c^\dagger_{\bar\sigma_1}\left({\bf K}_1\right)c_{\bar\sigma_2}^\dagger\left({\bf K}_2\right)c_{\sigma_2}\left({\bf K}_2\right)c_{\sigma_1}\left({\bf K}_1\right)}~.
+	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\sum_{\sigma=\pm 1}\braket{c^\dagger_{\bar\sigma}\left({\bf K}_1\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf K}_2\right)c_{\sigma}\left({\bf K}_1\right)}~.
 \end{aligned}\end{equation}
-We frame this in terms of the auxiliary model by (i) making the substitution again for the ground states, and (ii) by Fourier transforming the creation operators to real space and retaining just the impurity site operator:
+We frame this in terms of the auxiliary model by (i) making the substitution again for the ground states, and (ii) by Fourier transforming the operators \(c^\dagger_{\bar\sigma}\left({\bf K}_1\right)\) and \(c_{\bar\sigma}\left({\bf K}_2\right)\) to real space and retaining just the impurity site operator:
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{C}}_{\sigma_1,\sigma_2}({\bf K}_1, {\bf K}_2) \\
-	&= \langle\psi_\text{gs}({\bf r}_c) | c^\dagger_{\bar\sigma_1}\left({\bf r}_c\right)c_{\bar\sigma_2}^\dagger\left({\bf r}_c\right)c_{\sigma_2}\left({\bf K}_2\right)c_{\sigma_1}\left({\bf K}_1\right) | \psi_\text{gs}({\bf r}_c)\rangle~.
+	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\sum_{\sigma=\pm 1}\langle\psi_\text{gs}({\bf r}_c) | c^\dagger_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}\left({\bf K}_1\right) | \psi_\text{gs}({\bf r}_c)\rangle~.
 \end{aligned}\end{equation}
-Of course, one can also Fourier transform the other operators, so one can average over both possibilities to symmetrise the expression:
+Of course, one can also Fourier transform the other operators (with spin \(\sigma\)), so one can average over both possibilities to symmetrise the expression:
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{C}}_{\sigma_1,\sigma_2}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\langle\psi_\text{gs}({\bf r}_c) | \left[c^\dagger_{\bar\sigma_1}\left({\bf r}_c\right)c_{\bar\sigma_2}^\dagger\left({\bf r}_c\right)c_{\sigma_2}\left({\bf K}_2\right)c_{\sigma_1}\left({\bf K}_1\right) \right.\\
-	&\left.+ c^\dagger_{\bar\sigma_1}\left({\bf K}_1\right)c_{\bar\sigma_2}^\dagger\left({\bf K}_2\right)c_{\sigma_2}\left({\bf r}_c\right)c_{\sigma_1}\left({\bf r}_c\right) \right] | \psi_\text{gs}({\bf r}_c)\rangle~.
+	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{4}\sum_{\sigma=\pm 1}\langle\psi_\text{gs}({\bf r}_c) | \left[c^\dagger_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}\left({\bf K}_1\right) \right.\\
+	& \quad \left. +~ c^\dagger_{\bar\sigma}\left({\bf K}_1\right)c_{\sigma}^\dagger\left({\bf r}_c\right)c_{\bar\sigma}\left({\bf K}_2\right)c_{\sigma}\left({\bf r}_c\right) \right] | \psi_\text{gs}({\bf r}_c)\rangle~.
 \end{aligned}\end{equation}
+
+In a similar fashion, one can probe nature of charge-fluctuation driven correlations using
+\begin{equation}\begin{aligned}
+	&\tilde{\mathcal{C}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\braket{\left[c^\dagger_{\uparrow}\left({\bf K}_2\right)c_{\downarrow}^\dagger\left({\bf K}_2\right)c_{\downarrow}\left({\bf K}_1\right)c_{\uparrow}\left({\bf K}_1\right) + \text{h.c.}\right] }~.
+\end{aligned}\end{equation}
+
 
 
 

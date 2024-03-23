@@ -199,77 +199,85 @@ where
 Here, \(c_{d\sigma}\) is the impurity electron operator, \(c_{i\sigma}\) is the conduction bath electron operator, \(c_{0,\sigma}\) is the bath zeroth site operator, \({\bf S}_d\) is the impurity spin operator and \({\bf S}_0 = \sum_{\alpha,\beta}{\bf \sigma}c^\dagger_{0,\alpha}c_{0,\beta}\) is the operator for the local spin in the conduction bath. We have found that the e-SIAM has a stable local moment phase for \(U_b < -J/4\) with an antiferromagnetic Kondo coupling (\(J > 0\)). We have also shown that this model captures much of the phenomenology of the infinite dimensional Hubbard model (as discovered via DMFT), such as a second-order phase transition at \(T=0\) and the presence of an optical gap in the local spectral function beyond a certain value of interaction strength. Note that the impurity site and the conduction bath are both at half-filling.
 
 \subsection{Tiling towards a Hubbard-Heisenberg model with an s-wave impurity model}
-In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, where the impurity site couples to the conduction bath purely through the s-wave channel. We will show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. The generalisation involve allowing an arbitrary filling on the impurity site and in the conduction bath, through two additional parameter: (i) a particle-hole assymetry parameter \(\eta\) for the impurity site, and (ii) a chemical potential for the conduction bath. The first term modifies the impurity Hamiltonian \(\mathcal{H}_\text{imp}\) into
-\begin{equation}\begin{aligned}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{pWaveEsiam.pdf}
+	\caption{Caption.}
+	\label{pWaveEsiam}
+\end{figure}
+In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, where the impurity site coupled to the conduction bath purely through the s-wave channel. We will show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. The generalisation involve allowing an arbitrary filling on the impurity site and in the conduction bath, through two additional parameter: (i) a particle-hole assymetry parameter \(\eta\) for the impurity site, (ii) a chemical potential for the conduction bath, and (iii) embedding the impurity into the lattice of the 2D conduction bath. This modified impurity model is shown in Fig.~\ref{pWaveEsiam}. The first term modifies the impurity Hamiltonian \(\mathcal{H}_\text{imp}\) into
+\begin{equation}\begin{aligned}\label{onsiteHamiltonian}
 	\mathcal{H}_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~.
 \end{aligned}\end{equation}
 where we have placed the impurity site at the position \({\bf r}_d\). The second term modifies the conduction bath Hamiltonian \(\mathcal{H}_\text{cbath}\):
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{cbath} = -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
-	- \frac{1}{2}U_b\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
+\begin{equation}\begin{aligned}\label{bathHamiltonian}
+	\mathcal{H}_\text{cbath} &= -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
+							 &- \frac{1}{2 \mathcal{Z}}U_b\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
 \end{aligned}\end{equation}
 where \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\).
 
 In this notation, the interaction Hamiltonian can be written as
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{imp-cbath} &= \sum_{\sigma,\sigma^\prime}\frac{1}{ Z}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \\
-				     &-  \sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)
+\begin{equation}\begin{aligned}\label{interactionHamiltonian}
+	\mathcal{H}_\text{imp-cbath} &= \frac{J}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}\sum_{{\bf z}\in\text{NN}({\bf r}_d)} {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \\
+								 & - \frac{V}{\sqrt{\mathcal{Z}}}\sum_{\sigma} \sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)
 \end{aligned}\end{equation}
 where \(\boldsymbol \tau = \left( \tau_x, \tau_y, \tau_z \right) \) is the vector of Pauli matrices. \(\sigma\) and \(\sigma^\prime\) can be \(\pm 1\) and represent up and down configurations.
 
 We now follow the prescription laid out in eq.~\ref{tilingPrescription}. The tiled Hamiltonian can be written as 
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{tiled} = \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} \right.\\
+	\mathcal{H}_\text{tiled} = \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} \right.\\
 \left.+ \mathcal{H}_\text{imp-cbath}\right]T({\bf r} - {\bf r}_d)~.
 \end{aligned}\end{equation}
+Note that in comparison to eq.~\ref{tilingPrescription}, we have dropped the sum over the zeroth sites, because our impurity model Hamiltonian (defined using eqs.~\ref{onsiteHamiltonian} through \ref{interactionHamiltonian}) already contains a sum over these zeroth sites.
+
 We consider the effect of the translation operations on each part of the Hamiltonian. We first have
 \begin{equation}\begin{aligned}
-	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d) \\
-	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \right.\\
+	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d) \\
+	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \right.\\
 	 &\left.- \frac{U_b}{2\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}\right]T({\bf r} - {\bf r}_d) \\
-	=& -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
+	=& -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
 	 &- \frac{U_b}{2\mathcal{Z}}\sum_{\bf r}\sum_{{\bf z}\in\text{NN}\left({\bf r}\right)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i}\sum_{{\bf r} \neq {\bf r}_i}\hat n_{{\bf r}_i,\sigma}\\
-	=& -\frac{1}{\mathcal{Z}}(N-2)t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
+	=& -\frac{1}{\sqrt\mathcal{Z}}(N-2)t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
 	 &- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
 \end{aligned}\end{equation}
 In the first step, the factor of \(\mathcal{Z}\) is cancelled out by the trivial sum over \({\bf r}_0\) in the first and third terms. At the last step, the three terms simplified for the following reasons. The inequality \(\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}\) in the first term ensures that each nearest-neighbour pair appears in \(N-2\) instances of the auxiliary model, \(N\) being the total number of lattice sites; the two instances that do not contribute are the ones in which the impurity site itself is at \({\bf r}_i\) or \({\bf r}_j\). For the second term, the double sum \(\sum_{\bf r}\sum_{{\bf z} \in \text{NN}({\bf r})}\) evaluates to \(\mathcal{Z}\sum_{\bf r}\), because each point on the lattice appears \(\mathcal{W}\) times in the summation. This factor of \(\mathcal{W}\) cancels the one in the denominator. In the third term, the inner summation simply evaluates to \(N-1\), and we finally replace the dummy index \({\bf r}_i\) with \({\bf r}\). 
 
 The next part is
 \begin{equation}\begin{aligned}
-	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf r}_0\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp}T({\bf r} - {\bf r}_d) \\
+	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp}T({\bf r} - {\bf r}_d) \\
 	=& -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~.
 \end{aligned}\end{equation}
 This is obtained simply by replacing the impurity position \({\bf r}_d\) with the translated position \({\bf r}\), generating a translation-invariant Hubbard term (the first term) and a finite chemical potential (second term).
 
 We now consider the final term:
 \begin{equation}\begin{aligned}
-	&\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}T({\bf r} - {\bf r}_d)\\
-	&=\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\left[\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
-				     &-  \left.\sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)\\
-	&=\frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r})}\left[\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
-				     &-  \left.\sum_{\sigma} V\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]\\
-					 &=\frac{2}{\mathcal{Z}}\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]\\
+	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp-cbath}T({\bf r} - {\bf r}_d)\\
+	&=\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
+				     &-  \left. \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)\\
+	&=\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r})}\left[\frac{1}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
+				     &-  \frac{1}{\sqrt\mathcal{Z}}\left.\sum_{\sigma} V\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]\\
+					 &=\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]\\
 \end{aligned}\end{equation}
 At the last step, each nearest-neighbour pair of sites \({\bf r}_i, {\bf r}_j\) appear 2 times in the summation, because any site is a member of two distinct nearest-neighbour pairs. We have also defined \({\bf S}_{{\bf r}_j} =\sum_{\sigma,\sigma^\prime} {\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime}\) as the local spin operator.
 
 The total tiled Hamiltonian is therefore
 \begin{equation}\begin{aligned}
 	&\mathcal{H}_\text{tiled} \\
-	&= -\frac{N-2}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>,\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
+	&= -\frac{N-2}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>,\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
 	&- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}\\
-	& + \frac{2}{\mathcal{Z}}\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]
+	& + \sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]
 \end{aligned}\end{equation}
-While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms). Upon removing these repeated terms, the tiled Hamiltonian becomes
+While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms). Upon removing these repeated terms, the tiled Hamiltonian becomes
 \begin{equation}\begin{aligned}
 	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - (N-3)\mathcal{H}_\text{cbath-nint}\\
-							 &= -\frac{1}{\mathcal{Z}}(t + 2V)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
+							 &= -\frac{1}{\sqrt\mathcal{Z}}(t + 2V)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
 							 &- \frac{1}{2}\left(U + U_b\right)\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \left(\eta + 2\mu\right) \sum_{{\bf r}}\hat n_{{\bf r},\sigma} \\
 							 &+ \frac{2}{\mathcal{Z}}J\sum_{\left< {\bf r}_i, {\bf r}_j\right>} {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j}
 \end{aligned}\end{equation}
 
 The result of the tiling operations is a Hubbard-Heisenberg model, of the form
 \begin{equation}\begin{aligned}
-	\mathcal{H}_\text{HH} &= -\frac{1}{\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
+	\mathcal{H}_\text{HH} &= -\frac{1}{\sqrt\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
 						  &+ \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  ~,
 \end{aligned}\end{equation}
 where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
@@ -494,49 +502,52 @@ where \(\text{Im}[\cdot]\) is the imaginary part, and \(\tilde G^{(0)}\) is the 
 %We note that the form of $\Sigma(\vec k, \omega)$ obtained by us is similar to the form proposed on phenomenological grounds in the generalised DMFT + $\Sigma$ approach~\cite{sadovskii2012}.
 
 \section{Two-particle static correlators}
-Properties of the ground state can be probed using static correlation functions that are expectation values of two-particle excitation operators. A general correlation function in real space is of the form
-\begin{equation}\begin{aligned}
-	&\tilde{G}^{(2)}_{\left\{ \sigma_i \right\} }({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
-	&= \braket{c^\dagger_{\sigma_4}\left({\bf r}_c + {\bf r}_3\right)c_{\sigma_3}^\dagger\left({\bf r}_c + {\bf r}_2\right)c_{\sigma_2}\left({\bf r}_c + {\bf r}_1\right)c_{\sigma_1}\left({\bf r}_c\right)}~,
-\end{aligned}\end{equation}
-where the expectation value is in the ground state \(\ket{\Psi_\text{gs}}\). We replace the full ground state with the ground state of the auxiliary model at \({\bf r}_c\):
-\begin{equation}\begin{aligned}
-	\tilde{G}^{(2)}_{\left\{ \sigma_i \right\} }&({\bf r}_3, {\bf r}_2, {\bf r}_1) \\
-	=& \langle\psi_\text{gs}({\bf r}_c) | c^\dagger_{\sigma_4}\left({\bf r}_c + {\bf r}_3\right)c_{\sigma_3}^\dagger\left({\bf r}_c + {\bf r}_2\right)c_{\sigma_2}\left({\bf r}_c + {\bf r}_1\right)\\
-	&c_{\sigma_1}\left({\bf r}_c\right) | \psi_\text{gs}({\bf r}_c)\rangle~.
-\end{aligned}\end{equation}
+Properties of the ground state can be probed using static correlation functions that are expectation values of two-particle excitation operators. We will consider spin and charge correlations, in real and momentum space.
 
-One can also look at \(k-\)space correlations, of the spin or charge kind. The spin-flip correlations are of the form
+We first consider spin-spin correlations in real space, defined as
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\sum_{\sigma=\pm 1}\braket{c^\dagger_{\bar\sigma}\left({\bf K}_1\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf K}_2\right)c_{\sigma}\left({\bf K}_1\right)}~.
+	\tilde{S}_\text{flip}({\bf r}) = \frac{1}{2}\braket{S^+\left({\bf r}_c + {\bf r}\right)S^-\left({\bf r}_c\right) + \text{h.c.}}~,
 \end{aligned}\end{equation}
-We frame this in terms of the auxiliary model by (i) making the substitution again for the ground states, and (ii) by Fourier transforming the operators \(c^\dagger_{\bar\sigma}\left({\bf K}_1\right)\) and \(c_{\bar\sigma}\left({\bf K}_2\right)\) to real space and retaining just the impurity site operator:
+where \(S^-(\nu) = c^\dagger(\nu,\downarrow)c(\nu, \uparrow)\) and \(S^+ = \left( S^- \right)^\dagger \) are the spin-flip operators, and the expectation value is in the ground state \(\ket{\Psi_\text{gs}}\). We replace the full ground state with the ground state of the auxiliary model at \({\bf r}_c\):
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\sum_{\sigma=\pm 1}\langle\psi_\text{gs}({\bf r}_c) | c^\dagger_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}\left({\bf K}_1\right) | \psi_\text{gs}({\bf r}_c)\rangle~.
+	\tilde{S}_\text{flip}({\bf r}) = \frac{1}{2}\braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf d} + {\bf r}\right)S^-\left({\bf d}\right) + \text{h.c.} | \psi_\text{gs}({\bf r}_c)}~,
 \end{aligned}\end{equation}
-Of course, one can also Fourier transform the other operators (with spin \(\sigma\)), so one can average over both possibilities to symmetrise the expression:
+where we have interpereted the site at \({\bf r}_c\) as the impurity site \({\bf d}\) for the auxiliary model in question. The final expression therefore involves the spin-flip correlation function between the impurity site and a site in the bath, within a single auxiliary model.
+
+Charge correlations involve flips of the charge isospin states (instead of the spin states), and are defined as
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{S}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{4}\sum_{\sigma=\pm 1}\langle\psi_\text{gs}({\bf r}_c) | \left[c^\dagger_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}^\dagger\left({\bf K}_2\right)c_{\bar\sigma}\left({\bf r}_c\right)c_{\sigma}\left({\bf K}_1\right) \right.\\
-	& \quad \left. +~ c^\dagger_{\bar\sigma}\left({\bf K}_1\right)c_{\sigma}^\dagger\left({\bf r}_c\right)c_{\bar\sigma}\left({\bf K}_2\right)c_{\sigma}\left({\bf r}_c\right) \right] | \psi_\text{gs}({\bf r}_c)\rangle~.
+	\tilde{C}_\text{flip}({\bf r}) = \frac{1}{2}\braket{C^+\left({\bf r}_c + {\bf r}\right)C^-\left({\bf r}_c\right) + \text{h.c.}}~,
+\end{aligned}\end{equation}
+where \(C^-(\nu) = c(\nu,\downarrow)c(\nu, \uparrow)\) and \(C^+ = \left( C^- \right)^\dagger \). Making identical substitutions here gives
+\begin{equation}\begin{aligned}
+	\tilde{C}_\text{flip}({\bf r}) = \frac{1}{2}\braket{\psi_\text{gs}({\bf r}_c) | C^+\left({\bf d} + {\bf r}\right)C^-\left({\bf d}\right) + \text{h.c.} | \psi_\text{gs}({\bf r}_c)}~.
 \end{aligned}\end{equation}
 
-In a similar fashion, one can probe nature of charge-fluctuation driven correlations using
+One can also look at \(k-\)space correlations, of the spin or charge kind:
 \begin{equation}\begin{aligned}
-	&\tilde{\mathcal{C}}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\braket{\left[c^\dagger_{\uparrow}\left({\bf K}_2\right)c_{\downarrow}^\dagger\left({\bf K}_2\right)c_{\downarrow}\left({\bf K}_1\right)c_{\uparrow}\left({\bf K}_1\right) + \text{h.c.}\right] }~.
+	\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) &= \frac{1}{2}\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right) + \text{h.c.}}~,\\
+	\tilde{C}_\text{flip}({\bf K}_1, {\bf K}_2) &= \frac{1}{2}\braket{C^+\left({\bf K}_1\right)C^-\left({\bf K}_2\right) + \text{h.c.}}~.
 \end{aligned}\end{equation}
-
-
-
-
-
-
+We again consider the spin-flip correlation first. In order to introduce the impurity site, we rewrite the expectation values as
+\begin{equation}\begin{aligned}
+	&\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\left[\sqrt{\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)}\braket{S^-\left({\bf K}_2\right)S^+\left({\bf K}_1\right)}} + \text{h.c.}\right] ~.
+\end{aligned}\end{equation}
+We frame this in terms of the auxiliary model by (i) making the substitution again for the ground states, and (ii) by fourier transforming the first operator within each expectation value to real space and retaining just the impurity site operator:
+\begin{equation}\begin{aligned}
+	&\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\left[\sqrt{\braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf d}\right)S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}}\right. \\
+	&\left.\times\sqrt{\braket{\psi_\text{gs}{({\bf r}_c)} | S^-\left({\bf d}\right)S^+\left({\bf K}_1\right) | \psi_\text{gs}{({\bf r}_c)}}} + \text{h.c.}\right] ~.
+\end{aligned}\end{equation}
+Performing similar manipulations with the charge isospin-flip correlation gives
+\begin{equation}\begin{aligned}
+	&\tilde{C}_\text{flip}({\bf K}_1, {\bf K}_2) \\
+	&= \frac{1}{2}\left[\sqrt{\braket{\psi_\text{gs}({\bf r}_c) | C^+\left({\bf d}\right)C^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}}\right. \\
+	&\left.\times\sqrt{\braket{\psi_\text{gs}{({\bf r}_c)} | C^-\left({\bf d}\right)C^+\left({\bf K}_1\right) | \psi_\text{gs}{({\bf r}_c)}}} + \text{h.c.}\right] ~.
+\end{aligned}\end{equation}
 
 \section{Entanglement measures}
-\subsection{Entanglement entropy}
+
 Given the \(T=0\) density matrix \(\tilde\rho_\text{gs} = \ket{\Psi}_\text{gs}\bra{{\Psi}_\text{gs}}\) of the lattice model and a fermionic two-level subspace \(\nu\), the reduced density matrix for the {\it complement} subspace of \(\nu\) can be obtained by tracing over the configurations of that subspace
 \begin{equation}\begin{aligned}
 	&\overline\rho_{\nu} \\
@@ -571,133 +582,34 @@ where \(\rho_\text{gs}({\bf r}_c) = \ket{\psi_\text{gs}({\bf r}_c)}\bra{\psi_\te
 	\tilde S_\text{EE}^{\text{(loc)}} = S_\text{EE}^{(\text{imp.})}~.
 \end{aligned}\end{equation}
 
+We might also be interested in entanglement entropy of subsystems with multiple sites. The reduced density matrix for the composite subsystem of the sites \({\bf r}_c\) and \({\bf r}_c + {\bf r}\) is obtained by tracing out the site \({\bf r}_c + {\bf r}\) from \(\overline\rho_{{\bf r}_c,\sigma}\). That then gives
+\begin{equation}\begin{aligned}
+	\overline\rho_{({\bf r}_c, {\bf r}_c + {\bf r}),\sigma} = c^\dagger_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} c_{{\bf r}_c + {\bf r},\sigma} + n_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} n_{{\bf r}_c + {\bf r},\sigma}~.
+\end{aligned}\end{equation}
+
+
 We now come to the \(k-\)space entanglement entropy, defined by \(\nu = ({\bf K},\sigma)\) and the reduced density matrix
 \begin{equation}\begin{aligned}
 	\overline\rho_{{\bf K},\sigma} = c^\dagger_{{\bf K},\sigma} \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}} c_{{\bf K},\sigma} + n_{{\bf K},\sigma} \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}} n_{{\bf K},\sigma}~.
 \end{aligned}\end{equation}
-We again replace the states with the uniform part, while we expand the operators on the right of the density matrix (\(c\) and \(n\)) in a Fourier series in order to extract an impurity site operator:
+We again replace the states with the uniform part, while we expand the operators on one side of the density matrix in a Fourier series in order to extract an impurity site operator:
 \begin{equation}\begin{aligned}
-	\overline\rho_{{\bf K},\sigma} = c^\dagger_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) c_{{\bf r}_c,\sigma} + n_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) n_{{\bf r}_c,\sigma}~.
+	\overline\rho_{{\bf K},\sigma} &= \frac{1}{2}\left[c^\dagger_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) c_{{\bf r}_c,\sigma} + n_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) n_{{\bf r}_c,\sigma} \right.\\
+	&+ \left. c^\dagger_{{\bf r}_c,\sigma} \rho_\text{gs}({\bf r}_c) c_{{\bf K},\sigma} + n_{{\bf r}_c,\sigma} \rho_\text{gs}({\bf r}_c) n_{{\bf K},\sigma}\right. ~.
 \end{aligned}\end{equation}
-The eigenvalues of this operator can be used to compute the entanglement entropy of the state \({\bf K}\sigma\).
+The eigenvalues of this operator can be used to compute the entanglement entropy of the state \({\bf K}\sigma\). Using the same approach as that for the real space case, the reduced density matrix for two \(k-\)states is again obtained by tracing out the second \(k-\)state from this density matrix:
+\begin{equation}\begin{aligned}
+	\overline\rho_{({\bf K}_1, {\bf K}_2),\sigma} &= \frac{1}{2}\left[c^\dagger_{{\bf K}_2,\sigma} \overline\rho_{{\bf K}_1,\sigma} c_{{\bf r}_c,\sigma} + n_{{\bf K}_2,\sigma} \overline\rho_{{\bf K}_1,\sigma} n_{{\bf r}_c,\sigma} \right.\\
+	&+ \left. c^\dagger_{{\bf r}_c,\sigma} \overline\rho_{{\bf K}_1,\sigma} c_{{\bf K}_2,\sigma} + n_{{\bf r}_c,\sigma} \overline\rho_{{\bf K}_1,\sigma} n_{{\bf K}_2,\sigma}\right] ~.
+\end{aligned}\end{equation}
+
+Other measures like mutual information can be obtained by using these elementary measures.
+
 
 
 \clearpage
 
 \begin{widetext}
-\section{Static correlation functions}
-This approach also holds for higher-order static correlation functions. For example, a general local correlation of the form \(\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0}) | \Psi_\text{gs}}\) corresponding to operators \(\mathcal{O}_1\) and \(\mathcal{O}_2\) can be estimated, using this method, in terms of auxiliary model quantities. For that, we first express the correlation at sites \({\bf r_0}\) as well as its nearest neighbours: 
-\begin{equation}\begin{aligned}
-	\frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0}) | \Psi_\text{gs}} + \frac{1}{\mathcal{Z}}\sum_{{\bf a} \in \text{NN of }{\bf r_0}}\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0} + {\bf a}) \mathcal{O}_2({\bf r_0} + {\bf a}) | \Psi_\text{gs}}\right]
-\end{aligned}\end{equation}
-This is enabled by the translation symmetry of the problem, and it allows us to involve both the impurity site and the bath zeroth site in the relations. By keeping only the uniform part of the ground-state wavefunction, we get
-\begin{equation}\begin{aligned}
-	\label{local_correlation}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0}) | \Psi_\text{gs}} \simeq& \frac{1}{2\lambda_{\vec k_0}^2}\left[\frac{1}{\mathcal{Z} }\sum_{{\bf a} \in \text{NN of }{\bf r_0}}\braket{\psi_\text{aux}({\bf r_0}, {\bf a}) | \mathcal{O}_1({\bf r_0}, {\bf a}) \mathcal{O}_2({\bf r_0}) | \psi_\text{aux}({\bf r_0})} \right. \\
-													   &+ \left.\frac{1}{\mathcal{Z}^2}\sum_{{\bf a} \in \text{NN of }{\bf r_0}}\braket{\psi_\text{aux}({\bf r_0}, {\bf a}) | \mathcal{O}_1({\bf r_0} + {\bf a}) \mathcal{O}_2({\bf r_0} + {\bf a}) | \psi_\text{aux}({\bf r_0}, {\bf a})}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{Z}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]
-\end{aligned}\end{equation}
-In the above expression, where the arguments \((d)\) and \((z)\) indicate that the corresponding operator acts at the impurity site and the bath zeroth site respectively, and the subscript \(\text{aux}\) indicates that the averaging is carried out in the impurity model.
-
-Similar expressions hold for non-local correlation functions.
-\begin{equation}\begin{aligned}
-	\label{nonlocal_correlation}
-	&\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0} + {\bf a}) | \Psi_\text{gs}} \\
-	=& \frac{1}{4}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0} + {\bf a}) + \mathcal{O}_1({\bf r_0} + {\bf a}) \mathcal{O}_2({\bf r_0} + 2{\bf a}) + \mathcal{O}_1({\bf r_0} - {\bf a}) \mathcal{O}_2({\bf r_0}) + \mathcal{O}_1({\bf r_0} - 2{\bf a}) \mathcal{O}_2({\bf r_0} - {\bf a}) | \Psi_\text{gs}}\right]\\
-	\simeq& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{Z}}\left[\braket{\psi_\text{aux}({\bf r_0}, {\bf a}) | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0} + {\bf a}) + \mathcal{O}_1({\bf r_0} + {\bf a}) \mathcal{O}_2({\bf r_0} + 2{\bf a}) | \psi_\text{aux}({\bf r_0}, {\bf a})} \right. \\
-	      &\left.\braket{\psi_\text{aux}({\bf r_0}, -{\bf a}) | \mathcal{O}_1({\bf r_0} - {\bf a}) \mathcal{O}_2({\bf r_0}) + \mathcal{O}_1({\bf r_0} - 2{\bf a}) \mathcal{O}_2({\bf r_0} - {\bf a}) | \psi_\text{aux}({\bf r_0}, -{\bf a})}\right]\\
-	=& \frac{1}{4\lambda_{\vec k_0}^2 \mathcal{Z}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right]
-\end{aligned}\end{equation}
-In the first equation, the first two terms were introduced to incorporate effects arising from the bath zeroth and first sites (guided by the dynamics of the transition in the underlying extended Anderson model), while the last two terms were introduced to symmetrise the effects of choosing \({\bf r_0}\) as \(d\) and \({\bf r_0} + {\bf a}\) as \(z\), and not other way round. The argument \((1)\) in the operators indicate that they act at the first site of the bath (beyond the bath zeroth site).
-
-The next-nearest correlation function is relatively simpler, because only those terms contribute that involve both the impurity as well as the first site. If \({\bf a}^\prime\) denotes the relative vector between a given site and one of its next-nearest neighbours, we can write
-\begin{equation}\begin{aligned}
-	\label{nnn_correlation}
-	\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0} + {\bf a}^\prime) | \Psi_\text{gs}} =& \frac{1}{2}\left[\braket{\Psi_\text{gs} | \mathcal{O}_1({\bf r_0}) \mathcal{O}_2({\bf r_0} + {\bf a}^\prime) + \mathcal{O}_1({\bf r_0} - {\bf a}^\prime) \mathcal{O}_2({\bf r_0}) | \Psi_\text{gs}}\right]\\
-	=& \frac{1}{2\lambda_{\vec k_0}^2 \mathcal{Z}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right]
-\end{aligned}\end{equation}
-
-
-\section{Correlation functions in momentum space}
-Similar to Greens functions, our formalism also allows calculating \(k-\)space correlation functions \(\chi(\vec q)\) from knowledge of local and nearest-neighbour correlations \(\chi_\text{loc}\) and \(\chi_\text{nn}\). This is seen by Fourier transforming a generic real-space correlation function \(\chi({\bf r})\) corresponding to the operator \(\mathcal{O}\):
-\begin{equation}\begin{aligned}
-	\chi({\bf r}) = \left<\mathcal{O}_1 ({\bf r} + {\bf r}) \mathcal{O}_2({\bf r})\right> = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot {\bf r}}e^{i \left(\vec k + \vec q\right) \cdot {\bf r}}\left<\mathcal{O}_1 (\vec q) \mathcal{O}_2(\vec k)\right>
-\end{aligned}\end{equation}
-Since the response should not depend on \({\bf r}\) (owing to translation invariance), we have
-\begin{equation}\begin{aligned}
-	\chi({\bf r}) = \frac{1}{N^2}\sum_{\vec k, \vec q} e^{i \vec q \cdot {\bf r}}e^{i \left(\vec k + \vec q\right) \cdot {\bf r}}\delta_{\vec k + \vec q, 0}\left<\mathcal{O}_1 (\vec q) \mathcal{O}_2(\vec k)\right> = \frac{1}{N}\sum_{\vec k} e^{-i \vec k \cdot {\bf r}}\left<\mathcal{O}_1 (-\vec k) \mathcal{O}_2(\vec k)\right>
-\end{aligned}\end{equation}
-By inverting the Fourier transform, we therefore get
-\begin{equation}\begin{aligned}
-	\chi(\vec k) &\equiv \left<\mathcal{O}_1 (-\vec k) \mathcal{O}_2(\vec k)\right> = \sum_{{\bf r}}e^{i \vec{k}\cdot\vec{r}} \chi({\bf r}) \simeq \chi_\text{loc} + \xi_{\vec k} \chi_\text{nn} + \Xi_{\vec k}\chi_\text{nnn}~,
-\end{aligned}\end{equation}
-where \(\chi_\text{loc},\chi_\text{nn},\chi_\text{nnn}\) are local, nearest-neighbour and next-nearest-neighbour correlation functions, with dispersions \(\xi_{\vec k} = 2\left[\cos(k_x a) + \cos\left(k_y a\right)\right] \) and \(\Xi_{\vec k} = 2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right] \). Following eqs.~\ref{local_correlation} through \ref{nnn_correlation}, these can be cast into impurity model correlation functions:
-\begin{equation}\begin{aligned}
-	\chi(\vec k)=& \frac{1}{2\lambda_{\vec k_0}^2}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(d)}_\text{aux} + \frac{1}{\mathcal{Z}}\braket{\mathcal{O}_1(z) \mathcal{O}_2(z)}_\text{aux}\right]\\
-		    &+ \frac{2\left[\cos(k_x a) + \cos\left(k_y a\right)\right]}{4\lambda_{\vec k_0}^2 \mathcal{Z}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(z) + \mathcal{O}_1(z) \mathcal{O}_2(1) + \mathcal{O}_1(z) \mathcal{O}_2(d) + \mathcal{O}_1(1) \mathcal{O}_2(z)}_\text{aux}\right] \\
-		    &+ \frac{2\left[\cos \left(ak_x + ak_y\right) + \cos \left( ak_x - ak_y \right) \right]}{2\lambda_{\vec k_0}^2 \mathcal{Z}}\left[\braket{\mathcal{O}_1(d) \mathcal{O}_2(1) + \mathcal{O}_1(1) \mathcal{O}_2(d)}_\text{aux}\right] 
-\end{aligned}\end{equation}
-
-\section{Momentum-space entanglement}
-The density matrix of the full Hamiltonian in ground-state is simply \(\rho_\text{gs} = \ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\). In order to calculate entanglement measures in and among \(k-\)space states, we begin by obtaining an expression for the von-Neumann entropy of a \(\vec k-\)state, in terms of auxiliary model quantities.
-
-\subsection{\(k-\)space von-Neumann entropy}
-The full ground state \(\ket{\Psi_\text{gs}}\) can be written in the basis of the Fock states of momentum \(\vec k\sigma\):
-\begin{equation}\begin{aligned}
-	\Psi_\text{gs} = \sin\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 0}\otimes\ket{\phi_{\vec k\sigma}} + \cos\theta_{\vec k\sigma} \ket{n_{\vec k\sigma} = 1}\otimes\ket{\bar\phi_{\vec k\sigma}}
-\end{aligned}\end{equation}
-where \(\ket{n_{\vec k\sigma}}\) is the state with occupancy \(n_{\vec k\sigma}\) from the Hilbert space of \(\vec k\sigma\). \(\ket{\phi_{\vec k\sigma}}\) and \(\ket{\bar\phi_{\vec k\sigma}}\) are the normalised states representing the configuration of the remaining degrees of freedom in the full state \(\Psi_\text{gs}\) when \(\hat n_{k\sigma}\) is 0 and 1 respectively. \(\sin \theta_{\vec k}\) and \(\cos\theta_{\vec k\sigma}\) are the probabilities of obtaining \(n_{\vec k\sigma}\) to be 0 and 1 respectively, in the full ground state.
-
-The reduced density matrix for the momentum state \(\vec k\sigma\) is then obtained simply by tracing over the states \(\ket{n_{\vec k\sigma}}\):
-\begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma} = \sum_{n_{\vec k\sigma}=0,1} \braket{n_{\vec k\sigma} | \rho_\text{gs} | n_{\vec k\sigma}} = \sin^2\theta_{\vec k\sigma} \ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} + \cos^2\theta_{\vec k\sigma} \ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\label{red_matrix}
-\end{aligned}\end{equation}
-If the eigenvalues of the operators \(\ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}}\) and \(\ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\) are \(\left\{ \lambda_n \right\} \) and \(\left\{ \bar\lambda_n \right\} \) respectively, the von-Neumann entropy is given by
-\begin{equation}\begin{aligned}
-	S_\text{EE}\left(\rho_{\vec k\sigma}\right) = \sum_n \left( \sin^2\theta_{\vec k\sigma}\lambda_n + \cos^2\theta_{\vec k\sigma}\bar\lambda_n \right) 
-\end{aligned}\end{equation}
-
-In order to connect with the auxiliary model, we will need to obtain the reduced density matrix without tracing out any states. We will, instead, project on to the appropriate states with the particle number operator \(\hat n_{\vec k\sigma}\) and the hole number operator \(\hat h_{\vec k\sigma} = 1 - \hat n_{\vec k\sigma}\). The reduced density matrix can be obtained by applying such projectors:
-\begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma} \equiv \hat n_{\vec k\sigma}\rho_\text{gs} \hat n_{\vec k\sigma} + \hat h_{\vec k\sigma}\rho_\text{gs} \hat h_{\vec k\sigma} = \sin^2\theta_{\vec k\sigma} \ket{0}\bra{0}\otimes\ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} + \cos^2\theta_{\vec k\sigma} \ket{1}\bra{1}\otimes\ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}\label{red_matrix_projection}
-\end{aligned}\end{equation}
-where \(\ket{1}\) and \(\ket{0}\) are the \(n_{\vec k\sigma}=1\) and 0 states respectively. In the basis \(\left\{ \ket{0}, \ket{1} \right\} \), the reduced density matrix can be represented as
-\begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma} = \begin{pmatrix}\sin^2\theta_{\vec k\sigma} \ket{\phi_{\vec k\sigma}}\bra{\phi_{\vec k\sigma}} & 0 \\ \\
-	0 & \cos^2\theta_{\vec k\sigma} \ket{\bar\phi_{\vec k\sigma}}\bra{\bar\phi_{\vec k\sigma}}
-	\end{pmatrix} ~,
-\end{aligned}\end{equation}
-such that the eigenvalues of this matrix are the same as those of the operator in eq.~\ref{red_matrix}; the projection method would therefore give the same von-Neumann entropy as that obtained using the partial traces.
-
-We will now Fourier transform the reduced matrix from the definition in eq.~\ref{red_matrix_projection}, and retain terms up to the nearest neighbour, by expanding \(c_{\vec k\sigma}\) as \(c_{{\bf r_0},\sigma} + \xi_{\vec k}c_{{\bf r_0} + {\bf a},\sigma}\), where \({\bf a}\) is the nearest neighbour site to \({\bf r_0}\), and \(\xi_{\vec k}\) has been defined above.
-\begin{equation}\begin{aligned}
-	\hat n_{\vec k\sigma}\ket{\Psi_\text{gs}} \to  \left[ \hat n_{{\bf r_0},\sigma} + \sum_{{\bf a}} \hat n_{{\bf r_0} + {\bf a},\sigma} + \sum_{{\bf a}}\left( e^{i \vec{k}\cdot\vec{a}}c^\dagger_{{\bf r_0},\sigma}c_{{\bf r_0} + {\bf a},\sigma} + \text{h.c.} \right) \right]\ket{\Psi_\text{gs}}
-\end{aligned}\end{equation}
-We also expand the ground state wavefunction: \(\ket{\Psi}_\text{gs} \simeq \ket{\psi_\text{aux}} = \frac{1}{\sqrt \mathcal{Z}}\sum_{{\bf a} \in \text{NN of }{\bf r_0}}\ket{\psi_\text{aux}({\bf r_0},{\bf a})}\), so that we get
-\begin{equation}\begin{aligned}
-	\hat n_{\vec k\sigma}\ket{\Psi_\text{gs}} &= \frac{1}{\sqrt \mathcal{Z}}\left[ \hat n_{{\bf r_0},\sigma} \sum_{{\bf a}}\ket{\psi_\text{aux}({\bf r_0},{\bf a})} + \sum_{{\bf a}} \hat n_{{\bf r_0} + {\bf a},\sigma}\ket{\psi_\text{aux}({\bf r_0},{\bf a})} + \sum_{{\bf a}}\left( e^{i \vec{k}\cdot\vec{a}}c^\dagger_{{\bf r_0},\sigma}c_{{\bf r_0} + {\bf a},\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}({\bf r_0},{\bf a})}\right]\\
-						  &=\hat n_{d,\sigma} \ket{\psi_\text{aux}} + \hat n_{z,\sigma}\ket{\psi_\text{aux}} + \frac{\xi_{\vec k}}{\sqrt \mathcal{Z}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right) \ket{\psi_\text{aux}}
-\end{aligned}\end{equation}
-By taking the outer product with its hermitian conjugate and then adding the hole counterpart \(\hat h_{\vec k\sigma}\rho_\text{gs} \hat h_{\vec k\sigma}\), we get the reduced density matrix:
-\begin{equation}\begin{aligned}
-	\rho_{\vec k\sigma} \simeq& \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{Z}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{Z}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\\
-				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{Z}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_\text{aux} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec k}}{\sqrt \mathcal{Z}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]\label{density_matrix_kspace}
-\end{aligned}\end{equation}
-The von-Neumann entropy \(S_\text{EE}(\vec k)\) can then be calculated by taking the trace of the operator \(\rho_{\vec k\sigma}\ln \rho_{\vec k\sigma}\).
-
-\subsection{\(k-\)space mutual information}
-Another measure of many-body correlations would be the mutual information between two momentum-space states. The mutual information \(I_2\) between the states \(\ket{\vec k, \sigma}\) and \(\ket{\vec q, \sigma}\) is defined as
-\begin{equation}\begin{aligned}
-	I_2(\vec k\sigma:\vec q\sigma) = S_\text{EE}(\rho_{\vec k\sigma}) + S_\text{EE}(\rho_{\vec q\sigma}) - S_\text{EE}(\rho_{\vec k\sigma, \vec q\sigma})~,
-\end{aligned}\end{equation}
-where \(S_\text{EE}(\rho)\) is the von-Neumann entropy associated with the density matrix \(\rho\). The reduced density matrices \(\rho_{\vec k\sigma}\) and \(\rho_{\vec q\sigma}\) can be computed using eq.~\ref{density_matrix_kspace}; the reduced density matrix \(\rho_{\vec q\sigma, \vec k\sigma}\) has both the states \(\vec k\sigma\) and \(\vec q\sigma\) traced out, and it can be obtained by substituting \(\rho_{\vec k\sigma}\) back into eq.~\ref{density_matrix_kspace}:
-\begin{equation}\begin{aligned}
-	&\rho_{\vec k\sigma, \vec q\sigma} \\
-	=& \hat n_{\vec q\sigma}\rho_{\vec k\sigma}\hat n_{\vec q\sigma} + \hat h_{\vec q\sigma}\rho_{\vec k\sigma}\hat h_{\vec q\sigma}\\
-	=& \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{Z}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat n_{d,\sigma} + \hat n_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{Z}}\left(c^\dagger_{d,\sigma}c_{z,\sigma} + \text{h.c.} \right)\right]\\
-				  &+ \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{Z}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right] \rho_{\vec k\sigma} \left[\hat h_{d,\sigma} + \hat h_{z,\sigma} + \frac{\xi_{\vec q}}{\sqrt \mathcal{Z}}\left(c_{d,\sigma}c^\dagger_{z,\sigma} + \text{h.c.} \right)\right]
-\end{aligned}\end{equation}
-
 
 \section{The Mott MIT: a local perspective}
 \subsection{Gapping of the local spectral function and vanishing of correlations}

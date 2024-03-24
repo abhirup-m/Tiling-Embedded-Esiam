@@ -10,7 +10,7 @@ tightBindDispersion(t::Float64, kx_arr_flat::Array{Float64}, ky_arr_flat::Array{
 
 # d-wave and p-wave generation functions
 dwaveKdep(kx::Float64, ky::Float64) = cos.(kx) - cos.(ky)
-pwaveKdep(kx::Float64, ky::Float64) = cos.(kx) + cos.(ky)
+pwaveKdep(kx_arr::Vector{Float64}, ky_arr::Vector{Float64}) = cos(kx_arr[1] - kx_arr[2] + kx_arr[3] - kx_arr[4]) + cos(ky_arr[1] - ky_arr[2] + ky_arr[3] - ky_arr[4])
 
 function getdensityOfStates(num_kspace::Int64, dispersionArray::Vector{Float64})
 	# momentum space interval is 2pi/N
@@ -63,7 +63,7 @@ function getIsoEnergeticContour(dispersionArray::Vector{Float64}, num_kspace::In
 end
 
 
-function stepwiseRenormalisation(innerIndicesArr::Vector{Float64}, energyCutoff::Float64, cutoffPoints::Vector{Float64}, proceed_flags::Vector{Int64}, kondoJArrayPrev::Array{Float64, 2}, kondoJArrayNext::Array{Float64, 2}, bathInt, num_kspace::Int64, deltaEnergy::Float64, densityOfStates::Vector{Float64})
+function stepwiseRenormalisation(innerIndicesArr::Vector{Int64}, energyCutoff::Float64, cutoffPoints::Vector{Int64}, proceed_flags::Matrix{Int64}, kondoJArrayPrev::Array{Float64, 2}, kondoJArrayNext::Array{Float64, 2}, bathInt, num_kspace::Int64, deltaEnergy::Float64, densityOfStates::Vector{Float64})
     omega = -abs(energyCutoff) / 2
     Threads.@threads for (innerIndex1, innerIndex2) in collect(Iterators.product(innerIndicesArr, innerIndicesArr))
         denominators = [omega - abs(energyCutoff) / 2 + kondoJArrayPrev[qpoint, qpoint] / 4 + 
@@ -143,8 +143,8 @@ function multiOrbKondoRGFlow(num_kspace_half::Int64, t::Float64, J_init::Float64
 	# bath interaction does not renormalise, so we don't need to make it into a matrix. A function
 	# is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
     # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    bathFunc = orbs[2] == 'p' ? pwaveKdep : dwaveKdep
-    bathInt(momenta) = W_val * prod([bathFunc(kx_arr_flat[momentum], ky_arr_flat[momentum]) for momentum in momenta])
+    bathInt(momenta) = orbs[2] == 'd' ? W_val * prod([dwaveKdep(kx_arr_flat[momentum], ky_arr_flat[momentum]) for momentum in momenta]) : W_val * pwaveKdep(kx_arr_flat[momenta], ky_arr_flat[momenta])
+
     
 	# indices of the points within the lower left quadrant. We need these so that we can track the RG 
 	# of just these points, since the other points can then be reconstructed from these points using symmetries.
@@ -153,7 +153,7 @@ function multiOrbKondoRGFlow(num_kspace_half::Int64, t::Float64, J_init::Float64
     # define flags to track whether the RG flow for a particular J_{k1, k2} needs to be stopped 
     # (perhaps because it has gone to zero, or its denominator has gone to zero). These flags are
     # initialised to one, which means that by default, the RG can proceed for all the momenta.
-    proceed_flags = ones(num_kspace^2, num_kspace^2)
+    proceed_flags = fill(1, num_kspace^2, num_kspace^2)
 
     # Run the RG flow starting from the maximum energy, down to the penultimate energy (ΔE), in steps of ΔE
     @showprogress for (stepIndex, energyCutoff) in enumerate(maximum(dispersionArray):-deltaEnergy:deltaEnergy)

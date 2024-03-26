@@ -141,6 +141,53 @@ where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of t
 
 The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
 
+\section{Extending the Anderson impurity model}
+We consider an impurity spin \(\vec S_d\) interacting with a two-dimensional tight-binding conduction bath through a general interaction of the form
+\begin{equation}\begin{aligned}
+		\sum_{{\bf k}_1, {\bf k}_2, \sigma_1, \sigma_2} J_{{\bf k}_1, {\bf k}_2} \vec{S}_d\cdot\frac{1}{2}\vec{\tau}_{\sigma_1,\sigma_2} c^\dagger_{{\bf k}_1,\sigma_1}c_{{\bf k}_2,\sigma_2}
+\end{aligned}\end{equation}
+where \(\vec \tau\) is the vector of sigma matrices and \({\bf k}_1,{\bf k}_2\) are momentum states of the conduction bath. The precise form of \(J_{{\bf k}_1, {\bf k}_2}\) depends on the symmetry of the symmetry of the impurity-bath interaction. We consider the following three cases:
+
+(i)~a d-wave interaction, where the impurity couples with a coherent d-wave combination \(f_\sigma\) of the bath sites closest to it: \(f_\sigma \equiv \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} - c^\dagger_{U\sigma} - c^\dagger_{D\sigma}\right)\), where \(L,R,U\) and \(D\) indicate electrons at the positions \((x,y)=\left(-a,0\right), \left( a,0 \right) , \left( 0,a \right) \) and \(\left( 0,-a \right) \) respectively, \(a\) being the lattice spacing of the conduction bath lattice. The corresponding interaction (in real space) is of the form \(\vec{S}_d\cdot\sum_{\sigma_1,\sigma_2}\frac{1}{2}\vec{\tau}_{\sigma_1,\sigma_2}f^\dagger_{\sigma_1}f_{\sigma_2}\). When fourier-transformed to momentum space, it gives rise to the momentum-dependent Kondo coupling 
+\begin{equation}\begin{aligned}\label{J_dwave}
+	J_{{\bf k}_1, {\bf k}_2} = J\prod_{i=1,2}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]~.
+\end{aligned}\end{equation}
+For reference, we define the Fourier transforms as \(c^\dagger_{L(R),\sigma} = \sum_{{\bf k}}c^\dagger_{{\bf k},\sigma}e^{-(+)ik^x a}\), \(c^\dagger_{U(D),\sigma} = \sum_{{\bf k}}c^\dagger_{{\bf k},\sigma}e^{-(+)ik^y a}\).
+
+(ii)~a p-wave interaction, where the impurity couples with the p-wave electron \(p_\sigma \equiv \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} + c^\dagger_{U\sigma} + c^\dagger_{D\sigma}\right)\). The momentum-dependent Kondo coupling in this case is 
+\begin{equation}\begin{aligned}\label{J_pwave}
+	J_{{\bf k}_1, {\bf k}_2} = J\prod_{i=1,2}\left[\cos\left( ak_i^x \right) + \cos\left( ak_i^y \right) \right]
+\end{aligned}\end{equation}
+Since we are considering a 2-dimensional conduction bath in the tight-binding limit, such a Kondo coupling vanishes close to the Fermi surface. As a result, this case is not interesting for our purpose.
+
+(iii)~a p-wave interaction, but without the off-site terms in the bath. This amounts to considering the Kondo interaction term \(J\vec{S}_d\cdot\sum_{\sigma_1,\sigma_2}\frac{1}{2}\vec{\tau}_{\sigma_1,\sigma_2}\frac{1}{4}\sum_{i=L,R,U,D}c^\dagger_{i,\sigma_1}c_{i,\sigma_2}\). The momentum-dependent Kondo coupling in this case is 
+\begin{equation}\begin{aligned}\label{J_pwave_nooffsite}
+	J_{{\bf k}_1, {\bf k}_2} \equiv \frac{1}{2}J \cos\left[ a\left( k_1^x - k_2^x \right) + x\to y \right]
+\end{aligned}\end{equation}
+This does not vanish identically on the Fermi surface, and is therefore of potential interest to us.
+
+We also consider correlation terms on the bath sites \(L,R,U\) and \(D\). In momentum space, it is of the general form
+\begin{equation}\begin{aligned}
+-\frac{1}{2}\sum_{1, 2, 3, 4}\sum_\sigma W_{1,2,3,4}~ c^\dagger_{{\bf k}_1,\sigma}c_{{\bf k}_2,\sigma}\left(c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} - c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma}\right) ~,
+\end{aligned}\end{equation}
+where the form of \(W_{\left\{{\bf k}_i\right\}}\) is again determined by the orbitals participating in the interaction. We ignore the p-wave interaction (for the same reason as above) and consider just the d-wave interaction and a p-wave interaction without off-site terms. These two cases lead to the following Hamiltonian structures:
+(i)~a d-wave interaction, of the form \(-\frac{W}{2}\left(f^\dagger_{\uparrow}f_{\uparrow} - f^\dagger_{\downarrow}f_{\downarrow}\right)^2\) in real space, leading to the momentum-dependence
+\begin{equation}\begin{aligned}\label{W_dwave}
+	W_{1,2,3,4} = W\prod_{i=1,2,3,4}\left[\cos\left( ak_i^x \right) - \cos\left( ak_i^y \right) \right]~.
+\end{aligned}\end{equation}
+(ii)~a p-wave interaction without off-site terms, \(-\frac{W}{2}\sum_{i=L,R,U,D}\left(c^\dagger_{i,\uparrow}c_{i,\uparrow} - c^\dagger_{i,\downarrow}c_{i,\downarrow}\right)^2\), leading to the following form in momentum space:
+\begin{equation}\begin{aligned}\label{W_pwave_nooffsite}
+	W_{\left\{{\bf k}_i\right\}} = \frac{1}{4}W\left[\cos\left(a\left(k_1^x - k_2^x + k_3^x - k_4^x\right)\right) + x \to y\right]~.
+\end{aligned}\end{equation}
+
+To summarise, the total Hamiltonian we consider is of the form
+\begin{equation}\begin{aligned}\label{hamiltonian}
+	&-2t\sum_{kx,k y}\left[\cos(ak_x) + \cos(ak_y)\right] c^\dagger_{{\bf k},\sigma}c_{{\bf k},\sigma} + \\
+	 &\sum_{{\bf k}_1, {\bf k}_2, \sigma_1, \sigma_2} J_{{\bf k}_1, {\bf k}_2} \vec{S}_d\cdot\frac{1}{2}\vec{\tau}_{\sigma_1,\sigma_2} c^\dagger_{{\bf k}_1,\sigma_1}c_{{\bf k}_2,\sigma_2} -\\
+	 &\frac{1}{2}\sum_{1, 2, 3, 4}\sum_\sigma W_{1,2,3,4}~ c^\dagger_{{\bf k}_1,\sigma}c_{{\bf k}_2,\sigma}\left(c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} - c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma}\right)~,
+\end{aligned}\end{equation}
+where \(J_{\left\{ {\bf k}_i \right\} }\) takes one of the two forms in eqs.~\ref{J_dwave} and \ref{J_pwave_nooffsite}, and \(W_{\left\{{\bf k}_i\right\}}\) can similarly take either of the two forms in eqs.~\ref{W_dwave} and \ref{W_pwave_nooffsite}. 
+
 \section{The Tiling Algorithm}
 
 \subsection{Formal description of the tiling procedure}\label{formalDescription}
@@ -281,7 +328,7 @@ The result of the tiling operations is a Hubbard-Heisenberg model, of the form
 						  &+ \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  ~,
 \end{aligned}\end{equation}
 where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
-\begin{equation}\begin{aligned}
+\begin{equation}\begin{aligned}\label{couplingsMappings}
 	\tilde t = t+2V,~~ \tilde U = U + U_b, ~ ~ \tilde \mu = 2\mu + \eta,~ ~ \tilde J = 2J~.
 \end{aligned}\end{equation}
 In summary, the appropriate method for reconstructing the lattice model Hamiltonian is therefore
@@ -635,11 +682,11 @@ In Fig.~\ref{spin-charge-correlations}, we show the behaviour of the spin-flip a
 \end{figure}
 
 \subsection{Value of the critical paramter for the bulk model}
-Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{map_aux_bulk}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled. This means that both the local and the nearest-neighbour Greens functions have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model, the former also shows the same zero-energy resonance. 
+Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{couplingsMappings}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled. This means that both the local and the nearest-neighbour Greens functions have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model, the former also shows the same zero-energy resonance. 
 
 On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, leading to the transformation of poles into zeros in the Greens functions. This is demonstrated through the gapping of the impurity spectral function in fig.~\ref{spec_func_mit}, and it describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped.
 
-Finally, using relations \eqref{map_aux_bulk} between the auxiliary model couplings and the bulk parameters, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$. Using \(U_{H-H}^{*} = U^* + U_b\) and \(J_{H-H}^{*} = 2J^*\) (following \eqref{map_aux_bulk}), we get
+Finally, using relations \eqref{couplingsMappings} between the auxiliary model couplings and the bulk parameters, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$. Using \(U_{H-H}^{*} = U^* + U_b\) and \(J_{H-H}^{*} = 2J^*\) (following \eqref{couplingsMappings}), we get
 \begin{equation}\begin{aligned}
 	r^{*} &=& \frac{1}{2}\left(\frac{U^{*}}{J^{*}} + \frac{U_b}{J^*}\right)
 \end{aligned}\end{equation}
@@ -1051,7 +1098,7 @@ To resolve the translation operators, we will now insert the momentum eigenstate
 The momentum eigenket \(\ket{\vec k}\) can be expressed as a sum over position eigenkets at varying distances from \({\bf r_0}\). This form allows a systematic method of improving the energy eigenvalue estimate, because the interacting in the impurity model is extremely localised, so the overlap between two auxiliary models decreases rapidly with distance. The majority of the contribution will come from the state at \({\bf r_0}\), and improvements are then made by considering auxiliary models at further distances. 
 
 \section{Greens function in the insulating phase: the Hubbard bands and mottness}
-In the insulating state, the cluster becomes a local moment and the bulk system reduces to the atomic limit \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). The Greens function in this limit is given in Appendix~\ref{atomic limit}. From eq.~\ref{atomic_limit_gf}, we have
+In the insulating state, the cluster becomes a local moment and the bulk system reduces to the atomic limit \(H = -\frac{U}{2}\sum_i\left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\). The Greens function in this limit is that of the atomic limit of the Hubbard model:
 \begin{equation}\begin{aligned}
 	G_{i}(\omega) = \sum_\sigma G_{i,\sigma}(\omega) = \frac{1 + \left<\tau_{i }\right>}{\omega - \frac{U}{2}} + \frac{1 - \left<\tau_{i}\right>}{\omega + \frac{U}{2}}
 \end{aligned}\end{equation}
@@ -1117,6 +1164,145 @@ We now apply our approach to the case of infinite number of nearest-neighbours $
 \end{aligned}\end{equation}
 making the self-energy completely local.
 
+\section{Derivation of RG equations for the embedded e-SIAM}
+\subsection{RG scheme}
+At any given step \(j\) of the RG procedure, we decouple the states \(\left\{ {\bf q} \right\} \) on the isoenergetic surface of energy \(\varepsilon_j\). The diagonal Hamiltonian \(H_D\) for this step consists of all terms that do not change the occupancy of the states \(\left\{{\bf q}\right\}\):
+\begin{equation}\begin{aligned}
+	H_D^{(j)} = \varepsilon_j\sum_{q,\sigma}\tau_{q,\sigma} + \frac{1}{2}\sum_{{\bf q}}J_{{\bf q}, {\bf q}}S_d^z\left(\hat n_{{\bf q}, \uparrow} - \hat n_{{\bf q}, \downarrow}\right) - \frac{1}{2}\sum_{{\bf q}}W_{\bf q}\left(\hat n_{{\bf q}, \uparrow} - \hat n_{{\bf q}, \downarrow}\right)^2~,
+\end{aligned}\end{equation}
+where \(\tau = \hat n - 1/2\) and \(W_{{\bf q}}\) is a shorthand for \(W_{{\bf q},{\bf q},{\bf q},{\bf q}}\). The three terms, respectively, are the kinetic energy of the momentum states on the isoenergetic shell that we are decoupling, the spin-correlation energy between the impurity spin and the spins formed by these momentum states and, finally, the local correlation energy associated with these states arising from the \(W\) term. The off-diagonal part of the Hamiltonian on the other hand leads to scattering in the states \(\left\{ {\bf q} \right\} \). We now list these terms, classified by the coupling they originate from.
+
+\textbf{Arising from the Kondo spin-exchange term}
+\begin{equation}\begin{aligned}
+	T_{KZ1}^\dagger + T_{KZ1} &= \frac{1}{2}\sum_{{\bf k}, {\bf q}, \sigma}\sigma J_{{\bf k}, {\bf q}} S_d^z  \left[c^\dagger_{{\bf q}\sigma}c_{{\bf k},\sigma} + \text{h.c.}\right],\\
+	T_{KZ2}^\dagger + T_{KZ2} &= \frac{1}{2}\sum_{{\bf q}, \sigma}\sigma J_{{\bf q}, {\bf \bar q}} S_d^z  \left[c^\dagger_{{\bf q}\sigma}c_{{\bf \bar q},\sigma} + \text{h.c.}\right],\\
+	T_{KT1}^\dagger + T_{KT1} &= \frac{1}{2}\sum_{{\bf k}, {\bf q}}J_{{\bf k}, {\bf q}} \left[S_d^+\left(c^\dagger_{{\bf q}\downarrow}c_{{\bf k}\uparrow} + c^\dagger_{{\bf k}\downarrow}c_{{\bf q}\uparrow}\right) + \text{h.c.}\right],\\
+	T_{KT2}^\dagger + T_{KT2} &= \frac{1}{2}\sum_{{\bf q}}J_{{\bf q}, {\bf \bar q}} \left[S_d^+\left(c^\dagger_{{\bf q}\downarrow}c_{{\bf \bar q}\uparrow} + c^\dagger_{{\bf \bar q}\downarrow}c_{{\bf q}\uparrow}\right) + \text{h.c.}\right],\\
+\end{aligned}\end{equation}
+\textbf{Arising from spin-preserving scattering within conduction bath}
+\begin{equation}\begin{aligned}
+	T_{P1}^\dagger + T_{P1} &= -\sum_{{\bf q} \in \varepsilon_j}\sum_{{\bf k}_2, {\bf k}_3, {\bf k}_4 < \varepsilon_j}\sum_{\sigma} \left[W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} + \text{h.c.}\right]\\
+	T_{P2}^\dagger + T_{P3} &= -\sum_{{\bf q} \in \varepsilon_j}\sum_{{\bf k}_2 < \varepsilon_j}\sum_{\sigma} W_{{\bf q},{\bf k}_2,{\bf \bar q}, {\bf \bar q}} c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma} n_{{\bf \bar q},\sigma} -\sum_{{\bf q} \in \varepsilon_j}\sum_{{\bf k}_1 < \varepsilon_j}\sum_{\sigma} W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}} c^\dagger_{{\bf k}_1,\sigma}c_{{\bf q},\sigma} n_{{\bf q},\sigma}
+\end{aligned}\end{equation}
+\textbf{Arising from spin-flip scattering within conduction bath}
+\begin{equation}\begin{aligned}
+	T_{F1}^\dagger + T_{F1} &= \sum_{{\bf q} \in \varepsilon_j}\sum_{{\bf k}_2, {\bf k}_3, {\bf k}_4 < \varepsilon_j}\sum_{\sigma} \left[W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma} + \text{h.c.}\right]\\
+	T_{F2} &= \sum_{{\bf q}, {\bf q}^\prime \in \varepsilon_j}\sum_{{\bf k}_2, {\bf k}_3 < \varepsilon_j}\sum_{\sigma}W_{{\bf q},{\bf q}^\prime,{\bf k}_2,{\bf k}_3} c^\dagger_{{\bf q},\sigma}c_{{\bf q}^\prime,\sigma}c^\dagger_{{\bf k}_2,\bar\sigma}c_{{\bf k}_3,\bar\sigma}\\
+	T_{F3} &= \sum_{{\bf q}, {\bf q}^\prime \in \varepsilon_j}\sum_{{\bf k}_2, {\bf k}_3 < \varepsilon_j}\sum_{\sigma} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf q}^\prime} c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf q}^\prime,\bar\sigma} \\
+	T_{F4}^\dagger + T_{F4} &= \sum_{{\bf q}, {\bf q}^\prime, \in \varepsilon_j}\sum_{{\bf k}_1 < \varepsilon_j}\sum_{\sigma} \left[W_{{\bf q},{\bf q},{\bf q}^{\prime}, {\bf k}_1} n_{{\bf q},\sigma} c^\dagger_{{\bf q}^{\prime},\bar\sigma}c_{{\bf k}_1,\bar\sigma} + \text{h.c.}\right]
+\end{aligned}\end{equation}
+In all of the terms \(T_{P[i]}\) and \(T_{F[i]}\), the factor of \(1/2\) in front has been cancelled out by a factor of 2 coming from the multiple possibilities of arranging the momentum labels.
+
+The renormalisation of the Hamiltonian is constructed from the general expression
+\begin{equation}\begin{aligned}
+	\Delta H^{(j)} = H_X \frac{1}{\omega- H_D} H_X~.
+\end{aligned}\end{equation}
+
+The states on the isoenergetic shell \(\pm|\varepsilon_j|\) come in particle-hole pairs \(\left( {\bf q}, {\bf \bar q} \right) \) with energies of opposite signs (relative to the Fermi energy). If \({\bf q}\) is defined as the hole state (unoccupied in the absence of quantum fluctuations), it will have positive energy, while the particle state \({\bf \bar q}\) will be of negative energy and hence below the Fermi surface. To be more specific, given a state \({\bf q}\) with energy \(\pm|\varepsilon_j|\), we define its particle-hole transformed counterpart as the state \({\bf \bar q} = \boldsymbol{\pi} + {\bf q}\), having energy \(\mp|\varepsilon_j|\) and residing in the opposite quadrant of the Brillouin zone. Given this definition, we have the important property that
+\begin{equation}\begin{aligned}\label{particleHoleRelation}
+	J_{{\bf k}, {\bf \bar q}} &= -J_{{\bf k}, {\bf q}},\\
+	W_{\left\{{\bf k}\right\}, {\bf \bar q}} &= -W_{\left\{{\bf k}\right\}, {\bf q}}~.
+\end{aligned}\end{equation}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.35\textwidth]{particleHoleRelation.pdf}
+	\caption{Particle and hole states.}
+	\label{fig:particleHoleRelation-pdf}
+\end{figure}
+\subsection{Renormalisation of the bath correlation term {\it W}}
+The bath correlation term \(W\) can undergo renormalisation only via scattering processes arising from itself. Irrespective of whether the state \({\bf q}\) being decoupled is in a particle or hole configuration in the initial many-body state, the propagator \(G = 1/(\omega - H_D)\) of the intermediate excited state is uniform, and equal to 
+\begin{equation}\begin{aligned}\label{propagatorW}
+	G_W = 1/\left(\omega - |\varepsilon_j|/2 + W_{\bf q}/2)\right)~,
+\end{aligned}\end{equation}
+where \(W_{\bf q}\) is the same whether \({\bf q}\) is above or below the Fermi surface. The \(|\varepsilon_j|/2\) in \(H_D\) arises from the excited nature of the state after the initial scattering process.
+
+\paragraph*{Scattering arising purely from spin-preserving processes}
+In this subsection, we calculate the renormalisation to \(W\) arising from the terms \(T_{P1}\), \(T_{P2}\) and \(T_{P3}\). The first term is
+\begin{equation}\begin{aligned}
+	T_{P1}^\dagger G_W T_{P3} &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} G_W W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}} c^\dagger_{{\bf k}_1,\sigma}c_{{\bf q},\sigma} n_{{\bf q},\sigma}\\
+							  &= -\sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} c^\dagger_{{\bf k}_1,\sigma} c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} \sum_{\bf q \in \text{PS}} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4} G_W W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}}~.
+\end{aligned}\end{equation}
+The operators acting on the states being decoupled contract to form a number operator \(n_{{\bf q},\sigma}\) which projects the sum over \({\bf q}\) into the states that are initial occupied (particle sector, PS). 
+
+The second such contribution is obtained by flipping the sequence of scattering processes:
+\begin{equation}\begin{aligned}
+	T_{P3} G_W T_{P1}^\dagger &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q} W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}} c^\dagger_{{\bf k}_1,\sigma}c_{{\bf q},\sigma} n_{{\bf q},\sigma} G_W W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} \\
+							  &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} c^\dagger_{{\bf k}_1,\sigma} c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} \sum_{\bf q \in \text{HS}} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4} G_W W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}}~.
+\end{aligned}\end{equation}
+By virtue of eq.~\ref{particleHoleRelation}, the product of couplings \(W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4} G_W W_{{\bf k}_1,{\bf q},{\bf q},{\bf q}}\) is the same irrespective of whether \({\bf q}\) belongs to the particle or hole sector. The two contributions therefore cancel each other. Moreover, the remaining contributions \(T_{P3}^\dagger G_W T_{P1}\) and \(T_{P1}G_W T_{P2}^\dagger\) are effectively hermitian conjugates of the two contributions considered above, and therefore also cancel each other.
+
+\paragraph*{Scattering arising from spin-flip processes}
+We now come to the processes that involve spin-flips. Considering \(T_{F1}\) and \(T_{F4}\) first, we get
+\begin{equation}\begin{aligned}
+	T_{F1}^\dagger G_W T_{F4} &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma} G_W W_{{\bf k}_1, {\bf q}, {\bf q}, {\bf q}}  c^\dagger_{{\bf k}_1\sigma} c_{{\bf q}\sigma} n_{{\bf q} \bar \sigma} \\
+							  &= -\sum_{1,2,3,4}\sum_\sigma c^\dagger_{{\bf k}_1\sigma} c_{{\bf k}_2\sigma} c^\dagger_{{\bf k}_3\bar\sigma} c_{{\bf k}_4\bar \sigma} \sum_{\bf q \in \text{PS}} W_{{\bf q}, {\bf k}_2, {\bf k}_4, {\bf k}_4} G_W W_{{\bf k}_1, {\bf q}, {\bf q}, {\bf q}}~,\\
+	T_{F4} G_W T_{F1}^\dagger &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q}W_{{\bf k}_1, {\bf q}, {\bf q}, {\bf q}}  c^\dagger_{{\bf k}_1\sigma} c_{{\bf q}\sigma} n_{{\bf q} \bar \sigma} G_W W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf k}_4}c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma}  \\
+							  &= \sum_{1,2,3,4}\sum_\sigma c^\dagger_{{\bf k}_1\sigma} c_{{\bf k}_2\sigma} c^\dagger_{{\bf k}_3\bar\sigma} c_{{\bf k}_4\bar \sigma} \sum_{\bf q \in \text{HS}} W_{{\bf q}, {\bf k}_2, {\bf k}_4, {\bf k}_4} G_W W_{{\bf k}_1, {\bf q}, {\bf q}, {\bf q}}~.
+\end{aligned}\end{equation}
+By the same arguments as in the previous subsection, these terms cancel each other out. Their hermitian conjugate contributions \(T_{F1} G_W T_{F4}^\dagger\) and \(T_{F4}^\dagger G_W T_{F1}\) also cancel out. The other two terms are \(T_{F2}\) and \(T_{F3}\), and their contributions also cancel out for the same reason:
+\begin{equation}\begin{aligned}
+	T_{F2} G_W T_{F2} &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q}W_{{\bf q},{\bf \bar q},{\bf k}_3,{\bf k}_4} c^\dagger_{{\bf q},\sigma}c_{{\bf \bar q},\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma} G_W W_{{\bf \bar q},{\bf q},{\bf k}_1,{\bf k}_2} c^\dagger_{{\bf \bar q},\sigma}c_{{\bf q},\sigma}c^\dagger_{{\bf k}_1,\bar\sigma}c_{{\bf k}_2,\bar\sigma} \\
+							  &= \sum_{1,2,3,4}\sum_\sigma c^\dagger_{{\bf k}_1\sigma} c_{{\bf k}_2\sigma} c^\dagger_{{\bf k}_3\bar\sigma} c_{{\bf k}_4\bar \sigma} \sum_{\bf q \in \text{PS}} W_{{\bf q},{\bf \bar q},{\bf k}_3,{\bf k}_4} G_W W_{{\bf \bar q},{\bf q},{\bf k}_1,{\bf k}_2}~,\\
+	T_{F3} G_W T_{F3} &= \sum_\sigma\sum_{{\bf k}_1, {\bf k}_2, {\bf k}_3, {\bf k}_4} \sum_{\bf q} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf \bar q}} c^\dagger_{{\bf q},\sigma}c_{{\bf k}_2,\sigma}c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf \bar q},\bar\sigma} G_W W_{{\bf \bar q},{\bf k}_4,{\bf k}_1,{\bf q}} c^\dagger_{{\bf \bar q},\bar\sigma} c_{{\bf k}_4,\bar\sigma} c^\dagger_{{\bf k}_1,\sigma} c_{{\bf q},\sigma} \\
+							  &= -\sum_{1,2,3,4}\sum_\sigma c^\dagger_{{\bf k}_1\sigma} c_{{\bf k}_2\sigma} c^\dagger_{{\bf k}_3\bar\sigma} c_{{\bf k}_4\bar \sigma} \sum_{\bf q \in \text{PS}} W_{{\bf q},{\bf k}_2,{\bf k}_3,{\bf \bar q}} G_W W_{{\bf \bar q},{\bf k}_4,{\bf k}_1,{\bf q}}~,
+\end{aligned}\end{equation}
+
+\paragraph*{Scattering involving both spin-flip and spin-preserving processes}
+These processes involve the combination of terms like \(T_{P1}\) with \(T_{F4}\), and \(T_{P2}\) with \(T_{F1}\). These again cancel each other out for the same reasons as outline above.
+
+\paragraph*{Net renormalisation for the bath correlation term}
+Since all the contributions cancel out in pairs, the bath correlation term \(W\) is {\it marginal}.
+
+\subsection{Renormalisation of the Kondo scattering term {\it J}}
+We focus on the renormalisation of the spin-flip part of the Kondo interaction. For these processes, the intermediate many-body state always involves the impurity spin being anti-correlated with the conduction electron spin, such that the propagator for that state is \(G_J = 1/\left(\omega - |\varepsilon_j|/2 + J_{\bf q}/4 + W_{\bf q}/2)\right) \).
+\paragraph*{Impurity-mediated spin-flip scattering purely through Kondo-like processes}
+The following processes arising from the Kondo term renormalise the spin-flip interaction:
+\begin{equation}\begin{aligned}\label{kondoRenorm1}
+	T^\dagger_{KT1} G_J \left(T_{KZ1} + T_{KZ1}^\dagger\right) &= \frac{1}{4}\sum_{{\bf k}_1, {\bf k}_1, {\bf q}}~J_{{\bf q}, {\bf k}_2} S_d^+ \left[-c^\dagger_{{\bf q}\downarrow} c_{{\bf k}_2 \uparrow} G_J c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow} + c^\dagger_{{\bf k}_2\downarrow} c_{{\bf q} \uparrow} G_J c^\dagger_{{\bf q}\uparrow} c_{{\bf k}_1 \uparrow}\right]J_{{\bf k}_1,{\bf q}} S_d^z\\
+								&= -\frac{1}{8}\sum_{{\bf k}_1, {\bf k}_1, {\bf q}}~J_{{\bf q}, {\bf k}_2} S_d^+ \left[ c^\dagger_{{\bf k}_1 \downarrow}c_{{\bf k}_2 \uparrow} G_J n_{{\bf q} \downarrow} + c^\dagger_{{\bf k}_2\downarrow} c_{{\bf k}_1 \uparrow}(1 - n_{{\bf q} \uparrow}) G_J \right]J_{{\bf k}_1,{\bf q}}\\
+								&= -\frac{1}{8}\sum_{{\bf k}_1, {\bf k}_1}~ S_d^+ c^\dagger_{{\bf k}_1 \downarrow}c_{{\bf k}_2 \uparrow}\sum_{{\bf q} \in \text{PS}}\left[J_{{\bf q}, {\bf k}_2} J_{{\bf k}_1,{\bf q}} + J_{{\bf \bar q}, {\bf k}_1} J_{{\bf k}_2,{\bf \bar q}} \right]G_J~.
+\end{aligned}\end{equation}
+In getting the final expression, we used the sigma matrix relation \(S_d^+ S_d^z = -\frac{1}{2}S_d^+\), and absorbed the projector \(1 - n_{{\bf q} \uparrow}\) into the sum over the particle sector by replacing \(q\) with its particle-hole transformed counterpart \(\bar q\). An identical contribution is obtained by switching the sequence of processes:
+\begin{equation}\begin{aligned}\label{kondoRenorm2}
+	 \left(T_{KZ1} + T_{KZ1}^\dagger\right) G_J T^\dagger_{KT1} &= \frac{1}{4}\sum_{{\bf k}_1, {\bf k}_1, {\bf q}}~J_{{\bf k}_1,{\bf q}} S_d^z\left[- c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow}G_J c^\dagger_{{\bf q}\downarrow} c_{{\bf k}_2 \uparrow} +c^\dagger_{{\bf q}\uparrow} c_{{\bf k}_1 \uparrow} G_J c^\dagger_{{\bf k}_2\downarrow} c_{{\bf q} \uparrow} \right] J_{{\bf q}, {\bf k}_2} S_d^+ \\
+								&= -\frac{1}{8}\sum_{{\bf k}_1, {\bf k}_1}~ S_d^+ c^\dagger_{{\bf k}_1 \downarrow}c_{{\bf k}_2 \uparrow}\sum_{{\bf q} \in \text{PS}}\left[J_{{\bf \bar q}, {\bf k}_2} J_{{\bf k}_1,{\bf \bar q}} + J_{{\bf q}, {\bf k}_1} J_{{\bf k}_2,{\bf q}} \right]G_J~.
+\end{aligned}\end{equation}
+
+\paragraph*{Scattering processes involving interplay between the Kondo interaction and conduction bath interaction}
+Looking at \(T_{KT1}^\dagger\) first, we have
+\begin{equation}\begin{aligned}\label{t7t6}
+	T_{KT1}^\dagger G_J \left(T_{F4} + T_{F4}^\dagger\right) &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} J_{{\bf k}_2, {\bf q}}S_d^+ \left(c^\dagger_{{\bf q}\downarrow}c_{{\bf k}_2\uparrow}  G_J W_{{\bf q}, {\bf q}, {\bf k}_1, {\bf q}} n_{q \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow} + c^\dagger_{{\bf k}_2\downarrow}c_{{\bf q}\uparrow}  G_J W_{{\bf \bar q}, {\bf \bar q}, {\bf q}, {\bf k}_1} n_{\bar q \downarrow} c^\dagger_{{\bf q} \uparrow} c_{{\bf k}_1 \uparrow}\right) ~.
+\end{aligned}\end{equation}
+For either of the two choices of the functional form of \(W\), it is easy to show that \(W_{{\bf q}, {\bf q}, {\bf k}_1, {\bf q}} = W_{{\bf \bar q}, {\bf \bar q}, {\bf q}, {\bf k}_1}\).
+\begin{equation}\begin{aligned}\label{KT1F4}
+	T_{KT1}^\dagger G_J \left(T_{F4} + T_{F4}^\dagger\right) &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} J_{{\bf k}_2, {\bf q}} W_{{\bf q}, {\bf q}, {\bf k}_1, {\bf q}} G_J S_d^+ \left[-c^\dagger_{{\bf k}_1 \downarrow}c_{{\bf k}_2\uparrow} n_{{\bf q}\downarrow} n_{q \uparrow} + c^\dagger_{{\bf k}_2\downarrow} c_{{\bf k}_1 \uparrow} (1 - n_{{\bf q}\uparrow}) n_{\bar q \downarrow}\right] ~.
+\end{aligned}\end{equation}
+
+Another contribution is obtained by switching the sequence of the scattering processes:
+\begin{equation}\begin{aligned}\label{F4KT1}
+	\left(T_{F4} + T_{F4}^\dagger\right) G_J T_{KT1}^\dagger &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} \left(W_{{\bf q}, {\bf q}, {\bf k}_1, {\bf q}} n_{\bar q \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow} G_J c^\dagger_{{\bf q}\downarrow}c_{{\bf k}_2\uparrow} + W_{{\bf \bar q}, {\bf \bar q}, {\bf q}, {\bf k}_1} n_{q \downarrow} c^\dagger_{{\bf q} \uparrow} c_{{\bf k}_1 \uparrow} G_J c^\dagger_{{\bf k}_2\downarrow}c_{{\bf q}\uparrow} \right) J_{{\bf k}_2, {\bf q}}S_d^+\\
+															 &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} \left(c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf k}_2\uparrow} n_{\bar q \uparrow} (1 - n_{{\bf q} \downarrow}) - c^\dagger_{{\bf k}_2\downarrow}c_{{\bf k}_1 \uparrow}n_{q \downarrow} n_{{\bf q} \uparrow}\right) W_{{\bf q}, {\bf q}, {\bf k}_1, {\bf q}} G_J J_{{\bf k}_2, {\bf q}}S_d^+
+\end{aligned}\end{equation}
+The two contributions (eqs.~\ref{KT1F4} and \ref{F4KT1}) arising from \(T_{KT1}\) cancel each other.
+
+We now consider the other spin-exchange process \(T_{KT2}^\dagger\). One such contribution is
+\begin{equation}\begin{aligned}\label{kondoRenorm3}
+	T_{KT2}^\dagger G_J T_{F3} &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} J_{{\bf q}, {\bf \bar q}}S_d^+ \left(c^\dagger_{{\bf q}\downarrow}c_{{\bf \bar q}\uparrow} G_J c^\dagger_{{\bf \bar q} \uparrow} c_{{\bf k}_2 \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow} + c^\dagger_{{\bf \bar q}\downarrow}c_{{\bf q}\uparrow}  G_J  c^\dagger_{{\bf q} \uparrow} c_{{\bf k}_2 \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf \bar q} \downarrow}\right)W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}\\
+							   &= -\frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} S_d^+ c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf k}_2 \uparrow}\left[n_{{\bf q}\downarrow}(1 - n_{{\bf \bar q}\uparrow}) + n_{{\bf \bar q}\downarrow}(1 - n_{{\bf q}\uparrow}) \right] J_{{\bf q}, {\bf \bar q}} G_J W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}\\
+							   &= -\frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2} S_d^+ c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf k}_2 \uparrow}\sum_{{\bf q} \in \text{PS}}\left(J_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} + J_{{\bf \bar q}, {\bf q}} W_{{\bf q}, {\bf k}_2, {\bf k}_1, {\bf \bar q}}\right)G_J~.
+\end{aligned}\end{equation}
+An identical contribution is obtained from the reversed term:
+\begin{equation}\begin{aligned}\label{kondoRenorm4}
+	T_{F3}G_J T_{KT2}^\dagger  &= \frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2,{\bf q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}\left(c^\dagger_{{\bf \bar q} \uparrow} c_{{\bf k}_2 \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf q} \downarrow} G_J c^\dagger_{{\bf q}\downarrow}c_{{\bf \bar q}\uparrow} +  c^\dagger_{{\bf q} \uparrow} c_{{\bf k}_2 \uparrow} c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf \bar q} \downarrow} G_J c^\dagger_{{\bf \bar q}\downarrow}c_{{\bf q}\uparrow} \right)J_{{\bf q}, {\bf \bar q}}S_d^+ \\
+							   &= -\frac{1}{2}\sum_{{\bf k}_1,{\bf k}_2} S_d^+ c^\dagger_{{\bf k}_1 \downarrow} c_{{\bf k}_2 \uparrow}\sum_{{\bf q} \in \text{PS}}\left(J_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} + J_{{\bf \bar q}, {\bf q}} W_{{\bf q}, {\bf k}_2, {\bf k}_1, {\bf \bar q}}\right)G_J~.
+\end{aligned}\end{equation}
+
+\paragraph*{Net renormalisation to the Kondo interaction}
+Combining the results from eqs.~\ref{kondoRenorm1}, \ref{kondoRenorm2}, \ref{kondoRenorm3} and \ref{kondoRenorm4}, as well as using the properties \(J_{{\bf \bar q}, {\bf k}_1} J_{{\bf k}_2,{\bf \bar q}} = J_{{\bf q}, {\bf k}_2} J_{{\bf k}_1,{\bf q}}\) and \(J_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} = J_{{\bf \bar q}, {\bf q}} W_{{\bf q}, {\bf k}_2, {\bf k}_1, {\bf \bar q}}\), the total renormalisation in the momentum-resolved Kondo coupling \(J^{(j)}\) at the \(j^\text{th}\) step amounts to
+\begin{equation}\begin{aligned}
+	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{\frac{1}{2}\left(J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + J^{(j)}_{{\bf k}_1,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_2}\right) + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2}
+\end{aligned}\end{equation}
 
 \end{widetext}
 \bibliography{tilingProject}

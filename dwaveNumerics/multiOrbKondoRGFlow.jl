@@ -10,7 +10,7 @@ tightBindDispersion(t::Float64, kx_arr_flat::Array{Float64}, ky_arr_flat::Array{
 
 # d-wave and p-wave generation functions
 dwaveKdep(kx::Float64, ky::Float64) = cos.(kx) - cos.(ky)
-pwaveKdep(kx_arr::Vector{Float64}, ky_arr::Vector{Float64}) = cos(kx_arr[1] - kx_arr[2] + kx_arr[3] - kx_arr[4]) + cos(ky_arr[1] - ky_arr[2] + ky_arr[3] - ky_arr[4])
+pwaveKdep(kx_arr::Vector, ky_arr::Vector) = cos.(kx_arr[1] .- kx_arr[2] .+ kx_arr[3] .- kx_arr[4]) .+ cos.(ky_arr[1] .- ky_arr[2] .+ ky_arr[3] .- ky_arr[4])
 
 function getdensityOfStates(num_kspace::Int64, dispersionArray::Vector{Float64})
 	# momentum space interval is 2pi/N
@@ -65,27 +65,31 @@ end
 
 function stepwiseRenormalisation(innerIndicesArr::Vector{Int64}, energyCutoff::Float64, cutoffPoints::Vector{Int64}, proceed_flags::Matrix{Int64}, kondoJArrayPrev::Array{Float64, 2}, kondoJArrayNext::Array{Float64, 2}, bathInt, num_kspace::Int64, deltaEnergy::Float64, densityOfStates::Vector{Float64})
     omega = -abs(energyCutoff) / 2
+    denominators = [omega - abs(energyCutoff) / 2 + kondoJArrayPrev[qpoint, qpoint] / 4 + 
+            bathInt(qpoint, qpoint, qpoint, qpoint) / 2 for qpoint in cutoffPoints]
+    
+    # only consider those terms whose denominator haven't gone through zeros
+    cutoffPoints = cutoffPoints[denominators .< 0]
+    denominators = denominators[denominators .< 0]
+    # println(length(cutoffPoints))
+    # println(diag(kondoJArrayPrev[cutoffPoints, cutoffPoints]) .* bathInt(cutoffPoints, cutoffPoints, innerIndicesArr[1], innerIndicesArr[2]))
+    # println(kondoJArrayPrev[innerIndicesArr[1], cutoffPoints] .* kondoJArrayPrev[innerIndicesArr[2], cutoffPoints])
     Threads.@threads for (innerIndex1, innerIndex2) in collect(Iterators.product(innerIndicesArr, innerIndicesArr))
-        denominators = [omega - abs(energyCutoff) / 2 + kondoJArrayPrev[qpoint, qpoint] / 4 + 
-            bathInt([qpoint, qpoint, qpoint, qpoint]) / 2 for qpoint in cutoffPoints]
         
         # if the flag is disabled for this momentum pair, don't bother to do the rest
         if proceed_flags[innerIndex1,innerIndex2] == 0
             continue
         end
-
+        kondoJArrayNext[innerIndex1,innerIndex2] += -deltaEnergy * sum(densityOfStates[cutoffPoints] .* (kondoJArrayPrev[innerIndex1, cutoffPoints] .* kondoJArrayPrev[innerIndex2, cutoffPoints] .+ 4 .* diag(kondoJArrayPrev[cutoffPoints, cutoffPoints]) .* bathInt(cutoffPoints, cutoffPoints, innerIndex1, innerIndex2)) ./ denominators)
         # loop over the cutoff momentum states
-        for (qpoint, denominator) in zip(cutoffPoints, denominators)
+        # kondoJArrayNext[innerIndex1,innerIndex2] += -deltaEnergy * (length(innerIndicesArr) - length(cutoffPoints)) * sum(densityOfStates[cutoffPoints] .* (kondoJArrayPrev[innerIndex1, cutoffPoints] .* kondoJArrayPrev[innerIndex2, cutoffPoints] .+ 4 * sum(kondoJArrayPrev[cutoffPoints, cutoffPoints] .* bathInt(cutoffPoints,cutoffPoints,innerIndex1,innerIndex2), dims=1)) ./ (length(innerIndicesArr)^3 * denominators))
+        
+        # for (qpoint, denominator) in zip(cutoffPoints, denominators)
 
-            # only consider those terms whose denominator haven't gone through zeros
-            if  denominator < 0
-
-                # the expression for renormalisation is -∑ ΔE × ρ(q) [J(k1,q) J(q,k2) + 4J(q,-q) W(-q,q,k1,k2)]/denominator(q). 
-                # since we are summing q only over one quadrant, we multiply a factor of 4 in front of ΔE. We also replace -q with q,
-                # because each -q brings a minus sign, so J(q,-q) W(-q,q,k1,k2) = (-J(q,q))(-W(q,q,...))
-                kondoJArrayNext[innerIndex1,innerIndex2] += -4 * deltaEnergy * densityOfStates[qpoint] * (kondoJArrayPrev[innerIndex1, qpoint] * kondoJArrayPrev[innerIndex2, qpoint] + 4 * kondoJArrayPrev[qpoint, qpoint] * bathInt([innerIndex1,innerIndex2,qpoint, qpoint])) / denominator
-            end
-        end
+        #     # the expression for renormalisation is -∑_{q in PS} ΔE × ρ(q) [J(k1,q1) J(q1,k2) + 4J(-q,q) W(q,-q,k1,k2)]/denominator. 
+        #     # We replace -q with q, because each -q brings a minus sign, so J(q,-q) W(-q,q,k1,k2) = (-J(q,q))(-W(q,q,...))
+        #     kondoJArrayNext[innerIndex1,innerIndex2] += -deltaEnergy * densityOfStates[qpoint] * (kondoJArrayPrev[innerIndex1, qpoint] * kondoJArrayPrev[innerIndex2, qpoint] .+ 4 * kondoJArrayPrev[qpoint, qpoint] .* bathInt(qpoint, qpoint, innerIndex1, innerIndex2)) / denominator
+        # end
 
         # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
         if kondoJArrayNext[innerIndex1,innerIndex2] * kondoJArrayPrev[innerIndex1,innerIndex2] <= 0 && kondoJArrayPrev[innerIndex1,innerIndex2] != 0
@@ -93,12 +97,14 @@ function stepwiseRenormalisation(innerIndicesArr::Vector{Int64}, energyCutoff::F
             proceed_flags[innerIndex1,innerIndex2] = 0
         end
 
-        ## having obtained the renormalisation for one quadrant, we now obtain the reflected 
+        # having obtained the renormalisation for one quadrant, we now obtain the reflected 
         # points in the other three quadrants, and set their renormalisation equal to the one we have obtained.
         telePoints1 = teleportToAllQuads(innerIndex1, num_kspace)
         telePoints2 = teleportToAllQuads(innerIndex2, num_kspace)
         for (point1, point2) in Iterators.product(telePoints1, telePoints2)
-            kondoJArrayNext[point1,point2] = kondoJArrayNext[innerIndex1,innerIndex2]
+            if !(point1 in innerIndicesArr) && !(point2 in innerIndicesArr)
+                kondoJArrayNext[point1,point2] = kondoJArrayNext[innerIndex1,innerIndex2]
+            end
         end
     end
     return kondoJArrayNext, proceed_flags
@@ -143,8 +149,7 @@ function multiOrbKondoRGFlow(num_kspace_half::Int64, t::Float64, J_init::Float64
 	# bath interaction does not renormalise, so we don't need to make it into a matrix. A function
 	# is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
     # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    bathInt(momenta) = orbs[2] == 'd' ? W_val * prod([dwaveKdep(kx_arr_flat[momentum], ky_arr_flat[momentum]) for momentum in momenta]) : W_val * pwaveKdep(kx_arr_flat[momenta], ky_arr_flat[momenta])
-
+    bathInt(k1, k2, k3, k4) = orbs[2] == 'd' ? W_val * prod([dwaveKdep(kx_arr_flat[momentum], ky_arr_flat[momentum]) for momentum in [k1, k2, k3, k4]]) : W_val * pwaveKdep([kx_arr_flat[momentum] for momentum in [k1, k2, k3, k4]], [ky_arr_flat[momentum] for momentum in [k1, k2, k3, k4]])
     
 	# indices of the points within the lower left quadrant. We need these so that we can track the RG 
 	# of just these points, since the other points can then be reconstructed from these points using symmetries.
@@ -175,7 +180,7 @@ function multiOrbKondoRGFlow(num_kspace_half::Int64, t::Float64, J_init::Float64
         # get the k-space points that need to be tracked for renormalisation, by getting the states 
         # below the cutoff energy as well within the lower left quadrant
 		innerIndicesArr = [point for (point, energy) in enumerate(dispersionArray) if abs(energy) < abs(energyCutoff) && point in quadrantIndices]
-
+        
         kondoJArrayNext, proceed_flags_updated = stepwiseRenormalisation(innerIndicesArr, energyCutoff, cutoffPoints,
                                                                          proceed_flags, kondoJArray[:,:,stepIndex], 
                                                                          kondoJArray[:,:,stepIndex+1], bathInt, num_kspace,
@@ -187,7 +192,7 @@ function multiOrbKondoRGFlow(num_kspace_half::Int64, t::Float64, J_init::Float64
 end
 
 function teleportToAllQuads(point::Int64, num_kspace::Int64)
-    # given a point in the lower left quadrant, find other point symmetric to this,
+    # given a point in the lower left quadrant, find other points symmetric to this,
     # through the tranformation kx -> 2\pi - kx, ky -> 2pi - ky.
     # -------------------
     # | x             x |
@@ -255,7 +260,27 @@ function getBackScattFlow(kondoJArray::Array{Float64, 3}, num_kspace_half::Int64
     results = zeros((length(FermiArmSouthWest), num_kspace_half + 1))
     k = 1
     for (p1, p2) in zip(FermiArmSouthWest, FermiArmNorthEast)
-        results[k,:] = kondoJArray[p1,p2,:]
+        results[k,:] = kondoJArray[p1,p2,:] ./ kondoJArray[p1,p2,1]
+        k += 1
+    end
+    return results
+end
+
+
+function getBackScattFlowBool(kondoJArray::Array{Float64, 3}, num_kspace_half::Int64)
+    # extract the RG flow of backscattering couplings (for eg, node to node, antinode to antinode, etc)
+    num_kspace = 2 * num_kspace_half + 1
+
+    # extract coordinates of the south west and north east arms of the Fermi surface, since backscattering
+    # is just the coupling between the i^th point of the SW arm and the i^th point of the NE arm.
+    FermiArmSouthWest = [num_kspace_half + 1 + j * (num_kspace - 1) for j in 0:(num_kspace_half)]
+    FermiArmNorthEast = [num_kspace * (num_kspace_half + 1) + j * (num_kspace - 1) for j in 0:(num_kspace_half)]
+    
+    results = zeros((length(FermiArmSouthWest), num_kspace_half + 1))
+    k = 1
+    for (p1, p2) in zip(FermiArmSouthWest, FermiArmNorthEast)
+        # sign.(kondoJArray[point,point,:]) .* (abs.(kondoJArray[point,point,:] ./ kondoJArray[point,point,1]) .>= 1)
+        results[k,:] = sign.(kondoJArray[p1,p2,:]) .* (abs.(kondoJArray[p1,p2,:] ./ kondoJArray[p1,p2,1]) .>= 1)
         k += 1
     end
     return results
@@ -270,7 +295,37 @@ function getInStateScattFlow(kondoJArray::Array{Float64, 3}, num_kspace_half::In
     FermiArmSouthWest = [num_kspace_half + 1 + j * (num_kspace - 1) for j in 0:(num_kspace_half)]    
     results = zeros((length(FermiArmSouthWest), num_kspace_half + 1))
     for (k, point) in enumerate(FermiArmSouthWest)
-        results[k,:] = kondoJArray[point,point,:]
+        results[k,:] = kondoJArray[point,point,:] ./ kondoJArray[point,point,1]
     end
+    return results
+end
+
+
+function getInStateScattFlowBool(kondoJArray::Array{Float64, 3}, num_kspace_half::Int64)
+    # extract the in-place scattering Rg flow (essentially, 
+    # the RG flow of the couplings {J(k,k), k in FS}.
+    
+    num_kspace = 2 * num_kspace_half + 1
+    FermiArmSouthWest = [num_kspace_half + 1 + j * (num_kspace - 1) for j in 0:(num_kspace_half)]    
+    results = zeros((length(FermiArmSouthWest), num_kspace_half + 1))
+    for (k, point) in enumerate(FermiArmSouthWest)
+        results[k,:] .= sign.(kondoJArray[point,point,:]) .* (sign.(kondoJArray[point,point,:] .- kondoJArray[point,point,1]) .+ 1)
+    end
+    return results
+end
+
+
+function getGlobalFlowBool(kondoJArray::Array{Float64, 3}, num_kspace_half::Int64)
+    num_kspace = 2 * num_kspace_half + 1
+    bare_J_squared = reshape(diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'), (num_kspace, num_kspace))
+    results = sign.(reshape(diag(kondoJArray[:, :, end] * kondoJArray[:, :, end]'), (num_kspace, num_kspace)) .- bare_J_squared)
+    return results
+end
+
+
+function getGlobalFlow(kondoJArray::Array{Float64, 3}, num_kspace_half::Int64)
+    num_kspace = 2 * num_kspace_half + 1
+    bare_J_squared = reshape(diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'), (num_kspace, num_kspace))
+    results = reshape(diag(kondoJArray[:, :, end] * kondoJArray[:, :, end]'), (num_kspace, num_kspace)) ./ bare_J_squared 
     return results
 end

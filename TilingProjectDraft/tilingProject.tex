@@ -46,15 +46,16 @@ Above a critical \(U_c\), the impurity spectral function gets gapped out, and th
 \section{Philosophy of auxiliary model methods}
 The present method is a realisation of the general method of using simpler systems called auxiliary models to study bulk systems~\cite{martin_2016}. In general, a full Hamiltonian can be separated into the Hamiltonians for a particular subsystem \(S\), the rest of the system \(R\), and the interactions between \(S\) and \(R\).
 \begin{equation}\begin{aligned}
-	\mathcal{H} &= \mathcal{H}_S\ket{S}\bra{S} + \mathcal{H}_R \ket{R}\bra{R} + \mathcal{H}_{SR} \ket{S}\bra{R} + \mathcal{H}_{RS}\ket{S}\bra{R} \\
-		    &= \begin{bmatrix} & \mathcal{H}_{R} && \mathcal{H}_{RS} & \\ & \mathcal{H}_{RS}^* && \mathcal{H}_{S} & \end{bmatrix}
+	\mathcal{H} &= \mathcal{H}_S\ket{S}\bra{S} + \mathcal{H}_R \ket{R}\bra{R} + \mathcal{H}_{SR} \ket{S}\bra{R} \\
+				&+ \mathcal{H}_{RS}\ket{S}\bra{R} = \begin{bmatrix} & \mathcal{H}_{R} && \mathcal{H}_{RS} & \\ & \mathcal{H}_{RS}^* && \mathcal{H}_{S} & \end{bmatrix}
 \end{aligned}\end{equation}
-where \(\ket{S}\) and \(\ket{R}\) actually represents sums over all basis kets of \(S\) and \(R\) respectively. As an example, we can split the Hubbard model Hamiltonian between a particular site \(i = p\) and the rest of the lattice as follows (fig.~\ref{cluster-bath}):
-\begin{widetext}
+where \(\ket{S}\) and \(\ket{R}\) actually represents sums over all basis kets of \(S\) and \(R\) respectively. As an example, we can split the Hubbard model Hamiltonian between a particular site \(i = p\) and the rest of the lattice into three parts \(H_\text{hubb} = H_S + H_R + H_{SR} + H_{RS}\) (fig.~\ref{cluster-bath}), where
 \begin{equation}\begin{aligned}
-	H_\text{hubb} &= \overbrace{U^H\hat n_{p \uparrow} \hat n_{p \downarrow} - \mu^H \sum_\sigma \hat n_{p \sigma}}^{H_S} + \underbrace{U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} -t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right)}_{H_R} -\underbrace{t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)}_{H_{SR} + H_{RS}}\\
+	H_S &= U^H\hat n_{p \uparrow} \hat n_{p \downarrow} - \mu^H \sum_\sigma \hat n_{p \sigma}\\
+	H_R &= U^H\sum_{i \neq p}\hat n_{i \uparrow} \hat n_{p \downarrow} - \mu^H \sum_{i \neq p, \sigma} \hat n_{i \sigma} \\
+		&-t^H\sum_{\sigma,\left<i,j \right>\atop{i \neq p \neq j}}\left(c^\dagger_{i\sigma} c_{j\sigma} + \text{h.c.}\right) \\
+	H_{SR} + H_{Rs} &= - t^H\sum_{\sigma,\atop{i \in \text{N.N. of }p}}\left(c^\dagger_{i\sigma} c_{p\sigma} + \text{h.c.}\right)~.
 \end{aligned}\end{equation}
-\end{widetext}
 The Greens function of the full Hamiltonian can also be split in a similar fashion:
 \begin{equation}\begin{aligned}
 	G(\omega) = \begin{bmatrix} G_S && G_{SR} \\ G_{RS} && G_R \end{bmatrix}
@@ -217,11 +218,11 @@ where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\t
 Assuming that both the Kondo interaction and the bath interaction couple to the \(d-\)wave channel, we have the microscopic functional forms 
 \begin{equation}\begin{aligned}
 	J^{(0)}_{{\bf k},{\bf q}} &= J f_\mathcal{D}({\bf k}) f_\mathcal{D}({\bf q})~,\\
-	J^{(0)}_{{\bf \bar q},{\bf q}} &= J f_\mathcal{D}(\pi + {\bf q}) f_\mathcal{D}({\bf q}) = -Jf_\mathcal{D}({\bf q})^2 ~,
+	J^{(0)}_{{\bf \bar q},{\bf q}} &= J f_\mathcal{D}(\pi + {\bf q}) f_\mathcal{D}({\bf q}) = Jf_\mathcal{D}({\bf q})^2 ~,
 \end{aligned}\end{equation}
 and
 \begin{equation}\begin{aligned}
-	W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} = -W f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf q})^2~,
+	W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} = W f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf q})^2~,
 \end{aligned}\end{equation}
 where \(f_\mathcal{D}({\bf k}) = \cos\left( ak_{x} \right) - \cos\left( ak_y \right) \) is the \(d-\)wave symmetric functional form in \(k-\)space
 The numerator of the RG equations becomes
@@ -242,7 +243,7 @@ One can also study the case when the bath interaction has \(p-\)wave symmetry:
 This choice does not preserve the momentum-dependence of the Kondo coupling, because we can no longer pull out a factor of \(f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf k}_2)\) from the RG equation. At the first step, the RG equation is of the form
 \begin{equation}\begin{aligned}
 	&\Delta J^{(0)}_{{\bf k}_1, {\bf k}_2} =\\
-	&-\sum_{{\bf q} \in \text{PS}} \frac{f_\mathcal{D}({\bf q})^2\left[{J}^2 f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf k}_1) + 2JW f_\mathcal{P}\left({\bf k}_1, {\bf k}_2\right)\right] }{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}~.
+	&-\sum_{{\bf q} \in \text{PS}} \frac{f_\mathcal{D}({\bf q})^2\left[{J}^2 f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf k}_1) - 2JW f_\mathcal{P}\left({\bf k}_1, {\bf k}_2\right)\right] }{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}~.
 \end{aligned}\end{equation}
 The presence of the \(f_\mathcal{P}\) function in the second term leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
 
@@ -934,7 +935,7 @@ We already know that \(\Delta \mathcal{N}_\text{imp}=1\) across the transition, 
 The metal-insulator transition is therefore characterised by a change in the topological quantity \(\mathcal{N}_L\). The topological nature arises from the fact that it can be expressed in terms of winding numbers related to the corresponding Greens functions. \(\mathcal{N}_\text{imp}\), which derives from the impurity Greens function \(G_d\), is related to the winding numbers of the curves \(\text{Det}[G_d^{-1}(\Gamma^<)]\) and \(\text{Det}[G_d^{-1}(\Gamma^0)]\). The winding number is simply the number of times this function encircles the origin when traced on the curves \(\Gamma^<\) and \(\Gamma^0\) that enclose all poles inside and on the Fermi surface respectively. An example of such a winding number is shown in fig.~\ref{imp_winding}.
 \begin{figure}[!htb]
 	\centering
-	\includegraphics[width=0.4\textwidth]{luttinger_top_change.png}
+	\includegraphics[width=0.4\textwidth]{windingNumbers.pdf}
 	\caption{The green lines describe the winding number related to the impurity Greens function, while the blue lines do it for the bath. At the local moment fixed point \(V=0\), the impurity has a winding number of 1 because the curve encircles the origin once. At the strong-coupling fixed point, this winding number becomes zero, indicated by the fact that the curve does not encircle the origin even once. The reduction in the winding number on the part of the impurity is directly linked to the increase in the winding number of the bath - it encircles the origin once at the local moment fixed point but twice at strong-coupling.}
 	\label{imp_winding}
 \end{figure}

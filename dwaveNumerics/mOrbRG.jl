@@ -123,8 +123,8 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
         repeat(range(K_MIN, stop = K_MAX, length = num_kspace), outer = num_kspace)
     kx_pos_arr = collect(range(0, K_MAX, length = num_kspace_half + 1))
 
-    densityOfStates, dispersionArray = getDensityOfStates(HOP_T, tightBindDisp, num_kspace)
-    cutOffEnergies = -tightBindDisp(HOP_T, kx_pos_arr, 0 .* kx_pos_arr)
+    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, num_kspace)
+    cutOffEnergies = -tightBindDisp(kx_pos_arr, 0 .* kx_pos_arr)
     cutOffEnergies = cutOffEnergies[cutOffEnergies.>=-TOLERANCE]
 
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 

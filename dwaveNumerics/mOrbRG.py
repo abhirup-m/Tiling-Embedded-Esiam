@@ -57,7 +57,6 @@ def tightBindDispersion(size, hop_t):
 
 
 def getDensityofStates(size, dispersionFunc, hop_t):
-    k_1Darr = np.linspace(K_MIN, K_MAX, size)
     dispersion = dispersionFunc(size, hop_t)
     dispersion_x_plus1 = np.roll(dispersion, 1, axis=0)
     dispersion_x_minus1 = np.roll(dispersion, -1, axis=0)
@@ -79,7 +78,7 @@ def getIsoEnergeticContour(dispersionArray, energy):
         for point, diff in enumerate(difference[:-1])
         if difference[point] != difference[point + 1]
     ]
-    return contourPoints
+    return np.asarray(contourPoints)
 
 
 def deltaJ_k1k2(argsList):
@@ -92,23 +91,23 @@ def deltaJ_k1k2(argsList):
     bathIntfactor = args["bathIntCoup"] * np.array(
         [
             bathIntFunc(
-                (holePoint, index1, index2, point), args["bathIntType"], args["size"]
+                (holePoint, index1, index2, point), args["orbital"], args["size"]
             )
             for point, holePoint in zip(UVPoints, args["holeUVPoints"])
         ]
     )
 
     renormalisation = -args["deltaEnergy"] * sum(
-        args["dOfStates"][UVPoints]
-        * (
-            kondoCoupPrev[index2][UVPoints].flatten()
-            * kondoCoupPrev[index1][UVPoints].flatten()
-            + 4 * args["kondoCoup_q_qbar"] * bathIntfactor
-        )
-        / args["denominators"]
+        (
+            args["dOfStates"][UVPoints]
+            * (
+                kondoCoupPrev[index2][UVPoints].flatten()
+                * kondoCoupPrev[index1][UVPoints].flatten()
+                + 4 * args["kondoCoup_q_qbar"] * bathIntfactor
+            )
+            / args["denominators"]
+        )[args["denominators"] > 0]
     )
-    # print(kondoCoupPrev[index1, index2], renormalisation)
-    # print(kondoCoupPrev[index1, index2])
     if (kondoCoupPrev[index1, index2] + renormalisation) * kondoCoupPrev[
         index1, index2
     ] < 0:
@@ -117,48 +116,71 @@ def deltaJ_k1k2(argsList):
 
 
 def getDeltaJ(args):
-    innerIndices = args["innerIndices"]
-    UVenergy = args["UVenergy"]
-    UVPoints = args["UVPoints"]
-    proceedFlags = args["proceedFlags"]
-    kondoCoupPrev = args["kondoCoupPrev"]
-    kondoCoupNext = args["KondoCoupNext"]
-    bathIntCoup = args["bathIntCoup"]
-    size = args["size"]
-    UVenergy = args["UVenergy"]
-    omega = args["omega"]
-    bathIntType = args["bathIntType"]
-    bathIntUV = bathIntCoup * np.array(
+    bathIntUV = args["bathIntCoup"] * np.array(
         [
-            bathIntFunc((point, point, point, point), bathIntType, size)
-            for point in UVPoints
+            bathIntFunc((point, point, point, point), args["orbital"], args["size"])
+            for point in args["UVPoints"]
         ]
     )
     denominators = (
-        omega
-        - abs(UVenergy) / 2
-        + kondoCoupPrev[UVPoints, UVPoints] / 4
+        args["omega"]
+        - abs(args["UVenergy"]) / 2
+        + args["kondoCoupPrev"][args["UVPoints"], args["UVPoints"]] / 4
         + bathIntUV / 2
     )
 
-    holeUVPoints = [getHolePoint(point, size) for point in UVPoints]
-    kondoCoup_q_qbar = np.array(
-        [
-            kondoCoupPrev[point][holePoint]
-            for point, holePoint in zip(UVPoints, holeUVPoints)
+    if args["orbital"] == "d":
+        qx_arr, qy_arr = map1Dto2D(args["UVPoints"], args["size"])
+        kx_arr, ky_arr = map1Dto2D(args["innerIndices"], args["size"])
+        kx1_arr, kx2_arr = np.meshgrid(kx_arr, kx_arr)
+        ky1_arr, ky2_arr = np.meshgrid(ky_arr, ky_arr)
+        renormalisation = (
+            -args["deltaEnergy"]
+            * (args["kondoCoup"] ** 2 + 4 * args["kondoCoup"] * args["bathIntCoup"])
+            * sum(
+                (
+                    args["dOfStates"][args["UVPoints"]]
+                    * (np.cos(qx_arr) - np.cos(qy_arr)) ** 4
+                    / denominators
+                )[denominators < 0]
+            )
+        )
+        print(renormalisation)
+        for index1 in args["innerIndices"]:
+            kx1, ky1 = map1Dto2D(index1, args["size"])
+            kx2_arr, ky2_arr = map1Dto2D(args["innerIndices"], args["size"])
+            args["kondoCoupNext"][index1, args["innerIndices"]] += (
+                args["proceedFlags"][index1, args["innerIndices"]]
+                * renormalisation
+                * (np.cos(kx1) - np.cos(ky1))
+                * (np.cos(kx2_arr) - np.cos(ky2_arr))
+            )
+        args["proceedFlags"][args["kondoCoupNext"] * args["kondoCoupPrev"] < 0] = 0
+        args["kondoCoupNext"][args["kondoCoupNext"] * args["kondoCoupPrev"] < 0] = 0
+    else:
+        holeUVPoints = [getHolePoint(point, args["size"]) for point in args["UVPoints"]]
+        kondoCoup_q_qbar = np.array(
+            [
+                args["kondoCoupPrev"][point][holePoint]
+                for point, holePoint in zip(args["UVPoints"], holeUVPoints)
+            ]
+        )
+        args["holeUVPoints"] = holeUVPoints
+        args["denominators"] = denominators
+        args["kondoCoup_q_qbar"] = kondoCoup_q_qbar
+        argsList = [
+            ((index1, index2), args)
+            for index1, index2 in product(args["innerIndices"], repeat=2)
         ]
-    )
-    args["holeUVPoints"] = holeUVPoints
-    args["denominators"] = denominators
-    args["kondoCoup_q_qbar"] = kondoCoup_q_qbar
-    argsList = [
-        ((index1, index2), args) for index1, index2 in product(innerIndices, repeat=2)
-    ]
-    for renormalisation, index1, index2 in Pool().map(deltaJ_k1k2, argsList):
-        kondoCoupNext[index1, index2] += renormalisation
-        if kondoCoupNext[index1, index2] * kondoCoupPrev[index1, index2] < 0:
-            proceedFlags[index1, index2] = 0
-    return kondoCoupNext, proceedFlags
+        for renormalisation, index1, index2 in Pool().map(deltaJ_k1k2, argsList):
+            args["kondoCoupNext"][index1, index2] += renormalisation
+            if (
+                args["kondoCoupNext"][index1, index2]
+                * args["kondoCoupPrev"][index1, index2]
+                < 0
+            ):
+                args["proceedFlags"][index1, index2] = 0
+    return args["kondoCoupNext"], args["proceedFlags"]
 
 
 def main(args):
@@ -171,7 +193,7 @@ def main(args):
     assert orbital in ("d", "p")
     size = 2 * size_half + 1
     dispersionArray = tightBindDispersion(size, hop_t)
-    dispersion1D = np.flip(np.sort(dispersionArray[0]))
+    dispersion1D = np.flip(np.sort(np.unique(dispersionArray[0])))
     rgScales = dispersion1D[dispersion1D > 0]
     dOfStates = getDensityofStates(size, tightBindDispersion, hop_t).flatten()
     kondoCoupArray = np.zeros((len(dispersion1D), size**2, size**2))
@@ -191,18 +213,23 @@ def main(args):
     proceedFlags = np.ones((size**2, size**2))
     for step, UVenergy in tqdm(enumerate(rgScales[:-1]), total=len(rgScales)):
         deltaEnergy = abs(rgScales[step] - rgScales[step + 1])
-        kondoCoupArray[step + 1] = kondoCoupArray[step]
+        kondoCoupArray[step + 1 :] = kondoCoupArray[step]
         UVPoints = getIsoEnergeticContour(dispersionArray, UVenergy)
+        UVPointsHole = getIsoEnergeticContour(dispersionArray, -UVenergy)
         proceedFlags[UVPoints, :] = 0
         proceedFlags[:, UVPoints] = 0
+        proceedFlags[UVPointsHole, :] = 0
+        proceedFlags[:, UVPointsHole] = 0
         if np.all(proceedFlags == 0):
             break
 
-        innerIndices = [
-            point
-            for point, energy in enumerate(dispersionArray.flatten())
-            if energy < UVenergy
-        ]
+        innerIndices = np.asarray(
+            [
+                point
+                for point, energy in enumerate(dispersionArray.flatten())
+                if abs(energy) < UVenergy
+            ]
+        )
         args["innerIndices"] = innerIndices
         args["dOfStates"] = dOfStates
         args["UVenergy"] = UVenergy
@@ -210,12 +237,13 @@ def main(args):
         args["UVPoints"] = UVPoints
         args["proceedFlags"] = proceedFlags
         args["kondoCoupPrev"] = kondoCoupArray[step]
-        args["KondoCoupNext"] = kondoCoupArray[step + 1]
+        args["kondoCoupNext"] = kondoCoupArray[step + 1]
         args["bathIntCoup"] = bathIntCoup
+        args["kondoCoup"] = kondoCoup
         args["size"] = size
         args["UVenergy"] = UVenergy
         args["omega"] = -np.amax(dispersionArray) / 2
-        args["bathIntType"] = orbital
+        args["orbital"] = orbital
         kondoCoupNext, proceedFlagsNew = getDeltaJ(args)
         proceedFlags = proceedFlagsNew
         kondoCoupArray[step + 1] = kondoCoupNext

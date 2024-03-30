@@ -142,9 +142,9 @@ function initialiseKondoJ(num_kspace, orbital, num_steps, J_init)
             k2x, k2y = map1DTo2D(p2, num_kspace)
             if orbital == "d"
                 kondoJArray[p1, p2, 1] =
-                    J_init * (cos(k1x) - cos(k1y) + cos(k2x) - cos(k2y))
+                J_init * (cos(k1x) - cos(k1y)) * (cos(k2x) - cos(k2y))
             else
-                kondoJArray[p1, p2, 1] = J_init * (cos(k1x - k2x) + cos(k1y - k2y))
+                kondoJArray[p1, p2, 1] = 0.5 * J_init * (cos(k1x - k2x) + cos(k1y - k2y))
             end
         end
     end
@@ -175,7 +175,8 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init) #Array{Float64}(undef, num_kspace^2, num_kspace^2, length(cutOffEnergies))
+    kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init) 
+    #kondoJArray = Array{Float64}(undef, num_kspace^2, num_kspace^2, length(cutOffEnergies))
 
     # bare value of J is given by J(k1, k2) = J_init × [cos(k1x) - cos(k1y)] × [cos(k2x) - cos(k2y)] 
     # Threads.@threads for p1 = 1:num_kspace^2
@@ -208,7 +209,8 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
         cutoffPoints = getIsoEngCont(dispersionArray, energyCutoff)
 
         # these cutoff points will no longer participate in the RG flow, so disable their flags
-        proceed_flags[cutoffPoints, :] .= proceed_flags[:, cutoffPoints] .= 0
+        proceed_flags[cutoffPoints, :] .= 0
+        proceed_flags[:, cutoffPoints] .= 0
 
         # if there are no enabled flags (i.e., all are zero), stop the RG flow
         if all(==(0), proceed_flags)

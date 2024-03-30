@@ -46,6 +46,9 @@ end
 function tightBindDisp(kx_vals::Vector{Float64}, ky_vals::Vector{Float64})
     return -2 * HOP_T .* (cos.(kx_vals) + cos.(ky_vals))
 end
+function tightBindDisp(kx_val::Float64, ky_val::Float64)
+    return -2 * HOP_T .* (cos.(kx_val) + cos.(ky_val))
+end
 
 
 function teleportToAllQuads(point::Int64, num_kspace::Int64)

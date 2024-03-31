@@ -125,7 +125,7 @@ function getInStateScattFlowBool(kondoJArray::Array{Float64,3}, num_kspace_half:
 end
 
 
-function getGlobalFlowBool(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, stepIndex::Int64)
+function getGlobalFlowBool(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, stepIndex::Int64, savePath::String)
     num_kspace = 2 * num_kspace_half + 1
     bare_J_squared = reshape(
         diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'),
@@ -138,11 +138,12 @@ function getGlobalFlowBool(kondoJArray::Array{Float64,3}, num_kspace_half::Int64
                 (num_kspace, num_kspace),
             ) .- bare_J_squared
         )
+    writedlm(savePath, results)
     return results
 end
 
 
-function getGlobalFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, stepIndex::Int64)
+function getGlobalFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, stepIndex::Int64, savePath::String)
     num_kspace = 2 * num_kspace_half + 1
     bare_J_squared = reshape(
         diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'),
@@ -153,5 +154,6 @@ function getGlobalFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, st
             diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]'),
             (num_kspace, num_kspace),
         ) ./ bare_J_squared
+    writedlm(savePath, results)
     return results
 end

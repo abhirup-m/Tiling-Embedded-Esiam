@@ -46,7 +46,7 @@ function deltaJk1k2(
     densityOfStates_q::Vector{Float64},
 )
     # if the flag is disabled for this momentum pair, don't bother to do the rest
-    if proceed_flagk1k2 == 0
+    if proceed_flagk1k2 == 0 || length(denominators) == 0
         return 0, 0
     end
 
@@ -125,6 +125,15 @@ function stepwiseRenormalisation(
         )
         kondoJArrayNext[innerIndex1, innerIndex2] += renormalisation_k1k2
         proceed_flags[innerIndex1, innerIndex2] = proceed_flag_k1k2
+
+        for (symFactor, newPoint1, newPoint2) in symmetryPartners(innerIndex1, innerIndex2, num_kspace)
+            kondoJArrayNext[newPoint1, newPoint2] += symFactor * renormalisation_k1k2
+            proceed_flags[newPoint1, newPoint2] = proceed_flag_k1k2
+            if kondoJArrayNext[newPoint1, newPoint2] * kondoJArrayPrev[newPoint1, newPoint2] < 0
+                kondoJArrayNext[newPoint1, newPoint2] = 0
+                proceed_flags[newPoint1, newPoint2] = 0
+            end
+        end
     end
     return kondoJArrayNext, proceed_flags
 end
@@ -176,21 +185,6 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
     kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init) 
-    #kondoJArray = Array{Float64}(undef, num_kspace^2, num_kspace^2, length(cutOffEnergies))
-
-    # bare value of J is given by J(k1, k2) = J_init × [cos(k1x) - cos(k1y)] × [cos(k2x) - cos(k2y)] 
-    # Threads.@threads for p1 = 1:num_kspace^2
-    #     for p2 = 1:num_kspace^2
-    #         k1x, k1y = map1DTo2D(p1, num_kspace)
-    #         k2x, k2y = map1DTo2D(p2, num_kspace)
-    #         if orbital == "d"
-    #             kondoJArray[p1, p2, 1] =
-    #                 J_init * (cos(k1x) - cos(k1y) + cos(k2x) - cos(k2y))
-    #         else
-    #             kondoJArray[p1, p2, 1] = J_init * (cos(k1x - k2x) + cos(k1y - k2y))
-    #         end
-    #     end
-    # end
 
     # define flags to track whether the RG flow for a particular J_{k1, k2} needs to be stopped 
     # (perhaps because it has gone to zero, or its denominator has gone to zero). These flags are
@@ -218,10 +212,11 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
         end
 
         # get the k-space points that need to be tracked for renormalisation, by getting the states 
-        # below the cutoff energy as well within the lower left quadrant
+        # below the cutoff energy. We only take points within the lower left quadrant, because the
+        # other quadrant is obtained through symmetry relations.
         innerIndicesArr = [
             point for (point, energy) in enumerate(dispersionArray) if
-            abs(energy) < abs(energyCutoff)
+            abs(energy) < abs(energyCutoff) && map1DTo2D(point, num_kspace)[1] < 0.5 * (K_MAX + K_MIN)
         ]
 
         # calculate the renormalisation for this step and for all k1,k2 pairs

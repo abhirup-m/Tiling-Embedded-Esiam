@@ -14,6 +14,8 @@
 *.npy
 *.ipynb_checkpoint*
 *.gif
+*.mp4
 esiam-spectrum/
 esiam-phases-data/
 movie_plots/
+*/data/*

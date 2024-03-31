@@ -121,12 +121,21 @@ end
 
 
 function particleHoleTransf(point::Vector{Int64}, num_kspace::Int64)
+    # obtain the particle-hole transformed point k --> k ± π.
     kx_val, ky_val = map1DTo2D(point, num_kspace)
     kx_new = [
+              # if kx is in left quadrant, shift it to the right, else to the left
         kx .< (K_MAX + K_MIN) / 2 ? kx .+ (K_MAX - K_MIN) / 2 : kx .- (K_MAX - K_MIN) / 2 for kx in kx_val
     ]
     ky_new = [
+              # if ky is in bottom quadrant, shift it to the top, else to the bottom
         ky .< (K_MAX + K_MIN) / 2 ? ky .+ (K_MAX - K_MIN) / 2 : ky .- (K_MAX - K_MIN) / 2 for ky in ky_val
     ]
     return map2DTo1D(kx_new, ky_new, num_kspace)
+end
+
+
+function symmetryPartners(point1::Int64, point2::Int64, num_kspace::Int64)
+    newPoint1, newPoint2 = particleHoleTransf([point1, point2], num_kspace)
+    return [[-1, newPoint1, point2], [-1, point1, newPoint2], [1, newPoint1, newPoint2]]
 end

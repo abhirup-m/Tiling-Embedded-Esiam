@@ -105,7 +105,7 @@ function stepwiseRenormalisation(
 
     # loop over (k1, k2) pairs that represent the momentum states within the emergent window,
     # so that we can calculate the renormalisation of J(k1, k2), for all k1, k2.
-    externalVertexPairs = collect(Iterators.product(innerIndicesArr, innerIndicesArr))
+    externalVertexPairs = [(p1, p2) for p1 in sort(innerIndicesArr) for p2 in sort(innerIndicesArr)[sort(innerIndicesArr) .>= p1]]
     Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
         renormalisation_k1k2, proceed_flag_k1k2 = deltaJk1k2(
             denominators,
@@ -123,15 +123,17 @@ function stepwiseRenormalisation(
             ],
             densityOfStates[cutoffPoints],
         )
-        kondoJArrayNext[innerIndex1, innerIndex2] += renormalisation_k1k2
-        proceed_flags[innerIndex1, innerIndex2] = proceed_flag_k1k2
+        for (point1, point2) in [[innerIndex1, innerIndex2], [innerIndex2, innerIndex1]]
+            kondoJArrayNext[point1, point2] += renormalisation_k1k2
+            proceed_flags[point1, point2] = proceed_flag_k1k2
 
-        for (symFactor, newPoint1, newPoint2) in symmetryPartners(innerIndex1, innerIndex2, num_kspace)
-            kondoJArrayNext[newPoint1, newPoint2] += symFactor * renormalisation_k1k2
-            proceed_flags[newPoint1, newPoint2] = proceed_flag_k1k2
-            if kondoJArrayNext[newPoint1, newPoint2] * kondoJArrayPrev[newPoint1, newPoint2] < 0
-                kondoJArrayNext[newPoint1, newPoint2] = 0
-                proceed_flags[newPoint1, newPoint2] = 0
+            for (symFactor, newPoint1, newPoint2) in symmetryPartners(point1, point2, num_kspace)
+                kondoJArrayNext[newPoint1, newPoint2] += symFactor * renormalisation_k1k2
+                proceed_flags[newPoint1, newPoint2] = proceed_flag_k1k2
+                if kondoJArrayNext[newPoint1, newPoint2] * kondoJArrayPrev[newPoint1, newPoint2] < 0
+                    kondoJArrayNext[newPoint1, newPoint2] = 0
+                    proceed_flags[newPoint1, newPoint2] = 0
+                end
             end
         end
     end
@@ -197,7 +199,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
 
         # set the Kondo coupling of all subsequent steps equal to that of the present step 
         # for now, so that we can just add the renormalisation to it later
-        kondoJArray[:, :, stepIndex+1:end] .= kondoJArray[:, :, stepIndex]
+        kondoJArray[:, :, stepIndex+1] = kondoJArray[:, :, stepIndex]
 
         # get the k-points that will be decoupled at this step, by getting the isoenergetic contour at the cutoff energy.
         cutoffPoints = getIsoEngCont(dispersionArray, energyCutoff)
@@ -208,6 +210,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
 
         # if there are no enabled flags (i.e., all are zero), stop the RG flow
         if all(==(0), proceed_flags)
+            kondoJArray[:, :, stepIndex+2:end] .= kondoJArray[:, :, stepIndex]
             break
         end
 

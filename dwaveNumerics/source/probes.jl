@@ -1,4 +1,5 @@
 using LinearAlgebra
+using DelimitedFiles
 
 function getForwardScattFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int64)
     # given the entire matrix of the RG flow of Kondo couplings, extract the RG flow
@@ -18,8 +19,8 @@ function getForwardScattFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int
         point - 1 for
         point in FermiArmSouthWest if 1 <= (point - 1) % num_kspace <= num_kspace_half
     ]
-    kx_arr_flat = repeat(range(-pi, stop = pi, length = num_kspace), inner = num_kspace)
-    ky_arr_flat = repeat(range(-pi, stop = pi, length = num_kspace), outer = num_kspace)
+    kx_arr_flat = repeat(range(-pi, stop=pi, length=num_kspace), inner=num_kspace)
+    ky_arr_flat = repeat(range(-pi, stop=pi, length=num_kspace), outer=num_kspace)
 
     # define coordinates of the antinodal, midway and nodal points
     antinodeD = FermiArmSouthWest[1]
@@ -38,7 +39,7 @@ function getForwardScattFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int
     # etc, for purposes of displaying in figures
     return results,
     [
-        round.((kx_arr_flat[point], ky_arr_flat[point]) ./ pi, digits = 2) for
+        round.((kx_arr_flat[point], ky_arr_flat[point]) ./ pi, digits=2) for
         point in [antinodeD, midway, node]
     ]
 end
@@ -131,13 +132,12 @@ function getGlobalFlowBool(kondoJArray::Array{Float64,3}, num_kspace_half::Int64
         diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'),
         (num_kspace, num_kspace),
     )
-    results =
-        sign.(
-            reshape(
-                diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]'),
-                (num_kspace, num_kspace),
-            ) .- bare_J_squared
-        )
+    results = (sign.(
+        reshape(
+            diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]'),
+            (num_kspace, num_kspace),
+        ) .- bare_J_squared
+    ))
     writedlm(savePath, results)
     return results
 end
@@ -149,11 +149,15 @@ function getGlobalFlow(kondoJArray::Array{Float64,3}, num_kspace_half::Int64, st
         diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]'),
         (num_kspace, num_kspace),
     )
-    results =
+    results_unnorm =
         reshape(
             diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]'),
             (num_kspace, num_kspace),
-        ) ./ bare_J_squared
-    writedlm(savePath, results)
-    return results
+        )
+    results_norm = (reshape(
+        diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]'),
+        (num_kspace, num_kspace),
+    ) ./ bare_J_squared)
+    writedlm(savePath, results_norm)
+    return results_norm, results_unnorm
 end

@@ -1,166 +1,7 @@
-using LinearAlgebra
 using ProgressMeter
 include("./helpers.jl")
+include("./rgFlow.jl")
 include("./constants.jl")
-
-
-
-function bathIntForm(
-    bathIntStr::Float64,
-    orbital::String,
-    num_kspace::Int64,
-    points::Vector,
-)
-    # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
-    # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
-    # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    @assert orbital == "d" || orbital == "p"
-    @assert length(points) == 4
-    k2_vals = map1DTo2D(points[2], num_kspace)
-    k3_vals = map1DTo2D(points[3], num_kspace)
-    k4_vals = map1DTo2D(points[4], num_kspace)
-    k1_vals = map1DTo2D(points[1], num_kspace)
-    if orbital == "d"
-        bathInt = bathIntStr
-        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
-            bathInt = bathInt .* (cos.(kx) - cos.(ky))
-        end
-        return bathInt
-    else
-        return 0.5 .* bathIntStr .* (
-            cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .+
-            cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
-        )
-    end
-end
-
-
-function deltaJk1k2(
-    denominators::Vector{Float64},
-    proceed_flagk1k2::Int64,
-    kondoJArrayPrev_k1k2::Float64,
-    kondoJ_k2q_qk1::Vector{Float64},
-    kondoJ_qqbar::Vector{Float64},
-    deltaEnergy::Float64,
-    bathIntArgs,
-    densityOfStates_q::Vector{Float64},
-)
-    # if the flag is disabled for this momentum pair, don't bother to do the rest
-    if proceed_flagk1k2 == 0 || length(denominators) == 0
-        return 0, 0
-    end
-
-    # the renormalisation itself is given by the expression
-    # ΔJ(k1, k2) = ∑_q [J(k2,q)J(q,k1) + 4 * J(q,qbar) * W(qbar, k2, k1, q)]/[ω - E/2 + J(q)/4 + W(q)/2]
-    renormalisation =
-        -deltaEnergy * sum(
-            densityOfStates_q .*
-            (kondoJ_k2q_qk1 .+ 4 .* kondoJ_qqbar .* bathIntForm(bathIntArgs...)) ./
-            denominators,
-        )
-
-    # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
-    if (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 <= 0
-        renormalisation = 0
-        proceed_flagk1k2 = 0
-    end
-    return renormalisation, proceed_flagk1k2
-end
-
-
-function stepwiseRenormalisation(
-    innerIndicesArr::Vector{Int64},
-    energyCutoff::Float64,
-    cutoffPoints::Vector{Int64},
-    proceed_flags::Matrix{Int64},
-    kondoJArrayPrev::Array{Float64,2},
-    kondoJArrayNext::Array{Float64,2},
-    bathIntStr::Float64,
-    num_kspace::Int64,
-    deltaEnergy::Float64,
-    orbital::String,
-    densityOfStates::Vector{Float64},
-)
-
-    # construct denominators for the RG equation, given by
-    # d = ω - E/2 + J(q)/4 + W(q)/2
-    omega = -abs(energyCutoff) / 2
-    denominators =
-        omega .- abs(energyCutoff) / 2 .+ diag(
-            kondoJArrayPrev[cutoffPoints, cutoffPoints] / 4 .+
-            bathIntForm(
-                bathIntStr,
-                orbital,
-                num_kspace,
-                [cutoffPoints, cutoffPoints, cutoffPoints, cutoffPoints],
-            ) / 2,
-        )
-
-    # only consider those terms whose denominator haven't gone through zeros
-    cutoffPoints = cutoffPoints[denominators.<0]
-    denominators = denominators[denominators.<0]
-
-    # obtain the hole counterparts of the UV states
-    cutoffHolePoints = particleHoleTransf(cutoffPoints, num_kspace)
-
-    # loop over (k1, k2) pairs that represent the momentum states within the emergent window,
-    # so that we can calculate the renormalisation of J(k1, k2), for all k1, k2.
-    externalVertexPairs = [(p1, p2) for p1 in sort(innerIndicesArr) for p2 in sort(innerIndicesArr)[sort(innerIndicesArr) .>= p1]]
-    Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
-        renormalisation_k1k2, proceed_flag_k1k2 = deltaJk1k2(
-            denominators,
-            proceed_flags[innerIndex1, innerIndex2],
-            kondoJArrayPrev[innerIndex1, innerIndex2],
-            kondoJArrayPrev[innerIndex2, cutoffPoints] .*
-            kondoJArrayPrev[cutoffPoints, innerIndex1],
-            diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints]),
-            deltaEnergy,
-            [
-                bathIntStr,
-                orbital,
-                num_kspace,
-                [cutoffHolePoints, innerIndex2, innerIndex1, cutoffPoints],
-            ],
-            densityOfStates[cutoffPoints],
-        )
-        for (point1, point2) in [[innerIndex1, innerIndex2], [innerIndex2, innerIndex1]]
-            kondoJArrayNext[point1, point2] += renormalisation_k1k2
-            proceed_flags[point1, point2] = proceed_flag_k1k2
-
-            for (symFactor, newPoint1, newPoint2) in symmetryPartners(point1, point2, num_kspace)
-                kondoJArrayNext[newPoint1, newPoint2] += symFactor * renormalisation_k1k2
-                proceed_flags[newPoint1, newPoint2] = proceed_flag_k1k2
-                if kondoJArrayNext[newPoint1, newPoint2] * kondoJArrayPrev[newPoint1, newPoint2] < 0
-                    kondoJArrayNext[newPoint1, newPoint2] = 0
-                    proceed_flags[newPoint1, newPoint2] = 0
-                end
-            end
-        end
-    end
-    return kondoJArrayNext, proceed_flags
-end
-
-
-function initialiseKondoJ(num_kspace, orbital, num_steps, J_init)
-    # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
-    # incoming and outgoing momentum indices, while the third dimension stores the 
-    # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
-    # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = Array{Float64}(undef, num_kspace^2, num_kspace^2, num_steps)
-    Threads.@threads for p1 = 1:num_kspace^2
-        for p2 = 1:num_kspace^2
-            k1x, k1y = map1DTo2D(p1, num_kspace)
-            k2x, k2y = map1DTo2D(p2, num_kspace)
-            if orbital == "d"
-                kondoJArray[p1, p2, 1] =
-                J_init * (cos(k1x) - cos(k1y)) * (cos(k2x) - cos(k2y))
-            else
-                kondoJArray[p1, p2, 1] = 0.5 * J_init * (cos(k1x - k2x) + cos(k1y - k2y))
-            end
-        end
-    end
-    return kondoJArray
-end
 
 
 function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbital::String)
@@ -174,19 +15,15 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
     # num_kspace_half(for [antinode, pi)) + 1(for node) + num_kspace_half(for (node, antinode])
     num_kspace = 2 * num_kspace_half + 1
 
-    # create flattened array of momenta, of the form
-    # (kx1, ky1), (kx2, ky1), ..., (kxN, ky1), (kx1, ky2), ..., (kxN, kyN)
     densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, num_kspace)
 
-    kx_pos_arr = collect(range(0, K_MAX, length = num_kspace_half + 1))
-    cutOffEnergies = -tightBindDisp(kx_pos_arr, 0 .* kx_pos_arr)
-    cutOffEnergies = cutOffEnergies[cutOffEnergies.>=-TOLERANCE]
+    cutOffEnergies = getCutOffEnergy(num_kspace)
 
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init) 
+    kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init)
 
     # define flags to track whether the RG flow for a particular J_{k1, k2} needs to be stopped 
     # (perhaps because it has gone to zero, or its denominator has gone to zero). These flags are
@@ -201,32 +38,22 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
         # for now, so that we can just add the renormalisation to it later
         kondoJArray[:, :, stepIndex+1] = kondoJArray[:, :, stepIndex]
 
-        # get the k-points that will be decoupled at this step, by getting the isoenergetic contour at the cutoff energy.
-        cutoffPoints = getIsoEngCont(dispersionArray, energyCutoff)
-
-        # these cutoff points will no longer participate in the RG flow, so disable their flags
-        proceed_flags[cutoffPoints, :] .= 0
-        proceed_flags[:, cutoffPoints] .= 0
-
         # if there are no enabled flags (i.e., all are zero), stop the RG flow
         if all(==(0), proceed_flags)
             kondoJArray[:, :, stepIndex+2:end] .= kondoJArray[:, :, stepIndex]
             break
         end
 
-        # get the k-space points that need to be tracked for renormalisation, by getting the states 
-        # below the cutoff energy. We only take points within the lower left quadrant, because the
-        # other quadrant is obtained through symmetry relations.
-        innerIndicesArr = [
-            point for (point, energy) in enumerate(dispersionArray) if
-            abs(energy) < abs(energyCutoff) && map1DTo2D(point, num_kspace)[1] < 0.5 * (K_MAX + K_MIN)
-        ]
+        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersionArray, energyCutoff, proceed_flags, num_kspace)
 
         # calculate the renormalisation for this step and for all k1,k2 pairs
         kondoJArrayNext, proceed_flags_updated = stepwiseRenormalisation(
             innerIndicesArr,
+            excludedVertexPairs,
+            mixedVertexPairs,
             energyCutoff,
             cutoffPoints,
+            cutoffHolePoints,
             proceed_flags,
             kondoJArray[:, :, stepIndex],
             kondoJArray[:, :, stepIndex+1],

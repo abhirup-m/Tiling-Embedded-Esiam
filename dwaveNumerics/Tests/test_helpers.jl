@@ -22,31 +22,24 @@ end
 end
 
 
-FS_points = [3, 7, 9, 11, 15, 17, 19, 23]
-FS_points_left = [3, 7, 11, 17, 23]
-center_points = [13]
-corner_points = [1, 5, 21, 25]
-outside_points = [2, 4, 6, 10, 16, 20, 22, 24]
-inside_points = [8, 12, 14, 18]
-probe_energies = [0, -2 * HOP_T, 2 * HOP_T, -4 * HOP_T, 4 * HOP_T]
 @testset "Tight-binding Dispersion" begin
     @test tightBindDisp(KX_VALUES, KY_VALUES) == [tightBindDisp(kx, ky) for (kx, ky) in zip(KX_VALUES, KY_VALUES)]
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    @test dispersion[FS_points] ≈ probe_energies[1] * ones(length(FS_points)) atol = 1e-10
-    @test dispersion[inside_points] ≈ probe_energies[2] * ones(length(inside_points)) atol = 1e-10
-    @test dispersion[outside_points] ≈ probe_energies[3] * ones(length(outside_points)) atol = 1e-10
-    @test dispersion[center_points] ≈ probe_energies[4] * ones(length(center_points)) atol = 1e-10
-    @test dispersion[corner_points] ≈ probe_energies[5] * ones(length(corner_points)) atol = 1e-10
+    dOfStates, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
+    @test dispersion[FS_POINTS] ≈ PROBE_ENERGIES[1] * ones(length(FS_POINTS)) atol = 1e-10
+    @test dispersion[INSIDE_POINTS] ≈ PROBE_ENERGIES[2] * ones(length(INSIDE_POINTS)) atol = 1e-10
+    @test dispersion[OUTSIDE_POINTS] ≈ PROBE_ENERGIES[3] * ones(length(OUTSIDE_POINTS)) atol = 1e-10
+    @test dispersion[CENTER_POINTS] ≈ PROBE_ENERGIES[4] * ones(length(CENTER_POINTS)) atol = 1e-10
+    @test dispersion[CORNER_POINTS] ≈ PROBE_ENERGIES[5] * ones(length(CORNER_POINTS)) atol = 1e-10
 end
 
 
 @testset "Isoenergetic contours" begin
     dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    @test getIsoEngCont(dispersion, probe_energies[1]) ≈ FS_points atol = 1e-10
-    @test getIsoEngCont(dispersion, probe_energies[2]) ≈ inside_points atol = 1e-10
-    @test getIsoEngCont(dispersion, probe_energies[3]) ≈ outside_points atol = 1e-10
-    @test getIsoEngCont(dispersion, probe_energies[4]) ≈ center_points atol = 1e-10
-    @test getIsoEngCont(dispersion, probe_energies[5]) ≈ corner_points atol = 1e-10
+    @test getIsoEngCont(dispersion, PROBE_ENERGIES[1]) ≈ FS_POINTS atol = 1e-10
+    @test getIsoEngCont(dispersion, PROBE_ENERGIES[2]) ≈ INSIDE_POINTS atol = 1e-10
+    @test getIsoEngCont(dispersion, PROBE_ENERGIES[3]) ≈ OUTSIDE_POINTS atol = 1e-10
+    @test getIsoEngCont(dispersion, PROBE_ENERGIES[4]) ≈ CENTER_POINTS atol = 1e-10
+    @test getIsoEngCont(dispersion, PROBE_ENERGIES[5]) ≈ CORNER_POINTS atol = 1e-10
 end
 
 
@@ -58,13 +51,11 @@ end
 end
 
 
-@testset "High-energy low-energy separation" begin
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    proceed_flags = fill(1, SIZE_BZ[1]^2, SIZE_BZ[1]^2)
-    innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersion, abs(probe_energies[3]), proceed_flags, SIZE_BZ[1])
-    @test sort(cutoffPoints) == sort(outside_points)
-    @test unique(sort(cutoffHolePoints)) == sort(inside_points)
-    @test sort(innerIndicesArr) == sort(FS_points_left)
-    @test sort(excludedVertexPairs) == [(p1, p2) for p1 in [9, 15, 19] for p2 in [9, 15, 19] if p2 >= p1]
-    @test proceed_flags[outside_points] == 0 .* outside_points
+@testset "Density of states" begin
+    dOfStates, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
+    @test dOfStates[3] == dOfStates[11] == dOfStates[15] == dOfStates[23]
+    @test dOfStates[1] == dOfStates[5] == dOfStates[21] == dOfStates[25]
+    @test dOfStates[2] == dOfStates[4] == dOfStates[22] == dOfStates[24]
+    @test dOfStates[6] == dOfStates[10] == dOfStates[16] == dOfStates[20]
+    @test dOfStates[7] == dOfStates[17] == dOfStates[19] == dOfStates[9]
 end

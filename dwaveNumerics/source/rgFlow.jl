@@ -12,6 +12,40 @@ function getCutOffEnergy(num_kspace)
 end
 
 
+function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float64, proceed_flags::Matrix{Int64}, num_kspace::Int64)
+
+    # get the k-points that will be decoupled at this step, by getting the isoenergetic contour at the cutoff energy.
+    cutoffPoints = unique(getIsoEngCont(dispersionArray, energyCutoff))
+    cutoffHolePoints = particleHoleTransf(cutoffPoints, num_kspace)
+
+    # these cutoff points will no longer participate in the RG flow, so disable their flags
+    proceed_flags[cutoffPoints, :] .= 0
+    proceed_flags[:, cutoffPoints] .= 0
+    proceed_flags[cutoffHolePoints, :] .= 0
+    proceed_flags[:, cutoffHolePoints] .= 0
+
+    # get the k-space points that need to be tracked for renormalisation, by getting the states 
+    # below the cutoff energy. We only take points within the lower left quadrant, because the
+    # other quadrant is obtained through symmetry relations.
+    innerIndicesArr = [
+        point for (point, energy) in enumerate(dispersionArray) if
+        abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
+        map1DTo2D(point, num_kspace)[1] <= 0.5 * (K_MAX + K_MIN)
+    ]
+    excludedIndicesArr = [
+        point for (point, energy) in enumerate(dispersionArray) if
+        abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
+        map1DTo2D(point, num_kspace)[1] > 0.5 * (K_MAX + K_MIN)
+    ]
+    excludedVertexPairs = [
+        (p1, p2) for p1 in sort(excludedIndicesArr) for
+        p2 in sort(excludedIndicesArr)[sort(excludedIndicesArr).>=p1]
+    ]
+    mixedVertexPairs = [(p1, p2) for p1 in innerIndicesArr for p2 in excludedIndicesArr]
+    return innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags
+end
+
+
 function initialiseKondoJ(num_kspace, orbital, num_steps, J_init)
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
@@ -38,7 +72,7 @@ function bathIntForm(
     bathIntStr::Float64,
     orbital::String,
     num_kspace::Int64,
-    points::Vector,
+    points,
 )
     # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
     # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
@@ -90,10 +124,12 @@ function deltaJk1k2(
 
     # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
     if (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 <= 0
-        renormalisation = 0
+        kondoJArrayNext_k1k2 = 0
         proceed_flagk1k2 = 0
+    else
+        kondoJArrayNext_k1k2 = kondoJArrayPrev_k1k2 + renormalisation
     end
-    return renormalisation, proceed_flagk1k2
+    return kondoJArrayNext_k1k2, proceed_flagk1k2
 end
 
 
@@ -103,8 +139,9 @@ function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs
         @assert innerIndex1 in innerIndicesArr
         @assert innerIndex2 in innerIndicesArr
         kondoJArrayNext[innerIndex1, excludedIndex] = kondoJArrayNext[excludedIndex, innerIndex1] = -kondoJArrayNext[innerIndex1, innerIndex2]
-        proceed_flags[innerIndex1, excludedIndex] = proceed_flags[excludedIndex, innerIndex1] = proceed_flags[innerIndex1, innerIndex2]
-        if kondoJArrayPrev[innerIndex1, excludedIndex] * kondoJArrayNext[innerIndex1, excludedIndex] <= 0
+        proceed_flags[innerIndex1, excludedIndex] = proceed_flags[innerIndex1, innerIndex2]
+        proceed_flags[excludedIndex, innerIndex1] = proceed_flags[innerIndex1, innerIndex2]
+        if kondoJArrayPrev[innerIndex1, excludedIndex] * kondoJArrayNext[innerIndex1, excludedIndex] < -abs(TOLERANCE)
             kondoJArrayNext[innerIndex1, excludedIndex] = kondoJArrayNext[excludedIndex, innerIndex1] = 0
             proceed_flags[innerIndex1, excludedIndex] = proceed_flags[excludedIndex, innerIndex1] = 0
         end
@@ -114,9 +151,11 @@ function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs
         @assert sourcePoint1 in innerIndicesArr
         @assert sourcePoint2 in innerIndicesArr
         kondoJArrayNext[index1, index2] = kondoJArrayNext[index2, index1] = kondoJArrayNext[sourcePoint1, sourcePoint2]
-        proceed_flags[index1, index2] = proceed_flags[index2, index1] = proceed_flags[sourcePoint1, sourcePoint2]
-        if kondoJArrayPrev[index1, index2] * kondoJArrayNext[index1, index2] <= 0
-            kondoJArrayNext[index1, index2] = kondoJArrayNext[index2, index1] = 0
+        proceed_flags[index1, index2] = proceed_flags[sourcePoint1, sourcePoint2]
+        proceed_flags[index2, index1] = proceed_flags[sourcePoint1, sourcePoint2]
+        if kondoJArrayPrev[index1, index2] * kondoJArrayNext[index1, index2] < -abs(TOLERANCE)
+            kondoJArrayNext[index1, index2] = 0
+            kondoJArrayNext[index2, index1] = 0
             proceed_flags[index1, index2] = proceed_flags[index2, index1] = 0
         end
     end
@@ -170,7 +209,7 @@ function stepwiseRenormalisation(
     kondoJ_qq_bar = diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints])
     dOfStates_cutoff = densityOfStates[cutoffPoints]
     Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
-        renormalisation_k1k2, proceed_flag_k1k2 = deltaJk1k2(
+        kondoJArrayNext_k1k2, proceed_flag_k1k2 = deltaJk1k2(
             denominators,
             proceed_flags[innerIndex1, innerIndex2],
             kondoJArrayPrev[innerIndex1, innerIndex2],
@@ -186,8 +225,8 @@ function stepwiseRenormalisation(
             ],
             dOfStates_cutoff,
         )
-        kondoJArrayNext[innerIndex1, innerIndex2] += renormalisation_k1k2
-        kondoJArrayNext[innerIndex2, innerIndex1] += renormalisation_k1k2
+        kondoJArrayNext[innerIndex1, innerIndex2] = kondoJArrayNext_k1k2
+        kondoJArrayNext[innerIndex2, innerIndex1] = kondoJArrayNext_k1k2
         proceed_flags[innerIndex1, innerIndex2] = proceed_flag_k1k2
         proceed_flags[innerIndex2, innerIndex1] = proceed_flag_k1k2
     end

@@ -110,33 +110,3 @@ function particleHoleTransf(points::Vector{Int64}, num_kspace::Int64)
 end
 
 
-function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float64, proceed_flags::Matrix{Int64}, num_kspace::Int64)
-
-    # get the k-points that will be decoupled at this step, by getting the isoenergetic contour at the cutoff energy.
-    cutoffPoints = unique(getIsoEngCont(dispersionArray, energyCutoff))
-    cutoffHolePoints = particleHoleTransf(cutoffPoints, num_kspace)
-
-    # these cutoff points will no longer participate in the RG flow, so disable their flags
-    proceed_flags[cutoffPoints, :] .= 0
-    proceed_flags[:, cutoffPoints] .= 0
-
-    # get the k-space points that need to be tracked for renormalisation, by getting the states 
-    # below the cutoff energy. We only take points within the lower left quadrant, because the
-    # other quadrant is obtained through symmetry relations.
-    innerIndicesArr = [
-        point for (point, energy) in enumerate(dispersionArray) if
-        abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
-        map1DTo2D(point, num_kspace)[1] <= 0.5 * (K_MAX + K_MIN)
-    ]
-    excludedIndicesArr = [
-        point for (point, energy) in enumerate(dispersionArray) if
-        abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
-        map1DTo2D(point, num_kspace)[1] > 0.5 * (K_MAX + K_MIN)
-    ]
-    excludedVertexPairs = [
-        (p1, p2) for p1 in sort(excludedIndicesArr) for
-        p2 in sort(excludedIndicesArr)[sort(excludedIndicesArr).>=p1]
-    ]
-    mixedVertexPairs = [(p1, p2) for p1 in innerIndicesArr for p2 in excludedIndicesArr]
-    return innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags
-end

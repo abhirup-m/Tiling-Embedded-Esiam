@@ -46,7 +46,7 @@ function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float
 end
 
 
-function initialiseKondoJ(num_kspace, orbital, num_steps, J_init)
+function initialiseKondoJ(num_kspace::Int64, orbital::String, num_steps::Int64, J_init::Float64)
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
@@ -196,9 +196,8 @@ function stepwiseRenormalisation(
 
     # only consider those terms whose denominator haven't gone through zeros
     cutoffPoints = cutoffPoints[denominators.<0]
+    cutoffHolePoints = cutoffHolePoints[denominators.<0]
     denominators = denominators[denominators.<0]
-
-    # obtain the hole counterparts of the UV states
 
     # loop over (k1, k2) pairs that represent the momentum states within the emergent window,
     # so that we can calculate the renormalisation of J(k1, k2), for all k1, k2.
@@ -209,12 +208,12 @@ function stepwiseRenormalisation(
     kondoJ_qq_bar = diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints])
     dOfStates_cutoff = densityOfStates[cutoffPoints]
     Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
+        kondoJ_k2_q_times_kondoJ_q_k1 = diag(kondoJArrayPrev[innerIndex2, cutoffPoints] * kondoJArrayPrev[innerIndex1, cutoffPoints]')
         kondoJArrayNext_k1k2, proceed_flag_k1k2 = deltaJk1k2(
             denominators,
             proceed_flags[innerIndex1, innerIndex2],
             kondoJArrayPrev[innerIndex1, innerIndex2],
-            kondoJArrayPrev[innerIndex2, cutoffPoints] .*
-            kondoJArrayPrev[cutoffPoints, innerIndex1],
+            kondoJ_k2_q_times_kondoJ_q_k1,
             kondoJ_qq_bar,
             deltaEnergy,
             [

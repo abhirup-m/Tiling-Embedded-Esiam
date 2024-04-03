@@ -1,11 +1,14 @@
 using ProgressMeter
 include("./rgFlow.jl")
 
-function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbital::String)
+function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, impOrbital::String, bathOrbital::String)
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
     @assert num_kspace_half % 2 == 0
-    @assert orbital in ["p", "d"]
+
+    # ensure that the choice of orbitals is d or p
+    @assert bathOrbital in ["p", "d"]
+    @assert impOrbital in ["p", "d"]
 
     # num_kspace_half is the number of points from 0 until pi,
     # so that the total number of k-points along an axis is 
@@ -20,7 +23,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = initialiseKondoJ(num_kspace, orbital, length(cutOffEnergies), J_init)
+    kondoJArray = initialiseKondoJ(num_kspace, impOrbital, num_kspace_half + 1, J_init)
 
     # define flags to track whether the RG flow for a particular J_{k1, k2} needs to be stopped 
     # (perhaps because it has gone to zero, or its denominator has gone to zero). These flags are
@@ -57,7 +60,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, orbi
             bathIntStr,
             num_kspace,
             deltaEnergy,
-            orbital,
+            bathOrbital,
             densityOfStates,
         )
         kondoJArray[:, :, stepIndex+1] = kondoJArrayNext

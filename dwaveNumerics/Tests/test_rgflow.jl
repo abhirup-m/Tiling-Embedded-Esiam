@@ -10,6 +10,13 @@ include("../source/rgFlow.jl")
     @test sort(innerIndicesArr) == sort(FS_POINTS_LEFT)
     @test sort(excludedVertexPairs) == [(p1, p2) for p1 in [9, 15, 19] for p2 in [9, 15, 19] if p2 >= p1]
     @test proceed_flags_updated[OUTSIDE_POINTS] == 0 .* OUTSIDE_POINTS
+
+    innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags_updated = highLowSeparation(dispersion, abs(PROBE_ENERGIES[5]), PROCEED_FLAGS, SIZE_BZ[1])
+    @test sort(cutoffPoints) == sort(CORNER_POINTS)
+    @test unique(sort(cutoffHolePoints)) == sort(CENTER_POINTS)
+    @test sort(innerIndicesArr) == sort(INNER_INDICES_ONE)
+    @test sort(unique([p1 for (p1, p2) in excludedVertexPairs])) == sort(EXCLUDED_INDICES_ONE)
+    @test proceed_flags_updated[OUTSIDE_POINTS] == 0 .* OUTSIDE_POINTS
 end
 
 @testset "Getting cutoff energies" begin
@@ -19,35 +26,71 @@ end
     end
 end
 
-@testset "Initialise Kondo coupling matrix" begin
-    kondoJArray = initialiseKondoJ(SIZE_BZ[1], "p", 1, 1)[:, :, 1]
-    @test all(diag(kondoJArray[:, :]) .== 1)
-    @test kondoJArray[[1, 6, 11, 16, 21], :] ≈ kondoJArray[[5, 10, 15, 20, 25], :] atol = 1e-10
-    @test kondoJArray[[1, 2, 3, 4, 5], :] ≈ kondoJArray[[21, 22, 23, 24, 25], :] atol = 1e-10
-    @test kondoJArray[[2, 7, 12, 17, 22], :] ≈ -kondoJArray[[14, 19, 24, 9, 14], :] atol = 1e-10
-    @test kondoJArray[[6, 7, 8, 9, 10], :] ≈ -kondoJArray[[18, 19, 20, 17, 18], :] atol = 1e-10
-    @test kondoJArray[[1, 2, 3, 4, 5], :] ≈ kondoJArray[[21, 22, 23, 24, 25], :] atol = 1e-10
+
+function kondoArraySymmetriesCheck(kondoJArray, orbital, num_kspace)
+    if orbital == "p"
+        # check that the diagonal elements J(k,k) are all unity for the p-wave case
+        @test all(diag(kondoJArray[:, :]) .== 1)
+    else
+        # check that J(k_1,k_2) is zero if k1 and k2 are on the 
+        # kx=ky lines, for the d-wave case
+        kx_equals_ky = [1:num_kspace+1:num_kspace^2;
+            num_kspace^2-num_kspace+1:num_kspace-1:num_kspace]
+        @testset for (p1, p2) in Iterators.product(kx_equals_ky, kx_equals_ky)
+            @test kondoJArray[p1, p2] ≈ 0 atol = 1e-10
+        end
+    end
+
+    # J(k,q_x=0,q_y) == J(k,q_x=2π,q_y)
+    @test kondoJArray[1:num_kspace:num_kspace^2-num_kspace+1, :] ≈ kondoJArray[num_kspace:num_kspace:num_kspace^2, :] atol = 1e-10
+
+    # J(k,q_y=0,q_x) == J(k,q_y=2π,q_x)
+    @test kondoJArray[1:1:num_kspace, :] ≈ kondoJArray[num_kspace^2-num_kspace+1:1:num_kspace^2, :] atol = 1e-10
+
+    # J(k,q) == -J(k,q+π)
+    @testset for p1 in 1:num_kspace^2
+        for p2 in 1:num_kspace^2
+            @test kondoJArray[p1, p2] ≈ -kondoJArray[p1, particleHoleTransf(p2, num_kspace)] atol = 1e-10
+        end
+    end
+
+    # J(k,q) == J(q,k)
     @testset for p1 in eachindex(kondoJArray[1, :])
         for p2 in eachindex(kondoJArray[:, 1])
             @test kondoJArray[p1, p2] == kondoJArray[p2, p1]
         end
     end
-    @testset for p1 in rand(1:SIZE_BZ[1]^2, 10)
-        p2 = particleHoleTransf(p1, SIZE_BZ[1])
-        @test kondoJArray[p1, p2] == -1
+
+    # J(k,k+π) == -1 for p-wave and J(k,k+π) == -J(k,k)
+    @testset for p1 in rand(1:num_kspace^2, 10)
+        p2 = particleHoleTransf(p1, num_kspace)
+        if orbital == "p"
+            @test kondoJArray[p1, p2] ≈ -1 atol = 1e-10
+        else
+            @test kondoJArray[p1, p2] ≈ -kondoJArray[p1, p1] atol = 1e-10
+        end
     end
 
-    @testset for p2 in eachindex(kondoJArray[:, 1])
-        kx, ky = map1DTo2D(p2, SIZE_BZ[1])
-        @test kondoJArray[1, p2] ≈ -0.5 * (cos(kx) + cos(ky)) atol = 1e-10
-        @test kondoJArray[2, p2] ≈ -0.5 * (sin(kx) + cos(ky)) atol = 1e-10
-        @test kondoJArray[3, p2] ≈ 0.5 * (cos(kx) - cos(ky)) atol = 1e-10
-        @test kondoJArray[6, p2] ≈ -0.5 * (cos(kx) + sin(ky)) atol = 1e-10
-        @test kondoJArray[7, p2] ≈ -0.5 * (sin(kx) + sin(ky)) atol = 1e-10
-        @test kondoJArray[8, p2] ≈ 0.5 * (cos(kx) - sin(ky)) atol = 1e-10
-        @test kondoJArray[11, p2] ≈ 0.5 * (-cos(kx) + cos(ky)) atol = 1e-10
-        @test kondoJArray[12, p2] ≈ 0.5 * (-sin(kx) + cos(ky)) atol = 1e-10
-        @test kondoJArray[13, p2] ≈ 0.5 * (cos(kx) + cos(ky)) atol = 1e-10
+    # quantitative checks for the values of J(k,q)
+    @testset for p1 in eachindex(kondoJArray[:, 1])
+        kx, ky = map1DTo2D(p1, num_kspace)
+        for p2 in 1:num_kspace^2
+            qx, qy = map1DTo2D(p2, num_kspace)
+            if orbital == "p"
+                @test kondoJArray[p1, p2] ≈ 0.5 * (cos(kx - qx) + cos(ky - qy)) atol = 1e-10
+            else
+                @test kondoJArray[p1, p2] ≈ (cos(kx) - cos(ky)) * ((cos(qx) - cos(qy))) atol = 1e-10
+            end
+        end
+    end
+end
+
+
+@testset "Initialise Kondo coupling matrix" begin
+
+    @testset for orbital in ["p", "d"]
+        kondoJArray = initialiseKondoJ(SIZE_BZ[1], orbital, 1, 1.0)[:, :, 1]
+        kondoArraySymmetriesCheck(kondoJArray, orbital, SIZE_BZ[1])
     end
 end
 
@@ -147,4 +190,58 @@ end
             @test proceed_flags[p1, p2] ≈ proceed_flags[p3, p4] atol = 1e-10
         end
     end
+end
+
+
+@testset "Symmetrise RG flow" begin
+    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
+    kondoJArrayPrev = initialiseKondoJ(SIZE_BZ[1], "p", 3, 0.1)[:, :, 1]
+    @testset for E in [PROBE_ENERGIES[1], PROBE_ENERGIES[3]]
+        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersion, E, PROCEED_FLAGS, SIZE_BZ[1])
+        kondoJArrayNext = copy(kondoJArrayPrev)
+        kondoJArrayNext[innerIndicesArr] = kondoJArrayNext[innerIndicesArr] .* 2
+
+        externalVertexPairs = [
+            (p1, p2) for p1 in sort(innerIndicesArr) for
+            p2 in sort(innerIndicesArr)[sort(innerIndicesArr).>=p1]
+        ]
+        kondoJArrayNext_updated, proceed_flags = symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, SIZE_BZ[1], kondoJArrayNext, kondoJArrayPrev, proceed_flags)
+        @testset for p1 in 1:SIZE_BZ[1]^2
+            for p2 in 1:SIZE_BZ[1]^2
+                @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p2, p1] atol = 1e-10
+            end
+        end
+        holePoints = [4, 5, 9, 10, 14, 15, 19, 20]
+        particlePoints = [12, 13, 17, 18, 22, 23, 7, 8, 12, 13]
+
+        @testset for p1 in innerIndicesArr
+            for (p2, p3) in zip(holePoints, particlePoints)
+                @test kondoJArrayNext_updated[p1, p2] ≈ -kondoJArrayNext_updated[p1, p3] atol = 1e-10
+                @test proceed_flags[p1, p2] ≈ proceed_flags[p1, p3] atol = 1e-10
+            end
+        end
+        @testset for ((p1, p3), (p2, p4)) in Iterators.product(zip(holePoints, particlePoints), zip(holePoints, particlePoints))
+            @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p3, p4] atol = 1e-10
+            @test proceed_flags[p1, p2] ≈ proceed_flags[p3, p4] atol = 1e-10
+        end
+    end
+end
+
+
+@testset "Step-wise Renormalisation" begin
+    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
+    excludedVertexPairs = [
+        (p1, p2) for p1 in sort(EXCLUDED_INDICES_ONE) for
+        p2 in sort(EXCLUDED_INDICES_ONE)[sort(EXCLUDED_INDICES_ONE).>=p1]
+    ]
+    mixedVertexPairs = [(p1, p2) for p1 in INNER_INDICES_ONE for p2 in EXCLUDED_INDICES_ONE]
+    proceed_flags = fill(1, (SIZE_BZ[1]^2, SIZE_BZ[1]^2))
+    proceed_flags[CORNER_POINTS, :] .= 0
+    proceed_flags[:, CORNER_POINTS] .= 0
+    proceed_flags[CENTER_POINTS[1], CENTER_POINTS[1]] = 0
+    kondoJArrayPrev = initialiseKondoJ(SIZE_BZ[1], "d", 3, 1.0)
+    kondoJArrayNext, proceed_flags = stepwiseRenormalisation(INNER_INDICES_ONE, excludedVertexPairs, mixedVertexPairs, maximum(PROBE_ENERGIES), CORNER_POINTS, repeat(CENTER_POINTS, 4), proceed_flags, kondoJArrayPrev[:, :, 1], kondoJArrayPrev[:, :, 1], 0.0, SIZE_BZ[1], PROBE_ENERGIES[5] - PROBE_ENERGIES[3], "d", dos)
+    kondoArraySymmetriesCheck(kondoJArrayNext, "d", SIZE_BZ[1])
+    kondoJArrayNext, proceed_flags = stepwiseRenormalisation(INNER_INDICES_ONE, excludedVertexPairs, mixedVertexPairs, maximum(PROBE_ENERGIES), CORNER_POINTS, repeat(CENTER_POINTS, 4), proceed_flags, kondoJArrayPrev[:, :, 1], kondoJArrayPrev[:, :, 1], 0.0, SIZE_BZ[1], PROBE_ENERGIES[5] - PROBE_ENERGIES[3], "d", dos)
+    kondoArraySymmetriesCheck(kondoJArrayNext, "d", SIZE_BZ[1])
 end

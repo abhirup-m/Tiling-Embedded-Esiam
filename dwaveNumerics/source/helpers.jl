@@ -110,3 +110,12 @@ function particleHoleTransf(points::Vector{Int64}, num_kspace::Int64)
 end
 
 
+function tolerantSign(quant, boundary)
+    if boundary - abs(TOLERANCE) <= quant <= boundary + abs(TOLERANCE)
+        return 0
+    elseif quant > boundary + abs(TOLERANCE)
+        return 1
+    else
+        return -1
+    end
+end

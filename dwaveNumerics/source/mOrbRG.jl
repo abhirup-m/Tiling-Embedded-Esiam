@@ -7,8 +7,8 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, impO
     @assert num_kspace_half % 2 == 0
 
     # ensure that the choice of orbitals is d or p
-    @assert bathOrbital in ["p", "d"]
-    @assert impOrbital in ["p", "d"]
+    @assert bathOrbital in ["p", "d", "poff"]
+    @assert impOrbital in ["p", "d", "poff"]
 
     # num_kspace_half is the number of points from 0 until pi,
     # so that the total number of k-points along an axis is 

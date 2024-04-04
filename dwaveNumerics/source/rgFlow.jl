@@ -47,22 +47,26 @@ end
 
 
 function initialiseKondoJ(num_kspace::Int64, orbital::String, num_steps::Int64, J_init::Float64)
+    @assert orbital in ["d", "p", "poff"]
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
     kondoJArray = Array{Float64}(undef, num_kspace^2, num_kspace^2, num_steps)
     Threads.@threads for p1 = 1:num_kspace^2
-        for p2 = 1:num_kspace^2
-            k1x, k1y = map1DTo2D(p1, num_kspace)
-            k2x, k2y = map1DTo2D(p2, num_kspace)
-            if orbital == "d"
-                kondoJArray[p1, p2, 1] =
-                    J_init * (cos(k1x) - cos(k1y)) * (cos(k2x) - cos(k2y))
-            else
-                kondoJArray[p1, p2, 1] = 0.5 * J_init * (cos(k1x - k2x) + cos(k1y - k2y))
-            end
+        k1x, k1y = map1DTo2D(p1, num_kspace)
+        p2_arr = collect(p1:num_kspace^2)
+        k2x, k2y = map1DTo2D(p2_arr, num_kspace)
+        if orbital == "d"
+            kondoJArray[p1, p2_arr, 1] =
+                J_init * (cos(k1x) - cos(k1y)) .* (cos.(k2x) - cos.(k2y))
+        elseif orbital == "p"
+            kondoJArray[p1, p2_arr, 1] = 0.5 * J_init .* (cos.(k1x .- k2x) .+ cos.(k1y .- k2y))
+        else
+            kondoJArray[p1, p2_arr, 1] =
+                J_init * (cos(k1x) + cos(k1y)) .* (cos.(k2x) + cos.(k2y))
         end
+        kondoJArray[p2_arr, p1, 1] = kondoJArray[p1, p2_arr, 1]
     end
     return kondoJArray
 end
@@ -77,7 +81,7 @@ function bathIntForm(
     # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
     # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
     # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    @assert orbital == "d" || orbital == "p"
+    @assert orbital in ["d", "p", "poff"]
     @assert length(points) == 4
     k2_vals = map1DTo2D(points[2], num_kspace)
     k3_vals = map1DTo2D(points[3], num_kspace)
@@ -89,11 +93,17 @@ function bathIntForm(
             bathInt = bathInt .* (cos.(kx) - cos.(ky))
         end
         return bathInt
-    else
+    elseif orbital == "p"
         return 0.5 .* bathIntStr .* (
             cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .+
             cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
         )
+    else
+        bathInt = bathIntStr
+        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
+            bathInt = bathInt .* (cos.(kx) + cos.(ky))
+        end
+        return bathInt
     end
 end
 

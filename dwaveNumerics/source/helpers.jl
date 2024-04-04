@@ -2,41 +2,41 @@ include("./constants.jl")
 
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
-function map1DTo2D(point::Int64, num_kspace::Int64)
+function map1DTo2D(point::Int64, size_BZ::Int64)
     # Convert overall point to row and column values.
     # These serve as indices of kx and ky
-    kx_index = (point - 1) % num_kspace + 1
-    ky_index = div((point - 1), num_kspace) + 1
+    kx_index = (point - 1) % size_BZ + 1
+    ky_index = div((point - 1), size_BZ) + 1
 
     # construct a 1D array of possible k values, and convert
     # kx_index and ky_index into values
-    k_values = range(K_MIN, stop=K_MAX, length=num_kspace)
+    k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     return [k_values[kx_index], k_values[ky_index]]
 end
-function map1DTo2D(point::Vector{Int64}, num_kspace::Int64)
+function map1DTo2D(point::Vector{Int64}, size_BZ::Int64)
     # same as above, but for multiple points. In this case,
     # two tuples are returned, for kx values and ky values.
-    kx_index = (point .- 1) .% num_kspace .+ 1
-    ky_index = div.((point .- 1), num_kspace) .+ 1
-    k_values = range(K_MIN, stop=K_MAX, length=num_kspace)
+    kx_index = (point .- 1) .% size_BZ .+ 1
+    ky_index = div.((point .- 1), size_BZ) .+ 1
+    k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     return [k_values[kx_index], k_values[ky_index]]
 end
 
-function map2DTo1D(kx_val::Float64, ky_val::Float64, num_kspace::Int64)
+function map2DTo1D(kx_val::Float64, ky_val::Float64, size_BZ::Int64)
     # obtain the indices, given the values of kx and ky
-    k_values = range(K_MIN, stop=K_MAX, length=num_kspace)
+    k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     kx_index, ky_index = argmin(abs.(k_values .- kx_val)), argmin(abs.(k_values .- ky_val))
 
     # covert the row and column indices into an overall flattened index
-    return kx_index + (ky_index - 1) * num_kspace
+    return kx_index + (ky_index - 1) * size_BZ
 end
-function map2DTo1D(kx_val::Vector{Float64}, ky_val::Vector{Float64}, num_kspace::Int64)
+function map2DTo1D(kx_val::Vector{Float64}, ky_val::Vector{Float64}, size_BZ::Int64)
     # same but for multiple (kx,ky) pairs.
-    k_values = range(K_MIN, stop=K_MAX, length=num_kspace)
+    k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     points = Int64[]
     for (kx, ky) in zip(kx_val, ky_val)
         kx_index, ky_index = argmin(abs.(k_values .- kx)), argmin(abs.(k_values .- ky))
-        push!(points, kx_index + (ky_index - 1) * num_kspace)
+        push!(points, kx_index + (ky_index - 1) * size_BZ)
     end
     return points
 end
@@ -51,15 +51,15 @@ function tightBindDisp(kx_val::Float64, ky_val::Float64)
 end
 
 
-function getDensityOfStates(dispersionFunc, num_kspace)
-    kx_vals = repeat(range(K_MIN, stop=K_MAX, length=num_kspace), outer=num_kspace)
-    ky_vals = repeat(range(K_MIN, stop=K_MAX, length=num_kspace), inner=num_kspace)
+function getDensityOfStates(dispersionFunc, size_BZ)
+    kx_vals = repeat(range(K_MIN, stop=K_MAX, length=size_BZ), outer=size_BZ)
+    ky_vals = repeat(range(K_MIN, stop=K_MAX, length=size_BZ), inner=size_BZ)
 
     dispersion = dispersionFunc(kx_vals, ky_vals)
     dispersion_xplus1 = dispersionFunc(circshift(kx_vals, 1), ky_vals)
     dispersion_xminus1 = dispersionFunc(circshift(kx_vals, -1), ky_vals)
-    dispersion_yplus1 = dispersionFunc(ky_vals, circshift(ky_vals, num_kspace))
-    dispersion_yminus1 = dispersionFunc(ky_vals, circshift(ky_vals, -num_kspace))
+    dispersion_yplus1 = dispersionFunc(ky_vals, circshift(ky_vals, size_BZ))
+    dispersion_yminus1 = dispersionFunc(ky_vals, circshift(ky_vals, -size_BZ))
     dOfStates =
         4 ./
         sqrt.(
@@ -73,9 +73,9 @@ function getDensityOfStates(dispersionFunc, num_kspace)
     # normalise the DOS according to the convention \int dE \rho(E) = N (where N is the total number of k-states)
     dOfStates /=
         sum([
-            dos * abs(dispersion[i%num_kspace+1] - dispersion[i]) for
+            dos * abs(dispersion[i%size_BZ+1] - dispersion[i]) for
             (i, dos) in enumerate(dOfStates)
-        ]) / num_kspace^2
+        ]) / size_BZ^2
     return dOfStates, dispersion
 end
 
@@ -93,20 +93,20 @@ function getIsoEngCont(dispersion::Vector{Float64}, probeEnergy::Float64)
 end
 
 
-function particleHoleTransf(point::Int64, num_kspace::Int64)
+function particleHoleTransf(point::Int64, size_BZ::Int64)
     # obtain the particle-hole transformed point k --> (k + π) % π.
-    kx_val, ky_val = map1DTo2D(point, num_kspace)
+    kx_val, ky_val = map1DTo2D(point, size_BZ)
     kx_new = kx_val <= 0.5 * (K_MAX + K_MIN) ? kx_val + 0.5 * (K_MAX - K_MIN) : kx_val - 0.5 * (K_MAX - K_MIN)
     ky_new = ky_val <= 0.5 * (K_MAX + K_MIN) ? ky_val + 0.5 * (K_MAX - K_MIN) : ky_val - 0.5 * (K_MAX - K_MIN)
-    return map2DTo1D(kx_new, ky_new, num_kspace)
+    return map2DTo1D(kx_new, ky_new, size_BZ)
 end
 
-function particleHoleTransf(points::Vector{Int64}, num_kspace::Int64)
+function particleHoleTransf(points::Vector{Int64}, size_BZ::Int64)
     # obtain the particle-hole transformed point k --> (k + π) % π.
-    kx_vals, ky_vals = map1DTo2D(points, num_kspace)
+    kx_vals, ky_vals = map1DTo2D(points, size_BZ)
     kx_new = [kx <= 0.5 * (K_MAX + K_MIN) ? kx + 0.5 * (K_MAX - K_MIN) : kx - 0.5 * (K_MAX - K_MIN) for kx in kx_vals]
     ky_new = [ky <= 0.5 * (K_MAX + K_MIN) ? ky + 0.5 * (K_MAX - K_MIN) : ky - 0.5 * (K_MAX - K_MIN) for ky in ky_vals]
-    return map2DTo1D(kx_new, ky_new, num_kspace)
+    return map2DTo1D(kx_new, ky_new, size_BZ)
 end
 
 

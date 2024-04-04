@@ -27,30 +27,30 @@ end
 end
 
 
-function kondoArraySymmetriesCheck(kondoJArray, orbital, num_kspace)
+function kondoArraySymmetriesCheck(kondoJArray, orbital, size_BZ)
     if orbital == "p"
         # check that the diagonal elements J(k,k) are all unity for the p-wave case
         @test all(diag(kondoJArray[:, :]) .== 1)
     else
         # check that J(k_1,k_2) is zero if k1 and k2 are on the 
         # kx=ky lines, for the d-wave case
-        kx_equals_ky = [1:num_kspace+1:num_kspace^2;
-            num_kspace^2-num_kspace+1:num_kspace-1:num_kspace]
+        kx_equals_ky = [1:size_BZ+1:size_BZ^2;
+            size_BZ^2-size_BZ+1:size_BZ-1:size_BZ]
         @testset for (p1, p2) in Iterators.product(kx_equals_ky, kx_equals_ky)
             @test kondoJArray[p1, p2] ≈ 0 atol = 1e-10
         end
     end
 
     # J(k,q_x=0,q_y) == J(k,q_x=2π,q_y)
-    @test kondoJArray[1:num_kspace:num_kspace^2-num_kspace+1, :] ≈ kondoJArray[num_kspace:num_kspace:num_kspace^2, :] atol = 1e-10
+    @test kondoJArray[1:size_BZ:size_BZ^2-size_BZ+1, :] ≈ kondoJArray[size_BZ:size_BZ:size_BZ^2, :] atol = 1e-10
 
     # J(k,q_y=0,q_x) == J(k,q_y=2π,q_x)
-    @test kondoJArray[1:1:num_kspace, :] ≈ kondoJArray[num_kspace^2-num_kspace+1:1:num_kspace^2, :] atol = 1e-10
+    @test kondoJArray[1:1:size_BZ, :] ≈ kondoJArray[size_BZ^2-size_BZ+1:1:size_BZ^2, :] atol = 1e-10
 
     # J(k,q) == -J(k,q+π)
-    @testset for p1 in 1:num_kspace^2
-        for p2 in 1:num_kspace^2
-            @test kondoJArray[p1, p2] ≈ -kondoJArray[p1, particleHoleTransf(p2, num_kspace)] atol = 1e-10
+    @testset for p1 in 1:size_BZ^2
+        for p2 in 1:size_BZ^2
+            @test kondoJArray[p1, p2] ≈ -kondoJArray[p1, particleHoleTransf(p2, size_BZ)] atol = 1e-10
         end
     end
 
@@ -62,8 +62,8 @@ function kondoArraySymmetriesCheck(kondoJArray, orbital, num_kspace)
     end
 
     # J(k,k+π) == -1 for p-wave and J(k,k+π) == -J(k,k)
-    @testset for p1 in rand(1:num_kspace^2, 10)
-        p2 = particleHoleTransf(p1, num_kspace)
+    @testset for p1 in rand(1:size_BZ^2, 10)
+        p2 = particleHoleTransf(p1, size_BZ)
         if orbital == "p"
             @test kondoJArray[p1, p2] ≈ -1 atol = 1e-10
         else
@@ -73,9 +73,9 @@ function kondoArraySymmetriesCheck(kondoJArray, orbital, num_kspace)
 
     # quantitative checks for the values of J(k,q)
     @testset for p1 in eachindex(kondoJArray[:, 1])
-        kx, ky = map1DTo2D(p1, num_kspace)
-        for p2 in 1:num_kspace^2
-            qx, qy = map1DTo2D(p2, num_kspace)
+        kx, ky = map1DTo2D(p1, size_BZ)
+        for p2 in 1:size_BZ^2
+            qx, qy = map1DTo2D(p2, size_BZ)
             if orbital == "p"
                 @test kondoJArray[p1, p2] ≈ 0.5 * (cos(kx - qx) + cos(ky - qy)) atol = 1e-10
             else

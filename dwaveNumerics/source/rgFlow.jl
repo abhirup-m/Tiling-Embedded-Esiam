@@ -3,8 +3,8 @@ using ProgressMeter
 include("./helpers.jl")
 
 
-function getCutOffEnergy(num_kspace)
-    kx_pos_arr = collect(range(K_MIN, K_MAX, length=num_kspace))
+function getCutOffEnergy(size_BZ)
+    kx_pos_arr = collect(range(K_MIN, K_MAX, length=size_BZ))
     kx_holesector = kx_pos_arr[kx_pos_arr.>=0]
     cutOffEnergies = -tightBindDisp(kx_holesector, 0 .* kx_holesector)
     cutOffEnergies = cutOffEnergies[cutOffEnergies.>=-TOLERANCE]
@@ -12,11 +12,11 @@ function getCutOffEnergy(num_kspace)
 end
 
 
-function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float64, proceed_flags::Matrix{Int64}, num_kspace::Int64)
+function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float64, proceed_flags::Matrix{Int64}, size_BZ::Int64)
 
     # get the k-points that will be decoupled at this step, by getting the isoenergetic contour at the cutoff energy.
     cutoffPoints = unique(getIsoEngCont(dispersionArray, energyCutoff))
-    cutoffHolePoints = particleHoleTransf(cutoffPoints, num_kspace)
+    cutoffHolePoints = particleHoleTransf(cutoffPoints, size_BZ)
 
     # these cutoff points will no longer participate in the RG flow, so disable their flags
     proceed_flags[cutoffPoints, :] .= 0
@@ -30,12 +30,12 @@ function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float
     innerIndicesArr = [
         point for (point, energy) in enumerate(dispersionArray) if
         abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
-        map1DTo2D(point, num_kspace)[1] <= 0.5 * (K_MAX + K_MIN)
+        map1DTo2D(point, size_BZ)[1] <= 0.5 * (K_MAX + K_MIN)
     ]
     excludedIndicesArr = [
         point for (point, energy) in enumerate(dispersionArray) if
         abs(energy) < (abs(energyCutoff) - TOLERANCE) &&
-        map1DTo2D(point, num_kspace)[1] > 0.5 * (K_MAX + K_MIN)
+        map1DTo2D(point, size_BZ)[1] > 0.5 * (K_MAX + K_MIN)
     ]
     excludedVertexPairs = [
         (p1, p2) for p1 in sort(excludedIndicesArr) for
@@ -46,25 +46,25 @@ function highLowSeparation(dispersionArray::Vector{Float64}, energyCutoff::Float
 end
 
 
-function initialiseKondoJ(num_kspace::Int64, orbital::String, num_steps::Int64, J_init::Float64)
+function initialiseKondoJ(size_BZ::Int64, orbital::String, num_steps::Int64, J_val::Float64)
     @assert orbital in ["d", "p", "poff"]
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = Array{Float64}(undef, num_kspace^2, num_kspace^2, num_steps)
-    Threads.@threads for p1 = 1:num_kspace^2
-        k1x, k1y = map1DTo2D(p1, num_kspace)
-        p2_arr = collect(p1:num_kspace^2)
-        k2x, k2y = map1DTo2D(p2_arr, num_kspace)
+    kondoJArray = Array{Float64}(undef, size_BZ^2, size_BZ^2, num_steps)
+    Threads.@threads for p1 = 1:size_BZ^2
+        k1x, k1y = map1DTo2D(p1, size_BZ)
+        p2_arr = collect(p1:size_BZ^2)
+        k2x, k2y = map1DTo2D(p2_arr, size_BZ)
         if orbital == "d"
             kondoJArray[p1, p2_arr, 1] =
-                J_init * (cos(k1x) - cos(k1y)) .* (cos.(k2x) - cos.(k2y))
+                J_val * (cos(k1x) - cos(k1y)) .* (cos.(k2x) - cos.(k2y))
         elseif orbital == "p"
-            kondoJArray[p1, p2_arr, 1] = 0.5 * J_init .* (cos.(k1x .- k2x) .+ cos.(k1y .- k2y))
+            kondoJArray[p1, p2_arr, 1] = 0.5 * J_val .* (cos.(k1x .- k2x) .+ cos.(k1y .- k2y))
         else
             kondoJArray[p1, p2_arr, 1] =
-                J_init * (cos(k1x) + cos(k1y)) .* (cos.(k2x) + cos.(k2y))
+                J_val * (cos(k1x) + cos(k1y)) .* (cos.(k2x) + cos.(k2y))
         end
         kondoJArray[p2_arr, p1, 1] = kondoJArray[p1, p2_arr, 1]
     end
@@ -75,7 +75,7 @@ end
 function bathIntForm(
     bathIntStr::Float64,
     orbital::String,
-    num_kspace::Int64,
+    size_BZ::Int64,
     points,
 )
     # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
@@ -83,10 +83,10 @@ function bathIntForm(
     # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
     @assert orbital in ["d", "p", "poff"]
     @assert length(points) == 4
-    k2_vals = map1DTo2D(points[2], num_kspace)
-    k3_vals = map1DTo2D(points[3], num_kspace)
-    k4_vals = map1DTo2D(points[4], num_kspace)
-    k1_vals = map1DTo2D(points[1], num_kspace)
+    k2_vals = map1DTo2D(points[2], size_BZ)
+    k3_vals = map1DTo2D(points[3], size_BZ)
+    k4_vals = map1DTo2D(points[4], size_BZ)
+    k1_vals = map1DTo2D(points[1], size_BZ)
     if orbital == "d"
         bathInt = bathIntStr
         for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
@@ -143,9 +143,9 @@ function deltaJk1k2(
 end
 
 
-function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, num_kspace, kondoJArrayNext, kondoJArrayPrev, proceed_flags)
+function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, size_BZ, kondoJArrayNext, kondoJArrayPrev, proceed_flags)
     Threads.@threads for (innerIndex1, excludedIndex) in mixedVertexPairs
-        innerIndex2 = particleHoleTransf(excludedIndex, num_kspace)
+        innerIndex2 = particleHoleTransf(excludedIndex, size_BZ)
         @assert innerIndex1 in innerIndicesArr
         @assert innerIndex2 in innerIndicesArr
         kondoJArrayNext[innerIndex1, excludedIndex] = kondoJArrayNext[excludedIndex, innerIndex1] = -kondoJArrayNext[innerIndex1, innerIndex2]
@@ -157,7 +157,7 @@ function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs
         end
     end
     Threads.@threads for (index1, index2) in excludedVertexPairs
-        sourcePoint1, sourcePoint2 = particleHoleTransf([index1, index2], num_kspace)
+        sourcePoint1, sourcePoint2 = particleHoleTransf([index1, index2], size_BZ)
         @assert sourcePoint1 in innerIndicesArr
         @assert sourcePoint2 in innerIndicesArr
         kondoJArrayNext[index1, index2] = kondoJArrayNext[index2, index1] = kondoJArrayNext[sourcePoint1, sourcePoint2]
@@ -184,7 +184,7 @@ function stepwiseRenormalisation(
     kondoJArrayPrev::Array{Float64,2},
     kondoJArrayNext::Array{Float64,2},
     bathIntStr::Float64,
-    num_kspace::Int64,
+    size_BZ::Int64,
     deltaEnergy::Float64,
     orbital::String,
     densityOfStates::Vector{Float64},
@@ -199,7 +199,7 @@ function stepwiseRenormalisation(
             bathIntForm(
                 bathIntStr,
                 orbital,
-                num_kspace,
+                size_BZ,
                 [cutoffPoints, cutoffPoints, cutoffPoints, cutoffPoints],
             ) / 2,
         )
@@ -229,7 +229,7 @@ function stepwiseRenormalisation(
             [
                 bathIntStr,
                 orbital,
-                num_kspace,
+                size_BZ,
                 [cutoffHolePoints, innerIndex2, innerIndex1, cutoffPoints],
             ],
             dOfStates_cutoff,
@@ -239,6 +239,6 @@ function stepwiseRenormalisation(
         proceed_flags[innerIndex1, innerIndex2] = proceed_flag_k1k2
         proceed_flags[innerIndex2, innerIndex1] = proceed_flag_k1k2
     end
-    kondoJArrayNext, proceed_flags = symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, num_kspace, kondoJArrayNext, kondoJArrayPrev, proceed_flags)
+    kondoJArrayNext, proceed_flags = symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, size_BZ, kondoJArrayNext, kondoJArrayPrev, proceed_flags)
     return kondoJArrayNext, proceed_flags
 end

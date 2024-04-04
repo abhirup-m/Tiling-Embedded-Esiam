@@ -2,22 +2,22 @@ using Test
 include("../source/helpers.jl")
 
 @testset "Mapping 1D To 2D" begin
-    @testset for num_kspace in SIZE_BZ
-        points_subset = POINTS(num_kspace)
+    @testset for size_BZ in SIZE_BZ
+        points_subset = POINTS(size_BZ)
         @testset for (test, testPoint) in enumerate(points_subset)
-            @test map1DTo2D(testPoint, num_kspace) ≈ [KX_VALUES[test], KY_VALUES[test]]
+            @test map1DTo2D(testPoint, size_BZ) ≈ [KX_VALUES[test], KY_VALUES[test]]
         end
-        @test map1DTo2D(points_subset, num_kspace) ≈ [KX_VALUES, KY_VALUES]
+        @test map1DTo2D(points_subset, size_BZ) ≈ [KX_VALUES, KY_VALUES]
     end
 end
 
 @testset "Mapping 2D To 1D" begin
-    @testset for num_kspace in SIZE_BZ
-        points_subset = POINTS(num_kspace)
+    @testset for size_BZ in SIZE_BZ
+        points_subset = POINTS(size_BZ)
         @testset for test in eachindex(KX_VALUES)
-            @test map2DTo1D(KX_VALUES[test], KY_VALUES[test], num_kspace) ≈ points_subset[test]
+            @test map2DTo1D(KX_VALUES[test], KY_VALUES[test], size_BZ) ≈ points_subset[test]
         end
-        @test map2DTo1D(KX_VALUES, KY_VALUES, num_kspace) ≈ points_subset
+        @test map2DTo1D(KX_VALUES, KY_VALUES, size_BZ) ≈ points_subset
     end
 end
 

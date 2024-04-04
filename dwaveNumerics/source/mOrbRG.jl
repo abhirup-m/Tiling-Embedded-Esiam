@@ -1,34 +1,30 @@
 using ProgressMeter
 include("./rgFlow.jl")
 
-function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, impOrbital::String, bathOrbital::String)
+function main(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String})
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
-    @assert num_kspace_half % 2 == 0
+    @assert size_BZ != 0
 
     # ensure that the choice of orbitals is d or p
+    impOrbital, bathOrbital = orbitals
     @assert bathOrbital in ["p", "d", "poff"]
     @assert impOrbital in ["p", "d", "poff"]
 
-    # num_kspace_half is the number of points from 0 until pi,
-    # so that the total number of k-points along an axis is 
-    # num_kspace_half(for [antinode, pi)) + 1(for node) + num_kspace_half(for (node, antinode])
-    num_kspace = 2 * num_kspace_half + 1
+    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
 
-    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, num_kspace)
-
-    cutOffEnergies = getCutOffEnergy(num_kspace)
+    cutOffEnergies = getCutOffEnergy(size_BZ)
 
     # Kondo coupling must be stored in a 3D matrix. Two of the dimensions store the 
     # incoming and outgoing momentum indices, while the third dimension stores the 
     # behaviour along the RG flow. For example, J[i][j][k] reveals the value of J 
     # for the momentum pair (i,j) at the k^th Rg step.
-    kondoJArray = initialiseKondoJ(num_kspace, impOrbital, num_kspace_half + 1, J_init)
+    kondoJArray = initialiseKondoJ(size_BZ, impOrbital, trunc(Int, (size_BZ + 1) / 2), J_val)
 
     # define flags to track whether the RG flow for a particular J_{k1, k2} needs to be stopped 
     # (perhaps because it has gone to zero, or its denominator has gone to zero). These flags are
     # initialised to one, which means that by default, the RG can proceed for all the momenta.
-    proceed_flags = fill(1, num_kspace^2, num_kspace^2)
+    proceed_flags = fill(1, size_BZ^2, size_BZ^2)
 
     # Run the RG flow starting from the maximum energy, down to the penultimate energy (ΔE), in steps of ΔE
     @showprogress for (stepIndex, energyCutoff) in enumerate(cutOffEnergies[1:end-1])
@@ -44,7 +40,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, impO
             break
         end
 
-        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersionArray, energyCutoff, proceed_flags, num_kspace)
+        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersionArray, energyCutoff, proceed_flags, size_BZ)
 
         # calculate the renormalisation for this step and for all k1,k2 pairs
         kondoJArrayNext, proceed_flags_updated = stepwiseRenormalisation(
@@ -58,7 +54,7 @@ function main(num_kspace_half::Int64, J_init::Float64, bathIntStr::Float64, impO
             kondoJArray[:, :, stepIndex],
             kondoJArray[:, :, stepIndex+1],
             bathIntStr,
-            num_kspace,
+            size_BZ,
             deltaEnergy,
             bathOrbital,
             densityOfStates,

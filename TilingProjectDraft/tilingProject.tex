@@ -216,15 +216,10 @@ where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\t
 \begin{equation}\begin{aligned}
 	\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2} = \Delta J^{(j)}_{{\bf k}_1, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2}~.
 \end{aligned}\end{equation}
-These transformations involve translating one or both momenta through the center of the Brillouin zone. Further symmetries are obtained by translating both momenta through the \(x-\) or \(y-\)axes:
-\begin{equation}\begin{aligned}
-	\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2} = \Delta J^{(j)}_{{\bf k}_1, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2}~.
-\end{aligned}\end{equation}
-
+These transformations involve translating one or both momenta through the center of the Brillouin zone.
 
 We now consider some specific cases of these results.
-
-\subsubsection{Same symmetries in the Kondo coupling and bath interaction}
+\paragraph{Same symmetries in the Kondo coupling and bath interaction}
 Assuming that both the Kondo interaction and the bath interaction couple to the \(d-\)wave channel, we have the microscopic functional forms 
 \begin{equation}\begin{aligned}
 	J^{(0)}_{{\bf k},{\bf q}} &= J f_\mathcal{D}({\bf k}) f_\mathcal{D}({\bf q})~,\\
@@ -237,14 +232,14 @@ and
 where \(f_\mathcal{D}({\bf k}) = \cos\left( ak_{x} \right) - \cos\left( ak_y \right) \) is the \(d-\)wave symmetric functional form in \(k-\)space
 The numerator of the RG equations becomes
 \begin{equation}\begin{aligned}
-	f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf q})^4\left[J^2 + 4JW\right] ~.
+	f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf q})^2\left[J^2 + 4JWf_\mathcal{D}({\bf q})^2\right] ~.
 \end{aligned}\end{equation}
 Since a factor of \(f_\mathcal{D}({\bf k}_1)f_\mathcal{D}({\bf k}_2)\) factors out of the RG equation, the Kondo coupling will preserve its momentum dependence during the RG equation, and we can study the RG flow of the amplitude \(J\):
 \begin{equation}\begin{aligned}
-	\Delta J = \sum_{{\bf q} \in \text{PS}} \frac{-\left(J^2 + 4JW\right) f_\mathcal{D}({\bf q})^4}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{2}f_\mathcal{D}({\bf q})^4}~.
+	\Delta J = \sum_{{\bf q} \in \text{PS}} \frac{-f_\mathcal{D}({\bf q})^2\left[J^2 + 4JWf_\mathcal{D}({\bf q})^2\right]}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{2}f_\mathcal{D}({\bf q})^4}~.
 \end{aligned}\end{equation}
 
-\subsubsection{Different symmetries in the Kondo coupling and bath interaction}
+\paragraph{Different symmetries in the Kondo coupling and bath interaction}
 One can also study the case when the bath interaction has \(p-\)wave symmetry:
 \begin{equation}\begin{aligned}
 	W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}} =& \frac{1}{2}W f_\mathcal{P}\left(\pi + {\bf q}, {\bf k}_2, {\bf k}_1, {\bf q}\right) ~,\\

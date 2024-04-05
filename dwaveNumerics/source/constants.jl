@@ -8,6 +8,9 @@
 # overlap integral 't' set to 1
 (@isdefined HOP_T) || const HOP_T = 1.0
 
+(@isdefined DISCRETE_CGRAD) || const DISCRETE_CGRAD = cgrad(:BuPu_3, 3, categorical=true)
+(@isdefined FIG_SIZE) || const FIG_SIZE = (750, 300)
+
 # for testing. 
 (@isdefined SIZE_BZ) || const SIZE_BZ = [5, 101, 1001]
 (@isdefined KX_VALUES) || const KX_VALUES = [K_MIN, K_MAX, K_MIN, K_MAX, 0]

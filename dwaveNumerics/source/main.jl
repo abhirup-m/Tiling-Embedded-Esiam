@@ -1,15 +1,17 @@
 using ProgressMeter
-using Plots, Measures, LaTeXStrings
+using Makie, CairoMakie, Measures, LaTeXStrings
 using JLD2
+set_theme!(theme_latexfonts())
+update_theme!(fontsize=24)
+
 include("./rgFlow.jl")
 include("./probes.jl")
-
-animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "kondoUb_kspaceRG_$(orbitals[1])_$(orbitals[2])_wave_$(size_BZ)_$(round(W_by_J_min, digits=4))_$(size_BZ)_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
+animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])_$(orbitals[2])_$(size_BZ)_$(round(W_by_J_min, digits=4))_$(size_BZ)_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
 
 function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String})
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
-    @assert size_BZ != 0
+    @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..."
 
     # ensure that the choice of orbitals is d or p
     impOrbital, bathOrbital = orbitals
@@ -71,40 +73,51 @@ function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, or
 end
 
 
-function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr)
-    p1 = plot()
-    p2 = plot()
+function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr, W_by_J)
     if probeName == "scattProb"
-        results_norm, results_unnorm, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3])
+        results_norm, _, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3])
         results1 = results_bool
         results2 = log10.(results_norm)
-        title_left = "relevance/irrelevanceo of \$\\Gamma(k)\$"
-        title_right = "\$\\Gamma(k) = \\sum_q J(k,q)^2\$"
+        title_left = L"\mathrm{relevance/irrelevance~of~}\Gamma(k)"
+        title_right = L"\Gamma(k) = \sum_q J(k,q)^2"
         cmap_left = DISCRETE_CGRAD
-        p1, p2 = plotHeatmaps(reshape(results1, (size_BZ, size_BZ)),
-            reshape(results2, (size_BZ, size_BZ)),
-            xarr, yarr, [p1, p2], cmap_left, [title_left, title_right])
     elseif probeName == "kondoCoupFSMap"
         results1, results2 = kondoCoupFSMap(size_BZ, kondoJArrayFull)
-        title_left = "\$J(k,q_\\mathrm{node})\$"
-        title_right = "\$J(k,q_{\\mathrm{antin.}})\$"
+        title_left = L"J(k,q_\mathrm{node})"
+        title_right = L"J(k,q_{\mathrm{antin.}})"
         cmap_left = :matter
-        p1, p2 = plotHeatmaps(reshape(results1, (size_BZ, size_BZ)),
-            reshape(results2, (size_BZ, size_BZ)),
-            xarr, yarr, [p1, p2], cmap_left, [title_left, title_right])
-        scatter!(p1, [-1 / 2], [-1 / 2], markersize=6, markercolor=:grey, markerstrokecolor=:white, markerstrokewidth=4)
-        scatter!(p2, [0], [-1], markersize=6, markercolor=:grey, markerstrokecolor=:white, markerstrokewidth=4)
+    elseif probeName == "kondoCoupMidwayMap"
+        (results1, results2), (kx_plot, ky_plot) = kondoCoupMidwayMap(size_BZ, kondoJArrayFull)
+        title_left = L"J(k,q_\mathrm{node^\prime})"
+        title_right = L"J(k,q_{\mathrm{antin.^\prime}})"
+        cmap_left = :matter
     elseif probeName == "kondoCoupDiagMap"
         results1 = kondoCoupDiagMap(size_BZ, kondoJArrayFull)
         results2 = results1
-        title_left = "\$J(k,k)\$"
+        title_left = L"J(k,k)"
         title_right = ""
         cmap_left = :matter
-        p1, p2 = plotHeatmaps(reshape(results1, (size_BZ, size_BZ)),
-            reshape(results2, (size_BZ, size_BZ)),
-            xarr, yarr, [p1, p2], cmap_left, [title_left, title_right])
     end
-    return p1, p2
+    fig = Figure()
+    titlelayout = GridLayout(fig[0, 1:4])
+    Label(titlelayout[1, 1:4], L"W/J=%$(W_by_J)", justification=:center, padding=(0, 0, -20, 0))
+    ax1 = Axis(fig[1, 1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title_left)
+    ax2 = Axis(fig[1, 3], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title_right)
+    ax1, ax2 = plotHeatmaps(reshape(results1, (size_BZ, size_BZ)),
+        reshape(results2, (size_BZ, size_BZ)),
+        xarr, yarr, fig, [ax1, ax2], cmap_left)
+    if probeName == "kondoCoupFSMap"
+        scatter!(ax1, [-1 / 2], [-1 / 2], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
+        scatter!(ax2, [0], [-1], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
+    end
+    if probeName == "kondoCoupMidwayMap"
+        scatter!(ax1, [kx_plot[1] / pi], [ky_plot[1] / pi], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
+        scatter!(ax2, [kx_plot[2] / pi], [ky_plot[2] / pi], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
+    end
+    colsize!(fig.layout, 1, Aspect(1, 1.0))
+    colsize!(fig.layout, 3, Aspect(1, 1.0))
+    resize_to_layout!(fig)
+    return fig
 end
 
 
@@ -112,28 +125,28 @@ function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, 
     @assert size_BZ % 2 != 0
     savePaths = ["data/$(orbitals)_$(size_BZ)_$(round(J_val, digits=3))_$(round(W_by_J, digits=3)).jld2" for W_by_J in W_by_J_range]
     for (j, W_by_J) in enumerate(W_by_J_range)
-        kondoJArrayFull, dispersionArray = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals)
-        kondoJArrayEnds = kondoJArrayFull[:, :, [1, end]]
-        jldsave(savePaths[j]; kondoJArrayEnds)
+        kondoJArrayFull, _ = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals)
+        file = jldopen(savePaths[j], "w")
+        file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
+        close(file)
     end
     k_vals = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     for probeName in probes
         pdfFileNames = ["fig_$(W_by_J).pdf" for W_by_J in W_by_J_range]
-        anim = @animate for (W_by_J, savePath, pdfFileName) in zip(W_by_J_range, savePaths, pdfFileNames)
-            kondoJArrayFull = jldopen(savePath, "r")["kondoJArrayEnds"]
-            kondoJArrayFull = reshape(kondoJArrayFull, (size_BZ^2, size_BZ^2, 2))
-            p1, p2 = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, k_vals, k_vals)
-            p = plot(p1, p2, size=FIG_SIZE,
-                top_margin=3mm, left_margin=[5mm 10mm], bottom_margin=5mm,
-                xlabel="\$ \\mathrm{k_x/\\pi} \$", ylabel="\$ \\mathrm{k_y/\\pi} \$",
-                dpi=100 * figScale,
-            )
-            savefig(p, pdfFileName)
+        # anim = @animate 
+        for (W_by_J, savePath, pdfFileName) in zip(W_by_J_range, savePaths, pdfFileNames)
+            file = jldopen(savePath, "r")
+            kondoJArrayEnds = file["kondoJArrayEnds"]
+            close(file)
+            kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
+            fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, k_vals, k_vals, W_by_J)
+            display(fig)
+            save(pdfFileName, fig, pt_per_unit=100)
         end
         plotName = animName(orbitals, size_BZ, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)
-        run(`pdfunite $pdfFileNames fig-$(plotName)-$(replace(probeName, " " => "-")).pdf`)
+        run(`pdfunite $pdfFileNames $(plotName)-$(replace(probeName, " " => "-")).pdf`)
         run(`rm $pdfFileNames`)
-        gif(anim, plotName * "-$(replace(probeName, " " => "-")).gif", fps=0.5)
+        # gif(anim, plotName * "-$(replace(probeName, " " => "-")).gif", fps=0.5)
         # gif(anim, plotName * "-$(replace(probe, " " => "-")).mp4", fps=0.5)
     end
 end

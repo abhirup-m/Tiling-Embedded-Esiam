@@ -1,54 +1,33 @@
 using LinearAlgebra
 using CairoMakie
+using Makie
 
 function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64)
-    bare_J_squared = diag(kondoJArray[:, :, 1] * kondoJArray[:, :, 1]')
-    results_unnorm = diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]')
-    results_norm = results_unnorm ./ bare_J_squared
-    results_bool = [tolerantSign(results_norm_i, 1) for results_norm_i in results_norm]
-    return results_norm, results_unnorm, results_bool
+    results = diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]')
+    results_bare = diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, 1]')
+    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL) # [tolerantSign(results_norm_i, RG_RELEVANCE_TOL) for results_norm_i in results_norm]
+    results[results_bool.<0] .= 0
+    return results, results_bare, results_bool
 end
 
 
-function kondoCoupFSMap(size_BZ, kondoJArrayFull)
-    chunk = 0.25 * (size_BZ - 5)
-    node = trunc(Int64, (1 + chunk) * size_BZ + 2 + chunk)
-    antinode = trunc(Int64, 3 + 2 * chunk)
-    results1 = kondoJArrayFull[node, :, end]
-    results2 = kondoJArrayFull[antinode, :, end]
-    return [results1, results2]
+function kondoCoupMap(k_vals, size_BZ, kondoJArrayFull)
+    kx, ky = k_vals
+    kspacePoint = map2DTo1D(kx, ky, size_BZ)
+    results = kondoJArrayFull[kspacePoint, :, end] .^ 2
+    results_bare = kondoJArrayFull[kspacePoint, :, 1] .^ 2
+    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / size_BZ^2)
+    return results, results_bare, results_bool
 end
 
 
-function kondoCoupMidwayMap(size_BZ, kondoJArrayFull)
-    chunk = 0.25 * (size_BZ - 5)
-    point1 = trunc(Int64, ((3 / 8) * size_BZ - 1) * size_BZ) + trunc(Int64, (3 / 8) * size_BZ)
-    antinode = 3 + 2 * chunk
-    point2 = trunc(Int64, antinode + size_BZ)
-    kx, ky = map1DTo2D([point1, point2], size_BZ)
-    println([kx, ky])
-    results1 = kondoJArrayFull[point1, :, end]
-    results2 = kondoJArrayFull[point2, :, end]
-    return [results1, results2], [kx, ky]
-end
-
-
-function kondoCoupDiagMap(size_BZ, kondoJArrayFull)
-    return [kondoJArrayFull[i, i, end] for i in 1:size_BZ^2]
-end
-
-function plotHeatmaps(results1, results2, xarr, yarr, fig, axes, cmap_left)
-    replace!(results1, NaN => 0)
-    replace!(results2, NaN => 0)
-    minima = minimum.([results1, results2])
-    maxima = maximum.([results1, results2])
-
-    hm1 = heatmap!(axes[1], xarr, yarr, results1, colormap=cmap_left,
-    )
-    Colorbar(fig[1, 2], hm1, colorrange=(minima[1], maxima[1]))
-    hm2 = heatmap!(axes[2], xarr, yarr, results2, colormap=:matter,
-    )
-    Colorbar(fig[1, 4], hm2, colorrange=(minima[2], maxima[2]))
+function plotHeatmaps(results_arr, xarr, yarr, fig, axes, cmaps, size_BZ)
+    for (i, result) in enumerate(results_arr)
+        reshaped_result = reshape(result, (size_BZ, size_BZ))
+        hmap = heatmap!(axes[i], xarr, yarr, reshaped_result, colormap=cmaps[i],
+        )
+        Colorbar(fig[1, 2*i], hmap, colorrange=(minimum(result), maximum(result)))
+    end
     return axes
 end
 

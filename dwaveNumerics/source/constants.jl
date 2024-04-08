@@ -10,6 +10,7 @@
 
 (@isdefined DISCRETE_CGRAD) || const DISCRETE_CGRAD = cgrad(:BuPu_3, 3, categorical=true)
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
+(@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2
 
 # for testing. 
 (@isdefined SIZE_BZ) || const SIZE_BZ = [5, 101, 1001]

@@ -9,9 +9,6 @@ include("./probes.jl")
 animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])_$(orbitals[2])_$(size_BZ)_$(round(W_by_J_min, digits=4))_$(size_BZ)_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
 
 function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String})
-    # ensure that [0, \pi] has odd number of states, so 
-    # that the nodal point is well-defined.
-    @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..."
 
     # ensure that the choice of orbitals is d or p
     impOrbital, bathOrbital = orbitals
@@ -74,55 +71,62 @@ end
 
 
 function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr, W_by_J)
+    titles = Vector{LaTeXString}(undef, 3)
+    cmaps = [DISCRETE_CGRAD, :matter, :matter]
     if probeName == "scattProb"
-        results_norm, _, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3])
-        results1 = results_bool
-        results2 = log10.(results_norm)
-        title_left = L"\mathrm{relevance/irrelevance~of~}\Gamma(k)"
-        title_right = L"\Gamma(k) = \sum_q J(k,q)^2"
-        cmap_left = DISCRETE_CGRAD
-    elseif probeName == "kondoCoupFSMap"
-        results1, results2 = kondoCoupFSMap(size_BZ, kondoJArrayFull)
-        title_left = L"J(k,q_\mathrm{node})"
-        title_right = L"J(k,q_{\mathrm{antin.}})"
-        cmap_left = :matter
-    elseif probeName == "kondoCoupMidwayMap"
-        (results1, results2), (kx_plot, ky_plot) = kondoCoupMidwayMap(size_BZ, kondoJArrayFull)
-        title_left = L"J(k,q_\mathrm{node^\prime})"
-        title_right = L"J(k,q_{\mathrm{antin.^\prime}})"
-        cmap_left = :matter
-    elseif probeName == "kondoCoupDiagMap"
-        results1 = kondoCoupDiagMap(size_BZ, kondoJArrayFull)
-        results2 = results1
-        title_left = L"J(k,k)"
-        title_right = ""
-        cmap_left = :matter
+        results, results_bare, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3])
+        titles[1] = L"\mathrm{relevance/irrelevance~of~}\Gamma(k)"
+        titles[2] = L"\Gamma(k) = \sum_q J(k,q)^2"
+        titles[3] = L"\Gamma^{(0)}(k) = \sum_q J(k,q)^2"
+    elseif probeName == "kondoCoupNodeMap"
+        node = (-pi / 2, -pi / 2)
+        results, results_bare, results_bool = kondoCoupMap(node, size_BZ, kondoJArrayFull)
+        titles[1] = L"\mathrm{relevance/irrelevance~of~}J(k,q_\mathrm{node})"
+        titles[2] = L"J(k,q_\mathrm{node})"
+        titles[3] = L"J^{(0)}(k,q_\mathrm{node})"
+        drawPoint = (-0.5, -0.5)
+    elseif probeName == "kondoCoupAntinodeMap"
+        antinode = (0.0, -pi)
+        results, results_bare, results_bool = kondoCoupMap(antinode, size_BZ, kondoJArrayFull)
+        titles[1] = L"\mathrm{relevance/irrelevance~of~}J(k,q_\mathrm{antin.})"
+        titles[2] = L"J(k,q_\mathrm{antin.})"
+        titles[3] = L"J^{(0)}(k,q_\mathrm{antin.})"
+        drawPoint = (0, -1)
+    elseif probeName == "kondoCoupOffNodeMap"
+        offnode = (-pi / 2 + 4 * pi / size_BZ, -pi / 2 + 4 * pi / size_BZ)
+        results, results_bare, results_bool = kondoCoupMap(offnode, size_BZ, kondoJArrayFull)
+        titles[1] = L"\mathrm{relevance/irrelevance~of~}J(k,q^\prime_\mathrm{node})"
+        titles[2] = L"J(k,q^\prime_\mathrm{node})"
+        titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{node}})"
+        drawPoint = offnode ./ pi
+    elseif probeName == "kondoCoupOffAntinodeMap"
+        offantinode = (0.0, -pi + 4 * pi / size_BZ)
+        results, results_bare, results_bool = kondoCoupMap(offantinode, size_BZ, kondoJArrayFull)
+        titles[1] = L"\mathrm{relevance/irrelevance~of~}J(k,q^\prime_\mathrm{antin.})"
+        titles[2] = L"J(k,q^\prime_\mathrm{antin.})"
+        titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
+        drawPoint = offantinode ./ pi
     end
     fig = Figure()
-    titlelayout = GridLayout(fig[0, 1:4])
-    Label(titlelayout[1, 1:4], L"W/J=%$(W_by_J)", justification=:center, padding=(0, 0, -20, 0))
-    ax1 = Axis(fig[1, 1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title_left)
-    ax2 = Axis(fig[1, 3], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title_right)
-    ax1, ax2 = plotHeatmaps(reshape(results1, (size_BZ, size_BZ)),
-        reshape(results2, (size_BZ, size_BZ)),
-        xarr, yarr, fig, [ax1, ax2], cmap_left)
-    if probeName == "kondoCoupFSMap"
-        scatter!(ax1, [-1 / 2], [-1 / 2], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
-        scatter!(ax2, [0], [-1], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
+    titlelayout = GridLayout(fig[0, 1:6])
+    Label(titlelayout[1, 1:6], L"W/J=%$(W_by_J)", justification=:center, padding=(0, 0, -20, 0))
+    axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles)]
+    axes = plotHeatmaps((results_bool, results, results_bare),
+        xarr, yarr, fig, axes, cmaps, size_BZ)
+    if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap"]
+        [scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
     end
-    if probeName == "kondoCoupMidwayMap"
-        scatter!(ax1, [kx_plot[1] / pi], [ky_plot[1] / pi], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
-        scatter!(ax2, [kx_plot[2] / pi], [ky_plot[2] / pi], markersize=20, color=:grey, strokewidth=2, strokecolor=:white)
-    end
-    colsize!(fig.layout, 1, Aspect(1, 1.0))
-    colsize!(fig.layout, 3, Aspect(1, 1.0))
+    [colsize!(fig.layout, i, Aspect(1, 1.0)) for i in [1, 3, 5]]
     resize_to_layout!(fig)
     return fig
 end
 
 
 function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, orbitals::Vector{String}, probes::Vector{String}; figScale=1.0)
-    @assert size_BZ % 2 != 0
+    # ensure that [0, \pi] has odd number of states, so 
+    # that the nodal point is well-defined.
+    @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."
+
     savePaths = ["data/$(orbitals)_$(size_BZ)_$(round(J_val, digits=3))_$(round(W_by_J, digits=3)).jld2" for W_by_J in W_by_J_range]
     for (j, W_by_J) in enumerate(W_by_J_range)
         kondoJArrayFull, _ = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals)

@@ -2,11 +2,22 @@ using LinearAlgebra
 using CairoMakie
 using Makie
 
-function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64)
-    results = diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, stepIndex]')
-    results_bare = diag(kondoJArray[:, :, stepIndex] * kondoJArray[:, :, 1]')
-    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL) # [tolerantSign(results_norm_i, RG_RELEVANCE_TOL) for results_norm_i in results_norm]
-    results[results_bool.<0] .= 0
+function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int64, dispersion::Vector{Float64}, fixedpointEnergy::Float64)
+    println(fixedpointEnergy)
+    results = zeros(size_BZ^2)
+    results_bare = zeros(size_BZ^2)
+    E_cloud = dispersion[-fixedpointEnergy.<=dispersion.<=fixedpointEnergy]
+    point2_arr = unique(getIsoEngCont(dispersion, E_cloud))
+    Threads.@threads for point1 in 1:size_BZ^2
+        kx, ky = map1DTo2D(point1, size_BZ)
+        if (abs(kx) ≈ K_MAX && abs(ky) ≈ K_MAX) || (kx ≈ 0 && ky ≈ 0)
+            continue
+        end
+        results[point1] = sum(kondoJArray[point1, point2_arr, stepIndex] .^ 2)
+        results_bare[point1] = sum(kondoJArray[point1, point2_arr, 1] .^ 2)
+    end
+    results_bool = tolerantSign.(abs.(results ./ results_bare), RG_RELEVANCE_TOL)
+    results[results_bool.<0] .= NaN
     return results, results_bare, results_bool
 end
 
@@ -16,7 +27,8 @@ function kondoCoupMap(k_vals, size_BZ, kondoJArrayFull)
     kspacePoint = map2DTo1D(kx, ky, size_BZ)
     results = kondoJArrayFull[kspacePoint, :, end] .^ 2
     results_bare = kondoJArrayFull[kspacePoint, :, 1] .^ 2
-    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / size_BZ^2)
+    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / size_BZ)
+    results[results_bool.<0] .= NaN
     return results, results_bare, results_bool
 end
 

@@ -192,9 +192,9 @@ function stepwiseRenormalisation(
 
     # construct denominators for the RG equation, given by
     # d = ω - E/2 + J(q)/4 + W(q)/2
-    omega = -abs(energyCutoff) / 2
+
     denominators =
-        omega .- abs(energyCutoff) / 2 .+ diag(
+        OMEGA .- abs(energyCutoff) / 2 .+ diag(
             kondoJArrayPrev[cutoffPoints, cutoffPoints] / 4 .+
             bathIntForm(
                 bathIntStr,
@@ -204,10 +204,16 @@ function stepwiseRenormalisation(
             ) / 2,
         )
 
+    # println(denominators[1])
     # only consider those terms whose denominator haven't gone through zeros
     cutoffPoints = cutoffPoints[denominators.<0]
     cutoffHolePoints = cutoffHolePoints[denominators.<0]
     denominators = denominators[denominators.<0]
+
+    if length(cutoffPoints) == 0
+        proceed_flags[:, :] .= 0
+        return kondoJArrayNext, proceed_flags
+    end
 
     # loop over (k1, k2) pairs that represent the momentum states within the emergent window,
     # so that we can calculate the renormalisation of J(k1, k2), for all k1, k2.

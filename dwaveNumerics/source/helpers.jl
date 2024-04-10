@@ -93,6 +93,21 @@ function getIsoEngCont(dispersion::Vector{Float64}, probeEnergy::Float64)
 end
 
 
+function getIsoEngCont(dispersion::Vector{Float64}, probeEnergies::Vector{Float64})
+    # obtain the k-space points that have the specified energy. We count one point per row.
+
+    contourPoints = Int64[]
+    for (point, energy) in enumerate(dispersion)
+        for probeEnergy in probeEnergies
+            if abs(energy - probeEnergy) < TOLERANCE
+                push!(contourPoints, point)
+            end
+        end
+    end
+    return contourPoints
+end
+
+
 function particleHoleTransf(point::Int64, size_BZ::Int64)
     # obtain the particle-hole transformed point k --> (k + π) % π.
     kx_val, ky_val = map1DTo2D(point, size_BZ)

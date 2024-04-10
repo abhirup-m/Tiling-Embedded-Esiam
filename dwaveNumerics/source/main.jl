@@ -1,14 +1,18 @@
-using ProgressMeter
-using Makie, CairoMakie, Measures, LaTeXStrings
-using JLD2
+using Distributed
+if nprocs() == 1
+    addprocs(4)
+end
+@everywhere using ProgressMeter
+@everywhere using Makie, CairoMakie, Measures, LaTeXStrings
+@everywhere using JLD2
 set_theme!(theme_latexfonts())
 update_theme!(fontsize=24)
 
-include("./rgFlow.jl")
-include("./probes.jl")
+@everywhere include("./rgFlow.jl")
+@everywhere include("./probes.jl")
 animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])_$(orbitals[2])_$(size_BZ)_$(round(W_by_J_min, digits=4))_$(size_BZ)_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
 
-function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String})
+@everywhere function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String}; progressbarEnabled=false)
 
     # ensure that the choice of orbitals is d or p
     impOrbital, bathOrbital = orbitals
@@ -31,7 +35,9 @@ function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, or
     proceed_flags = fill(1, size_BZ^2, size_BZ^2)
 
     # Run the RG flow starting from the maximum energy, down to the penultimate energy (ΔE), in steps of ΔE
-    @showprogress for (stepIndex, energyCutoff) in enumerate(cutOffEnergies[1:end-1])
+
+    fixedpointEnergy = minimum(cutOffEnergies)
+    @showprogress enabled = progressbarEnabled for (stepIndex, energyCutoff) in enumerate(cutOffEnergies[1:end-1])
         deltaEnergy = abs(cutOffEnergies[stepIndex+1] - cutOffEnergies[stepIndex])
 
         # set the Kondo coupling of all subsequent steps equal to that of the present step 
@@ -41,6 +47,7 @@ function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, or
         # if there are no enabled flags (i.e., all are zero), stop the RG flow
         if all(==(0), proceed_flags)
             kondoJArray[:, :, stepIndex+2:end] .= kondoJArray[:, :, stepIndex]
+            fixedpointEnergy = energyCutoff
             break
         end
 
@@ -66,15 +73,15 @@ function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, or
         kondoJArray[:, :, stepIndex+1] = kondoJArrayNext
         proceed_flags = proceed_flags_updated
     end
-    return kondoJArray, dispersionArray
+    return kondoJArray, dispersionArray, fixedpointEnergy
 end
 
 
-function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr, W_by_J)
+function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr, W_by_J, dispersion, fixedpointEnergy)
     titles = Vector{LaTeXString}(undef, 3)
     cmaps = [DISCRETE_CGRAD, :matter, :matter]
     if probeName == "scattProb"
-        results, results_bare, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3])
+        results, results_bare, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3], size_BZ, dispersion, fixedpointEnergy)
         titles[1] = L"\mathrm{relevance/irrelevance~of~}\Gamma(k)"
         titles[2] = L"\Gamma(k) = \sum_q J(k,q)^2"
         titles[3] = L"\Gamma^{(0)}(k) = \sum_q J(k,q)^2"
@@ -109,11 +116,11 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, xarr, yarr, W_
     end
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:6])
-    Label(titlelayout[1, 1:6], L"W/J=%$(W_by_J)", justification=:center, padding=(0, 0, -20, 0))
+    Label(titlelayout[1, 1:6], L"NW/J=%$(trunc(size_BZ * W_by_J, digits=1))", justification=:center, padding=(0, 0, -20, 0))
     axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles)]
     axes = plotHeatmaps((results_bool, results, results_bare),
         xarr, yarr, fig, axes, cmaps, size_BZ)
-    if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap"]
+    if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap"]
         [scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
     end
     [colsize!(fig.layout, i, Aspect(1, 1.0)) for i in [1, 3, 5]]
@@ -127,11 +134,14 @@ function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, 
     # that the nodal point is well-defined.
     @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."
 
+    progressbarEnabled = length(W_by_J_range) == 1 ? true : false
     savePaths = ["data/$(orbitals)_$(size_BZ)_$(round(J_val, digits=3))_$(round(W_by_J, digits=3)).jld2" for W_by_J in W_by_J_range]
-    for (j, W_by_J) in enumerate(W_by_J_range)
-        kondoJArrayFull, _ = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals)
+    @sync @showprogress enabled = !(progressbarEnabled) @distributed for (j, W_by_J) in collect(enumerate(W_by_J_range))
+        kondoJArrayFull, dispersion, fixedpointEnergy = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         file = jldopen(savePaths[j], "w")
         file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
+        file["dispersion"] = dispersion
+        file["fixedpointEnergy"] = fixedpointEnergy
         close(file)
     end
     k_vals = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
@@ -141,9 +151,11 @@ function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, 
         for (W_by_J, savePath, pdfFileName) in zip(W_by_J_range, savePaths, pdfFileNames)
             file = jldopen(savePath, "r")
             kondoJArrayEnds = file["kondoJArrayEnds"]
+            dispersion = file["dispersion"]
+            fixedpointEnergy = file["fixedpointEnergy"]
             close(file)
             kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
-            fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, k_vals, k_vals, W_by_J)
+            fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, k_vals, k_vals, W_by_J, dispersion, fixedpointEnergy)
             display(fig)
             save(pdfFileName, fig, pt_per_unit=100)
         end

@@ -143,6 +143,8 @@ where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of t
 The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
 
 \section{Extending the Anderson impurity model}
+We have already shown in a previous work that by including a local attractive interacting on the conduction bath site coupled to the impurity site of the Anderson impurity model, one can obtain an impurity phase transition from a screened phase to an unscreened local moment phase. This occurs at a certain critical value of the attractive interaction strength. We now consider a more realistic form of this model, by embedding the impurity site into the lattice of a 2D  conduction bath and accounting for the lowering of the \(s-\)wave symmetry of the interactions down to just the \(C_4\) symmetry of the 2D square lattice.
+
 \subsection{Hamiltonian}
 We consider an impurity spin \(\vec S_d\) interacting with a two-dimensional tight-binding conduction bath through a general interaction of the form
 \begin{equation}\begin{aligned}
@@ -207,7 +209,7 @@ To summarise, the total Hamiltonian we consider is of the form
 	 &\frac{1}{2}\sum_{1, 2, 3, 4}\sum_\sigma W_{1,2,3,4}~ c^\dagger_{{\bf k}_1,\sigma}c_{{\bf k}_2,\sigma}\left(c^\dagger_{{\bf k}_3,\sigma}c_{{\bf k}_4,\sigma} - c^\dagger_{{\bf k}_3,\bar\sigma}c_{{\bf k}_4,\bar\sigma}\right)~,
 \end{aligned}\end{equation}
 where \(J_{\left\{ {\bf k}_i \right\} }\) takes one of the two forms in eqs.~\ref{J_dwave} and \ref{J_pwave_nooffsite}, and \(W_{\left\{{\bf k}_i\right\}}\) can similarly take either of the two forms in eqs.~\ref{W_dwave} and \ref{W_pwave_nooffsite}. 
-\subsection{Results}
+\subsection{Unitary RG analysis of the model}
 We studied the low-energy physics of this model through a unitary renormalisation group calculation that decouples the high-energy modes of the conduction bath and incorporates their effects in the form of renormalised Hamiltonian couplings. We find that the bath interaction \(W\) remains marginal (does not undergo any renormalisation), while the renormalisation in the momentum-resolved Kondo coupling \(J^{(j)}\) at the \(j^\text{th}\) step is of the form
 \begin{equation}\begin{aligned}\label{KondoRGequation}
 	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2}~,
@@ -251,6 +253,37 @@ This choice does not preserve the momentum-dependence of the Kondo coupling, bec
 	&-\sum_{{\bf q} \in \text{PS}} \frac{f_\mathcal{D}({\bf q})^2\left[{J}^2 f_\mathcal{D}({\bf k}_2)f_\mathcal{D}({\bf k}_1) - 2JW f_\mathcal{P}\left({\bf k}_1, {\bf k}_2\right)\right] }{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}~.
 \end{aligned}\end{equation}
 The presence of the \(f_\mathcal{P}\) function in the second term leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
+
+\subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
+We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
+
+We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
+\begin{equation}\begin{aligned}
+	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
+\end{aligned}\end{equation}
+where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. More insights in the difference of the behaviour is obtained by studying the fixed point distribution of the couplings \(J_{{\bf k}, {\bf q}}\) for \({\bf k}\) at a node and at an antinode. This is shown in fig.~\ref{kondoMaps}.
+
+\begin{figure*}[htpb]
+	\centering
+	\includegraphics[width=0.49\textwidth]{scattProb-1.pdf}
+	\includegraphics[width=0.49\textwidth]{scattProb-2.pdf}\\
+	\includegraphics[width=0.49\textwidth]{scattProb-3.pdf}
+	\includegraphics[width=0.49\textwidth]{scattProb-4.pdf}\\
+	\includegraphics[width=0.49\textwidth]{scattProb-5.pdf}
+	\includegraphics[width=0.49\textwidth]{scattProb-6.pdf}
+	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. In each pair of plots, the right figure shows the dependence of \(\Gamma\) on \(k_x/\pi\) and \(k_y/\pi\), while the left figure shows whether \(\Gamma({\bf k}\) is relevant (violet) or irrelevant (grey). As can be seen in the right pair of figures of the top row, the antinodal points are the first state to be removed from the Kondo cloud, while the left pair of figures of the bottom row shows that the node is the last to be removed.}
+	\label{gamma_kxky}
+\end{figure*}
+
+\begin{figure*}[htpb]
+	\centering
+	\includegraphics[width=0.49\textwidth]{kondoCoupNodeMap-1.pdf}
+	\includegraphics[width=0.49\textwidth]{kondoCoupNodeMap-6.pdf}\\
+	\includegraphics[width=0.49\textwidth]{kondoCoupAntinodeMap-1.pdf}
+	\includegraphics[width=0.49\textwidth]{kondoCoupAntinodeMap-6.pdf}
+	\caption{Distribution of Kondo coupling scattering processes. While the nodes are connected mostly through forward and backscattering processes, the antinodes also involve tangential scattering processes.}
+	\label{kondoMaps}
+\end{figure*}
 
 \section{The Tiling Algorithm}
 

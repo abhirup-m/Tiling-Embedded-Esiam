@@ -84,16 +84,16 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, disper
         drawPoint = offantinode ./ pi
     end
     fig = Figure()
-    titlelayout = GridLayout(fig[0, 1:6])
+    titlelayout = GridLayout(fig[0, 1:4])
     header = trunc(size_BZ * W_by_J, digits=2)
-    Label(titlelayout[1, 1:6], L"NW/J=%$header", justification=:center, padding=(0, 0, -20, 0))
-    axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles)]
-    axes = plotHeatmaps((results_bool, results, results_bare),
-        fig, axes, cmaps, size_BZ)
+    Label(titlelayout[1, 1:4], L"NW/J=%$header", justification=:center, padding=(0, 0, -20, 0))
+    axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles[1:2])]
+    axes = plotHeatmaps((results_bool, results),
+			fig, axes[1:2], cmaps, size_BZ)
     if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap"]
         [scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
     end
-    [colsize!(fig.layout, i, Aspect(1, 1.0)) for i in [1, 3, 5]]
+    [colsize!(fig.layout, i, Aspect(1, 1.0)) for i in [1, 3]]
     resize_to_layout!(fig)
     return fig
 end

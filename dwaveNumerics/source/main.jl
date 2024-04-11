@@ -130,7 +130,7 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
                 save(pdfFileName, fig, pt_per_unit=100)
             end
         end
-        plotName = animName(orbitals, size_BZ, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)
+        plotName = animName(orbitals, size_BZ, omega_by_t, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)
         run(`pdfunite $pdfFileNames $(plotName)-$(replace(probeName, " " => "-")).pdf`)
         run(`rm $pdfFileNames`)
         # gif(anim, plotName * "-$(replace(probeName, " " => "-")).gif", fps=0.5)

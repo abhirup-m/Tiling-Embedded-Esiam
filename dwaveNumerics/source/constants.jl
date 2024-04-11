@@ -11,12 +11,13 @@ using Makie
 (@isdefined HOP_T) || const HOP_T = 1.0
 
 # quantum fluctuation scale ω
-(@isdefined OMEGA) || const OMEGA = 0.5 * HOP_T
+(@isdefined OMEGA) || const OMEGA = -2 * HOP_T
 
 (@isdefined DISCRETE_CGRAD) || const DISCRETE_CGRAD = cgrad(:BuPu_3, 3, categorical=true)
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
 (@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2
 
+const ALLOWED_PROBES = ["scattProb", "kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap"]
 # for testing. 
 (@isdefined SIZE_BZ) || const SIZE_BZ = [5, 101, 1001]
 (@isdefined KX_VALUES) || const KX_VALUES = [K_MIN, K_MAX, K_MIN, K_MAX, 0]

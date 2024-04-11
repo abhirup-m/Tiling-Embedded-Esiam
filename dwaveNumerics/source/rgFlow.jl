@@ -174,6 +174,7 @@ end
 
 function stepwiseRenormalisation(
     innerIndicesArr::Vector{Int64},
+    omega_by_t::Float64,
     excludedVertexPairs::Vector{Tuple{Int64,Int64}},
     mixedVertexPairs::Vector{Tuple{Int64,Int64}},
     energyCutoff::Float64,
@@ -192,6 +193,7 @@ function stepwiseRenormalisation(
     # construct denominators for the RG equation, given by
     # d = ω - E/2 + J(q)/4 + W(q)/2
 
+    OMEGA = omega_by_t * HOP_T
     denominators =
         OMEGA .- abs(energyCutoff) / 2 .+ diag(
             kondoJArrayPrev[cutoffPoints, cutoffPoints] / 4 .+

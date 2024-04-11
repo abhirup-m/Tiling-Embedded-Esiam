@@ -10,9 +10,6 @@ using Makie
 # overlap integral 't' set to 1
 (@isdefined HOP_T) || const HOP_T = 1.0
 
-# quantum fluctuation scale ω
-(@isdefined OMEGA) || const OMEGA = -2 * HOP_T
-
 (@isdefined DISCRETE_CGRAD) || const DISCRETE_CGRAD = cgrad(:BuPu_3, 3, categorical=true)
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
 (@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2

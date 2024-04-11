@@ -14,9 +14,9 @@ update_theme!(fontsize=24)
 @everywhere include("./probes.jl")
 
 # file name format for saving plots and animations
-animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])_$(orbitals[2])_$(size_BZ)_$(round(W_by_J_min, digits=4))_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
+animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(W_by_J_min, digits=4))_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
 
-@everywhere function momentumSpaceRG(size_BZ::Int64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String}; progressbarEnabled=false)
+@everywhere function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Vector{String}; progressbarEnabled=false)
 
     # ensure that the choice of orbitals is d or p
     impOrbital, bathOrbital = orbitals
@@ -60,6 +60,7 @@ animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[
         # calculate the renormalisation for this step and for all k1,k2 pairs
         kondoJArrayNext, proceed_flags_updated = stepwiseRenormalisation(
             innerIndicesArr,
+            omega_by_t,
             excludedVertexPairs,
             mixedVertexPairs,
             energyCutoff,
@@ -81,7 +82,7 @@ animName(orbitals, size_BZ, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[
 end
 
 
-function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, orbitals::Vector{String}, probes::Vector{String}; figScale=1.0)
+function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_range::Vector{Float64}, orbitals::Vector{String}, probes::Vector{String}; figScale=1.0)
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
     @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."
@@ -98,7 +99,7 @@ function manager(size_BZ::Int64, J_val::Float64, W_by_J_range::Vector{Float64}, 
 
     # loop over all given values of W/J, get the fixed point distribution J(k1,k2) and save them in files
     @sync @showprogress enabled = !(progressbarEnabled) @distributed for (j, W_by_J) in collect(enumerate(W_by_J_range))
-        kondoJArrayFull, dispersion, fixedpointEnergy = momentumSpaceRG(size_BZ, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
+        kondoJArrayFull, dispersion, fixedpointEnergy = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         jldopen(savePaths[j], "w") do file
             file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
             file["dispersion"] = dispersion

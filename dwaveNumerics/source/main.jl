@@ -8,7 +8,7 @@ end
 @everywhere using JLD2
 @everywhere using ProgressMeter
 set_theme!(theme_latexfonts())
-update_theme!(fontsize=24)
+update_theme!(fontsize=30)
 
 @everywhere include("./rgFlow.jl")
 @everywhere include("./probes.jl")
@@ -127,7 +127,7 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
                 # calculate and plot the probe result, then save the fig.
                 fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J, dispersion, fixedpointEnergy)
                 display(fig)
-                save(pdfFileName, fig, pt_per_unit=100)
+                save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end
         plotName = animName(orbitals, size_BZ, omega_by_t, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)

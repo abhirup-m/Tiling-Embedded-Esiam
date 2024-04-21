@@ -20,8 +20,8 @@ animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = 
 
     # ensure that the choice of orbitals is d or p
     impOrbital, bathOrbital = orbitals
-    @assert bathOrbital in ["p", "d", "poff"]
-    @assert impOrbital in ["p", "d", "poff"]
+    @assert bathOrbital in ["p", "d", "poff", "doff"]
+    @assert impOrbital in ["p", "d", "poff", "doff"]
 
     densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
 
@@ -126,7 +126,6 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
 
                 # calculate and plot the probe result, then save the fig.
                 fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J, dispersion, fixedpointEnergy)
-                display(fig)
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end

@@ -3,7 +3,6 @@ using CairoMakie
 using Makie
 
 function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int64, dispersion::Vector{Float64}, fixedpointEnergy::Float64)
-    println(fixedpointEnergy)
     results = zeros(size_BZ^2)
     results_bare = zeros(size_BZ^2)
     E_cloud = dispersion[-fixedpointEnergy.<=dispersion.<=fixedpointEnergy]

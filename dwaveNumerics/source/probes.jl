@@ -1,8 +1,8 @@
 using LinearAlgebra
 using CairoMakie
 using Makie
-include("../../../fermionise/source/fermionise.jl")
-include("../../../fermionise/source/models.jl")
+@everywhere include("../../../fermionise/source/fermionise.jl")
+@everywhere include("../../../fermionise/source/models.jl")
 
 function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int64, dispersion::Vector{Float64}, fixedpointEnergy::Float64)
     results = zeros(size_BZ^2)
@@ -34,32 +34,27 @@ function kondoCoupMap(k_vals, size_BZ, kondoJArrayFull)
 end
 
 
-function spinFlipCorrMap(size_BZ::Int64, kondoJArrayFull, W_val::Float64, orbitals::Tuple{String,String})
+function spinFlipCorrMap(k_index::Int64, size_BZ::Int64, kondoJArrayFull, W_val::Float64, orbitals::Tuple{String,String})
     k_indices = collect(1:size_BZ^2)
-    results = zeros(length(k_indices))
-    trunc_dim = 4
+    # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
+    spinFlipCorrOplist = [("+-+-", 1.0, [1, 2, 4, 3]), ("+-+-", 1.0, [2, 1, 3, 4])]
+
+    trunc_dim = 3
     basis = BasisStates(trunc_dim * 2 + 2)
 
-    # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
-    spinFlipCorrOplist = [("+-+-", 1., [1, 2, 4, 3]), ("+-+-", 1., [2, 1, 3, 4])]
+    other_k_indices = k_indices[k_indices.≠k_index]
+    chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
+    mapSeq = Dict(index => i for (i, index) in enumerate(chosenIndices))
 
-    @showprogress for k_index in k_indices
-        other_k_indices = k_indices[k_indices .≠ k_index]
-        chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
-        mapSeq = Dict(index => i for (i, index) in enumerate(chosenIndices))
-
-        Ek_arr = Dict(mapSeq[index] => tightBindDisp(map1DTo2D(index, size_BZ)...) for index in chosenIndices)
-        kondoDict = Dict(Tuple(mapSeq[p] for p in points) => kondoJArrayFull[points..., end]
-                         for points in Iterators.product(chosenIndices, chosenIndices))
-        bathIntDict = Dict(Tuple(mapSeq[p] for p in points) => bathIntForm(W_val, orbitals[2], size_BZ, points)
-                           for points in Iterators.product(chosenIndices, chosenIndices, chosenIndices, chosenIndices))
-        oplist = KondoKSpace(Ek_arr, kondoDict, bathIntDict)
-        fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
-        eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
-        results[k_index] = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
-    end
-    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL)
-    return results, results_bool
+    Ek_arr = Dict(mapSeq[index] => tightBindDisp(map1DTo2D(index, size_BZ)...) for index in chosenIndices)
+    kondoDict = Dict(Tuple(mapSeq[p] for p in points) => kondoJArrayFull[points..., end]
+                     for points in Iterators.product(chosenIndices, chosenIndices))
+    bathIntDict = Dict(Tuple(mapSeq[p] for p in points) => bathIntForm(W_val, orbitals[2], size_BZ, points)
+                       for points in Iterators.product(chosenIndices, chosenIndices, chosenIndices, chosenIndices))
+    oplist = KondoKSpace(Ek_arr, kondoDict, bathIntDict)
+    fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
+    eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+    return gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
 end
 
 
@@ -113,7 +108,11 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
         drawPoint = offantinode ./ pi
     elseif probeName == "spinFlipCorrMap"
-        results, results_bool = spinFlipCorrMap(size_BZ, kondoJArrayFull, W_by_J * J_val, orbitals)
+        results = zeros(size_BZ^2)
+        @time @sync for k_index in 1:size_BZ^2
+            @async results[k_index] = remotecall_fetch(spinFlipCorrMap, max(1, k_index % nprocs()), k_index, size_BZ, kondoJArrayFull, W_by_J * J_val, orbitals)
+        end
+        results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL)
         titles[1] = L"\mathrm{rel(irrel)evance~of~}J(k,q^\prime_\mathrm{antin.})"
         titles[2] = L"J(k,q^\prime_\mathrm{antin.})"
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"

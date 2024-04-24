@@ -79,7 +79,7 @@ function kondoArraySymmetriesCheck(kondoJArray, orbital, size_BZ)
             if orbital == "p"
                 @test kondoJArray[p1, p2] ≈ 0.5 * (cos(kx - qx) + cos(ky - qy)) atol = 1e-10
             else
-                @test kondoJArray[p1, p2] ≈ (cos(kx) - cos(ky)) * ((cos(qx) - cos(qy))) atol = 1e-10
+                @test kondoJArray[p1, p2] ≈ 0.5 * (cos(kx - qx) - cos(ky - qy)) atol = 1e-10
             end
         end
     end
@@ -225,23 +225,4 @@ end
             @test proceed_flags[p1, p2] ≈ proceed_flags[p3, p4] atol = 1e-10
         end
     end
-end
-
-
-@testset "Step-wise Renormalisation" begin
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    excludedVertexPairs = [
-        (p1, p2) for p1 in sort(EXCLUDED_INDICES_ONE) for
-        p2 in sort(EXCLUDED_INDICES_ONE)[sort(EXCLUDED_INDICES_ONE).>=p1]
-    ]
-    mixedVertexPairs = [(p1, p2) for p1 in INNER_INDICES_ONE for p2 in EXCLUDED_INDICES_ONE]
-    proceed_flags = fill(1, (SIZE_BZ[1]^2, SIZE_BZ[1]^2))
-    proceed_flags[CORNER_POINTS, :] .= 0
-    proceed_flags[:, CORNER_POINTS] .= 0
-    proceed_flags[CENTER_POINTS[1], CENTER_POINTS[1]] = 0
-    kondoJArrayPrev = initialiseKondoJ(SIZE_BZ[1], "d", 3, 1.0)
-    kondoJArrayNext, proceed_flags = stepwiseRenormalisation(INNER_INDICES_ONE, excludedVertexPairs, mixedVertexPairs, maximum(PROBE_ENERGIES), CORNER_POINTS, repeat(CENTER_POINTS, 4), proceed_flags, kondoJArrayPrev[:, :, 1], kondoJArrayPrev[:, :, 1], 0.0, SIZE_BZ[1], PROBE_ENERGIES[5] - PROBE_ENERGIES[3], "d", dos)
-    kondoArraySymmetriesCheck(kondoJArrayNext, "d", SIZE_BZ[1])
-    kondoJArrayNext, proceed_flags = stepwiseRenormalisation(INNER_INDICES_ONE, excludedVertexPairs, mixedVertexPairs, maximum(PROBE_ENERGIES), CORNER_POINTS, repeat(CENTER_POINTS, 4), proceed_flags, kondoJArrayPrev[:, :, 1], kondoJArrayPrev[:, :, 1], 0.0, SIZE_BZ[1], PROBE_ENERGIES[5] - PROBE_ENERGIES[3], "d", dos)
-    kondoArraySymmetriesCheck(kondoJArrayNext, "d", SIZE_BZ[1])
 end

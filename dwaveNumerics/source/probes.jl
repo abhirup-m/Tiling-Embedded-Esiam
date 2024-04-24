@@ -1,8 +1,10 @@
 using LinearAlgebra
 using CairoMakie
 using Makie
-@everywhere include("../../../fermionise/source/fermionise.jl")
-@everywhere include("../../../fermionise/source/models.jl")
+using LaTeXStrings
+include("../../../fermionise/source/fermionise.jl")
+include("../../../fermionise/source/correlations.jl")
+include("../../../fermionise/source/models.jl")
 
 function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int64, dispersion::Vector{Float64}, fixedpointEnergy::Float64)
     results = zeros(size_BZ^2)
@@ -23,7 +25,7 @@ function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int
 end
 
 
-function kondoCoupMap(k_vals, size_BZ, kondoJArrayFull)
+function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArrayFull::Array{Float64,3})
     kx, ky = k_vals
     kspacePoint = map2DTo1D(kx, ky, size_BZ)
     results = kondoJArrayFull[kspacePoint, :, end] .^ 2
@@ -34,27 +36,32 @@ function kondoCoupMap(k_vals, size_BZ, kondoJArrayFull)
 end
 
 
-function spinFlipCorrMap(k_index::Int64, size_BZ::Int64, kondoJArrayFull, W_val::Float64, orbitals::Tuple{String,String})
+function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArrayFull::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
+    results = zeros(size_BZ^2)
     k_indices = collect(1:size_BZ^2)
+    k_vals = range(K_MIN, K_MAX, length=size_BZ)
+
     # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
     spinFlipCorrOplist = [("+-+-", 1.0, [1, 2, 4, 3]), ("+-+-", 1.0, [2, 1, 3, 4])]
 
-    trunc_dim = 3
-    basis = BasisStates(trunc_dim * 2 + 2)
-
-    other_k_indices = k_indices[k_indices.≠k_index]
-    chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
-    mapSeq = Dict(index => i for (i, index) in enumerate(chosenIndices))
-
-    Ek_arr = Dict(mapSeq[index] => tightBindDisp(map1DTo2D(index, size_BZ)...) for index in chosenIndices)
-    kondoDict = Dict(Tuple(mapSeq[p] for p in points) => kondoJArrayFull[points..., end]
-                     for points in Iterators.product(chosenIndices, chosenIndices))
-    bathIntDict = Dict(Tuple(mapSeq[p] for p in points) => bathIntForm(W_val, orbitals[2], size_BZ, points)
-                       for points in Iterators.product(chosenIndices, chosenIndices, chosenIndices, chosenIndices))
-    oplist = KondoKSpace(Ek_arr, kondoDict, bathIntDict)
-    fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
-    eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
-    return gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
+    trunc_dim = 6
+    basis = BasisStates(trunc_dim * 2 + 2, totOccupancy=[trunc_dim + 1])
+    bathIntFunc(points) = bathIntForm(W_val, orbitals[2], size_BZ, points)
+    Threads.@threads for kx_index in 1:size_BZ
+        for ky_index in kx_index:size_BZ
+            k_index = map2DTo1D(k_vals[kx_index], k_vals[ky_index], size_BZ)
+            k_index_xyflipped = map2DTo1D(k_vals[ky_index], k_vals[kx_index], size_BZ)
+            other_k_indices = k_indices[k_indices.≠k_index]
+            chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
+            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
+            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
+            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+            results[k_index] = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
+            results[k_index_xyflipped] = results[k_index]
+        end
+    end
+    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / 100)
+    return results, results_bool
 end
 
 
@@ -108,19 +115,14 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
         drawPoint = offantinode ./ pi
     elseif probeName == "spinFlipCorrMap"
-        results = zeros(size_BZ^2)
-        @time @sync for k_index in 1:size_BZ^2
-            @async results[k_index] = remotecall_fetch(spinFlipCorrMap, max(1, k_index % nprocs()), k_index, size_BZ, kondoJArrayFull, W_by_J * J_val, orbitals)
-        end
-        results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL)
+        @time results, results_bool = spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
         titles[1] = L"\mathrm{rel(irrel)evance~of~}J(k,q^\prime_\mathrm{antin.})"
         titles[2] = L"J(k,q^\prime_\mathrm{antin.})"
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
     end
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:4])
-    header = trunc(size_BZ * W_by_J, digits=1)
-    Label(titlelayout[1, 1:4], L"NW/J=%$header", justification=:center, padding=(0, 0, -20, 0))
+    Label(titlelayout[1, 1:4], L"NW/J=%$(trunc(size_BZ * W_by_J, digits=1))", justification=:center, padding=(0, 0, -20, 0))
     axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles[1:2])]
     axes = plotHeatmaps((results_bool, results),
         fig, axes[1:2], cmaps, size_BZ)

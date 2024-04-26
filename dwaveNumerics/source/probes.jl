@@ -37,39 +37,41 @@ end
 
 
 function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArrayFull::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
-    results = zeros(size_BZ^2)
+    halfSize = trunc(Int, (size_BZ + 1) / 2)
+    kx_SEquadrant = range((K_MIN + K_MAX) / 2, stop=K_MAX, length=halfSize)
+    ky_SEquadrant = range(K_MIN, stop=(K_MIN + K_MAX) / 2, length=halfSize)
+    SEquadrant_kpairs = [(kx, ky) for ky in ky_SEquadrant for kx in kx_SEquadrant]
+
+    results = zeros(halfSize^2)
     k_indices = collect(1:size_BZ^2)
-    k_vals = range(K_MIN, K_MAX, length=size_BZ)
 
     # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
     spinFlipCorrOplist = [("+-+-", 1.0, [1, 2, 4, 3]), ("+-+-", 1.0, [2, 1, 3, 4])]
 
-    trunc_dim = 6
-    basis = BasisStates(trunc_dim * 2 + 2, totOccupancy=[trunc_dim + 1])
+    trunc_dim = 5
+    basis = BasisStates(trunc_dim * 2 + 2)
     bathIntFunc(points) = bathIntForm(W_val, orbitals[2], size_BZ, points)
-    Threads.@threads for kx_index in 1:size_BZ
-        for ky_index in kx_index:size_BZ
-            k_index = map2DTo1D(k_vals[kx_index], k_vals[ky_index], size_BZ)
-            k_index_xyflipped = map2DTo1D(k_vals[ky_index], k_vals[kx_index], size_BZ)
-            other_k_indices = k_indices[k_indices.≠k_index]
-            chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
-            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
-            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
-            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
-            results[k_index] = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
-            results[k_index_xyflipped] = results[k_index]
+    Threads.@threads for (kx, ky) in SEquadrant_kpairs
+        if kx < ky
+            continue
         end
+        k_index = map2DTo1D(kx, ky, size_BZ)
+        other_k_indices = k_indices[k_indices.≠k_index]
+        chosenIndices = [[k_index]; other_k_indices[sortperm(abs.(kondoJArrayFull[k_index, other_k_indices, end]), rev=true)][1:trunc_dim-1]]
+        oplist = KondoKSpace(chosenIndices, dispersion, 100 .* kondoJArrayFull[:, :, end], bathIntFunc)
+        fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
+        eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+        results[SEquadrant_kpairs .== [(kx, ky)]] .= gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
+        results[SEquadrant_kpairs .== [(ky, kx)]] .= results[SEquadrant_kpairs .== [(kx, ky)]]
     end
     results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / 100)
-    return results, results_bool
+    return results, results_bool, kx_SEquadrant, ky_SEquadrant
 end
 
 
-function plotHeatmaps(results_arr, fig, axes, cmaps, size_BZ)
-    k_vals = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
-    x_arr = y_arr = k_vals
+function plotHeatmaps(results_arr, x_arr, y_arr, fig, axes, cmaps)
     for (i, result) in enumerate(results_arr)
-        reshaped_result = reshape(result, (size_BZ, size_BZ))
+        reshaped_result = reshape(result, (length(x_arr), length(y_arr)))
         hmap = heatmap!(axes[i], x_arr, y_arr, reshaped_result, colormap=cmaps[i],
         )
         Colorbar(fig[1, 2*i], hmap, colorrange=(minimum(result), maximum(result)))
@@ -86,6 +88,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[1] = L"\mathrm{rel(irrel)evance~of~}\Gamma(k)"
         titles[2] = L"\Gamma/\Gamma^{(0)}"
         titles[3] = L"\Gamma^{(0)}(k) = \sum_q J(k,q)^2"
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "kondoCoupNodeMap"
         node = (-pi / 2, -pi / 2)
         results, results_bare, results_bool = kondoCoupMap(node, size_BZ, kondoJArrayFull)
@@ -93,6 +96,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[2] = L"J(k,q_\mathrm{node})"
         titles[3] = L"J^{(0)}(k,q_\mathrm{node})"
         drawPoint = (-0.5, -0.5)
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "kondoCoupAntinodeMap"
         antinode = (0.0, -pi)
         results, results_bare, results_bool = kondoCoupMap(antinode, size_BZ, kondoJArrayFull)
@@ -100,6 +104,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[2] = L"J(k,q_\mathrm{antin.})"
         titles[3] = L"J^{(0)}(k,q_\mathrm{antin.})"
         drawPoint = (0, -1)
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "kondoCoupOffNodeMap"
         offnode = (-pi / 2 + 4 * pi / size_BZ, -pi / 2 + 4 * pi / size_BZ)
         results, results_bare, results_bool = kondoCoupMap(offnode, size_BZ, kondoJArrayFull)
@@ -107,6 +112,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[2] = L"J(k,q^\prime_\mathrm{node})"
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{node}})"
         drawPoint = offnode ./ pi
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "kondoCoupOffAntinodeMap"
         offantinode = (0.0, -pi + 4 * pi / size_BZ)
         results, results_bare, results_bool = kondoCoupMap(offantinode, size_BZ, kondoJArrayFull)
@@ -114,18 +120,18 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         titles[2] = L"J(k,q^\prime_\mathrm{antin.})"
         titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
         drawPoint = offantinode ./ pi
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "spinFlipCorrMap"
-        @time results, results_bool = spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
-        titles[1] = L"\mathrm{rel(irrel)evance~of~}J(k,q^\prime_\mathrm{antin.})"
-        titles[2] = L"J(k,q^\prime_\mathrm{antin.})"
-        titles[3] = L"J^{(0)}(k,q^\prime_{\mathrm{antin.}})"
+        results, results_bool, x_arr, y_arr = @time spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals) 
+        titles[1] = L"\mathrm{rel(irrel)evance~of~} "
+        titles[2] = L"\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
     end
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:4])
     Label(titlelayout[1, 1:4], L"NW/J=%$(trunc(size_BZ * W_by_J, digits=1))", justification=:center, padding=(0, 0, -20, 0))
     axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles[1:2])]
-    axes = plotHeatmaps((results_bool, results),
-        fig, axes[1:2], cmaps, size_BZ)
+    axes = plotHeatmaps((results_bool, results), x_arr, y_arr,
+        fig, axes[1:2], cmaps)
     if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap"]
         [scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
     end

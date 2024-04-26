@@ -3,7 +3,7 @@ using Distributed
 
 # add four more processes, to allow distributed computing, only if this hasn't already been done before (hence the if check)
 if nprocs() == 1
-    addprocs(4)
+    addprocs(0)
 end
 @everywhere using JLD2
 @everywhere using ProgressMeter
@@ -40,7 +40,7 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
     isdir(saveDir) || mkdir(saveDir)
 
     # loop over all given values of W/J, get the fixed point distribution J(k1,k2) and save them in files
-    @sync @showprogress enabled = !(progressbarEnabled) @distributed for (j, W_by_J) in collect(enumerate(W_by_J_range))
+    @showprogress Threads.@threads for (j, W_by_J) in collect(enumerate(W_by_J_range))
         kondoJArrayFull, dispersion, fixedpointEnergy = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         jldopen(savePaths[j], "w") do file
             file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
@@ -50,8 +50,8 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
     end
 
     # loop over the various probes that has been requested
-    for probeName in probes
-        pdfFileNames = ["fig_$(W_by_J).pdf" for W_by_J in W_by_J_range]
+    @showprogress for probeName in probes
+        pdfFileNames = ["fig_$(W_by_J)_$probeName.pdf" for W_by_J in W_by_J_range]
 
         # loop over each value of W/J to calculate the probe for that value
         # anim = @animate 

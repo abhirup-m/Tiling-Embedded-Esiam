@@ -2,6 +2,7 @@ using LinearAlgebra
 using CairoMakie
 using Makie
 using LaTeXStrings
+using Plots
 include("../../../fermionise/source/fermionise.jl")
 include("../../../fermionise/source/correlations.jl")
 include("../../../fermionise/source/models.jl")
@@ -19,7 +20,7 @@ function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int
         results[point1] = sum(kondoJArray[point1, point2_arr, stepIndex] .^ 2) / length(point2_arr)
         results_bare[point1] = sum(kondoJArray[point1, point2_arr, 1] .^ 2) / length(point2_arr)
     end
-    results_bool = tolerantSign.(abs.(results ./ results_bare), RG_RELEVANCE_TOL)
+    results_bool = tolerantSign.(abs.(results), abs.(results_bare) .* RG_RELEVANCE_TOL)
     results[results_bool.<0] .= NaN
     return results ./ results_bare, results_bare, results_bool
 end
@@ -37,34 +38,75 @@ end
 
 
 function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArrayFull::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
+    # get size of each quadrant (number of points in the range [0, π])
     halfSize = trunc(Int, (size_BZ + 1) / 2)
+
+    # get the k-values that lie within the southeast quadrant ([0, π]×[0, π])>
+    # We will calculate the correlation only for these values, because the values
+    # in the other quadrants will be identical to these.
     kx_SEquadrant = range((K_MIN + K_MAX) / 2, stop=K_MAX, length=halfSize)
     ky_SEquadrant = range(K_MIN, stop=(K_MIN + K_MAX) / 2, length=halfSize)
     SEquadrant_kpairs = [(kx, ky) for ky in ky_SEquadrant for kx in kx_SEquadrant]
 
+    # initialise zero matrix for storing correlations
     results = zeros(halfSize^2)
+    results_bare = zeros(halfSize^2)
+
+    # get all possible indices of momentum states within the Brillouin zone
     k_indices = collect(1:size_BZ^2)
 
     # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
-    spinFlipCorrOplist = [("+-+-", 1.0, [1, 2, 4, 3]), ("+-+-", 1.0, [2, 1, 3, 4])]
+    spinFlipCorrOplist = [("+-+-", 0.5, [1, 2, 4, 3]), ("+-+-", 0.5, [2, 1, 3, 4])]
 
-    trunc_dim = 5
+    # number of k-states we will be keeping in any single Hamiltonian
+    trunc_dim = 4
+
+    # generating basis states for constructing prototype Hamiltonians which
+    # will be diagonalised to obtain correlations
     basis = BasisStates(trunc_dim * 2 + 2)
+
+    # inline function to return bath interaction matrix elements
     bathIntFunc(points) = bathIntForm(W_val, orbitals[2], size_BZ, points)
-    Threads.@threads for (kx, ky) in SEquadrant_kpairs
-        if kx < ky
-            continue
+
+    # loop over all points in the south east quadrant
+    Threads.@threads for ky in ky_SEquadrant
+
+        # only calculate the upper triangular block, because the
+        # lower block can be obtained by transposing.
+        for kx in kx_SEquadrant[kx_SEquadrant .>= ky]
+            # obtain the 1D representation of the chosen (kx, ky) point
+            k_index = map2DTo1D(kx, ky, size_BZ)
+
+            # get all points which are not (kx, ky) and which lie inside the energy shell of (kx, ky)
+            other_k_indices = k_indices[(k_indices.≠k_index).&(abs.(dispersion[k_indices]).<=abs(dispersion[k_index]))]
+
+            # get the k_indices from other_k_indices which have the largest value of J_{k1, k2}
+            chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
+
+            # construct Hamiltonian matrix using fixed point values of couplings and the chosen momentum indices.
+            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
+            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE ^ 0.5)
+
+            # diagonalise and obtain correlation
+            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+            correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
+        
+            # set the appropriate matrix element of the results matrix to this calculated value.
+            # Also set the transposed element to the same value.
+            results[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation
+            results[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
+
+            # do the same for the bare Hamiltonian
+            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, 1], bathIntFunc)
+            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE ^ 0.5)
+            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+            correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
+            results_bare[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation
+            results_bare[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
         end
-        k_index = map2DTo1D(kx, ky, size_BZ)
-        other_k_indices = k_indices[k_indices.≠k_index]
-        chosenIndices = [[k_index]; other_k_indices[sortperm(abs.(kondoJArrayFull[k_index, other_k_indices, end]), rev=true)][1:trunc_dim-1]]
-        oplist = KondoKSpace(chosenIndices, dispersion, 100 .* kondoJArrayFull[:, :, end], bathIntFunc)
-        fixedPointHamMatrix = generalOperatorMatrix(basis, oplist)
-        eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
-        results[SEquadrant_kpairs .== [(kx, ky)]] .= gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
-        results[SEquadrant_kpairs .== [(ky, kx)]] .= results[SEquadrant_kpairs .== [(kx, ky)]]
     end
-    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / 100)
+    # calculate whether the correlations are zero or non-zero.
+    results_bool = tolerantSign.(abs.(results), abs.(results_bare) .* RG_RELEVANCE_TOL)
     return results, results_bool, kx_SEquadrant, ky_SEquadrant
 end
 
@@ -72,7 +114,7 @@ end
 function plotHeatmaps(results_arr, x_arr, y_arr, fig, axes, cmaps)
     for (i, result) in enumerate(results_arr)
         reshaped_result = reshape(result, (length(x_arr), length(y_arr)))
-        hmap = heatmap!(axes[i], x_arr, y_arr, reshaped_result, colormap=cmaps[i],
+        hmap = CairoMakie.heatmap!(axes[i], x_arr, y_arr, reshaped_result, colormap=cmaps[i],
         )
         Colorbar(fig[1, 2*i], hmap, colorrange=(minimum(result), maximum(result)))
     end
@@ -122,7 +164,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         drawPoint = offantinode ./ pi
         x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "spinFlipCorrMap"
-        results, results_bool, x_arr, y_arr = @time spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals) 
+        results, results_bool, x_arr, y_arr = @time spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
         titles[1] = L"\mathrm{rel(irrel)evance~of~} "
         titles[2] = L"\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
     end
@@ -133,7 +175,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
     axes = plotHeatmaps((results_bool, results), x_arr, y_arr,
         fig, axes[1:2], cmaps)
     if probeName in ["kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap"]
-        [scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
+        [CairoMakie.scatter!(ax, [drawPoint[1]], [drawPoint[2]], markersize=20, color=:grey, strokewidth=2, strokecolor=:white) for ax in axes]
     end
     [colsize!(fig.layout, i, Aspect(1, 1.0)) for i in [1, 3]]
     resize_to_layout!(fig)

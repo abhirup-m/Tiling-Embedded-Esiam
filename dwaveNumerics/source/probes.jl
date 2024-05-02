@@ -87,32 +87,36 @@ function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArra
         # get the k_indices from other_k_indices which have the largest value of J_{k1, k2}
         # chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
         nTuplesKstates = [[[k_index]; tuple] for tuple in combinations(other_k_indices, trunc_dim - 1)]
-        for chosenIndices in nTuplesKstates
-            # construct Hamiltonian matrix using fixed point values of couplings and the chosen momentum indices.
-            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
-            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE^0.5)
+        operatorListSet = KondoKSpace(nTuplesKstates, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
+        fixedPointHamMatrices = generalOperatorMatrix(basis, operatorListSet; tolerance=TOLERANCE^0.5)
+        Threads.@threads for fixedPointHamMatrix in fixedPointHamMatrices
+            # diagonalise and obtain correlation
+            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+            correlation = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
 
+            # set the appropriate matrix element of the results matrix to this calculated value.
+            # Also set the transposed element to the same value.
+            results[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation / length(nTuplesKstates)
+            results[SEquadrant_kpairs.==[(ky, kx)]] .+= correlation / length(nTuplesKstates)
+        end
+
+        # do the same for the bare Hamiltonian
+        operatorListSet = KondoKSpace(nTuplesKstates, dispersion, kondoJArrayFull[:, :, 1], bathIntFunc)
+        fixedPointHamMatrices = generalOperatorMatrix(basis, operatorListSet; tolerance=TOLERANCE^1)
+        Threads.@threads for fixedPointHamMatrix in fixedPointHamMatrices
             # diagonalise and obtain correlation
             eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
             correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
 
             # set the appropriate matrix element of the results matrix to this calculated value.
             # Also set the transposed element to the same value.
-            results[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation / length(nTuplesKstates)
-            results[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
-
-            # do the same for the bare Hamiltonian
-            oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, 1], bathIntFunc)
-            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE^0.5)
-            eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
-            correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
             results_bare[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation / length(nTuplesKstates)
-            results_bare[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
+            results_bare[SEquadrant_kpairs.==[(ky, kx)]] .+= correlation / length(nTuplesKstates)
         end
     end
     # calculate whether the correlations are zero or non-zero.
     results_bool = tolerantSign.(abs.(results), abs.(results_bare) .* RG_RELEVANCE_TOL)
-    return results, results_bool, kx_SEquadrant, ky_SEquadrant
+    return abs.(results), results_bool, kx_SEquadrant, ky_SEquadrant
 end
 
 
@@ -171,7 +175,7 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
     elseif probeName == "spinFlipCorrMap"
         results, results_bool, x_arr, y_arr = @time spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
         titles[1] = L"\mathrm{rel(irrel)evance~of~} "
-        titles[2] = L"\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
+        titles[2] = L"0.5\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
     end
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:4])

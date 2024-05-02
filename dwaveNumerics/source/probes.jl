@@ -3,6 +3,7 @@ using CairoMakie
 using Makie
 using LaTeXStrings
 using Plots
+using Combinatorics
 include("../../../fermionise/source/fermionise.jl")
 include("../../../fermionise/source/correlations.jl")
 include("../../../fermionise/source/models.jl")
@@ -56,10 +57,10 @@ function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArra
     k_indices = collect(1:size_BZ^2)
 
     # operator list for the operator S_d^+ c^†_{k ↓} c_{k ↑} + h.c.
-    spinFlipCorrOplist = [("+-+-", 0.5, [1, 2, 4, 3]), ("+-+-", 0.5, [2, 1, 3, 4])]
+    spinFlipCorrOplist = Dict(("+-+-", [1, 2, 4, 3]) => 0.5, ("+-+-", [2, 1, 3, 4]) => 0.5)
 
     # number of k-states we will be keeping in any single Hamiltonian
-    trunc_dim = 4
+    trunc_dim = 2
 
     # generating basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
@@ -69,39 +70,43 @@ function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArra
     bathIntFunc(points) = bathIntForm(W_val, orbitals[2], size_BZ, points)
 
     # loop over all points in the south east quadrant
-    Threads.@threads for ky in ky_SEquadrant
+    Threads.@threads for (kx, ky) in SEquadrant_kpairs
 
         # only calculate the upper triangular block, because the
         # lower block can be obtained by transposing.
-        for kx in kx_SEquadrant[kx_SEquadrant .>= ky]
-            # obtain the 1D representation of the chosen (kx, ky) point
-            k_index = map2DTo1D(kx, ky, size_BZ)
+        if kx < ky
+            continue
+        end
 
-            # get all points which are not (kx, ky) and which lie inside the energy shell of (kx, ky)
-            other_k_indices = k_indices[(k_indices.≠k_index).&(abs.(dispersion[k_indices]).<=abs(dispersion[k_index]))]
+        # obtain the 1D representation of the chosen (kx, ky) point
+        k_index = map2DTo1D(kx, ky, size_BZ)
 
-            # get the k_indices from other_k_indices which have the largest value of J_{k1, k2}
-            chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
+        # get all points which are not (kx, ky) and which lie inside the energy shell of (kx, ky)
+        other_k_indices = k_indices[(k_indices.≠k_index).&(abs.(dispersion[k_indices]).<=abs(dispersion[k_index]))]
 
+        # get the k_indices from other_k_indices which have the largest value of J_{k1, k2}
+        # chosenIndices = [[k_index]; other_k_indices[sortperm(kondoJArrayFull[k_index, other_k_indices, end], rev=true)][1:trunc_dim-1]]
+        nTuplesKstates = [[[k_index]; tuple] for tuple in combinations(other_k_indices, trunc_dim - 1)]
+        for chosenIndices in nTuplesKstates
             # construct Hamiltonian matrix using fixed point values of couplings and the chosen momentum indices.
             oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
-            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE ^ 0.5)
+            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE^0.5)
 
             # diagonalise and obtain correlation
             eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
             correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
-        
+
             # set the appropriate matrix element of the results matrix to this calculated value.
             # Also set the transposed element to the same value.
-            results[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation
+            results[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation / length(nTuplesKstates)
             results[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
 
             # do the same for the bare Hamiltonian
             oplist = KondoKSpace(chosenIndices, dispersion, kondoJArrayFull[:, :, 1], bathIntFunc)
-            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE ^ 0.5)
+            fixedPointHamMatrix = generalOperatorMatrix(basis, oplist; tolerance=TOLERANCE^0.5)
             eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
             correlation = abs(gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist))
-            results_bare[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation
+            results_bare[SEquadrant_kpairs.==[(kx, ky)]] .+= correlation / length(nTuplesKstates)
             results_bare[SEquadrant_kpairs.==[(ky, kx)]] .+= results[SEquadrant_kpairs.==[(kx, ky)]]
         end
     end

@@ -38,6 +38,39 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
+function spinFlipCorrMapCoarse(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArrayFull::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
+    nodes = map2DTo1D([-pi / 2, pi / 2, pi / 2, -pi / 2], [-pi / 2, -pi / 2, pi / 2, pi / 2], size_BZ)
+    antinodes = map2DTo1D([0, pi, 0, -pi], [-pi, 0, pi, 0], size_BZ)
+    chosenPoints = [nodes; antinodes]
+    correlationResults = zeros(size_BZ^2)
+    bathIntFunc(points) = bathIntForm(W_val, orbitals[2], size_BZ, points)
+    @time operatorList = KondoKSpace(chosenPoints, dispersion, kondoJArrayFull[:, :, end], bathIntFunc)
+    basis = BasisStates(2 * length(chosenPoints) + 2; totOccupancy=[length(chosenPoints) + 1])
+    @time fixedPointHamMatrix = generalOperatorMatrix(basis, operatorList;)
+    @time eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+    @time Threads.@threads for (i, point) in collect(enumerate(chosenPoints))
+        upIndex = 2 + 2 * (i - 1) + 1
+        downIndex = upIndex + 1
+        spinFlipCorrOplist = Dict(("+-+-", [1, 2, downIndex, upIndex]) => 0.5, ("+-+-", [2, 1, upIndex, downIndex]) => 0.5)
+        correlation = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
+        correlationResults[point] = correlation
+    end
+    correlationResultsBare = zeros(size_BZ^2)
+    @time operatorList = KondoKSpace(chosenPoints, dispersion, kondoJArrayFull[:, :, 1], bathIntFunc)
+    @time fixedPointHamMatrix = generalOperatorMatrix(basis, operatorList;)
+    @time eigvals, eigstates = getSpectrum(fixedPointHamMatrix)
+    @time Threads.@threads for (i, point) in collect(enumerate(chosenPoints))
+        upIndex = 2 + 2 * (i - 1) + 1
+        downIndex = upIndex + 1
+        spinFlipCorrOplist = Dict(("+-+-", [1, 2, downIndex, upIndex]) => 0.5, ("+-+-", [2, 1, upIndex, downIndex]) => 0.5)
+        correlation = gstateCorrelation(basis, eigvals, eigstates, spinFlipCorrOplist)
+        correlationResultsBare[point] = correlation
+    end
+    correlationResultsBool = tolerantSign.(abs.(correlationResults), abs.(correlationResultsBare) .* RG_RELEVANCE_TOL)
+    return abs.(correlationResults), correlationResultsBool
+end
+
+
 function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArrayFull::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
     # get size of each quadrant (number of points in the range [0, π])
     halfSize = trunc(Int, (size_BZ + 1) / 2)
@@ -173,9 +206,10 @@ function mapProbeNameToProbe(probeName, size_BZ, kondoJArrayFull, W_by_J, J_val,
         drawPoint = offantinode ./ pi
         x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     elseif probeName == "spinFlipCorrMap"
-        results, results_bool, x_arr, y_arr = @time spinFlipCorrMap(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
+        results, results_bool = spinFlipCorrMapCoarse(size_BZ, dispersion, kondoJArrayFull, W_by_J * J_val, orbitals)
         titles[1] = L"\mathrm{rel(irrel)evance~of~} "
         titles[2] = L"0.5\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
+        x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     end
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:4])

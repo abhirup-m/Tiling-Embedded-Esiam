@@ -1,17 +1,10 @@
-using Makie, CairoMakie, Measures, LaTeXStrings
-using Distributed
-
-# add four more processes, to allow distributed computing, only if this hasn't already been done before (hence the if check)
-if nprocs() == 1
-    addprocs(0)
-end
-@everywhere using JLD2
-@everywhere using ProgressMeter
+using JLD2
+using ProgressMeter
 set_theme!(theme_latexfonts())
 update_theme!(fontsize=30)
 
-@everywhere include("./rgFlow.jl")
-@everywhere include("./probes.jl")
+include("./rgFlow.jl")
+include("./probes.jl")
 
 # file name format for saving plots and animations
 animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(W_by_J_min, digits=4))_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
@@ -54,7 +47,6 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
         pdfFileNames = ["fig_$(W_by_J)_$probeName.pdf" for W_by_J in W_by_J_range]
 
         # loop over each value of W/J to calculate the probe for that value
-        # anim = @animate 
         for (W_by_J, savePath, pdfFileName) in zip(W_by_J_range, savePaths, pdfFileNames)
 
             # load saved data
@@ -67,14 +59,13 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
                 kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
 
                 # calculate and plot the probe result, then save the fig.
-                fig = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J, J_val, dispersion, orbitals, fixedpointEnergy)
+                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J, J_val, dispersion, orbitals, fixedpointEnergy)
+                fig = mainPlotter(results, results_bare, probeName)
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end
         plotName = animName(orbitals, size_BZ, omega_by_t, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)
         run(`pdfunite $pdfFileNames $(plotName)-$(replace(probeName, " " => "-")).pdf`)
         run(`rm $pdfFileNames`)
-        # gif(anim, plotName * "-$(replace(probeName, " " => "-")).gif", fps=0.5)
-        # gif(anim, plotName * "-$(replace(probe, " " => "-")).mp4", fps=0.5)
     end
 end

@@ -69,9 +69,12 @@ function initialiseKondoJ(size_BZ::Int64, orbital::String, num_steps::Int64, J_v
             kondoJArray[p1, p2_arr, 1] =
                 J_val * (cos(k1x) + cos(k1y)) .* (cos.(k2x) + cos.(k2y))
         end
+
+        # set the transposed elements to the same values (the matrix is real symmetric)
         kondoJArray[p2_arr, p1, 1] = kondoJArray[p1, p2_arr, 1]
     end
-    return kondoJArray
+    # kondoJArray[abs.(kondoJArray)./minimum(abs.(kondoJArray .!= 0)).<1e-5] .= 0
+    return round.(kondoJArray, digits=trunc(Int, -log10(TOLERANCE)))
 end
 
 
@@ -141,12 +144,13 @@ function deltaJk1k2(
         )
 
     # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
-    if (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 <= 0
+    if abs(kondoJArrayPrev_k1k2) > TOLERANCE && (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 < 0
         kondoJArrayNext_k1k2 = 0
         proceed_flagk1k2 = 0
     else
         kondoJArrayNext_k1k2 = kondoJArrayPrev_k1k2 + renormalisation
     end
+
     return kondoJArrayNext_k1k2, proceed_flagk1k2
 end
 
@@ -159,10 +163,6 @@ function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs
         kondoJArrayNext[innerIndex1, excludedIndex] = kondoJArrayNext[excludedIndex, innerIndex1] = -kondoJArrayNext[innerIndex1, innerIndex2]
         proceed_flags[innerIndex1, excludedIndex] = proceed_flags[innerIndex1, innerIndex2]
         proceed_flags[excludedIndex, innerIndex1] = proceed_flags[innerIndex1, innerIndex2]
-        if kondoJArrayPrev[innerIndex1, excludedIndex] * kondoJArrayNext[innerIndex1, excludedIndex] < -abs(TOLERANCE)
-            kondoJArrayNext[innerIndex1, excludedIndex] = kondoJArrayNext[excludedIndex, innerIndex1] = 0
-            proceed_flags[innerIndex1, excludedIndex] = proceed_flags[excludedIndex, innerIndex1] = 0
-        end
     end
     Threads.@threads for (index1, index2) in excludedVertexPairs
         sourcePoint1, sourcePoint2 = particleHoleTransf([index1, index2], size_BZ)
@@ -171,11 +171,6 @@ function symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs
         kondoJArrayNext[index1, index2] = kondoJArrayNext[index2, index1] = kondoJArrayNext[sourcePoint1, sourcePoint2]
         proceed_flags[index1, index2] = proceed_flags[sourcePoint1, sourcePoint2]
         proceed_flags[index2, index1] = proceed_flags[sourcePoint1, sourcePoint2]
-        if kondoJArrayPrev[index1, index2] * kondoJArrayNext[index1, index2] < -abs(TOLERANCE)
-            kondoJArrayNext[index1, index2] = 0
-            kondoJArrayNext[index2, index1] = 0
-            proceed_flags[index1, index2] = proceed_flags[index2, index1] = 0
-        end
     end
     return kondoJArrayNext, proceed_flags
 end
@@ -214,7 +209,6 @@ function stepwiseRenormalisation(
             ) / 2,
         )
 
-    # println(denominators[1])
     # only consider those terms whose denominator haven't gone through zeros
     cutoffPoints = cutoffPoints[denominators.<0]
     cutoffHolePoints = cutoffHolePoints[denominators.<0]
@@ -259,7 +253,7 @@ function stepwiseRenormalisation(
     return kondoJArrayNext, proceed_flags
 end
 
-@everywhere function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Tuple{String,String}; progressbarEnabled=false)
+function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Tuple{String,String}; progressbarEnabled=false)
 
     impOrbital, bathOrbital = orbitals
 
@@ -315,8 +309,10 @@ end
             bathOrbital,
             densityOfStates,
         )
-        kondoJArray[:, :, stepIndex+1] = kondoJArrayNext
+        kondoJArray[:, :, stepIndex+1] = round.(kondoJArrayNext, digits=trunc(Int, -log10(TOLERANCE)))
         proceed_flags = proceed_flags_updated
+        # println(kondoJArray[21, 93, stepIndex], kondoJArray[21, 93, stepIndex+1])
+        # println(kondoJArray[77, 149, stepIndex], kondoJArray[77, 149, stepIndex+1])
     end
     return kondoJArray, dispersionArray, fixedpointEnergy
 end

@@ -5,7 +5,7 @@ using Makie
 (@isdefined K_MAX) || const K_MAX = pi
 
 # tolerance for identifying energy contours
-(@isdefined TOLERANCE) || const TOLERANCE = 1e-10
+(@isdefined TOLERANCE) || const TOLERANCE = 1e-8
 
 # overlap integral 't' set to 1
 (@isdefined HOP_T) || const HOP_T = 1.0
@@ -14,7 +14,7 @@ using Makie
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
 (@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2
 
-const ALLOWED_PROBES = ["scattProb", "kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap", "spinFlipCorrMap"]
+(@isdefined ALLOWED_PROBES) || const ALLOWED_PROBES = ["scattProb", "kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap", "spinFlipCorrMap"]
 # for testing. 
 (@isdefined SIZE_BZ) || const SIZE_BZ = [5, 101, 1001]
 (@isdefined KX_VALUES) || const KX_VALUES = [K_MIN, K_MAX, K_MIN, K_MAX, 0]

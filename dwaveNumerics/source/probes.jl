@@ -34,10 +34,18 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}; trunc_dim::Int64=3)
+function sampleKondoIntAndBathInt(chosenIndicesPerm::Vector{Int64}, kondoJArray, bathIntArgs)
+# W_val, orbitals[2], size_BZ
+    k_indices = 1:length(chosenIndicesPerm)
+    indices_two_repeated = ntuple(x->k_indices, 2)
+    indices_four_repeated = ntuple(x->k_indices, 4)
+    kondoDict = Dict(pair => kondoJArray[chosenIndicesPerm[collect(pair)]..., end] for pair in Iterators.product(indices_two_repeated...))
+    kondoDictBare = Dict(pair => kondoJArray[chosenIndicesPerm[collect(pair)]..., 1] for pair in Iterators.product(indices_two_repeated...))
+    bathIntDict = Dict(fourSet => bathIntForm(bathIntArgs..., chosenIndicesPerm[collect(fourSet)]) for fourSet in Iterators.product(indices_four_repeated...))
+    return kondoDict, kondoDictBare, bathIntDict
+end
 
-    # get size of each quadrant (number of points in the range [0, π])
-    halfSize = trunc(Int, (size_BZ + 1) / 2)
+function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}; trunc_dim::Int64=3)
 
     # get all possible indices of momentum states within the Brillouin zone
     k_indices = collect(1:size_BZ^2)
@@ -51,17 +59,15 @@ function spinFlipCorrMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArra
     # will be diagonalised to obtain correlations
     basis = BasisStates(trunc_dim * 2 + 2)
 
-    kondoDict = Dict((i, j) => kondoJArray[i, j, end] for (i, j) in Iterators.product(k_indices, k_indices))
-    kondoDictBare = Dict((i, j) => kondoJArray[i, j, 1] for (i, j) in Iterators.product(k_indices, k_indices))
-    bathIntDict = Dict(indices => bathIntForm(W_val, orbitals[2], size_BZ, indices) for indices in Iterators.product(k_indices, k_indices, k_indices, k_indices))
     correlationOperators = [Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0) for i in 1:trunc_dim]
     for energy in [0]
         suitableIndices = k_indices[abs.(dispersion[k_indices]).<=energy+TOLERANCE]
         for chosenIndices in collect(combinations(suitableIndices, trunc_dim))
             for chosenIndicesPerm in permutations(chosenIndices)
-                operatorList = kondoKSpace(chosenIndicesPerm, dispersion, kondoDict, bathIntDict)
+                kondoDict, kondoDictBare, bathIntDict = sampleKondoIntAndBathInt(chosenIndicesPerm, kondoJArray, (W_val, orbitals[2], size_BZ))
+                operatorList = kondoKSpace(dispersion[chosenIndicesPerm], kondoDict, bathIntDict)
                 matrix = generalOperatorMatrix(basis, operatorList)
-                eigvals, eigvecs = getSpectrum(matrix)
+                eigvals, eigvecs = getSpectrum(matrix; tolerance=TOLERANCE)
                 results[chosenIndicesPerm] .+= [sum(abs.(gstateCorrelation(basis, eigvals, eigvecs, correlationOperators[i]))) for (i, index) in enumerate(chosenIndicesPerm)]
             end
             contributorCounter[chosenIndices] .+= factorial(trunc_dim)

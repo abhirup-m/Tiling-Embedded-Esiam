@@ -145,15 +145,16 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         # get Kondo interaction terms and bath interaction terms involving only the indices
         # appearing in the present sequence.
         dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
-        operatorListSet = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet)
-        @time matrixSet = generalOperatorMatrix(basis, operatorListSet)
+        operatorList, couplingMatrix = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet)
+        @time matrixSet = generalOperatorMatrix(basis, operatorList, couplingMatrix)
         @time eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
-
+        @time correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenInfo..., correlationOperatorList) 
+                                           for (sequence, matrix, eigenInfo) in zip(allSequences, matrixSet, eigenSet)])
         # calculate the correlation for all such configurations.
-        @time for (sequence, matrix, eigenInfo) in zip(allSequences, matrixSet, eigenSet)
+        @time for (sequence, correlationResult) in zip(allSequences, correlationResults)
 
             # calculate the correlation for all points in the present sequence
-            results[sequence] .+= gstateCorrelation(basis, eigenInfo..., correlationOperatorList)
+            results[sequence] .+= correlationResult
             contributorCounter[sequence] .+= 1
         end
 

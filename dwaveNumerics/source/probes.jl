@@ -77,26 +77,26 @@ Useful if I want to look at the interactions only between a certain set of k-sta
 Used for constructing lattice eSIAM Hamiltonians for samples of 2/3/4 k-states, in
 order to diagonalise and obtain correlations.
 """
-function sampleKondoIntAndBathInt(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64, String,Int64})
+function sampleKondoIntAndBathInt(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
     k_indices = 1:length(sequence)
 
     # create the twice repeated and four times repeated vectors, for nested iterations.
-    indices_two_repeated = ntuple(x->k_indices, 2)
-    indices_four_repeated = ntuple(x->k_indices, 4)
+    indices_two_repeated = ntuple(x -> k_indices, 2)
+    indices_four_repeated = ntuple(x -> k_indices, 4)
 
     # create the dictionaries by iterating over all combinations of the momentum states.
-    dispersionDict = Dict{Int64, Float64}(index => dispersion[state] for (index, state) in enumerate(sequence))
-    kondoDict = Dict{Tuple{Int64, Int64}, Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in Iterators.product(indices_two_repeated...))
-    kondoDictBare = Dict{Tuple{Int64, Int64}, Float64}(pair => kondoJArray[sequence[collect(pair)]..., 1] for pair in Iterators.product(indices_two_repeated...))
-    bathIntDict = Dict{Tuple{Int64, Int64, Int64, Int64}, Float64}(fourSet => bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in Iterators.product(indices_four_repeated...))
+    dispersionDict = Dict{Int64,Float64}(index => dispersion[state] for (index, state) in enumerate(sequence))
+    kondoDict = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in Iterators.product(indices_two_repeated...))
+    kondoDictBare = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., 1] for pair in Iterators.product(indices_two_repeated...))
+    bathIntDict = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}(fourSet => bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in Iterators.product(indices_four_repeated...))
     return dispersionDict, kondoDict, kondoDictBare, bathIntDict
 end
 
-function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64, 3}, bathIntArgs::Tuple{Float64, String,Int64})
-    dispersionDictSet = Dict{Int64, Float64}[]
-    kondoDictSet = Dict{Tuple{Int64, Int64}, Float64}[]
-    kondoDictBareSet = Dict{Tuple{Int64, Int64}, Float64}[]
-    bathIntDictSet = Dict{Tuple{Int64, Int64, Int64, Int64}, Float64}[]
+function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
+    dispersionDictSet = Dict{Int64,Float64}[]
+    kondoDictSet = Dict{Tuple{Int64,Int64},Float64}[]
+    kondoDictBareSet = Dict{Tuple{Int64,Int64},Float64}[]
+    bathIntDictSet = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}[]
     for sequence in sequenceSet
         dispersionDict, kondoDict, kondoDictBare, bathIntDict = sampleKondoIntAndBathInt(sequence, dispersion, kondoJArray, bathIntArgs)
         push!(dispersionDictSet, dispersionDict)
@@ -140,18 +140,22 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
         # interchanges lead to fermion signs.
         allSequences = [perm for chosenIndices in collect(combinations(suitableIndices, trunc_dim)) for perm in permutations(chosenIndices)]
+        @assert !isempty(allSequences)
 
         # get Kondo interaction terms and bath interaction terms involving only the indices
         # appearing in the present sequence.
-        dispersionSet, kondoDictSet, kondoDictBareSet, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
-        operatorListSet = kondoKSpace(dispersionSet, kondoDictSet, bathIntDictSet)
+        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
+        operatorListSet = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet)
         matrixSet = generalOperatorMatrix(basis, operatorListSet)
+        eigenSet = [[Dict{Tuple{Int64,Int64},Float64}(), Dict{Tuple{Int64,Int64},Vector{Float64}}()] for _ in eachindex(matrixSet)]
+        Threads.@threads for i in eachindex(matrixSet)
+            eigvals, eigvecs = getSpectrum(matrixSet[i])
+            eigenSet[i][1] = eigvals
+            eigenSet[i][2] = eigvecs
+        end
 
         # calculate the correlation for all such configurations.
-        for (sequence, matrix) in zip(allSequences, matrixSet)
-            eigvals, eigvecs = getSpectrum(matrix)
-
-            # calculate the correlation for all points in the present sequence
+        for (sequence, (eigvals, eigvecs)) in zip(allSequences, eigenSet)
             results[sequence] .+= gstateCorrelation(basis, eigvals, eigvecs, correlationOperatorList)
             contributorCounter[sequence] .+= 1
         end
@@ -183,7 +187,7 @@ end
 Maps the given probename string (such as "kondoCoupNodeMap") to its appropriate function 
 which can calculate and return the value of that probe.
 """
-function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String, String}, fixedpointEnergy::Float64)
+function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String,String}, fixedpointEnergy::Float64)
     if probeName == "scattProb"
         results, results_bare, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3], size_BZ, dispersion, fixedpointEnergy)
     elseif probeName == "kondoCoupNodeMap"

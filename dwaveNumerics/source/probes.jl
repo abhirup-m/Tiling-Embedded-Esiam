@@ -146,17 +146,14 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         # appearing in the present sequence.
         dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
         operatorListSet = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet)
-        matrixSet = generalOperatorMatrix(basis, operatorListSet)
-        eigenSet = [[Dict{Tuple{Int64,Int64},Float64}(), Dict{Tuple{Int64,Int64},Vector{Float64}}()] for _ in eachindex(matrixSet)]
-        Threads.@threads for i in eachindex(matrixSet)
-            eigvals, eigvecs = getSpectrum(matrixSet[i])
-            eigenSet[i][1] = eigvals
-            eigenSet[i][2] = eigvecs
-        end
+        @time matrixSet = generalOperatorMatrix(basis, operatorListSet)
+        @time eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
 
         # calculate the correlation for all such configurations.
-        for (sequence, (eigvals, eigvecs)) in zip(allSequences, eigenSet)
-            results[sequence] .+= gstateCorrelation(basis, eigvals, eigvecs, correlationOperatorList)
+        @time for (sequence, matrix, eigenInfo) in zip(allSequences, matrixSet, eigenSet)
+
+            # calculate the correlation for all points in the present sequence
+            results[sequence] .+= gstateCorrelation(basis, eigenInfo..., correlationOperatorList)
             contributorCounter[sequence] .+= 1
         end
 

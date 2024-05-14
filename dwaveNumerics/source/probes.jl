@@ -11,46 +11,37 @@ include("../../../fermionise/source/models.jl")
 Function to calculate the average Kondo scattering probability Γ(k) = (1/N^*)∑_q J(k,q)^2
 at the RG fixed point, where N^* is the number of points within the fixed point window.
 """
-function scattProb(kondoJArray::Array{Float64,3}, stepIndex::Int64, size_BZ::Int64, dispersion::Vector{Float64}, fixedpointEnergy::Float64)
+function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Vector{Float64}, energyScales::Vector{Float64})
 
     # allocate zero arrays to store Γ at fixed point and for the bare Hamiltonian.
     results = zeros(size_BZ^2)
     results_bare = zeros(size_BZ^2)
 
-    # get all allowed energies starting from the fixed point energy
-    # up to the Fermi energy. Only the k-states lying in this range
-    # will be considering for the summation over q.
-    E_cloud = dispersion[-fixedpointEnergy.<=dispersion.<=fixedpointEnergy]
-
-    # set of points q that lie within the allowed window. This is
-    # obtained by calculating the isoenergetic points that lie on 
-    # each energy level E within the set of levels E_cloud = [E1, E2, ...].
-    point2_arr = unique(getIsoEngCont(dispersion, E_cloud))
-
     # loop over all points k for which we want to calculate Γ(k).
-    Threads.@threads for point1 in 1:size_BZ^2
+    Threads.@threads for point in 1:size_BZ^2
 
-        # check if the point is one of the four corners of the 
-        # Brillouin zone. If it is, then set that to zero, because
-        # it is not affected by the RG and is therefore not of interest.
-        kx, ky = map1DTo2D(point1, size_BZ)
-        if (abs(kx) ≈ K_MAX && abs(ky) ≈ K_MAX) || (kx ≈ 0 && ky ≈ 0)
+        # check if the point is one of the four corners or the 
+        # center. If it is, then don't bother. These points are
+        # not affected by the RG and therefore not of interest.
+        if point ∈ [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2, trunc(Int, 0.5 * (size_BZ^2 + 1))]
             continue
         end
 
+        targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion) .<= abs(dispersion[point])]
+
         # calculate the average over q, both for the fixed point and the bare Hamiltonian.
-        results[point1] = sum(kondoJArray[point1, point2_arr, stepIndex] .^ 2) / length(point2_arr)
-        results_bare[point1] = sum(kondoJArray[point1, point2_arr, 1] .^ 2) / length(point2_arr)
+        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) / length(targetStatesForPoint)
+        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2) / length(targetStatesForPoint)
     end
 
     # get a boolean representation of results for visualisation, using the mapping
     # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    results_bool = tolerantSign.(abs.(results), abs.(results_bare) .* RG_RELEVANCE_TOL)
+    results_bool = [r/r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
 
     # set the -1 to NaN, in order to make them stand out on the plots.
-    results[results_bool.<0] .= NaN
+    results[results_bool .== -1] .= NaN
 
-    return results ./ results_bare, results_bare, results_bool
+    return results ./ results_bare, results_bool
 end
 
 
@@ -185,9 +176,9 @@ end
 Maps the given probename string (such as "kondoCoupNodeMap") to its appropriate function 
 which can calculate and return the value of that probe.
 """
-function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String,String}, fixedpointEnergy::Float64)
+function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String,String}, energyScales::Vector{Float64})
     if probeName == "scattProb"
-        results, results_bare, results_bool = scattProb(kondoJArrayFull, size(kondoJArrayFull)[3], size_BZ, dispersion, fixedpointEnergy)
+        results, results_bool = scattProb(kondoJArrayFull, size_BZ, dispersion, energyScales)
     elseif probeName == "kondoCoupNodeMap"
         results, results_bare, results_bool = kondoCoupMap(node, size_BZ, kondoJArrayFull)
     elseif probeName == "kondoCoupAntinodeMap"

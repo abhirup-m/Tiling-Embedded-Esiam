@@ -1,10 +1,8 @@
 using JLD2
 using ProgressMeter
-set_theme!(theme_latexfonts())
-update_theme!(fontsize=30)
-
 include("./rgFlow.jl")
 include("./probes.jl")
+include("./plotting.jl")
 
 # file name format for saving plots and animations
 animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = "$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(W_by_J_min, digits=4))_$(round(W_by_J_max, digits=4))_$(round(J_val, digits=4))_$(FIG_SIZE[1] * scale)x$(FIG_SIZE[2] * scale)"
@@ -34,11 +32,11 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
 
     # loop over all given values of W/J, get the fixed point distribution J(k1,k2) and save them in files
     @showprogress Threads.@threads for (j, W_by_J) in collect(enumerate(W_by_J_range))
-        kondoJArrayFull, dispersion, fixedpointEnergy = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
+        kondoJArrayFull, dispersion, energyScales = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         jldopen(savePaths[j], "w") do file
-            file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
+            file["kondoJArray"] = kondoJArrayFull
             file["dispersion"] = dispersion
-            file["fixedpointEnergy"] = fixedpointEnergy
+            file["energyScales"] = energyScales
         end
     end
 
@@ -48,19 +46,18 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
 
         # loop over each value of W/J to calculate the probe for that value
         for (W_by_J, savePath, pdfFileName) in zip(W_by_J_range, savePaths, pdfFileNames)
-
+            titleText = L"NW/J=%$(trunc(size_BZ * W_by_J, digits=1))"
             # load saved data
             jldopen(savePath, "r"; compress=true) do file
-                kondoJArrayEnds = file["kondoJArrayEnds"]
+                kondoJArray = file["kondoJArray"]
                 dispersion = file["dispersion"]
-                fixedpointEnergy = file["fixedpointEnergy"]
+                energyScales = file["energyScales"]
 
                 # reshape to 1D array of size N^2 into 2D array of size NxN, so that we can plot it as kx vs ky.
-                kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
 
                 # calculate and plot the probe result, then save the fig.
-                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J, J_val, dispersion, orbitals, fixedpointEnergy)
-                fig = mainPlotter(results, results_bare, probeName)
+                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals, energyScales)
+                fig = mainPlotter(results, results_bare, probeName, size_BZ, titleText)
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end

@@ -1,7 +1,8 @@
 using CairoMakie
 using Makie
 using LaTeXStrings
-using Plots
+set_theme!(theme_latexfonts())
+update_theme!(fontsize=30)
 
 
 function plotHeatmaps(results_arr, x_arr, y_arr, fig, axes, cmaps)
@@ -15,16 +16,17 @@ function plotHeatmaps(results_arr, x_arr, y_arr, fig, axes, cmaps)
 end
 
 
-function mainPlotter(results, results_bool, probName::String)
+function mainPlotter(results::Vector{Float64}, results_bool::Vector{Int64}, probeName::String, size_BZ::Int64, titleText::LaTeXString)
     titles = Vector{LaTeXString}(undef, 2)
     cmaps = [DISCRETE_CGRAD, :matter, :matter]
-    if probeName == "kondoCoupNodeMap"
-        node = (-pi / 2, -pi / 2)
+    if probeName == "scattProb"
+        titles[1] = L"\mathrm{rel(irrel)evance~of~}\Gamma(k)"
+        titles[2] = L"\Gamma(k)/\Gamma^{(0)}(k)"
+    elseif probeName == "kondoCoupNodeMap"
         titles[1] = L"\mathrm{rel(irrel)evance~of~}J(k,q_\mathrm{node})"
         titles[2] = L"J(k,q_\mathrm{node})"
         drawPoint = (-0.5, -0.5)
     elseif probeName == "kondoCoupAntinodeMap"
-        antinode = (0.0, -pi)
         titles[1] = L"\mathrm{rel(irrel)evance~of~}J(k,q_\mathrm{antin.})"
         titles[2] = L"J(k,q_\mathrm{antin.})"
         drawPoint = (0, -1)
@@ -45,7 +47,7 @@ function mainPlotter(results, results_bool, probName::String)
     x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     fig = Figure()
     titlelayout = GridLayout(fig[0, 1:4])
-    Label(titlelayout[1, 1:4], L"NW/J=%$(trunc(size_BZ * W_by_J, digits=1))", justification=:center, padding=(0, 0, -20, 0))
+    Label(titlelayout[1, 1:4], titleText, justification=:center, padding=(0, 0, -20, 0))
     axes = [Axis(fig[1, 2*i-1], xlabel=L"\mathrm{k_x}", ylabel=L"\mathrm{k_y}", title=title) for (i, title) in enumerate(titles[1:2])]
     axes = plotHeatmaps((results_bool, results), x_arr, y_arr,
         fig, axes[1:2], cmaps)

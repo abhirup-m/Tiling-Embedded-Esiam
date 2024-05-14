@@ -53,7 +53,7 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
     kspacePoint = map2DTo1D(k_vals..., size_BZ)
     results = kondoJArrayFull[kspacePoint, :, end] .^ 2
     results_bare = kondoJArrayFull[kspacePoint, :, 1] .^ 2
-    results_bool = tolerantSign.(abs.(results), RG_RELEVANCE_TOL / size_BZ)
+    results_bool = [r/r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
     results[results_bool.<0] .= NaN
     return results, results_bare, results_bool
 end
@@ -99,7 +99,7 @@ function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion
 end
 
 
-function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=3)
+function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, energyScales, correlationDefinition; trunc_dim::Int64=2)
 
     # get all possible indices of momentum states within the Brillouin zone
     k_indices = collect(1:size_BZ^2)
@@ -120,41 +120,47 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
 
     # loop over energy scales and calculate correlation values at each stage.
-    for energy in [0]
-
+    Threads.@threads for energy in sort(unique(abs.(round.(dispersion[dispersion .< maximum(dispersion) / 2], digits=trunc(Int, -log10(TOLERANCE))))), rev=true)
         # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
         # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
-        suitableIndices = [index for index in k_indices if abs(dispersion[index] - energy) < TOLERANCE && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
+        suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
 
         # generate all possible configurations of k-states from among these k-states. These include combinations as well as permutations.
         # All combinations are needed in order to account for interactions of a particular k-state with all other k-states.
         # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
         # interchanges lead to fermion signs.
-        allSequences = [perm for chosenIndices in collect(combinations(suitableIndices, trunc_dim)) for perm in permutations(chosenIndices)]
+        onShellStates = [index for index in suitableIndices if abs(abs(dispersion[index]) - energy) < TOLERANCE]
+        allCombinations = [comb for comb in combinations(suitableIndices, trunc_dim) if !isempty(intersect(onShellStates, comb))]
+        allSequences = [perm for chosenIndices in allCombinations for perm in permutations(chosenIndices)]
         @assert !isempty(allSequences)
 
         # get Kondo interaction terms and bath interaction terms involving only the indices
         # appearing in the present sequence.
-        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
+        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
         operatorList, couplingMatrix = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet)
-        @time matrixSet = generalOperatorMatrix(basis, operatorList, couplingMatrix)
-        @time eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
-        @time correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenInfo..., correlationOperatorList) 
-                                           for (sequence, matrix, eigenInfo) in zip(allSequences, matrixSet, eigenSet)])
+        matrixSet = generalOperatorMatrix(basis, operatorList, couplingMatrix)
+        eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
+        correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenInfo..., correlationOperatorList) for (sequence, matrix, eigenInfo) in zip(allSequences, matrixSet, eigenSet)])
         # calculate the correlation for all such configurations.
-        @time for (sequence, correlationResult) in zip(allSequences, correlationResults)
+        for (sequence, correlationResult) in zip(allSequences, correlationResults)
 
             # calculate the correlation for all points in the present sequence
-            results[sequence] .+= correlationResult
-            contributorCounter[sequence] .+= 1
+            for (i, index) in enumerate(sequence)
+                if index ∉ onShellStates
+                    continue
+                end
+                results[index] += correlationResult[i]
+                contributorCounter[index] += 1
+            end
         end
 
         # average over all sequences
-        results[suitableIndices] ./= contributorCounter[suitableIndices]
+        results[onShellStates] ./= contributorCounter[onShellStates]
+
     end
 
     # propagate results from lower bottom quadrant to all quadrants.
-    for index in [index for index in k_indices if map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
+    Threads.@threads for index in [index for index in k_indices if map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
         k_val = map1DTo2D(index, size_BZ)
 
         # points in other quadrants are obtained by multiplying kx,ky with 
@@ -167,8 +173,10 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
     # get a boolean representation of results for visualisation, using the mapping
     # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    results_bool = Dict(k => tolerantSign.(abs(results[k]), abs.(results_bare[k]) .* RG_RELEVANCE_TOL) for k in keys(results))
-    return results, results_bare, results_bool
+    # results = [r <= 1e-3 ? 0 : 1 for r in results]
+    results[results .< 0.1] .= NaN
+    results_bool = [r <= 1e-3 ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
+    return results, results_bool
 end
 
 
@@ -188,7 +196,7 @@ function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull:
     elseif probeName == "kondoCoupOffAntinodeMap"
         results, results_bare, results_bool = kondoCoupMap(offantinode, size_BZ, kondoJArrayFull)
     elseif probeName == "spinFlipCorrMap"
-        results, results_bool = spinFlipCorrMapCoarse(size_BZ, dispersion, kondoJArrayFull, W_val, orbitals, Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0))
+        results, results_bool = correlationMap(size_BZ, dispersion, kondoJArrayFull, W_val, orbitals, energyScales, i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0))
     end
     return results, results_bool
 end

@@ -53,11 +53,9 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
                 dispersion = file["dispersion"]
                 energyScales = file["energyScales"]
 
-                # reshape to 1D array of size N^2 into 2D array of size NxN, so that we can plot it as kx vs ky.
-
                 # calculate and plot the probe result, then save the fig.
-                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals, energyScales)
-                fig = mainPlotter(results, results_bare, probeName, size_BZ, titleText)
+                results, results_bool = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals, energyScales)
+                fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end

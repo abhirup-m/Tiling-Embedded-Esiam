@@ -27,21 +27,22 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
             continue
         end
 
-        targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion) .<= abs(dispersion[point])]
+        targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
         # calculate the average over q, both for the fixed point and the bare Hamiltonian.
-        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) / length(targetStatesForPoint)
-        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2) / length(targetStatesForPoint)
+        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) #/ length(targetStatesForPoint)
+        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2) #/ length(targetStatesForPoint)
     end
 
     # get a boolean representation of results for visualisation, using the mapping
     # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    results_bool = [r/r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
+    results_bool = [abs(r / r_b) < RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
 
     # set the -1 to NaN, in order to make them stand out on the plots.
-    results[results_bool .== -1] .= NaN
+    results[results_bool.==-1] .= NaN
+    results_scaled = [r_b == 0 ? r : r / r_b for (r, r_b) in zip(results, results_bare)]
 
-    return results ./ results_bare, results_bool
+    return results_scaled, results_bool
 end
 
 
@@ -53,7 +54,7 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
     kspacePoint = map2DTo1D(k_vals..., size_BZ)
     results = kondoJArrayFull[kspacePoint, :, end] .^ 2
     results_bare = kondoJArrayFull[kspacePoint, :, 1] .^ 2
-    results_bool = [r/r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
+    results_bool = [r / r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
     results[results_bool.<0] .= NaN
     return results, results_bare, results_bool
 end
@@ -101,8 +102,17 @@ end
 
 function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, energyScales, correlationDefinition; trunc_dim::Int64=2)
 
+    _, resultsScattProbBool = scattProb(kondoJArray, size_BZ, dispersion, energyScales)
+
     # get all possible indices of momentum states within the Brillouin zone
     k_indices = collect(1:size_BZ^2)
+
+    for index in k_indices
+        if resultsScattProbBool[index] == -1
+            kondoJArray[index, :, end] .= 0
+            kondoJArray[:, index, end] .= 0
+        end
+    end
 
     # initialise zero array for storing correlations
     results = zeros(size_BZ^2)
@@ -114,13 +124,13 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
     # generate basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
-    basis = BasisStates(trunc_dim * 2 + 2)
+    basis = BasisStates(trunc_dim * 2 + 2; totOccupancy=[trunc_dim + 1])
 
     # define correlation operators for all k-states within Brillouin zone.
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
 
     # loop over energy scales and calculate correlation values at each stage.
-    Threads.@threads for energy in sort(unique(abs.(round.(dispersion[dispersion .< maximum(dispersion) / 2], digits=trunc(Int, -log10(TOLERANCE))))), rev=true)
+    Threads.@threads for energy in dispersion[abs.(dispersion).<maximum(dispersion)/2] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
         # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
         # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
         suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
@@ -173,9 +183,11 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
     # get a boolean representation of results for visualisation, using the mapping
     # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    # results = [r <= 1e-3 ? 0 : 1 for r in results]
-    results[results .< 0.1] .= NaN
-    results_bool = [r <= 1e-3 ? -1 : 1 for (r,r_b) in zip(results, results_bare)]
+    # println(results[13])
+    # results = [r <= 1e-3 ? NaN : r for r in results]
+    # println(results[13])
+    # results[results .< 0.1] .= NaN
+    results_bool = [r <= 1e-3 ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
     return results, results_bool
 end
 

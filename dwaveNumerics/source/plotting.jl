@@ -3,10 +3,14 @@ using Makie
 using LaTeXStrings
 set_theme!(theme_latexfonts())
 update_theme!(fontsize=30)
-
+(@isdefined DISCRETE_CGRAD) || const DISCRETE_CGRAD = cgrad(:BuPu_3, 3, categorical=true)
 
 function plotHeatmaps(results_arr, x_arr, y_arr, fig, axes, cmaps)
     for (i, result) in enumerate(results_arr)
+        result[abs.(result).<TOLERANCE] .= 0
+        if all(result .>= 0) && !all(iszero.(result))
+            result = log10.(result)
+        end
         reshaped_result = reshape(result, (length(x_arr), length(y_arr)))
         hmap = CairoMakie.heatmap!(axes[i], x_arr, y_arr, reshaped_result, colormap=cmaps[i],
         )

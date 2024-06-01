@@ -32,11 +32,10 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
 
     # loop over all given values of W/J, get the fixed point distribution J(k1,k2) and save them in files
     @showprogress Threads.@threads for (j, W_by_J) in collect(enumerate(W_by_J_range))
-        kondoJArrayFull, dispersion, energyScales = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
+        kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         jldopen(savePaths[j], "w") do file
             file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
             file["dispersion"] = dispersion
-            file["energyScales"] = energyScales
         end
     end
 
@@ -51,13 +50,12 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
             jldopen(savePath, "r"; compress=true) do file
                 kondoJArrayEnds = file["kondoJArrayEnds"]
                 dispersion = file["dispersion"]
-                energyScales = file["energyScales"]
 
                 # reshape to 1D array of size N^2 into 2D array of size NxN, so that we can plot it as kx vs ky.
                 kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
 
                 # calculate and plot the probe result, then save the fig.
-                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J * J_val, dispersion, orbitals, energyScales)
+                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J * J_val, dispersion, orbitals)
                 fig = mainPlotter(results, results_bare, probeName, size_BZ, L"a")
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end

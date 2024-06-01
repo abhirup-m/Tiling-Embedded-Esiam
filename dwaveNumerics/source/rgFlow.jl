@@ -274,9 +274,7 @@ function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, ba
 
     # Run the RG flow starting from the maximum energy, down to the penultimate energy (ΔE), in steps of ΔE
 
-    energyScales = Float64[]
     @showprogress enabled = progressbarEnabled for (stepIndex, energyCutoff) in enumerate(cutOffEnergies[1:end-1])
-        push!(energyScales, energyCutoff)
         deltaEnergy = abs(cutOffEnergies[stepIndex+1] - cutOffEnergies[stepIndex])
 
         # set the Kondo coupling of all subsequent steps equal to that of the present step 
@@ -312,5 +310,5 @@ function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, ba
         kondoJArray[:, :, stepIndex+1] = round.(kondoJArrayNext, digits=trunc(Int, -log10(TOLERANCE)))
         proceed_flags = proceed_flags_updated
     end
-    return kondoJArray, dispersionArray, energyScales
+    return kondoJArray, dispersionArray
 end

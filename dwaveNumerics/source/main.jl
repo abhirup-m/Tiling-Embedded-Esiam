@@ -34,7 +34,7 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
     @showprogress Threads.@threads for (j, W_by_J) in collect(enumerate(W_by_J_range))
         kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals; progressbarEnabled=progressbarEnabled)
         jldopen(savePaths[j], "w") do file
-            file["kondoJArrayEnds"] = kondoJArrayFull[:, :, [1, end]]
+            file["kondoJArray"] = kondoJArrayFull[:, :, [1, end]]
             file["dispersion"] = dispersion
         end
     end
@@ -48,15 +48,18 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
 
             # load saved data
             jldopen(savePath, "r"; compress=true) do file
-                kondoJArrayEnds = file["kondoJArrayEnds"]
+                kondoJArray = file["kondoJArray"]
+                averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
+                @assert averageKondoScale > RG_RELEVANCE_TOL
+                kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
                 dispersion = file["dispersion"]
 
                 # reshape to 1D array of size N^2 into 2D array of size NxN, so that we can plot it as kx vs ky.
-                kondoJArrayEnds = reshape(kondoJArrayEnds, (size_BZ^2, size_BZ^2, 2))
+                kondoJArray = reshape(kondoJArray, (size_BZ^2, size_BZ^2, 2))
 
                 # calculate and plot the probe result, then save the fig.
-                results, results_bare = mapProbeNameToProbe(probeName, size_BZ, kondoJArrayEnds, W_by_J * J_val, dispersion, orbitals)
-                fig = mainPlotter(results, results_bare, probeName, size_BZ, L"a")
+                results, results_bool = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals)
+                fig = mainPlotter(results, results_bool, probeName, size_BZ, L"a")
                 save(pdfFileName, fig, pt_per_unit=figScale)
             end
         end

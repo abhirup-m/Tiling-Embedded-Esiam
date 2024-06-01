@@ -28,16 +28,13 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
         targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
         # calculate the average over q, both for the fixed point and the bare Hamiltonian.
-        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) / length(targetStatesForPoint)
-        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2) / length(targetStatesForPoint)
+        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2)
+        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
     end
 
     # get a boolean representation of results for visualisation, using the mapping
-    # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    results_bool = [abs(r / r_b) < RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
+    results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0) #[abs(r) < RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
 
-    # set the -1 to NaN, in order to make them stand out on the plots.
-    # results[results_bool.==-1] .= NaN
     results_scaled = [r_b == 0 ? r : r / r_b for (r, r_b) in zip(results, results_bare)]
 
     return results_scaled, results_bool
@@ -128,8 +125,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
 
     # loop over energy scales and calculate correlation values at each stage.
-    # Threads.@threads 
-    for energy in dispersion[abs.(dispersion).<maximum(dispersion)/2] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
+    Threads.@threads for energy in dispersion[abs.(dispersion).<maximum(dispersion)/2] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
         # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
         # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
         suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]

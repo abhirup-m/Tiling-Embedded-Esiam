@@ -9,13 +9,6 @@ animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = 
 
 
 function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_range::Vector{Float64}, orbitals::Tuple{String,String}, probes::Vector{String}; figScale::Float64=1.0, saveDir::String="./data/")
-    # ensure that [0, \pi] has odd number of states, so 
-    # that the nodal point is well-defined.
-    @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."
-
-    # ensure that the choice of orbitals is d or p
-    @assert orbitals[1] in ["p", "d", "poff", "doff"]
-    @assert orbitals[2] in ["p", "d", "poff", "doff"]
 
     # ensure that the requested probe is among the ones that can be calculated
     @assert issubset(Set(probes), Set(ALLOWED_PROBES))
@@ -67,4 +60,42 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
         run(`pdfunite $pdfFileNames $(plotName)-$(replace(probeName, " " => "-")).pdf`)
         run(`rm $pdfFileNames`)
     end
+end
+
+function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::Float64, J_val::Float64, orbitals::Tuple{String,String}; figScale::Float64=1.0, saveDir::String="./data/")
+    size_BZ_min = 5
+    size_BZ_vals = size_BZ_min:4:size_BZ_max
+    antinodeTransition = Float64[]
+    nodeTransition = Float64[]
+    for (kvals, array) in zip([(-pi/2, -pi/2), (0.0, -pi)], [nodeTransition, antinodeTransition])
+        W_by_J_bracket = [0, W_by_J_max]
+        @showprogress for (i, size_BZ) in enumerate(size_BZ_vals)
+            if i > 1
+                W_by_J_bracket = [array[i-1], W_by_J_max]
+            end
+            kpoint = map2DTo1D(kvals..., size_BZ)
+            while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
+                bools = []
+                for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
+                    kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
+                    results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
+                    push!(bools, results_bool[kpoint] == 0)
+                end
+                if bools[1] == false && bools[3] == true
+                    if bools[2] == true
+                        W_by_J_bracket[2] = sum(W_by_J_bracket) / 2
+                    else
+                        W_by_J_bracket[1] = sum(W_by_J_bracket) / 2
+                    end
+                else
+                    W_by_J_bracket[2] = W_by_J_bracket[1]
+                    W_by_J_bracket[1] = 0
+                end
+            end
+            push!(array, sum(W_by_J_bracket) / 2)
+            println(kvals, array[end])
+        end
+    end
+    println("A", antinodeTransition)
+    println("N", nodeTransition)
 end

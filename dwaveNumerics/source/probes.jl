@@ -35,7 +35,8 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
     # get a boolean representation of results for visualisation, using the mapping
     results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0) #[abs(r) < RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
 
-    results_scaled = [r_b == 0 ? r : r / r_b for (r, r_b) in zip(results, results_bare)]
+    # results_scaled = [r_b == 0 ? r : r / r_b for (r, r_b) in zip(results, results_bare)]
+    results_scaled = results
 
     return results_scaled, results_bool
 end
@@ -186,12 +187,6 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         end
     end
 
-    # get a boolean representation of results for visualisation, using the mapping
-    # results_bool = -1 if results/results_bare < TOLERANCE and +1 otherwise.
-    # println(results[13])
-    # results = [r <= 1e-3 ? NaN : r for r in results]
-    # println(results[13])
-    # results[results .< 0.1] .= NaN
     results_bool = [r <= 1e-3 ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
     return results, results_bool
 end

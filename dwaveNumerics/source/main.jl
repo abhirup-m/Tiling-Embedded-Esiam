@@ -67,7 +67,7 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
     size_BZ_vals = size_BZ_min:4:size_BZ_max
     antinodeTransition = Float64[]
     nodeTransition = Float64[]
-    for (kvals, array) in zip([(-pi/2, -pi/2), (0.0, -pi)], [nodeTransition, antinodeTransition])
+    for (kvals, array) in zip([(-pi / 2, -pi / 2), (0.0, -pi)], [nodeTransition, antinodeTransition])
         W_by_J_bracket = [0, W_by_J_max]
         @showprogress for (i, size_BZ) in enumerate(size_BZ_vals)
             if i > 1
@@ -77,8 +77,8 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
             while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
                 bools = []
                 for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
-                    kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
-                    results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
+                    @time kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
+                    @time results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
                     push!(bools, results_bool[kpoint] == 0)
                 end
                 if bools[1] == false && bools[3] == true
@@ -93,7 +93,6 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
                 end
             end
             push!(array, sum(W_by_J_bracket) / 2)
-            println(kvals, array[end])
         end
     end
     println("A", antinodeTransition)

@@ -6,8 +6,8 @@ using Combinatorics
 using fermions
 
 """
-Function to calculate the average Kondo scattering probability Γ(k) = (1/N^*)∑_q J(k,q)^2
-at the RG fixed point, where N^* is the number of points within the fixed point window.
+Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
+at the RG fixed point.
 """
 function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Vector{Float64})
 

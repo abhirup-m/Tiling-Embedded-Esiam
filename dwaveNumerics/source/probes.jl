@@ -4,6 +4,7 @@
 using LinearAlgebra
 using Combinatorics
 using fermions
+using ProgressMeter
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -90,7 +91,7 @@ function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion
 end
 
 
-function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=2)
+function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=5)
 
     _, resultsScattProbBool = scattProb(kondoJArray, size_BZ, dispersion)
 
@@ -106,7 +107,6 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
     # initialise zero array for storing correlations
     results = zeros(size_BZ^2)
-    results_bare = zeros(size_BZ^2)
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
@@ -120,7 +120,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
 
     # loop over energy scales and calculate correlation values at each stage.
-    Threads.@threads for energy in dispersion[abs.(dispersion).<maximum(dispersion)/2] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
+    @showprogress Threads.@threads for energy in dispersion[abs.(dispersion).<maximum(dispersion)/8] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
         # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
         # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
         suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
@@ -166,7 +166,6 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
         # average over all sequences
         results[onShellStates] ./= contributorCounter[onShellStates]
-
     end
 
     # propagate results from lower bottom quadrant to all quadrants.
@@ -181,28 +180,17 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         end
     end
 
-    results_bool = [r <= 1e-3 ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
-    return log10.(results), results_bool
+    results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
+    return results, results_bool
 end
 
 
-"""
-Maps the given probename string (such as "kondoCoupNodeMap") to its appropriate function 
-which can calculate and return the value of that probe.
-"""
-function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String,String})
-    if probeName == "scattProb"
-        results, results_bool = scattProb(kondoJArrayFull, size_BZ, dispersion)
-    elseif probeName == "kondoCoupNodeMap"
-        results, results_bare, results_bool = kondoCoupMap(node, size_BZ, kondoJArrayFull)
-    elseif probeName == "kondoCoupAntinodeMap"
-        results, results_bare, results_bool = kondoCoupMap(antinode, size_BZ, kondoJArrayFull)
-    elseif probeName == "kondoCoupOffNodeMap"
-        results, results_bare, results_bool = kondoCoupMap(offnode, size_BZ, kondoJArrayFull)
-    elseif probeName == "kondoCoupOffAntinodeMap"
-        results, results_bare, results_bool = kondoCoupMap(offantinode, size_BZ, kondoJArrayFull)
-    elseif probeName == "spinFlipCorrMap"
-        @time results, results_bool = correlationMap(size_BZ, dispersion, kondoJArrayFull, W_val, orbitals, i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0))
-    end
-    return results, results_bool
+function tiledCorrelationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String, String})
+    results = zeros(size_BZ^2, size_BZ^2)
+    correlationDefinition = i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0)
+    correlationmap, _ = correlationMap(size_BZ, dispersion, kondoJArray, W_val, orbitals, correlationDefinition)
+    results = 0.5 .* sqrt.(correlationmap * correlationmap')
+    results[abs.(results) .< TOLERANCE ^ 0.5] .= TOLERANCE ^ 0.5
+    results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
+    return log10.(results), results_bool
 end

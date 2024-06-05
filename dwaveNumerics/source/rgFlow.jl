@@ -225,8 +225,7 @@ function stepwiseRenormalisation(
     ]
     kondoJ_qq_bar = diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints])
     dOfStates_cutoff = densityOfStates[cutoffPoints]
-    #Threads.@threads 
-    for (innerIndex1, innerIndex2) in externalVertexPairs
+    Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
         # println((innerIndex1, innerIndex2), cutoffHolePoints)
         kondoJ_k2_q_times_kondoJ_q_k1 = diag(kondoJArrayPrev[innerIndex2, cutoffPoints] * kondoJArrayPrev[innerIndex1, cutoffPoints]')
         kondoJArrayNext_k1k2, proceed_flag_k1k2 = deltaJk1k2(

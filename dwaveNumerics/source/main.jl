@@ -10,9 +10,6 @@ animName(orbitals, size_BZ, omega_by_t, scale, W_by_J_min, W_by_J_max, J_val) = 
 
 function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_range::Vector{Float64}, orbitals::Tuple{String,String}, probes::Vector{String}; figScale::Float64=1.0, saveDir::String="./data/")
 
-    # ensure that the requested probe is among the ones that can be calculated
-    @assert issubset(Set(probes), Set(ALLOWED_PROBES))
-
     # determines whether the inner loops (RG iteration, for a single value of W)
     # should show progress bars.
     progressbarEnabled = length(W_by_J_range) == 1 ? true : false
@@ -51,9 +48,7 @@ function manager(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_ran
                 kondoJArray = reshape(kondoJArray, (size_BZ^2, size_BZ^2, 2))
 
                 # calculate and plot the probe result, then save the fig.
-                results, results_bool = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals)
-                fig = mainPlotter(results, results_bool, probeName, size_BZ, L"a")
-                save(pdfFileName, fig, pt_per_unit=figScale)
+                results, results_bool = mapProbeNameToProbe(probeName, size_BZ, kondoJArray, W_by_J * J_val, dispersion, orbitals, L"$W/J=%$(round(W_by_J, digits=1))$", pdfFileName, figScale)
             end
         end
         plotName = animName(orbitals, size_BZ, omega_by_t, figScale, minimum(W_by_J_range), maximum(W_by_J_range), J_val)
@@ -95,6 +90,41 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
             push!(array, sum(W_by_J_bracket) / 2)
         end
     end
-    println("A", antinodeTransition)
-    println("N", nodeTransition)
+end
+
+
+"""
+Maps the given probename string (such as "kondoCoupNodeMap") to its appropriate function 
+which can calculate and return the value of that probe.
+"""
+function mapProbeNameToProbe(probeName::String, size_BZ::Int64, kondoJArrayFull::Array{Float64,3}, W_val::Float64, dispersion::Vector{Float64}, orbitals::Tuple{String,String}, titleText, pdfFileName, figScale)
+    if probeName == "scattProb"
+        results, results_bool = scattProb(kondoJArrayFull, size_BZ, dispersion)
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "kondoCoupNodeMap"
+        results, results_bare, results_bool = kondoCoupMap(node, size_BZ, kondoJArrayFull)
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "kondoCoupAntinodeMap"
+        results, results_bare, results_bool = kondoCoupMap(antinode, size_BZ, kondoJArrayFull)
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "kondoCoupOffNodeMap"
+        results, results_bare, results_bool = kondoCoupMap(offnode, size_BZ, kondoJArrayFull)
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "kondoCoupOffAntinodeMap"
+        results, results_bare, results_bool = kondoCoupMap(offantinode, size_BZ, kondoJArrayFull)
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "spinFlipCorrMap"
+        results, results_bool = correlationMap(size_BZ, dispersion, kondoJArrayFull, W_val, orbitals, i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0))
+        fig = mainPlotter(results, results_bool, probeName, size_BZ, titleText)
+    elseif probeName == "tiledspinFlipCorrMap"
+        results, results_bool = tiledCorrelationMap(size_BZ, dispersion, kondoJArrayFull, W_val, orbitals)
+        resultsDiag = diag(results)
+        node = map2DTo1D(-pi/2, -pi/2, size_BZ)
+        antiNode = map2DTo1D(0.0, -pi, size_BZ)
+        resultsNode = results[node, :]
+        resultsAntinode = results[antiNode, :]
+        fig = mainPlotter([resultsDiag, resultsNode, resultsAntinode], probeName, size_BZ, titleText)
+    end
+    savefig(fig, pdfFileName)
+    return results, results_bool
 end

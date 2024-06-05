@@ -7,17 +7,19 @@ include("../source/rgFlow.jl")
 
 
 @testset "Flow of totalScatterProb" begin
-    kondoJArray = rand(Float64, (SIZE_BZ[1]^2, SIZE_BZ[1]^2, 3))
-    dOfStates, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    results, results_bool = scattProb(kondoJArray, SIZE_BZ[1], dispersion)
-    allPoints = collect(1:SIZE_BZ[1]^2)
-    @testset for p1 in allPoints
-        targetStatesForPoint = collect(1:SIZE_BZ[1]^2)[abs.(dispersion).<=abs(dispersion[p1])]
-        results_compare = sum(kondoJArray[p1, targetStatesForPoint, 3] .^ 2) / length(targetStatesForPoint)
-        results_compare_bare = sum(kondoJArray[p1, targetStatesForPoint, 1] .^ 2) / length(targetStatesForPoint)
-        results_scaled = results_compare_bare == 0 ? results_compare : results_compare / results_compare_bare
-        if !(p1 in CORNER_POINTS || p1 in CENTER_POINTS)
-            @test results[p1] ≈ results_scaled atol = TOLERANCE
+    size_BZ = 9
+    firstShellPoints = [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2, trunc(Int, 0.5 * (size_BZ^2 + 1))]
+    secondShellPoints = [2, size_BZ - 1, size_BZ + 1, 2 * size_BZ, size_BZ * (size_BZ - 2) + 1, size_BZ^2 - size_BZ, size_BZ^2 - size_BZ + 2, size_BZ^2 - 1]
+    secondAndBeyondPoints = [p for p in 1:size_BZ^2 if p ∉ firstShellPoints]
+    J_val = 0.1
+    orbitals = ("p", "p")
+    @testset for orbitals in [("p", "p"), ("d", "d")]
+        for W_val in [0.0, -0.1 * J_val, -J_val]
+            kondoJArray, dispersion = momentumSpaceRG(size_BZ, -2.0, J_val, W_val, orbitals)
+            results, results_bool = scattProb(kondoJArray, size_BZ, dispersion)
+            resultsCompare = zeros(size_BZ^2, size_BZ^2)
+            resultsCompare[secondShellPoints] .= [sum(kondoJArray[p, secondAndBeyondPoints, 2] .^ 2) for p in secondShellPoints]
+            @test resultsCompare[secondShellPoints] == results[secondShellPoints]
         end
     end
 end

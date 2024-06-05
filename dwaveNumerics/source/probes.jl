@@ -13,7 +13,6 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
 
     # allocate zero arrays to store Γ at fixed point and for the bare Hamiltonian.
     results = zeros(size_BZ^2)
-    results_bare = zeros(size_BZ^2)
 
     # loop over all points k for which we want to calculate Γ(k).
     Threads.@threads for point in 1:size_BZ^2
@@ -21,24 +20,19 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
         # check if the point is one of the four corners or the 
         # center. If it is, then don't bother. These points are
         # not affected by the RG and therefore not of interest.
-        if point ∈ [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2, trunc(Int, 0.5 * (size_BZ^2 + 1))]
-            continue
+        if point ∉ [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2, trunc(Int, 0.5 * (size_BZ^2 + 1))]
+            targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
+
+            # calculate the sum over q
+            results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2)
         end
 
-        targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
-
-        # calculate the average over q, both for the fixed point and the bare Hamiltonian.
-        results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2)
-        results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
     end
 
     # get a boolean representation of results for visualisation, using the mapping
-    results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0) #[abs(r) < RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
+    results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0)
 
-    # results_scaled = [r_b == 0 ? r : r / r_b for (r, r_b) in zip(results, results_bare)]
-    results_scaled = results
-
-    return results_scaled, results_bool
+    return results, results_bool
 end
 
 
@@ -144,7 +138,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         # appearing in the present sequence.
         dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
         operatorList, couplingMatrix = fermions.kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
-        uniqueHamiltonians = Dict{Vector{Float64}, Vector{Vector{Int64}}}()
+        uniqueHamiltonians = Dict{Vector{Float64},Vector{Vector{Int64}}}()
         for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
             if couplingSet ∉ keys(uniqueHamiltonians)
                 uniqueHamiltonians[couplingSet] = Vector{Int64}[]
@@ -188,7 +182,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     end
 
     results_bool = [r <= 1e-3 ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
-    return results, results_bool
+    return log10.(results), results_bool
 end
 
 

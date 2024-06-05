@@ -5,11 +5,8 @@ include("./helpers.jl")
 
 
 function getCutOffEnergy(size_BZ)
-    kx_pos_arr = collect(range(K_MIN, K_MAX, length=size_BZ))
-    kx_holesector = kx_pos_arr[kx_pos_arr.>=0]
-    cutOffEnergies = -tightBindDisp(kx_holesector, 0 .* kx_holesector)
-    cutOffEnergies = cutOffEnergies[cutOffEnergies.>=-TOLERANCE]
-    return sort(cutOffEnergies, rev=true)
+    kx_pos_arr = [kx for kx in range(K_MIN, K_MAX, length=size_BZ) if kx >= 0]
+    return sort(-tightBindDisp(kx_pos_arr, 0 .* kx_pos_arr), rev=true)
 end
 
 
@@ -142,6 +139,7 @@ function deltaJk1k2(
             (kondoJ_k2q_qk1 .+ 4 .* kondoJ_qqbar .* bathIntForm(bathIntArgs...)) ./
             denominators,
         )
+    # println("REN:", renormalisation, kondoJ_qqbar, bathIntForm(bathIntArgs...))
 
     # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
     if abs(kondoJArrayPrev_k1k2) > TOLERANCE && (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 < 0
@@ -207,7 +205,7 @@ function stepwiseRenormalisation(
                 size_BZ,
                 [cutoffPoints, cutoffPoints, cutoffPoints, cutoffPoints],
             ) / 2,
-        )
+           )
 
     # only consider those terms whose denominator haven't gone through zeros
     cutoffPoints = cutoffPoints[denominators.<0]
@@ -227,7 +225,9 @@ function stepwiseRenormalisation(
     ]
     kondoJ_qq_bar = diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints])
     dOfStates_cutoff = densityOfStates[cutoffPoints]
-    Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
+    #Threads.@threads 
+    for (innerIndex1, innerIndex2) in externalVertexPairs
+        # println((innerIndex1, innerIndex2), cutoffHolePoints)
         kondoJ_k2_q_times_kondoJ_q_k1 = diag(kondoJArrayPrev[innerIndex2, cutoffPoints] * kondoJArrayPrev[innerIndex1, cutoffPoints]')
         kondoJArrayNext_k1k2, proceed_flag_k1k2 = deltaJk1k2(
             denominators,

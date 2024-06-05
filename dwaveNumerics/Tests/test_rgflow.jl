@@ -19,8 +19,8 @@ include("../source/rgFlow.jl")
 end
 
 @testset "Getting cutoff energies" begin
-    cutOffEnergies = getCutOffEnergy(SIZE_BZ[1])
-    for (i, E) in enumerate(cutOffEnergies)
+    cutoffEnergies = getCutOffEnergy(SIZE_BZ[1])
+    for (i, E) in enumerate(cutoffEnergies)
         @test E ≈ [4, 2, 0][i] atol = TOLERANCE
     end
 end
@@ -86,144 +86,45 @@ end
 
 
 @testset "Initialise Kondo coupling matrix" begin
-
-    @testset for orbital in ["p", "d"]
-        kondoJArray = initialiseKondoJ(SIZE_BZ[1], orbital, 1, 1.0)[:, :, 1]
-        kondoArraySymmetriesCheck(kondoJArray, orbital, SIZE_BZ[1])
-    end
-end
-
-
-@testset "Bath interaction function" begin
-    p1_range = rand(1:SIZE_BZ[1]^2, 10)
-    p2_range = rand(1:SIZE_BZ[1]^2, 10)
-    @testset for (p1, p2) in zip(p1_range, p2_range)
-        @test bathIntForm(1.0, "p", SIZE_BZ[1], [p1, p1, p2, p2]) == 1
-    end
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    _, _, _, cutoffPoints, cutoffHolePoints, _ = highLowSeparation(dispersion, PROBE_ENERGIES[3], PROCEED_FLAGS, SIZE_BZ[1])
-    p1_range = rand(1:SIZE_BZ[1]^2, length(cutoffPoints))
-    p2_range = rand(1:SIZE_BZ[1]^2, length(cutoffPoints))
-    @testset for (p1, p2, q, q_bar) in zip(p1_range, p2_range, cutoffPoints, cutoffHolePoints)
-        @test bathIntForm(1.0, "p", SIZE_BZ[1], [q_bar, p1, p2, q]) ≈ -bathIntForm(1.0, "p", SIZE_BZ[1], [q, p1, p2, q]) atol = TOLERANCE
-    end
-    bathIntMatrix = zeros((SIZE_BZ[1]^2, SIZE_BZ[1]^2))
-    for p1 in 1:SIZE_BZ[1]^2
-        for p2 in 1:SIZE_BZ[1]^2
-            bathIntMatrix[p1, p2] = bathIntForm(1.0, "p", SIZE_BZ[1], [1, p1, p2, 1])
-        end
-    end
-    @test all(diag(bathIntMatrix[:, :]) .== 1)
-    @test bathIntMatrix[[1, 6, 11, 16, 21], :] ≈ bathIntMatrix[[5, 10, 15, 20, 25], :] atol = TOLERANCE
-    @test bathIntMatrix[[1, 2, 3, 4, 5], :] ≈ bathIntMatrix[[21, 22, 23, 24, 25], :] atol = TOLERANCE
-    @test bathIntMatrix[[2, 7, 12, 17, 22], :] ≈ -bathIntMatrix[[14, 19, 24, 9, 14], :] atol = TOLERANCE
-    @test bathIntMatrix[[6, 7, 8, 9, 10], :] ≈ -bathIntMatrix[[18, 19, 20, 17, 18], :] atol = TOLERANCE
-    @test bathIntMatrix[[1, 2, 3, 4, 5], :] ≈ bathIntMatrix[[21, 22, 23, 24, 25], :] atol = TOLERANCE
-    @testset for p1 in eachindex(bathIntMatrix[1, :])
-        for p2 in eachindex(bathIntMatrix[:, 1])
-            @test bathIntMatrix[p1, p2] == bathIntMatrix[p2, p1]
-        end
-    end
-    @testset for p2 in eachindex(bathIntMatrix[:, 1])
-        kx, ky = map1DTo2D(p2, SIZE_BZ[1])
-        @test bathIntMatrix[1, p2] ≈ -0.5 * (cos(kx) + cos(ky)) atol = TOLERANCE
-        @test bathIntMatrix[2, p2] ≈ -0.5 * (sin(kx) + cos(ky)) atol = TOLERANCE
-        @test bathIntMatrix[3, p2] ≈ 0.5 * (cos(kx) - cos(ky)) atol = TOLERANCE
-        @test bathIntMatrix[6, p2] ≈ -0.5 * (cos(kx) + sin(ky)) atol = TOLERANCE
-        @test bathIntMatrix[7, p2] ≈ -0.5 * (sin(kx) + sin(ky)) atol = TOLERANCE
-        @test bathIntMatrix[8, p2] ≈ 0.5 * (cos(kx) - sin(ky)) atol = TOLERANCE
-        @test bathIntMatrix[11, p2] ≈ 0.5 * (-cos(kx) + cos(ky)) atol = TOLERANCE
-        @test bathIntMatrix[12, p2] ≈ 0.5 * (-sin(kx) + cos(ky)) atol = TOLERANCE
-        @test bathIntMatrix[13, p2] ≈ 0.5 * (cos(kx) + cos(ky)) atol = TOLERANCE
-    end
-end
-
-
-@testset "DeltaJ(k1,k2)" begin
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    _, _, _, cutoffPoints, cutoffHolePoints, _ = highLowSeparation(dispersion, PROBE_ENERGIES[3], PROCEED_FLAGS, SIZE_BZ[1])
-    denominators = -1 .* [1.5, 3, 1, 1, 2, 4, 1, 1]
-    proceed_flag_k1k2 = 1
-    Jk1k2Prev = 0.1
-    Jk2q_qk1 = [1, 1.5, 2, 0, -2, 1, 2, 0]
-    J_qqbar = -1 * ones(size(cutoffPoints))
-    dos_qq = 0.5 * ones(size(cutoffPoints))
-    args = [-0.25, "p", SIZE_BZ[1], [cutoffPoints, 1, 2, cutoffHolePoints]]
-    kondoJArrayNext_k1k2, proceed_flags_updated = deltaJk1k2(denominators, proceed_flag_k1k2, Jk1k2Prev, Jk2q_qk1, J_qqbar, DELTA_ENERGY, args, dos_qq)
-    @test kondoJArrayNext_k1k2 ≈ 0.1 + DELTA_ENERGY * (1 / 3 + 3.75 / 2 - 23 / 16) atol = TOLERANCE
-    @test proceed_flags_updated == 1
-    args = [-1.0, "p", SIZE_BZ[1], [cutoffPoints, 1, 2, cutoffHolePoints]]
-    kondoJArrayNext_k1k2, proceed_flags_updated = deltaJk1k2(denominators, proceed_flag_k1k2, Jk1k2Prev, Jk2q_qk1, J_qqbar, DELTA_ENERGY, args, dos_qq)
-    @test kondoJArrayNext_k1k2 ≈ 0 atol = TOLERANCE
-    @test proceed_flags_updated == 0
-end
-
-
-@testset "Symmetrise RG flow" begin
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    kondoJArrayPrev = initialiseKondoJ(SIZE_BZ[1], "p", 3, 0.1)[:, :, 1]
-    @testset for E in [PROBE_ENERGIES[1], PROBE_ENERGIES[3]]
-        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersion, E, PROCEED_FLAGS, SIZE_BZ[1])
-        kondoJArrayNext = copy(kondoJArrayPrev)
-        kondoJArrayNext[innerIndicesArr] = kondoJArrayNext[innerIndicesArr] .* 2
-
-        externalVertexPairs = [
-            (p1, p2) for p1 in sort(innerIndicesArr) for
-            p2 in sort(innerIndicesArr)[sort(innerIndicesArr).>=p1]
-        ]
-        kondoJArrayNext_updated, proceed_flags = symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, SIZE_BZ[1], kondoJArrayNext, kondoJArrayPrev, proceed_flags)
-        @testset for p1 in 1:SIZE_BZ[1]^2
-            for p2 in 1:SIZE_BZ[1]^2
-                @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p2, p1] atol = TOLERANCE
+    size_BZ = 9
+    J_val = 0.1
+    @testset for orbital in ["p", "d", "poff", "doff"]
+        kondoJArray = initialiseKondoJ(size_BZ, orbital, 1, J_val)[:, :, 1]
+        for (k_index1, k_index2) in Iterators.product(1:size_BZ^2, 1:size_BZ^2)
+            kx1, ky1 = map1DTo2D(k_index1, size_BZ)
+            kx2, ky2 = map1DTo2D(k_index2, size_BZ)
+            if orbital == "p"
+                @test kondoJArray[k_index1, k_index2] ≈ 0.5 * J_val * (cos(kx1 - kx2) + cos(ky1 - ky2)) atol = TOLERANCE
+            elseif orbital == "d"
+                @test kondoJArray[k_index1, k_index2] ≈ 0.5 * J_val * (cos(kx1 - kx2) - cos(ky1 - ky2)) atol = TOLERANCE
+            elseif orbital == "poff"
+                @test kondoJArray[k_index1, k_index2] ≈ J_val * (cos(kx1) + cos(ky1)) * (cos(kx2) + cos(ky2)) atol = TOLERANCE
+            elseif orbital == "doff"
+                @test kondoJArray[k_index1, k_index2] ≈ J_val * (cos(kx1) - cos(ky1)) * (cos(kx2) - cos(ky2)) atol = TOLERANCE
             end
-        end
-        holePoints = [4, 5, 9, 10, 14, 15, 19, 20]
-        particlePoints = [12, 13, 17, 18, 22, 23, 7, 8, 12, 13]
-
-        @testset for p1 in innerIndicesArr
-            for (p2, p3) in zip(holePoints, particlePoints)
-                @test kondoJArrayNext_updated[p1, p2] ≈ -kondoJArrayNext_updated[p1, p3] atol = TOLERANCE
-                @test proceed_flags[p1, p2] ≈ proceed_flags[p1, p3] atol = TOLERANCE
-            end
-        end
-        @testset for ((p1, p3), (p2, p4)) in Iterators.product(zip(holePoints, particlePoints), zip(holePoints, particlePoints))
-            @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p3, p4] atol = TOLERANCE
-            @test proceed_flags[p1, p2] ≈ proceed_flags[p3, p4] atol = TOLERANCE
         end
     end
 end
 
 
-@testset "Symmetrise RG flow" begin
-    dos, dispersion = getDensityOfStates(tightBindDisp, SIZE_BZ[1])
-    kondoJArrayPrev = initialiseKondoJ(SIZE_BZ[1], "p", 3, 0.1)[:, :, 1]
-    @testset for E in [PROBE_ENERGIES[1], PROBE_ENERGIES[3]]
-        innerIndicesArr, excludedVertexPairs, mixedVertexPairs, cutoffPoints, cutoffHolePoints, proceed_flags = highLowSeparation(dispersion, E, PROCEED_FLAGS, SIZE_BZ[1])
-        kondoJArrayNext = copy(kondoJArrayPrev)
-        kondoJArrayNext[innerIndicesArr] = kondoJArrayNext[innerIndicesArr] .* 2
-
-        externalVertexPairs = [
-            (p1, p2) for p1 in sort(innerIndicesArr) for
-            p2 in sort(innerIndicesArr)[sort(innerIndicesArr).>=p1]
-        ]
-        kondoJArrayNext_updated, proceed_flags = symmetriseRGFlow(innerIndicesArr, excludedVertexPairs, mixedVertexPairs, SIZE_BZ[1], kondoJArrayNext, kondoJArrayPrev, proceed_flags)
-        @testset for p1 in 1:SIZE_BZ[1]^2
-            for p2 in 1:SIZE_BZ[1]^2
-                @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p2, p1] atol = TOLERANCE
+begin
+    size_BZ = 5
+    W_val = 0.1
+    Threads.@threads for orbital in ["p", "d", "poff", "doff"]
+        @testset "Bath interaction function: $orbital" begin
+        for points in collect(Iterators.product(1:size_BZ^2, 1:size_BZ^2, 1:size_BZ^2, 1:size_BZ^2))
+            kx_arr, ky_arr = map1DTo2D(collect(points), size_BZ)
+            bathIntValue = bathIntForm(W_val, orbital, size_BZ, points)
+            if orbital == "p"
+                @test bathIntValue ≈ 0.5 * W_val * (cos(kx_arr[1] - kx_arr[2] + kx_arr[3] - kx_arr[4]) + cos(ky_arr[1] - ky_arr[2] + ky_arr[3] - ky_arr[4])) atol = TOLERANCE
+            elseif orbital == "d"
+                @test bathIntValue ≈ 0.5 * W_val * (cos(kx_arr[1] - kx_arr[2] + kx_arr[3] - kx_arr[4]) - cos(ky_arr[1] - ky_arr[2] + ky_arr[3] - ky_arr[4])) atol = TOLERANCE
+            elseif orbital == "poff"
+                @test bathIntValue ≈ W_val * prod([cos(kx) + cos(ky) for (kx, ky) in zip(kx_arr, ky_arr)]) atol = TOLERANCE
+            elseif orbital == "doff"
+                @test bathIntValue ≈ W_val * prod([cos(kx) - cos(ky) for (kx, ky) in zip(kx_arr, ky_arr)]) atol = TOLERANCE
             end
         end
-        holePoints = [4, 5, 9, 10, 14, 15, 19, 20]
-        particlePoints = [12, 13, 17, 18, 22, 23, 7, 8, 12, 13]
-
-        @testset for p1 in innerIndicesArr
-            for (p2, p3) in zip(holePoints, particlePoints)
-                @test kondoJArrayNext_updated[p1, p2] ≈ -kondoJArrayNext_updated[p1, p3] atol = TOLERANCE
-                @test proceed_flags[p1, p2] ≈ proceed_flags[p1, p3] atol = TOLERANCE
-            end
-        end
-        @testset for ((p1, p3), (p2, p4)) in Iterators.product(zip(holePoints, particlePoints), zip(holePoints, particlePoints))
-            @test kondoJArrayNext_updated[p1, p2] ≈ kondoJArrayNext_updated[p3, p4] atol = TOLERANCE
-            @test proceed_flags[p1, p2] ≈ proceed_flags[p3, p4] atol = TOLERANCE
         end
     end
 end
@@ -232,17 +133,41 @@ end
 @testset "RG flow" begin
     J_val = 0.1
     size_BZ = 5
-    for W_val in [0.0, -J_val / 2, -1 * J_val]
-        kondoJArray, dispersion = momentumSpaceRG(size_BZ, -2.0, J_val, W_val, ("p", "p"))
-
-        @test (kondoJArray[3, 15, end] == kondoJArray[3, 11, end]
-               == kondoJArray[23, 11, end] == kondoJArray[23, 15, end]
-               ≠ 0)
-        @test (kondoJArray[3, 9, end] == kondoJArray[9, 15, end]
-               == kondoJArray[15, 19, end] == kondoJArray[19, 23, end]
-               == kondoJArray[23, 17, end] == kondoJArray[17, 11, end]
-               == kondoJArray[11, 7, end] == 0)
-        @test (kondoJArray[3, 23, end] == kondoJArray[11, 15, end] ≠ 0)
-        @test (kondoJArray[7, 19, end] == kondoJArray[9, 17, end] ≠ 0)
+    centerPoint = trunc(Int, 0.5 * (size_BZ^2 + 1))
+    omega_by_t = -2.0
+    cutoffPoints1 = [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2]
+    cutoffPoints1Particle = [centerPoint]
+    cutoffPoints1Bar = particleHoleTransf(cutoffPoints1, size_BZ)
+    cutoffPoints2 = [2, size_BZ-1, size_BZ+1, 2 * size_BZ, size_BZ * (size_BZ - 2) + 1, size_BZ^2-size_BZ, size_BZ^2-size_BZ+2, size_BZ^2-1]
+    cutoffPoints2Particle = [centerPoint-1, centerPoint+1, centerPoint-size_BZ, centerPoint+size_BZ]
+    cutoffPoints2Bar = particleHoleTransf(cutoffPoints2, size_BZ)
+    innerPoints1 = [p for p ∈ 1:size_BZ^2 if p ∉ cutoffPoints1 && p ∉ cutoffPoints1Particle]
+    innerPoints2 = [p for p ∈ innerPoints1 if p ∉ cutoffPoints2 && p ∉ cutoffPoints2Particle]
+    dos, dispersion = getDensityOfStates(tightBindDisp, size_BZ)
+    deltaEnergy1 = dispersion[1] - dispersion[2]
+    deltaEnergy2 = dispersion[2] - dispersion[3]
+    for orbitals in [("p", "p"), ("d", "d")]
+        for W_val in [0, -0.1 * J_val, -J_val]
+            kondoJArray, _ = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
+            denominators1 = [omega_by_t * HOP_T - abs(dispersion[q]) / 2 + kondoJArray[q,q,1] / 4 + bathIntForm(W_val, orbitals[1], size_BZ, (q,q,q,q)) / 2 for q in cutoffPoints1]
+            for (p1, p2) in Iterators.product(innerPoints1, innerPoints1)
+                numerators_JJ = [kondoJArray[p2,q,1] .* kondoJArray[q,p1,1] for q in cutoffPoints1]
+                numerators_JW = [4 * kondoJArray[q,qBar,1] * bathIntForm(W_val, orbitals[1], size_BZ, (qBar, p2 , p1 , q)) for (q, qBar) in zip(cutoffPoints1, cutoffPoints1Bar)]
+                @test kondoJArray[p1, p2, 2] ≈ kondoJArray[p1, p2, 1] - deltaEnergy1 * sum((numerators_JJ .+ numerators_JW) .* dos[cutoffPoints1] ./ denominators1) atol=TOLERANCE
+            end
+            for (q1, q2) in Iterators.product(cutoffPoints1, cutoffPoints1)
+                @test kondoJArray[q1, q2, 2] == kondoJArray[q1, q2, 1]
+            end
+            continue
+            denominators2 = [omega_by_t * HOP_T - abs(dispersion[q]) / 2 + kondoJArray[q,q,2] / 4 + bathIntForm(W_val, orbitals[1], size_BZ, (q,q,q,q)) / 2 for q in cutoffPoints2]
+            for (p1, p2) in Iterators.product(innerPoints2, innerPoints2)
+                numerators_JJ = [kondoJArray[p2,q,2] .* kondoJArray[q,p1,2] for q in cutoffPoints2]
+                numerators_JW = [4 * kondoJArray[q,qBar,2] * bathIntForm(W_val, orbitals[1], size_BZ, (qBar, p2 , p1 , q)) for (q, qBar) in zip(cutoffPoints2, cutoffPoints2Bar)]
+                @test kondoJArray[p1, p2, 3] ≈ kondoJArray[p1, p2, 2] - deltaEnergy2 * sum((numerators_JJ .+ numerators_JW) .* dos[cutoffPoints2] ./ denominators2) atol=TOLERANCE
+            end
+            for (q1, q2) in Iterators.product(cutoffPoints2, cutoffPoints2)
+                @test kondoJArray[q1, q2, 3] == kondoJArray[q1, q2, 2]
+            end
+        end
     end
 end

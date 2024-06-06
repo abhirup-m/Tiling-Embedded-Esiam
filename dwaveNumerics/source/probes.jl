@@ -17,6 +17,7 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
 
     # allocate zero arrays to store Γ at fixed point and for the bare Hamiltonian.
     results = zeros(size_BZ^2)
+    results_bare = zeros(size_BZ^2)
 
     # loop over all points k for which we want to calculate Γ(k).
     Threads.@threads for point in 1:size_BZ^2
@@ -29,6 +30,7 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
 
             # calculate the sum over q
             results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2)
+            results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
         end
 
     end
@@ -36,7 +38,7 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
     # get a boolean representation of results for visualisation, using the mapping
     results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0)
 
-    return results, results_bool
+    return results ./ results_bare, results_bool
 end
 
 
@@ -95,7 +97,7 @@ function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion
 end
 
 
-function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=4)
+function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=2)
 
     _, resultsScattProbBool = scattProb(kondoJArray, size_BZ, dispersion)
 
@@ -124,7 +126,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
 
     # loop over energy scales and calculate correlation values at each stage.
-    @showprogress Threads.@threads for energy in dispersion[abs.(dispersion).<maximum(dispersion)/8] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
+    @showprogress for energy in dispersion .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
         # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
         # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
         suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
@@ -140,19 +142,18 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
         # get Kondo interaction terms and bath interaction terms involving only the indices
         # appearing in the present sequence.
-        @time dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
-        @time operatorList, couplingMatrix = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
+        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
+        operatorList, couplingMatrix = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
         uniqueHamiltonians = Dict{Vector{Float64},Vector{Vector{Int64}}}()
-        @time for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
+        for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
             if couplingSet ∉ keys(uniqueHamiltonians)
                 uniqueHamiltonians[couplingSet] = Vector{Int64}[]
             end
             push!(uniqueHamiltonians[couplingSet], sequence)
         end
-        @time matrixSet = generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonians)))
-        @time eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
-        @time correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(allSequences, eigenSet)])
-        println("-------------------")
+        matrixSet = generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonians)))
+        eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
+        correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(allSequences, eigenSet)])
 
         # calculate the correlation for all such configurations.
         for (sequences, correlationResult) in zip(values(uniqueHamiltonians), correlationResults)
@@ -190,12 +191,11 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 end
 
 
-function tiledCorrelationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String, String})
+function tiledCorrelationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String, String}, correlationDefinition)
     results = zeros(size_BZ^2, size_BZ^2)
-    correlationDefinition = i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0)
     correlationmap, _ = correlationMap(size_BZ, dispersion, kondoJArray, W_val, orbitals, correlationDefinition)
     results = 0.5 .* sqrt.(correlationmap * correlationmap')
     results[abs.(results) .< TOLERANCE ^ 0.5] .= TOLERANCE ^ 0.5
     results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
-    return log10.(results), results_bool
+    return results, results_bool
 end

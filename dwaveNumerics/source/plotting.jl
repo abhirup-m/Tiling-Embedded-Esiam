@@ -17,7 +17,7 @@ end
 
 function mainPlotter(results_arr::Vector{Vector{Float64}}, probeName::String, size_BZ::Int64, titleText::LaTeXString)
     subtitles = Vector{LaTeXString}(undef, length(results_arr))
-    cmaps = [DISCRETE_CGRAD, :matter, :matter]
+    cmaps = [DISCRETE_CGRAD, :BuPu_3, :BuPu_3]
     if probeName == "scattProb"
         subtitles[1] = L"\mathrm{rel(irrel)evance~of~}\Gamma(k)"
         subtitles[2] = L"\Gamma(k)/\Gamma^{(0)}(k)"
@@ -40,16 +40,19 @@ function mainPlotter(results_arr::Vector{Vector{Float64}}, probeName::String, si
         subtitles[2] = L"J(k,q^\prime_\mathrm{antin.})"
         drawPoint = offantinode ./ pi
     elseif probeName == "spinFlipCorrMap"
-        subtitles[1] = L"\mathrm{rel(irrel)evance~of~} "
-        subtitles[2] = L"0.5\langle S_d^+ c^\dagger_{k \downarrow}c_{k\uparrow} + \text{h.c.}\rangle"
-    elseif probeName == "tiledspinFlipCorrMap"
+        subtitles[1] = L"\mathrm{rel(irrel)evance~of~} \chi(d,k)"
+        subtitles[2] = L"\chi(d,k)"
+    elseif probeName == "tiledSpinFlipCorrMap"
         subtitles[1] = L"\chi(k)"
         subtitles[2] = L"\chi(k_{N}, k)"
         subtitles[3] = L"\chi(k_{AN}, k)"
-        cmaps = [:matter, :matter, :matter]
+    elseif probeName == "tiledChargeFlipCorrMap"
+        subtitles[1] = L"\mathcal{C}(k)"
+        subtitles[2] = L"\mathcal{C}(k_{N}, k)"
+        subtitles[3] = L"\mathcal{C}(k_{AN}, k)"
     end
     x_arr = y_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
     plots = plotHeatmaps(results_arr, x_arr, y_arr, cmaps, subtitles)
-    fig = plot(plots..., size=(900, 220), layout = grid(1, length(results_arr)), plot_title=titleText, plot_titlevspan=0.1)
+    fig = plot(plots..., size=(290 * length(results_arr), 220), layout = grid(1, length(results_arr)), plot_title=titleText, plot_titlevspan=0.1)
     return fig
 end

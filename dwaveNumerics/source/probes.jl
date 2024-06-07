@@ -3,10 +3,7 @@
 
 using LinearAlgebra
 using Combinatorics
-include("../../../../juliaProjects/fermions/src/base.jl")
-include("../../../../juliaProjects/fermions/src/eigen.jl")
-include("../../../../juliaProjects/fermions/src/correlations.jl")
-include("../../../../juliaProjects/fermions/src/models.jl")
+using fermions
 using ProgressMeter
 
 """
@@ -120,7 +117,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 
     # generate basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
-    basis = BasisStates(trunc_dim * 2 + 2; totOccupancy=[trunc_dim + 1])
+    basis = fermions.BasisStates(trunc_dim * 2 + 2; totOccupancy=[trunc_dim + 1])
 
     # define correlation operators for all k-states within Brillouin zone.
     correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
@@ -143,7 +140,7 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
         # get Kondo interaction terms and bath interaction terms involving only the indices
         # appearing in the present sequence.
         dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
-        operatorList, couplingMatrix = kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
+        operatorList, couplingMatrix = fermions.kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
         uniqueHamiltonians = Dict{Vector{Float64},Vector{Vector{Int64}}}()
         for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
             if couplingSet ∉ keys(uniqueHamiltonians)
@@ -151,9 +148,9 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
             end
             push!(uniqueHamiltonians[couplingSet], sequence)
         end
-        matrixSet = generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonians)))
-        eigenSet = fetch.([Threads.@spawn getSpectrum(matrix) for matrix in matrixSet])
-        correlationResults = fetch.([Threads.@spawn gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(allSequences, eigenSet)])
+        matrixSet = fermions.generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonians)))
+        eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
+        correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(allSequences, eigenSet)])
 
         # calculate the correlation for all such configurations.
         for (sequences, correlationResult) in zip(values(uniqueHamiltonians), correlationResults)

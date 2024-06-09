@@ -134,3 +134,48 @@ function tolerantSign(quant, boundary)
         return -1
     end
 end
+
+
+function blockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}; trunc_dim::Int64=2)
+
+    # generate basis states for constructing prototype Hamiltonians which
+    # will be diagonalised to obtain correlations
+    basis = fermions.BasisStates(trunc_dim * 2 + 2; totOccupancy=[trunc_dim + 1])
+
+    energyContours = dispersion[1:Int(round((size_BZ+1)/2))]
+    spectrumSet = []
+    sequenceSets = []
+
+    # loop over energy scales and calculate correlation values at each stage.
+    @showprogress for energy in energyContours
+        # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
+        # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
+        suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
+
+        # generate all possible configurations of k-states from among these k-states. These include combinations as well as permutations.
+        # All combinations are needed in order to account for interactions of a particular k-state with all other k-states.
+        # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
+        # interchanges lead to fermion signs.
+        onShellStates = [index for index in suitableIndices if abs(abs(dispersion[index]) - energy) < TOLERANCE]
+        allCombinations = [comb for comb in combinations(suitableIndices, trunc_dim) if !isempty(intersect(onShellStates, comb))]
+        allSequences = [perm for chosenIndices in allCombinations for perm in permutations(chosenIndices)]
+        @assert !isempty(allSequences)
+
+        # get Kondo interaction terms and bath interaction terms involving only the indices
+        # appearing in the present sequence.
+        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
+        operatorList, couplingMatrix = fermions.kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
+        uniqueHamiltonianSequences = Dict{Vector{Float64},Vector{Vector{Int64}}}()
+        for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
+            if couplingSet ∉ keys(uniqueHamiltonianSequences)
+                uniqueHamiltonianSequences[couplingSet] = Vector{Int64}[]
+            end
+            push!(uniqueHamiltonianSequences[couplingSet], sequence)
+        end
+        matrixSet = fermions.generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonianSequences)))
+        eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
+        push!(spectrumSet, eigenInfo)
+        push!(sequenceSets, uniqueHamiltonianSequences)
+    end
+    return energyContour, spectrumSet, sequenceSets
+end

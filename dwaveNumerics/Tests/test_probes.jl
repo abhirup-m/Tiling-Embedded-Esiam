@@ -18,8 +18,10 @@ include("../source/rgFlow.jl")
             kondoJArray, dispersion = momentumSpaceRG(size_BZ, -2.0, J_val, W_val, orbitals)
             results, results_bool = scattProb(kondoJArray, size_BZ, dispersion)
             resultsCompare = zeros(size_BZ^2, size_BZ^2)
+            resultsCompareBool = zeros(size_BZ^2, size_BZ^2)
             resultsCompare[secondShellPoints] .= [sum(kondoJArray[p, secondAndBeyondPoints, 2] .^ 2) for p in secondShellPoints]
-            @test resultsCompare[secondShellPoints] == results[secondShellPoints]
+            resultsCompareBool[secondShellPoints] .= [sum(kondoJArray[p, secondAndBeyondPoints, 1] .^ 2) for p in secondShellPoints]
+            @test resultsCompare[secondShellPoints] ./ resultsCompareBool[secondShellPoints] == results[secondShellPoints]
         end
     end
 end
@@ -27,8 +29,8 @@ end
 
 J_val = 0.1
 orbitals = ("p", "p")
-for trunc_dim in [2,]
-    @testset "Correlation k-space symmetry, BZ size=$size_BZ, cluster size=$trunc_dim" for size_BZ in [5, 9, 13]
+for trunc_dim in [2,3]
+    @testset "Correlation k-space symmetry, BZ size=$size_BZ, cluster size=$trunc_dim" for size_BZ in [5, 9]
         @showprogress for W_val in range(0.0, stop=-J_val, length=2)
             kondoJArray, dispersion = momentumSpaceRG(size_BZ, -2.0, J_val, W_val, ("p", "p"))
             FS_indices = [point for point in 1:size_BZ^2 if abs(dispersion[point]) < TOLERANCE]

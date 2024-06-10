@@ -9,7 +9,7 @@
 (@isdefined HOP_T) || const HOP_T = 1.0
 
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
-(@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2
+(@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-5
 
 (@isdefined ALLOWED_PROBES) || const ALLOWED_PROBES = ["scattProb", "kondoCoupNodeMap", "kondoCoupAntinodeMap", "kondoCoupOffNodeMap", "kondoCoupOffAntinodeMap", "spinFlipCorrMap"]
 (@isdefined PLOT_SIZE) || const PLOT_SIZE = (400, 300)

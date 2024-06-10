@@ -33,9 +33,12 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
     end
 
     # get a boolean representation of results for visualisation, using the mapping
-    results_bool = ifelse.(abs.(results) .> TOLERANCE, 1, 0)
+    results_scaled = results ./ results_bare
+    results_bool = ifelse.(abs.(results_scaled) .> RG_RELEVANCE_TOL, 1, 0)
+    results_scaled[abs.(results_scaled) .< 1e-3] .= 1e-3
+    results_scaled[results_bool .== 0] .= 0
 
-    return results ./ results_bare, results_bool
+    return results_scaled, results_bool
 end
 
 
@@ -94,19 +97,7 @@ function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion
 end
 
 
-function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, correlationDefinition; trunc_dim::Int64=2)
-
-    _, resultsScattProbBool = scattProb(kondoJArray, size_BZ, dispersion)
-
-    # get all possible indices of momentum states within the Brillouin zone
-    k_indices = collect(1:size_BZ^2)
-
-    for index in k_indices
-        if resultsScattProbBool[index] == -1
-            kondoJArray[index, :, end] .= 0
-            kondoJArray[:, index, end] .= 0
-        end
-    end
+function correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition)
 
     # initialise zero array for storing correlations
     results = zeros(size_BZ^2)
@@ -115,45 +106,16 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
     # appears in the computation. Needed to finally average over all combinations.
     contributorCounter = zeros(size_BZ^2)
 
-    # generate basis states for constructing prototype Hamiltonians which
-    # will be diagonalised to obtain correlations
-    basis = fermions.BasisStates(trunc_dim * 2 + 2; totOccupancy=[trunc_dim + 1])
-
     # define correlation operators for all k-states within Brillouin zone.
-    correlationOperatorList = [correlationDefinition(i) for i in 1:trunc_dim]
+    correlationOperatorList = [correlationDefinition(i) for i in 1:length(sequenceSets[1])]
 
     # loop over energy scales and calculate correlation values at each stage.
-    @showprogress for energy in dispersion .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
-        # extract the k-states which lie within the energy window of the present iteration and are in the lower bottom quadrant.
-        # the values of the other quadrants will be equal to these (C_4 symmetry), so we just calculate one quadrant.
-        suitableIndices = [index for index in k_indices if abs(dispersion[index]) <= (energy + TOLERANCE) && map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
+    @showprogress for (energy, eigenSet, uniqueHamiltonianSequences) in zip(energyContours, spectrumSet, sequenceSets)
 
-        # generate all possible configurations of k-states from among these k-states. These include combinations as well as permutations.
-        # All combinations are needed in order to account for interactions of a particular k-state with all other k-states.
-        # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
-        # interchanges lead to fermion signs.
-        onShellStates = [index for index in suitableIndices if abs(abs(dispersion[index]) - energy) < TOLERANCE]
-        allCombinations = [comb for comb in combinations(suitableIndices, trunc_dim) if !isempty(intersect(onShellStates, comb))]
-        allSequences = [perm for chosenIndices in allCombinations for perm in permutations(chosenIndices)]
-        @assert !isempty(allSequences)
-
-        # get Kondo interaction terms and bath interaction terms involving only the indices
-        # appearing in the present sequence.
-        dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (0.0, orbitals[2], size_BZ))
-        operatorList, couplingMatrix = fermions.kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; tolerance=TOLERANCE)
-        uniqueHamiltonians = Dict{Vector{Float64},Vector{Vector{Int64}}}()
-        for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
-            if couplingSet ∉ keys(uniqueHamiltonians)
-                uniqueHamiltonians[couplingSet] = Vector{Int64}[]
-            end
-            push!(uniqueHamiltonians[couplingSet], sequence)
-        end
-        matrixSet = fermions.generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonians)))
-        eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
-        correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(allSequences, eigenSet)])
+        correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(uniqueHamiltonianSequences, eigenSet)])
 
         # calculate the correlation for all such configurations.
-        for (sequences, correlationResult) in zip(values(uniqueHamiltonians), correlationResults)
+        for (sequences, correlationResult) in zip(values(uniqueHamiltonianSequences), correlationResults)
 
             for sequence in sequences
                 # calculate the correlation for all points in the present sequence
@@ -188,10 +150,10 @@ function correlationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray
 end
 
 
-function tiledCorrelationMap(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String, String}, correlationDefinition)
+function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition, tiler)
     results = zeros(size_BZ^2, size_BZ^2)
-    correlationmap, _ = correlationMap(size_BZ, dispersion, kondoJArray, W_val, orbitals, correlationDefinition)
-    results = 0.5 .* sqrt.(correlationmap * correlationmap')
+    correlationmap, _ = correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition)
+    results = tiler(correlationmap)
     results[abs.(results) .< TOLERANCE ^ 0.5] .= TOLERANCE ^ 0.5
     results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
     return results, results_bool

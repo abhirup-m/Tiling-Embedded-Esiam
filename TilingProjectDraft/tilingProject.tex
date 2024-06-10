@@ -695,13 +695,20 @@ As has been done before, we simplify \(\Psi_\text{gs}\) by retaining only the un
 \end{aligned}\end{equation}
 where \(\rho_\text{gs}({\bf r}_c) = \ket{\psi_\text{gs}({\bf r}_c)}\bra{\psi_\text{gs}({\bf r}_c)}\) is the \(T=0\) density matrix for the auxiliary model at \({\bf r}_c\). This is simply the reduced density matrix of the impurity site for the auxiliary model at \({\bf r}_c\), leading to the following simple relation for the local entanglement entropy of the lattice model:
 \begin{equation}\begin{aligned}
-	\tilde S_\text{EE}^{\text{(loc)}} = S_\text{EE}^{(\text{imp.})}~.
+	\tilde S_\text{EE}({\bf r}_c;\sigma) = S_\text{EE}(d;\sigma)~,
 \end{aligned}\end{equation}
+where \(S_\text{EE}(d)\) is the entanglement entropy of the impurity site.
 
 We might also be interested in entanglement entropy of subsystems with multiple sites. The reduced density matrix for the composite subsystem of the sites \({\bf r}_c\) and \({\bf r}_c + {\bf r}\) is obtained by tracing out the site \({\bf r}_c + {\bf r}\) from \(\overline\rho_{{\bf r}_c,\sigma}\). That then gives
 \begin{equation}\begin{aligned}
-	\overline\rho_{({\bf r}_c, {\bf r}_c + {\bf r}),\sigma} = c^\dagger_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} c_{{\bf r}_c + {\bf r},\sigma} + n_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} n_{{\bf r}_c + {\bf r},\sigma}~.
+	\overline\rho_{({\bf r}_c, {\bf r}_c + {\bf r}),\sigma} = c^\dagger_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} c_{{\bf r}_c + {\bf r},\sigma} + n_{{\bf r}_c + {\bf r},\sigma} \overline\rho_{{\bf r}_c,\sigma} n_{{\bf r}_c + {\bf r},\sigma}~,
 \end{aligned}\end{equation}
+leading to the expression
+\begin{equation}\begin{aligned}
+	\tilde S_\text{EE}\left({\bf r}_c, {\bf r}_c + {\bf r};\sigma\right) = S_\text{EE}(d, {\bf r};\sigma)~,
+\end{aligned}\end{equation}
+where \(S_\text{EE}(d, r)\) is the entanglement entropy of the impurity site and the conduction bath site at a distance \({\bf r}\) from it.
+
 
 
 We now come to the \(k-\)space entanglement entropy, defined by \(\nu = ({\bf K},\sigma)\) and the reduced density matrix
@@ -713,11 +720,30 @@ We again replace the states with the uniform part, while we expand the operators
 	\overline\rho_{{\bf K},\sigma} &= \frac{1}{2}\left[c^\dagger_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) c_{{\bf r}_c,\sigma} + n_{{\bf K},\sigma} \rho_\text{gs}({\bf r}_c) n_{{\bf r}_c,\sigma} \right.\\
 	&+ \left. c^\dagger_{{\bf r}_c,\sigma} \rho_\text{gs}({\bf r}_c) c_{{\bf K},\sigma} + n_{{\bf r}_c,\sigma} \rho_\text{gs}({\bf r}_c) n_{{\bf K},\sigma}\right. ~.
 \end{aligned}\end{equation}
-The eigenvalues of this operator can be used to compute the entanglement entropy of the state \({\bf K}\sigma\). Using the same approach as that for the real space case, the reduced density matrix for two \(k-\)states is again obtained by tracing out the second \(k-\)state from this density matrix:
+The eigenvalues of this operator can be used to compute the entanglement entropy of the state \({\bf K}\sigma\). If we define an {\it off-site} entanglement entropy 
+\begin{equation}\begin{aligned}
+	S^\prime_{\text{EE}}(\nu_1,\nu_2) = -\text{Tr}\left[\rho_{\nu_1,\nu_2}\ln \rho_{\nu_1,\nu_2}\right]
+\end{aligned}\end{equation}
+with 
+\begin{equation}\begin{aligned}
+	\rho_{\nu_1,\nu_2} = (c^\dagger_{\nu_1} \tilde\rho_\text{gs} c_{\nu_2} + n_{\nu_1} \tilde\rho_\text{gs} n_{\nu_2}) + \text{h.c.}~,
+\end{aligned}\end{equation}
+we can frame the expression for the \(k-\)space entanglement entropy in terms of the auxiliary model off-site entanglement entropy:
+\begin{equation}\begin{aligned}
+	S_\text{EE}({\bf K};\sigma) = S^\prime_\text{EE}\left(d, {\bf K};\sigma\right) 
+\end{aligned}\end{equation}
+
+
+Using the same approach as that for the real space case, the reduced density matrix for two \(k-\)states is again obtained by tracing out the second \(k-\)state from this density matrix:
 \begin{equation}\begin{aligned}
 	\overline\rho_{({\bf K}_1, {\bf K}_2),\sigma} &= \frac{1}{2}\left[c^\dagger_{{\bf K}_2,\sigma} \overline\rho_{{\bf K}_1,\sigma} c_{{\bf r}_c,\sigma} + n_{{\bf K}_2,\sigma} \overline\rho_{{\bf K}_1,\sigma} n_{{\bf r}_c,\sigma} \right.\\
 	&+ \left. c^\dagger_{{\bf r}_c,\sigma} \overline\rho_{{\bf K}_1,\sigma} c_{{\bf K}_2,\sigma} + n_{{\bf r}_c,\sigma} \overline\rho_{{\bf K}_1,\sigma} n_{{\bf K}_2,\sigma}\right] ~.
 \end{aligned}\end{equation}
+This straightforwardly leads to the relation
+\begin{equation}\begin{aligned}
+	S_\text{EE}({\bf K}_1,{\bf K}_2;\sigma) = S^\prime_\text{EE}\left(d, {\bf K}_1;\sigma\right) + S^\prime_\text{EE}\left(d, {\bf K}_2;\sigma\right)
+\end{aligned}\end{equation}
+
 
 Other measures like mutual information can be obtained by using these elementary measures.
 

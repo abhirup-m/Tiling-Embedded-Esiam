@@ -136,7 +136,7 @@ function tolerantSign(quant, boundary)
 end
 
 
-function blockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}; trunc_dim::Int64=2)
+function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}; trunc_dim::Int64=2)
 
     # generate basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
@@ -174,8 +174,8 @@ function blockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray:
         end
         matrixSet = fermions.generalOperatorMatrix(basis, operatorList, collect(keys(uniqueHamiltonianSequences)))
         eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
-        push!(spectrumSet, eigenInfo)
+        push!(spectrumSet, eigenSet)
         push!(sequenceSets, uniqueHamiltonianSequences)
     end
-    return energyContour, spectrumSet, sequenceSets
+    return energyContours, spectrumSet, sequenceSets
 end

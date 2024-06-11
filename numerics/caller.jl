@@ -2,14 +2,13 @@ include("./source/main.jl")
 include("./source/plotting.jl")
 
 J_val = 0.1
-size_BZ = 13
+size_BZ = 33
 omega_by_t = -2.0
-W_by_J_arr = -1.0 .* [57.5, 59, 60, 62] ./ size_BZ
+W_by_J_arr = -1.0 .* [0, 57.5, 59, 60, 62] ./ size_BZ
 orbitals = ("p", "p")
 savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
 x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
 collatedResults = []
-saveName = "$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4))"
 
 for (i, savePath) in enumerate(savePaths)
     jldopen(savePath, "r"; compress=true) do file
@@ -28,5 +27,5 @@ for (i, savePath) in enumerate(savePaths)
     push!(collatedResults, [log10.(results_arr[1]), results_arr[2]])
     end
 end
-
-plotHeatmaps(x_arr, collatedResults, saveName)
+saveName = "scattprob-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
+plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\Gamma/\Gamma_0$", L"relevance of $\Gamma$"], collatedResults, saveName)

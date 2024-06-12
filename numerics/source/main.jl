@@ -1,5 +1,6 @@
 using JLD2
 using ProgressMeter
+include("./constants.jl")
 include("./rgFlow.jl")
 include("./probes.jl")
 
@@ -21,9 +22,12 @@ function rgFlowData(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_
     # loop over all given values of W/J, get the fixed point distribution J(k1,k2) and save them in files
     @showprogress for (j, W_by_J) in collect(enumerate(W_by_J_range))
         W_val = J_val * W_by_J
-        kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals; progressbarEnabled=progressbarEnabled)
+        kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals; progressbarEnabled=progressbarEnabled)
+        averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
+        @assert averageKondoScale > RG_RELEVANCE_TOL
+        kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
         jldopen(savePaths[j], "w") do file
-            file["kondoJArray"] = kondoJArrayFull
+            file["kondoJArray"] = kondoJArray
             file["dispersion"] = dispersion
             file["W_val"] = W_val
             file["size_BZ"] = size_BZ
@@ -34,59 +38,17 @@ function rgFlowData(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_
 end
 
 
-function getCorrelations(savePaths, corrDefArray; tile=false)
-    correlationResults = []
-    for savePath in savePaths
-        jldopen(savePath, "r"; compress=true) do file
-        kondoJArray = file["kondoJArray"]
-        dispersion = file["dispersion"]
-        W_val = file["W_val"]
-        size_BZ = file["size_BZ"]
-        orbitals = file["orbitals"]
-        averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
-        @assert averageKondoScale > RG_RELEVANCE_TOL
-        kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-        energyContours, spectrumSet, sequenceSets = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals)
+function getCorrelations(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64, 3}, W_val::Float64, orbitals::Tuple{String,String}, corrDefArray; tile=false)
+    correlationResults = [[] for _ in corrDefArray]
+    basis, uniqueSequences, eigenSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val , orbitals)
+    for (i, correlationDefinition) in enumerate(corrDefArray)
         if tile
-            results, results_bool = correlationMap(size_BZ, dispersion, kondoJArray, W_val, orbitals, correlationDefinition)
+            results = correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition)
         else
-            results, results_bool = correlationMap(size_BZ, dispersion, kondoJArray, W_val, orbitals, correlationDefinition)
+            results = correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition)
         end
-        end
+        push!(correlationResults[i], results...)
     end
+    return correlationResults
 end
 
-function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::Float64, J_val::Float64, orbitals::Tuple{String,String}; figScale::Float64=1.0, saveDir::String="./data/")
-    size_BZ_min = 5
-    size_BZ_vals = size_BZ_min:4:size_BZ_max
-    antinodeTransition = Float64[]
-    nodeTransition = Float64[]
-    for (kvals, array) in zip([(-pi / 2, -pi / 2), (0.0, -pi)], [nodeTransition, antinodeTransition])
-        W_by_J_bracket = [0, W_by_J_max]
-        @showprogress for (i, size_BZ) in enumerate(size_BZ_vals)
-            if i > 1
-                W_by_J_bracket = [array[i-1], W_by_J_max]
-            end
-            kpoint = map2DTo1D(kvals..., size_BZ)
-            while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
-                bools = []
-                for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
-                    @time kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
-                    @time results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
-                    push!(bools, results_bool[kpoint] == 0)
-                end
-                if bools[1] == false && bools[3] == true
-                    if bools[2] == true
-                        W_by_J_bracket[2] = sum(W_by_J_bracket) / 2
-                    else
-                        W_by_J_bracket[1] = sum(W_by_J_bracket) / 2
-                    end
-                else
-                    W_by_J_bracket[2] = W_by_J_bracket[1]
-                    W_by_J_bracket[1] = 0
-                end
-            end
-            push!(array, sum(W_by_J_bracket) / 2)
-        end
-    end
-end

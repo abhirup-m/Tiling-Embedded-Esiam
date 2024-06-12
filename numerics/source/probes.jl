@@ -34,9 +34,7 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
 
     # get a boolean representation of results for visualisation, using the mapping
     results_scaled = results ./ results_bare
-    results_bool = ifelse.(abs.(results_scaled) .> RG_RELEVANCE_TOL, 1, 0)
-    results_scaled[abs.(results_scaled) .< 1e-3] .= 1e-3
-    results_scaled[results_bool .== 0] .= 0
+    results_bool = ifelse.(abs.(results_scaled) .> 0, 1, 0)
 
     return results_scaled, results_bool
 end
@@ -56,48 +54,8 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-"""
-Create two dictionaries kondoDict and bathIntDict for use in another function.
-The dictionary kondoDict has tuples (k1, k2) as keys and the corresponding 
-Kondo coupling J_{k1, k2} as the values, while bathIntDict has 4-tuples (k1,k2,k3,k4)
-as keys and the corresponding bath W-interaction W_{k1,k2,k3,k4} as the values.
-Useful if I want to look at the interactions only between a certain set of k-states.
-Used for constructing lattice eSIAM Hamiltonians for samples of 2/3/4 k-states, in
-order to diagonalise and obtain correlations.
-"""
-function sampleKondoIntAndBathInt(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
-    k_indices = 1:length(sequence)
-
-    # create the twice repeated and four times repeated vectors, for nested iterations.
-    indices_two_repeated = ntuple(x -> k_indices, 2)
-    indices_four_repeated = ntuple(x -> k_indices, 4)
-
-    # create the dictionaries by iterating over all combinations of the momentum states.
-    dispersionDict = Dict{Int64,Float64}(index => dispersion[state] for (index, state) in enumerate(sequence))
-    kondoDict = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in Iterators.product(indices_two_repeated...))
-    kondoDictBare = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., 1] for pair in Iterators.product(indices_two_repeated...))
-    bathIntDict = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}(fourSet => bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in Iterators.product(indices_four_repeated...))
-    return dispersionDict, kondoDict, kondoDictBare, bathIntDict
-end
-
-function sampleKondoIntAndBathInt(sequenceSet::Vector{Vector{Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
-    dispersionDictSet = Dict{Int64,Float64}[]
-    kondoDictSet = Dict{Tuple{Int64,Int64},Float64}[]
-    kondoDictBareSet = Dict{Tuple{Int64,Int64},Float64}[]
-    bathIntDictSet = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}[]
-
-    for results in fetch.([Threads.@spawn sampleKondoIntAndBathInt(sequence, dispersion, kondoJArray, bathIntArgs) for sequence in sequenceSet])
-        dispersionDict, kondoDict, kondoDictBare, bathIntDict = results
-        push!(dispersionDictSet, dispersionDict)
-        push!(kondoDictSet, kondoDict)
-        push!(kondoDictBareSet, kondoDictBare)
-        push!(bathIntDictSet, bathIntDict)
-    end
-    return dispersionDictSet, kondoDictSet, kondoDictBareSet, bathIntDictSet
-end
-
-
-function correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition)
+function correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition)
+    suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
 
     # initialise zero array for storing correlations
     results = zeros(size_BZ^2)
@@ -106,46 +64,29 @@ function correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, corr
     # appears in the computation. Needed to finally average over all combinations.
     contributorCounter = zeros(size_BZ^2)
 
-    # define correlation operators for all k-states within Brillouin zone.
-    correlationOperatorList = [correlationDefinition(i) for i in 1:length(sequenceSets[1])]
+    correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationDefinition.(1:TRUNC_DIM)) 
+                                 for (eigenvals, eigenstates) in eigenSet])
 
-    # loop over energy scales and calculate correlation values at each stage.
-    @showprogress for (energy, eigenSet, uniqueHamiltonianSequences) in zip(energyContours, spectrumSet, sequenceSets)
-
-        correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationOperatorList) for (sequence, (eigenvals, eigenstates)) in zip(uniqueHamiltonianSequences, eigenSet)])
-
-        # calculate the correlation for all such configurations.
-        for (sequences, correlationResult) in zip(values(uniqueHamiltonianSequences), correlationResults)
-
-            for sequence in sequences
-                # calculate the correlation for all points in the present sequence
-                for (i, index) in enumerate(sequence)
-                    if index ∉ onShellStates
-                        continue
-                    end
-                    results[index] += correlationResult[i]
+    # calculate the correlation for all such configurations.
+    for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
+        for sequence in sequenceSet
+            maxE = maximum(abs.(dispersion[collect(sequence)]))
+            for (i, index) in enumerate(sequence)
+                if abs(abs(dispersion[index]) - maxE) < TOLERANCE
+                    results[index] = ifelse(correlationResult[i] > results[index], correlationResult[i], results[index])
                     contributorCounter[index] += 1
                 end
             end
         end
-
-        # average over all sequences
-        results[onShellStates] ./= contributorCounter[onShellStates]
     end
 
-    # propagate results from lower bottom quadrant to all quadrants.
-    Threads.@threads for index in [index for index in k_indices if map1DTo2D(index, size_BZ)[1] >= 0 && map1DTo2D(index, size_BZ)[2] <= 0]
-        k_val = map1DTo2D(index, size_BZ)
+    @assert all(contributorCounter[suitableIndices] .> 0)
 
-        # points in other quadrants are obtained by multiplying kx,ky with 
-        # ±1 factors. 
-        for signs in [(-1, 1), (-1, -1), (1, -1)]
-            index_prime = map2DTo1D((k_val .* signs)..., size_BZ)
-            results[index_prime] = results[index]
-        end
-    end
-
-    results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
+    # average over all sequences
+    # results[suitableIndices] ./= contributorCounter[suitableIndices]
+    results = propagateIndices(suitableIndices, size_BZ, results)
+    results_bool = [r <= 0 ? -1 : 1 for r in results]
+    results[0 .< abs.(results) .< 1e-2] .= 1e-2
     return results, results_bool
 end
 
@@ -155,6 +96,42 @@ function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets,
     correlationmap, _ = correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition)
     results = tiler(correlationmap)
     results[abs.(results) .< TOLERANCE ^ 0.5] .= TOLERANCE ^ 0.5
-    results_bool = [r <= 1e-3 ? -1 : 1 for r in results]
+    results_bool = [r <= RG_RELEVANCE_TOL ? -1 : 1 for r in results]
     return results, results_bool
+end
+
+
+function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::Float64, J_val::Float64, orbitals::Tuple{String,String}; figScale::Float64=1.0, saveDir::String="./data/")
+    size_BZ_min = 5
+    size_BZ_vals = size_BZ_min:4:size_BZ_max
+    antinodeTransition = Float64[]
+    nodeTransition = Float64[]
+    for (kvals, array) in zip([(-pi / 2, -pi / 2), (0.0, -pi)], [nodeTransition, antinodeTransition])
+        W_by_J_bracket = [0, W_by_J_max]
+        @showprogress for (i, size_BZ) in enumerate(size_BZ_vals)
+            if i > 1
+                W_by_J_bracket = [array[i-1], W_by_J_max]
+            end
+            kpoint = map2DTo1D(kvals..., size_BZ)
+            while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
+                bools = []
+                for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
+                    @time kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
+                    @time results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
+                    push!(bools, results_bool[kpoint] == 0)
+                end
+                if bools[1] == false && bools[3] == true
+                    if bools[2] == true
+                        W_by_J_bracket[2] = sum(W_by_J_bracket) / 2
+                    else
+                        W_by_J_bracket[1] = sum(W_by_J_bracket) / 2
+                    end
+                else
+                    W_by_J_bracket[2] = W_by_J_bracket[1]
+                    W_by_J_bracket[1] = 0
+                end
+            end
+            push!(array, sum(W_by_J_bracket) / 2)
+        end
+    end
 end

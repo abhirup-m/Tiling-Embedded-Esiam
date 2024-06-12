@@ -70,7 +70,6 @@ function initialiseKondoJ(size_BZ::Int64, orbital::String, num_steps::Int64, J_v
         # set the transposed elements to the same values (the matrix is real symmetric)
         kondoJArray[p2_arr, p1, 1] = kondoJArray[p1, p2_arr, 1]
     end
-    # kondoJArray[abs.(kondoJArray)./minimum(abs.(kondoJArray .!= 0)).<1e-5] .= 0
     return round.(kondoJArray, digits=trunc(Int, -log10(TOLERANCE)))
 end
 
@@ -139,7 +138,6 @@ function deltaJk1k2(
             (kondoJ_k2q_qk1 .+ 4 .* kondoJ_qqbar .* bathIntForm(bathIntArgs...)) ./
             denominators,
         )
-    # println("REN:", renormalisation, kondoJ_qqbar, bathIntForm(bathIntArgs...))
 
     # if a non-zero coupling goes through a zero, we set it to zero, and disable its flag.
     if abs(kondoJArrayPrev_k1k2) > TOLERANCE && (kondoJArrayPrev_k1k2 + renormalisation) * kondoJArrayPrev_k1k2 < 0
@@ -226,7 +224,6 @@ function stepwiseRenormalisation(
     kondoJ_qq_bar = diag(kondoJArrayPrev[cutoffPoints, cutoffHolePoints])
     dOfStates_cutoff = densityOfStates[cutoffPoints]
     Threads.@threads for (innerIndex1, innerIndex2) in externalVertexPairs
-        # println((innerIndex1, innerIndex2), cutoffHolePoints)
         kondoJ_k2_q_times_kondoJ_q_k1 = diag(kondoJArrayPrev[innerIndex2, cutoffPoints] * kondoJArrayPrev[innerIndex1, cutoffPoints]')
         kondoJArrayNext_k1k2, proceed_flag_k1k2 = deltaJk1k2(
             denominators,

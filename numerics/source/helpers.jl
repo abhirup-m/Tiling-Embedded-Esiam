@@ -150,30 +150,18 @@ function getUpperQuadrantLowerIndices(size_BZ)
 end
 
 
-function propagateIndices(suitableIndices::Vector{Int64}, size_BZ::Int64, results::Vector{Float64})
+function propagateIndices(index::Int64, size_BZ::Int64)
     # propagate results from lower octant to upper octant
-    quadrantIndices = copy(suitableIndices)
-    for index in suitableIndices
-        k_val = map1DTo2D(index, size_BZ)
-        index_prime = map2DTo1D(reverse(k_val)..., size_BZ)
-        @assert index_prime ∉ suitableIndices || k_val[1] == k_val[2]
-        results[index_prime] = results[index]
-        push!(quadrantIndices, index_prime)
+    k_val = map1DTo2D(index, size_BZ)
+    newIndices = []
+    push!(newIndices, map2DTo1D(reverse(k_val)..., size_BZ))
+    for signs in [(-1, 1), (-1, -1), (1, -1)]
+        index_prime = map2DTo1D((k_val .* signs)..., size_BZ)
+        push!(newIndices, index_prime)
+        index_prime = map2DTo1D((reverse(k_val) .* signs)..., size_BZ)
+        push!(newIndices, index_prime)
     end
-
-    # propagate results from lower bottom quadrant to all quadrants.
-    for index in quadrantIndices
-        k_val = map1DTo2D(index, size_BZ)
-
-        # points in other quadrants are obtained by multiplying kx,ky with 
-        # ±1 factors. 
-        for signs in [(-1, 1), (-1, -1), (1, -1)]
-            index_prime = map2DTo1D((k_val .* signs)..., size_BZ)
-            @assert index_prime ∉ suitableIndices || prod(k_val) == 0
-            results[index_prime] = results[index]
-        end
-    end
-    return results
+    return newIndices
 end
 
 

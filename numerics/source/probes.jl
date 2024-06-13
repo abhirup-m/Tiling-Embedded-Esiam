@@ -54,37 +54,68 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition)
-    suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
+function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitArray}}, dispersion::Vector{Float64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, eigenSet, correlationDefinition; twoParticle=0)
 
     # initialise zero array for storing correlations
-    results = zeros(size_BZ^2)
+    results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
-    contributorCounter = zeros(size_BZ^2)
+    contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
 
-    correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, correlationDefinition.(1:TRUNC_DIM)) 
+    corrDefArr = []
+    if twoParticle == 0
+        corrDefArr = correlationDefinition.(1:TRUNC_DIM)
+    else
+        corrDefArr = vec([correlationDefinition(pair) for pair in Iterators.product(1:TRUNC_DIM, 1:TRUNC_DIM)])
+    end
+
+    correlationResults = fetch.([Threads.@spawn fermions.gstateCorrelation(basis, eigenvals, eigenstates, corrDefArr) 
                                  for (eigenvals, eigenstates) in eigenSet])
 
     # calculate the correlation for all such configurations.
     for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
         for sequence in sequenceSet
             maxE = maximum(abs.(dispersion[collect(sequence)]))
+            if twoParticle == 0
             for (i, index) in enumerate(sequence)
                 if abs(abs(dispersion[index]) - maxE) < TOLERANCE
-                    results[index] = ifelse(correlationResult[i] > results[index], correlationResult[i], results[index])
+                    results[index] += correlationResult[i]
                     contributorCounter[index] += 1
                 end
+            end
+            else
+            for (k, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
+                if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE
+                    results[index1, index2] += correlationResult[k]
+                    contributorCounter[index1, index2] += 1
+                end
+            end
             end
         end
     end
 
-    @assert all(contributorCounter[suitableIndices] .> 0)
+    suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
+    if twoParticle == 0
 
-    # average over all sequences
-    # results[suitableIndices] ./= contributorCounter[suitableIndices]
-    results = propagateIndices(suitableIndices, size_BZ, results)
+        # average over all sequences
+        results[suitableIndices] ./= contributorCounter[suitableIndices]
+        Threads.@threads for index in suitableIndices
+            newPoints = propagateIndices(index, size_BZ)
+            results[newPoints] .= results[index]
+        end
+    else
+
+        # average over all sequences
+        results[suitableIndices, suitableIndices] ./= contributorCounter[suitableIndices, suitableIndices]
+        Threads.@threads for (index1, index2) in collect(Iterators.product(suitableIndices, suitableIndices))
+            newPoints1 = propagateIndices(index1, size_BZ)
+            newPoints2 = propagateIndices(index2, size_BZ)
+            for (p1, p2) in Iterators.product(newPoints1, newPoints2)
+                results[p1, p2] = results[index1, index2]
+            end
+        end
+    end
     results_bool = [r <= 0 ? -1 : 1 for r in results]
     results[0 .< abs.(results) .< 1e-2] .= 1e-2
     return results, results_bool

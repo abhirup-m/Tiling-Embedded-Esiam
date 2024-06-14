@@ -38,14 +38,14 @@ function rgFlowData(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, W_by_J_
 end
 
 
-function getCorrelations(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64, 3}, W_val::Float64, orbitals::Tuple{String,String}, corrDefArray; twoParticle=0, tile=false)
+function getCorrelations(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64, 3}, W_val::Float64, orbitals::Tuple{String,String}, corrDefArray, cutoffFraction::Float64; twoParticle=0, tile=false)
     correlationResults = [[] for _ in corrDefArray]
-    basis, uniqueSequences, eigenSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val , orbitals)
+    basis, suitableIndices, uniqueSequences, eigenSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val , orbitals, cutoffFraction)
     for (i, correlationDefinition) in enumerate(corrDefArray)
         if tile
-            results = correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
+            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
         else
-            results = correlationMap(size_BZ, basis, dispersion, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
+            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
         end
         push!(correlationResults[i], results...)
     end

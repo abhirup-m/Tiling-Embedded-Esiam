@@ -165,20 +165,22 @@ function propagateIndices(index::Int64, size_BZ::Int64)
 end
 
 
-function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String})
+function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
 
     # generate basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
     basis = fermions.BasisStates(TRUNC_DIM * 2 + 2)
     suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
+    filter!(x -> abs(dispersion[x]) / maximum(dispersion) < cutOffFraction, suitableIndices)
     allCombs = collect(combinations(suitableIndices, TRUNC_DIM))
     allSequences = NTuple{TRUNC_DIM, Int64}[]
-    for energy in dispersion .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
+    for energy in dispersion[abs.(dispersion)./maximum(dispersion) .< cutOffFraction] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
         onshellPoints = filter(x -> abs.((dispersion[x]) .- energy) .< TOLERANCE, suitableIndices)
         onshellCombs = filter(x -> !isempty(intersect(x, onshellPoints)), allCombs)
-        for comb in onshellCombs
-            push!(allSequences, Tuple.(collect(permutations(comb)))...)
-        end
+        push!(allSequences, Tuple.(onshellCombs)...)
+        # for comb in onshellCombs
+        #     push!(allSequences, Tuple.(collect(permutations(comb)))...)
+        # end
     end
 
     # generate all possible permutations of size TRUNC_DIM from among these k-states.
@@ -208,7 +210,7 @@ function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArr
     matrixSet = fermions.generalOperatorMatrix(basis, operatorList, uniqueCouplingSets)
     eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
 
-    return basis, uniqueSequences, eigenSet
+    return basis, suitableIndices, uniqueSequences, eigenSet
 end
 
 

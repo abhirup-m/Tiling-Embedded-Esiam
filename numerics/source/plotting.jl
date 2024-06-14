@@ -4,7 +4,7 @@ const plt = PyPlot
 
 function plotHeatmaps(axisVals, axisLabels, figLabels, collatedResults, saveName)
     nx, ny = length(collatedResults), length(collatedResults[1])
-    fig, axes = PyPlot.subplots(nx, ny, figsize=(2.4 * nx, 4.8 * ny), layout="compressed")
+    fig, axes = PyPlot.subplots(nrows=nx, ncols=ny, squeeze=false, figsize=(2.4 * nx, 4.8 * ny), layout="compressed")
     fw, fh = fig.get_size_inches()
     for (i, results_arr) in enumerate(collatedResults)
         for (ax, result) in zip(axes[i, :], results_arr)

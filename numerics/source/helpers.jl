@@ -169,7 +169,7 @@ function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArr
 
     # generate basis states for constructing prototype Hamiltonians which
     # will be diagonalised to obtain correlations
-    basis = fermions.BasisStates(TRUNC_DIM * 2 + 2)
+    basis = fermions.BasisStates(TRUNC_DIM * 2 + 2; localOccupancy=([1,2], 1))
     suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
     filter!(x -> abs(dispersion[x]) / maximum(dispersion) < cutOffFraction, suitableIndices)
     allCombs = collect(combinations(suitableIndices, TRUNC_DIM))
@@ -178,16 +178,12 @@ function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArr
         onshellPoints = filter(x -> abs.((dispersion[x]) .- energy) .< TOLERANCE, suitableIndices)
         onshellCombs = filter(x -> !isempty(intersect(x, onshellPoints)), allCombs)
         push!(allSequences, Tuple.(onshellCombs)...)
-        # for comb in onshellCombs
-        #     push!(allSequences, Tuple.(collect(permutations(comb)))...)
-        # end
     end
 
     # generate all possible permutations of size TRUNC_DIM from among these k-states.
     # All combinations are needed in order to account for interactions of a particular k-state with all other k-states.
     # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
     # interchanges lead to fermion signs.
-    # allSequences = [Tuple(perm) for perm in permutations(suitableIndices, TRUNC_DIM)]
     @assert !isempty(allSequences)
 
     # get Kondo interaction terms and bath interaction terms involving only the indices

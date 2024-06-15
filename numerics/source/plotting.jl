@@ -18,5 +18,6 @@ function plotHeatmaps(axisVals, axisLabels, figLabels, collatedResults, saveName
     axes[1,1].set_title(figLabels[1])
     axes[1,2].set_title(figLabels[2])
     fig.savefig(saveName, bbox_inches="tight")
+    plt.close()
 end
 

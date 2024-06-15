@@ -57,11 +57,13 @@ end
 function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitArray}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, eigenSet::Vector{Tuple{Dict{Tuple{Int64, Int64}, Vector{Float64}}, Dict{Tuple{Int64, Int64}, Vector{Vector{Float64}}}}}, correlationDefinition; twoParticle=0)
 
     # initialise zero array for storing correlations
-    results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
+    # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
+    results = zeros(size_BZ^2)
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
-    contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
+    # contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
+    contributorCounter = fill(0, size_BZ^2)
 
     corrDefArr = []
     if twoParticle == 0
@@ -87,34 +89,42 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
             else
             for (k, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
                 if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE
-                    results[index1, index2] += correlationResult[k]
-                    contributorCounter[index1, index2] += 1
+                    results[index1] += correlationResult[k]
+                    results[index2] += correlationResult[k]
+                    contributorCounter[index1] += 1
+                    contributorCounter[index2] += 1
                 end
             end
             end
         end
     end
+    @assert all(x -> x > 0, contributorCounter[suitableIndices])
 
-    if twoParticle == 0
-
-        # average over all sequences
-        # results[suitableIndices] ./= contributorCounter[suitableIndices]
-        Threads.@threads for index in suitableIndices
-            newPoints = propagateIndices(index, size_BZ)
-            results[newPoints] .= results[index]
-        end
-    else
-
-        # average over all sequences
-        # results[suitableIndices, suitableIndices] ./= contributorCounter[suitableIndices, suitableIndices]
-        Threads.@threads for (index1, index2) in collect(Iterators.product(suitableIndices, suitableIndices))
-            newPoints1 = propagateIndices(index1, size_BZ)
-            newPoints2 = propagateIndices(index2, size_BZ)
-            for (p1, p2) in Iterators.product(newPoints1, newPoints2)
-                results[p1, p2] = results[index1, index2]
-            end
-        end
+    results[suitableIndices] ./= contributorCounter[suitableIndices]
+    Threads.@threads for index in suitableIndices
+        newPoints = propagateIndices(index, size_BZ)
+        results[newPoints] .= results[index]
     end
+    # if twoParticle == 0
+
+    #     # average over all sequences
+    #     results[suitableIndices] ./= contributorCounter[suitableIndices]
+    #     Threads.@threads for index in suitableIndices
+    #         newPoints = propagateIndices(index, size_BZ)
+    #         results[newPoints] .= results[index]
+    #     end
+    # else
+
+    #     # average over all sequences
+    #     results[suitableIndices, suitableIndices] ./= contributorCounter[suitableIndices, suitableIndices]
+    #     Threads.@threads for (index1, index2) in collect(Iterators.product(suitableIndices, suitableIndices))
+    #         newPoints1 = propagateIndices(index1, size_BZ)
+    #         newPoints2 = propagateIndices(index2, size_BZ)
+    #         for (p1, p2) in Iterators.product(newPoints1, newPoints2)
+    #             results[p1, p2] = results[index1, index2]
+    #         end
+    #     end
+    # end
     results_bool = [r <= 0 ? -1 : 1 for r in results]
     results[0 .< abs.(results) .< 1e-2] .= 1e-2
     return results, results_bool

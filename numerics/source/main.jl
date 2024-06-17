@@ -40,12 +40,12 @@ end
 
 function getCorrelations(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64, 3}, W_val::Float64, orbitals::Tuple{String,String}, corrDefArray, cutoffFraction::Float64; twoParticle=0, tile=false)
     correlationResults = [[] for _ in corrDefArray]
-    basis, suitableIndices, uniqueSequences, eigenSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val , orbitals, cutoffFraction)
+    basis, suitableIndices, uniqueSequences, gstatesSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val , orbitals, cutoffFraction)
     for (i, correlationDefinition) in enumerate(corrDefArray)
         if tile
-            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
+            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, correlationDefinition; twoParticle=twoParticle)
         else
-            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, eigenSet, correlationDefinition; twoParticle=twoParticle)
+            results = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, correlationDefinition; twoParticle=twoParticle)
         end
         push!(correlationResults[i], results...)
     end

@@ -205,8 +205,8 @@ function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArr
     end
     matrixSet = fermions.generalOperatorMatrix(basis, operatorList, uniqueCouplingSets)
     eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
-
-    return basis, suitableIndices, uniqueSequences, eigenSet
+    gstatesSet = [fermions.getGstate(basis, eigenVals, eigenVecs) for (eigenVals, eigenVecs) in eigenSet]
+    return basis, suitableIndices, uniqueSequences, gstatesSet
 end
 
 

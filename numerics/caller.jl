@@ -1,10 +1,10 @@
-const TRUNC_DIM = 3
+const TRUNC_DIM = 2
 include("./source/main.jl")
 include("./source/plotting.jl")
 J_val = 0.1
-size_BZ = 37
+size_BZ = 25
 omega_by_t = -2.0
-W_by_J_arr = -1.0 .* [59, 62, 63, 64] ./ size_BZ # time = 14.318 s
+W_by_J_arr = -1.0 .* [37, 38, 39] ./ size_BZ # time = 14.318 s
 orbitals = ("p", "p")
 savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
 x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
@@ -33,7 +33,11 @@ function corr()
     collatedResultsCharge = []
     corrSpinArray = [i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0)]
     corrDoubOccArray = [i -> Dict(("nn", [2 * i + 1, 2 * i + 2]) => 1.0, ("hh", [2 * i + 1, 2 * i + 2]) => 1.0)]
-    corrChargeArray = [pair -> Dict(("++--", [2 * pair[2] + 1, 2 * pair[2] + 2,  2 * pair[1] + 2, 2 * pair[1] + 1]) => 1.0, ("++--", [2 * pair[1] + 1, 2 * pair[1] + 2,  2 * pair[2] + 2, 2 * pair[2] + 1]) => 1.0)]
+    corrChargeArray = [pair -> Dict(("++--", [2 * pair[2] + 1, 2 * pair[2] + 2,  2 * pair[1] + 2, 2 * pair[1] + 1]) => 1.0, 
+                                    ("--++", [2 * pair[1] + 2, 2 * pair[1] + 1,  2 * pair[2] + 1, 2 * pair[2] + 2]) => 1.0,
+                                    ("++--", [2 * pair[1] + 1, 2 * pair[1] + 2,  2 * pair[2] + 2, 2 * pair[2] + 1]) => 1.0,
+                                    ("--++", [2 * pair[2] + 2, 2 * pair[2] + 1,  2 * pair[1] + 1, 2 * pair[1] + 2]) => 1.0
+                                   )]
     @showprogress for (i, savePath) in collect(enumerate(savePaths))
         jldopen(savePath, "r"; compress=true) do file
         kondoJArray = file["kondoJArray"]
@@ -47,12 +51,11 @@ function corr()
         genpoint = map2DTo1D(float(3 * π / 4), 0.0, size_BZ)
 
         # set W_val to zero so that it does not interfere with the spin-flip fluctuations.
-        resSpin = getCorrelations(size_BZ, dispersion, kondoJArray, 0.0, orbitals, corrSpinArray, 0.25)
-        resDoubOcc = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrDoubOccArray, 0.25)
-        resCharge = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrChargeArray, 0.25; twoParticle=1)
+        resSpin = getCorrelations(size_BZ, dispersion, kondoJArray, 0.0, orbitals, corrSpinArray, 0.5)
+        resDoubOcc = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrDoubOccArray, 0.5)
+        resCharge = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrChargeArray, 0.5; twoParticle=1)
         push!(collatedResultsSpin, [log10.(resSpin[1][1]), resSpin[1][2]])
-        push!(collatedResultsCharge, [log10.(resCharge[1][1]), resDoubOcc[1][1]])
-        # push!(collatedResultsCharge, [log10.(sum(resCharge[1][1], dims=1) ./ length(resCharge[1][1][1,:])), log10.(sum(resCharge[1][1], dims=1))])
+        push!(collatedResultsCharge, [resCharge[1][1], resDoubOcc[1][1]])
         end
     end
 

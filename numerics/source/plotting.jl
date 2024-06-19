@@ -1,23 +1,33 @@
-using PyPlot
+using CairoMakie
 using LaTeXStrings
-const plt = PyPlot
 
-function plotHeatmaps(axisVals, axisLabels, figLabels, collatedResults, saveName)
-    nx, ny = length(collatedResults), length(collatedResults[1])
-    fig, axes = PyPlot.subplots(nrows=nx, ncols=ny, squeeze=false, figsize=(2.4 * nx, 4.8 * ny), layout="compressed")
-    fw, fh = fig.get_size_inches()
-    for (i, results_arr) in enumerate(collatedResults)
-        for (ax, result) in zip(axes[i, :], results_arr)
+function plotHeatmaps(axisVals, axisLabels, figLabels, subFigTitles, collatedResults, saveName)
+    fig = Figure(dpi=600, figure_padding=0)
+    for (row, results_arr) in enumerate(collatedResults)
+        Box(fig[2 * row - 1:2 * row + 1, 0:length(results_arr)+1], color=:white, strokecolor=:gray, strokewidth = 2.5)
+        Label(fig[2 * row - 1, 1:length(results_arr)], subFigTitles[row], fontsize = 20, padding=(0, 0, -10, 10))
+        for (col, result) in enumerate(results_arr)
+            gl = GridLayout(fig[2 * row, col])
             reshaped_result = reshape(result, (length(axisVals[1]), length(axisVals[1])))
-            img = ax.imshow(reshaped_result, origin="lower", extent=(axisVals[1][1], axisVals[1][end],axisVals[2][1], axisVals[2][end]));
-            ax.set_xlabel(axisLabels[1])
-            ax.set_ylabel(axisLabels[2])
-            fig.colorbar(img);
+            ax = Axis(gl[1, 1], aspect=1.0, height=150, width=150, 
+                                 xlabel=axisLabels[1], ylabel=axisLabels[2], 
+                                 xlabelsize=16, ylabelsize=16
+                                )
+            if all(isnan.(reshaped_result)) || all(isinf.(reshaped_result))
+                reshaped_result .= 0
+            end
+            hm = heatmap!(ax, axisVals[1], axisVals[2], reshaped_result)
+            Colorbar(gl[1, 2], hm)
         end
     end
-    axes[1,1].set_title(figLabels[1])
-    axes[1,2].set_title(figLabels[2])
-    fig.savefig(saveName, bbox_inches="tight")
-    plt.close()
+    for (i, text) in enumerate(figLabels)
+        Label(fig[0, i], text, fontsize = 20)
+    end
+    # for (i, text) in enumerate(subFigTitles)
+    #     Label(fig[i, 0], text, fontsize = 20)
+    # end
+    trim!(fig.layout)
+    resize_to_layout!(fig)
+    save(saveName, fig)
 end
 

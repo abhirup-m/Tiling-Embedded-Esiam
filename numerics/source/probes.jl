@@ -111,41 +111,78 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
 end
 
 
-function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}})
+function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}}, mutInfoIndices::Vector{Int64})
 
     # initialise zero array for storing correlations
     # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
-    results = zeros(size_BZ^2)
+    resultsVNE = zeros(size_BZ^2)
+    resultsMI = Dict(zip(mutInfoIndices, [zeros(size_BZ^2) for _ in mutInfoIndices]))
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
     # contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
-    contributorCounter = fill(0, size_BZ^2)
+    contributorCounterVNE = fill(0, size_BZ^2)
 
-    correlationResults = [fetch.([Threads.@spawn fermions.vnEntropy(gstates, [2 * i + 1, 2 * i + 2]) for i in 1:TRUNC_DIM]) for gstates in gstatesSet]
-
+    correlationVNE = [fetch.([Threads.@spawn fermions.vnEntropy(gstates, [2 * i + 1, 2 * i + 2]) for i in 1:TRUNC_DIM]) for gstates in gstatesSet]
     # calculate the correlation for all such configurations.
-    for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
+    for (sequenceSet, vne) in zip(uniqueSequences, correlationVNE)
         for sequence in sequenceSet
             maxE = maximum(abs.(dispersion[collect(sequence)]))
             for (i, index) in enumerate(sequence)
                 if abs(abs(dispersion[index]) - maxE) < TOLERANCE
-                    results[index] += correlationResult[i]
-                    contributorCounter[index] += 1
+                    resultsVNE[index] += vne[i]
+                    contributorCounterVNE[index] += 1
                 end
             end
         end
     end
-    @assert all(x -> x > 0, contributorCounter[suitableIndices])
 
-    results[suitableIndices] ./= contributorCounter[suitableIndices]
+    correlationMI = [fetch.([Threads.@spawn fermions.mutInfo(gstates, ([2 * i + 1, 2 * i + 2], [2 * j + 1, 2 * j + 2])) for (i,j) in Iterators.product(1:TRUNC_DIM, 1:TRUNC_DIM)]) for gstates in gstatesSet]
+    contributorCounterMI = Dict(zip(mutInfoIndices, [zeros(size_BZ^2) for _ in mutInfoIndices]))
+    for (sequenceSet, mutInfo) in zip(uniqueSequences, correlationMI)
+        for sequence in sequenceSet
+            if isnothing(intersect(sequence, mutInfoIndices))
+                continue
+            end
+            maxE = maximum(abs.(dispersion[collect(sequence)]))
+            for (i, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
+                if (index1 ∈ mutInfoIndices || index2 ∈ mutInfoIndices ) && index1 ≠ index2 && (abs(abs(dispersion[index1]) - maxE) < TOLERANCE || abs(abs(dispersion[index2]) - maxE) < TOLERANCE)
+                    if index1 ∈ mutInfoIndices
+                        resultsMI[index1][index2] += mutInfo[i]
+                        contributorCounterMI[index1][index2] += 1
+                    end
+                    if index2 ∈ mutInfoIndices
+                        resultsMI[index2][index1] += mutInfo[i]
+                        contributorCounterMI[index2][index1] += 1
+                    end
+    end end end end
+
+    @assert all(x -> x > 0, contributorCounterVNE[suitableIndices])
+    resultsVNE[suitableIndices] ./= contributorCounterVNE[suitableIndices]
     Threads.@threads for index in suitableIndices
         newPoints = propagateIndices(index, size_BZ)
-        results[newPoints] .= results[index]
+        resultsVNE[newPoints] .= resultsVNE[index]
     end
-    results[results .< 1e-3] .= 0
-    results_bool = [r <= 0 ? -1 : 1 for r in results]
-    return results, results_bool
+
+    for (index, counter) in contributorCounterMI
+        @assert all(x -> x > 0, counter[suitableIndices][suitableIndices .≠ index])
+        resultsMI[index][suitableIndices][suitableIndices .≠ index] ./= counter[suitableIndices][suitableIndices .≠ index]
+    end
+
+    Threads.@threads for index in suitableIndices
+        newPoints = propagateIndices(index, size_BZ)
+        resultsVNE[newPoints] .= resultsVNE[index]
+        for mutInfoIndex in keys(resultsMI)
+            resultsMI[mutInfoIndex][newPoints] .= resultsMI[mutInfoIndex][index]
+        end
+    end
+
+    resultsVNE[resultsVNE .< 1e-3] .= 0
+    for k in keys(resultsMI)
+        resultsMI[k][resultsMI[k] .< 1e-3] .= 0
+    end
+    # resultsVNE_bool = [r <= 0 ? -1 : 1 for r in resultsVNE]
+    return resultsVNE, resultsMI
 end
 
 function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition, tiler)

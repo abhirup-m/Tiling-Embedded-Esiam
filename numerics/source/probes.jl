@@ -90,10 +90,10 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
             else
             for (k, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
                 if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE
-                    results[index1] += correlationResult[k]
-                    results[index2] += correlationResult[k]
-                    contributorCounter[index1] += 1
-                    contributorCounter[index2] += 1
+                results[index1] += correlationResult[k]
+                results[index2] += correlationResult[k]
+                contributorCounter[index1] += 1
+                contributorCounter[index2] += 1
                 end
             end
             end
@@ -110,6 +110,43 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
     return results, results_bool
 end
 
+
+function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}})
+
+    # initialise zero array for storing correlations
+    # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
+    results = zeros(size_BZ^2)
+
+    # initialise zero array to count the number of times a particular k-state
+    # appears in the computation. Needed to finally average over all combinations.
+    # contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
+    contributorCounter = fill(0, size_BZ^2)
+
+    correlationResults = [fetch.([Threads.@spawn fermions.vnEntropy(gstates, [2 * i + 1, 2 * i + 2]) for i in 1:TRUNC_DIM]) for gstates in gstatesSet]
+
+    # calculate the correlation for all such configurations.
+    for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
+        for sequence in sequenceSet
+            maxE = maximum(abs.(dispersion[collect(sequence)]))
+            for (i, index) in enumerate(sequence)
+                if abs(abs(dispersion[index]) - maxE) < TOLERANCE
+                    results[index] += correlationResult[i]
+                    contributorCounter[index] += 1
+                end
+            end
+        end
+    end
+    @assert all(x -> x > 0, contributorCounter[suitableIndices])
+
+    results[suitableIndices] ./= contributorCounter[suitableIndices]
+    Threads.@threads for index in suitableIndices
+        newPoints = propagateIndices(index, size_BZ)
+        results[newPoints] .= results[index]
+    end
+    results[results .< 1e-3] .= 0
+    results_bool = [r <= 0 ? -1 : 1 for r in results]
+    return results, results_bool
+end
 
 function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition, tiler)
     results = zeros(size_BZ^2, size_BZ^2)

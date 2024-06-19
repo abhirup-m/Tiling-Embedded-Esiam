@@ -1,13 +1,19 @@
+using JLD2
+using ProgressMeter
+
 const TRUNC_DIM = 2
-include("./source/main.jl")
+include("./source/constants.jl")
+include("./source/rgFlow.jl")
+include("./source/probes.jl")
 include("./source/plotting.jl")
-J_val = 0.1
-size_BZ = 25
-omega_by_t = -2.0
-W_by_J_arr = -1.0 .* [37, 38, 39] ./ size_BZ # time = 14.318 s
-orbitals = ("p", "p")
-savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
-x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
+const J_val = 0.1
+const BZfraction = 0.5
+const size_BZ = 37
+const omega_by_t = -2.0
+const W_by_J_arr = -1.0 .* [59, 60, 61, 62, 63, 64] ./ size_BZ # time = 14.318 s
+const orbitals = ("p", "p")
+const savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
+const x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
 
 function probe()
     collatedResults = []
@@ -30,14 +36,25 @@ end
 
 function corr()
     collatedResultsSpin = []
+    collatedResultsVne = []
     collatedResultsCharge = []
-    corrSpinArray = [i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0)]
-    corrDoubOccArray = [i -> Dict(("nn", [2 * i + 1, 2 * i + 2]) => 1.0, ("hh", [2 * i + 1, 2 * i + 2]) => 1.0)]
-    corrChargeArray = [pair -> Dict(("++--", [2 * pair[2] + 1, 2 * pair[2] + 2,  2 * pair[1] + 2, 2 * pair[1] + 1]) => 1.0, 
+    corrSpinFlip = i -> Dict(("+-+-", [2, 1, 2 * i + 1, 2 * i + 2]) => 1.0, ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1]) => 1.0)
+    corrDoubOcc = i -> Dict(("nn", [2 * i + 1, 2 * i + 2]) => 1.0, ("hh", [2 * i + 1, 2 * i + 2]) => 1.0)
+    corrimpKDoubOcc = i -> Dict(("nn", [1, 2 * i + 1]) => 1.0, 
+                                      ("nn", [2, 2 * i + 1]) => 1.0, 
+                                      ("nn", [1, 2 * i + 2]) => 1.0, 
+                                      ("nn", [2, 2 * i + 2]) => 1.0, 
+                                      ("hh", [1, 2 * i + 1]) => 1.0, 
+                                      ("hh", [2, 2 * i + 1]) => 1.0, 
+                                      ("hh", [1, 2 * i + 2]) => 1.0, 
+                                      ("hh", [2, 2 * i + 2]) => 1.0,
+                                     )
+                           
+    corrCharge = pair -> Dict(("++--", [2 * pair[2] + 1, 2 * pair[2] + 2,  2 * pair[1] + 2, 2 * pair[1] + 1]) => 1.0, 
                                     ("--++", [2 * pair[1] + 2, 2 * pair[1] + 1,  2 * pair[2] + 1, 2 * pair[2] + 2]) => 1.0,
                                     ("++--", [2 * pair[1] + 1, 2 * pair[1] + 2,  2 * pair[2] + 2, 2 * pair[2] + 1]) => 1.0,
                                     ("--++", [2 * pair[2] + 2, 2 * pair[2] + 1,  2 * pair[1] + 1, 2 * pair[1] + 2]) => 1.0
-                                   )]
+                                   )
     @showprogress for (i, savePath) in collect(enumerate(savePaths))
         jldopen(savePath, "r"; compress=true) do file
         kondoJArray = file["kondoJArray"]
@@ -51,18 +68,26 @@ function corr()
         genpoint = map2DTo1D(float(3 * π / 4), 0.0, size_BZ)
 
         # set W_val to zero so that it does not interfere with the spin-flip fluctuations.
-        resSpin = getCorrelations(size_BZ, dispersion, kondoJArray, 0.0, orbitals, corrSpinArray, 0.5)
-        resDoubOcc = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrDoubOccArray, 0.5)
-        resCharge = getCorrelations(size_BZ, dispersion, kondoJArray, W_val, orbitals, corrChargeArray, 0.5; twoParticle=1)
-        push!(collatedResultsSpin, [log10.(resSpin[1][1]), resSpin[1][2]])
-        push!(collatedResultsCharge, [resCharge[1][1], resDoubOcc[1][1]])
+        basis, suitableIndices, uniqueSequences, gstatesSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals, BZfraction)
+        resSpin, resSpinBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrSpinFlip)
+        push!(collatedResultsSpin, [log10.(resSpin), resSpinBool])
+
+        vne, vneBool = entanglementMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet)
+        push!(collatedResultsVne, [vne, vneBool])
+
+        basis, suitableIndices, uniqueSequences, gstatesSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals, BZfraction)
+        resDoubOcc, resDoubOccBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrDoubOcc)
+        resCharge, resChargeBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrCharge; twoParticle=1)
+        push!(collatedResultsCharge, [resCharge, resDoubOcc])
         end
     end
 
     saveName = "spin-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
     plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\chi_s(d, \vec k)$", L"relevance of $\chi_s(d, \vec k)$"], collatedResultsSpin, saveName)
     saveName = "charge-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
-    plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\chi_c(d, k_\text{N})$", L"$\chi_c(d, k_\text{AN})$"], collatedResultsCharge, saveName)
+    plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], ["off-diag ch. corr.", L"$n_{k\uparrow}n_{k\downarrow}$"], collatedResultsCharge, saveName)
+    saveName = "vne-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
+    plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], ["off-diag ch. corr.", L"$n_{k\uparrow}n_{k\downarrow}$"], collatedResultsVne, saveName)
 end
 
 probe()

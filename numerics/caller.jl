@@ -86,8 +86,6 @@ function corr()
         end
     end
 
-    # saveName = "spin-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
-    # plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\chi_s(d, \vec k)$", L"relevance of $\chi_s(d, \vec k)$"], collatedResultsSpin, saveName)
     saveName = "charge-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
     plotHeatmaps([x_arr, x_arr], [L"ak_x/\pi", L"ak_y/\pi"], [L"\chi_s(d, \vec{k})", L"\chi_c(\vec{k})", L"n_{k\uparrow}n_{k\downarrow}"], subFigTitles, collatedResultsCharge, saveName)
     saveName = "vne-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"

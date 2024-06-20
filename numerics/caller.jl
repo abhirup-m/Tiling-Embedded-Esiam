@@ -7,13 +7,14 @@ include("./source/rgFlow.jl")
 include("./source/probes.jl")
 include("./source/plotting.jl")
 const J_val = 0.1
-const BZfraction = 0.5
+const BZfraction = 0.25
 const size_BZ = 37
 const omega_by_t = -2.0
-const W_by_J_arr = -1.0 .* [0, 59, 60, 62, 64] ./ size_BZ
+const W_by_J_arr = -1.0 .* [0, 59, 63, 64] ./ size_BZ
 const orbitals = ("p", "p")
 const savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
 const x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
+const cmap = :YlOrBr
 
 function probe()
     collatedResults = []
@@ -29,7 +30,7 @@ function probe()
         push!(subFigTitles, L"W/J=%$(round(W_val, digits=3))")
 
         results_arr = scattProb(kondoJArray, size_BZ, dispersion)
-        push!(collatedResults, [log10.(results_arr[1]), results_arr[2]])
+        push!(collatedResults, [results_arr[1], results_arr[2]])
         end
     end
     saveName = "scattprob-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
@@ -76,19 +77,19 @@ function corr()
         basis, suitableIndices, uniqueSequences, gstatesSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, 0.0, orbitals, BZfraction)
         resSpin, resSpinBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrSpinFlip)
         vne, mutInfo = entanglementMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, [node, antinode])
-        push!(collatedResultsVne, [log10.(vne), log10.(mutInfo[node]), log10.(mutInfo[antinode])])
+        push!(collatedResultsVne, [vne, mutInfo[node], mutInfo[antinode]])
 
         basis, suitableIndices, uniqueSequences, gstatesSet = getBlockSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals, BZfraction)
         resDoubOcc, resDoubOccBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrDoubOcc)
         resCharge, resChargeBool = correlationMap(size_BZ, basis, dispersion, suitableIndices, uniqueSequences, gstatesSet, corrCharge; twoParticle=1)
-        push!(collatedResultsCharge, [log10.(resCharge), log10.(resDoubOcc), log10.(resSpin)])
+        push!(collatedResultsCharge, [resSpin, resCharge, resDoubOcc])
         end
     end
 
     # saveName = "spin-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
     # plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\chi_s(d, \vec k)$", L"relevance of $\chi_s(d, \vec k)$"], collatedResultsSpin, saveName)
     saveName = "charge-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
-    plotHeatmaps([x_arr, x_arr], [L"ak_x/\pi", L"ak_y/\pi"], ["off-diag ch. corr.", L"n_{k\uparrow}n_{k\downarrow}", L"\chi_s(d, \vec{k})"], subFigTitles, collatedResultsCharge, saveName)
+    plotHeatmaps([x_arr, x_arr], [L"ak_x/\pi", L"ak_y/\pi"], [L"\chi_s(d, \vec{k})", L"\chi_c(\vec{k})", L"n_{k\uparrow}n_{k\downarrow}"], subFigTitles, collatedResultsCharge, saveName)
     saveName = "vne-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_by_J_arr), digits=4))_$(round(maximum(W_by_J_arr), digits=4))_$(round(J_val, digits=4)).pdf"
     plotHeatmaps([x_arr, x_arr], [L"ak_x/\pi", L"ak_y/\pi"], [L"\text{S}_\text{EE}(k)", L"I_2(k_N:k)", L"I_2(k_\text{AN}:k)"], subFigTitles, collatedResultsVne, saveName)
 end

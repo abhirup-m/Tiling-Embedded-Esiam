@@ -13,8 +13,7 @@ at the RG fixed point.
 function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Vector{Float64})
 
     # allocate zero arrays to store Γ at fixed point and for the bare Hamiltonian.
-    results = zeros(size_BZ^2)
-    results_bare = zeros(size_BZ^2)
+    results_scaled = zeros(size_BZ^2)
 
     # loop over all points k for which we want to calculate Γ(k).
     Threads.@threads for point in 1:size_BZ^2
@@ -26,14 +25,12 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
             targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
             # calculate the sum over q
-            results[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2)
-            results_bare[point] = sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
+            results_scaled[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) / sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
         end
 
     end
 
     # get a boolean representation of results for visualisation, using the mapping
-    results_scaled = results ./ results_bare
     results_bool = ifelse.(abs.(results_scaled) .> 0, 1, 0)
 
     return results_scaled, results_bool
@@ -106,6 +103,7 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
         newPoints = propagateIndices(index, size_BZ)
         results[newPoints] .= results[index]
     end
+    @assert !any(isnan.(results))
     results_bool = [r <= 0 ? -1 : 1 for r in results]
     return results, results_bool
 end
@@ -146,12 +144,12 @@ function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector
             end
             maxE = maximum(abs.(dispersion[collect(sequence)]))
             for (i, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
-                if (index1 ∈ mutInfoIndices || index2 ∈ mutInfoIndices ) && index1 ≠ index2 && (abs(abs(dispersion[index1]) - maxE) < TOLERANCE || abs(abs(dispersion[index2]) - maxE) < TOLERANCE)
+                if (index1 ∈ mutInfoIndices || index2 ∈ mutInfoIndices ) && (abs(abs(dispersion[index1]) - maxE) < TOLERANCE || abs(abs(dispersion[index2]) - maxE) < TOLERANCE)
                     if index1 ∈ mutInfoIndices
                         resultsMI[index1][index2] += mutInfo[i]
                         contributorCounterMI[index1][index2] += 1
                     end
-                    if index2 ∈ mutInfoIndices
+                    if index2 ∈ mutInfoIndices && index1 ≠ index2
                         resultsMI[index2][index1] += mutInfo[i]
                         contributorCounterMI[index2][index1] += 1
                     end
@@ -163,10 +161,11 @@ function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector
         newPoints = propagateIndices(index, size_BZ)
         resultsVNE[newPoints] .= resultsVNE[index]
     end
+    @assert !any(isnan.(resultsVNE))
 
     for (index, counter) in contributorCounterMI
-        @assert all(x -> x > 0, counter[suitableIndices][suitableIndices .≠ index])
-        resultsMI[index][suitableIndices][suitableIndices .≠ index] ./= counter[suitableIndices][suitableIndices .≠ index]
+        @assert all(x -> x > 0, counter[suitableIndices])
+        resultsMI[index][suitableIndices] ./= counter[suitableIndices]
     end
 
     Threads.@threads for index in suitableIndices
@@ -175,6 +174,9 @@ function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector
         for mutInfoIndex in keys(resultsMI)
             resultsMI[mutInfoIndex][newPoints] .= resultsMI[mutInfoIndex][index]
         end
+    end
+    for index in keys(resultsMI)
+        @assert !any(isnan.(resultsMI[index]))
     end
 
     resultsVNE[resultsVNE .< 1e-3] .= 0

@@ -59,7 +59,6 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
-    # contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
     contributorCounter = fill(0, size_BZ^2)
 
     corrDefArr = []
@@ -118,7 +117,6 @@ function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector
 
     # initialise zero array to count the number of times a particular k-state
     # appears in the computation. Needed to finally average over all combinations.
-    # contributorCounter = ifelse(twoParticle == 0, fill(0, size_BZ^2), fill(0, size_BZ^2, size_BZ^2))
     contributorCounterVNE = fill(0, size_BZ^2)
 
     correlationVNE = [fetch.([Threads.@spawn fermions.vnEntropy(gstates, [2 * i + 1, 2 * i + 2]) for i in 1:TRUNC_DIM]) for gstates in gstatesSet]

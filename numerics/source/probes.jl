@@ -10,7 +10,7 @@ using ProgressMeter
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
 at the RG fixed point.
 """
-function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Vector{Float64})
+function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Vector{Float64}, BZfraction::Float64)
 
     # allocate zero arrays to store Γ at fixed point and for the bare Hamiltonian.
     results_scaled = zeros(size_BZ^2)
@@ -21,11 +21,11 @@ function scattProb(kondoJArray::Array{Float64,3}, size_BZ::Int64, dispersion::Ve
         # check if the point is one of the four corners or the 
         # center. If it is, then don't bother. These points are
         # not affected by the RG and therefore not of interest.
-        if point ∉ [1, size_BZ, size_BZ^2 - size_BZ + 1, size_BZ^2, trunc(Int, 0.5 * (size_BZ^2 + 1))]
+        if abs(dispersion[point] / maximum(dispersion)) < BZfraction
             targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
             # calculate the sum over q
-            results_scaled[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) / sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2)
+            results_scaled[point] = sum(kondoJArray[point, targetStatesForPoint, end] .^ 2) ^ 0.5 / sum(kondoJArray[point, targetStatesForPoint, 1] .^ 2) ^ 0.5
         end
 
     end
@@ -51,7 +51,7 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}}, correlationDefinition; twoParticle=0)
+function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}}, correlationDefinition; twoParticle=0, pivotIndex=0)
 
     # initialise zero array for storing correlations
     # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
@@ -75,6 +75,9 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
     # calculate the correlation for all such configurations.
     for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
         for sequence in sequenceSet
+            if pivotIndex > 0 && pivotIndex ∉ sequence
+                continue
+            end
             maxE = maximum(abs.(dispersion[collect(sequence)]))
             if twoParticle == 0
             for (i, index) in enumerate(sequence)
@@ -85,19 +88,22 @@ function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{
             end
             else
             for (k, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
-                if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE
-                results[index1] += correlationResult[k]
-                results[index2] += correlationResult[k]
-                contributorCounter[index1] += 1
-                contributorCounter[index2] += 1
+                if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE && (pivotIndex == 0 || pivotIndex ∈ (index1, index2))
+                    if pivotIndex > 0
+                        index1 = ifelse(index1 == pivotIndex, index2, index1)
+                    end
+                    results[index1] += correlationResult[k]
+                    contributorCounter[index1] += 1
                 end
             end
             end
         end
     end
-    @assert all(x -> x > 0, contributorCounter[suitableIndices])
+    if pivotIndex == 0
+        @assert all(x -> x > 0, contributorCounter[suitableIndices])
+    end
 
-    results[suitableIndices] ./= contributorCounter[suitableIndices]
+    results[suitableIndices][contributorCounter[suitableIndices] .> 0] ./= contributorCounter[suitableIndices][contributorCounter[suitableIndices] .> 0]
     Threads.@threads for index in suitableIndices
         newPoints = propagateIndices(index, size_BZ)
         results[newPoints] .= results[index]

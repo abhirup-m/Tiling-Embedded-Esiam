@@ -1,3 +1,4 @@
+include("models.jl")
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
 function map1DTo2D(point::Int64, size_BZ::Int64)
@@ -165,6 +166,92 @@ function propagateIndices(index::Int64, size_BZ::Int64)
 end
 
 
+function expandBasis(basisStates::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}, numAdditional::Integer)
+    @assert numAdditional > 0
+    newBasisStates = Dict{keytype(basisStates), valtype(basisStates)}()
+    for (key, basisArr) in basisStates
+        for basisStateDict in basisArr
+            BitVecs = collect(keys(basisStateDict))
+            coeffs = collect(values(basisStateDict))
+            for newBitCombination in Iterators.product(repeat([(0,1),], 2 * numAdditional)...)
+                newBitVecs = [vcat(state, collect(newBitCombination)) for state in BitVecs]
+                totOcc = sum(newBitVecs[1])
+                totSz = sum(newBitVecs[1][1:2:end]) - sum(newBitVecs[1][2:2:end])
+                newKey = (totOcc, totSz)
+                if newKey ∉ keys(newBasisStates)
+                    newBasisStates[newKey] = []
+                end
+                push!(newBasisStates[newKey], Dict(zip(newBitVecs, coeffs)))
+            end
+        end
+    end
+    return newBasisStates
+end
+
+
+function transformBasis(basisStates::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}},
+        transformation::Dict{Tuple{Int64, Int64}, Vector{Vector{Float64}}})
+    newBasisStates = Dict{keytype(basisStates), valtype(basisStates)}(k => [Dict() for d in v] for (k, v) in basisStates)
+    for k in keys(basisStates)
+        for (i, eigenvector) in enumerate(transformation[k])
+            for (j, multiplier) in enumerate(eigenvector)
+                multipliedValues = multiplier .* collect(values(basisStates[k][j]))
+                multipliedState = Dict(zip(keys(basisStates[k][j]), multipliedValues))
+                mergewith!(+, newBasisStates[k][i], multipliedState)
+            end
+        end
+    end
+    return newBasisStates
+end
+
+
+function iterativeDiagonaliser(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
+    @assert cutOffFraction < 1
+    EIGENDIM = 500
+    energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] .|> abs |> sort
+    energyMidPoints = 0.5 .* abs.(energyContours[1:end-1] + energyContours[2:end])
+    allowedIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] < 0]
+    activeStates = Int64[]
+    basisStates = Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}()
+    spectrum = nothing
+    hamiltonianDefinition = Dict{Tuple{String,Vector{Int64}},Float64}()
+    @showprogress for energy in energyMidPoints[energyMidPoints ./ maximum(abs.(dispersion)) .< cutOffFraction]
+        particleStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] <= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
+        holeStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] >= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
+        allowedIndices = setdiff(allowedIndices, particleStates)
+        allowedIndices = setdiff(allowedIndices, holeStates)
+
+        kxvalsParticle, _ = map1DTo2D(particleStates, size_BZ)
+        kxvalsHole, _ = map1DTo2D(holeStates, size_BZ)
+        sortedParticleStates = particleStates[sortperm(kxvalsParticle)]
+        sortedHoleStates = holeStates[sortperm(kxvalsHole)]
+
+        for (pLeft, pRight, hLeft, hRight) in zip(sortedParticleStates, reverse(sortedParticleStates), 
+                                                  sortedHoleStates, reverse(sortedHoleStates))
+            newStates = unique([pLeft, pRight, hLeft, hRight])
+            activeStates = [activeStates; newStates]
+            if isnothing(basisStates)
+                for (k, varr) in fermions.BasisStates(2 + 2 * length(activeStates); localOccupancy=([1,2], 1))
+                    basisStates[k] = [Dict(v => 1.0) for v in varr]
+                end
+            else
+                basisStates = expandBasis(basisStates, length(activeStates))
+            end
+            # @time dispersionDict, kondoDict, _, bathIntDict = sampleKondoIntAndBathInt(activeStates, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ); specialIndices=newStates)
+            @time mergewith!(+, hamiltonianDefinition, kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states); specialIndices=newStates))
+            hamiltonianMatrix = fermions.generalOperatorMatrix(basisStates, hamiltonianDefinition)
+            spectrum = fermions.getSpectrum(hamiltonianMatrix; maxNum=EIGENDIM)
+            @assert keys(basisStates) == keys(spectrum[1]) == keys(spectrum[2])
+            basisStates = transformBasis(basisStates, spectrum[2])
+            if pLeft == pRight || hLeft == hRight
+                @assert pLeft == pRight && hLeft == hRight
+                break
+            end
+        end
+    end
+    return spectrum
+end
+
 function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
 
     # generate basis states for constructing prototype Hamiltonians which
@@ -219,19 +306,22 @@ Useful if I want to look at the interactions only between a certain set of k-sta
 Used for constructing lattice eSIAM Hamiltonians for samples of 2/3/4 k-states, in
 order to diagonalise and obtain correlations.
 """
-function sampleKondoIntAndBathInt(sequence::NTuple{TRUNC_DIM, Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
+function sampleKondoIntAndBathInt(sequence::Union{Vector{Int64}, NTuple{TRUNC_DIM, Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64}; specialIndices=Int64[])
     k_indices = 1:length(sequence)
+    if isempty(specialIndices)
+        specialIndices = k_indices
+    end
 
     # create the twice repeated and four times repeated vectors, for nested iterations.
-    indices_two_repeated = ntuple(x -> k_indices, 2)
-    indices_four_repeated = ntuple(x -> k_indices, 4)
+    indices_two_repeated = [pair for pair in Iterators.product(repeat([k_indices], 2)...) if !isempty(intersect(specialIndices, pair))]
+    indices_four_repeated = [set for set in Iterators.product(repeat([k_indices], 4)...) if !isempty(intersect(specialIndices, set))]
 
     # create the dictionaries by iterating over all combinations of the momentum states.
     dispersionDict = Dict{Int64,Float64}(index => dispersion[state] for (index, state) in enumerate(sequence))
-    kondoDict = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in Iterators.product(indices_two_repeated...))
-    kondoDictBare = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., 1] for pair in Iterators.product(indices_two_repeated...))
-    bathIntDict = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}(fourSet => bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in Iterators.product(indices_four_repeated...))
-    return dispersionDict, kondoDict, kondoDictBare, bathIntDict
+    kondoDict = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in indices_two_repeated) 
+    bathIntDict = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}(zip(indices_four_repeated, 
+                                                                   fetch.([Threads.@spawn bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in indices_four_repeated])))
+    return dispersionDict, kondoDict, Dict(), bathIntDict
 end
 
 function sampleKondoIntAndBathInt(sequenceSet::Vector{NTuple{TRUNC_DIM, Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})

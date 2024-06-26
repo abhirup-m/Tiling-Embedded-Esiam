@@ -7,10 +7,10 @@ include("./source/rgFlow.jl")
 include("./source/probes.jl")
 include("./source/plotting.jl")
 const J_val = 0.1
-const BZfraction = 0.15
-const size_BZ = 37
+const BZfraction = 0.25
+const size_BZ = 21
 const omega_by_t = -2.0
-const W_by_J_arr = -1.0 .* [0, 59, 63, 64] ./ size_BZ
+const W_by_J_arr = -1.0 .* [0,] ./ size_BZ
 const orbitals = ("p", "p")
 const savePaths = rgFlowData(size_BZ, omega_by_t, J_val, W_by_J_arr, orbitals)
 const x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
@@ -29,6 +29,8 @@ function probe()
         dispersion = file["dispersion"]
         push!(subFigTitles, L"W/J=%$(round(W_val, digits=3))")
 
+        spectrum = iterativeDiagonaliser(size_BZ, dispersion, kondoJArray, W_val, orbitals, BZfraction)
+        return
         results_arr = scattProb(kondoJArray, size_BZ, dispersion, BZfraction)
         push!(collatedResults, [results_arr[1], results_arr[2]])
         end
@@ -99,4 +101,4 @@ function corr()
 end
 
 probe();
-corr();
+# corr();

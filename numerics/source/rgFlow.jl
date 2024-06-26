@@ -83,7 +83,6 @@ function bathIntForm(
     # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
     # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
     # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    @assert length(points) == 4
     k2_vals = map1DTo2D(points[2], size_BZ)
     k3_vals = map1DTo2D(points[3], size_BZ)
     k4_vals = map1DTo2D(points[4], size_BZ)
@@ -201,7 +200,7 @@ function stepwiseRenormalisation(
                 bathIntStr,
                 orbital,
                 size_BZ,
-                [cutoffPoints, cutoffPoints, cutoffPoints, cutoffPoints],
+                Tuple([cutoffPoints, cutoffPoints, cutoffPoints, cutoffPoints]),
             ) / 2,
            )
 
@@ -236,7 +235,7 @@ function stepwiseRenormalisation(
                 bathIntStr,
                 orbital,
                 size_BZ,
-                [cutoffHolePoints, innerIndex2, innerIndex1, cutoffPoints],
+                Tuple([cutoffHolePoints, innerIndex2, innerIndex1, cutoffPoints]),
             ],
             dOfStates_cutoff,
         )

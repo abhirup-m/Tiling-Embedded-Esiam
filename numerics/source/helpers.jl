@@ -166,61 +166,48 @@ function propagateIndices(index::Int64, size_BZ::Int64)
 end
 
 
-function expandBasis(basisStates::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}, numAdditional::Integer)
-    @assert numAdditional > 0
-    newBasisStates = Dict{keytype(basisStates), valtype(basisStates)}()
-    for (key, basisArr) in basisStates
-        for basisStateDict in basisArr
-            BitVecs = collect(keys(basisStateDict))
-            coeffs = collect(values(basisStateDict))
-            for newBitCombination in Iterators.product(repeat([(0,1),], 2 * numAdditional)...)
-                newBitVecs = [vcat(state, collect(newBitCombination)) for state in BitVecs]
-                totOcc = sum(newBitVecs[1])
-                totSz = sum(newBitVecs[1][1:2:end]) - sum(newBitVecs[1][2:2:end])
-                newKey = (totOcc, totSz)
-                if newKey ∉ keys(newBasisStates)
-                    newBasisStates[newKey] = []
-                end
-                push!(newBasisStates[newKey], Dict(zip(newBitVecs, coeffs)))
-            end
+function iterativeDiagonaliser(
+        hamiltonianFamily::Vector{Dict{Tuple{String,Vector{Int64}},Float64}},
+        initBasis::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}},
+        numStatesFamily::Vector{Int64},
+        retainSize::Int64
+    )
+    @assert length(hamiltonianFamily) == length(numStatesFamily)
+    spectrumFamily = []
+    basisStates = initBasis
+    @showprogress for (i, hamiltonian) in enumerate(hamiltonianFamily)
+        hamiltonianMatrix = fermions.generalOperatorMatrix(basisStates, hamiltonian)
+        println(size.(collect(values(hamiltonianMatrix))))
+        spectrum = fermions.getSpectrum(hamiltonianMatrix; maxNum=retainSize, tolerance=TOLERANCE)
+        println([sort(abs.(minimum.(vectors))) for vectors in values(spectrum[2])])
+        push!(spectrumFamily, spectrum)
+        @assert keys(basisStates) == keys(spectrum[1]) == keys(spectrum[2])
+        basisStates = fermions.transformBasis(basisStates, spectrum[2])
+        println("----")
+        @time if i < length(numStatesFamily)
+            basisStates = fermions.expandBasis(basisStates, numStatesFamily[i+1] - numStatesFamily[i]; totOccReq=[1+numStatesFamily[i+1]], totSzReq=[1, 0, -1])
         end
     end
-    return newBasisStates
+    return spectrumFamily
 end
 
 
-function transformBasis(basisStates::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}},
-        transformation::Dict{Tuple{Int64, Int64}, Vector{Vector{Float64}}})
-    newBasisStates = Dict{keytype(basisStates), valtype(basisStates)}(k => [Dict() for d in v] for (k, v) in basisStates)
-    for k in keys(basisStates)
-        for (i, eigenvector) in enumerate(transformation[k])
-            for (j, multiplier) in enumerate(eigenvector)
-                multipliedValues = multiplier .* collect(values(basisStates[k][j]))
-                multipliedState = Dict(zip(keys(basisStates[k][j]), multipliedValues))
-                mergewith!(+, newBasisStates[k][i], multipliedState)
-            end
-        end
-    end
-    return newBasisStates
-end
-
-
-function iterativeDiagonaliser(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
+function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
     @assert cutOffFraction < 1
-    EIGENDIM = 500
+    retainSize = 500
     energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] .|> abs |> sort
     energyMidPoints = 0.5 .* abs.(energyContours[1:end-1] + energyContours[2:end])
     allowedIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] < 0]
     activeStates = Int64[]
-    basisStates = Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}()
-    spectrum = nothing
-    hamiltonianDefinition = Dict{Tuple{String,Vector{Int64}},Float64}()
-    @showprogress for energy in energyMidPoints[energyMidPoints ./ maximum(abs.(dispersion)) .< cutOffFraction]
+    initBasis = Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}()
+    numStatesFamily = Int64[]
+    activeStatesArr = []
+    newStatesArr = []
+    @showprogress desc="Hamiltonian family" for energy in energyMidPoints[energyMidPoints ./ maximum(abs.(dispersion)) .< cutOffFraction]
         particleStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] <= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
         holeStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] >= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
         allowedIndices = setdiff(allowedIndices, particleStates)
         allowedIndices = setdiff(allowedIndices, holeStates)
-
         kxvalsParticle, _ = map1DTo2D(particleStates, size_BZ)
         kxvalsHole, _ = map1DTo2D(holeStates, size_BZ)
         sortedParticleStates = particleStates[sortperm(kxvalsParticle)]
@@ -229,28 +216,26 @@ function iterativeDiagonaliser(size_BZ::Int64, dispersion::Vector{Float64}, kond
         for (pLeft, pRight, hLeft, hRight) in zip(sortedParticleStates, reverse(sortedParticleStates), 
                                                   sortedHoleStates, reverse(sortedHoleStates))
             newStates = unique([pLeft, pRight, hLeft, hRight])
+            push!(newStatesArr, newStates)
             activeStates = [activeStates; newStates]
-            if isnothing(basisStates)
-                for (k, varr) in fermions.BasisStates(2 + 2 * length(activeStates); localOccupancy=([1,2], 1))
-                    basisStates[k] = [Dict(v => 1.0) for v in varr]
-                end
-            else
-                basisStates = expandBasis(basisStates, length(activeStates))
+            push!(activeStatesArr, activeStates)
+            push!(numStatesFamily, length(activeStates))
+            if length(initBasis) == 0
+                initBasis = fermions.BasisStates(2 + 2 * length(activeStates); 
+                                                 totOccupancy=1 + length(activeStates), localOccupancy=([1,2], 1))
             end
-            # @time dispersionDict, kondoDict, _, bathIntDict = sampleKondoIntAndBathInt(activeStates, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ); specialIndices=newStates)
-            @time mergewith!(+, hamiltonianDefinition, kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states); specialIndices=newStates))
-            hamiltonianMatrix = fermions.generalOperatorMatrix(basisStates, hamiltonianDefinition)
-            spectrum = fermions.getSpectrum(hamiltonianMatrix; maxNum=EIGENDIM)
-            @assert keys(basisStates) == keys(spectrum[1]) == keys(spectrum[2])
-            basisStates = transformBasis(basisStates, spectrum[2])
+
             if pLeft == pRight || hLeft == hRight
                 @assert pLeft == pRight && hLeft == hRight
                 break
             end
         end
     end
+    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states); specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
+    spectrum = iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize)
     return spectrum
 end
+
 
 function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
 

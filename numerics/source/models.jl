@@ -1,5 +1,6 @@
 function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntFunc; specialIndices=Int64[], tolerance::Float64=1e-16)
     specialIndices = ifelse(isempty(specialIndices), sequence, specialIndices)
+
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
 
     for (momIndex, index) in enumerate(specialIndices)
@@ -48,16 +49,14 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
     end end
 
     # bath interaction terms, for all quartets of momenta
-    terms = []
-    @showprogress for (i1, index1) in enumerate(sequence) for (i2, index2) in enumerate(sequence) for (i3, index3) in enumerate(sequence) for (i4, index4) in enumerate(sequence)
-        momIndices = (index1, index2, index3, index4)
-        index4tuples = (i1, i2, i3, i4)
+    for pairs in Iterators.product(repeat([enumerate(sequence)], 4)...)# for (i2, index2) in enumerate(sequence) for (i3, index3) in enumerate(sequence) for (i4, index4) in enumerate(sequence)
+        momIndices = Tuple(pair[2] for pair in pairs)
+        index4tuples = Tuple(pair[1] for pair in pairs)
         if isempty(intersect(index4tuples, specialIndices))
             continue
         end
         bathIntVal = bathIntFunc(momIndices)
-        bathIntVal = abs(bathIntVal) > tolerance ? bathIntVal : 0
-        if bathIntVal == 0
+        if abs(bathIntVal) ≤ tolerance
             continue
         end
 
@@ -68,17 +67,13 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
         # -0.5 W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↑} c_{4, ↑}
         # -0.5 W_{1,2,3,4} c^†_{1 ↓} c_{2, ↓} c^†_{3 ↓} c_{4, ↓}
         # W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↓} c_{4, ↓}
-        push!(Dict(("+-+-", upIndices) => -0.5 * bathIntVal))
-        push!(Dict(("+-+-", downIndices) => -0.5 * bathIntVal))
-        push!(Dict(("+-+-", [upIndices[1:2]; downIndices[3:4]]) => bathIntVal))
-        # merge!(+, operatorList, 
-        #        Dict(("+-+-", upIndices) => -0.5 * bathIntVal),
-        #        Dict(("+-+-", downIndices) => -0.5 * bathIntVal),
-        #        Dict(("+-+-", [upIndices[1:2]; downIndices[3:4]]) => bathIntVal)
-        #       )
+        merge!(+, operatorList, 
+               Dict(("+-+-", upIndices) => -0.5 * bathIntVal),
+               Dict(("+-+-", downIndices) => -0.5 * bathIntVal),
+               Dict(("+-+-", [upIndices[1:2]; downIndices[3:4]]) => bathIntVal)
+              )
 
-    end end end end
-    operatorList = mergewith(+, operatorList, terms...)
+    end
     return operatorList
 end
 

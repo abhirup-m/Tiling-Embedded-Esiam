@@ -166,119 +166,36 @@ function propagateIndices(index::Int64, size_BZ::Int64)
 end
 
 
-function iterativeDiagonaliser(
-        hamiltonianFamily::Vector{Dict{Tuple{String,Vector{Int64}},Float64}},
-        initBasis::Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}},
-        numStatesFamily::Vector{Int64},
-        retainSize::Int64
-    )
-    @assert length(hamiltonianFamily) == length(numStatesFamily)
-    spectrumFamily = []
-    basisStates = initBasis
-    @showprogress for (i, hamiltonian) in enumerate(hamiltonianFamily)
-        hamiltonianMatrix = fermions.generalOperatorMatrix(basisStates, hamiltonian)
-        println(size.(collect(values(hamiltonianMatrix))))
-        spectrum = fermions.getSpectrum(hamiltonianMatrix; maxNum=retainSize, tolerance=TOLERANCE)
-        println([sort(abs.(minimum.(vectors))) for vectors in values(spectrum[2])])
-        push!(spectrumFamily, spectrum)
-        @assert keys(basisStates) == keys(spectrum[1]) == keys(spectrum[2])
-        basisStates = fermions.transformBasis(basisStates, spectrum[2])
-        println("----")
-        @time if i < length(numStatesFamily)
-            basisStates = fermions.expandBasis(basisStates, numStatesFamily[i+1] - numStatesFamily[i]; totOccReq=[1+numStatesFamily[i+1]], totSzReq=[1, 0, -1])
-        end
-    end
-    return spectrumFamily
-end
-
-
-function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
-    @assert cutOffFraction < 1
+function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, fractionBZ::Float64)
     retainSize = 500
-    energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] .|> abs |> sort
-    energyMidPoints = 0.5 .* abs.(energyContours[1:end-1] + energyContours[2:end])
-    allowedIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] < 0]
+    energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] |> sort
+    energyShells = energyContours[abs.(energyContours) ./ maximum(energyContours) .< fractionBZ]
+    println("Working with ", length(energyShells), " shells.")
+    southWestQuadrantIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] < 0]
     activeStates = Int64[]
     initBasis = Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}()
     numStatesFamily = Int64[]
     activeStatesArr = []
     newStatesArr = []
-    @showprogress desc="Hamiltonian family" for energy in energyMidPoints[energyMidPoints ./ maximum(abs.(dispersion)) .< cutOffFraction]
-        particleStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] <= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
-        holeStates = filter(x -> abs(dispersion[x]) < energy && dispersion[x] >= 0 && map1DTo2D(x, size_BZ)[2] <= 0 && map1DTo2D(x, size_BZ)[1] <= 0, 1:size_BZ^2)
-        allowedIndices = setdiff(allowedIndices, particleStates)
-        allowedIndices = setdiff(allowedIndices, holeStates)
-        kxvalsParticle, _ = map1DTo2D(particleStates, size_BZ)
-        kxvalsHole, _ = map1DTo2D(holeStates, size_BZ)
-        sortedParticleStates = particleStates[sortperm(kxvalsParticle)]
-        sortedHoleStates = holeStates[sortperm(kxvalsHole)]
+    @showprogress desc="Hamiltonian family" for energy in energyShells
+        onShellStates = filter(x -> abs(dispersion[x] - energy) < TOLERANCE, southWestQuadrantIndices)
+        kxvals, _ = map1DTo2D(onShellStates, size_BZ)
+        leftToRightSequence = onShellStates[sortperm(kxvals)]
 
-        for (pLeft, pRight, hLeft, hRight) in zip(sortedParticleStates, reverse(sortedParticleStates), 
-                                                  sortedHoleStates, reverse(sortedHoleStates))
-            newStates = unique([pLeft, pRight, hLeft, hRight])
-            push!(newStatesArr, newStates)
-            activeStates = [activeStates; newStates]
+        for point in leftToRightSequence
+            push!(newStatesArr, [point])
+            activeStates = [activeStates; [point]]
             push!(activeStatesArr, activeStates)
             push!(numStatesFamily, length(activeStates))
             if length(initBasis) == 0
                 initBasis = fermions.BasisStates(2 + 2 * length(activeStates); 
                                                  totOccupancy=1 + length(activeStates), localOccupancy=([1,2], 1))
             end
-
-            if pLeft == pRight || hLeft == hRight
-                @assert pLeft == pRight && hLeft == hRight
-                break
-            end
         end
     end
     hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states); specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
-    spectrum = iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize)
+    spectrum = fermions.iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize; tolerance=TOLERANCE)
     return spectrum
-end
-
-
-function getBlockSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, cutOffFraction::Float64)
-
-    # generate basis states for constructing prototype Hamiltonians which
-    # will be diagonalised to obtain correlations
-    basis = fermions.BasisStates(TRUNC_DIM * 2 + 2; localOccupancy=([1,2], 1))
-    suitableIndices = getUpperQuadrantLowerIndices(size_BZ)
-    filter!(x -> abs(dispersion[x]) / maximum(dispersion) < cutOffFraction, suitableIndices)
-    allCombs = collect(combinations(suitableIndices, TRUNC_DIM))
-    allSequences = NTuple{TRUNC_DIM, Int64}[]
-    for energy in dispersion[abs.(dispersion)./maximum(dispersion) .< cutOffFraction] .|> (x -> round(x, digits=trunc(Int, -log10(TOLERANCE)))) .|> abs |> unique |> (x -> sort(x, rev=true))
-        onshellPoints = filter(x -> abs.((dispersion[x]) .- energy) .< TOLERANCE, suitableIndices)
-        onshellCombs = filter(x -> !isempty(intersect(x, onshellPoints)), allCombs)
-        push!(allSequences, Tuple.(onshellCombs)...)
-    end
-
-    # generate all possible permutations of size TRUNC_DIM from among these k-states.
-    # All combinations are needed in order to account for interactions of a particular k-state with all other k-states.
-    # All permutations are needed in order to remove basis independence ([k1, k2, k3] & [k1, k3, k2] are not same, because
-    # interchanges lead to fermion signs.
-    @assert !isempty(allSequences)
-
-    # get Kondo interaction terms and bath interaction terms involving only the indices
-    # appearing in the present sequence.
-    dispersionDictSet, kondoDictSet, _, bathIntDictSet = sampleKondoIntAndBathInt(allSequences, dispersion, kondoJArray, (W_val, orbitals[2], size_BZ))
-
-    operatorList, couplingMatrix = fermions.kondoKSpace(dispersionDictSet, kondoDictSet, bathIntDictSet; bathField=0.0, tolerance=TOLERANCE)
-    uniqueCouplingSets = Vector{Float64}[]
-    uniqueSequences = Vector{NTuple{TRUNC_DIM, Int64}}[]
-    for (sequence, couplingSet) in zip(allSequences, couplingMatrix)
-        if couplingSet ∉ uniqueCouplingSets
-            push!(uniqueCouplingSets, couplingSet)
-            push!(uniqueSequences, [sequence])
-        else
-            location = findall(g -> g == couplingSet, uniqueCouplingSets)
-            @assert length(location) == 1
-            push!(uniqueSequences[location[1]], sequence)
-        end
-    end
-    matrixSet = fermions.generalOperatorMatrix(basis, operatorList, uniqueCouplingSets)
-    eigenSet = fetch.([Threads.@spawn fermions.getSpectrum(matrix) for matrix in matrixSet])
-    gstatesSet = [fermions.getGstate(basis, eigenVals, eigenVecs) for (eigenVals, eigenVecs) in eigenSet]
-    return basis, suitableIndices, uniqueSequences, gstatesSet
 end
 
 

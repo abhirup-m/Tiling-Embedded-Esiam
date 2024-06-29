@@ -7,8 +7,8 @@ include("./source/rgFlow.jl")
 include("./source/probes.jl")
 include("./source/plotting.jl")
 const J_val = 0.1
-const BZfraction = 0.35
-const size_BZ = 9
+const fractionBZ = 0.1
+const size_BZ = 45
 const omega_by_t = -2.0
 const W_by_J_arr = -1.0 .* [0,] ./ size_BZ
 const orbitals = ("p", "p")
@@ -29,7 +29,7 @@ function probe()
         dispersion = file["dispersion"]
         push!(subFigTitles, L"W/J=%$(round(W_val, digits=3))")
 
-        @time spectrum = getIterativeSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals, BZfraction)
+        @time spectrum = getIterativeSpectrum(size_BZ, dispersion, kondoJArray, W_val, orbitals, fractionBZ)
         return
         results_arr = scattProb(kondoJArray, size_BZ, dispersion, BZfraction)
         push!(collatedResults, [results_arr[1], results_arr[2]])

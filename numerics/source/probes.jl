@@ -51,59 +51,20 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function correlationMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}}, correlationDefinition; twoParticle=0, pivotIndex=0)
+function correlationMap(gstates::Vector{Dict{BitVector, Float64}}, (corrDef, numLegs), mapStateToIndex)
 
     # initialise zero array for storing correlations
     # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
-    results = zeros(size_BZ^2)
+    results = zeros(repeat([size_BZ^2], numLegs)...)
 
-    # initialise zero array to count the number of times a particular k-state
-    # appears in the computation. Needed to finally average over all combinations.
-    contributorCounter = fill(0, size_BZ^2)
-
+    suitableIndices = collect(keys(mapStateToIndex))
     corrDefArr = []
-    if twoParticle == 0
-        corrDefArr = correlationDefinition.(1:TRUNC_DIM)
-    else
-        corrDefArr = vec([correlationDefinition(pair) for pair in Iterators.product(1:TRUNC_DIM, 1:TRUNC_DIM)])
+    for k_inds in combinations(suitableIndices, numLegs)
+        hamInds = [mapStateToIndex[ind] for ind in k_inds]
+        corrOperator = corrDef(hamInds...)
+        results[k_inds...] = sum([abs(fermions.gstateCorrelation(gstate, corrOperator)) for gstate in gstates]) / length(gstates)
     end
 
-    correlationResults = [fetch.([Threads.@spawn fermions.gstateCorrelation(gstates, operator) 
-                                  for operator in corrDefArr])
-                                 for gstates in gstatesSet]
-
-    # calculate the correlation for all such configurations.
-    for (sequenceSet, correlationResult) in zip(uniqueSequences, correlationResults)
-        for sequence in sequenceSet
-            if pivotIndex > 0 && pivotIndex ∉ sequence
-                continue
-            end
-            maxE = maximum(abs.(dispersion[collect(sequence)]))
-            if twoParticle == 0
-            for (i, index) in enumerate(sequence)
-                if abs(abs(dispersion[index]) - maxE) < TOLERANCE
-                    results[index] += correlationResult[i]
-                    contributorCounter[index] += 1
-                end
-            end
-            else
-            for (k, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))
-                if abs(abs(dispersion[index1]) - maxE) < TOLERANCE && abs(abs(dispersion[index2]) - maxE) < TOLERANCE && (pivotIndex == 0 || pivotIndex ∈ (index1, index2))
-                    if pivotIndex > 0
-                        index1 = ifelse(index1 == pivotIndex, index2, index1)
-                    end
-                    results[index1] += correlationResult[k]
-                    contributorCounter[index1] += 1
-                end
-            end
-            end
-        end
-    end
-    if pivotIndex == 0
-        @assert all(x -> x > 0, contributorCounter[suitableIndices])
-    end
-
-    results[suitableIndices][contributorCounter[suitableIndices] .> 0] ./= contributorCounter[suitableIndices][contributorCounter[suitableIndices] .> 0]
     Threads.@threads for index in suitableIndices
         newPoints = propagateIndices(index, size_BZ)
         results[newPoints] .= results[index]

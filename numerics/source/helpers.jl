@@ -167,35 +167,36 @@ end
 
 
 function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, fractionBZ::Float64)
-    retainSize = 500
+    retainSize = 30
     energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] |> sort
     energyShells = energyContours[abs.(energyContours) ./ maximum(energyContours) .< fractionBZ]
     println("Working with ", length(energyShells), " shells.")
-    southWestQuadrantIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] < 0]
+    southWestQuadrantIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] <= 0 && map1DTo2D(p, size_BZ)[2] <= 0]
     activeStates = Int64[]
-    initBasis = Dict{Tuple{Int64, Int64}, Vector{Dict{BitVector, Float64}}}()
     numStatesFamily = Int64[]
-    activeStatesArr = []
-    newStatesArr = []
+    activeStatesArr = Vector{Vector{Int}}()
+    newStatesArr = Vector{Int64}[]
+    currentStates = Int64[]
     @showprogress desc="Hamiltonian family" for energy in energyShells
         onShellStates = filter(x -> abs(dispersion[x] - energy) < TOLERANCE, southWestQuadrantIndices)
         kxvals, _ = map1DTo2D(onShellStates, size_BZ)
-        leftToRightSequence = onShellStates[sortperm(kxvals)]
-
-        for point in leftToRightSequence
-            push!(newStatesArr, [point])
-            activeStates = [activeStates; [point]]
-            push!(activeStatesArr, activeStates)
-            push!(numStatesFamily, length(activeStates))
-            if length(initBasis) == 0
-                initBasis = fermions.BasisStates(2 + 2 * length(activeStates); 
-                                                 totOccupancy=1 + length(activeStates), localOccupancy=([1,2], 1))
+        for (point1, point2) in zip(onShellStates[sortperm(kxvals)], onShellStates[sortperm(kxvals, rev=true)])
+            if point1 ∈ currentStates || point2 ∈ currentStates
+                break
             end
+            push!(newStatesArr, [point1, point2])
+            push!(currentStates, point1, point2)
+            push!(activeStatesArr, copy(currentStates))
+            push!(numStatesFamily, length(currentStates))
         end
     end
-    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states); specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
-    spectrum = fermions.iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize; tolerance=TOLERANCE)
-    return spectrum
+    initBasis = fermions.BasisStates(2 + 2 * numStatesFamily[1]; 
+                                     occCriteria=x -> x == 1 + numStatesFamily[1],
+                                     localConstraint=x -> x[1] + x[2] == 1)
+    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
+                                                           specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
+    spectrumFamily = fermions.iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize; occCriteria=(x,N) -> x == N, tolerance=TOLERANCE)
+    return spectrumFamily, numStatesFamily, activeStatesArr
 end
 
 
@@ -240,4 +241,20 @@ function sampleKondoIntAndBathInt(sequenceSet::Vector{NTuple{TRUNC_DIM, Int64}},
         push!(bathIntDictSet, bathIntDict)
     end
     return dispersionDictSet, kondoDictSet, kondoDictBareSet, bathIntDictSet
+end
+
+
+function groundStates(spectrumFamily, numStatesFamily)
+    halfFillingKeys = collect(keys(spectrumFamily[end][1]))#[key for key in collect(keys(spectrumFamily[end][1])) if key[1] == 1 + numStatesFamily[end]]
+    minimumEnergy = minimum([minimum(spectrumFamily[end][1][key]) for key in halfFillingKeys])
+    groundStates = Dict{BitVector, Float64}[]
+    for key in halfFillingKeys
+        println((key, numStatesFamily[end]))
+        for (energy, state) in zip(spectrumFamily[end][1][key], spectrumFamily[end][2][key])
+            if abs(energy - minimumEnergy) < TOLERANCE
+                push!(groundStates, state)
+            end
+        end
+    end
+    return groundStates
 end

@@ -166,95 +166,34 @@ function propagateIndices(index::Int64, size_BZ::Int64)
 end
 
 
-function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, W_val::Float64, orbitals::Tuple{String,String}, fractionBZ::Float64)
+function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Matrix{Float64}, W_val::Float64, orbitals::Tuple{String,String}, fractionBZ::Float64)
     retainSize = 30
     energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] |> sort
     energyShells = energyContours[abs.(energyContours) ./ maximum(energyContours) .< fractionBZ]
     println("Working with ", length(energyShells), " shells.")
     southWestQuadrantIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] <= 0 && map1DTo2D(p, size_BZ)[2] <= 0]
-    activeStates = Int64[]
-    numStatesFamily = Int64[]
     activeStatesArr = Vector{Vector{Int}}()
     newStatesArr = Vector{Int64}[]
-    currentStates = Int64[]
-    @showprogress desc="Hamiltonian family" for energy in energyShells
+    for energy in energyShells
         onShellStates = filter(x -> abs(dispersion[x] - energy) < TOLERANCE, southWestQuadrantIndices)
         kxvals, _ = map1DTo2D(onShellStates, size_BZ)
         for (point1, point2) in zip(onShellStates[sortperm(kxvals)], onShellStates[sortperm(kxvals, rev=true)])
-            if point1 ∈ currentStates || point2 ∈ currentStates
+            if !isempty(activeStatesArr) && (point1 ∈ activeStatesArr[end] || point2 ∈ activeStatesArr[end])
                 break
             end
             push!(newStatesArr, [point1, point2])
-            push!(currentStates, point1, point2)
-            push!(activeStatesArr, copy(currentStates))
-            push!(numStatesFamily, length(currentStates))
-        end
-    end
-    initBasis = fermions.BasisStates(2 + 2 * numStatesFamily[1]; 
-                                     occCriteria=x -> x == 1 + numStatesFamily[1],
-                                     localConstraint=x -> x[1] + x[2] == 1)
-    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
-                                                           specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
-    spectrumFamily = fermions.iterativeDiagonaliser(hamiltonianFamily, initBasis, numStatesFamily, retainSize; occCriteria=(x,N) -> x == N, tolerance=TOLERANCE)
-    return spectrumFamily, numStatesFamily, activeStatesArr
-end
-
-
-"""
-Create two dictionaries kondoDict and bathIntDict for use in another function.
-The dictionary kondoDict has tuples (k1, k2) as keys and the corresponding 
-Kondo coupling J_{k1, k2} as the values, while bathIntDict has 4-tuples (k1,k2,k3,k4)
-as keys and the corresponding bath W-interaction W_{k1,k2,k3,k4} as the values.
-Useful if I want to look at the interactions only between a certain set of k-states.
-Used for constructing lattice eSIAM Hamiltonians for samples of 2/3/4 k-states, in
-order to diagonalise and obtain correlations.
-"""
-function sampleKondoIntAndBathInt(sequence::Union{Vector{Int64}, NTuple{TRUNC_DIM, Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64}; specialIndices=Int64[])
-    k_indices = 1:length(sequence)
-    if isempty(specialIndices)
-        specialIndices = k_indices
-    end
-
-    # create the twice repeated and four times repeated vectors, for nested iterations.
-    indices_two_repeated = [pair for pair in Iterators.product(repeat([k_indices], 2)...) if !isempty(intersect(specialIndices, pair))]
-    indices_four_repeated = [set for set in Iterators.product(repeat([k_indices], 4)...) if !isempty(intersect(specialIndices, set))]
-
-    # create the dictionaries by iterating over all combinations of the momentum states.
-    dispersionDict = Dict{Int64,Float64}(index => dispersion[state] for (index, state) in enumerate(sequence))
-    kondoDict = Dict{Tuple{Int64,Int64},Float64}(pair => kondoJArray[sequence[collect(pair)]..., end] for pair in indices_two_repeated) 
-    bathIntDict = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}(zip(indices_four_repeated, 
-                                                                   fetch.([Threads.@spawn bathIntForm(bathIntArgs..., sequence[collect(fourSet)]) for fourSet in indices_four_repeated])))
-    return dispersionDict, kondoDict, Dict(), bathIntDict
-end
-
-function sampleKondoIntAndBathInt(sequenceSet::Vector{NTuple{TRUNC_DIM, Int64}}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntArgs::Tuple{Float64,String,Int64})
-    dispersionDictSet = Dict{Int64,Float64}[]
-    kondoDictSet = Dict{Tuple{Int64,Int64},Float64}[]
-    kondoDictBareSet = Dict{Tuple{Int64,Int64},Float64}[]
-    bathIntDictSet = Dict{Tuple{Int64,Int64,Int64,Int64},Float64}[]
-
-    for results in fetch.([Threads.@spawn sampleKondoIntAndBathInt(sequence, dispersion, kondoJArray, bathIntArgs) for sequence in sequenceSet])
-        dispersionDict, kondoDict, kondoDictBare, bathIntDict = results
-        push!(dispersionDictSet, dispersionDict)
-        push!(kondoDictSet, kondoDict)
-        push!(kondoDictBareSet, kondoDictBare)
-        push!(bathIntDictSet, bathIntDict)
-    end
-    return dispersionDictSet, kondoDictSet, kondoDictBareSet, bathIntDictSet
-end
-
-
-function groundStates(spectrumFamily, numStatesFamily)
-    halfFillingKeys = collect(keys(spectrumFamily[end][1]))#[key for key in collect(keys(spectrumFamily[end][1])) if key[1] == 1 + numStatesFamily[end]]
-    minimumEnergy = minimum([minimum(spectrumFamily[end][1][key]) for key in halfFillingKeys])
-    groundStates = Dict{BitVector, Float64}[]
-    for key in halfFillingKeys
-        println((key, numStatesFamily[end]))
-        for (energy, state) in zip(spectrumFamily[end][1][key], spectrumFamily[end][2][key])
-            if abs(energy - minimumEnergy) < TOLERANCE
-                push!(groundStates, state)
+            if isempty(activeStatesArr)
+                push!(activeStatesArr, newStatesArr[end])
+            else
+                push!(activeStatesArr, [activeStatesArr[end]; newStatesArr[end]])
             end
         end
     end
-    return groundStates
+    display(newStatesArr)
+    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
+                                                           specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
+    display(hamiltonianFamily[1])
+    display(hamiltonianFamily[2])
+    spectrumSavePaths = IterDiag(hamiltonianFamily, retainSize)
+    return spectrumSavePaths, activeStatesArr
 end

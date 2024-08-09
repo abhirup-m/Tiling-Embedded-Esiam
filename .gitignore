@@ -19,3 +19,5 @@ esiam-spectrum/
 esiam-phases-data/
 movie_plots/
 *.jld2
+*/data/*
+*/data-iterdiag/*

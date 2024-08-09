@@ -1,4 +1,4 @@
-function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Array{Float64,3}, bathIntFunc; specialIndices=Int64[], tolerance::Float64=1e-16)
+function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Matrix{Float64}, bathIntFunc; specialIndices=Int64[], tolerance::Float64=1e-16)
     specialIndices = ifelse(isempty(specialIndices), sequence, specialIndices)
 
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
@@ -6,6 +6,9 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
     for (momIndex, index) in enumerate(specialIndices)
         energy = dispersion[index]
         energy = abs(energy) > tolerance ? energy : 0
+        if energy == 0
+            continue
+        end
         merge!(+, operatorList, Dict(("n", [2 * momIndex + 1]) => energy))
         merge!(+, operatorList, Dict(("n", [2 * momIndex + 2]) => energy))
     end
@@ -74,6 +77,7 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
               )
 
     end
+    operatorList = [(k..., v) for (k,v) in operatorList]
     return operatorList
 end
 

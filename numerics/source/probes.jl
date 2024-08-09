@@ -51,18 +51,16 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function correlationMap(gstates::Vector{Dict{BitVector, Float64}}, (corrDef, numLegs), mapStateToIndex)
+function correlationMap(savePath::String, corrDef::Function, numLegs::Int64, mapStateToIndex::Dict{Int64, Int64}, size_BZ::Int64)
 
     # initialise zero array for storing correlations
-    # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))
     results = zeros(repeat([size_BZ^2], numLegs)...)
 
     suitableIndices = collect(keys(mapStateToIndex))
-    corrDefArr = []
     for k_inds in combinations(suitableIndices, numLegs)
         hamInds = [mapStateToIndex[ind] for ind in k_inds]
         corrOperator = corrDef(hamInds...)
-        results[k_inds...] = sum([abs(fermions.gstateCorrelation(gstate, corrOperator)) for gstate in gstates]) / length(gstates)
+        results[k_inds...] = IterCorrelation(savePath, corrOperator)
     end
 
     Threads.@threads for index in suitableIndices

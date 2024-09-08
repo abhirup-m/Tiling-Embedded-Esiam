@@ -3,12 +3,15 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
 
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
 
-    for (momIndex, index) in enumerate(specialIndices)
-        energy = dispersion[index]
-        energy = abs(energy) > tolerance ? energy : 0
-        if energy == 0
+    for (momIndex, index) in enumerate(sequence)
+        if index ∉ specialIndices
             continue
         end
+        energy = dispersion[index]
+        # energy = abs(energy) > tolerance ? energy : 0
+        # if energy == 0
+        #     continue
+        # end
         merge!(+, operatorList, Dict(("n", [2 * momIndex + 1]) => energy))
         merge!(+, operatorList, Dict(("n", [2 * momIndex + 2]) => energy))
     end
@@ -52,30 +55,31 @@ function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondo
     end end
 
     # bath interaction terms, for all quartets of momenta
-    for pairs in Iterators.product(repeat([enumerate(sequence)], 4)...)# for (i2, index2) in enumerate(sequence) for (i3, index3) in enumerate(sequence) for (i4, index4) in enumerate(sequence)
-        momIndices = Tuple(pair[2] for pair in pairs)
-        index4tuples = Tuple(pair[1] for pair in pairs)
-        if isempty(intersect(index4tuples, specialIndices))
-            continue
+    # for pairs in Iterators.product(repeat([enumerate(sequence)], 4)...)
+    for (i1, index1) in enumerate(sequence) for (i2, index2) in enumerate(sequence)
+            momIndices = [index1, index1, index2, index2]
+            index4tuples = [i1, i1, i2, i2]
+            if isempty(intersect(momIndices, specialIndices))
+                continue
+            end
+            bathIntVal = bathIntFunc(momIndices)
+            if abs(bathIntVal) ≤ tolerance
+                continue
+            end
+
+            # get the up and down indices for all momenta
+            upIndices = collect(2 .* index4tuples .+ 1)
+            downIndices = collect(2 .* index4tuples .+ 2)
+
+            # -0.5 W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↑} c_{4, ↑}
+            # -0.5 W_{1,2,3,4} c^†_{1 ↓} c_{2, ↓} c^†_{3 ↓} c_{4, ↓}
+            # W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↓} c_{4, ↓}
+            merge!(+, operatorList, 
+                   Dict(("+-+-", upIndices) => -0.5 * bathIntVal),
+                   Dict(("+-+-", downIndices) => -0.5 * bathIntVal),
+                   Dict(("+-+-", [upIndices[1:2]; downIndices[3:4]]) => bathIntVal)
+                  )
         end
-        bathIntVal = bathIntFunc(momIndices)
-        if abs(bathIntVal) ≤ tolerance
-            continue
-        end
-
-        # get the up and down indices for all momenta
-        upIndices = collect(2 .* index4tuples .+ 1)
-        downIndices = collect(2 .* index4tuples .+ 2)
-
-        # -0.5 W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↑} c_{4, ↑}
-        # -0.5 W_{1,2,3,4} c^†_{1 ↓} c_{2, ↓} c^†_{3 ↓} c_{4, ↓}
-        # W_{1,2,3,4} c^†_{1 ↑} c_{2, ↑} c^†_{3 ↓} c_{4, ↓}
-        merge!(+, operatorList, 
-               Dict(("+-+-", upIndices) => -0.5 * bathIntVal),
-               Dict(("+-+-", downIndices) => -0.5 * bathIntVal),
-               Dict(("+-+-", [upIndices[1:2]; downIndices[3:4]]) => bathIntVal)
-              )
-
     end
     operatorList = [(k..., v) for (k,v) in operatorList]
     return operatorList

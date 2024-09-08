@@ -1,0 +1,184 @@
+\documentclass[reprint]{revtex4-2}
+\usepackage{braket,amsmath,amssymb,color,graphicx,bookmark,bm}
+\begin{document}
+
+\title{Iterative Ground State Approach Algorithm}
+\begin{abstract}
+	The following is the algorithm for performing an iterative diagonalization of fermionic systems. It is mostly similar to DMRG and NRG, and allows obtaining the low-energy spectrum large many-body Hamiltonians.
+\end{abstract}
+\date{\today}
+\maketitle
+
+% 
+
+\section{Structure of Hamiltonian and Operators}
+\subsection{Jordan-Wigner Matrix Representation of Fermionic Operators}
+For a single qubit, the creation/annihilation matrices are
+\begin{equation}\begin{aligned}
+	c = \begin{pmatrix}0 & 1 \\ 0 & 0\end{pmatrix}, c^\dagger = \begin{pmatrix}0 & 0 \\ 1 & 0\end{pmatrix}~,
+\end{aligned}\end{equation}
+given the convention that \(\ket{1} = (0 ~ ~ 1)\) is the occupied state. For a many-body system, these must be replaced with field operators that have the canonical fermionic algebra. For a system of \(N\) 1-particle levels, this can be accomplished through a {\it Jordan-Wigner}-like transformation
+\begin{equation}\begin{aligned}
+	c_j = \left(\otimes_1^j \sigma_z\right) \otimes c \otimes \left(\otimes_1^{N-j} \mathbb{I}\right) ~, j \in [0, N-1]~,
+\end{aligned}\end{equation}
+where \(\sigma_z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix} \) and \(\mathbb{I} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} \). For example, for spinless electrons on a three-site lattice, we can have three fermionic operators: \(c_{1}\),\(c_{2}\), and \(c_{3}\). Following the above expression, their matrices are\\
+\begin{equation*}\begin{aligned}
+	c_1 = c \otimes \mathbb{I} \otimes \mathbb{I} = \begin{bmatrix}
+0 & 0 & 1 & 0 & 0 & 0 &  0 &  0 \\
+0 & 0 & 0 & 1 & 0 & 0 &  0 &  0 \\
+0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+0 & 0 & 0 & 0 & 0 & 0 & -1 &  0 \\
+0 & 0 & 0 & 0 & 0 & 0 &  0 & -1 \\
+0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 
+\end{bmatrix}~,\\
+	c_2 = \sigma \otimes c \otimes \mathbb{I} = \begin{bmatrix}
+0 & 0 & 1 & 0 & 0 & 0 &  0 &  0 \\
+ 0 & 0 & 0 & 1 & 0 & 0 &  0 &  0 \\
+ 0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+ 0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+ 0 & 0 & 0 & 0 & 0 & 0 & -1 &  0 \\
+ 0 & 0 & 0 & 0 & 0 & 0 &  0 & -1 \\
+ 0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 \\
+ 0 & 0 & 0 & 0 & 0 & 0 &  0 &  0 
+\end{bmatrix}~,\\
+		c_3 = \sigma \otimes \sigma \otimes c = \begin{bmatrix}
+	0 & 1 & 0 &  0 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 & -1 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 & -1 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 &  0 & 0 & 1 \\
+	0 & 0 & 0 &  0 & 0 &  0 & 0 & 0 
+\end{bmatrix}~,\\
+\end{aligned}\end{equation*}
+
+For later use, we define the {\it antisymmetriser matrix} \(S(j)\) and identity matrix \(\mathbb{I}(j)\),
+\begin{equation}\begin{aligned}
+	S(j) &= \otimes_1^j \sigma_z = \sigma_z \otimes \ldots j\text{ times } \ldots \otimes \sigma_z,\\
+	\mathbb{I}(j) &= \otimes_1^{N-j} \mathbb{I} = \mathbb{I} \otimes  \ldots j\text{ times } \ldots \otimes \mathbb{I}~,
+\end{aligned}\end{equation}
+to express the fermionic representation compactly:
+\begin{equation}\begin{aligned}\label{jordanwigner}
+	c_j = S(j) \otimes c \otimes \mathbb{I}(N-j)~.
+\end{aligned}\end{equation}
+
+\subsection{Structure of Hamiltonian}
+We consider a general impurity model, of \(L\) number of sites (excluding the impurity site):
+\begin{equation}\begin{aligned}\label{hamiltonian}
+	H_\text{sys}(L) = H_\text{imp} + H_\text{imp-bath} +  
+	- t\sum_{\sigma, j = 1}^{L-1}\left(c^\dagger_{j,\sigma}c_{j+1,\sigma} + \text{h.c.}\right) ~,
+\end{aligned}\end{equation}
+where \(H_\text{imp}\) is the Hamiltonian for the decoupled impurity site and \(H_\text{imp-bath}\) is the impurity-bath coupling. Such a system has \(2L+2\) single-particle levels in the full system (2 spin levels for each of the \(L+1\) sites).
+
+Iteration scheme (the initial number of states is \(L_0\)):
+\begin{equation}\begin{aligned}\label{iterationScheme}
+	H_0(L_0) &= H_\text{sys}(L_0)~,\\
+	H_{r+1}(L_0) &= H_r(L_0) + \Delta H_r(L_0), ~ r \geq 0~,\\
+	\Delta H_r(L_0) &= - t\sum_{\sigma}\left(c^\dagger_{L_0 + r,\sigma}c_{L_0 + r+1,\sigma} + \text{h.c.}\right).
+\end{aligned}\end{equation}
+\(H_0\) is the initial Hamiltonian, consisting of \(L_0\) lattice sites in the bath, \(H_{r+1}(L_0)\) is the Hamiltonian after \(r+1\) iterations having started with \(L_0\) sites, and \(\Delta H_r(L_0)\) is the increment term that gets added to \(H_r(L_0)\) during the \((r+1)^\text{th}\) iteration to give rise to \(H_{r+1}(L_0)\). 
+
+%\section{Getting Together Everything That We Need}
+%The broad idea of the algorithm (described in the next section) is the following: At any given step, we diagonalise the Hamiltonian for a given number of step, truncate the set of eigenstates to a manageable size, transform all operators to this rotated truncated basis, add a new site to the model to generate a new Hamiltonian, and then start from the first step. In preparation for describing the algorithm in more detail, we now describe various mathematical objects that we will use in the process.
+%
+%\subsection{Specifications}
+%\begin{itemize}
+%	\item \(H_r\) is the Hamiltonian at the start of any given step \(r\) of the iteration.
+%	\item \(D_\text{tr}\) is the maximum number of eigenstates that are retained from any single symmetry sector any given step of the iteration.
+%	\item The basis for representing the Hamiltonian at any given step is denoted as \(\mathcal{B}_r\). Its dimensions are \(D_r \times N_r\), obtained by stacking the basis vectors column-wise:
+%\begin{equation}\begin{aligned}
+%	\mathcal{B}_r = \left[\underbrace{V_1}_{D_r \times 1};\quad V_2; \quad \ldots V_{N_r}\right]_{D_r \times N_r} ~,
+%\end{aligned}\end{equation}
+%where \(V_1, V_2\), etc are the basis vectors represented as column vectors.
+%	\item We start the iteration by considering \(L_0\) sites in the conduction bath, the initial Hamiltonian being \(H_0(L_0)\).
+%\end{itemize}
+%
+%\subsection{Using Symmetries}
+%Typically, our Hamiltonians will enjoy a global \(U(1)\) symmetry (overall number conservation) and overall magnetisation conservation. This will be preserved under the transformations, and will hold for the Hamiltonian at any step. We can therefore classify our basis \(\mathcal{B}_r\) into sectors \(\left\{\mathcal{B}_r^{(\nu)}\right\} \) according to the quantum numbers \(\nu\) of the symmetries. For the above example of total particle number conservation and total magnetisation conservation, \(\nu\) refers to the tuples \((N, m_z)\) of eigenvalues of the total number operator and the total magnetisation operator. The size (dimension) of each basis vector is \(D_r\).
+%
+%We are also gonna need to track the indices \(C^{(\nu)}\) of the columns of \(\mathcal{B}_r\) at which a particular subspace \(\mathcal{B}_r^{(\nu)}\) has non-zero values. As an illustration, consider the following artificial example where the values \(x_i\) form the symmetry block with \(\nu=1\), \(z\) forms the block \(\nu=2\) and \(y_i\) form \(\nu=3\):
+%\begin{equation}\begin{aligned}
+%	\mathcal{B}_r = \begin{bmatrix} 
+%		x_1 & x_3 & 0 & 0 & 0 \\
+%		x_2 & x_4 & 0 & 0 & 0 \\
+%		0 & 0 & z & 0 & 0 \\
+%		0 & 0 & 0 & y_1 & y_1 \\
+%		0 & 0 & 0 & y_2 & y_2 \\
+%	\end{bmatrix} ~,\quad
+%	\mathcal{B}_r^{(1)} = \begin{bmatrix} 
+%		x_1 & x_3 \\
+%		x_2 & x_4 \\
+%		0 & 0 \\
+%		0 & 0 \\
+%		0 & 0 \\
+%	\end{bmatrix} ~,\quad
+%	\mathcal{B}_r^{(2)} = \begin{bmatrix} 
+%		0 \\
+%		0 \\
+%		z \\
+%		0 \\
+%		0 \\
+%	\end{bmatrix} ~,\quad
+%	\mathcal{B}_r^{(3)} = \begin{bmatrix} 
+%		0 & 0 \\
+%		0 & 0 \\
+%		0 & 0\\
+%		y_1 & y_1 \\
+%		y_2 & y_2 \\
+%	\end{bmatrix} ~,\quad
+%	\begin{aligned}
+%	& C^{(1)} =[1, 2],\\
+%	& C^{(2)} =[3], \\
+%	& C^{(3)} =[4, 5]~.
+%    \end{aligned}
+%\end{aligned}\end{equation}
+%
+%\subsection{Adding new sites}
+%We also have \(L_r + 1\) fermionic field operators \(\left\{ c_j \right\} \), written in the basis \(\mathcal{B}_r\) at any given step, where \(L_r\) is the number of lattice sites present in the system at this step. These operators act on \(L_r+1\) number of sites; in order to go from one step of the iteration to the next, we will need to expand the system by adding one or more sites. This addition of sites requires the antisymmetrization of new field operators (acting purely on the new sites) against the existing \(L_r + 1\) operators (acting on the old sites). This antisymmetrization, in turn, requires a large antisymmetrization operator \(S_r = \otimes_1^{L_r+1}\sigma_z\).
+
+\section{The Algorithm}
+\subsection{Iterative Diagonalization}
+Let the starting Hamiltonian be \(H_0(L_0)\), consisting of \(L_0\) single-particle levels (hence a Hilbert space dimension of \(2^{L_0}\)). We start with a single-particle computational basis and construct the \(L_0\) fermionic operators \(c_1, c_2, \ldots, c_{L_0}\) in this basis, using eq.~\ref{jordanwigner}. We also keep track of a large antisymmetriser matrix \(S(L_0)\) that will be used to attach new sites when we expand the system. Let \(M_s\) be the maximum number of eigenstates we retain in the spectrum at any given step. The value of \(M_s\) should be chosen so that a \(M_s\times M_s\) matrix can be diagonalised in reasonable time.
+\begin{itemize}
+	\item[{\it S1.}] Construct the complete Hamiltonian matrix \(H_0\) in our present basis using the field operators \(\left\{c_j\right\}\). Diagonalise the Hamiltonian (of size \(D_0 \times D_0\)) and obtain the eigenvalues \({E_n}\) and eigenstates \({X_n}\). Each \(X_n\) is a column vector of size \(D_0\).
+	\item[{\it S2.}] Retain at most \(M_s\) number of eigenstates, preferring the ones with lower energy. The reduced basis for this rotated truncated subspace is constructed by stacking the column vectors \(X_n\) horizontally:
+		\begin{equation}\begin{aligned}
+			R = [X_1 X_2 \ldots X_{M_s}]_{D_0\times M_s}~.
+		\end{aligned}\end{equation}
+		This matrix also acts as the transformation to rotates and truncate all operators from the old basis into the new one.
+	\item[{\it S3.}] We rotate our Hamiltonian \(H_0\), our fermionic operators \(\left\{ c_j \right\} \) and the large antisymmetrizer matrix \(S(L_0)\) into the new reduced basis, using the transformation \(\mathcal{O} \to R^\dagger \mathcal{O} R\).
+	\item[{\it S4.}] We now need to expand our system by adding the increment Hamiltonian \(\Delta H_0\). Let the number of {\it new } 1-particle levels in \(\Delta H_0\) be \(L_\Delta\). These new levels will be indexed as \(L_0+1,\ldots,L_0+L_\Delta\). We need to define antisymmetrized fermionic operators for the new sites:
+		\begin{equation}\begin{aligned}
+			c_{L_0+1} &= c \otimes \mathbb{I}(2^{L_\Delta - 1}),\\
+			c_{L_0+2} &= \sigma_z \otimes c \otimes \mathbb{I}(2^{L_\Delta - 2}),\\
+					   &~~ \ldots~\\
+			~c_{L_0+L_\Delta} &= (\otimes_1^{L_\Delta-1} \sigma) \otimes c ~.
+		\end{aligned}\end{equation}
+		These have to be calculated in the local computational basis (of size \(2^{L_\Delta}\)) of the new levels. 
+	\item[{\it S5.}] Combining the new sites with the old sites leads to a combined Hilbert space dimension of \((M_s + 2^{L_\Delta}) \times (M_s + 2^{L_\Delta})\). To allow all operators to act on the enlarged Hilbert space, we expand both sets of operators:
+	\begin{equation}\begin{aligned}
+		c_j &= S(L_0) \otimes c_j;~~j=L_0 +1, \ldots, L_\Delta~,\\
+		c_j &= c_j \otimes \mathbb{I}(2^{L_\Delta});~ ~ j=1, 2, \ldots, L_0~,\\
+		H_0 &\to H_0 \otimes \mathbb{I}(2^{L_\Delta}),\\
+		S(L_1) &= S(L_0) \otimes \mathbb{I}(2^{L_\Delta})~.
+	\end{aligned}\end{equation}
+	where \(\mathbb{I}(2^{L_\Delta})\) is an identity matrix of dimension \(2^{L_\Delta} \times 2^{L_\Delta}\). Note that the operators in the last three equations are the rotated ones (following Step 3).
+\item[{\it S6.}] Using the transformed operators \(c_{L_0+1},\ldots,c_{L_0 + L_\Delta}\) for the new sites, construct the difference Hamiltonian matrix \(\Delta H_0\) and hence the updated Hamiltonian \(H_1 = H_0 + \Delta H_0\) for the next step. Repeat the process starting from step 2 with the new Hamiltonian \(H_1\), the new operators \(c_j\) and the new matrix \(S(L_1)\) replacing the old counterparts.
+\end{itemize}
+
+\subsection{Static Correlations}
+We are in general interested in \(n-\)point correlations of the form \(\left<\mathcal{O}_1 \mathcal{O}_2 \ldots \mathcal{O}_n\right>\), where \(\mathcal{O}_i\) are operators that act on 1-particle Hilbert spaces. Let the earliest step of the iterative diagonalisation procedure at which all these operators have entered the system be \(r\). At this step \(r\), construct the correlation operator \(\mathcal{O}_1 \mathcal{O}_2 \ldots \mathcal{O}_n\) using the fermionic matrices \(c_j\) at that step (recall that these matrices will be highly rotated versions of the matrices we started with). Having constructed the operator \(O\), we expand and rotate it after the completion of every future step: \(O_{n+1} = (R_n^\dagger O_n R_n)\otimes \mathbb{I}(2^{L_\Delta})\), where \(R_n\) is the rotation matrix for the \(n^\text{th}\) step. The last step \(n^*\) of the iterative diagonalisation consists of only a diagonalisation and no expansion, resulting in a final set of eigenstates \(\left\{ X_i \right\} \). The form of the correlation operator in this basis is \(O_{n^*} = R^\dagger_{n^*-1} O_{n^*-1} R_{n^*}\). The expectation value can now be calculated using the matrix \(O_{n^*}\) and the ground state of \(\left\{ X_i \right\} \).
+
+\section{Examples and Benchmarks}
+\subsection{Single-Impurity Anderson Model}
+The single-impurity Anderson model at half-filling is obtained by setting \(H_\text{imp}=-\frac{U}{2}\left(n_{d \uparrow} - n_{d \downarrow}\right)^2 \) and \(H_\text{imp-bath} = -V\sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)\) in eq.~\ref{hamiltonian}. We studied this model using the above approach to benchmark the ground state energy and spin-flip correlation \(\left<\frac{1}{2}S_d^+ S_0^- + \text{h.c.} \right>\) against exact diagonalization (ED). In order to extend the ED to a larger number of sites, we restricted ourselves to just the \(N=2\) sector, \(N\) being the total occupancy. We find very good agreement for \(M_s \sim 1000\) and above. These results are shown in Fig.~\ref{comparisonSIAM}.
+\begin{figure*}[!htpb]
+\centering
+\includegraphics[width=0.48\textwidth]{energy.pdf}
+\includegraphics[width=0.48\textwidth]{spinflipcomparison.pdf}
+\label{comparisonSIAM}
+\end{figure*}
+\end{document}

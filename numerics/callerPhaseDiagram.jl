@@ -1,4 +1,4 @@
-using ProgressMeter, Measures, CairoMakie
+using ProgressMeter, Measures, CairoMakie, LaTeXStrings
 
 const TRUNC_DIM = 2
 include("./source/constants.jl")
@@ -6,42 +6,35 @@ include("./source/helpers.jl")
 include("./source/rgFlow.jl")
 include("./source/probes.jl")
 
-const colorSet = resample_cmap(:YlOrBr, 3)
-function getPhase(J_val, W_val)
-    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
-    averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
-    @assert averageKondoScale > RG_RELEVANCE_TOL
-    kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-    scattProbBool = scattProb(kondoJArray, size_BZ, dispersion, fractionBZ)[2]
-    if all(>(0), scattProbBool[fermiPoints])
-        return 1
-    elseif all(==(0), scattProbBool[fermiPoints])
-        return 3
-    else
-        return 2
-    end
-end
+const cmap = resample_cmap(:cherry, 20)[1:end-1]
+const linecmap = :Dark2_3
+const phaseMaps = Dict("FL" => 2, "PG" => 1, "MI" => 3)
+const scatterLabels = ["N gaps", "AN gaps", "MP gaps"]
+const colorSet = resample_cmap(cmap, length(phaseMaps))
+const lineColorSet = resample_cmap(linecmap, 3)
+const labelSet = LaTeXString.([sort(collect(phaseMaps), by=last) .|> first; scatterLabels])
 
 const omega_by_t::Float64 = -2.0
 const orbitals::Tuple{String, String} = ("p", "p")
-const numPoints::Int64 = 100
+const numPoints::Int64 = 150
 const fractionBZ::Float64 = 0.3
 const size_BZ::Int64 = 17
 
-densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
-node = map2DTo1D(float(π)/2, float(π)/2, size_BZ)
-antinode = map2DTo1D(float(π), 0.0, size_BZ)
-fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
+J_val_arr = collect(range(0.05, stop=0.6, length=numPoints))
+W_val_arr = -1 .* collect(range(0.05, 0.2, length=numPoints))
+# phaseDiagram, nodeGap, antiNodeGap, midPointGap = PhaseDiagram(J_val_arr, W_val_arr, numPoints, phaseMaps)
+f = Figure(size=(400, 300), figure_padding=8, fontsize=14)
+ax = Axis(f[1, 1], xlabel=L"Kondo Int. $(J)$", ylabel=L"Bath Int. $(|W|)$")
+heatmap!(ax, J_val_arr, abs.(W_val_arr), phaseDiagram;
+         colormap=cmap, legend=true,)
 
-W_val_arr = -1.0 * range(0.0, stop=0.3, length=numPoints)
-J_val_arr = 1.0 * range(0.05, stop=0.6, length=numPoints)
-
-@time phaseDiagram = [getPhase(J_val_arr[i], W_val_arr[j]) for (i, j) in Iterators.product(1:numPoints, 1:numPoints)]
-println(unique(phaseDiagram))
-f = Figure()
-ax = Axis(f[1, 1])
-heatmap!(ax, J_val_arr, -1 .* W_val_arr, phaseDiagram;
-            xlabel="Kondo Int. \$J\$", ylabel="Bath Int. \$-W\$", colormap=:YlOrBr, 
-            thickness_scaling=1.5)
-display(f)
-save("phaseDiagram.pdf", f)
+sc1 = lines!(ax, J_val_arr[nodeGap .!= nothing], abs.(nodeGap[nodeGap .!= nothing]),
+       color=lineColorSet[1])
+sc2 = lines!(ax, J_val_arr[antiNodeGap .!= nothing], abs.(antiNodeGap[antiNodeGap .!= nothing]),
+             color=lineColorSet[2], linestyle=:dash)
+sc3 = lines!(ax, J_val_arr[midPointGap .!= nothing], abs.(midPointGap[midPointGap .!= nothing]),
+                    color=lineColorSet[3], linestyle=(:dashdotdot, :dense))
+legnd = [[PolyElement(color=col) for col in colorSet]; [sc1, sc2, sc3]]
+axislegend(ax, legnd, labelSet, markersize=2)
+save("phaseDiagram.pdf", f, px_per_unit=4)
+save("phaseDiagram.png", f, px_per_unit=8)

@@ -1,3 +1,5 @@
+using fermions
+
 include("models.jl")
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
@@ -177,11 +179,8 @@ function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondo
     for energy in energyShells
         onShellStates = filter(x -> abs(dispersion[x] - energy) < TOLERANCE, southWestQuadrantIndices)
         kxvals, _ = map1DTo2D(onShellStates, size_BZ)
-        for (point1, point2) in zip(onShellStates[sortperm(kxvals)], onShellStates[sortperm(kxvals, rev=true)])
-            if !isempty(activeStatesArr) && (point1 ∈ activeStatesArr[end] || point2 ∈ activeStatesArr[end])
-                break
-            end
-            push!(newStatesArr, [point1, point2])
+        for point in onShellStates[sortperm(kxvals)]
+            push!(newStatesArr, [point])
             if isempty(activeStatesArr)
                 push!(activeStatesArr, newStatesArr[end])
             else
@@ -189,11 +188,64 @@ function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondo
             end
         end
     end
-    display(newStatesArr)
-    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
-                                                           specialIndices=newStates) for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
+    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, 10 .* kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
+                                                           specialIndices=newStates)
+                                for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
     display(hamiltonianFamily[1])
     display(hamiltonianFamily[2])
     spectrumSavePaths = IterDiag(hamiltonianFamily, retainSize)
     return spectrumSavePaths, activeStatesArr
 end
+
+
+function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, numPoints::Int64, phaseMaps::Dict{String, Int64})
+    function PhaseStrip(J_val::Float64, W_val_arr::Vector{Float64}, phaseMaps::Dict{String, Int64})
+        phaseFlags = 0 .* collect(W_val_arr)
+        trackPoints = Dict(
+                           "N" => map2DTo1D(π/2, π/2, size_BZ),
+                           "AN" => map2DTo1D(π/1, 0.0, size_BZ),
+                           "M" => map2DTo1D(0.75 * π, 0.25 * π, size_BZ),
+                          )
+
+        gapTrackers = Dict("N" => NaN, "AN" => NaN, "M" => NaN)
+        for (i, W_val) in enumerate(W_val_arr)
+            kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
+            averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
+            @assert averageKondoScale > RG_RELEVANCE_TOL
+            kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
+            scattProbBool = scattProb(kondoJArray, size_BZ, dispersion, fractionBZ)[2]
+            if all(>(0), scattProbBool[fermiPoints])
+                phaseFlags[i] = phaseMaps["FL"]
+            elseif !all(==(0), scattProbBool[fermiPoints])
+                phaseFlags[i] = phaseMaps["PG"]
+            else
+                phaseFlags[i] = phaseMaps["MI"]
+            end
+            for (point, kpoint) in trackPoints
+                if isnan(gapTrackers[point]) && scattProbBool[kpoint] == 0
+                    gapTrackers[point] = W_val
+                end
+            end
+        end
+        return phaseFlags, gapTrackers
+    end
+
+    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
+    fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
+    @assert length(fermiPoints) == 2 * size_BZ - 2
+    @assert all(==(0), dispersionArray[fermiPoints])
+
+    phaseDiagram = zeros(numPoints, numPoints)
+    nodeGap = zeros(numPoints)
+    antiNodeGap = zeros(numPoints)
+    midPointGap = zeros(numPoints)
+    @time results = fetch.(@showprogress [Threads.@spawn PhaseStrip(J_val, W_val_arr, phaseMaps) for J_val in J_val_arr])
+    for (i, (phaseResult, gapTrackers)) in enumerate(results)
+        phaseDiagram[i, :] = phaseResult
+        nodeGap[i] = gapTrackers["N"]
+        antiNodeGap[i] = gapTrackers["AN"]
+        midPointGap[i] = gapTrackers["M"]
+    end
+    return phaseDiagram, nodeGap, antiNodeGap, midPointGap
+end
+

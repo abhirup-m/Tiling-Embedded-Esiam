@@ -10,10 +10,10 @@ include("./source/plotting.jl")
 const J_val = 0.1
 const omega_by_t = -2.0
 const orbitals = ("p", "p")
-const cmap = :YlOrBr
-fractionBZ = 0.2
-size_BZ = 17
-W_val_arr = -1.0 .* [2.6, 2.8] ./ size_BZ
+const cmap = :cherry
+fractionBZ = 0.1
+size_BZ = 9
+W_val_arr = -1.0 .* [0, 1] ./ size_BZ
 x_arr = range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi
 
 node = map2DTo1D(float(π)/2, float(π)/2, size_BZ)
@@ -36,7 +36,7 @@ function probe(kondoJArrays, dispersion)
     @time for W_val in W_val_arr
         push!(subFigTitles, L"W/J=%$(round(W_val, digits=3))")
         results_arr = scattProb(kondoJArrays[W_val], size_BZ, dispersion, fractionBZ)
-        push!(collatedResults, [results_arr[2]])
+        push!(collatedResults, [results_arr[1], results_arr[2]])
     end
     saveName = "scattprob-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(J_val, digits=4)).pdf"
     plotHeatmaps([x_arr, x_arr], [L"$ak_x/\pi$", L"$ak_y/\pi$"], [L"$\Gamma/\Gamma_0$", L"relevance of $\Gamma$"], subFigTitles, collatedResults, saveName)
@@ -50,16 +50,15 @@ function corr(kondoJArrays, dispersion)
     @showprogress for W_val in W_val_arr
         push!(subFigTitles, L"W/J=%$(round(W_val, digits=3))")
 
-        # set W_val to zero so that it does not interfere with the spin-flip fluctuations.
-        @time savePaths, activeStatesArr = getIterativeSpectrum(size_BZ, dispersion, kondoJArrays[W_val][:, :, end], 0.0, orbitals, fractionBZ)
+        @time savePaths, activeStatesArr = getIterativeSpectrum(size_BZ, dispersion, kondoJArrays[W_val][:, :, end], 0 * W_val, orbitals, fractionBZ)
         resSpin, resSpinBool = correlationMap(savePaths[end], corrSpinFlip, 1, Dict(activeStatesArr[end] .=> 1:length(activeStatesArr[end])), size_BZ)
 
         push!(collatedResultsSpin, [resSpin, resSpinBool])
+        display(maximum(abs.(resSpin)))
     end
-    println(collatedResultsSpin[1])
     saveName = "charge-$(orbitals[1])-$(orbitals[2])_$(size_BZ)_$(omega_by_t)_$(round(minimum(W_val_arr), digits=4))_$(round(maximum(W_val_arr), digits=4))_$(round(J_val, digits=4)).pdf"
     plotHeatmaps([x_arr, x_arr], [L"ak_x/\pi", L"ak_y/\pi"], [L"\chi_s(d, \vec{k})", L"\chi_c(\vec{k})", L"n_{k\uparrow}n_{k\downarrow}"], subFigTitles, collatedResultsSpin, saveName)
 end
 
 probe(kondoJArrays, dispersion);
-# corr(kondoJArrays, dispersion);
+corr(kondoJArrays, dispersion);

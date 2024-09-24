@@ -1,6 +1,5 @@
 using fermions
 
-include("models.jl")
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
 function map1DTo2D(point::Int64, size_BZ::Int64)
@@ -153,48 +152,25 @@ function getUpperQuadrantLowerIndices(size_BZ)
 end
 
 
-function propagateIndices(index::Int64, size_BZ::Int64)
-    # propagate results from lower octant to upper octant
-    k_val = map1DTo2D(index, size_BZ)
-    newIndices = []
-    push!(newIndices, map2DTo1D(reverse(k_val)..., size_BZ))
-    for signs in [(-1, 1), (-1, -1), (1, -1)]
-        index_prime = map2DTo1D((k_val .* signs)..., size_BZ)
-        push!(newIndices, index_prime)
-        index_prime = map2DTo1D((reverse(k_val) .* signs)..., size_BZ)
-        push!(newIndices, index_prime)
-    end
-    return newIndices
-end
-
-
-function getIterativeSpectrum(size_BZ::Int64, dispersion::Vector{Float64}, kondoJArray::Matrix{Float64}, W_val::Float64, orbitals::Tuple{String,String}, fractionBZ::Float64)
-    retainSize = 30
-    energyContours = dispersion[1:trunc(Int, (size_BZ + 1)/2)] |> sort
-    energyShells = energyContours[abs.(energyContours) ./ maximum(energyContours) .< fractionBZ]
-    println("Working with ", length(energyShells), " shells.")
-    southWestQuadrantIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] <= 0 && map1DTo2D(p, size_BZ)[2] <= 0]
-    activeStatesArr = Vector{Vector{Int}}()
-    newStatesArr = Vector{Int64}[]
-    for energy in energyShells
-        onShellStates = filter(x -> abs(dispersion[x] - energy) < TOLERANCE, southWestQuadrantIndices)
-        kxvals, _ = map1DTo2D(onShellStates, size_BZ)
-        for point in onShellStates[sortperm(kxvals)]
-            push!(newStatesArr, [point])
-            if isempty(activeStatesArr)
-                push!(activeStatesArr, newStatesArr[end])
-            else
-                push!(activeStatesArr, [activeStatesArr[end]; newStatesArr[end]])
-            end
+# propagate results from lower octant to upper octant
+function propagateIndices(
+        innerPoints::Vector{Int64}, 
+        corrResults::Dict{String, Vector{Float64}}, 
+        size_BZ::Int64, 
+        oppositePoints::Dict{Int64, Vector{Int64}}
+    )
+    
+    for pivot in innerPoints
+        newIndices = Int64[oppositePoints[pivot]...]
+        for index in [[pivot]; oppositePoints[pivot]]
+            k_val = map1DTo2D(index, size_BZ)
+            append!(newIndices, [map2DTo1D((k_val .* signs)..., size_BZ) for signs in [(-1, 1), (-1, -1), (1, -1)]])
+        end
+        for (name, correlation) in corrResults
+            corrResults[name][newIndices] .= correlation[pivot]
         end
     end
-    hamiltonianFamily = fetch.([Threads.@spawn kondoKSpace(activeStates, dispersion, 10 .* kondoJArray, states -> bathIntForm(W_val, orbitals[2], size_BZ, states);
-                                                           specialIndices=newStates)
-                                for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)])
-    display(hamiltonianFamily[1])
-    display(hamiltonianFamily[2])
-    spectrumSavePaths = IterDiag(hamiltonianFamily, retainSize)
-    return spectrumSavePaths, activeStatesArr
+    return corrResults
 end
 
 

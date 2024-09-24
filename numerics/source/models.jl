@@ -1,7 +1,18 @@
-function kondoKSpace(sequence::Vector{Int64}, dispersion::Vector{Float64}, kondoJArray::Matrix{Float64}, bathIntFunc; specialIndices=Int64[], tolerance::Float64=1e-16)
+function kondoKSpace(
+        sequence::Vector{Int64},
+        dispersion::Vector{Float64},
+        kondoJArray::Matrix{Float64},
+        bathIntFunc;
+        specialIndices=Int64[],
+        impField::Float64=0,
+        tolerance::Float64=1e-16
+    )
     specialIndices = ifelse(isempty(specialIndices), sequence, specialIndices)
 
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
+
+    merge!(+, operatorList, Dict(("n", [1]) => impField/2))
+    merge!(+, operatorList, Dict(("n", [2]) => -impField/2))
 
     for (momIndex, index) in enumerate(sequence)
         if index ∉ specialIndices

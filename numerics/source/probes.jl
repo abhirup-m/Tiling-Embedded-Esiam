@@ -1,10 +1,6 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-using LinearAlgebra
-using Combinatorics
-using fermions
-using ProgressMeter
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -51,25 +47,121 @@ function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArra
 end
 
 
-function correlationMap(savePath::String, corrDef::Function, numLegs::Int64, mapStateToIndex::Dict{Int64, Int64}, size_BZ::Int64)
+@everywhere function iterDiagResults(
+        hamiltDetails::Dict,
+        correlationFuncDict::Dict,
+        maxSize::Int64,
+        pivotLoc::Int64,
+        pivotPointsArr::Vector{Vector{Int64}},
+    )
+    corrResults = Dict(k => zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
+    pivotPoints = pivotPointsArr[pivotLoc]
+    newStatesArr = [pivotPointsArr[pivotLoc:pivotLoc]; pivotPointsArr[1:pivotLoc-1]; pivotPointsArr[pivotLoc+1:end]]
+    activeStatesArr = Vector{Int64}[pivotPoints]
+    for newStates in newStatesArr[2:end]
+        push!(activeStatesArr, [activeStatesArr[end]; newStates])
+    end
+
+    mapCorrNameToIndex = Dict()
+    correlationDefDict = Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}}()
+    for (name, (numLegs, func)) in correlationFuncDict
+        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
+            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
+                correlationDefDict[name * join(k_inds)] = func(k_inds...)
+                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
+            end
+        end
+    end
+
+    hamiltonianFamily = fetch.([
+                                Threads.@spawn kondoKSpace(activeStates,
+                                                           hamiltDetails["dispersion"], 
+                                                           hamiltDetails["kondoJArray"],
+                                                           states -> bathIntForm(hamiltDetails["W_val"], hamiltDetails["orbitals"][2], hamiltDetails["size_BZ"], states);
+                                                           impField=1e-4,
+                                                           specialIndices=newStates,
+                                                          )
+                                for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)
+                               ]
+                              )
+
+    savePaths, iterDiagResults = IterDiag(
+                                 hamiltonianFamily, 
+                                 maxSize;
+                                 symmetries=Char['N'],
+                                 occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                                 correlationDefDict=correlationDefDict,
+                                 silent=true,
+                                )
+
+    for (k, v) in iterDiagResults
+        if k ∉ keys(mapCorrNameToIndex)
+            continue
+        end
+        name, k_inds = mapCorrNameToIndex[k]
+        corrResults[name][k_inds...] += v / correlationFuncDict[name][1]
+    end
+    return corrResults
+end
+
+
+function correlationMap(
+        hamiltDetails::Dict,
+        numShells::Int64,
+        correlationFuncDict,
+        maxSize::Int64,
+    )
+
+    size_BZ = hamiltDetails["size_BZ"]
 
     # initialise zero array for storing correlations
-    results = zeros(repeat([size_BZ^2], numLegs)...)
+    corrResults = Dict(k => zeros(repeat([size_BZ^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
+    corrResultsBool = Dict(k => zeros(repeat([size_BZ^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
 
-    suitableIndices = collect(keys(mapStateToIndex))
-    for k_inds in combinations(suitableIndices, numLegs)
-        hamInds = [mapStateToIndex[ind] for ind in k_inds]
-        corrOperator = corrDef(hamInds...)
-        results[k_inds...] = IterCorrelation(savePath, corrOperator)
+    pivotPointsArr = Vector{Int64}[]
+
+    energyVals = dispersion[1:div(size_BZ+1,2)] .|> abs |> unique |> sort
+    energyPartitions = [[0]; (energyVals[2:end] .+ energyVals[1:end-1]) ./ 2; energyVals[end]]
+    oppositePoints = Dict{Int64, Vector{Int64}}()
+
+    # pick out k-states from the southwest quadrant that have positive energies 
+    # (hole states can be reconstructed from them (p-h symmetry))
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] <= 0 && map1DTo2D(p, size_BZ)[2] <= 0 && energyPartitions[numShells+1] ≥ dispersion[p]]
+
+    energyShells = Vector{Int64}[]
+    for shell in 1:numShells
+        push!(energyShells, SWIndices[(abs.(dispersion[SWIndices]) .≥ energyPartitions[shell]) .& (abs.(dispersion[SWIndices]) .≤ energyPartitions[shell+1])])
+        particleStates = energyShells[end][dispersion[energyShells[end]] .≥ 0]
+        distancesFromNodeParticle = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in particleStates]
+        holeStates = energyShells[end][dispersion[energyShells[end]] .≤ 0]
+        distancesFromNodeHole = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in holeStates]
+        
+        for distance in sort(unique(distancesFromNodeParticle))
+            push!(pivotPointsArr, particleStates[distancesFromNodeParticle .== distance])
+            for point in pivotPointsArr[end]
+                oppositePoints[point] = holeStates[isapprox.(distancesFromNodeHole, distance, atol=1e-10)]
+            end
+        end
     end
 
-    Threads.@threads for index in suitableIndices
-        newPoints = propagateIndices(index, size_BZ)
-        results[newPoints] .= results[index]
+    corrResults = @showprogress @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotLoc in eachindex(pivotPointsArr)
+        iterDiagResults(hamiltDetails, correlationFuncDict, maxSize, pivotLoc, copy(pivotPointsArr))
     end
-    @assert !any(isnan.(results))
-    results_bool = [r <= 0 ? -1 : 1 for r in results]
-    return results, results_bool
+
+    corrResults = propagateIndices(vcat(pivotPointsArr...), corrResults, size_BZ, oppositePoints)
+    # for pivotPoint in vcat(pivotPointsArr...)
+    #     newPoints = propagateIndices(pivotPoint, size_BZ, oppositePoints[pivotPoint])
+    #     println(pivotPoint, newPoints, oppositePoints[pivotPoint])
+    #     for (k, correlation) in corrResults
+    #         corrResults[k][newPoints] .= correlation[pivotPoint]
+    #     end
+    # end
+
+    for (name, results) in corrResults
+        @assert !any(isnan.(results))
+        corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
+    end
+    return corrResults, corrResultsBool
 end
 
 

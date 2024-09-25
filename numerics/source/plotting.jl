@@ -1,16 +1,18 @@
-using CairoMakie, Random, Measures, LaTeXStrings
+using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
 set_theme!(merge(theme_ggplot2(), theme_latexfonts()))
-const cmap = :cherry
+colmap = reverse(ColorSchemes.cherry)
+fontsize = 26
 function plotHeatmap(
-        matrixData::Vector{Float64},
+        matrixData::Union{Vector{Int64}, Vector{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
         axisLabels::NTuple{2, LaTeXString},
         title::LaTeXString,
+        annotation::LaTeXString,
     )
     matrix = reshape(matrixData, length.(axisVals))
 
     figure = Figure(size = (500, 400), 
-                    fontsize = 26, 
+                    fontsize = fontsize, 
                    )
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
@@ -20,13 +22,17 @@ function plotHeatmap(
     heatmap!(ax, 
              axisVals..., 
              matrix; 
-             colormap=cmap,
+             colormap=colmap,
             )
 
-    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (-1, 1))
-    Colorbar(figure[:, end+1]; 
+    gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=:top, halign=:right)
+    Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
+    Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.3), color=:white)
+
+    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)-1, minimum(matrixData)+1))
+    Colorbar(figure[1, 2]; 
              limits=colorbarLimits,
-             colormap=cmap,
+             colormap=colmap,
             )
 
     savename = joinpath("figures", randstring(5) * ".pdf")

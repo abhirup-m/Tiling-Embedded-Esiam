@@ -74,46 +74,6 @@ function initialiseKondoJ(size_BZ::Int64, orbital::String, num_steps::Int64, J_v
 end
 
 
-function bathIntForm(
-    bathIntStr::Float64,
-    orbital::String,
-    size_BZ::Int64,
-    points,
-)
-    # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
-    # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
-    # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
-    k2_vals = map1DTo2D(points[2], size_BZ)
-    k3_vals = map1DTo2D(points[3], size_BZ)
-    k4_vals = map1DTo2D(points[4], size_BZ)
-    k1_vals = map1DTo2D(points[1], size_BZ)
-    if orbital == "d"
-        bathInt = bathIntStr
-        return 0.5 .* bathIntStr .* (
-            cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .-
-            cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
-        )
-    elseif orbital == "p"
-        return 0.5 .* bathIntStr .* (
-            cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .+
-            cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
-        )
-    elseif orbital == "poff"
-        bathInt = bathIntStr
-        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
-            bathInt = bathInt .* (cos.(kx) + cos.(ky))
-        end
-        return bathInt
-    else
-        bathInt = bathIntStr
-        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
-            bathInt = bathInt .* (cos.(kx) - cos.(ky))
-        end
-        return bathInt
-    end
-end
-
-
 function deltaJk1k2(
     denominators::Vector{Float64},
     proceed_flagk1k2::Int64,

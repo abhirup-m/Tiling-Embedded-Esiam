@@ -1,8 +1,6 @@
-using fermions
-
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
-function map1DTo2D(point::Int64, size_BZ::Int64)
+@everywhere function map1DTo2D(point::Int64, size_BZ::Int64)
     # Convert overall point to row and column values.
     # These serve as indices of kx and ky
     kx_index = (point - 1) % size_BZ + 1
@@ -13,7 +11,7 @@ function map1DTo2D(point::Int64, size_BZ::Int64)
     k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     return [k_values[kx_index], k_values[ky_index]]
 end
-function map1DTo2D(point::Vector{Int64}, size_BZ::Int64)
+@everywhere function map1DTo2D(point::Vector{Int64}, size_BZ::Int64)
     # same as above, but for multiple points. In this case,
     # two tuples are returned, for kx values and ky values.
     kx_index = (point .- 1) .% size_BZ .+ 1
@@ -174,54 +172,43 @@ function propagateIndices(
 end
 
 
-function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, numPoints::Int64, phaseMaps::Dict{String, Int64})
-    function PhaseStrip(J_val::Float64, W_val_arr::Vector{Float64}, phaseMaps::Dict{String, Int64})
-        phaseFlags = 0 .* collect(W_val_arr)
-        trackPoints = Dict(
-                           "N" => map2DTo1D(π/2, π/2, size_BZ),
-                           "AN" => map2DTo1D(π/1, 0.0, size_BZ),
-                           "M" => map2DTo1D(0.75 * π, 0.25 * π, size_BZ),
-                          )
-
-        gapTrackers = Dict("N" => NaN, "AN" => NaN, "M" => NaN)
-        for (i, W_val) in enumerate(W_val_arr)
-            kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
-            averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
-            @assert averageKondoScale > RG_RELEVANCE_TOL
-            kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-            scattProbBool = scattProb(kondoJArray, size_BZ, dispersion, fractionBZ)[2]
-            if all(>(0), scattProbBool[fermiPoints])
-                phaseFlags[i] = phaseMaps["FL"]
-            elseif !all(==(0), scattProbBool[fermiPoints])
-                phaseFlags[i] = phaseMaps["PG"]
-            else
-                phaseFlags[i] = phaseMaps["MI"]
-            end
-            for (point, kpoint) in trackPoints
-                if isnan(gapTrackers[point]) && scattProbBool[kpoint] == 0
-                    gapTrackers[point] = W_val
-                end
-            end
+@everywhere function bathIntForm(
+    bathIntStr::Float64,
+    orbital::String,
+    size_BZ::Int64,
+    points,
+)
+    # bath interaction does not renormalise, so we don't need to make it into a matrix. A function
+    # is enough to invoke the W(k1,k2,k3,k4) value whenever we need it. To obtain it, we call the p-wave
+    # function for each momentum k_i, then multiply them to get W_1234 = W × p(k1) * p(k2) * p(k3) * p(k4)
+    k2_vals = map1DTo2D(points[2], size_BZ)
+    k3_vals = map1DTo2D(points[3], size_BZ)
+    k4_vals = map1DTo2D(points[4], size_BZ)
+    k1_vals = map1DTo2D(points[1], size_BZ)
+    if orbital == "d"
+        bathInt = bathIntStr
+        return 0.5 .* bathIntStr .* (
+            cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .-
+            cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
+        )
+    elseif orbital == "p"
+        return 0.5 .* bathIntStr .* (
+            cos.(k1_vals[1] .- k2_vals[1] .+ k3_vals[1] .- k4_vals[1]) .+
+            cos.(k1_vals[2] .- k2_vals[2] .+ k3_vals[2] .- k4_vals[2])
+        )
+    elseif orbital == "poff"
+        bathInt = bathIntStr
+        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
+            bathInt = bathInt .* (cos.(kx) + cos.(ky))
         end
-        return phaseFlags, gapTrackers
+        return bathInt
+    else
+        bathInt = bathIntStr
+        for (kx, ky) in [k1_vals, k2_vals, k3_vals, k4_vals]
+            bathInt = bathInt .* (cos.(kx) - cos.(ky))
+        end
+        return bathInt
     end
-
-    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
-    fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
-    @assert length(fermiPoints) == 2 * size_BZ - 2
-    @assert all(==(0), dispersionArray[fermiPoints])
-
-    phaseDiagram = zeros(numPoints, numPoints)
-    nodeGap = zeros(numPoints)
-    antiNodeGap = zeros(numPoints)
-    midPointGap = zeros(numPoints)
-    @time results = fetch.(@showprogress [Threads.@spawn PhaseStrip(J_val, W_val_arr, phaseMaps) for J_val in J_val_arr])
-    for (i, (phaseResult, gapTrackers)) in enumerate(results)
-        phaseDiagram[i, :] = phaseResult
-        nodeGap[i] = gapTrackers["N"]
-        antiNodeGap[i] = gapTrackers["AN"]
-        midPointGap[i] = gapTrackers["M"]
-    end
-    return phaseDiagram, nodeGap, antiNodeGap, midPointGap
 end
+
 

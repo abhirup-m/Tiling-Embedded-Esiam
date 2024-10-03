@@ -208,7 +208,7 @@ function stepwiseRenormalisation(
     return kondoJArrayNext, proceed_flags
 end
 
-function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Tuple{String,String}; progressbarEnabled=false)
+@everywhere function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Tuple{String,String}; progressbarEnabled=false)
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
     @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."

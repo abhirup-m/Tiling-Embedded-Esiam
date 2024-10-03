@@ -30,7 +30,6 @@ function scattProb(
 
     # get a boolean representation of results for visualisation, using the mapping
     results_bool = ifelse.(abs.(results_scaled) .> 0, 1, 0)
-    println(maximum(abs.(results_bool)))
 
     return results_scaled, results_bool
 end
@@ -53,11 +52,19 @@ end
 @everywhere function iterDiagResults(
         hamiltDetails::Dict,
         correlationFuncDict::Dict,
+        vneFuncDict::Dict,
         maxSize::Int64,
         pivotLoc::Int64,
         pivotPointsArr::Vector{Vector{Int64}},
     )
-    corrResults = Dict(k => zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
+    corrResults = Dict{String, Vector{Float64}}()
+    for (k, (numLegs, _)) in correlationFuncDict 
+        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
+    end
+    for (k, (numLegs, _)) in vneFuncDict 
+    corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
+    end
+
     pivotPoints = pivotPointsArr[pivotLoc]
     newStatesArr = Vector{Int64}[pivotPointsArr[pivotLoc:pivotLoc]; pivotPointsArr[1:pivotLoc-1]; pivotPointsArr[pivotLoc+1:end]]
     newStatesArr = [newStates for newStates in newStatesArr if all(p -> hamiltDetails["dispersion"][p] ≤ maximum(hamiltDetails["dispersion"][pivotPoints]), newStates)]
@@ -77,6 +84,17 @@ end
         end
     end
 
+    vneDefDict = Dict{String, Vector{Int64}}()
+    for (name, (numLegs, func)) in vneFuncDict
+        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
+            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
+                vneDefDict[name * join(k_inds)] = func(k_inds...)
+                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
+            end
+        end
+    end
+
+
     hamiltonianFamily = fetch.([
                                 Threads.@spawn kondoKSpace(activeStates,
                                                            hamiltDetails["dispersion"], 
@@ -95,6 +113,7 @@ end
                                  symmetries=Char['N'],
                                  occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
                                  correlationDefDict=correlationDefDict,
+                                 vneDefDict=vneDefDict,
                                  silent=true,
                                 )
 
@@ -103,7 +122,11 @@ end
             continue
         end
         name, k_inds = mapCorrNameToIndex[k]
-        corrResults[name][k_inds...] += v / correlationFuncDict[name][1]
+        if name ∈ keys(correlationFuncDict)
+            corrResults[name][k_inds...] += v[end] / correlationFuncDict[name][1]
+        else
+            corrResults[name][k_inds...] += v[end] / vneFuncDict[name][1]
+        end
     end
     return corrResults
 end
@@ -112,16 +135,15 @@ end
 function correlationMap(
         hamiltDetails::Dict,
         numShells::Int64,
-        correlationFuncDict,
-        maxSize::Int64,
+        correlationFuncDict::Dict,
+        maxSize::Int64;
+        vneFuncDict::Dict=Dict(),
     )
 
     size_BZ = hamiltDetails["size_BZ"]
 
     # initialise zero array for storing correlations
-    corrResults = Dict(k => zeros(repeat([size_BZ^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
-    corrResultsBool = Dict(k => zeros(repeat([size_BZ^2], numLegs)...) for (k, (numLegs, _)) in correlationFuncDict)
-
+    
     pivotPointsArr = Vector{Int64}[]
 
     energyVals = dispersion[1:div(size_BZ+1,2)] .|> abs |> unique |> sort
@@ -148,12 +170,14 @@ function correlationMap(
         end
     end
 
-    corrResults = @showprogress @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotLoc in eachindex(pivotPointsArr)
-        iterDiagResults(hamiltDetails, correlationFuncDict, maxSize, pivotLoc, copy(pivotPointsArr))
+    desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
+    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotLoc in eachindex(pivotPointsArr)
+        iterDiagResults(hamiltDetails, correlationFuncDict, vneFuncDict, maxSize, pivotLoc, copy(pivotPointsArr))
     end
 
     corrResults = propagateIndices(vcat(pivotPointsArr...), corrResults, size_BZ, oppositePoints)
 
+    corrResultsBool = Dict()
     for (name, results) in corrResults
         @assert !any(isnan.(results))
         corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
@@ -161,83 +185,6 @@ function correlationMap(
     return corrResults, corrResultsBool
 end
 
-
-#=function entanglementMap(size_BZ::Int64, basis::Dict{Tuple{Int64, Int64}, Vector{BitVector}}, dispersion::Vector{Float64}, suitableIndices::Vector{Int64}, uniqueSequences::Vector{Vector{NTuple{TRUNC_DIM, Int64}}}, gstatesSet::Vector{Vector{Dict{BitVector, Float64}}}, mutInfoIndices::Vector{Int64})=#
-#==#
-#=    # initialise zero array for storing correlations=#
-#=    # results = ifelse(twoParticle == 0, zeros(size_BZ^2), zeros(size_BZ^2, size_BZ^2))=#
-#=    resultsVNE = zeros(size_BZ^2)=#
-#=    resultsMI = Dict(zip(mutInfoIndices, [zeros(size_BZ^2) for _ in mutInfoIndices]))=#
-#==#
-#=    # initialise zero array to count the number of times a particular k-state=#
-#=    # appears in the computation. Needed to finally average over all combinations.=#
-#=    contributorCounterVNE = fill(0, size_BZ^2)=#
-#==#
-#=    correlationVNE = [fetch.([Threads.@spawn fermions.vnEntropy(gstates, [2 * i + 1, 2 * i + 2]) for i in 1:TRUNC_DIM]) for gstates in gstatesSet]=#
-#=    # calculate the correlation for all such configurations.=#
-#=    for (sequenceSet, vne) in zip(uniqueSequences, correlationVNE)=#
-#=        for sequence in sequenceSet=#
-#=            maxE = maximum(abs.(dispersion[collect(sequence)]))=#
-#=            for (i, index) in enumerate(sequence)=#
-#=                if abs(abs(dispersion[index]) - maxE) < TOLERANCE=#
-#=                    resultsVNE[index] += vne[i]=#
-#=                    contributorCounterVNE[index] += 1=#
-#=                end=#
-#=            end=#
-#=        end=#
-#=    end=#
-#==#
-#=    correlationMI = [fetch.([Threads.@spawn fermions.mutInfo(gstates, ([2 * i + 1, 2 * i + 2], [2 * j + 1, 2 * j + 2])) for (i,j) in Iterators.product(1:TRUNC_DIM, 1:TRUNC_DIM)]) for gstates in gstatesSet]=#
-#=    contributorCounterMI = Dict(zip(mutInfoIndices, [zeros(size_BZ^2) for _ in mutInfoIndices]))=#
-#=    for (sequenceSet, mutInfo) in zip(uniqueSequences, correlationMI)=#
-#=        for sequence in sequenceSet=#
-#=            if isnothing(intersect(sequence, mutInfoIndices))=#
-#=                continue=#
-#=            end=#
-#=            maxE = maximum(abs.(dispersion[collect(sequence)]))=#
-#=            for (i, (index1, index2)) in enumerate(Iterators.product(sequence, sequence))=#
-#=                if (index1 ∈ mutInfoIndices || index2 ∈ mutInfoIndices ) && (abs(abs(dispersion[index1]) - maxE) < TOLERANCE || abs(abs(dispersion[index2]) - maxE) < TOLERANCE)=#
-#=                    if index1 ∈ mutInfoIndices=#
-#=                        resultsMI[index1][index2] += mutInfo[i]=#
-#=                        contributorCounterMI[index1][index2] += 1=#
-#=                    end=#
-#=                    if index2 ∈ mutInfoIndices && index1 ≠ index2=#
-#=                        resultsMI[index2][index1] += mutInfo[i]=#
-#=                        contributorCounterMI[index2][index1] += 1=#
-#=                    end=#
-#=    end end end end=#
-#==#
-#=    @assert all(x -> x > 0, contributorCounterVNE[suitableIndices])=#
-#=    resultsVNE[suitableIndices] ./= contributorCounterVNE[suitableIndices]=#
-#=    Threads.@threads for index in suitableIndices=#
-#=        newPoints = propagateIndices(index, size_BZ)=#
-#=        resultsVNE[newPoints] .= resultsVNE[index]=#
-#=    end=#
-#=    @assert !any(isnan.(resultsVNE))=#
-#==#
-#=    for (index, counter) in contributorCounterMI=#
-#=        @assert all(x -> x > 0, counter[suitableIndices])=#
-#=        resultsMI[index][suitableIndices] ./= counter[suitableIndices]=#
-#=    end=#
-#==#
-#=    Threads.@threads for index in suitableIndices=#
-#=        newPoints = propagateIndices(index, size_BZ)=#
-#=        resultsVNE[newPoints] .= resultsVNE[index]=#
-#=        for mutInfoIndex in keys(resultsMI)=#
-#=            resultsMI[mutInfoIndex][newPoints] .= resultsMI[mutInfoIndex][index]=#
-#=        end=#
-#=    end=#
-#=    for index in keys(resultsMI)=#
-#=        @assert !any(isnan.(resultsMI[index]))=#
-#=    end=#
-#==#
-#=    resultsVNE[resultsVNE .< 1e-3] .= 0=#
-#=    for k in keys(resultsMI)=#
-#=        resultsMI[k][resultsMI[k] .< 1e-3] .= 0=#
-#=    end=#
-#=    # resultsVNE_bool = [r <= 0 ? -1 : 1 for r in resultsVNE]=#
-#=    return resultsVNE, resultsMI=#
-#=end=#
 
 function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition, tiler)
     results = zeros(size_BZ^2, size_BZ^2)

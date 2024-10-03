@@ -15,12 +15,14 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 500
+global const maxSize = 200
 
 numShells = 3
-size_BZ = 33
+size_BZ = 13
+#=W_val_arr = -1.0 .* [0, 0.5] ./ size_BZ=#
 W_val_arr = -1.0 .* [0, 5.6, 5.7, 5.8, 5.9, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
+label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
 
 function RGFlow(W_val_arr, size_BZ)
     kondoJArrays = Dict{Float64, Array{Float64, 3}}()
@@ -40,7 +42,7 @@ function probe(kondoJArrays, dispersion)
     saveNames = String[]
     for W_val in W_val_arr
         results_scaled, results_bool = scattProb(size_BZ, kondoJArrays[W_val], dispersion)
-        push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", L"$W/J=%$(round(W_val/J_val, digits=2))$//$M_s=%$(maxSize)$"))
+        push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", label(W_val)))
     end
     println("\n Saved at $(saveNames).")
     run(`pdfunite $(saveNames) scattprob.pdf`)
@@ -61,7 +63,14 @@ function corr(kondoJArrays, dispersion)
                                                ("hh", [2 * i + 2, 2 * i + 1], 0.5)])
                             )
     vneDef = Dict("vne_k" => (1, i -> [2 * i + 1, 2 * i + 2]))
-    saveNames = String[]
+    mutInfoDef = Dict(
+                      "I2_k_d" => (1, (i, nodeIndex, antinodeIndex) -> ([1, 2], [2 * i + 1, 2 * i + 2])),
+                      "I2_k_N" => (1, (i, nodeIndex, antinodeIndex) -> ([2 * nodeIndex + 1, 2 * nodeIndex + 2], [2 * i + 1, 2 * i + 2])),
+                      "I2_k_AN" => (1, (i, nodeIndex, antinodeIndex) -> ([2 * antinodeIndex + 1, 2 * antinodeIndex + 2], [2 * i + 1, 2 * i + 2]))
+                       )
+    saveNamesCorr = String[]
+    saveNamesVne = String[]
+    saveNamesMutInfo = String[]
     @time Threads.@threads for W_val in W_val_arr
 
         hamiltDetails = Dict(
@@ -73,23 +82,24 @@ function corr(kondoJArrays, dispersion)
                              "bathIntForm" => bathIntForm,
                             )
 
-        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, spinCorrelation, maxSize; vneFuncDict=vneDef)
-        push!(saveNames, plotHeatmap(corrResults["SF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_s(d, \vec{k})$", L"$W/J=%$(round(W_val/J_val, digits=2))$"))
-        push!(saveNames, plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}_\mathrm{EE}(\vec{k})$", L"$W/J=%$(round(W_val/J_val, digits=2))$"))
+        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, spinCorrelation, maxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef)
+        push!(saveNamesCorr, plotHeatmap(corrResults["SF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_s(d, \vec{k})$", label(W_val)))
+        push!(saveNamesVne, plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}_\mathrm{EE}^{(s)}(\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_d"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(d,\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_N"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{N},\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
 
-        hamiltDetails = Dict(
-                             "dispersion" => dispersion,
-                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
-                             "W_val" => W_val,
-                             "orbitals" => orbitals,
-                             "size_BZ" => size_BZ,
-                             "bathIntForm" => bathIntForm,
-                            )
-        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, maxSize)
-        push!(saveNames, plotHeatmap(corrResults["CF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_c(d, \vec{k})$", L"$W/J=%$(round(W_val/J_val, digits=2))$"))
+        hamiltDetails["W_val"] = W_val
+        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, maxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef)
+        push!(saveNamesCorr, plotHeatmap(corrResults["CF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_c(d, \vec{k})$", label(W_val)))
+        push!(saveNamesVne, plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}^{(c)}_\mathrm{EE}(\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_d"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(d,\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_N"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{N},\vec{k})$", label(W_val)))
+        push!(saveNamesMutInfo, plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
     end
-    println("\n Saved at $(saveNames).")
-    run(`pdfunite $(saveNames) correlations.pdf`)
+    run(`pdfunite $(saveNamesCorr) correlations.pdf`)
+    run(`pdfunite $(saveNamesVne) vnEntropy.pdf`)
+    run(`pdfunite $(saveNamesMutInfo) mutInfo.pdf`)
 end
 
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)

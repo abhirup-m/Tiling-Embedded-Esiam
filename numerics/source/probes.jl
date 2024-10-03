@@ -51,18 +51,22 @@ end
 
 @everywhere function iterDiagResults(
         hamiltDetails::Dict,
-        correlationFuncDict::Dict,
-        vneFuncDict::Dict,
         maxSize::Int64,
         pivotLoc::Int64,
         pivotPointsArr::Vector{Vector{Int64}},
+        correlationFuncDict::Dict,
+        vneFuncDict::Dict,
+        mutInfoFuncDict::Dict,
     )
     corrResults = Dict{String, Vector{Float64}}()
     for (k, (numLegs, _)) in correlationFuncDict 
         corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
     end
     for (k, (numLegs, _)) in vneFuncDict 
-    corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
+        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
+    end
+    for (k, (numLegs, _)) in mutInfoFuncDict
+        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
     end
 
     pivotPoints = pivotPointsArr[pivotLoc]
@@ -94,6 +98,18 @@ end
         end
     end
 
+    mutInfoDefDict = Dict{String, NTuple{2, Vector{Int64}}}()
+    nodeIndex = findall(==(map2DTo1D(-π/2, -π/2, hamiltDetails["size_BZ"])), activeStatesArr[end])[1]
+    antinodeIndex = findall(==(map2DTo1D(-π, 0., hamiltDetails["size_BZ"])), activeStatesArr[end])[1]
+    for (name, (numLegs, func)) in mutInfoFuncDict
+        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
+            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
+                mutInfoDefDict[name * join(k_inds)] = func(k_inds..., nodeIndex, antinodeIndex)
+                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
+            end
+        end
+    end
+
 
     hamiltonianFamily = fetch.([
                                 Threads.@spawn kondoKSpace(activeStates,
@@ -110,10 +126,14 @@ end
     savePaths, iterDiagResults = IterDiag(
                                  hamiltonianFamily, 
                                  maxSize;
-                                 symmetries=Char['N'],
+                                 symmetries=Char['N', 'S'],
+                                 magzReq=(m, N) -> -1 ≤ m ≤ 2,
                                  occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                                 #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
+                                 #=corrOccReq=(x, N) -> x == div(N, 2),=#
                                  correlationDefDict=correlationDefDict,
                                  vneDefDict=vneDefDict,
+                                 mutInfoDefDict=mutInfoDefDict,
                                  silent=true,
                                 )
 
@@ -124,8 +144,10 @@ end
         name, k_inds = mapCorrNameToIndex[k]
         if name ∈ keys(correlationFuncDict)
             corrResults[name][k_inds...] += v[end] / correlationFuncDict[name][1]
-        else
+        elseif name ∈ keys(vneFuncDict)
             corrResults[name][k_inds...] += v[end] / vneFuncDict[name][1]
+        else
+            corrResults[name][k_inds...] += v[end] / mutInfoFuncDict[name][1]
         end
     end
     return corrResults
@@ -138,6 +160,7 @@ function correlationMap(
         correlationFuncDict::Dict,
         maxSize::Int64;
         vneFuncDict::Dict=Dict(),
+        mutInfoFuncDict::Dict=Dict(),
     )
 
     size_BZ = hamiltDetails["size_BZ"]
@@ -172,7 +195,7 @@ function correlationMap(
 
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
     corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotLoc in eachindex(pivotPointsArr)
-        iterDiagResults(hamiltDetails, correlationFuncDict, vneFuncDict, maxSize, pivotLoc, copy(pivotPointsArr))
+        iterDiagResults(hamiltDetails, maxSize, pivotLoc, copy(pivotPointsArr), correlationFuncDict, vneFuncDict, mutInfoFuncDict)
     end
 
     corrResults = propagateIndices(vcat(pivotPointsArr...), corrResults, size_BZ, oppositePoints)

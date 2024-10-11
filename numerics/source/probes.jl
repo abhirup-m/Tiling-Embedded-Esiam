@@ -52,25 +52,13 @@ end
 @everywhere function iterDiagResults(
         hamiltDetails::Dict,
         maxSize::Int64,
-        pivotLoc::Int64,
-        pivotPointsArr::Vector{Vector{Int64}},
+        pivotPoints::Vector{Int64},
+        newStatesArr::Vector{Vector{Int64}},
         correlationFuncDict::Dict,
         vneFuncDict::Dict,
         mutInfoFuncDict::Dict,
     )
     corrResults = Dict{String, Vector{Float64}}()
-    for (k, (numLegs, _)) in correlationFuncDict 
-        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
-    end
-    for (k, (numLegs, _)) in vneFuncDict 
-        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
-    end
-    for (k, (numLegs, _)) in mutInfoFuncDict
-        corrResults[k] = zeros(repeat([hamiltDetails["size_BZ"]^2], numLegs)...) 
-    end
-
-    pivotPoints = pivotPointsArr[pivotLoc]
-    newStatesArr = Vector{Int64}[pivotPointsArr[pivotLoc:pivotLoc]; pivotPointsArr[1:pivotLoc-1]; pivotPointsArr[pivotLoc+1:end]]
     newStatesArr = [newStates for newStates in newStatesArr if all(p -> hamiltDetails["dispersion"][p] ≤ maximum(hamiltDetails["dispersion"][pivotPoints]), newStates)]
     activeStatesArr = Vector{Int64}[pivotPoints]
     for newStates in newStatesArr[2:end]
@@ -79,37 +67,32 @@ end
 
     mapCorrNameToIndex = Dict()
     correlationDefDict = Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}}()
-    for (name, (numLegs, func)) in correlationFuncDict
-        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
-            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
-                correlationDefDict[name * join(k_inds)] = func(k_inds...)
-                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
-            end
+    for (name, func) in correlationFuncDict
+        for k_ind in findall(∈(pivotPoints), activeStatesArr[end])
+            correlationDefDict[name * string(k_ind)] = func(k_ind)
+            mapCorrNameToIndex[name * string(k_ind)] = (name, activeStatesArr[end][k_ind])
         end
     end
 
     vneDefDict = Dict{String, Vector{Int64}}()
-    for (name, (numLegs, func)) in vneFuncDict
-        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
-            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
-                vneDefDict[name * join(k_inds)] = func(k_inds...)
-                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
-            end
+    for (name, func) in vneFuncDict
+        for k_ind in findall(∈(pivotPoints), activeStatesArr[end])
+            vneDefDict[name * string(k_ind)] = func(k_ind)
+            mapCorrNameToIndex[name * string(k_ind)] = (name, activeStatesArr[end][k_ind])
         end
     end
 
     mutInfoDefDict = Dict{String, NTuple{2, Vector{Int64}}}()
-    nodeIndex = findall(==(map2DTo1D(-π/2, -π/2, hamiltDetails["size_BZ"])), activeStatesArr[end])[1]
-    antinodeIndex = findall(==(map2DTo1D(-π, 0., hamiltDetails["size_BZ"])), activeStatesArr[end])[1]
-    for (name, (numLegs, func)) in mutInfoFuncDict
-        for k_inds in combinations(eachindex(activeStatesArr[end]), numLegs)
-            if !isempty(intersect(activeStatesArr[end][k_inds...], pivotPoints))
-                mutInfoDefDict[name * join(k_inds)] = func(k_inds..., nodeIndex, antinodeIndex)
-                mapCorrNameToIndex[name * join(k_inds)] = (name, activeStatesArr[end][k_inds])
+    for (name, (secondMomentum, func)) in mutInfoFuncDict
+        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(map2DTo1D(secondMomentum..., hamiltDetails["size_BZ"])), activeStatesArr[end])
+        for k_ind in findall(∈(pivotPoints), activeStatesArr[end])
+            partyA, partyB = func(k_ind, secondIndex)
+            if sort(partyA) ≠ sort(partyB)
+                mutInfoDefDict[name * join(k_ind)] = (partyA, partyB)
+                mapCorrNameToIndex[name * join(k_ind)] = (name, activeStatesArr[end][k_ind])
             end
         end
     end
-
 
     hamiltonianFamily = fetch.([
                                 Threads.@spawn kondoKSpace(activeStates,
@@ -123,34 +106,62 @@ end
                                ]
                               )
 
-    savePaths, iterDiagResults = IterDiag(
-                                 hamiltonianFamily, 
-                                 maxSize;
-                                 symmetries=Char['N', 'S'],
-                                 magzReq=(m, N) -> -1 ≤ m ≤ 2,
-                                 occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
-                                 #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
-                                 #=corrOccReq=(x, N) -> x == div(N, 2),=#
-                                 correlationDefDict=correlationDefDict,
-                                 vneDefDict=vneDefDict,
-                                 mutInfoDefDict=mutInfoDefDict,
-                                 silent=true,
-                                )
+    doAgain = true
+    id = nothing
+    while doAgain
+        savePaths, iterDiagResults = IterDiag(
+                                     hamiltonianFamily, 
+                                     maxSize;
+                                     symmetries=Char['N', 'S'],
+                                     magzReq=(m, N) -> -1 ≤ m ≤ 2,
+                                     occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                                     #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
+                                     #=corrOccReq=(x, N) -> x == div(N, 2),=#
+                                     correlationDefDict=correlationDefDict,
+                                     vneDefDict=vneDefDict,
+                                     mutInfoDefDict=mutInfoDefDict,
+                                     silent=true,
+                                    )
+        doAgain = false
 
-    for (k, v) in iterDiagResults
-        if k ∉ keys(mapCorrNameToIndex)
-            continue
+        for k in keys(correlationFuncDict)
+            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
         end
-        name, k_inds = mapCorrNameToIndex[k]
-        if name ∈ keys(correlationFuncDict)
-            corrResults[name][k_inds...] += v[end] / correlationFuncDict[name][1]
-        elseif name ∈ keys(vneFuncDict)
-            corrResults[name][k_inds...] += v[end] / vneFuncDict[name][1]
-        else
-            corrResults[name][k_inds...] += v[end] / mutInfoFuncDict[name][1]
+        for k in keys(vneFuncDict)
+            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
+        end
+        for k in keys(mutInfoFuncDict)
+            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
+        end
+
+        for (k, v) in iterDiagResults
+            if k ∉ keys(mapCorrNameToIndex)
+                continue
+            end
+            name, k_ind = mapCorrNameToIndex[k]
+            if name ∈ keys(correlationFuncDict)
+                corrResults[name][k_ind] = v[end]
+            elseif name ∈ keys(vneFuncDict)
+                corrResults[name][k_ind] = v[end]
+            else
+                corrResults[name][k_ind] = v[end]
+            end
+        end
+        for name in keys(mutInfoFuncDict)
+            if count(<(-1e-10),corrResults[name]) > 0
+                doAgain = true
+                id = rand()
+                println("Negative mutual info. found, will repeat $(id).")
+
+                break
+            end
+        end
+        if !isnothing(id)
+            println("Passed $(id).")
         end
     end
     return corrResults
+
 end
 
 
@@ -162,43 +173,37 @@ function correlationMap(
         vneFuncDict::Dict=Dict(),
         mutInfoFuncDict::Dict=Dict(),
     )
-
     size_BZ = hamiltDetails["size_BZ"]
 
     # initialise zero array for storing correlations
     
-    pivotPointsArr = Vector{Int64}[]
-
-    energyVals = dispersion[1:div(size_BZ+1,2)] .|> abs |> unique |> sort
-    energyPartitions = [[0]; (energyVals[2:end] .+ energyVals[1:end-1]) ./ 2; energyVals[end]]
-    oppositePoints = Dict{Int64, Vector{Int64}}()
+    cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] <= 0 && map1DTo2D(p, size_BZ)[2] <= 0 && energyPartitions[numShells+1] ≥ dispersion[p]]
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && -π < map1DTo2D(p, size_BZ)[2] ≤ 0 && cutoffEnergy ≥ dispersion[p] ≥ 0]
+    oppositePoints = Dict{Int64, Int64}(point => map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
+                                       for point in SWIndices)
 
-    energyShells = Vector{Int64}[]
-    for shell in 1:numShells
-        push!(energyShells, SWIndices[(abs.(dispersion[SWIndices]) .≥ energyPartitions[shell]) .& (abs.(dispersion[SWIndices]) .≤ energyPartitions[shell+1])])
-        particleStates = energyShells[end][dispersion[energyShells[end]] .≥ 0]
-        distancesFromNodeParticle = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in particleStates]
-        holeStates = energyShells[end][dispersion[energyShells[end]] .≤ 0]
-        distancesFromNodeHole = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in holeStates]
-        
-        for distance in sort(unique(distancesFromNodeParticle))
-            push!(pivotPointsArr, particleStates[distancesFromNodeParticle .== distance])
-            for point in pivotPointsArr[end]
-                oppositePoints[point] = holeStates[isapprox.(distancesFromNodeHole, distance, atol=1e-10)]
-            end
-        end
-    end
-
+    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
+    symmetricPairsNode = [SWIndices[findall(==(distance), distancesFromNode)] for distance in sort(unique(distancesFromNode))]
+    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
+                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
+                                     for p in SWIndices]
+    symmetricPairsAntiNode = [SWIndices[findall(==(distance), distancesFromAntiNode)] for distance in sort(unique(distancesFromAntiNode))]
+    
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
-    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotLoc in eachindex(pivotPointsArr)
-        iterDiagResults(hamiltDetails, maxSize, pivotLoc, copy(pivotPointsArr), correlationFuncDict, vneFuncDict, mutInfoFuncDict)
+    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoints in symmetricPairsNode
+        newStatesArrNode = [[pivotPoints]; filter(≠(pivotPoints), symmetricPairsNode)]
+        newStatesArrAntiNode = [[pivotPoints]; filter(≠(pivotPoints), symmetricPairsAntiNode)]
+        corrNode = iterDiagResults(hamiltDetails, maxSize, pivotPoints, newStatesArrNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict)
+        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, pivotPoints, newStatesArrAntiNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict)
+        avgCorr = mergewith(+, corrNode, corrAntiNode)
+        map!(v -> v ./ 2, values(avgCorr))
+        avgCorr
     end
 
-    corrResults = propagateIndices(vcat(pivotPointsArr...), corrResults, size_BZ, oppositePoints)
+    corrResults = propagateIndices(SWIndices, corrResults, size_BZ, oppositePoints)
 
     corrResultsBool = Dict()
     for (name, results) in corrResults

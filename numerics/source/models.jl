@@ -12,8 +12,10 @@ function kondoKSpace(
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
 
     if impField != 0
-        merge!(+, operatorList, Dict(("n", [1]) => impField/2))
-        merge!(+, operatorList, Dict(("n", [2]) => -impField/2))
+        for i in 1:(2 + length(sequence))
+            merge!(+, operatorList, Dict(("n", [2 * i - 1]) => impField/2))
+            merge!(+, operatorList, Dict(("n", [2 * i]) => -impField/2))
+        end
     end
 
     for (momIndex, index) in enumerate(sequence)

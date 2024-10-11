@@ -155,12 +155,12 @@ function propagateIndices(
         innerPoints::Vector{Int64}, 
         corrResults::Dict{String, Vector{Float64}}, 
         size_BZ::Int64, 
-        oppositePoints::Dict{Int64, Vector{Int64}}
+        oppositePoints::Dict{Int64, Int64}
     )
     
     for pivot in innerPoints
-        newIndices = Int64[oppositePoints[pivot]...]
-        for index in [[pivot]; oppositePoints[pivot]]
+        newIndices = Int64[oppositePoints[pivot]]
+        for index in [[pivot]; [oppositePoints[pivot]]]
             k_val = map1DTo2D(index, size_BZ)
             append!(newIndices, [map2DTo1D((k_val .* signs)..., size_BZ) for signs in [(-1, 1), (-1, -1), (1, -1)]])
         end

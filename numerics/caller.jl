@@ -15,7 +15,7 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 300
+global const maxSize = 100
 
 numShells = 4
 size_BZ = 33

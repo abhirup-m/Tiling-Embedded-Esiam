@@ -59,7 +59,8 @@ end
         mutInfoFuncDict::Dict,
     )
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
-    corrResults = Dict{String, Vector{Float64}}()
+    corrResults = Dict{String, Vector{Float64}}(k => zeros(hamiltDetails["size_BZ"]^2) for k in allKeys)
+
     newStatesArr = [newStates for newStates in newStatesArr if all(p -> hamiltDetails["dispersion"][p] ≤ maximum(hamiltDetails["dispersion"][pivotPoints]), newStates)]
     activeStatesArr = Vector{Int64}[pivotPoints]
     for newStates in newStatesArr[2:end]
@@ -107,10 +108,10 @@ end
                                ]
                               )
 
-    doAgain = true
+    iterDiagResults = nothing
     id = nothing
-    while doAgain
-        savePaths, iterDiagResults = IterDiag(
+    while true
+        savePaths, iterDiagResults, exitCode = IterDiag(
                                      hamiltonianFamily, 
                                      maxSize;
                                      symmetries=Char['N', 'S'],
@@ -123,32 +124,24 @@ end
                                      mutInfoDefDict=mutInfoDefDict,
                                      silent=true,
                                     )
-        doAgain = false
-
-        for k in allKeys
-            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
-        end
-
-        for (k, v) in iterDiagResults
-            if k ∉ keys(mapCorrNameToIndex)
-                continue
+        if exitCode > 0
+            id = rand()
+            println("Error code $(exitCode). Retry id=$(id).")
+        else
+            if !isnothing(id)
+                println("Passed $(id).")
             end
-            name, k_ind = mapCorrNameToIndex[k]
-            if name ∈ allKeys
-                corrResults[name][k_ind] = v[end]
-            end
+            break
         end
-        for name in keys(mutInfoFuncDict)
-            if count(<(-1e-10),corrResults[name]) > 0
-                doAgain = true
-                id = rand()
-                println("Negative mutual info. found, will repeat $(id).")
+    end
 
-                break
-            end
+    for (k, v) in iterDiagResults
+        if k ∉ keys(mapCorrNameToIndex)
+            continue
         end
-        if !isnothing(id)
-            println("Passed $(id).")
+        name, k_ind = mapCorrNameToIndex[k]
+        if name ∈ allKeys
+            corrResults[name][k_ind] = v[end]
         end
     end
     return corrResults

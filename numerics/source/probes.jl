@@ -58,6 +58,7 @@ end
         vneFuncDict::Dict,
         mutInfoFuncDict::Dict,
     )
+    allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
     corrResults = Dict{String, Vector{Float64}}()
     newStatesArr = [newStates for newStates in newStatesArr if all(p -> hamiltDetails["dispersion"][p] ≤ maximum(hamiltDetails["dispersion"][pivotPoints]), newStates)]
     activeStatesArr = Vector{Int64}[pivotPoints]
@@ -124,13 +125,7 @@ end
                                     )
         doAgain = false
 
-        for k in keys(correlationFuncDict)
-            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
-        end
-        for k in keys(vneFuncDict)
-            corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
-        end
-        for k in keys(mutInfoFuncDict)
+        for k in allKeys
             corrResults[k] = zeros(hamiltDetails["size_BZ"]^2)
         end
 
@@ -139,11 +134,7 @@ end
                 continue
             end
             name, k_ind = mapCorrNameToIndex[k]
-            if name ∈ keys(correlationFuncDict)
-                corrResults[name][k_ind] = v[end]
-            elseif name ∈ keys(vneFuncDict)
-                corrResults[name][k_ind] = v[end]
-            else
+            if name ∈ allKeys
                 corrResults[name][k_ind] = v[end]
             end
         end
@@ -181,7 +172,7 @@ function correlationMap(
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && -π < map1DTo2D(p, size_BZ)[2] ≤ 0 && cutoffEnergy ≥ dispersion[p] ≥ 0]
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] ≤ 0 && cutoffEnergy ≥ dispersion[p] ≥ 0]
     oppositePoints = Dict{Int64, Int64}(point => map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
                                        for point in SWIndices)
 

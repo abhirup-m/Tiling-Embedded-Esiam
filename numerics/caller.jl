@@ -17,10 +17,10 @@ global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
 global const maxSize = 300
 
-numShells = 1
+numShells = 4
 size_BZ = 33
-#=W_val_arr = -1.0 .* [0, 1] ./ size_BZ=#
-W_val_arr = -1.0 .* [0, 5.6, 5.7, 5.8, 5.88, 5.92] ./ size_BZ
+W_val_arr = -1.0 .* [0,] ./ size_BZ
+#=W_val_arr = -1.0 .* [0, 5.6, 5.7, 5.8, 5.88, 5.92] ./ size_BZ=#
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
 

@@ -2,10 +2,11 @@ function kondoKSpace(
         sequence::Vector{Int64},
         dispersion::Vector{Float64},
         kondoJArray::Matrix{Float64},
-        bathIntFunc;
-        specialIndices=Int64[],
-        impField::Float64=0.,
-        tolerance::Float64=1e-16
+        bathIntFunc,
+        specialIndices::Vector{Int64},
+        bathIntLegs::Int64,
+        impField::Float64,
+        tolerance::Float64,
     )
     specialIndices = ifelse(isempty(specialIndices), sequence, specialIndices)
 
@@ -23,12 +24,10 @@ function kondoKSpace(
             continue
         end
         energy = dispersion[index]
-        # energy = abs(energy) > tolerance ? energy : 0
-        # if energy == 0
-        #     continue
-        # end
-        merge!(+, operatorList, Dict(("n", [2 * momIndex + 1]) => energy))
-        merge!(+, operatorList, Dict(("n", [2 * momIndex + 2]) => energy))
+        if energy < tolerance
+            merge!(+, operatorList, Dict(("n", [2 * momIndex + 1]) => energy))
+            merge!(+, operatorList, Dict(("n", [2 * momIndex + 2]) => energy))
+        end
     end
 
     # Kondo terms, for all pairs of momenta
@@ -44,8 +43,7 @@ function kondoKSpace(
         impDownIndex = 2
 
         kondoIntVal = kondoJArray[index1, index2, end]
-        kondoIntVal = abs(kondoIntVal) > tolerance ? kondoIntVal : 0
-        if kondoIntVal == 0
+        if abs(kondoIntVal) < tolerance
             continue
         end
 
@@ -71,14 +69,18 @@ function kondoKSpace(
 
     # bath interaction terms, for all quartets of momenta
     #=for pairs in Iterators.product(repeat([enumerate(sequence)], 4)...)=#
-    for (pair1, pair2) in Iterators.product(repeat([enumerate(sequence)], 2)...)
-        index4tuples = [pair1[1], pair1[1], pair2[1], pair2[1]]
-        momIndices = [pair1[2], pair1[2], pair2[2], pair2[2]]
+    for pairs in Iterators.product(repeat([enumerate(sequence)], 4)...)
+        #=pair1, pair2 = ifelse(unique(pairs) == 2, unique(pairs), repeat(unique(pairs), 2))=#
+        index4tuples = first.(pairs)
+        momIndices = last.(pairs)
+        if length(unique(momIndices)) > bathIntLegs
+            continue
+        end
         if isempty(intersect(momIndices, specialIndices))# || length(unique(momIndices)) > 2
             continue
         end
         bathIntVal = bathIntFunc(momIndices)
-        if abs(bathIntVal) ≤ tolerance
+        if abs(bathIntVal) < tolerance
             continue
         end
 

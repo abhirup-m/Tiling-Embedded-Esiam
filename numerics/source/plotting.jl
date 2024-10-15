@@ -29,7 +29,7 @@ function plotHeatmap(
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.3), color=:white)
 
-    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)-1, minimum(matrixData)+1))
+    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)-1e-10, minimum(matrixData)+1e-10))
     Colorbar(figure[1, 2]; 
              limits=colorbarLimits,
              colormap=colmap,

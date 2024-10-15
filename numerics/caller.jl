@@ -15,12 +15,12 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 100
+global const maxSize = 500
 
-numShells = 4
+numShells = 1
 size_BZ = 33
-W_val_arr = -1.0 .* [0,] ./ size_BZ
-#=W_val_arr = -1.0 .* [0, 5.6, 5.7, 5.8, 5.88, 5.92] ./ size_BZ=#
+#=W_val_arr = -1.0 .* [0, 0.5, 1.] ./ size_BZ=#
+W_val_arr = -1.0 .* [0, 5.61, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
 
@@ -50,7 +50,8 @@ end
 
 
 function corr(kondoJArrays, dispersion)
-    spinCorrelation = Dict("SF" => i -> [
+
+    spinCorrelation = Dict("SF" => (nothing, (i, j) -> [
                                              ("nn", [1, 2, 2 * i + 1, 2 * i + 1], -0.25),
                                              ("nn", [1, 2, 2 * i + 2, 2 * i + 2], 0.25),
                                              ("nn", [2, 1, 2 * i + 1, 2 * i + 1], 0.25),
@@ -58,9 +59,16 @@ function corr(kondoJArrays, dispersion)
                                              ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1], -0.5),
                                              ("+-+-", [2, 1, 2 * i + 1, 2 * i + 2], -0.5),
                                             ]
+                                   )
                           )
-    chargeCorrelation = Dict("CF" => i -> [("nn", [2 * i + 1, 2 * i + 2], 0.5),
-                                               ("hh", [2 * i + 2, 2 * i + 1], 0.5)]
+    chargeCorrelation = Dict(
+                             "doubOcc" => (nothing, (i, j) -> [("nn", [2 * i + 1, 2 * i + 2], 1.), ("hh", [2 * i + 1, 2 * i + 2], 0.)]),
+                             "cfnode" => ((-π/2, -π/2), (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
+                                                                ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
+                                                               ]),
+                             "cfantinode" => ((-π, 0.), (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
+                                                                    ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
+                                                                   ])
                             )
     vneDef = Dict("vne_k" => i -> [2 * i + 1, 2 * i + 2])
     mutInfoDef = Dict(
@@ -68,15 +76,8 @@ function corr(kondoJArrays, dispersion)
                       "I2_k_N" => ((-π/2, -π/2), (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
                       "I2_k_AN" => ((-π, 0.), (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
                      )
-    saveNamesCorr = String[]
-    saveNamesVneSpin = String[]
-    saveNamesVneCharge = String[]
-    saveNamesMutInfoSpinImp = String[]
-    saveNamesMutInfoSpinNode = String[]
-    saveNamesMutInfoSpinAntiNode = String[]
-    saveNamesMutInfoChargeImp = String[]
-    saveNamesMutInfoChargeNode = String[]
-    saveNamesMutInfoChargeAntiNode = String[]
+    saveNames = Dict(name => [] for name in ["SF", "doubOcc", "cfnode", "cfantinode", "vne_k", "I2_k_d", "I2_k_N", "I2_k_AN"])
+
     for W_val in W_val_arr
 
         hamiltDetails = Dict(
@@ -87,39 +88,35 @@ function corr(kondoJArrays, dispersion)
                              "size_BZ" => size_BZ,
                              "bathIntForm" => bathIntForm,
                             )
-
-        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, spinCorrelation, maxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef)
-        if !isempty(corrResults["I2_k_AN"][corrResults["I2_k_AN"] .< -1e-5])
-            println("I2_k_AN", corrResults["I2_k_AN"][corrResults["I2_k_AN"] .< -1e-5])
-        end
-        push!(saveNamesCorr, plotHeatmap(corrResults["SF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_s(d, \vec{k})$", label(W_val)))
-        push!(saveNamesVneSpin, plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}_\mathrm{EE}^{(s)}(\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoSpinImp, plotHeatmap(corrResults["I2_k_d"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(d,\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoSpinNode, plotHeatmap(corrResults["I2_k_N"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{N},\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoSpinAntiNode, plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
+        corrResults, corrResultsBool = correlationMap(hamiltDetails, ifelse(W_val ≠ 0, 1, numShells), spinCorrelation, maxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef)
+        push!(saveNames["SF"], plotHeatmap(corrResults["SF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_s(d, \vec{k})$", label(W_val)))
+        push!(saveNames["vne_k"], plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}_\mathrm{EE}^{(s)}(\vec{k})$", label(W_val)))
+        push!(saveNames["I2_k_d"], plotHeatmap(corrResults["I2_k_d"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(d,\vec{k})$", label(W_val)))
+        push!(saveNames["I2_k_N"], plotHeatmap(corrResults["I2_k_N"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{N},\vec{k})$", label(W_val)))
+        push!(saveNames["I2_k_AN"], plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
 
         hamiltDetails["W_val"] = W_val
-        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, maxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef)
-        if !isempty(corrResults["I2_k_AN"][corrResults["I2_k_AN"] .< -1e-5])
-            println("I2_k_AN", corrResults["I2_k_AN"][corrResults["I2_k_AN"] .< -1e-5])
-        end
-        push!(saveNamesCorr, plotHeatmap(corrResults["CF"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\chi_c(d, \vec{k})$", label(W_val)))
-        push!(saveNamesVneCharge, plotHeatmap(corrResults["vne_k"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\mathrm{S}^{(c)}_\mathrm{EE}(\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoChargeImp, plotHeatmap(corrResults["I2_k_d"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(d,\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoChargeNode, plotHeatmap(corrResults["I2_k_N"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{N},\vec{k})$", label(W_val)))
-        push!(saveNamesMutInfoChargeAntiNode, plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
+        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, maxSize; bathIntLegs=4)
+        push!(saveNames["doubOcc"], plotHeatmap(corrResults["doubOcc"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle n_{\vec{k}, \uparrow} n_{\vec{k}, \downarrow}\rangle$", label(W_val)))
+        push!(saveNames["cfnode"], plotHeatmap(corrResults["cfnode"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle C_{\vec{k}}^+ C_{k_\mathrm{N}}^- + \mathrm{h.c.}\rangle$", label(W_val)))
+        push!(saveNames["cfantinode"], plotHeatmap(corrResults["cfantinode"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle C_{\vec{k}}^+ C_{k_\mathrm{AN}}^- + \mathrm{h.c.}\rangle$", label(W_val)))
     end
-    run(`pdfunite $(saveNamesCorr) correlations.pdf`)
-    run(`pdfunite $(saveNamesVneSpin) vnEntropySpin.pdf`)
-    run(`pdfunite $(saveNamesMutInfoSpinImp) mutInfoSpinImp.pdf`)
-    run(`pdfunite $(saveNamesMutInfoSpinNode) mutInfoSpinNode.pdf`)
-    run(`pdfunite $(saveNamesMutInfoSpinAntiNode) mutInfoSpinAntiNode.pdf`)
-    run(`pdfunite $(saveNamesVneCharge) vnEntropyCharge.pdf`)
-    run(`pdfunite $(saveNamesMutInfoChargeImp) mutInfoChargeImp.pdf`)
-    run(`pdfunite $(saveNamesMutInfoChargeNode) mutInfoChargeNode.pdf`)
-    run(`pdfunite $(saveNamesMutInfoChargeAntiNode) mutInfoChargeAntiNode.pdf`)
+    f = open("saveData.txt", "a")
+    for (name, files) in saveNames
+        shellCommand = "pdfunite $(join(files, " ")) $(name).pdf"
+        run(`sh -c $(shellCommand)`)
+        write(f, shellCommand*"\n")
+    end
+    close(f)
 end
 
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+#=println([kondoJArrays[W_val][dispersion .== 0, 497, end] for W_val in W_val_arr])=#
 @time probe(kondoJArrays, dispersion)
 @time corr(kondoJArrays, dispersion)
+#=names = []=#
+#=for W_val in W_val_arr=#
+#=    result = kondoCoupMap((-π, 0.), size_BZ, kondoJArrays[W_val])[1]=#
+#=    push!(names, plotHeatmap(result, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{N},\vec{k})$", label(W_val)))=#
+#=end=#
+#=run(`pdfunite $(names) kondoCoupMap.pdf`)=#

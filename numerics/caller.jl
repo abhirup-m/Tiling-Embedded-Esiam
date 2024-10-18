@@ -20,7 +20,7 @@ global const maxSize = 500
 numShells = 1
 size_BZ = 33
 #=W_val_arr = -1.0 .* [0, 0.5, 1.] ./ size_BZ=#
-W_val_arr = -1.0 .* [0, 5.61, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
+W_val_arr = -1.0 .* [0, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
 
@@ -29,7 +29,6 @@ function RGFlow(W_val_arr, size_BZ)
     results = @showprogress desc="rg flow" pmap(w -> momentumSpaceRG(size_BZ, omega_by_t, J_val, w, orbitals), W_val_arr)
     dispersion = results[1][2]
     for (result, W_val) in zip(results, W_val_arr)
-        #=kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)=#
         averageKondoScale = sum(abs.(result[1][:, :, 1])) / length(result[1][:, :, 1])
         @assert averageKondoScale > RG_RELEVANCE_TOL
         result[1][:, :, end] .= ifelse.(abs.(result[1][:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, result[1][:, :, end], 0)
@@ -96,7 +95,7 @@ function corr(kondoJArrays, dispersion)
         push!(saveNames["I2_k_AN"], plotHeatmap(corrResults["I2_k_AN"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(s)}(k_\mathrm{AN},\vec{k})$", label(W_val)))
 
         hamiltDetails["W_val"] = W_val
-        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, maxSize; bathIntLegs=4)
+        corrResults, corrResultsBool = correlationMap(hamiltDetails, numShells, chargeCorrelation, minimum((200, maxSize)); bathIntLegs=4)
         push!(saveNames["doubOcc"], plotHeatmap(corrResults["doubOcc"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle n_{\vec{k}, \uparrow} n_{\vec{k}, \downarrow}\rangle$", label(W_val)))
         push!(saveNames["cfnode"], plotHeatmap(corrResults["cfnode"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle C_{\vec{k}}^+ C_{k_\mathrm{N}}^- + \mathrm{h.c.}\rangle$", label(W_val)))
         push!(saveNames["cfantinode"], plotHeatmap(corrResults["cfantinode"], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\langle C_{\vec{k}}^+ C_{k_\mathrm{AN}}^- + \mathrm{h.c.}\rangle$", label(W_val)))
@@ -111,12 +110,5 @@ function corr(kondoJArrays, dispersion)
 end
 
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
-#=println([kondoJArrays[W_val][dispersion .== 0, 497, end] for W_val in W_val_arr])=#
 @time probe(kondoJArrays, dispersion)
 @time corr(kondoJArrays, dispersion)
-#=names = []=#
-#=for W_val in W_val_arr=#
-#=    result = kondoCoupMap((-π, 0.), size_BZ, kondoJArrays[W_val])[1]=#
-#=    push!(names, plotHeatmap(result, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$I_2^{(c)}(k_\mathrm{N},\vec{k})$", label(W_val)))=#
-#=end=#
-#=run(`pdfunite $(names) kondoCoupMap.pdf`)=#

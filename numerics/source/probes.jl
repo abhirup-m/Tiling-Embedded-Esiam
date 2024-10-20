@@ -122,7 +122,7 @@ end
                                      maxSize;
                                      symmetries=Char['N', 'S'],
                                      magzReq=(m, N) -> -1 ≤ m ≤ 2,
-                                     occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                                     occReq=(x, N) -> div(N, 2) - 5 ≤ x ≤ div(N, 2) + 5,
                                      #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
                                      #=corrOccReq=(x, N) -> x == div(N, 2),=#
                                      correlationDefDict=correlationDefDict,
@@ -173,9 +173,10 @@ function correlationMap(
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0 && map1DTo2D(p, size_BZ)[2] ≤ 0 && cutoffEnergy ≥ dispersion[p] ≥ 0]
-    oppositePoints = Dict{Int64, Int64}(point => map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
-                                       for point in SWIndices)
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
+                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
+                 && cutoffEnergy ≥ dispersion[p] ≥ 0
+                ]
 
     distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
     symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
@@ -183,9 +184,18 @@ function correlationMap(
                                       sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
                                      for p in SWIndices]
     symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
+    calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
+    
+    oppositePoints = Dict{Int64, Vector{Int64}}()
+    for point in calculatePoints
+        reflectDiagonal = map2DTo1D(reverse(map1DTo2D(point, size_BZ))..., size_BZ)
+        reflectFS = map2DTo1D((-1 .* reverse(map1DTo2D(point, size_BZ)) .+ [-π, -π])..., size_BZ)
+        reflectBoth = map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
+        oppositePoints[point] = [reflectDiagonal, reflectFS, reflectBoth]
+    end
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
-    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in symmetricPairsNode
+    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in calculatePoints
         corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs)
         corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs)
         avgCorr = mergewith(+, corrNode, corrAntiNode)
@@ -193,7 +203,8 @@ function correlationMap(
         avgCorr
     end
 
-    corrResults = propagateIndices(SWIndices, corrResults, size_BZ, oppositePoints)
+
+    corrResults = propagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
     corrResultsBool = Dict()
     for (name, results) in corrResults

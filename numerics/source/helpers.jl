@@ -155,17 +155,22 @@ function propagateIndices(
         innerPoints::Vector{Int64}, 
         corrResults::Dict{String, Vector{Float64}}, 
         size_BZ::Int64, 
-        oppositePoints::Dict{Int64, Int64}
+        oppositePoints::Dict{Int64, Vector{Int64}}
     )
+    for point in innerPoints
+        for (name, correlation) in corrResults
+            corrResults[name][oppositePoints[point]] .= correlation[point]
+        end
+    end
     
     for pivot in innerPoints
-        newIndices = Int64[oppositePoints[pivot]]
-        for index in [[pivot]; [oppositePoints[pivot]]]
-            k_val = map1DTo2D(index, size_BZ)
-            append!(newIndices, [map2DTo1D((k_val .* signs)..., size_BZ) for signs in [(-1, 1), (-1, -1), (1, -1)]])
-        end
+        k_val = 
+        newPoints = [map2DTo1D((map1DTo2D(point, size_BZ) .* signs)..., size_BZ) 
+                     for point in [[pivot]; oppositePoints[pivot]] 
+                     for signs in [(-1, 1), (-1, -1), (1, -1)]
+                    ]
         for (name, correlation) in corrResults
-            corrResults[name][newIndices] .= correlation[pivot]
+            corrResults[name][newPoints] .= correlation[pivot]
         end
     end
     return corrResults

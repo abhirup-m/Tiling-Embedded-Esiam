@@ -1,5 +1,6 @@
 \documentclass[reprint,hidelinks]{revtex4-2}
 \usepackage{braket,amsmath,color,graphicx,bookmark,bm}
+\graphicspath{{./figures/}}
 \bibliographystyle{apsrev4-2}
 \begin{document}
 
@@ -230,6 +231,7 @@ This choice does not lead to a factorisation of the momentum-space dependence, a
 \end{aligned}\end{equation}
 The first term in the numerator does not depend only on the momentum difference \({\bf k}_2 - {\bf k}_1\), unlike the bare Kondo coupling. This leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
 
+\section{Low-energy description of the embedded eSIAM}
 \subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
 We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
 
@@ -237,29 +239,53 @@ We quantify the removal of these points by the vanishing (up to a tolerance) of 
 \begin{equation}\begin{aligned}
 	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
 \end{aligned}\end{equation}
-where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. More insights in the difference of the behaviour is obtained by studying the fixed point distribution of the couplings \(J_{{\bf k}, {\bf q}}\) for \({\bf k}\) at a node and at an antinode. This is shown in fig.~\ref{kondoMaps}.
+where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. 
 
-\begin{figure*}[htpb]
+\begin{figure}[!htpb]
 	\centering
-	\includegraphics[width=0.49\textwidth]{scattProb-1.pdf}
-	\includegraphics[width=0.49\textwidth]{scattProb-2.pdf}\\
-	\includegraphics[width=0.49\textwidth]{scattProb-3.pdf}
-	\includegraphics[width=0.49\textwidth]{scattProb-4.pdf}\\
-	\includegraphics[width=0.49\textwidth]{scattProb-5.pdf}
-	\includegraphics[width=0.49\textwidth]{scattProb-6.pdf}
-	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. In each pair of plots, the right figure shows the dependence of \(\Gamma\) on \(k_x/\pi\) and \(k_y/\pi\), while the left figure shows whether \(\Gamma({\bf k}\) is relevant (violet) or irrelevant (grey). As can be seen in the right pair of figures of the top row, the antinodal points are the first state to be removed from the Kondo cloud, while the left pair of figures of the bottom row shows that the node is the last to be removed.}
+	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-6.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-7.pdf}
+	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. Each plot shows whether \(\Gamma({\bf k}\) is relevant (black) or irrelevant (white). The antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
 	\label{gamma_kxky}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[htpb]
+\subsection{Spin-correlations across the pseudogap}
+In figures.~\ref{spinCorr} and \ref{vneKspace}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) and entanglement entropy \(S_\text{EE}(\vec k)\), both in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
+
+\begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.49\textwidth]{kondoCoupNodeMap-1.pdf}
-	\includegraphics[width=0.49\textwidth]{kondoCoupNodeMap-6.pdf}\\
-	\includegraphics[width=0.49\textwidth]{kondoCoupAntinodeMap-1.pdf}
-	\includegraphics[width=0.49\textwidth]{kondoCoupAntinodeMap-6.pdf}
-	\caption{Distribution of Kondo coupling scattering processes. While the nodes are connected mostly through forward and backscattering processes, the antinodes also involve tangential scattering processes.}
-	\label{kondoMaps}
-\end{figure*}
+	\includegraphics[width=0.23\textwidth]{SF-3.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-4.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-5.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-6.pdf}
+	\caption{\(k-\)space distribution of spin-flip scattering correlation \(\chi_s(d,\vec k)\) (defined in the main text). The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last \(k-\)point to decouple from the impurity.}
+	\label{spinCorr}
+\end{figure}
+
+As a second probe of the pseudogapping phenomenon, we have also studied the entanglement entropy (EE) \(S_\text{EE}(\vec k)\), which is just the von Neumann entropy \(-\text{Tr}\left[\rho \ln \rho\right] \) of the reduced density matrix \(\rho_{\vec k}\) for each \(k-\)state. In accordance with the Kondo spin correlations \(\chi_s\), the EE shows the sequential decoupling, from the impurity, of the antinodes followed by the nodes. 
+
+Studies of \(k-\)space mutual information, \(I_2(\vec k, k_\text{N})\) and \(I_2(\vec k, k_\text{AN})\), between any given \(k-\)state and the node and antinode respectively, have revealed that each point interacts most strongly with it's own neighbourhood (see Supplementary Materials). This feature is in contrast to the charge-transfer correlations in the bath, that show ``long-ranged" interactions between the node and the antinode. These correlations will be discussed immediately after this, and are primarily responsible for driving the impurity transition and destabilising the Kondo cloud.
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{I2_k_d-1.pdf}
+	\includegraphics[width=0.23\textwidth]{I2_k_d-2.pdf}
+	\caption{\(k-\)space distribution of entanglement entropy. The pseudogapping occurs through (i) suppression of entanglement at \(W/J=-1.74\) near the nodes (compared to \(W=0\)), (ii) vanishing of entanglement near the antinodes, (iii) vanishing of entanglement at all points except the node.}
+	\label{vneKspace}
+\end{figure}
+
+\subsection{Charge correlations}
+In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
+	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
+	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
+	\label{cfnode}
+\end{figure}
 
 \section{The Tiling Algorithm}
 
@@ -747,14 +773,14 @@ This straightforwardly leads to the relation
 
 Other measures like mutual information can be obtained by using these elementary measures.
 
-\begin{figure*}[htpb]
-	\centering
-	\includegraphics[width=\textwidth]{charge-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
-\end{figure*}
-\begin{figure*}[htpb]
-	\centering
-	\includegraphics[width=\textwidth]{vne-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
-\end{figure*}
+% \begin{figure*}[htpb]
+% 	\centering
+% 	\includegraphics[width=\textwidth]{charge-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
+% \end{figure*}
+% \begin{figure*}[htpb]
+% 	\centering
+% 	\includegraphics[width=\textwidth]{vne-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
+% \end{figure*}
 
 \clearpage
 
@@ -763,26 +789,26 @@ Other measures like mutual information can be obtained by using these elementary
 
 \section{The Mott MIT: a local perspective}
 \subsection{Gapping of the local spectral function and vanishing of correlations}
-At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath zeroth site, the couplings \(J\) and \(V\) of the auxiliary model become irrelevant while \(U\) becomes remains non-zero, leading to a low-energy phase where the impurity is cut off from the conduction bath. This is the local moment phase, where low-energy excitations have been gapped out.
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.48\textwidth]{phase-map-MIT.pdf}
-	\includegraphics[width=0.48\textwidth]{spectral-function_dd.pdf}
-	\caption{{\it Left:} Phase diagram of the extended SIAM auxiliary model. As the parameter \(r\) is tuned through 0.25, the metallic blue phase changes into the insulating violet phase. {\it Right:} Local spectral function of the auxiliary model. It shows a hard gap for \(r/r_c > 1\).}
-	\label{spec_func_mit}
-\end{figure}
-
-The impurity local spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal spectral function \(\mathcal{A}_{dz}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the former shows the absence of any gapless excitations that can allow the impurity configuration to fluctuate, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been quenched. 
-
-In Fig.~\ref{spin-charge-correlations}, we show the behaviour of the spin-flip and charge isospin-flip correlations between two neighbouring real space sites, as well as the mutual real space entanglement and mutual information. Both show a sharp fall on crossing the transition, demonstrating the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity. Importantly, they charge correlations show a rise very close to the transition (can be seen as a single elevated blue point near \(r = 0.25\) in the left panel of Fig.~\ref{spin-charge-correlations}); this indicates that the transition is precipitated by the growth of pairing correlations.
-
-\begin{figure}[!htb]
-\centering
-	\includegraphics[width=0.48\textwidth]{spin-charge-corr-full.pdf}
-	\includegraphics[width=0.48\textwidth]{impEE-mutinfo-d0.pdf}
-	\caption{{\it Left}: Spin-flip correlations(red) and charge-flip correlations(blue) in real space. The former increases as the system moves into the Kondo regime, and then vanishes at the transition. The latter decreases as the charge content is removed from the ground state in the Kondo regime, but shows a sudden increase at the transition. {\it Right}: Real space Entanglement and mutual information. Both vanish in the local moment phase.}
-	\label{spin-charge-correlations}
-\end{figure}
+% At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath zeroth site, the couplings \(J\) and \(V\) of the auxiliary model become irrelevant while \(U\) becomes remains non-zero, leading to a low-energy phase where the impurity is cut off from the conduction bath. This is the local moment phase, where low-energy excitations have been gapped out.
+% \begin{figure}[htpb]
+% 	\centering
+% 	\includegraphics[width=0.48\textwidth]{phase-map-MIT.pdf}
+% 	\includegraphics[width=0.48\textwidth]{spectral-function_dd.pdf}
+% 	\caption{{\it Left:} Phase diagram of the extended SIAM auxiliary model. As the parameter \(r\) is tuned through 0.25, the metallic blue phase changes into the insulating violet phase. {\it Right:} Local spectral function of the auxiliary model. It shows a hard gap for \(r/r_c > 1\).}
+% 	\label{spec_func_mit}
+% \end{figure}
+%
+% The impurity local spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal spectral function \(\mathcal{A}_{dz}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the former shows the absence of any gapless excitations that can allow the impurity configuration to fluctuate, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been quenched. 
+%
+% In Fig.~\ref{spin-charge-correlations}, we show the behaviour of the spin-flip and charge isospin-flip correlations between two neighbouring real space sites, as well as the mutual real space entanglement and mutual information. Both show a sharp fall on crossing the transition, demonstrating the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity. Importantly, they charge correlations show a rise very close to the transition (can be seen as a single elevated blue point near \(r = 0.25\) in the left panel of Fig.~\ref{spin-charge-correlations}); this indicates that the transition is precipitated by the growth of pairing correlations.
+%
+% \begin{figure}[!htb]
+% \centering
+% 	\includegraphics[width=0.48\textwidth]{spin-charge-corr-full.pdf}
+% 	\includegraphics[width=0.48\textwidth]{impEE-mutinfo-d0.pdf}
+% 	\caption{{\it Left}: Spin-flip correlations(red) and charge-flip correlations(blue) in real space. The former increases as the system moves into the Kondo regime, and then vanishes at the transition. The latter decreases as the charge content is removed from the ground state in the Kondo regime, but shows a sudden increase at the transition. {\it Right}: Real space Entanglement and mutual information. Both vanish in the local moment phase.}
+% 	\label{spin-charge-correlations}
+% \end{figure}
 
 \subsection{Value of the critical paramter for the bulk model}
 Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{couplingsMappings}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled. This means that both the local and the nearest-neighbour Greens functions have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model, the former also shows the same zero-energy resonance. 
@@ -800,57 +826,57 @@ where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of t
 Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 9/8$ for the 2D square lattice Hubbard-Heisenberg model. The reduction in the value of \(r\) from \(2.5\) in the auxiliary model to \(~1.1\) in the bulk model can be attributed to (i) the reduction in the effective bulk repulsion \(U\) due to the competition coming from the attractive \(U_b\), and (ii) increased hybdridisation through \(J\) due to the presence of multiple auxiliary models that connect two lattice sites.
 
 \section{Momentum-space picture of the MIT}
-In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=\textwidth]{kspace-spectral-function-all.pdf}\hspace{\fill}
-\caption{\(k-\)space dependence of single-particle spectral function, \(A_{\vec k}(\omega \sim 0)\), at four values of the tuning parameter \(r\). The \(\vec k\) values are taken from the top right quadrant of the first Brillouin zone. In the metallic phase (\(r < r_c\)), the spectral function shows a \(k-\)dependence, indicating the presence of gapless excitations. Close to the transition (and beyond it), the momentum dependence gets removed and there is no spectral weight left in the infrared regime.}
-\label{kspace_specfunc}
-\end{figure}
-
-In Fig.~\ref{kspace_selfenergy}, we plot the momentum dependence of the single-particle self-energy, similar to the spectral function. The self-energy is flat in \(k-\)space away from the transition, consistent with the fact that the correlations are small in that regime. Close to the transition, the correlations pick up, and lead to a momentum-dependence of the self-energy, renormalising the Fermi liquid in the process and ultimately destroying it.
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=\textwidth]{kspace-imagsigma-all.pdf}\hspace{\fill}
-\caption{\(k-\)space dependence of imaginary part of the self-energy, \(\Sigma_{\vec k}(\omega \sim 0)\), at four values of the tuning parameter \(r\). In the metallic phase (\(r \ll r_c\)), the self-energy is quite small, indicating that the phase consists of an uncorrelated Fermi liquid. It increases close to the transition (and beyond it).}
-\label{kspace_selfenergy}
-\end{figure}
-
-In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show the momentum dependence of two-particle correlation functions. In every figure, each panel shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left panel to the right is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each panel, moving upwards amounts to tuning the system towards the transition. The spin-spin correlations (in Fig.~\ref{spin_kspace}) are large near the \(\vec k = \left( 0,0 \right) \) point, presumably because of the dominance of the Kondo cloud at long wavelengths. They vanish in the local moment phase (flat blue region near the top). The charge and pairing correlations (Figs.~\ref{charge_kspace} and \ref{pair_kspace}) disappear as the system moves into the Kondo regime, but reappear exactly at the transition. This is tied to the non-Fermi liquid theory at the QCP, as seen in the auxiliary model.
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=\textwidth]{spin_rspace_all.pdf}
-\caption{Momentum dependence of spin-spin correlation \(\left<\vec{S}_{-\vec k}\cdot\vec{S}_{\vec k} \right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
-\label{spin_kspace}
-\end{figure}
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=\textwidth]{charge_rspace_all.pdf}
-\caption{Momentum dependence of charge-charge correlation \(\left<\vec{C}_{-\vec k}\cdot\vec{C}_{\vec k} \right>\), where \(\vec C\) is the charge isospin associated with the doublet formed by the doublon and holon states. Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
-\label{charge_kspace}
-\end{figure}
-
-\begin{figure}[!htb]
-\includegraphics[width=\textwidth]{pair_rspace_all.pdf}
-\caption{Momentum dependence of pairing correlation \(\left<c^\dagger_{-k\uparrow}c^\dagger_{-k\downarrow}c_{k\downarrow}c_{k\uparrow}\right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
-\label{pair_kspace}
-\end{figure}
-
-\begin{figure}[!htb]
-\includegraphics[width=\textwidth]{vne_kspace_all.pdf}
-\caption{Momentum dependence of \(k-\)space von Neumann entanglement entropy \(S_\text{EE}(\vec k)\). The four frames (from the left) show the variation in entanglement of a \(k-\)space in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
-\label{entanglement_kspace}
-\end{figure}
-
-\begin{figure}[!htb]
-\includegraphics[width=\textwidth]{mutinfo_kspace_all.pdf}
-\caption{Momentum dependence of \(k-\)space mutual information \(I_2(\vec k: -\vec k)\). The four frames (from the left) show the variation in entanglement between the \(\vec k\) and \(-\vec k\) states in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
-\label{mutinfo_kspace}
-\end{figure}
-
-{\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colourmap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colourmap} as \(r\) is tuned towards and into the transition.}
+% In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
+%
+% \begin{figure}[!htb]
+% \centering
+% \includegraphics[width=\textwidth]{kspace-spectral-function-all.pdf}\hspace{\fill}
+% \caption{\(k-\)space dependence of single-particle spectral function, \(A_{\vec k}(\omega \sim 0)\), at four values of the tuning parameter \(r\). The \(\vec k\) values are taken from the top right quadrant of the first Brillouin zone. In the metallic phase (\(r < r_c\)), the spectral function shows a \(k-\)dependence, indicating the presence of gapless excitations. Close to the transition (and beyond it), the momentum dependence gets removed and there is no spectral weight left in the infrared regime.}
+% \label{kspace_specfunc}
+% \end{figure}
+%
+% In Fig.~\ref{kspace_selfenergy}, we plot the momentum dependence of the single-particle self-energy, similar to the spectral function. The self-energy is flat in \(k-\)space away from the transition, consistent with the fact that the correlations are small in that regime. Close to the transition, the correlations pick up, and lead to a momentum-dependence of the self-energy, renormalising the Fermi liquid in the process and ultimately destroying it.
+% \begin{figure}[!htb]
+% \centering
+% \includegraphics[width=\textwidth]{kspace-imagsigma-all.pdf}\hspace{\fill}
+% \caption{\(k-\)space dependence of imaginary part of the self-energy, \(\Sigma_{\vec k}(\omega \sim 0)\), at four values of the tuning parameter \(r\). In the metallic phase (\(r \ll r_c\)), the self-energy is quite small, indicating that the phase consists of an uncorrelated Fermi liquid. It increases close to the transition (and beyond it).}
+% \label{kspace_selfenergy}
+% \end{figure}
+%
+% In Figs.~\ref{spin_kspace},\ref{charge_kspace} and \ref{pair_kspace}, we show the momentum dependence of two-particle correlation functions. In every figure, each panel shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left panel to the right is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each panel, moving upwards amounts to tuning the system towards the transition. The spin-spin correlations (in Fig.~\ref{spin_kspace}) are large near the \(\vec k = \left( 0,0 \right) \) point, presumably because of the dominance of the Kondo cloud at long wavelengths. They vanish in the local moment phase (flat blue region near the top). The charge and pairing correlations (Figs.~\ref{charge_kspace} and \ref{pair_kspace}) disappear as the system moves into the Kondo regime, but reappear exactly at the transition. This is tied to the non-Fermi liquid theory at the QCP, as seen in the auxiliary model.
+% \begin{figure}[!htb]
+% \centering
+% \includegraphics[width=\textwidth]{spin_rspace_all.pdf}
+% \caption{Momentum dependence of spin-spin correlation \(\left<\vec{S}_{-\vec k}\cdot\vec{S}_{\vec k} \right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
+% \label{spin_kspace}
+% \end{figure}
+%
+% \begin{figure}[!htb]
+% \centering
+% \includegraphics[width=\textwidth]{charge_rspace_all.pdf}
+% \caption{Momentum dependence of charge-charge correlation \(\left<\vec{C}_{-\vec k}\cdot\vec{C}_{\vec k} \right>\), where \(\vec C\) is the charge isospin associated with the doublet formed by the doublon and holon states. Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
+% \label{charge_kspace}
+% \end{figure}
+%
+% \begin{figure}[!htb]
+% \includegraphics[width=\textwidth]{pair_rspace_all.pdf}
+% \caption{Momentum dependence of pairing correlation \(\left<c^\dagger_{-k\uparrow}c^\dagger_{-k\downarrow}c_{k\downarrow}c_{k\uparrow}\right>\). Each frame shows the variation along a specific horizontal cut \(k_y=\text{constant}\), as a function of \(r\). Moving from the left figure to the right figure is equivalent to moving upwards in the top right quadrant of the first Brillouin zone. In each figure, moving upwards amounts to tuning the system towards the transition. The flat blue region at the top is the local moment phase, void of any non-local correlations.}
+% \label{pair_kspace}
+% \end{figure}
+%
+% \begin{figure}[!htb]
+% \includegraphics[width=\textwidth]{vne_kspace_all.pdf}
+% \caption{Momentum dependence of \(k-\)space von Neumann entanglement entropy \(S_\text{EE}(\vec k)\). The four frames (from the left) show the variation in entanglement of a \(k-\)space in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
+% \label{entanglement_kspace}
+% \end{figure}
+%
+% \begin{figure}[!htb]
+% \includegraphics[width=\textwidth]{mutinfo_kspace_all.pdf}
+% \caption{Momentum dependence of \(k-\)space mutual information \(I_2(\vec k: -\vec k)\). The four frames (from the left) show the variation in entanglement between the \(\vec k\) and \(-\vec k\) states in the \(k_x-k_y\) plane as the transition parameter \(r\) is tuned through the metal-insulator transition. \(r/r_c=0.5\) represents a very weakly correlated metal, \(r/r_c=0.8,0.9\) represents a highly correlated metal in the Kondo phase of the auxiliary model, and \(r/r_c \sim 1\) represents the non-Fermi liquid metal formed at the transition.}
+% \label{mutinfo_kspace}
+% \end{figure}
+%
+% {\color{blue} In order to provide a second way of visualising these correlations, we have provided some videos that show their variation in the \(k_x-k_y\) plane as a function of \(r/r_c\). The videos for the spin-spin correlation and the pairing correlations are named ``ss\_rspace.gif" and ``pairing\_rspace.gif", respectively. Each frame of the video shows a colourmap of the correlation in the top right quadrant of the first Brillouin zone, at a {\it specific value of \(r\)}. The movie then shows the {\it evolution of this \(k-\)space colourmap} as \(r\) is tuned towards and into the transition.}
 
 \section{Emergence of effectively pseudogapped Anderson model at the MIT}
 %\begin{itemize}

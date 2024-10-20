@@ -1,7 +1,7 @@
 using Distributed
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(div(length(Sys.cpu_info()), 10))
+    addprocs(5)
 end
 using JLD2
 using LinearAlgebra
@@ -16,12 +16,12 @@ global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
 global const maxSize = 500
-WmaxSize = 500
+WmaxSize = 400
 
-numShells = 1
+numShells = 5
 size_BZ = 41
 # W_val_arr = -1.0 .* [0.0] ./ size_BZ
-W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564] ./ size_BZ
+W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
@@ -115,7 +115,7 @@ function corr(kondoJArrays, dispersion)
             end
 
             for name in keys(corrResults)
-                push!(saveNames[name], plotHeatmap(corrResults[name], (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], label(W_val)))
+                push!(saveNames[name], plotHeatmap(abs.(corrResults[name]), (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], label(W_val)))
             end
         end
     end

@@ -122,7 +122,7 @@ end
                                      maxSize;
                                      symmetries=Char['N', 'S'],
                                      magzReq=(m, N) -> -1 ≤ m ≤ 2,
-                                     occReq=(x, N) -> div(N, 2) - 5 ≤ x ≤ div(N, 2) + 5,
+                                     occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
                                      #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
                                      #=corrOccReq=(x, N) -> x == div(N, 2),=#
                                      correlationDefDict=correlationDefDict,

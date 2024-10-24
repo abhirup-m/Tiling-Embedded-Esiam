@@ -1,7 +1,7 @@
 using Distributed
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(5)
+    addprocs(0)
 end
 using JLD2
 using LinearAlgebra
@@ -16,15 +16,18 @@ global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
 global const maxSize = 500
-WmaxSize = 400
+WmaxSize = 500
 
+colmap = reverse(ColorSchemes.cherry)
 numShells = 5
 size_BZ = 41
-# W_val_arr = -1.0 .* [0.0] ./ size_BZ
+bathIntLegs = 3
+# W_val_arr = -1.0 .* [7.3] ./ size_BZ
 W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
-label(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
+getlabel(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
+getlabelNoSize(W_val) = L"$\frac{W}{J}=%$(round(W_val/J_val, digits=2))$"
 
 function RGFlow(W_val_arr, size_BZ)
     kondoJArrays = Dict{Float64, Array{Float64, 3}}()
@@ -43,7 +46,11 @@ function probe(kondoJArrays, dispersion)
     saveNames = String[]
     for W_val in W_val_arr
         results_scaled, results_bool = scattProb(size_BZ, kondoJArrays[W_val], dispersion)
-        push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", label(W_val)))
+
+        quadrantResult = results_bool[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+        push!(saveNames, plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                     L"$\Gamma/\Gamma_0$", getlabelNoSize(W_val), reverse(colmap)))
+        #push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", getlabelNoSize(W_val)))
     end
     println("\n Saved at $(saveNames).")
     run(`pdfunite $(saveNames) scattprob.pdf`)
@@ -78,6 +85,7 @@ function corr(kondoJArrays, dispersion)
                       "I2_k_AN" => ((-π, 0.), (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
                      )
     saveNames = Dict(name => [] for name in ["SF", "vne_k", "I2_k_d", "I2_k_N", "I2_k_AN", "doubOcc", "cfnode", "cfantinode"])
+    saveNamesPolished = Dict(name => [] for name in ["SF", "vne_k", "I2_k_d", "I2_k_N", "I2_k_AN", "doubOcc", "cfnode", "cfantinode"])
     plotTitles = Dict("SF" => L"$\chi_s(d, \vec{k})$",
                       "vne_k" => L"$\mathrm{S}_\mathrm{EE}^{(s)}(\vec{k})$",
                       "I2_k_d" => L"$I_2^{(s)}(d,\vec{k})$",
@@ -105,22 +113,28 @@ function corr(kondoJArrays, dispersion)
             corrResults = nothing
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
-                                                effectiveMaxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=3)
+                                                effectiveMaxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs)
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize;
-                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=3)
+                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs)
             else # case of W != 0 and considering the actual W as effective W, for charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
-                                                bathIntLegs=3)
+                                                bathIntLegs=bathIntLegs)
             end
 
             for name in keys(corrResults)
-                push!(saveNames[name], plotHeatmap(abs.(corrResults[name]), (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], label(W_val)))
+                push!(saveNames[name], plotHeatmap(abs.(corrResults[name]), (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                                   plotTitles[name], getlabel(W_val), colmap))
+            end
+            for name in keys(corrResults)
+                quadrantResult = corrResults[name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+                push!(saveNamesPolished[name], plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                                   plotTitles[name], getlabelNoSize(W_val), colmap))
             end
         end
     end
     f = open("saveData.txt", "a")
-    for (name, files) in saveNames
+    for (name, files) in saveNamesPolished
         if isempty(files)
             continue
         end

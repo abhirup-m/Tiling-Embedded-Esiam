@@ -34,7 +34,7 @@ function plotHeatmap(
     )
     matrix = reshape(matrixData, length.(axisVals))
 
-    figure = Figure(size=(300, 300))
+    figure = Figure(size=(300, 250))
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 

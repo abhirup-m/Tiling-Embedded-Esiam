@@ -164,8 +164,8 @@ function propagateIndices(
     end
     
     for pivot in innerPoints
-        k_val = 
-        newPoints = [map2DTo1D((map1DTo2D(point, size_BZ) .* signs)..., size_BZ) 
+        k_val = map1DTo2D(point, size_BZ)
+        newPoints = [map2DTo1D((k_val .* signs)..., size_BZ) 
                      for point in [[pivot]; oppositePoints[pivot]] 
                      for signs in [(-1, 1), (-1, -1), (1, -1)]
                     ]

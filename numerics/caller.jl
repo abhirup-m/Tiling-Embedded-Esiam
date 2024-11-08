@@ -15,19 +15,20 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 500
-WmaxSize = 500
+global const maxSize = 600
+WmaxSize = 600
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 5
-size_BZ = 41
+size_BZ = 49
 bathIntLegs = 3
-# W_val_arr = -1.0 .* [7.3] ./ size_BZ
-W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
+# W_val_arr = -1.0 .* [0, 8.19, 8.77] ./ size_BZ
+W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ
+# W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 getlabel(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
-getlabelNoSize(W_val) = L"$\frac{W}{J}=%$(round(W_val/J_val, digits=2))$"
+getlabelSize(W_val) = L"$\frac{W}{J}=%$(round(W_val/J_val, digits=2))$\n$L=%$(size_BZ)$"
 
 function RGFlow(W_val_arr, size_BZ)
     kondoJArrays = Dict{Float64, Array{Float64, 3}}()
@@ -49,7 +50,7 @@ function probe(kondoJArrays, dispersion)
 
         quadrantResult = results_bool[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
         push!(saveNames, plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                     L"$\Gamma/\Gamma_0$", getlabelNoSize(W_val), reverse(colmap)))
+                                     L"$\Gamma/\Gamma_0$", getlabelSize(W_val), reverse(colmap)))
         #push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", getlabelNoSize(W_val)))
     end
     println("\n Saved at $(saveNames).")
@@ -124,12 +125,12 @@ function corr(kondoJArrays, dispersion)
 
             for name in keys(corrResults)
                 push!(saveNames[name], plotHeatmap(abs.(corrResults[name]), (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                                   plotTitles[name], getlabel(W_val), colmap))
+                                                   plotTitles[name], getlabelSize(W_val), colmap))
             end
             for name in keys(corrResults)
                 quadrantResult = corrResults[name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
                 push!(saveNamesPolished[name], plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                                   plotTitles[name], getlabelNoSize(W_val), colmap))
+                                                   plotTitles[name], getlabelSize(W_val), colmap))
             end
         end
     end

@@ -117,19 +117,26 @@ end
     iterDiagResults = nothing
     id = nothing
     while true
-        savePaths, iterDiagResults, exitCode = IterDiag(
-                                     hamiltonianFamily, 
-                                     maxSize;
-                                     symmetries=Char['N', 'S'],
-                                     magzReq=(m, N) -> -1 ≤ m ≤ 2,
-                                     occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
-                                     #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
-                                     #=corrOccReq=(x, N) -> x == div(N, 2),=#
-                                     correlationDefDict=correlationDefDict,
-                                     vneDefDict=vneDefDict,
-                                     mutInfoDefDict=mutInfoDefDict,
-                                     silent=true,
-                                    )
+        output = IterDiag(
+                          hamiltonianFamily, 
+                          maxSize;
+                          symmetries=Char['N', 'S'],
+                          magzReq=(m, N) -> -1 ≤ m ≤ 2,
+                          occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                          #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
+                          #=corrOccReq=(x, N) -> x == div(N, 2),=#
+                          correlationDefDict=correlationDefDict,
+                          vneDefDict=vneDefDict,
+                          mutInfoDefDict=mutInfoDefDict,
+                          silent=true,
+                         )
+        exitCode = 0
+        if length(output) == 2
+            savePaths, iterDiagResults = output
+        else
+            savePaths, iterDiagResults, exitCode = output
+        end
+                          
 
         if exitCode > 0
             id = rand()
@@ -196,8 +203,8 @@ function correlationMap(
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
     corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in calculatePoints
-        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs)
-        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs)
+        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs)
+        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs)
         avgCorr = mergewith(+, corrNode, corrAntiNode)
         map!(v -> v ./ 2, values(avgCorr))
         avgCorr

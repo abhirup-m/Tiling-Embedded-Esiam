@@ -151,7 +151,7 @@ end
 
 
 # propagate results from lower octant to upper octant
-function propagateIndices(
+function PropagateIndices(
         innerPoints::Vector{Int64}, 
         corrResults::Dict{String, Vector{Float64}}, 
         size_BZ::Int64, 
@@ -164,8 +164,7 @@ function propagateIndices(
     end
     
     for pivot in innerPoints
-        k_val = map1DTo2D(point, size_BZ)
-        newPoints = [map2DTo1D((k_val .* signs)..., size_BZ) 
+        newPoints = [map2DTo1D((map1DTo2D(point, size_BZ) .* signs)..., size_BZ) 
                      for point in [[pivot]; oppositePoints[pivot]] 
                      for signs in [(-1, 1), (-1, -1), (1, -1)]
                     ]
@@ -174,6 +173,28 @@ function propagateIndices(
         end
     end
     return corrResults
+end
+
+
+# propagate results from lower octant to upper octant
+function PropagateIndices(
+        innerPoints::Vector{Int64}, 
+        size_BZ::Int64, 
+        oppositePoints::Dict{Int64, Vector{Int64}}
+    )
+    propagators = Dict{Int64, Vector{Int64}}(p => Int64[] for p in innerPoints)
+    for pivot in innerPoints
+        append!(propagators[pivot], oppositePoints[pivot])
+    end
+    
+    for pivot in innerPoints
+        newPoints = [map2DTo1D((map1DTo2D(point, size_BZ) .* signs)..., size_BZ) 
+                     for point in [[pivot]; oppositePoints[pivot]] 
+                     for signs in [(-1, 1), (-1, -1), (1, -1)]
+                    ]
+        append!(propagators[pivot], newPoints)
+    end
+    return propagators
 end
 
 

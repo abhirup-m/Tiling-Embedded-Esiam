@@ -1,7 +1,7 @@
 using Distributed
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(0)
+    addprocs(5)
 end
 using JLD2
 using LinearAlgebra
@@ -15,17 +15,18 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 600
-WmaxSize = 600
+global const maxSize = 500
+WmaxSize = 400
 
 colmap = reverse(ColorSchemes.cherry)
-numShells = 5
-size_BZ = 49
-bathIntLegs = 3
-# W_val_arr = -1.0 .* [0, 8.19, 8.77] ./ size_BZ
-W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ
+numShells = 1
+size_BZ = 33
+bathIntLegs = 2
+W_val_arr = -1.0 .* [5.6, 5.82, 5.92] ./ size_BZ
+#=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
-# W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
+#=W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ=#
+
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 getlabel(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
 getlabelSize(W_val) = L"$\frac{W}{J}=%$(round(W_val/J_val, digits=2))$\n$L=%$(size_BZ)$"
@@ -60,7 +61,7 @@ end
 
 function corr(kondoJArrays, dispersion)
 
-    spinCorrelation = Dict("SF" => (nothing, (i, j) -> [
+    spinCorrelation = Dict("SF" => [nothing, (i, j) -> [
                                              ("nn", [1, 2, 2 * i + 1, 2 * i + 1], -0.25),
                                              ("nn", [1, 2, 2 * i + 2, 2 * i + 2], 0.25),
                                              ("nn", [2, 1, 2 * i + 1, 2 * i + 1], 0.25),
@@ -68,22 +69,28 @@ function corr(kondoJArrays, dispersion)
                                              ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1], -0.5),
                                              ("+-+-", [2, 1, 2 * i + 1, 2 * i + 2], -0.5),
                                             ]
-                                   )
+                                   ]
                           )
+    node = map2DTo1D(-π/2, -π/2, size_BZ)
+    antinode = map2DTo1D(-π, 0., size_BZ)
+
     chargeCorrelation = Dict(
-                             "doubOcc" => (nothing, (i, j) -> [("nn", [2 * i + 1, 2 * i + 2], 1.), ("hh", [2 * i + 1, 2 * i + 2], 0.)]),
-                             "cfnode" => ((-π/2, -π/2), (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
+                             "doubOcc" => [nothing, (i, j) -> [("nn", [2 * i + 1, 2 * i + 2], 1.), ("hh", [2 * i + 1, 2 * i + 2], 0.)]
+                                          ],
+                             "cfnode" => [node, (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
                                                                 ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
-                                                               ]),
-                             "cfantinode" => ((-π, 0.), (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
+                                                               ]
+                                         ],
+                             "cfantinode" => [antinode, (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
                                                                     ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
-                                                                   ])
+                                                                   ]
+                                             ]
                             )
     vneDef = Dict("vne_k" => i -> [2 * i + 1, 2 * i + 2])
     mutInfoDef = Dict(
                       "I2_k_d" => (nothing, (i, j) -> ([1, 2], [2 * i + 1, 2 * i + 2])),
-                      "I2_k_N" => ((-π/2, -π/2), (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
-                      "I2_k_AN" => ((-π, 0.), (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
+                      "I2_k_N" => (node, (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
+                      "I2_k_AN" => (antinode, (i, j) -> ([2 * j + 1, 2 * j + 2], [2 * i + 1, 2 * i + 2])),
                      )
     saveNames = Dict(name => [] for name in ["SF", "vne_k", "I2_k_d", "I2_k_N", "I2_k_AN", "doubOcc", "cfnode", "cfantinode"])
     saveNamesPolished = Dict(name => [] for name in ["SF", "vne_k", "I2_k_d", "I2_k_N", "I2_k_AN", "doubOcc", "cfnode", "cfantinode"])
@@ -146,6 +153,71 @@ function corr(kondoJArrays, dispersion)
     close(f)
 end
 
+
+function Correlations2Point(kondoJArrays, dispersion)
+
+    node = map2DTo1D(-π/2, -π/2, size_BZ)
+    inter = map2DTo1D(-3π/4, -π/4, size_BZ)
+    antinode = map2DTo1D(-π, 0., size_BZ)
+    probePoints = [node, inter, antinode]
+
+    spinCorrelation = Dict("SF1" => [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2, 2 * j + 1], 1.)]])         # c^†_{k↑}c_{d↓}c^†_{d↓}c_{q↑}
+    spinCorrelation["SF4"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2 * j + 2, 1], 1.)]]         # c^†_{k↑}c_{d↓}c^†_{q↓}c_{d↑}
+    spinCorrelation["SF7"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2 * j + 2, 2 * j + 1], 1.)]] # c^†_{k↑}c_{d↓}c^†_{q↓}c_{q↑}
+    spinCorrelation["SF5"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2 * i + 2, 2 * j + 2, 1], 1.)]] # c^†_{k↑}c_{k↓}c^†_{q↓}c_{d↑}
+    spinCorrelation["SF6"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2 * i + 2, 2, 2 * j + 1], 1.)]] # c^†_{k↑}c_{k↓}c^†_{d↓}c_{q↑}
+    spinCorrelation["SF2"] = [-1, (i, j) -> [("+-+-", [1, 2 * i + 2, 2 * j + 2, 1], 1.)]]         # c^†_{d↑}c_{k↓}c^†_{q↓}c_{d↑}
+    spinCorrelation["SF3"] = [-1, (i, j) -> [("+-+-", [1, 2 * i + 2, 2, 2 * j + 1], 1.)]]         # c^†_{d↑}c_{k↓}c^†_{d↓}c_{q↑}
+    spinCorrelation["SF8"] = [-1, (i, j) -> [("+-+-", [1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.)]] # c^†_{d↑}c_{k↓}c^†_{q↓}c_{q↑}
+
+    saveNamesPolished = Dict(name => [] for name in ["SF-N", "SF-IN", "SF-AN"])
+    plotTitles = Dict(
+                      "SF-N" => L"$\chi_s(k_\mathrm{N}, \vec{k})$",
+                      "SF-IN" => L"$\chi_s(k_\mathrm{MID}, \vec{k})$",
+                      "SF-AN" => L"$\chi_s(k_\mathrm{AN}, \vec{k})$",
+                     )
+
+    for W_val in W_val_arr
+
+        hamiltDetails = Dict(
+                             "dispersion" => dispersion,
+                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                             "orbitals" => orbitals,
+                             "size_BZ" => size_BZ,
+                             "bathIntForm" => bathIntForm,
+                            )
+
+        hamiltDetails["W_val"] = 0.
+        effectiveNumShells = 1
+        effectiveMaxSize = maxSize
+        results, _ = correlationMap2Point(hamiltDetails, effectiveNumShells, 
+                                          spinCorrelation, effectiveMaxSize;
+                                          probePoints=probePoints,
+                                         )
+        corrResults = Dict()
+        corrResults["SF-N"] = sum([v[1, :] for v in values(results)]) ./ 6
+        corrResults["SF-IN"] = sum([v[2, :] for v in values(results)]) ./ 6
+        corrResults["SF-AN"] = sum([v[3, :] for v in values(results)]) ./ 6
+
+        for name in keys(corrResults)
+            quadrantResult = corrResults[name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+            push!(saveNamesPolished[name], plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                               plotTitles[name], getlabelSize(W_val), colmap))
+        end
+    end
+    f = open("saveData.txt", "a")
+    for (name, files) in saveNamesPolished
+        if isempty(files)
+            continue
+        end
+        shellCommand = "pdfunite $(join(files, " ")) $(name).pdf"
+        run(`sh -c $(shellCommand)`)
+        write(f, shellCommand*"\n")
+    end
+    close(f)
+end
+
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
 @time probe(kondoJArrays, dispersion)
 @time corr(kondoJArrays, dispersion)
+#=@time Correlations2Point(kondoJArrays, dispersion)=#

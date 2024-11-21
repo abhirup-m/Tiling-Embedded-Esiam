@@ -73,8 +73,8 @@ end
     correlationDefDict = Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}}()
     pivotIndices = findall(∈(pivotPoints), activeStatesArr[end])
     for (name, (secondMomentum, func)) in correlationFuncDict
-        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(map2DTo1D(secondMomentum..., hamiltDetails["size_BZ"])), activeStatesArr[end])
-        for pivotIndex in filter(≠(secondIndex), pivotIndices)
+        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), activeStatesArr[end])
+        for pivotIndex in pivotIndices
             correlationDefDict[name * string(pivotIndex)] = func(pivotIndex, secondIndex)
             mapCorrNameToIndex[name * string(pivotIndex)] = (name, activeStatesArr[end][pivotIndex])
         end
@@ -90,7 +90,7 @@ end
 
     mutInfoDefDict = Dict{String, NTuple{2, Vector{Int64}}}()
     for (name, (secondMomentum, func)) in mutInfoFuncDict
-        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(map2DTo1D(secondMomentum..., hamiltDetails["size_BZ"])), activeStatesArr[end])
+        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), activeStatesArr[end])
         for pivotIndex in pivotIndices
             partyA, partyB = func(pivotIndex, secondIndex)
             if sort(partyA) ≠ sort(partyB)
@@ -123,12 +123,11 @@ end
                           symmetries=Char['N', 'S'],
                           magzReq=(m, N) -> -1 ≤ m ≤ 2,
                           occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
-                          #=corrMagzReq=(m, N) -> m == ifelse(isodd(div(N, 2)), 1, 0),=#
-                          #=corrOccReq=(x, N) -> x == div(N, 2),=#
                           correlationDefDict=correlationDefDict,
                           vneDefDict=vneDefDict,
                           mutInfoDefDict=mutInfoDefDict,
                           silent=true,
+                          maxMaxSize=600,
                          )
         exitCode = 0
         if length(output) == 2
@@ -211,7 +210,7 @@ function correlationMap(
     end
 
 
-    corrResults = propagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+    corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
     corrResultsBool = Dict()
     for (name, results) in corrResults
@@ -222,12 +221,79 @@ function correlationMap(
 end
 
 
-function tiledCorrelationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition, tiler)
-    results = zeros(size_BZ^2, size_BZ^2)
-    correlationmap, _ = correlationMap(size_BZ, energyContours, spectrumSet, sequenceSets, correlationDefinition)
-    results = tiler(correlationmap)
-    results[abs.(results) .< TOLERANCE ^ 0.5] .= TOLERANCE ^ 0.5
-    results_bool = [r <= RG_RELEVANCE_TOL ? -1 : 1 for r in results]
+function correlationMap2Point(
+        hamiltDetails::Dict,
+        numShells::Int64,
+        correlationFuncDict::Dict,
+        maxSize::Int64;
+        probePoints::Vector{Int64}=Int64[],
+        bathIntLegs::Int64=2,
+    )
+    size_BZ = hamiltDetails["size_BZ"]
+
+    # initialise zero array for storing correlations
+    
+    cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
+
+    # pick out k-states from the southwest quadrant that have positive energies 
+    # (hole states can be reconstructed from them (p-h symmetry))
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
+                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
+                 && cutoffEnergy ≥ dispersion[p] ≥ 0
+                ]
+
+    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
+    symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
+    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
+                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
+                                     for p in SWIndices]
+    symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
+    calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
+    
+    oppositePoints = Dict{Int64, Vector{Int64}}()
+    for point in calculatePoints
+        reflectDiagonal = map2DTo1D(reverse(map1DTo2D(point, size_BZ))..., size_BZ)
+        reflectFS = map2DTo1D((-1 .* reverse(map1DTo2D(point, size_BZ)) .+ [-π, -π])..., size_BZ)
+        reflectBoth = map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
+        oppositePoints[point] = [reflectDiagonal, reflectFS, reflectBoth]
+    end
+
+    twoPointResults = Dict(k => zeros(length(probePoints), size_BZ^2) for k in keys(correlationFuncDict))
+
+    if isempty(probePoints)
+        probePoints = sort(calculatePoints)
+    end
+    for pivotIndex in eachindex(probePoints)
+        desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
+        results = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint2 in calculatePoints
+            for k in keys(correlationFuncDict)
+                correlationFuncDict[k][1] = probePoints[pivotIndex]
+            end
+            corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint2], symmetricPairsNode, copy(correlationFuncDict), Dict(), Dict(), bathIntLegs)
+            corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint2], symmetricPairsAntiNode, copy(correlationFuncDict), Dict(), Dict(), bathIntLegs)
+            avgCorr = mergewith(+, corrNode, corrAntiNode)
+            map!(v -> v ./ 2, values(avgCorr))
+            avgCorr
+        end
+        results = PropagateIndices(calculatePoints, results, size_BZ, oppositePoints)
+        for (k, v) in results
+            twoPointResults[k][pivotIndex, :] .= v
+        end
+    end
+
+    twoPointResultsBool = Dict()
+    for (name, results) in twoPointResults
+        @assert !any(isnan.(results))
+        twoPointResultsBool[name] = map(r -> abs(r) ≤ 1e-6 ? -1 : 1, results)
+    end
+    return twoPointResults, twoPointResultsBool
+end
+
+
+function CorrelationTiling(
+        corrResults::Vector{Float64}
+    )
+    tiledResults = zeros(repeat(length(corrResults), 2)...)
     return results, results_bool
 end
 
@@ -247,8 +313,8 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
             while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
                 bools = []
                 for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
-                    @time kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
-                    @time results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
+                    kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
+                    results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
                     push!(bools, results_bool[kpoint] == 0)
                 end
                 if bools[1] == false && bools[3] == true

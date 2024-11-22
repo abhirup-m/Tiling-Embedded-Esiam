@@ -58,6 +58,7 @@ end
         vneFuncDict::Dict,
         mutInfoFuncDict::Dict,
         bathIntLegs::Int64,
+        noSelfCorr::Vector{String},
     )
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
     corrResults = Dict{String, Vector{Float64}}(k => zeros(hamiltDetails["size_BZ"]^2) for k in allKeys)
@@ -75,6 +76,9 @@ end
     for (name, (secondMomentum, func)) in correlationFuncDict
         secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), activeStatesArr[end])
         for pivotIndex in pivotIndices
+            if name ∈ noSelfCorr && secondIndex == pivotIndex
+                continue
+            end
             correlationDefDict[name * string(pivotIndex)] = func(pivotIndex, secondIndex)
             mapCorrNameToIndex[name * string(pivotIndex)] = (name, activeStatesArr[end][pivotIndex])
         end
@@ -170,6 +174,7 @@ function correlationMap(
         vneFuncDict::Dict=Dict(),
         mutInfoFuncDict::Dict=Dict(),
         bathIntLegs::Int64=2,
+        noSelfCorr::Vector{String}=String[],
     )
     size_BZ = hamiltDetails["size_BZ"]
 
@@ -202,9 +207,9 @@ function correlationMap(
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
     corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in calculatePoints
-        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs)
-        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs)
-        avgCorr = mergewith(+, corrNode, corrAntiNode)
+        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr)
+        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr)
+        @time avgCorr = mergewith(+, corrNode, corrAntiNode)
         map!(v -> v ./ 2, values(avgCorr))
         avgCorr
     end

@@ -1,7 +1,7 @@
 using Distributed
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(5)
+    addprocs(0)
 end
 using JLD2
 using LinearAlgebra
@@ -22,7 +22,7 @@ colmap = reverse(ColorSchemes.cherry)
 numShells = 1
 size_BZ = 33
 bathIntLegs = 2
-W_val_arr = -1.0 .* [5.6, 5.82, 5.92] ./ size_BZ
+W_val_arr = -1.0 .* [0, 5.7, 5.92] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ=#
@@ -121,13 +121,14 @@ function corr(kondoJArrays, dispersion)
             corrResults = nothing
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
-                                                effectiveMaxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs)
+                                                effectiveMaxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs,
+                                                noSelfCorr=["cfnode", "cfantinode"])
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize;
                                                 vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs)
             else # case of W != 0 and considering the actual W as effective W, for charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
-                                                bathIntLegs=bathIntLegs)
+                                                bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"])
             end
 
             for name in keys(corrResults)

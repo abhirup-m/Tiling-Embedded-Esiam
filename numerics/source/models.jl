@@ -5,17 +5,23 @@ function kondoKSpace(
         bathIntFunc,
         specialIndices::Vector{Int64},
         bathIntLegs::Int64,
-        impField::Float64,
+        globalField::Float64,
         tolerance::Float64,
     )
     specialIndices = ifelse(isempty(specialIndices), sequence, specialIndices)
 
     operatorList = Dict{Tuple{String,Vector{Int64}},Float64}()
 
-    if impField != 0
-        for i in 1:(2 + length(sequence))
-            merge!(+, operatorList, Dict(("n", [2 * i - 1]) => impField/2))
-            merge!(+, operatorList, Dict(("n", [2 * i]) => -impField/2))
+    if globalField != 0
+        if specialIndices == sequence
+            merge!(+, operatorList, Dict(("n", [1]) => globalField/2))
+            merge!(+, operatorList, Dict(("n", [2]) => -globalField/2))
+        end
+        for (i, index) in enumerate(sequence)
+            if index ∈ specialIndices
+                merge!(+, operatorList, Dict(("n", [2 * i + 1]) => globalField/2))
+                merge!(+, operatorList, Dict(("n", [2 * i + 2]) => -globalField/2))
+            end
         end
     end
 

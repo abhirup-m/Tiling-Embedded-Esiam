@@ -3,7 +3,7 @@
 
 @everywhere using ProgressMeter, Combinatorics
 @everywhere using fermions
-@everywhere include("models.jl")
+# @everywhere include("models.jl")
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -59,28 +59,25 @@ end
         mutInfoFuncDict::Dict,
         bathIntLegs::Int64,
         noSelfCorr::Vector{String},
+        addPerStep::Int64,
     )
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
     corrResults = Dict{String, Vector{Float64}}(k => zeros(hamiltDetails["size_BZ"]^2) for k in allKeys)
 
-    newStatesArr = [[p] for p in sortedPoints if hamiltDetails["dispersion"][p] ≤ maximum(hamiltDetails["dispersion"][pivotPoints]) && p ∉ pivotPoints]
-    insert!(newStatesArr, 1, pivotPoints)
-    activeStatesArr = Vector{Int64}[pivotPoints]
-    for newStates in newStatesArr[2:end]
-        push!(activeStatesArr, [activeStatesArr[end]; newStates])
-    end
+    nonPivotPoints = filter(∉(pivotPoints), sortedPoints)
+    pointsSequence = vcat(pivotPoints, nonPivotPoints)
 
     mapCorrNameToIndex = Dict()
     correlationDefDict = Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}}()
-    pivotIndices = findall(∈(pivotPoints), activeStatesArr[end])
+    pivotIndices = findall(∈(pivotPoints), pointsSequence)
     for (name, (secondMomentum, func)) in correlationFuncDict
-        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), activeStatesArr[end])
+        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), pointsSequence)
         for pivotIndex in pivotIndices
             if name ∈ noSelfCorr && secondIndex == pivotIndex
                 continue
             end
             correlationDefDict[name * string(pivotIndex)] = func(pivotIndex, secondIndex)
-            mapCorrNameToIndex[name * string(pivotIndex)] = (name, activeStatesArr[end][pivotIndex])
+            mapCorrNameToIndex[name * string(pivotIndex)] = (name, pointsSequence[pivotIndex])
         end
     end
 
@@ -88,36 +85,41 @@ end
     for (name, func) in vneFuncDict
         for pivotIndex in pivotIndices
             vneDefDict[name * string(pivotIndex)] = func(pivotIndex)
-            mapCorrNameToIndex[name * string(pivotIndex)] = (name, activeStatesArr[end][pivotIndex])
+            mapCorrNameToIndex[name * string(pivotIndex)] = (name, pointsSequence[pivotIndex])
         end
     end
 
     mutInfoDefDict = Dict{String, NTuple{2, Vector{Int64}}}()
     for (name, (secondMomentum, func)) in mutInfoFuncDict
-        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), activeStatesArr[end])
+        secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), pointsSequence)
         for pivotIndex in pivotIndices
             partyA, partyB = func(pivotIndex, secondIndex)
             if sort(partyA) ≠ sort(partyB)
                 mutInfoDefDict[name * join(pivotIndex)] = (partyA, partyB)
-                mapCorrNameToIndex[name * join(pivotIndex)] = (name, activeStatesArr[end][pivotIndex])
+                mapCorrNameToIndex[name * join(pivotIndex)] = (name, pointsSequence[pivotIndex])
             end
         end
     end
 
-    hamiltonianFamily = fetch.([
-                                Threads.@spawn kondoKSpace(activeStates,
-                                                           hamiltDetails["dispersion"], 
-                                                           hamiltDetails["kondoJArray"],
-                                                           states -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], hamiltDetails["orbitals"][2], hamiltDetails["size_BZ"], states),
-                                                           newStates,
-                                                           bathIntLegs,
-                                                           1e-4,
-                                                           1e-10,
-                                                          )
-                                for (activeStates, newStates) in zip(activeStatesArr, newStatesArr)
-                               ]
-                              )
-
+    bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
+                                                         hamiltDetails["orbitals"][2],
+                                                         hamiltDetails["size_BZ"],
+                                                         points)
+                            
+    hamiltonian = KondoModel(
+                             hamiltDetails["dispersion"][pointsSequence],
+                             hamiltDetails["kondoJArray"][pointsSequence, pointsSequence],
+                             pointsSequence,
+                             bathIntFunc;
+                             bathIntLegs=bathIntLegs,
+                             globalField=1e-8,
+                             couplingTolerance=1e-10,
+                            )
+    indexPartitions = [2 + 2 * length(pivotPoints)]
+    while indexPartitions[end] < 2 + 2 * length(pointsSequence)
+        push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
+    end
+    hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
     iterDiagResults = nothing
     id = nothing
     while true
@@ -131,7 +133,7 @@ end
                           vneDefDict=vneDefDict,
                           mutInfoDefDict=mutInfoDefDict,
                           silent=true,
-                          maxMaxSize=600,
+                          maxMaxSize=maxSize,
                          )
         exitCode = 0
         if length(output) == 2
@@ -175,19 +177,20 @@ function correlationMap(
         mutInfoFuncDict::Dict=Dict(),
         bathIntLegs::Int64=2,
         noSelfCorr::Vector{String}=String[],
+        addPerStep::Int64=1,
     )
     size_BZ = hamiltDetails["size_BZ"]
 
-    # initialise zero array for storing correlations
-    
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
     SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
                  && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && cutoffEnergy ≥ dispersion[p] ≥ 0
+                 && abs(cutoffEnergy) ≥ abs(dispersion[p])
                 ]
+
+    calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
 
     distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
     symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
@@ -195,8 +198,6 @@ function correlationMap(
                                       sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
                                      for p in SWIndices]
     symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
-    calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
-    
     oppositePoints = Dict{Int64, Vector{Int64}}()
     for point in calculatePoints
         reflectDiagonal = map2DTo1D(reverse(map1DTo2D(point, size_BZ))..., size_BZ)
@@ -207,13 +208,12 @@ function correlationMap(
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
     corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in calculatePoints
-        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr)
-        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr)
-        @time avgCorr = mergewith(+, corrNode, corrAntiNode)
+        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
+        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
+        avgCorr = mergewith(+, corrNode, corrAntiNode)
         map!(v -> v ./ 2, values(avgCorr))
         avgCorr
     end
-
 
     corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 

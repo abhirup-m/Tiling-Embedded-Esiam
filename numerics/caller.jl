@@ -22,10 +22,10 @@ colmap = reverse(ColorSchemes.cherry)
 numShells = 1
 size_BZ = 33
 bathIntLegs = 2
-W_val_arr = -1.0 .* [0, 5.7, 5.92] ./ size_BZ
+W_val_arr = -1.0 .* [0, 5.6, 5.92] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
-#=W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ=#
+# W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
 getlabel(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
@@ -52,7 +52,6 @@ function probe(kondoJArrays, dispersion)
         quadrantResult = results_bool[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
         push!(saveNames, plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                                      L"$\Gamma/\Gamma_0$", getlabelSize(W_val), reverse(colmap)))
-        #push!(saveNames, plotHeatmap(results_bool, (x_arr, x_arr), (L"$ak_x/\pi$", L"$ak_y/\pi$"), L"$\Gamma/\Gamma_0$", getlabelNoSize(W_val)))
     end
     println("\n Saved at $(saveNames).")
     run(`pdfunite $(saveNames) scattprob.pdf`)
@@ -122,13 +121,13 @@ function corr(kondoJArrays, dispersion)
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
                                                 effectiveMaxSize; vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs,
-                                                noSelfCorr=["cfnode", "cfantinode"])
+                                                noSelfCorr=["cfnode", "cfantinode"], addPerStep=2)
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize;
-                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs)
+                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, bathIntLegs=bathIntLegs, addPerStep=2)
             else # case of W != 0 and considering the actual W as effective W, for charge
                 corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
-                                                bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"])
+                                                bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"], addPerStep=2)
             end
 
             for name in keys(corrResults)
@@ -162,7 +161,7 @@ function Correlations2Point(kondoJArrays, dispersion)
     antinode = map2DTo1D(-π, 0., size_BZ)
     probePoints = [node, inter, antinode]
 
-    spinCorrelation = Dict("SF1" => [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2, 2 * j + 1], 1.)]])         # c^†_{k↑}c_{d↓}c^†_{d↓}c_{q↑}
+    spinCorrelation = Dict("SF1" => [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2, 2 * j + 1], 1.)]]) # c^†_{k↑}c_{d↓}c^†_{d↓}c_{q↑}
     spinCorrelation["SF4"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2 * j + 2, 1], 1.)]]         # c^†_{k↑}c_{d↓}c^†_{q↓}c_{d↑}
     spinCorrelation["SF7"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2, 2 * j + 2, 2 * j + 1], 1.)]] # c^†_{k↑}c_{d↓}c^†_{q↓}c_{q↑}
     spinCorrelation["SF5"] = [-1, (i, j) -> [("+-+-", [2 * i + 1, 2 * i + 2, 2 * j + 2, 1], 1.)]] # c^†_{k↑}c_{k↓}c^†_{q↓}c_{d↑}

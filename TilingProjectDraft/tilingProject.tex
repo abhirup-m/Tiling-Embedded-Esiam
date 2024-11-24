@@ -564,7 +564,7 @@ Similar to the approach for the real-space Greens function, we simplify \(F^*_p(
 \end{aligned}\end{equation}
 The effect of the translation operators on the \(k-\)space annihilation operator can be easily deduced by transforming it to real-space, using the Fourier transform definition
 \begin{equation}\begin{aligned}\label{fourTransf}
-	c({\bf K}) = \frac{1}{N}\sum_{\bf r}e^{i{\bf K}\cdot{\bf r}}c({\bf r})~.
+	c({\bf K}) = \frac{1}{\sqrt N}\sum_{\bf r}e^{i{\bf K}\cdot{\bf r}}c({\bf r})~.
 \end{aligned}\end{equation}
 Upon applying this, we get
 \begin{equation}\begin{aligned}\label{translationOnField}
@@ -663,23 +663,47 @@ One can also look at \(k-\)space correlations, of the spin or charge kind:
 	\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) &= \frac{1}{2}\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right) + \text{h.c.}}~,\\
 	\tilde{C}_\text{flip}({\bf K}_1, {\bf K}_2) &= \frac{1}{2}\braket{C^+\left({\bf K}_1\right)C^-\left({\bf K}_2\right) + \text{h.c.}}~.
 \end{aligned}\end{equation}
-We again consider the spin-flip correlation first. In order to introduce the impurity site, we rewrite the expectation values as
+We again consider the spin-flip correlation first. In order to introduce the impurity site, we rewrite the expectation values sum of all coherent scattering processes involving the impurity site and the two \(k-\)states. Using eq.~\ref{eigenstateProposal}, we express the correlation in terms of a single auxiliary model:
 \begin{equation}\begin{aligned}
-	&\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\left[\sqrt{\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)}\braket{S^-\left({\bf K}_2\right)S^+\left({\bf K}_1\right)}} + \text{h.c.}\right] ~.
+	&\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)} \\
+	&= \frac{1}{N}\sum_{{\bf r}_d}\braket{\psi_\text{gs}({\bf r}_d) | S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_d)}~,
 \end{aligned}\end{equation}
-We frame this in terms of the auxiliary model by (i) making the substitution again for the ground states, and (ii) by fourier transforming the first operator within each expectation value to real space and retaining just the impurity site operator:
+where \({\bf r}_d\) is the location of the impurity site, and we average over the correlation values calculated over all possible auxiliary models. Assuming translation invariance, the static correlation values should be equal on every auxiliary model, allowing us to replace the average with the value at the reference origin \({\bf r}_c\):
+\begin{equation}\begin{aligned}\label{correlationAuxiliary}
+	&\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)} = \braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+Using the definition \(S^+(\nu) = c^\dagger_{\nu \uparrow} c_{nu \downarrow}\), one can Fourier transform the fermionic operators in eq.~\ref{correlationAuxiliary},
 \begin{equation}\begin{aligned}
-	&\tilde{S}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\left[\sqrt{\braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf d}\right)S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}}\right. \\
-	&\left.\times\sqrt{\braket{\psi_\text{gs}{({\bf r}_c)} | S^-\left({\bf d}\right)S^+\left({\bf K}_1\right) | \psi_\text{gs}{({\bf r}_c)}}} + \text{h.c.}\right] ~.
+	c_{{\bf k}\sigma} = \sum_{\bf r} e^{i {\bf k}\cdot{\bf r}} c_{{\bf r}\sigma},
 \end{aligned}\end{equation}
-Performing similar manipulations with the charge isospin-flip correlation gives
+and retain the only impurity site contribution \({\bf r}={\bf r}_c\) in order to introduce the dynamics of the impurity site. Carrying this out for one and two fermionic operators gives
+\begin{equation}\begin{aligned}\label{correlationAuxiliaryProcess}
+	&\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)} \\
+	&= \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf r}_c \uparrow} c_{{\bf K}_1 \downarrow} S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf K}_1 \uparrow} c_{{\bf r}_c \downarrow} S^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf K}_1\right) c^\dagger_{{\bf r}_c \downarrow} c_{{\bf K}_2 \uparrow} | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | S^+\left({\bf K}_1\right) c^\dagger_{{\bf K}_2 \downarrow} c_{{\bf r}_c \uparrow} | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf r}_c \uparrow} c_{{\bf K}_1 \downarrow} c^\dagger_{{\bf r}_c \downarrow} c_{{\bf K}_2 \uparrow} | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf r}_c \uparrow} c_{{\bf K}_1 \downarrow} c^\dagger_{{\bf K}_2 \downarrow} c_{{\bf r}_c \uparrow} | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf K}_1 \uparrow} c_{{\bf r}_c \downarrow} c^\dagger_{{\bf r}_c \downarrow} c_{{\bf K}_2 \uparrow} | \psi_\text{gs}({\bf r}_c)}\\
+	&+ \braket{\psi_\text{gs}({\bf r}_c) | c^\dagger_{{\bf K}_1 \uparrow} c_{{\bf r}_c \downarrow} c^\dagger_{{\bf K}_2 \downarrow} c_{{\bf r}_c \uparrow} | \psi_\text{gs}({\bf r}_c)}~.
+\end{aligned}\end{equation}
+We haven't considered three-particle dynamics on the impurity site because those would involve only one momentum state and would hence be incoherent for the other momentum state; for the same reason, certain two-particle terms have also been ignored. Henceforth, we replace the index \({\bf r}_c\) with \(d\), indicating that it is the position of the impurity site. By introducing the off-site spin operator \(S^+_{\nu_1,\nu_2} = c^\dagger_{\nu_1 \uparrow} c_{\nu_2 \downarrow}\) that flips an effective spin across multiple orbitals, we can express eq.~\ref{correlationAuxiliaryProcess} in a more illuminating form:
 \begin{equation}\begin{aligned}
-	&\tilde{C}_\text{flip}({\bf K}_1, {\bf K}_2) \\
-	&= \frac{1}{2}\left[\sqrt{\braket{\psi_\text{gs}({\bf r}_c) | C^+\left({\bf d}\right)C^-\left({\bf K}_2\right) | \psi_\text{gs}({\bf r}_c)}}\right. \\
-	&\left.\times\sqrt{\braket{\psi_\text{gs}{({\bf r}_c)} | C^-\left({\bf d}\right)C^+\left({\bf K}_1\right) | \psi_\text{gs}{({\bf r}_c)}}} + \text{h.c.}\right] ~.
+	&\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)} =\\
+	& \braket{(S^+_{d, {\bf K}_1} + S^+_{{\bf K}_1,d}) S^-({\bf K}_2) + S^+({\bf K}_1) (S^-_{d, {\bf K}_2} + S^-_{{\bf K}_2, d}) \right.\\
+	&+ \left.S^+_{d, {\bf K}_1} (S^-_{{\bf K}_2, d} + S^-_{d, {\bf K}_2}) + (S^+_{{\bf K}_1, d} + S^+_{{\bf K}_1, d}) S^-_{{\bf K}_2, d}}~.
 \end{aligned}\end{equation}
+This allows us to visualise the \(k-\)space correlation function through various scattering processes within the auxiliary model: the net correlation between \({\bf K}_1\) and \({\bf K}_2\) occur either through (i) simultaneous and opposite flips of the spin on one momentum state and the shared spin on the impurity site and another momentum state, or (ii) the simultaneous flips of spins shared between all three members.
+
+The charge correlations can be treated exactly the same way. We quote the final result here, in terms of the off-site charge operators \(C^+_{\nu_1, \nu_2} = c^\dagger_{\nu_1 \uparrow} c^\dagger_{\nu_2 \downarrow}\) :
+\begin{equation}\begin{aligned}
+	&\left<C^+({\bf K}_1) C^-({\bf K}_2)\right> = \\
+	& \braket{(C^+_{d, {\bf K}_1} + C^+_{{\bf K}_1,d}) C^-({\bf K}_2) + C^+({\bf K}_1) (C^-_{d, {\bf K}_2} + C^-_{{\bf K}_2, d}) \right.\\
+	&+ \left.C^+_{d, {\bf K}_1} (C^-_{{\bf K}_2, d} + C^-_{d, {\bf K}_2}) + (C^+_{{\bf K}_1, d} + C^+_{{\bf K}_1, d}) C^-_{{\bf K}_2, d}}~.
+\end{aligned}\end{equation}
+
+
 
 \section{Entanglement measures}
 

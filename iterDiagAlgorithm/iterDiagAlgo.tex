@@ -4,12 +4,14 @@
 
 \title{Iterative Ground State Approach Algorithm}
 \begin{abstract}
-	The following is the algorithm for performing an iterative diagonalization of fermionic systems. It is mostly similar to DMRG and NRG, and allows obtaining the low-energy spectrum large many-body Hamiltonians.
+	The following is the algorithm for performing an iterative diagonalization of fermionic systems. It is mostly similar to DMRG and NRG, and allows obtaining the low-energy spectrum of large many-body Hamiltonians.
 \end{abstract}
 \date{\today}
 \maketitle
 
-% 
+\section{Introduction}
+The broad idea is the following. We have a Hamiltonian describing an interacting set of states (in real or momentum space). We can express the total Hamiltonian in an incremental fashion: \(H = \sum_i H_i\), where \(H_{i+1}\) involves more number of states than \(H_i\). For example, a tight-binding model can be written in that form, with the definition \(H_i = c^\dagger_{i+1}c_i + \text{h.c.}\). The iterative diagonalisation method obtains the low-energy spectrum of this problem in the following manner: We first diagonalise the Hamiltonian \(H\) for a smaller value of \(i\), small enough such that this can be done exactly. We then truncate the spectrum to a predefined size, and rotate all existing operators to this truncated basis, including the Hamiltonian \(H\). We then consider the "bonding Hamiltonian" \(\Delta H\) between the existing sites and the new sites, and rotate the same into the truncated basis. Adding the previous rotated Hamiltonian \(H\) and the rotated increment Hamiltonian \(\Delta H\) gives us a truncated but effective Hamiltonian for the increased number of sites. We again diagonalise this, and again retain only a fixed number of states in the spectrum. We keep repeating this until we reach the required number of sites.
+
 
 \section{Structure of Hamiltonian and Operators}
 \subsection{Jordan-Wigner Matrix Representation of Fermionic Operators}
@@ -175,10 +177,9 @@ We are in general interested in \(n-\)point correlations of the form \(\left<\ma
 \section{Examples and Benchmarks}
 \subsection{Single-Impurity Anderson Model}
 The single-impurity Anderson model at half-filling is obtained by setting \(H_\text{imp}=-\frac{U}{2}\left(n_{d \uparrow} - n_{d \downarrow}\right)^2 \) and \(H_\text{imp-bath} = -V\sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)\) in eq.~\ref{hamiltonian}. We studied this model using the above approach to benchmark the ground state energy and spin-flip correlation \(\left<\frac{1}{2}S_d^+ S_0^- + \text{h.c.} \right>\) against exact diagonalization (ED). In order to extend the ED to a larger number of sites, we restricted ourselves to just the \(N=2\) sector, \(N\) being the total occupancy. We find very good agreement for \(M_s \sim 1000\) and above. These results are shown in Fig.~\ref{comparisonSIAM}.
-\begin{figure*}[!htpb]
-\centering
+\begin{widetext}
 \includegraphics[width=0.48\textwidth]{energy.pdf}
 \includegraphics[width=0.48\textwidth]{spinflipcomparison.pdf}
 \label{comparisonSIAM}
-\end{figure*}
+\end{widetext}
 \end{document}

@@ -2,7 +2,7 @@
 ##### (correlation functions, Greens functions, etc)    #####
 
 @everywhere using ProgressMeter, Combinatorics
-@everywhere using fermions
+@everywhere using Fermions
 # @everywhere include("models.jl")
 
 """
@@ -168,6 +168,54 @@ end
 end
 
 
+function iterDiagSpecFunc(
+        hamiltDetails::Dict,
+        maxSize::Int64,
+        sortedPoints::Vector{Int64},
+        specFuncDict::Dict,
+        bathIntLegs::Int64,
+        addPerStep::Int64,
+        freqValues::Vector{Float64},
+        standDev::Union{Vector{Float64}, Float64},
+    )
+
+    bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
+                                                         hamiltDetails["orbitals"][2],
+                                                         hamiltDetails["size_BZ"],
+                                                         points)
+                            
+    hamiltonian = KondoModel(
+                             hamiltDetails["dispersion"][sortedPoints],
+                             hamiltDetails["kondoJArray"][sortedPoints, sortedPoints],
+                             sortedPoints,
+                             bathIntFunc;
+                             bathIntLegs=bathIntLegs,
+                             globalField=hamiltDetails["globalField"],
+                             couplingTolerance=1e-10,
+                            )
+    append!(hamiltonian, [("n", [1], -6), ("n", [2], -6), ("nn", [1, 2], 12.)])
+    indexPartitions = [2]
+    while indexPartitions[end] < 2 + 2 * length(sortedPoints)
+        push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
+    end
+    hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
+
+    savePaths, resultsDict, specFuncOperators = IterDiag(
+                                                         hamiltonianFamily, 
+                                                         maxSize;
+                                                         symmetries=Char['N', 'S'],
+                                                         #=magzReq=(m, N) -> -1 ≤ m ≤ 2,=#
+                                                         occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                                                         silent=false,
+                                                         maxMaxSize=maxSize,
+                                                         specFuncDefDict=specFuncDict,
+                                                        ) 
+    totalSpecFunc = IterSpecFunc(savePaths, specFuncOperators, freqValues, standDev;
+                                 normEveryStep=true, degenTol=1e-10,
+                           )
+    return totalSpecFunc
+
+end
 function correlationMap(
         hamiltDetails::Dict,
         numShells::Int64,
@@ -223,6 +271,42 @@ function correlationMap(
         corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
     end
     return corrResults, corrResultsBool
+end
+
+
+function localSpecFunc(
+        hamiltDetails::Dict,
+        numShells::Int64,
+        specFuncDictFunc::Function,
+        freqValues::Vector{Float64},
+        standDev::Union{Vector{Float64}, Float64},
+        maxSize::Int64;
+        bathIntLegs::Int64=2,
+        addPerStep::Int64=1,
+    )
+    size_BZ = hamiltDetails["size_BZ"]
+
+    cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
+
+    # pick out k-states from the southwest quadrant that have positive energies 
+    # (hole states can be reconstructed from them (p-h symmetry))
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
+                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
+                 && abs(cutoffEnergy) ≥ abs(dispersion[p])
+                ]
+
+    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
+    sortedPoints = SWIndices[sortperm(distancesFromNode)]
+    
+    siamSpecDict, kondoSpecDict = specFuncDictFunc(length(sortedPoints))
+    specFunc1 = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints, siamSpecDict, 
+                                    bathIntLegs, addPerStep, freqValues, standDev)
+    specFunc2 = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints, kondoSpecDict, 
+                                 bathIntLegs, addPerStep, freqValues, standDev) / length(sortedPoints)
+    specFunc = specFunc1 + specFunc2
+    specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
+
+    return specFunc
 end
 
 

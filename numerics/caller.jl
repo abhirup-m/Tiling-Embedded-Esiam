@@ -15,20 +15,20 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 500
-WmaxSize = 400
+global const maxSize = 1000
+WmaxSize = 1000
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-size_BZ = 33
+size_BZ = 41
 bathIntLegs = 2
-W_val_arr = -1.0 .* [0, 5.6, 5.92] ./ size_BZ
+W_val_arr = -1.0 .* [0, 3.5, 7.564] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
 
 x_arr = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
-getlabel(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$\n$M_s=%$(maxSize)$"
+getlabelInt(W_val) = L"$W/J=%$(round(W_val/J_val, digits=2))$"
 getlabelSize(W_val) = L"$\frac{W}{J}=%$(round(W_val/J_val, digits=2))$\n$L=%$(size_BZ)$"
 
 function RGFlow(W_val_arr, size_BZ)
@@ -154,6 +154,61 @@ function corr(kondoJArrays, dispersion)
 end
 
 
+function LocalSpecFunc(kondoJArrays, dispersion)
+
+    function specFuncDictFunc(
+            numBathPoints::Int64,
+        )
+        #=if bathIndices == [1]=#
+        #=    return Dict("create" => [("+", [1], 1.), ("+", [2], 1.)], "destroy" => [("-", [1], 1.), ("-", [2], 1.)])=#
+        #=else=#
+        #=    dict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])=#
+        #=    for index in bathIndices[1:1]=#
+        #=        append!(dict["create"], [("+-+", [2, 1, 2 * index - 1], 1.), ("+-+", [1, 2, 2 * index], 1.), ])=#
+        #=        append!(dict["destroy"], [("+--", [1, 2, 2 * index - 1], 1.), ("+--", [2, 1, 2 * index], 1.), ])=#
+        #=    end=#
+        #=    return dict=#
+        #=end=#
+
+        siamSpecDict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])
+        append!(siamSpecDict["create"], [("+", [1], 1.), ("+", [2], 1.)])
+        append!(siamSpecDict["destroy"], [("-", [1], 1.), ("-", [2], 1.)])
+        kondoSpecDict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])
+        for index in 1:numBathPoints
+            append!(kondoSpecDict["create"], [("+-+", [2, 1, 2 * index + 1], 1.), ("+-+", [1, 2, 2 * index + 2], 1.),])
+            append!(kondoSpecDict["destroy"], [("+--", [1, 2, 2 * index + 1], 1.), ("+--", [2, 1, 2 * index + 2], 1.),])
+        end
+        return siamSpecDict, kondoSpecDict
+    end
+    freqValues = collect(-10:0.01:10)
+    specFuncResults = Dict{LaTeXString, Vector{Float64}}()
+    specFuncResultsTrunc = Dict{LaTeXString, Vector{Float64}}()
+    standDev = 0.1 .+ 0 .* abs.(freqValues) / maximum(freqValues)
+
+    for W_val in W_val_arr
+
+        hamiltDetails = Dict(
+                             "dispersion" => dispersion,
+                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                             "orbitals" => orbitals,
+                             "size_BZ" => size_BZ,
+                             "bathIntForm" => bathIntForm,
+                             "W_val" => 0. * W_val,
+                             "globalField" => 1e-5,
+                            )
+        effectiveNumShells = W_val == 0 ? numShells : 1
+        effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
+        specFunc = localSpecFunc(hamiltDetails, effectiveNumShells,
+                                 specFuncDictFunc, freqValues, standDev, effectiveMaxSize;
+                                 bathIntLegs=bathIntLegs, addPerStep=1)
+        specFuncResults[getlabelInt(W_val)] = specFunc
+        specFuncResultsTrunc[getlabelInt(W_val)] = specFunc[abs.(freqValues) .≤ 2]
+    end
+    plotSpecFunc(specFuncResults, freqValues, "impSpecFunc_$(size_BZ).pdf", L"$L=%$(size_BZ)$")
+    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 2], "impSpecFuncTrunc_$(size_BZ).pdf", L"$L=%$(size_BZ)$")
+end
+
+
 function Correlations2Point(kondoJArrays, dispersion)
 
     node = map2DTo1D(-π/2, -π/2, size_BZ)
@@ -219,5 +274,6 @@ end
 
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
 @time probe(kondoJArrays, dispersion)
-@time corr(kondoJArrays, dispersion)
+#=@time corr(kondoJArrays, dispersion)=#
+@time LocalSpecFunc(kondoJArrays, dispersion)
 #=@time Correlations2Point(kondoJArrays, dispersion)=#

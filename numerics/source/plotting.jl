@@ -56,8 +56,29 @@ function plotHeatmap(
              limits=colorbarLimits,
              colormap=colmap,
             )
-    savename = joinpath("figures", randstring(5) * ".pdf")
+    savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename
 end
 
+
+function plotSpecFunc(
+        specFuncArr::Dict{LaTeXString, Vector{Float64}},
+        freqValues::Vector{Float64},
+        saveName::String,
+        title::LaTeXString,
+    )
+    f = Figure()
+    ax = Axis(f[1, 1],
+        title = title,
+        xlabel = L"frequence~($\omega$)",
+        ylabel = L"impurity spectral function~$A(\omega)$",
+    )
+    markers = [:circle, :rect, :diamond, :xcross, :star4]
+    for (i, (label, specFunc)) in enumerate(specFuncArr)
+        scatter!(freqValues, specFunc, label=label, marker=markers[i])
+    end
+    axislegend()
+    save(saveName, current_figure())
+    return nothing
+end

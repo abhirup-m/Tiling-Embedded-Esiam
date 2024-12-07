@@ -25,16 +25,15 @@ update_theme!(
 
 # colmap = ColorSchemes.cherry
 function plotHeatmap(
-        matrixData::Union{Vector{Int64}, Vector{Float64}},
+        matrixData::Union{Matrix{Int64}, Matrix{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
-        axisLabels::NTuple{2, LaTeXString},
-        title::LaTeXString,
-        annotation::LaTeXString,
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        annotation::Union{String, LaTeXString},
         colmap,
+        figSize::NTuple{2, Int64}=(300, 250),
     )
-    matrix = reshape(matrixData, length.(axisVals))
-
-    figure = Figure(size=(300, 250))
+    figure = Figure(size=figSize)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
@@ -42,7 +41,7 @@ function plotHeatmap(
              )
     heatmap!(ax, 
              axisVals..., 
-             matrix; 
+             matrixData; 
              colormap=colmap,
             )
 
@@ -59,6 +58,51 @@ function plotHeatmap(
     savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename
+end
+
+
+function plotHeatmap(
+        matrixData::Union{Vector{Int64}, Vector{Float64}},
+        axisVals::NTuple{2, Vector{Float64}},
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        annotation::Union{String, LaTeXString},
+        colmap,
+        figSize::NTuple{2, Int64}=(300, 250),
+    )
+    matrixData = reshape(matrixData, length.(axisVals))
+    return plotHeatmap(matrixData, axisVals, axisLabels, title, annotation, colmap, figSize=figSize)
+end
+
+
+function plotPhaseDiagram(
+        matrixData::Matrix{Int64},
+        legend::Dict{Int64, String},
+        axisVals::NTuple{2, Vector{Float64}},
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        savename::String,
+        colmap,
+        figSize::NTuple{2, Int64}=(400, 300),
+    )
+    figure = Figure(size=figSize, figure_padding=(0, 8, 4, 8))
+    ax = Axis(figure[1, 1],
+              xlabel = axisLabels[1], 
+              ylabel=axisLabels[2], 
+              xticklabelsize=22,
+              yticklabelsize=22,
+             )
+
+    for v in unique(matrixData)
+        scatter!(ax, [0.5 * (axisVals[1][1] + axisVals[1][end])], [0.5 * (axisVals[2][1] + axisVals[2][end])], color=colmap[v], marker=:rect, label=legend[v]=>(; markersize=15))
+    end
+    heatmap!(ax, 
+             axisVals..., 
+             matrixData; 
+             colormap=colmap,
+            )
+    figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., -10.), patchcolor=:transparent, patchlabelgap=-10, colgap=0)
+    save(savename, figure)
 end
 
 

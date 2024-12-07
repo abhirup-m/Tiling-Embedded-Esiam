@@ -423,53 +423,69 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
 end
 
 
-function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, numPoints::Int64, phaseMaps::Dict{String, Int64})
-    function PhaseStrip(J_val::Float64, W_val_arr::Vector{Float64}, phaseMaps::Dict{String, Int64})
-        phaseFlags = 0 .* collect(W_val_arr)
-        trackPoints = Dict(
-                           "N" => map2DTo1D(π/2, π/2, size_BZ),
-                           "AN" => map2DTo1D(π/1, 0.0, size_BZ),
-                           "M" => map2DTo1D(0.75 * π, 0.25 * π, size_BZ),
-                          )
-
-        gapTrackers = Dict("N" => NaN, "AN" => NaN, "M" => NaN)
-        for (i, W_val) in enumerate(W_val_arr)
-            kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
-            averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
-            @assert averageKondoScale > RG_RELEVANCE_TOL
-            kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-            scattProbBool = scattProb(kondoJArray, size_BZ, dispersion, fractionBZ)[2]
-            if all(>(0), scattProbBool[fermiPoints])
-                phaseFlags[i] = phaseMaps["FL"]
-            elseif !all(==(0), scattProbBool[fermiPoints])
-                phaseFlags[i] = phaseMaps["PG"]
-            else
-                phaseFlags[i] = phaseMaps["MI"]
-            end
-            for (point, kpoint) in trackPoints
-                if isnan(gapTrackers[point]) && scattProbBool[kpoint] == 0
-                    gapTrackers[point] = W_val
-                end
-            end
-        end
-        return phaseFlags, gapTrackers
+function PhaseIndex(
+        J_val::Float64,
+        W_val::Float64,
+        fermiPoints::Vector{Int64},
+    )
+    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
+    averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
+    @assert averageKondoScale > RG_RELEVANCE_TOL
+    kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
+    scattProbBool = scattProb(size_BZ, kondoJArray, dispersion)[2]
+    if all(>(0), scattProbBool[fermiPoints])
+        return 1
+    elseif !all(==(0), scattProbBool[fermiPoints])
+        return 2
+    else
+        return 3
     end
+end
 
+
+function PhaseBounds(
+        J_val::Float64,
+        W_val_bounds::Vector{Float64},
+        fermiPoints::Vector{Int64},
+        phaseIndices::NTuple{2, Int64},
+        tolerance::Float64;
+        maxIter=100,
+    )
+    @assert tolerance > 0
+    currentPhaseIndices = [PhaseIndex(J_val, W_val_bounds[1], fermiPoints), PhaseIndex(J_val, W_val_bounds[2], fermiPoints)]
+    @assert currentPhaseIndices[1] ≤ phaseIndices[1] && currentPhaseIndices[2] ≥ phaseIndices[2]
+    @assert 2 ∈ phaseIndices
+    numIter = 1
+    while abs(W_val_bounds[1] - W_val_bounds[2]) > tolerance && numIter < maxIter
+        new_W_val = 0.5 * sum(W_val_bounds)
+        newPhaseIndex = PhaseIndex(J_val, new_W_val, fermiPoints)
+        if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseIndices[1]
+            currentPhaseIndices[1] = newPhaseIndex
+            W_val_bounds[1] = new_W_val
+        else
+            currentPhaseIndices[2] = newPhaseIndex
+            W_val_bounds[2] = new_W_val
+        end
+        numIter += 1
+    end
+    return 0.5 * sum(W_val_bounds)
+end
+
+function PhaseDiagram(kondoJVals::Vector{Float64}, bathIntVals::Vector{Float64}, phaseMaps::Dict{String, Int64})
+    @assert issorted(bathIntVals, rev=true)
+    tolerance = (maximum(bathIntVals) - minimum(bathIntVals)) / (length(bathIntVals) - 1)
     densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
     fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
     @assert length(fermiPoints) == 2 * size_BZ - 2
     @assert all(==(0), dispersionArray[fermiPoints])
 
-    phaseDiagram = zeros(numPoints, numPoints)
-    nodeGap = zeros(numPoints)
-    antiNodeGap = zeros(numPoints)
-    midPointGap = zeros(numPoints)
-    @time results = fetch.(@showprogress [Threads.@spawn PhaseStrip(J_val, W_val_arr, phaseMaps) for J_val in J_val_arr])
-    for (i, (phaseResult, gapTrackers)) in enumerate(results)
-        phaseDiagram[i, :] = phaseResult
-        nodeGap[i] = gapTrackers["N"]
-        antiNodeGap[i] = gapTrackers["AN"]
-        midPointGap[i] = gapTrackers["M"]
+    phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
+    @showprogress Threads.@threads for (i, kondoJ) in collect(enumerate(kondoJVals))
+        bathIntPGStart = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (1, 2), 1e-3)
+        bathIntPGStop = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (2, 3), 1e-3)
+        phaseDiagram[i, bathIntVals .≥ bathIntPGStart] .= phaseMaps["L-FL"]
+        phaseDiagram[i, bathIntPGStart .≥ bathIntVals .≥ bathIntPGStop] .= phaseMaps["L-PG"]
+        phaseDiagram[i, bathIntPGStop .≥ bathIntVals] .= phaseMaps["LM"]
     end
-    return phaseDiagram, nodeGap, antiNodeGap, midPointGap
+    return phaseDiagram
 end

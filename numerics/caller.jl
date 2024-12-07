@@ -20,7 +20,7 @@ WmaxSize = 1000
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-size_BZ = 41
+size_BZ = 9
 bathIntLegs = 2
 W_val_arr = -1.0 .* [0, 3.5, 7.564] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
@@ -272,8 +272,15 @@ function Correlations2Point(kondoJArrays, dispersion)
     close(f)
 end
 
-@time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
-@time probe(kondoJArrays, dispersion)
+J_val_arr = collect(0.1:0.003:0.3)
+W_val_arr = collect(0:-0.003:-0.3)
+phaseLabels = ["L-FL", "L-PG", "LM"]
+@time phaseDiagram = PhaseDiagram(J_val_arr, W_val_arr, Dict(phaseLabels .=> 1:3))
+plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (J_val_arr, -1 .* W_val_arr), 
+                 (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
+                 colmap[[2, 5, 8]], (350, 300))
+#=@time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)=#
+#=@time probe(kondoJArrays, dispersion)=#
 #=@time corr(kondoJArrays, dispersion)=#
-@time LocalSpecFunc(kondoJArrays, dispersion)
+#=@time LocalSpecFunc(kondoJArrays, dispersion)=#
 #=@time Correlations2Point(kondoJArrays, dispersion)=#

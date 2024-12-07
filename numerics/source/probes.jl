@@ -423,7 +423,7 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
 end
 
 
-function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, numPoints::Int64, phaseMaps::Dict{String, Int64})
+function PhaseDiagram(J_val_arr::Vector{Float64}, W_val_arr::Vector{Float64}, phaseMaps::Dict{String, Int64})
     function PhaseStrip(J_val::Float64, W_val_arr::Vector{Float64}, phaseMaps::Dict{String, Int64})
         phaseFlags = 0 .* collect(W_val_arr)
         trackPoints = Dict(
@@ -438,7 +438,7 @@ function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, n
             averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
             @assert averageKondoScale > RG_RELEVANCE_TOL
             kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-            scattProbBool = scattProb(kondoJArray, size_BZ, dispersion, fractionBZ)[2]
+            scattProbBool = scattProb(size_BZ, kondoJArray, dispersion)[2]
             if all(>(0), scattProbBool[fermiPoints])
                 phaseFlags[i] = phaseMaps["FL"]
             elseif !all(==(0), scattProbBool[fermiPoints])
@@ -460,12 +460,12 @@ function PhaseDiagram(J_vals_arr::Vector{Float64}, W_val_arr::Vector{Float64}, n
     @assert length(fermiPoints) == 2 * size_BZ - 2
     @assert all(==(0), dispersionArray[fermiPoints])
 
-    phaseDiagram = zeros(numPoints, numPoints)
-    nodeGap = zeros(numPoints)
-    antiNodeGap = zeros(numPoints)
-    midPointGap = zeros(numPoints)
-    @time results = fetch.(@showprogress [Threads.@spawn PhaseStrip(J_val, W_val_arr, phaseMaps) for J_val in J_val_arr])
-    for (i, (phaseResult, gapTrackers)) in enumerate(results)
+    phaseDiagram = fill(0, (length(J_val_arr), length(W_val_arr)))
+    nodeGap = zeros(length(J_val_arr))
+    antiNodeGap = zeros(length(J_val_arr))
+    midPointGap = zeros(length(J_val_arr))
+    @showprogress for (i, J_val) in enumerate(J_val_arr)
+        phaseResult, gapTrackers = PhaseStrip(J_val, W_val_arr, phaseMaps)
         phaseDiagram[i, :] = phaseResult
         nodeGap[i] = gapTrackers["N"]
         antiNodeGap[i] = gapTrackers["AN"]

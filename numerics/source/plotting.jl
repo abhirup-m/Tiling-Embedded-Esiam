@@ -19,22 +19,22 @@ update_theme!(
               Legend = (
                         patchsize=(50,20),
                         halign = :right,
+                        backgroundcolor=:white,
                         valign = :top,
                        ),
              )
 
 # colmap = ColorSchemes.cherry
 function plotHeatmap(
-        matrixData::Union{Vector{Int64}, Vector{Float64}},
+        matrixData::Union{Matrix{Int64}, Matrix{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
-        axisLabels::NTuple{2, LaTeXString},
-        title::LaTeXString,
-        annotation::LaTeXString,
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        annotation::Union{String, LaTeXString},
         colmap,
+        figSize::NTuple{2, Int64}=(300, 250),
     )
-    matrix = reshape(matrixData, length.(axisVals))
-
-    figure = Figure(size=(300, 250))
+    figure = Figure(size=figSize)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
@@ -42,7 +42,7 @@ function plotHeatmap(
              )
     heatmap!(ax, 
              axisVals..., 
-             matrix; 
+             matrixData; 
              colormap=colmap,
             )
 
@@ -59,6 +59,54 @@ function plotHeatmap(
     savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename
+end
+
+
+function plotHeatmap(
+        matrixData::Union{Vector{Int64}, Vector{Float64}},
+        axisVals::NTuple{2, Vector{Float64}},
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        annotation::Union{String, LaTeXString},
+        colmap,
+        figSize::NTuple{2, Int64}=(300, 250),
+    )
+    matrixData = reshape(matrixData, length.(axisVals))
+    return plotHeatmap(matrixData, axisVals, axisLabels, title, annotation, colmap, figSize=figSize)
+end
+
+
+function plotPhaseDiagram(
+        matrixData::Matrix{Int64},
+        legend::Dict{Int64, String},
+        axisVals::NTuple{2, Vector{Float64}},
+        axisLabels::NTuple{2, Union{String, LaTeXString}},
+        title::Union{String, LaTeXString},
+        savename::String,
+        colmap,
+        figSize::NTuple{2, Int64}=(400, 300),
+    )
+    figure = Figure(size=figSize, figure_padding = 4)
+    ax = Axis(figure[1, 1],
+              xlabel = axisLabels[1], 
+              ylabel=axisLabels[2], 
+              titlegap = 0,
+             )
+    colmap = [colmap[div(i * length(colmap), length(unique(matrixData)))] for i in matrixData |> unique |> sort]
+    legendFlags = Dict(v => true for v in matrixData |> unique)
+    for ri in axes(matrixData, 1)
+        for ci in axes(matrixData, 2)
+            val = matrixData[ri,ci]
+            if legendFlags[val]
+                scatter!(ax, axisVals[1][ci], axisVals[2][ri], color=colmap[val], marker=:rect, label=legend[val]=>(; markersize=15), markersize=5)
+                legendFlags[matrixData[ri,ci]] = false
+            else
+                scatter!(ax, axisVals[1][ci], axisVals[2][ri], color=colmap[val], markersize=5)
+            end
+        end
+    end
+    figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., 0.), patchcolor=:transparent, patchlabelgap=-5)
+    save(savename, figure)
 end
 
 

@@ -25,15 +25,15 @@ update_theme!(
 
 # colmap = ColorSchemes.cherry
 function plotHeatmap(
-        matrixData::Union{Matrix{Int64}, Matrix{Float64}},
+        matrixData::Union{Matrix{Int64}, Matrix{Float64}, Vector{Int64}, Vector{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
         axisLabels::NTuple{2, Union{String, LaTeXString}},
         title::Union{String, LaTeXString},
         annotation::Union{String, LaTeXString},
         colmap,
-        figSize::NTuple{2, Int64}=(300, 250),
     )
-    figure = Figure(size=figSize)
+    matrixData = reshape(matrixData, length.(axisVals))
+    figure = Figure(size=(300, 250))
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
@@ -50,7 +50,7 @@ function plotHeatmap(
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.3), color=:white)
 
-    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)-1e-10, minimum(matrixData)+1e-10))
+    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)*(1-1e-5), minimum(matrixData)*(1+1e-5)))
     Colorbar(figure[1, 2]; 
              limits=colorbarLimits,
              colormap=colmap,
@@ -58,20 +58,6 @@ function plotHeatmap(
     savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename
-end
-
-
-function plotHeatmap(
-        matrixData::Union{Vector{Int64}, Vector{Float64}},
-        axisVals::NTuple{2, Vector{Float64}},
-        axisLabels::NTuple{2, Union{String, LaTeXString}},
-        title::Union{String, LaTeXString},
-        annotation::Union{String, LaTeXString},
-        colmap,
-        figSize::NTuple{2, Int64}=(300, 250),
-    )
-    matrixData = reshape(matrixData, length.(axisVals))
-    return plotHeatmap(matrixData, axisVals, axisLabels, title, annotation, colmap, figSize=figSize)
 end
 
 
@@ -83,9 +69,8 @@ function plotPhaseDiagram(
         title::Union{String, LaTeXString},
         savename::String,
         colmap,
-        figSize::NTuple{2, Int64}=(400, 300),
     )
-    figure = Figure(size=figSize, figure_padding=(0, 8, 4, 8))
+    figure = Figure(size=(400, 300), figure_padding=(0, 8, 4, 8))
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 

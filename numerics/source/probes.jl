@@ -176,7 +176,8 @@ function iterDiagSpecFunc(
         bathIntLegs::Int64,
         addPerStep::Int64,
         freqValues::Vector{Float64},
-        standDev::Union{Vector{Float64}, Float64},
+        standDev::Float64,
+        silent::Bool,
     )
 
     bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
@@ -211,7 +212,7 @@ function iterDiagSpecFunc(
                                                          specFuncDefDict=specFuncDict,
                                                         ) 
     totalSpecFunc = IterSpecFunc(savePaths, specFuncOperators, freqValues, standDev;
-                                 normEveryStep=true, degenTol=1e-10,
+                                 normEveryStep=true, degenTol=1e-10, silent=silent,
                            )
     return totalSpecFunc
 
@@ -279,13 +280,16 @@ function localSpecFunc(
         numShells::Int64,
         specFuncDictFunc::Function,
         freqValues::Vector{Float64},
-        standDev::Union{Vector{Float64}, Float64},
+        standDev::NTuple{2, Float64},
         maxSize::Int64;
+        resonanceHeight::Float64=-1.,
+        heightTolerance::Float64=1e-4,
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
+        maxIter::Int64=20,
     )
     size_BZ = hamiltDetails["size_BZ"]
-
+    standDevInner, standDevOuter = standDev
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
@@ -299,12 +303,43 @@ function localSpecFunc(
     sortedPoints = SWIndices[sortperm(distancesFromNode)]
     
     siamSpecDict, kondoSpecDict = specFuncDictFunc(length(sortedPoints))
-    specFunc1 = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints, siamSpecDict, 
-                                    bathIntLegs, addPerStep, freqValues, standDev)
-    specFunc2 = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints, kondoSpecDict, 
-                                 bathIntLegs, addPerStep, freqValues, standDev) / length(sortedPoints)
-    specFunc = specFunc1 + specFunc2
-    specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
+    specFunc = zeros(length(freqValues))
+    error = 1.
+    increment = 0.3 * maximum(standDevInner)
+    numIter = 1
+    specFuncOuter = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+                                     siamSpecDict, bathIntLegs, addPerStep,
+                                     freqValues, standDevOuter, false)
+    while abs(error) > heightTolerance && numIter < maxIter
+        specFuncInner = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+                                         kondoSpecDict, bathIntLegs, addPerStep,
+                                         freqValues, standDevInner, ifelse(numIter==1, false, true)
+                                        ) / length(sortedPoints)
+        specFunc = specFuncInner + specFuncOuter
+        specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
+        if resonanceHeight < 0
+            break
+        end
+
+        newError = (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight
+        if numIter > 1 && (error * newError < 0 || abs(error - newError) > newError)
+            increment /= 2
+        end
+        error = newError
+        if error > 0
+            if standDevInner ≤ increment
+                increment /= 2
+            end
+            standDevInner += increment
+        else
+            standDevInner -= increment
+        end
+        numIter += 1
+    end
+
+    if numIter < maxIter && resonanceHeight > 0
+        println("Converged in $(numIter) runs: η=$(standDevInner)")
+    end
 
     return specFunc
 end
@@ -480,7 +515,7 @@ function PhaseDiagram(kondoJVals::Vector{Float64}, bathIntVals::Vector{Float64},
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    @showprogress Threads.@threads for (i, kondoJ) in collect(enumerate(kondoJVals))
+    @showprogress for (i, kondoJ) in collect(enumerate(kondoJVals))
         bathIntPGStart = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (1, 2), 1e-3)
         bathIntPGStop = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (2, 3), 1e-3)
         phaseDiagram[i, bathIntVals .≥ bathIntPGStart] .= phaseMaps["L-FL"]

@@ -16,6 +16,9 @@ update_theme!(
                        linewidth = 6,
                        markersize=20,
                       ),
+              Lines = (
+                       linewidth = 4,
+                     ),
               Legend = (
                         patchsize=(50,20),
                         halign = :right,
@@ -103,9 +106,9 @@ function plotSpecFunc(
         xlabel = L"frequence~($\omega$)",
         ylabel = L"impurity spectral function~$A(\omega)$",
     )
-    markers = [:circle, :rect, :diamond, :xcross, :star4]
+    linestyles = [:solid, :dash, :dot, :dashdot]
     for (i, (label, specFunc)) in enumerate(specFuncArr)
-        scatter!(freqValues, specFunc, label=label, marker=markers[i])
+        lines!(freqValues, specFunc; label=label, linestyle=linestyles[i])
     end
     axislegend()
     save(saveName, current_figure())

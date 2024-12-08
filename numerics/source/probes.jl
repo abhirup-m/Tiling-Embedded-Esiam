@@ -194,7 +194,7 @@ function iterDiagSpecFunc(
                              globalField=hamiltDetails["globalField"],
                              couplingTolerance=1e-10,
                             )
-    append!(hamiltonian, [("n", [1], -6), ("n", [2], -6), ("nn", [1, 2], 12.)])
+    append!(hamiltonian, [("n", [1], -10), ("n", [2], -10), ("nn", [1, 2], 20.)])
     indexPartitions = [2]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
@@ -305,12 +305,13 @@ function localSpecFunc(
     siamSpecDict, kondoSpecDict = specFuncDictFunc(length(sortedPoints))
     specFunc = zeros(length(freqValues))
     error = 1.
-    increment = 0.3 * maximum(standDevInner)
-    numIter = 1
+    numIter = 0
     specFuncOuter = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
                                      siamSpecDict, bathIntLegs, addPerStep,
                                      freqValues, standDevOuter, false)
+    increment = 0.
     while abs(error) > heightTolerance && numIter < maxIter
+        numIter += 1
         specFuncInner = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
                                          kondoSpecDict, bathIntLegs, addPerStep,
                                          freqValues, standDevInner, ifelse(numIter==1, false, true)
@@ -322,7 +323,16 @@ function localSpecFunc(
         end
 
         newError = (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight
-        if numIter > 1 && (error * newError < 0 || abs(error - newError) > newError)
+        if numIter == 1
+            standDevInner = (1 + newError) * standDevInner
+            increment = 0.1 * standDevInner
+            error = newError
+            display((standDevInner, error, increment))
+            numIter += 1
+            continue
+        end
+
+        if abs(error - newError) > newError || error * newError < 0
             increment /= 2
         end
         error = newError
@@ -334,14 +344,17 @@ function localSpecFunc(
         else
             standDevInner -= increment
         end
-        numIter += 1
+        display((standDevInner, error, increment))
     end
 
-    if numIter < maxIter && resonanceHeight > 0
-        println("Converged in $(numIter) runs: η=$(standDevInner)")
+    if resonanceHeight > 0 && (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight < heightTolerance
+        println("Converged in $(numIter-1) runs: η=$(standDevInner)")
+    end
+    if resonanceHeight > 0 && (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight > heightTolerance
+        println("Failed to converge: error=$((specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight)")
     end
 
-    return specFunc
+    return specFunc, standDevInner
 end
 
 

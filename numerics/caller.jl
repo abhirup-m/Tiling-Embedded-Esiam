@@ -15,14 +15,14 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 600
-WmaxSize = 600
+global const maxSize = 1000
+WmaxSize = 1000
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-size_BZ = 21
+size_BZ = 41
 bathIntLegs = 2
-W_val_arr = -1.0 .* [0, 1.] ./ size_BZ
+W_val_arr = -1.0 .* [0, 7.13, 7.564] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
@@ -198,10 +198,12 @@ function LocalSpecFunc(kondoJArrays, dispersion)
                             )
         effectiveNumShells = W_val == 0 ? numShells : 1
         effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
-        specFunc = localSpecFunc(hamiltDetails, effectiveNumShells, 
+        specFunc, standDevInner = localSpecFunc(hamiltDetails, effectiveNumShells, 
                                  specFuncDictFunc, freqValues, standDev, 
-                                 effectiveMaxSize; resonanceHeight=0.32,
-                                 bathIntLegs=bathIntLegs, addPerStep=1)
+                                 effectiveMaxSize; resonanceHeight=0.42,
+                                 heightTolerance=1e-3, bathIntLegs=bathIntLegs,
+                                 addPerStep=1)
+        standDev = (standDevInner, standDev[2])
         specFuncResults[getlabelInt(W_val)] = specFunc
         specFuncResultsTrunc[getlabelInt(W_val)] = specFunc[abs.(freqValues) .≤ 2]
     end

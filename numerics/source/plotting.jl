@@ -95,18 +95,16 @@ end
 
 
 function plotSpecFunc(
-        specFuncArr::Dict{LaTeXString, Vector{Float64}},
+        specFuncArr::Vector{Tuple{LaTeXString, Vector{Float64}}},
         freqValues::Vector{Float64},
         saveName::String,
-        title::LaTeXString,
     )
-    f = Figure()
+    f = Figure(figure_padding=4)
     ax = Axis(f[1, 1],
-        title = title,
         xlabel = L"frequence~($\omega$)",
         ylabel = L"impurity spectral function~$A(\omega)$",
     )
-    linestyles = [:solid, :dash, :dot, :dashdot]
+    linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense)]
     for (i, (label, specFunc)) in enumerate(specFuncArr)
         lines!(freqValues, specFunc; label=label, linestyle=linestyles[i])
     end

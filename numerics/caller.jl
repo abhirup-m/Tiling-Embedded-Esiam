@@ -15,14 +15,14 @@ include("./source/plotting.jl")
 global const J_val = 0.1
 global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
-global const maxSize = 1000
-WmaxSize = 1000
+global const maxSize = 800
+WmaxSize = 800
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-size_BZ = 41
+size_BZ = 57
 bathIntLegs = 2
-W_val_arr = -1.0 .* [0, 7.13, 7.564] ./ size_BZ
+W_val_arr = -1.0 .* [10.86, 10.88] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
@@ -180,10 +180,10 @@ function LocalSpecFunc(kondoJArrays, dispersion)
         end
         return siamSpecDict, kondoSpecDict
     end
-    freqValues = collect(-10:0.01:10)
-    specFuncResults = Dict{LaTeXString, Vector{Float64}}()
-    specFuncResultsTrunc = Dict{LaTeXString, Vector{Float64}}()
-    standDev = (0.1, 0.5) # 0.1 .+ 0 .* abs.(freqValues) / maximum(freqValues)
+    freqValues = collect(-11:0.005:11)
+    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    standDev = (0.1, 0.1 .+ exp.(abs.(freqValues) ./ maximum(freqValues))) # 0.1 .+ 0 .* abs.(freqValues) / maximum(freqValues)
 
     for W_val in W_val_arr
 
@@ -199,16 +199,27 @@ function LocalSpecFunc(kondoJArrays, dispersion)
         effectiveNumShells = W_val == 0 ? numShells : 1
         effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
         specFunc, standDevInner = localSpecFunc(hamiltDetails, effectiveNumShells, 
-                                 specFuncDictFunc, freqValues, standDev, 
-                                 effectiveMaxSize; resonanceHeight=0.42,
-                                 heightTolerance=1e-3, bathIntLegs=bathIntLegs,
-                                 addPerStep=1)
+                                                specFuncDictFunc, freqValues, standDev[1], standDev[2],
+                                                effectiveMaxSize; resonanceHeight=0.42,
+                                                heightTolerance=1e-3, bathIntLegs=bathIntLegs,
+                                                addPerStep=1)
         standDev = (standDevInner, standDev[2])
-        specFuncResults[getlabelInt(W_val)] = specFunc
-        specFuncResultsTrunc[getlabelInt(W_val)] = specFunc[abs.(freqValues) .≤ 2]
+        push!(specFuncResults, (getlabelInt(W_val), specFunc))
+        push!(specFuncResultsTrunc, (getlabelInt(W_val), specFunc[abs.(freqValues) .≤ 1]))
     end
-    plotSpecFunc(specFuncResults, freqValues, "impSpecFunc_$(size_BZ).pdf", L"$L=%$(size_BZ)$")
-    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 2], "impSpecFuncTrunc_$(size_BZ).pdf", L"$L=%$(size_BZ)$")
+    plotSpecFunc(specFuncResults, freqValues, "impSpecFunc_$(size_BZ).pdf")
+    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 1], "impSpecFuncTrunc_$(size_BZ).pdf")
+end
+
+
+function PhaseDiagram()
+    J_val_arr = collect(0.1:0.003:0.3)
+    W_val_arr = collect(0:-0.003:-0.3)
+    phaseLabels = ["L-FL", "L-PG", "LM"]
+    @time phaseDiagram = PhaseDiagram(J_val_arr, W_val_arr, Dict(phaseLabels .=> 1:3))
+    plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (J_val_arr, -1 .* W_val_arr), 
+                     (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
+                     colmap[[2, 5, 8]], (350, 300))
 end
 
 
@@ -275,15 +286,9 @@ function Correlations2Point(kondoJArrays, dispersion)
     close(f)
 end
 
-#=J_val_arr = collect(0.1:0.003:0.3)=#
-#=W_val_arr = collect(0:-0.003:-0.3)=#
-#=phaseLabels = ["L-FL", "L-PG", "LM"]=#
-#=@time phaseDiagram = PhaseDiagram(J_val_arr, W_val_arr, Dict(phaseLabels .=> 1:3))=#
-#=plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (J_val_arr, -1 .* W_val_arr), =#
-#=                 (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  =#
-#=                 colmap[[2, 5, 8]], (350, 300))=#
 @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
 @time probe(kondoJArrays, dispersion)
 #=@time corr(kondoJArrays, dispersion)=#
-@time LocalSpecFunc(kondoJArrays, dispersion)
+#=@time LocalSpecFunc(kondoJArrays, dispersion)=#
 #=@time Correlations2Point(kondoJArrays, dispersion)=#
+#=@time PhaseDiagram()=#

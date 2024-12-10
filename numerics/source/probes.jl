@@ -176,8 +176,9 @@ function iterDiagSpecFunc(
         bathIntLegs::Int64,
         addPerStep::Int64,
         freqValues::Vector{Float64},
-        standDev::Float64,
+        standDev::Union{Float64, Vector{Float64}},
         silent::Bool,
+        broadFuncType::String,
     )
 
     bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
@@ -194,7 +195,7 @@ function iterDiagSpecFunc(
                              globalField=hamiltDetails["globalField"],
                              couplingTolerance=1e-10,
                             )
-    append!(hamiltonian, [("n", [1], -10), ("n", [2], -10), ("nn", [1, 2], 20.)])
+    append!(hamiltonian, [("n", [1], -8), ("n", [2], -8), ("nn", [1, 2], 16.)])
     indexPartitions = [2]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
@@ -212,7 +213,7 @@ function iterDiagSpecFunc(
                                                          specFuncDefDict=specFuncDict,
                                                         ) 
     totalSpecFunc = IterSpecFunc(savePaths, specFuncOperators, freqValues, standDev;
-                                 normEveryStep=true, degenTol=1e-10, silent=silent,
+                                 normEveryStep=true, degenTol=1e-10, silent=silent, broadFuncType=broadFuncType,
                            )
     return totalSpecFunc
 
@@ -280,21 +281,28 @@ function localSpecFunc(
         numShells::Int64,
         specFuncDictFunc::Function,
         freqValues::Vector{Float64},
-        standDev::NTuple{2, Float64},
+        standDevInner::Union{Vector{Float64}, Float64},
+        standDevOuter::Union{Vector{Float64}, Float64},
         maxSize::Int64;
-        resonanceHeight::Float64=-1.,
+        resonanceHeight::Float64=0.,
         heightTolerance::Float64=1e-4,
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
         maxIter::Int64=20,
+        broadFuncType::String="gauss",
     )
+    if resonanceHeight < 0
+        resonanceHeight = 0
+    end
+    if resonanceHeight > 0
+        @assert typeof(standDevInner) == Float64
+    end
     size_BZ = hamiltDetails["size_BZ"]
-    standDevInner, standDevOuter = standDev
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] ≤ 0
                  && map1DTo2D(p, size_BZ)[2] ≤ 0 
                  && abs(cutoffEnergy) ≥ abs(dispersion[p])
                 ]
@@ -308,17 +316,17 @@ function localSpecFunc(
     numIter = 0
     specFuncOuter = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
                                      siamSpecDict, bathIntLegs, addPerStep,
-                                     freqValues, standDevOuter, false)
+                                     freqValues, standDevOuter, false, "gauss")
     increment = 0.
     while abs(error) > heightTolerance && numIter < maxIter
         numIter += 1
         specFuncInner = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
                                          kondoSpecDict, bathIntLegs, addPerStep,
-                                         freqValues, standDevInner, ifelse(numIter==1, false, true)
-                                        ) / length(sortedPoints)
+                                         freqValues, standDevInner, ifelse(numIter==1, false, true),
+                                         "lorentz") / length(sortedPoints)
         specFunc = specFuncInner + specFuncOuter
         specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
-        if resonanceHeight < 0
+        if resonanceHeight == 0
             break
         end
 

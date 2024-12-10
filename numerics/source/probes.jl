@@ -9,7 +9,8 @@
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
 at the RG fixed point.
 """
-function scattProb(
+
+@everywhere function scattProb(
         size_BZ::Int64,
         kondoJArray::Array{Float64,3},
         dispersion::Vector{Float64},
@@ -479,7 +480,7 @@ function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::F
 end
 
 
-function PhaseIndex(
+@everywhere function PhaseIndex(
         J_val::Float64,
         W_val::Float64,
         fermiPoints::Vector{Int64},
@@ -499,49 +500,63 @@ function PhaseIndex(
 end
 
 
-function PhaseBounds(
-        J_val::Float64,
-        W_val_bounds::Vector{Float64},
+@everywhere function PhaseBounds(
+        kondoJ::Float64,
+        transitionWindow::Vector{Float64},
         fermiPoints::Vector{Int64},
-        phaseIndices::NTuple{2, Int64},
+        phaseBoundType::NTuple{2, Int64},
         tolerance::Float64;
         maxIter=100,
     )
+    @assert issorted(transitionWindow, rev=true)
     @assert tolerance > 0
-    currentPhaseIndices = [PhaseIndex(J_val, W_val_bounds[1], fermiPoints), PhaseIndex(J_val, W_val_bounds[2], fermiPoints)]
-    @assert currentPhaseIndices[1] ≤ phaseIndices[1] && currentPhaseIndices[2] ≥ phaseIndices[2]
-    @assert 2 ∈ phaseIndices
+    currentPhaseIndices = [PhaseIndex(kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(kondoJ, transitionWindow[2], fermiPoints)]
+    @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
+    @assert 2 ∈ phaseBoundType
     numIter = 1
-    while abs(W_val_bounds[1] - W_val_bounds[2]) > tolerance && numIter < maxIter
-        new_W_val = 0.5 * sum(W_val_bounds)
-        newPhaseIndex = PhaseIndex(J_val, new_W_val, fermiPoints)
-        if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseIndices[1]
+    while abs(transitionWindow[1] - transitionWindow[2]) > tolerance && numIter < maxIter
+        updatedEdge = 0.5 * sum(transitionWindow)
+        newPhaseIndex = PhaseIndex(kondoJ, updatedEdge, fermiPoints)
+        if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
             currentPhaseIndices[1] = newPhaseIndex
-            W_val_bounds[1] = new_W_val
+            transitionWindow[1] = updatedEdge
         else
             currentPhaseIndices[2] = newPhaseIndex
-            W_val_bounds[2] = new_W_val
+            transitionWindow[2] = updatedEdge
         end
         numIter += 1
     end
-    return 0.5 * sum(W_val_bounds)
+    return 0.5 * sum(transitionWindow)
 end
 
-function PhaseDiagram(kondoJVals::Vector{Float64}, bathIntVals::Vector{Float64}, phaseMaps::Dict{String, Int64})
-    @assert issorted(bathIntVals, rev=true)
-    tolerance = (maximum(bathIntVals) - minimum(bathIntVals)) / (length(bathIntVals) - 1)
+function PhaseDiagram(
+        kondoJVals::Vector{Float64}, 
+        bathIntVals::Vector{Float64}, 
+        tolerance::Float64,
+        phaseMaps::Dict{String, Int64};
+    )
+    @assert issorted(kondoJVals)
+    #=tolerance = (maximum(bathIntVals) - minimum(bathIntVals)) / (length(bathIntVals) - 1)=#
     densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
     fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
     @assert length(fermiPoints) == 2 * size_BZ - 2
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    @showprogress for (i, kondoJ) in collect(enumerate(kondoJVals))
-        bathIntPGStart = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (1, 2), 1e-3)
-        bathIntPGStop = PhaseBounds(kondoJ, [bathIntVals[1], bathIntVals[end]], fermiPoints, (2, 3), 1e-3)
-        phaseDiagram[i, bathIntVals .≥ bathIntPGStart] .= phaseMaps["L-FL"]
-        phaseDiagram[i, bathIntPGStart .≥ bathIntVals .≥ bathIntPGStop] .= phaseMaps["L-PG"]
-        phaseDiagram[i, bathIntPGStop .≥ bathIntVals] .= phaseMaps["LM"]
+    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
+    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
+    for (i, (PGStart, PGStop)) in enumerate(zip(PGStartResults, PGStopResults))
+        phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
+        phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]
+        phaseDiagram[i, PGStop .≥ bathIntVals] .= phaseMaps["LM"]
     end
+
+    #=@showprogress for (i, kondoJ) in enumerate(kondoJVals)=#
+    #=    bathIntPGStart = PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance)=#
+    #=    bathIntPGStop = PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance)=#
+    #=    phaseDiagram[i, bathIntVals .≥ bathIntPGStart] .= phaseMaps["L-FL"]=#
+    #=    phaseDiagram[i, bathIntPGStart .≥ bathIntVals .≥ bathIntPGStop] .= phaseMaps["L-PG"]=#
+    #=    phaseDiagram[i, bathIntPGStop .≥ bathIntVals] .= phaseMaps["LM"]=#
+    #=end=#
     return phaseDiagram
 end

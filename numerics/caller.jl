@@ -13,16 +13,16 @@ include("./source/probes.jl")
 include("./source/plotting.jl")
 
 global const J_val = 0.1
-global const omega_by_t = -2.0
+@everywhere global const omega_by_t = -2.0
 @everywhere global const orbitals = ("p", "p")
 global const maxSize = 800
 WmaxSize = 800
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-size_BZ = 57
+@everywhere size_BZ = 49
 bathIntLegs = 2
-W_val_arr = -1.0 .* [10.86, 10.88] ./ size_BZ
+W_val_arr = -1.0 .* [10.85] ./ size_BZ
 #=W_val_arr = -1.0 .* [0, 4.1, 8.19, 8.55, 8.77] ./ size_BZ=#
 # W_val_arr = -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ
 # W_val_arr = -1.0 .* [0, 2.8, 5.6, 5.7, 5.82, 5.89, 5.92] ./ size_BZ
@@ -213,13 +213,13 @@ end
 
 
 function PhaseDiagram()
-    J_val_arr = collect(0.1:0.003:0.3)
-    W_val_arr = collect(0:-0.003:-0.3)
+    kondoJVals = 10 .^ (-1.5:0.01:-0.4)
+    bathIntVals = collect(-0.1:-0.001:-0.3)
     phaseLabels = ["L-FL", "L-PG", "LM"]
-    @time phaseDiagram = PhaseDiagram(J_val_arr, W_val_arr, Dict(phaseLabels .=> 1:3))
-    plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (J_val_arr, -1 .* W_val_arr), 
+    phaseDiagram = PhaseDiagram(kondoJVals, bathIntVals, 1e-3, Dict(phaseLabels .=> 1:3))
+    plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (kondoJVals, -1 .* bathIntVals),
                      (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
-                     colmap[[2, 5, 8]], (350, 300))
+                     colmap[[2, 5, 8]])
 end
 
 
@@ -286,9 +286,9 @@ function Correlations2Point(kondoJArrays, dispersion)
     close(f)
 end
 
-@time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
-@time probe(kondoJArrays, dispersion)
+#=@time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)=#
+#=@time probe(kondoJArrays, dispersion)=#
 #=@time corr(kondoJArrays, dispersion)=#
 #=@time LocalSpecFunc(kondoJArrays, dispersion)=#
 #=@time Correlations2Point(kondoJArrays, dispersion)=#
-#=@time PhaseDiagram()=#
+@time PhaseDiagram()

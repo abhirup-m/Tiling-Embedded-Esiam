@@ -73,12 +73,13 @@ function plotPhaseDiagram(
         savename::String,
         colmap,
     )
-    figure = Figure(size=(400, 300), figure_padding=(0, 8, 4, 8))
+    figure = Figure(size=(350, 300), figure_padding=(0, 8, 4, 8))
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
               xticklabelsize=22,
               yticklabelsize=22,
+              xscale=log10,
              )
 
     for v in unique(matrixData)

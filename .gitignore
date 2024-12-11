@@ -21,5 +21,6 @@ movie_plots/
 *.jld2
 */data/*
 */data-iterdiag/*
+*/RGSaveData/*
 */raw_figures/*
 saveData.txt

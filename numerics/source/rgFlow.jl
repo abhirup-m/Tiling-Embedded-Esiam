@@ -1,6 +1,7 @@
 using LinearAlgebra
 using Distributed
 using ProgressMeter
+using Serialization
 include("./helpers.jl")
 
 
@@ -208,7 +209,22 @@ function stepwiseRenormalisation(
     return kondoJArrayNext, proceed_flags
 end
 
-@everywhere function momentumSpaceRG(size_BZ::Int64, omega_by_t::Float64, J_val::Float64, bathIntStr::Float64, orbitals::Tuple{String,String}; progressbarEnabled=false)
+@everywhere function momentumSpaceRG(
+        size_BZ::Int64,
+        omega_by_t::Float64,
+        J_val::Float64,
+        bathIntStr::Float64,
+        orbitals::Tuple{String,String};
+        progressbarEnabled=false
+    )
+
+    savePath = joinpath("RGSaveData", "L=$(size_BZ),omega=$(omega_by_t),J=$(J_val),W=$(bathIntStr),orb=$(join(orbitals))")
+    mkpath("RGSaveData")
+    if isfile(savePath)
+        return deserialize(savePath)
+    end
+
+
     # ensure that [0, \pi] has odd number of states, so 
     # that the nodal point is well-defined.
     @assert (size_BZ - 5) % 4 == 0 "Size of Brillouin zone must be of the form N = 4n+5, n=0,1,2..., so that all the nodes and antinodes are well-defined."
@@ -272,5 +288,6 @@ end
         kondoJArray[:, :, stepIndex+1] = round.(kondoJArrayNext, digits=trunc(Int, -log10(TOLERANCE)))
         proceed_flags = proceed_flags_updated
     end
+    serialize(savePath, (kondoJArray, dispersionArray))
     return kondoJArray, dispersionArray
 end

@@ -3,7 +3,7 @@
 
 @everywhere using ProgressMeter, Combinatorics
 @everywhere using Fermions
-# @everywhere include("models.jl")
+#=include("/home/abhirup/storage/programmingProjects/fermions.jl/src/iterDiag.jl")=#
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -259,13 +259,26 @@ end
     end
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
-    corrResults = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint in calculatePoints
+    #=correlationsFromNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, =#
+    #=                                            copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), =#
+    #=                                            bathIntLegs, noSelfCorr, addPerStep), =#
+    #=                            calculatePoints=#
+    #=                           )=#
+    #=correlationsFromAntiNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, =#
+    #=                                            copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), =#
+    #=                                            bathIntLegs, noSelfCorr, addPerStep), =#
+    #=                            calculatePoints=#
+    #=                           )=#
+    #=@time corrResults = mergewith(+, correlationsFromNode..., correlationsFromAntiNode...)=#
+    #=map!(v -> v ./ 2, values(corrResults))=#
+
+    corrResults = Dict{String, Vector{Float64}}()
+    @showprogress desc=desc for pivotPoint in calculatePoints
         corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
         corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
-        avgCorr = mergewith(+, corrNode, corrAntiNode)
-        map!(v -> v ./ 2, values(avgCorr))
-        avgCorr
+        mergewith!(+, corrResults, corrNode, corrAntiNode)
     end
+    map!(v -> v ./ 2, values(corrResults))
 
     corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
@@ -306,7 +319,7 @@ function localSpecFunc(
     # (hole states can be reconstructed from them (p-h symmetry))
     SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] ≤ 0
                  && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && abs(cutoffEnergy) ≥ abs(dispersion[p])
+                 && abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
 
     distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
@@ -482,6 +495,7 @@ end
 
 
 @everywhere function PhaseIndex(
+        size_BZ::Int64,
         J_val::Float64,
         W_val::Float64,
         fermiPoints::Vector{Int64},
@@ -502,6 +516,7 @@ end
 
 
 @everywhere function PhaseBounds(
+        size_BZ::Int64,
         kondoJ::Float64,
         transitionWindow::Vector{Float64},
         fermiPoints::Vector{Int64},
@@ -511,13 +526,13 @@ end
     )
     @assert issorted(transitionWindow, rev=true)
     @assert tolerance > 0
-    currentPhaseIndices = [PhaseIndex(kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(kondoJ, transitionWindow[2], fermiPoints)]
+    currentPhaseIndices = [PhaseIndex(size_BZ, kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(size_BZ, kondoJ, transitionWindow[2], fermiPoints)]
     @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
     @assert 2 ∈ phaseBoundType
     numIter = 1
     while abs(transitionWindow[1] - transitionWindow[2]) > tolerance && numIter < maxIter
         updatedEdge = 0.5 * sum(transitionWindow)
-        newPhaseIndex = PhaseIndex(kondoJ, updatedEdge, fermiPoints)
+        newPhaseIndex = PhaseIndex(size_BZ, kondoJ, updatedEdge, fermiPoints)
         if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
             currentPhaseIndices[1] = newPhaseIndex
             transitionWindow[1] = updatedEdge
@@ -531,6 +546,7 @@ end
 end
 
 function PhaseDiagram(
+        size_BZ::Int64,
         kondoJVals::Vector{Float64}, 
         bathIntVals::Vector{Float64}, 
         tolerance::Float64,
@@ -544,20 +560,12 @@ function PhaseDiagram(
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
-    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
+    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
+    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
     for (i, (PGStart, PGStop)) in enumerate(zip(PGStartResults, PGStopResults))
         phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
         phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]
         phaseDiagram[i, PGStop .≥ bathIntVals] .= phaseMaps["LM"]
     end
-
-    #=@showprogress for (i, kondoJ) in enumerate(kondoJVals)=#
-    #=    bathIntPGStart = PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance)=#
-    #=    bathIntPGStop = PhaseBounds(kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance)=#
-    #=    phaseDiagram[i, bathIntVals .≥ bathIntPGStart] .= phaseMaps["L-FL"]=#
-    #=    phaseDiagram[i, bathIntPGStart .≥ bathIntVals .≥ bathIntPGStop] .= phaseMaps["L-PG"]=#
-    #=    phaseDiagram[i, bathIntPGStop .≥ bathIntVals] .= phaseMaps["LM"]=#
-    #=end=#
     return phaseDiagram
 end

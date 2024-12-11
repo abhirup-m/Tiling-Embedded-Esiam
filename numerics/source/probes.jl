@@ -219,7 +219,8 @@ function iterDiagSpecFunc(
     return totalSpecFunc
 
 end
-function correlationMap(
+
+@everywhere function correlationMap(
         hamiltDetails::Dict,
         numShells::Int64,
         correlationFuncDict::Dict,
@@ -238,7 +239,7 @@ function correlationMap(
     # (hole states can be reconstructed from them (p-h symmetry))
     SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
                  && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && abs(cutoffEnergy) ≥ abs(dispersion[p])
+                 && abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
 
     calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)

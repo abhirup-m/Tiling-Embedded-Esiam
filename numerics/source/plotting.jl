@@ -102,12 +102,12 @@ function plotSpecFunc(
     )
     f = Figure(figure_padding=4)
     ax = Axis(f[1, 1],
-        xlabel = L"frequence~($\omega$)",
-        ylabel = L"impurity spectral function~$A(\omega)$",
+        xlabel = L"frequence ($\omega$)",
+        ylabel = L"impurity spectral function $A(\omega)$",
     )
-    linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense)]
+    linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     for (i, (label, specFunc)) in enumerate(specFuncArr)
-        lines!(freqValues, specFunc; label=label, linestyle=linestyles[i])
+        lines!(freqValues, specFunc; label=label, linestyle=linestyles[((i - 1) % 6) + 1])
     end
     axislegend()
     save(saveName, current_figure())

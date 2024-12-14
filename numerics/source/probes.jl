@@ -196,7 +196,7 @@ function iterDiagSpecFunc(
                              globalField=hamiltDetails["globalField"],
                              couplingTolerance=1e-10,
                             )
-    append!(hamiltonian, [("n", [1], -8), ("n", [2], -8), ("nn", [1, 2], 16.)])
+    append!(hamiltonian, [("n", [1], -6), ("n", [2], -6), ("nn", [1, 2], 12.)])
     indexPartitions = [2]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
@@ -259,18 +259,6 @@ end
     end
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
-    #=correlationsFromNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, =#
-    #=                                            copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), =#
-    #=                                            bathIntLegs, noSelfCorr, addPerStep), =#
-    #=                            calculatePoints=#
-    #=                           )=#
-    #=correlationsFromAntiNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, =#
-    #=                                            copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), =#
-    #=                                            bathIntLegs, noSelfCorr, addPerStep), =#
-    #=                            calculatePoints=#
-    #=                           )=#
-    #=@time corrResults = mergewith(+, correlationsFromNode..., correlationsFromAntiNode...)=#
-    #=map!(v -> v ./ 2, values(corrResults))=#
 
     corrResults = Dict{String, Vector{Float64}}()
     @showprogress desc=desc for pivotPoint in calculatePoints
@@ -288,6 +276,16 @@ end
         corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
     end
     return corrResults, corrResultsBool
+end
+
+
+function localSpecFuncAverage(
+        argsNode,
+        argsAntinode
+    )
+    specFuncOuter = iterDiagSpecFunc(argsNode...)
+    specFuncOuter .+= iterDiagSpecFunc(argsAntinode...)
+    return specFuncOuter
 end
 
 
@@ -317,28 +315,44 @@ function localSpecFunc(
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] ≤ 0
-                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
+    SWIndices = [p for p in 1:size_BZ^2 if 
+                 #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
+                 #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
+                 map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&
+                 abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
-
-    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
-    sortedPoints = SWIndices[sortperm(distancesFromNode)]
+    distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 for node in NODAL_POINTS])
+                        for p in SWIndices
+                       ]
+    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- antinode) .^ 2)^0.5
+                                     for antinode in ANTINODAL_POINTS])
+                            for p in SWIndices
+                           ]
+    sortedPointsNode = SWIndices[sortperm(distancesFromNode)]
+    sortedPointsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
+    @assert length(sortedPointsAntiNode) == length(sortedPointsNode)
     
-    siamSpecDict, kondoSpecDict = specFuncDictFunc(length(sortedPoints))
+    siamSpecDictNode, kondoSpecDictNode = specFuncDictFunc(length(sortedPointsNode))
+    siamSpecDictAntiNode, kondoSpecDictAntiNode = specFuncDictFunc(length(sortedPointsAntiNode))
     specFunc = zeros(length(freqValues))
+    specFuncArgsNode = [
+                    hamiltDetails, maxSize, sortedPointsNode,
+                    siamSpecDictNode, bathIntLegs, addPerStep,
+                    freqValues, standDevOuter, false, "gauss"
+                   ]
+    specFuncArgsAntinode = deepcopy(specFuncArgsNode)
+    specFuncArgsAntinode[3] = sortedPointsAntiNode
+    specFuncOuter = localSpecFuncAverage(specFuncArgsNode, specFuncArgsAntinode)
+
     error = 1.
     numIter = 0
-    specFuncOuter = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
-                                     siamSpecDict, bathIntLegs, addPerStep,
-                                     freqValues, standDevOuter, false, "gauss")
     increment = 0.
+    specFuncArgsNode[4], specFuncArgsNode[end] = kondoSpecDictNode, "lorentz"
+    specFuncArgsAntinode[4], specFuncArgsAntinode[end] = kondoSpecDictAntiNode, "lorentz"
     while abs(error) > heightTolerance && numIter < maxIter
         numIter += 1
-        specFuncInner = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
-                                         kondoSpecDict, bathIntLegs, addPerStep,
-                                         freqValues, standDevInner, ifelse(numIter==1, false, true),
-                                         "lorentz") / length(sortedPoints)
+        specFuncArgsNode[end-2], specFuncArgsAntinode[end-2] = standDevInner, standDevInner
+        specFuncInner = localSpecFuncAverage(specFuncArgsNode, specFuncArgsAntinode) / length(sortedPointsNode)
         specFunc = specFuncInner + specFuncOuter
         specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
         if resonanceHeight == 0
@@ -496,6 +510,7 @@ end
 
 @everywhere function PhaseIndex(
         size_BZ::Int64,
+        omega_by_t::Float64,
         J_val::Float64,
         W_val::Float64,
         fermiPoints::Vector{Int64},
@@ -517,6 +532,7 @@ end
 
 @everywhere function PhaseBounds(
         size_BZ::Int64,
+        omega_by_t::Float64,
         kondoJ::Float64,
         transitionWindow::Vector{Float64},
         fermiPoints::Vector{Int64},
@@ -526,13 +542,13 @@ end
     )
     @assert issorted(transitionWindow, rev=true)
     @assert tolerance > 0
-    currentPhaseIndices = [PhaseIndex(size_BZ, kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(size_BZ, kondoJ, transitionWindow[2], fermiPoints)]
+    currentPhaseIndices = [PhaseIndex(size_BZ, omega_by_t, kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(size_BZ, omega_by_t, kondoJ, transitionWindow[2], fermiPoints)]
     @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
     @assert 2 ∈ phaseBoundType
     numIter = 1
     while abs(transitionWindow[1] - transitionWindow[2]) > tolerance && numIter < maxIter
         updatedEdge = 0.5 * sum(transitionWindow)
-        newPhaseIndex = PhaseIndex(size_BZ, kondoJ, updatedEdge, fermiPoints)
+        newPhaseIndex = PhaseIndex(size_BZ, omega_by_t, kondoJ, updatedEdge, fermiPoints)
         if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
             currentPhaseIndices[1] = newPhaseIndex
             transitionWindow[1] = updatedEdge
@@ -547,6 +563,7 @@ end
 
 function PhaseDiagram(
         size_BZ::Int64,
+        omega_by_t::Float64,
         kondoJVals::Vector{Float64}, 
         bathIntVals::Vector{Float64}, 
         tolerance::Float64,
@@ -560,8 +577,8 @@ function PhaseDiagram(
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
-    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
+    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
+    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
     for (i, (PGStart, PGStop)) in enumerate(zip(PGStartResults, PGStopResults))
         phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
         phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]

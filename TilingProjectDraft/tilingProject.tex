@@ -232,6 +232,15 @@ This choice does not lead to a factorisation of the momentum-space dependence, a
 The first term in the numerator does not depend only on the momentum difference \({\bf k}_2 - {\bf k}_1\), unlike the bare Kondo coupling. This leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
 
 \section{Low-energy description of the embedded eSIAM}
+\subsection{Zero temperature phase diagram}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{phaseDiagram.pdf}
+	\includegraphics[width=0.24\textwidth]{impSpecFuncTrunc_49.pdf}
+	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Right}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase.}
+	\label{phaseDiagram}
+\end{figure}
+
 \subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
 We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
 
@@ -252,7 +261,7 @@ where the other momentum \({\bf q}\) is summed over all the momentum states that
 \end{figure}
 
 \subsection{Spin-correlations across the pseudogap}
-In figures.~\ref{spinCorr} and \ref{vneKspace}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) and entanglement entropy \(S_\text{EE}(\vec k)\), both in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
+In figure ~\ref{spinCorr}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
 
 \begin{figure}[htpb]
 	\centering
@@ -691,16 +700,16 @@ and retain the only impurity site contribution \({\bf r}={\bf r}_c\) in order to
 We haven't considered three-particle dynamics on the impurity site because those would involve only one momentum state and would hence be incoherent for the other momentum state; for the same reason, certain two-particle terms have also been ignored. Henceforth, we replace the index \({\bf r}_c\) with \(d\), indicating that it is the position of the impurity site. By introducing the off-site spin operator \(S^+_{\nu_1,\nu_2} = c^\dagger_{\nu_1 \uparrow} c_{\nu_2 \downarrow}\) that flips an effective spin across multiple orbitals, we can express eq.~\ref{correlationAuxiliaryProcess} in a more illuminating form:
 \begin{equation}\begin{aligned}
 	&\braket{S^+\left({\bf K}_1\right)S^-\left({\bf K}_2\right)} =\\
-	& \braket{(S^+_{d, {\bf K}_1} + S^+_{{\bf K}_1,d}) S^-({\bf K}_2) + S^+({\bf K}_1) (S^-_{d, {\bf K}_2} + S^-_{{\bf K}_2, d}) \right.\\
-	&+ \left.S^+_{d, {\bf K}_1} (S^-_{{\bf K}_2, d} + S^-_{d, {\bf K}_2}) + (S^+_{{\bf K}_1, d} + S^+_{{\bf K}_1, d}) S^-_{{\bf K}_2, d}}~.
+	& \braket{(S^+_{d, {\bf K}_1} + S^+_{{\bf K}_1,d}) S^-({\bf K}_2) + S^+({\bf K}_1) (S^-_{d, {\bf K}_2} + S^-_{{\bf K}_2, d})} \\
+	&+ \braket{S^+_{d, {\bf K}_1} (S^-_{{\bf K}_2, d} + S^-_{d, {\bf K}_2}) + (S^+_{{\bf K}_1, d} + S^+_{{\bf K}_1, d}) S^-_{{\bf K}_2, d}}~.
 \end{aligned}\end{equation}
 This allows us to visualise the \(k-\)space correlation function through various scattering processes within the auxiliary model: the net correlation between \({\bf K}_1\) and \({\bf K}_2\) occur either through (i) simultaneous and opposite flips of the spin on one momentum state and the shared spin on the impurity site and another momentum state, or (ii) the simultaneous flips of spins shared between all three members.
 
 The charge correlations can be treated exactly the same way. We quote the final result here, in terms of the off-site charge operators \(C^+_{\nu_1, \nu_2} = c^\dagger_{\nu_1 \uparrow} c^\dagger_{\nu_2 \downarrow}\) :
 \begin{equation}\begin{aligned}
 	&\left<C^+({\bf K}_1) C^-({\bf K}_2)\right> = \\
-	& \braket{(C^+_{d, {\bf K}_1} + C^+_{{\bf K}_1,d}) C^-({\bf K}_2) + C^+({\bf K}_1) (C^-_{d, {\bf K}_2} + C^-_{{\bf K}_2, d}) \right.\\
-	&+ \left.C^+_{d, {\bf K}_1} (C^-_{{\bf K}_2, d} + C^-_{d, {\bf K}_2}) + (C^+_{{\bf K}_1, d} + C^+_{{\bf K}_1, d}) C^-_{{\bf K}_2, d}}~.
+	& \braket{(C^+_{d, {\bf K}_1} + C^+_{{\bf K}_1,d}) C^-({\bf K}_2) + C^+({\bf K}_1) (C^-_{d, {\bf K}_2} + C^-_{{\bf K}_2, d})}\\
+	&+ \braket{C^+_{d, {\bf K}_1} (C^-_{{\bf K}_2, d} + C^-_{d, {\bf K}_2}) + (C^+_{{\bf K}_1, d} + C^+_{{\bf K}_1, d}) C^-_{{\bf K}_2, d}}~.
 \end{aligned}\end{equation}
 
 
@@ -790,6 +799,15 @@ This straightforwardly leads to the relation
 
 Other measures like mutual information can be obtained by using these elementary measures.
 
+\section{Momentum-space picture of the MIT}
+In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{tiledSF-1.pdf}
+	\includegraphics[width=0.23\textwidth]{tiledSF-2.pdf}
+	\caption{tiledSF.pdf}
+	\label{fig:tiledSF-pdf}
+\end{figure}
 % \begin{figure*}[htpb]
 % 	\centering
 % 	\includegraphics[width=\textwidth]{charge-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
@@ -844,6 +862,12 @@ Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain 
 
 \section{Momentum-space picture of the MIT}
 % In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
+% \begin{figure}[htpb]
+% 	\centering
+% 	\includegraphics[width=0.8\textwidth]{tiledSF.pdf}
+% 	\caption{tiledSF.pdf}
+% 	\label{fig:tiledSF-pdf}
+% \end{figure}
 %
 % \begin{figure}[!htb]
 % \centering

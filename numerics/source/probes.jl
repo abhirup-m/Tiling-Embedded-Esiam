@@ -1,8 +1,7 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-@everywhere using ProgressMeter, Combinatorics
-@everywhere using Fermions
+@everywhere using ProgressMeter, Combinatorics, FileIO, Fermions
 #=include("/home/abhirup/storage/programmingProjects/fermions.jl/src/iterDiag.jl")=#
 
 """
@@ -40,12 +39,21 @@ end
 Return the map of Kondo couplings M_k(q) = J^2_{k,q} given the state k.
 Useful for visualising how a single state k interacts with all other states q.
 """
-function kondoCoupMap(k_vals::Tuple{Float64,Float64}, size_BZ::Int64, kondoJArrayFull::Array{Float64,3})
-    kspacePoint = map2DTo1D(k_vals..., size_BZ)
-    results = kondoJArrayFull[kspacePoint, :, end] .^ 2
-    results_bare = kondoJArrayFull[kspacePoint, :, 1] .^ 2
+function kondoCoupMap(
+        kx_ky::Tuple{Float64,Float64},
+        size_BZ::Int64,
+        kondoJArrayFull::Array{Float64,3};
+        mapAmong::Union{Function, Nothing}=nothing
+    )
+    kspacePoint = map2DTo1D(kx_ky..., size_BZ)
+    otherPoints = collect(1:size_BZ^2)
+    if !isnothing(mapAmong)
+        filter!(p -> mapAmong(map1DTo2D(p, size_BZ)...), otherPoints)
+    end
+    results = zeros(size_BZ^2) 
+    results[otherPoints] .= kondoJArrayFull[kspacePoint, otherPoints, end]
+    results_bare = kondoJArrayFull[kspacePoint, :, 1]
     results_bool = [r / r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
-    results[results_bool.<0] .= NaN
     return results, results_bare, results_bool
 end
 
@@ -224,13 +232,28 @@ end
         hamiltDetails::Dict,
         numShells::Int64,
         correlationFuncDict::Dict,
-        maxSize::Int64;
+        maxSize::Int64,
+        savePath::String;
         vneFuncDict::Dict=Dict(),
         mutInfoFuncDict::Dict=Dict(),
         bathIntLegs::Int64=2,
         noSelfCorr::Vector{String}=String[],
         addPerStep::Int64=1,
+        numProcs::Int64=1,
+        loadData::Bool=true,
     )
+
+    println(savePath)
+    if isfile(savePath) && loadData
+        corrResults = deserialize(savePath)
+        corrResultsBool = Dict()
+        for (name, results) in corrResults
+            @assert !any(isnan.(results))
+            corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
+        end
+        return corrResults, corrResultsBool
+    end
+
     size_BZ = hamiltDetails["size_BZ"]
 
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
@@ -260,15 +283,23 @@ end
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
 
-    corrResults = Dict{String, Vector{Float64}}()
-    @showprogress desc=desc for pivotPoint in calculatePoints
-        corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
-        corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, copy(correlationFuncDict), copy(vneFuncDict), copy(mutInfoFuncDict), bathIntLegs, noSelfCorr, addPerStep)
-        mergewith!(+, corrResults, corrNode, corrAntiNode)
-    end
+    corrNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, 
+                                                                correlationFuncDict, vneFuncDict, mutInfoFuncDict, 
+                                                                bathIntLegs, noSelfCorr, addPerStep),
+                                  WorkerPool(1:numProcs), calculatePoints)
+    corrAntiNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, 
+                                                                    correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs, 
+                                                                    noSelfCorr, addPerStep), 
+                                      WorkerPool(1:numProcs), calculatePoints)
+    corrResults = mergewith(+, corrNode..., corrAntiNode...)
     map!(v -> v ./ 2, values(corrResults))
 
     corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+
+    if !isempty(savePath)
+        mkpath(SAVEDIR)
+        serialize(savePath, corrResults)
+    end
 
     corrResultsBool = Dict()
     for (name, results) in corrResults
@@ -530,35 +561,46 @@ end
 end
 
 
-@everywhere function PhaseBounds(
+@everywhere function CriticalBathInt(
         size_BZ::Int64,
         omega_by_t::Float64,
         kondoJ::Float64,
         transitionWindow::Vector{Float64},
         fermiPoints::Vector{Int64},
-        phaseBoundType::NTuple{2, Int64},
         tolerance::Float64;
         maxIter=100,
+        loadData::Bool=true,
     )
-    @assert issorted(transitionWindow, rev=true)
     @assert tolerance > 0
-    currentPhaseIndices = [PhaseIndex(size_BZ, omega_by_t, kondoJ, transitionWindow[1], fermiPoints), PhaseIndex(size_BZ, omega_by_t, kondoJ, transitionWindow[2], fermiPoints)]
-    @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
-    @assert 2 ∈ phaseBoundType
-    numIter = 1
-    while abs(transitionWindow[1] - transitionWindow[2]) > tolerance && numIter < maxIter
-        updatedEdge = 0.5 * sum(transitionWindow)
-        newPhaseIndex = PhaseIndex(size_BZ, omega_by_t, kondoJ, updatedEdge, fermiPoints)
-        if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
-            currentPhaseIndices[1] = newPhaseIndex
-            transitionWindow[1] = updatedEdge
-        else
-            currentPhaseIndices[2] = newPhaseIndex
-            transitionWindow[2] = updatedEdge
-        end
-        numIter += 1
+    criticalBathInt = Float64[]
+    savePath = joinpath(SAVEDIR, "crit-bathint-$(size_BZ)-$(kondoJ)-$(tolerance)") 
+    if ispath(savePath) && loadData
+        return deserialize(savePath)
     end
-    return 0.5 * sum(transitionWindow)
+    @assert issorted(transitionWindow, rev=true)
+    for phaseBoundType in [(1, 2), (2, 3)]
+        currentTransitionWindow = copy(transitionWindow)
+        currentPhaseIndices = [PhaseIndex(size_BZ, omega_by_t, kondoJ, W_val, fermiPoints) for W_val in currentTransitionWindow]
+        @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
+        @assert 2 ∈ phaseBoundType
+        numIter = 1
+        while abs(currentTransitionWindow[1] - currentTransitionWindow[2]) > tolerance && numIter < maxIter
+            updatedEdge = 0.5 * sum(currentTransitionWindow)
+            newPhaseIndex = PhaseIndex(size_BZ, omega_by_t, kondoJ, updatedEdge, fermiPoints)
+            if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
+                currentPhaseIndices[1] = newPhaseIndex
+                currentTransitionWindow[1] = updatedEdge
+            else
+                currentPhaseIndices[2] = newPhaseIndex
+                currentTransitionWindow[2] = updatedEdge
+            end
+            numIter += 1
+        end
+        push!(criticalBathInt, 0.5 * sum(currentTransitionWindow))
+    end
+    mkpath(SAVEDIR)
+    serialize(savePath, Tuple(criticalBathInt))
+    return criticalBathInt
 end
 
 function PhaseDiagram(
@@ -568,6 +610,7 @@ function PhaseDiagram(
         bathIntVals::Vector{Float64}, 
         tolerance::Float64,
         phaseMaps::Dict{String, Int64};
+        loadData::Bool=true,
     )
     @assert issorted(kondoJVals)
     #=tolerance = (maximum(bathIntVals) - minimum(bathIntVals)) / (length(bathIntVals) - 1)=#
@@ -577,9 +620,8 @@ function PhaseDiagram(
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    PGStartResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (1, 2), tolerance), kondoJVals)
-    PGStopResults = @showprogress pmap(kondoJ -> PhaseBounds(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, (2, 3), tolerance), kondoJVals)
-    for (i, (PGStart, PGStop)) in enumerate(zip(PGStartResults, PGStopResults))
+    criticalBathIntResults = @showprogress pmap(kondoJ -> CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)
+    for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
         phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
         phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]
         phaseDiagram[i, PGStop .≥ bathIntVals] .= phaseMaps["LM"]

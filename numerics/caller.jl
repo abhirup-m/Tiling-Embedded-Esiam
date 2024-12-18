@@ -1,10 +1,9 @@
-using Distributed
+using Distributed, Serialization, Random
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
     addprocs(20)
 end
-using JLD2
-using LinearAlgebra
+@everywhere using JLD2, LinearAlgebra
 
 @everywhere include("./source/constants.jl")
 include("./source/helpers.jl")
@@ -14,14 +13,14 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 400
-WmaxSize = 400
+maxSize = 10
+WmaxSize = 10
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
 bathIntLegs = 3
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
-                                                   13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
+                         13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
                          33 => -1.0 .* [0, 2.8, 5.6, 5.89, 5.92, 5.93] ./ size_BZ,
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.55, 8.77, 8.8] ./ size_BZ,
@@ -63,10 +62,69 @@ function ScattProb(size_BZ::Int64)
 end
 
 
-function ImpurityCorrelations(size_BZ::Int64)
+function KondoCouplingMap(size_BZ::Int64)
     x_arr = get_x_arr(size_BZ)
-    #=W_val_arr = -1. .* [0., 0.1,]=#
-    W_val_arr = NiceValues(size_BZ)[4:4]
+    W_val_arr = NiceValues(size_BZ)[1:5]
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+    saveNames = Dict(name => [] for name in ["renormalised-map-node", "renormalised-map-antinode"])
+    corrResults = Dict(W_val => Dict() for W_val in W_val_arr)
+    bareMapNode = nothing
+    bareMapAntinode = nothing
+    for W_val in W_val_arr
+        results, results_bare, results_bool = kondoCoupMap((π/2, π/2), size_BZ, kondoJArrays[W_val]; 
+                                                           mapAmong=(kx, ky) -> abs(abs(kx) + abs(ky) - π) < 10^(-0.5),
+                                                          )
+        bareMapNode = results_bare
+        corrResults[W_val] = Dict("renormalised-map-node" => results)
+        results, results_bare, results_bool = kondoCoupMap((π/1, 0.), size_BZ, kondoJArrays[W_val]; 
+                                                           mapAmong=(kx, ky) -> abs(abs(kx) + abs(ky) - π) < 10^(-0.5),
+                                                          )
+        bareMapAntinode = results_bare
+        corrResults[W_val]["renormalised-map-antinode"] = results
+    end
+    push!(saveNames["renormalised-map-node"], plotHeatmap(bareMapNode, (x_arr, x_arr), 
+                                       (L"$ak_x/\pi$", L"$ak_y/\pi$"), "", 
+                                       getlabelInt(0., size_BZ), colmap;
+                                       figSize=(400, 250), figPad=(0., 0., 0., 10.),
+                                       #=colorScale=log10,=#
+                                      ))
+    push!(saveNames["renormalised-map-antinode"], plotHeatmap(bareMapAntinode, (x_arr, x_arr), 
+                                       (L"$ak_x/\pi$", L"$ak_y/\pi$"), "", 
+                                       getlabelInt(0., size_BZ), colmap;
+                                       figSize=(400, 250), figPad=(0., 0., 0., 10.),
+                                       #=colorScale=log10,=#
+                                      ))
+    for W_val in W_val_arr
+        results = corrResults[W_val]
+        for name in keys(results)
+            push!(saveNames[name], plotHeatmap(results[name], (x_arr, x_arr), 
+                                               (L"$ak_x/\pi$", L"$ak_y/\pi$"), "", 
+                                               getlabelInt(W_val, size_BZ), colmap;
+                                               figSize=(400, 250), figPad=(0., 0., 0., 10.),
+                                               #=colorScale=log10,=#
+                                              ))
+        end
+    end
+    f = open("plotData.txt", "a")
+    for (name, files) in saveNames
+        if isempty(files)
+            continue
+        end
+        shellCommand = "pdfunite $(join(files, " ")) $(name).pdf"
+        run(`sh -c $(shellCommand)`)
+        write(f, shellCommand*"\n")
+    end
+    close(f)
+end
+
+function ImpurityCorrelations(
+        size_BZ::Int64; 
+        spinOnly::Bool=false,
+        loadData::Bool=true,
+        loadId::String="",
+    )
+    x_arr = get_x_arr(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[1:5]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
     spinCorrelation = Dict("SF" => [nothing, (i, j) -> [
                                              ("nn", [1, 2, 2 * i + 1, 2 * i + 1], -0.25),
@@ -82,16 +140,16 @@ function ImpurityCorrelations(size_BZ::Int64)
     antinode = map2DTo1D(-π, 0., size_BZ)
 
     chargeCorrelation = Dict(
-                             #="doubOcc" => [nothing, (i, j) -> [("nn", [2 * i + 1, 2 * i + 2], 1.), ("hh", [2 * i + 1, 2 * i + 2], 0.)]=#
-                             #=             ],=#
+                             "doubOcc" => [nothing, (i, j) -> [("nn", [2 * i + 1, 2 * i + 2], 1.), ("hh", [2 * i + 1, 2 * i + 2], 0.)]
+                                          ],
                              "cfnode" => [node, (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
                                                                 ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
                                                                ]
                                          ],
-                             #="cfantinode" => [antinode, (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), =#
-                             #=                                       ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)=#
-                             #=                                      ]=#
-                             #=                ]=#
+                             "cfantinode" => [antinode, (i, j) -> [("++--", [2 * i + 1, 2 * i + 2, 2 * j + 2, 2 * j + 1], 1.), 
+                                                                    ("++--", [2 * j + 1, 2 * j + 2, 2 * i + 2, 2 * i + 1], 1.)
+                                                                   ]
+                                             ]
                             )
     vneDef = Dict("vne_k" => i -> [2 * i + 1, 2 * i + 2])
     mutInfoDef = Dict(
@@ -110,6 +168,7 @@ function ImpurityCorrelations(size_BZ::Int64)
                       "cfantinode" => L"$\langle C_{\vec{k}}^+ C_{k_\mathrm{AN}}^- + \mathrm{h.c.}\rangle$",
                      )
 
+    corrResults = Dict{Float64, Dict{String, Vector{Float64}}}(W_val => Dict() for W_val in W_val_arr)
     for W_val in W_val_arr
 
         hamiltDetails = Dict(
@@ -120,34 +179,48 @@ function ImpurityCorrelations(size_BZ::Int64)
                              "bathIntForm" => bathIntForm,
                             )
         for effective_Wval in unique([-0.0, W_val])
+            if spinOnly && effective_Wval ≠ 0
+                continue
+            end
             println("\n W = $(W_val), eff_W=$(effective_Wval), $(numShells) shells, maxSize = $(maxSize)")
             hamiltDetails["W_val"] = effective_Wval
             effectiveNumShells = W_val == 0 ? numShells : 1
             effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
-            corrResults = nothing
+            savePath = joinpath(SAVEDIR, "imp-corr-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)")
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
-                corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
-                                                effectiveMaxSize; 
-                                                #=vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, =#
+                results, _ = correlationMap(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
+                                                effectiveMaxSize, savePath; 
+                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                                 bathIntLegs=bathIntLegs,
-                                                noSelfCorr=["cfnode", "cfantinode"], addPerStep=1)
+                                                noSelfCorr=["cfnode", "cfantinode"], 
+                                                addPerStep=1, numProcs=2,
+                                                loadData=loadData
+                                               )
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
-                corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize;
-                                                #=vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, =#
-                                                bathIntLegs=bathIntLegs, addPerStep=1)
+                results, _ = correlationMap(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize, savePath;
+                                                vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
+                                                bathIntLegs=bathIntLegs, 
+                                                addPerStep=1, numProcs=2,
+                                                loadData=loadData
+                                               )
             else # case of W != 0 and considering the actual W as effective W, for charge
-                corrResults, _ = correlationMap(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
-                                                bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"], addPerStep=1)
+                results, _ = correlationMap(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize, savePath;
+                                                bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"], 
+                                                addPerStep=1, numProcs=2,
+                                                loadData=loadData
+                                               )
             end
-
-            for name in keys(corrResults)
-                quadrantResult = corrResults[name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
-                push!(saveNames[name], plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                                   plotTitles[name], getlabelInt(W_val, size_BZ), colmap))
-            end
+            merge!(corrResults[W_val], results)
         end
     end
-    f = open("saveData.txt", "a")
+    for (W_val, results) in corrResults
+        for name in keys(results)
+            quadrantResult = results[name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+            push!(saveNames[name], plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                               plotTitles[name], getlabelInt(W_val, size_BZ), colmap))
+        end
+    end
+    f = open("plotData.txt", "a")
     for (name, files) in saveNames
         if isempty(files)
             continue
@@ -160,9 +233,15 @@ function ImpurityCorrelations(size_BZ::Int64)
 end
 
 
-function LocalSpecFunc(size_BZ::Int64)
-    resonanceHeight = 0.
+function LocalSpecFunc(
+        size_BZ::Int64;
+        fixHeight::Bool=false,
+        loadData::Bool=true,
+    )
     W_val_arr = NiceValues(size_BZ)[[1, 4, 5, 6]]
+    if fixHeight
+        @assert 0 ∈ W_val_arr
+    end
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
     freqValues = collect(-15:0.005:15)
     freqValuesZoom1 = 13.
@@ -170,28 +249,40 @@ function LocalSpecFunc(size_BZ::Int64)
     specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
     standDev = (0.1, 0.1 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
+    resonanceHeight = 0.
+    effective_Wval = 0.
 
+    standDevInner = standDev[1]
     for W_val in W_val_arr
 
         if W_val == W_val_arr[end]
             resonanceHeight = 0.
         end
-        hamiltDetails = Dict(
-                             "dispersion" => dispersion,
-                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
-                             "orbitals" => orbitals,
-                             "size_BZ" => size_BZ,
-                             "bathIntForm" => bathIntForm,
-                             "W_val" => 0. * W_val,
-                             "globalField" => 1e-5,
-                            )
         effectiveNumShells = W_val == 0 ? numShells : 1
         effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
-        specFunc, standDevInner = localSpecFunc(hamiltDetails, effectiveNumShells, 
-                                                specFuncDictFunc, freqValues, standDev[1], standDev[2],
-                                                effectiveMaxSize; resonanceHeight=resonanceHeight,
-                                                heightTolerance=1e-3, bathIntLegs=bathIntLegs,
-                                                addPerStep=1)
+        savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD)")
+        if ispath(savePath) && loadData
+            specFunc = deserialize(savePath)
+        else
+            hamiltDetails = Dict(
+                                 "dispersion" => dispersion,
+                                 "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                                 "orbitals" => orbitals,
+                                 "size_BZ" => size_BZ,
+                                 "bathIntForm" => bathIntForm,
+                                 "W_val" => effective_Wval,
+                                 "globalField" => GLOBALFIELD,
+                                )
+            specFunc, standDevInner = localSpecFunc(hamiltDetails, effectiveNumShells, 
+                                                    specFuncDictFunc, freqValues, standDev[1], standDev[2],
+                                                    effectiveMaxSize; resonanceHeight=resonanceHeight,
+                                                    heightTolerance=1e-3, bathIntLegs=bathIntLegs,
+                                                    addPerStep=1)
+            serialize(savePath, specFunc)
+        end
+        if W_val == 0. && fixHeight
+            resonanceHeight = specFunc[freqValues ≥ 0][1]
+        end
         standDev = (standDevInner, standDev[2])
         push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
         push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
@@ -201,20 +292,27 @@ function LocalSpecFunc(size_BZ::Int64)
 end
 
 
-function PhaseDiagram(size_BZ::Int64)
+function PhaseDiagram(
+        size_BZ::Int64,
+        tolerance::Float64;
+        loadData::Bool=true,
+    )
     kondoJVals = 10 .^ (-1.5:0.01:-0.4)
-    bathIntVals = collect(-0.05:-0.001:-0.25)
+    bathIntVals = collect(-0.0:-0.001:-0.5)
     phaseLabels = ["L-FL", "L-PG", "LM"]
-    phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, 1e-3, Dict(phaseLabels .=> 1:3))
+    phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, tolerance, Dict(phaseLabels .=> 1:3); loadData=loadData)
     plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (kondoJVals, -1 .* bathIntVals),
                      (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
                      colmap[[2, 5, 8]])
 end
 
 
-function TiledSpinCorr(size_BZ::Int64)
+function TiledSpinCorr(
+        size_BZ::Int64;
+        loadData::Bool=true,
+    )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 4]]
+    W_val_arr = NiceValues(size_BZ)
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
     node = map2DTo1D(-π/2, -π/2, size_BZ)
     antinode = map2DTo1D(-π, 0., size_BZ)
@@ -232,18 +330,21 @@ function TiledSpinCorr(size_BZ::Int64)
                      )
 
     name = "tiledSF"
+    effective_Wval = 0.
     hamiltDetailsDict = Dict(W_val => Dict(
                                            "dispersion" => dispersion,
                                            "kondoJArray" => kondoJArrays[W_val][:, :, end],
                                            "orbitals" => orbitals,
                                            "size_BZ" => size_BZ,
                                            "bathIntForm" => bathIntForm,
-                                           "W_val" => 0.,
+                                           "W_val" => effective_Wval,
                                           )
                              for W_val in W_val_arr
                             )
-    resultsArr = pmap(W_val -> correlationMap(hamiltDetailsDict[W_val], ifelse(W_val == 0, numShells, 1), 
-                                              spinCorrelation, maxSize), W_val_arr)
+
+    effectiveNumShells = Dict(W_val => ifelse(W_val == 0, numShells, 1) for W_val in W_val_arr)
+    savePaths = Dict(W_val => joinpath(SAVEDIR, "imp-corr-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells[W_val])-$(maxSize)-$(bathIntLegs)") for W_val in W_val_arr)
+    resultsArr = pmap(W_val -> correlationMap(hamiltDetailsDict[W_val], effectiveNumShells[W_val], spinCorrelation, maxSize,savePaths[W_val]; loadData=loadData), W_val_arr)
     for (W_val, (corrResults, _)) in zip(W_val_arr, resultsArr)
         tiledCorrelation = sum(values(corrResults)) / 8
         quadrantResult = tiledCorrelation[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
@@ -262,8 +363,9 @@ function TiledSpinCorr(size_BZ::Int64)
     close(f)
 end
 
-#=@time ScattProb(33)=#
+#=@time ScattProb(49)=#
+@time KondoCouplingMap(13)
 @time ImpurityCorrelations(13)
 @time LocalSpecFunc(13)
 @time TiledSpinCorr(13)
-@time PhaseDiagram(13)
+@time PhaseDiagram(13, 1e-3)

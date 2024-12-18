@@ -33,10 +33,13 @@ function plotHeatmap(
         axisLabels::NTuple{2, Union{String, LaTeXString}},
         title::Union{String, LaTeXString},
         annotation::Union{String, LaTeXString},
-        colmap,
+        colmap;
+        figSize::NTuple{2, Int64}=(300, 250),
+        figPad::Union{NTuple{4, Float64}, Float64}=0.,
+        colorScale::Function=identity,
     )
     matrixData = reshape(matrixData, length.(axisVals))
-    figure = Figure(size=(300, 250))
+    figure = Figure(size=figSize, figure_padding=figPad)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
@@ -46,6 +49,7 @@ function plotHeatmap(
              axisVals..., 
              matrixData; 
              colormap=colmap,
+             colorscale=colorScale,
             )
 
     fontsize = 28
@@ -53,7 +57,11 @@ function plotHeatmap(
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.6), color=:white)
 
-    colorbarLimits = ifelse(minimum(matrixData) < maximum(matrixData), (minimum(matrixData), maximum(matrixData)), (minimum(matrixData)*(1-1e-5), minimum(matrixData)*(1+1e-5)))
+    if minimum(matrixData) < maximum(matrixData)
+        colorbarLimits = (minimum(matrixData), maximum(matrixData))
+    else
+        colorbarLimits = (minimum(matrixData)*(1-1e-5) - 1e-5, minimum(matrixData)*(1+1e-5) + 1e-5)
+    end
     Colorbar(figure[1, 2]; 
              limits=colorbarLimits,
              colormap=colmap,

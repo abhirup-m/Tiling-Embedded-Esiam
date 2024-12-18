@@ -218,8 +218,8 @@ end
         progressbarEnabled=false
     )
 
-    savePath = joinpath("RGSaveData", "L=$(size_BZ),omega=$(omega_by_t),J=$(J_val),W=$(bathIntStr),orb=$(join(orbitals))")
-    mkpath("RGSaveData")
+    savePath = joinpath(SAVEDIR, "rgflow-$(size_BZ)-$(omega_by_t)-$(J_val)-$(bathIntStr)-$(join(orbitals))")
+    mkpath(SAVEDIR)
     if isfile(savePath)
         return deserialize(savePath)
     end
@@ -288,6 +288,6 @@ end
         kondoJArray[:, :, stepIndex+1] = round.(kondoJArrayNext, digits=trunc(Int, -log10(TOLERANCE)))
         proceed_flags = proceed_flags_updated
     end
-    serialize(savePath, (kondoJArray, dispersionArray))
+    serialize(savePath, (kondoJArray[:, :, [1, size(kondoJArray)[3]]], dispersionArray))
     return kondoJArray, dispersionArray
 end

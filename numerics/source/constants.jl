@@ -1,9 +1,13 @@
+(@isdefined SAVEDIR) || const SAVEDIR = "saveData"
+
 # define the edges of the Brillouin zone
 (@isdefined K_MIN) || const K_MIN = -pi
 (@isdefined K_MAX) || const K_MAX = pi
 
 # tolerance for identifying energy contours
 (@isdefined TOLERANCE) || const TOLERANCE = 1e-8
+
+(@isdefined GLOBALFIELD) || const GLOBALFIELD = 1e-5
 
 # overlap integral 't' set to 1
 (@isdefined HOP_T) || const HOP_T = 1.0

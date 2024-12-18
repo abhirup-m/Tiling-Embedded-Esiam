@@ -24,3 +24,5 @@ movie_plots/
 */RGSaveData/*
 */raw_figures/*
 saveData.txt
+*/plotData.txt
+*/saveData

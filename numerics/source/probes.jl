@@ -1,7 +1,7 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-@everywhere using ProgressMeter, Combinatorics, FileIO, Fermions
+@everywhere using ProgressMeter, Combinatorics, Fermions
 #=include("/home/abhirup/storage/programmingProjects/fermions.jl/src/iterDiag.jl")=#
 
 """
@@ -240,19 +240,8 @@ end
         noSelfCorr::Vector{String}=String[],
         addPerStep::Int64=1,
         numProcs::Int64=1,
-        loadData::Bool=true,
+        loadData::Bool=false,
     )
-
-    println(savePath)
-    if isfile(savePath) && loadData
-        corrResults = deserialize(savePath)
-        corrResultsBool = Dict()
-        for (name, results) in corrResults
-            @assert !any(isnan.(results))
-            corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
-        end
-        return corrResults, corrResultsBool
-    end
 
     size_BZ = hamiltDetails["size_BZ"]
 
@@ -267,12 +256,6 @@ end
 
     calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
 
-    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
-    symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
-    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
-                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
-                                     for p in SWIndices]
-    symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
     oppositePoints = Dict{Int64, Vector{Int64}}()
     for point in calculatePoints
         reflectDiagonal = map2DTo1D(reverse(map1DTo2D(point, size_BZ))..., size_BZ)
@@ -280,6 +263,30 @@ end
         reflectBoth = map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
         oppositePoints[point] = [reflectDiagonal, reflectFS, reflectBoth]
     end
+
+    if isfile(savePath) && loadData
+        #=corrResults = deserialize(savePath)=#
+        corrResults = Dict{String, Vector{Float64}}()
+        for (k, v) in load(savePath)
+            corrResults[k] = v
+        end
+        @assert issetequal(collect(keys(corrResults)), vcat(([correlationFuncDict, vneFuncDict, mutInfoFuncDict] .|> keys .|> collect)...))
+        corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+        corrResultsBool = Dict()
+        for (name, results) in corrResults
+            @assert !any(isnan.(results))
+            corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
+        end
+        return corrResults, corrResultsBool
+    end
+
+    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
+    symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
+    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
+                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
+                                     for p in SWIndices
+                                    ]
+    symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
 
@@ -294,12 +301,16 @@ end
     corrResults = mergewith(+, corrNode..., corrAntiNode...)
     map!(v -> v ./ 2, values(corrResults))
 
-    corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
-
     if !isempty(savePath)
         mkpath(SAVEDIR)
-        serialize(savePath, corrResults)
+        jldopen(savePath, "w"; compress = true) do file
+            for (k, v) in corrResults
+                file[k] = v
+            end
+        end
     end
+
+    corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
     corrResultsBool = Dict()
     for (name, results) in corrResults
@@ -369,7 +380,7 @@ function localSpecFunc(
     specFuncArgsNode = [
                     hamiltDetails, maxSize, sortedPointsNode,
                     siamSpecDictNode, bathIntLegs, addPerStep,
-                    freqValues, standDevOuter, false, "gauss"
+                    freqValues, standDevOuter, true, "gauss"
                    ]
     specFuncArgsAntinode = deepcopy(specFuncArgsNode)
     specFuncArgsAntinode[3] = sortedPointsAntiNode
@@ -546,7 +557,7 @@ end
         W_val::Float64,
         fermiPoints::Vector{Int64},
     )
-    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals)
+    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals; saveData=false)
     averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
     @assert averageKondoScale > RG_RELEVANCE_TOL
     kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
@@ -569,14 +580,10 @@ end
         fermiPoints::Vector{Int64},
         tolerance::Float64;
         maxIter=100,
-        loadData::Bool=true,
+        loadData::Bool=false,
     )
     @assert tolerance > 0
     criticalBathInt = Float64[]
-    savePath = joinpath(SAVEDIR, "crit-bathint-$(size_BZ)-$(kondoJ)-$(tolerance)") 
-    if ispath(savePath) && loadData
-        return deserialize(savePath)
-    end
     @assert issorted(transitionWindow, rev=true)
     for phaseBoundType in [(1, 2), (2, 3)]
         currentTransitionWindow = copy(transitionWindow)
@@ -598,8 +605,6 @@ end
         end
         push!(criticalBathInt, 0.5 * sum(currentTransitionWindow))
     end
-    mkpath(SAVEDIR)
-    serialize(savePath, Tuple(criticalBathInt))
     return criticalBathInt
 end
 
@@ -610,21 +615,34 @@ function PhaseDiagram(
         bathIntVals::Vector{Float64}, 
         tolerance::Float64,
         phaseMaps::Dict{String, Int64};
-        loadData::Bool=true,
+        loadData::Bool=false,
     )
     @assert issorted(kondoJVals)
-    #=tolerance = (maximum(bathIntVals) - minimum(bathIntVals)) / (length(bathIntVals) - 1)=#
     densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
     fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
     @assert length(fermiPoints) == 2 * size_BZ - 2
     @assert all(==(0), dispersionArray[fermiPoints])
 
     phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
-    criticalBathIntResults = @showprogress pmap(kondoJ -> CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)
+    savePath = joinpath(SAVEDIR, "crit-bathint-$(size_BZ).jld2") 
+    if loadData && ispath(savePath)
+        loadedData = load(savePath)
+    else
+        loadedData = Dict()
+    end
+    keyFunc(kondoJ) = "$(tolerance)-$(kondoJ)"
+    criticalBathIntResults = @showprogress pmap(kondoJ -> keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)
     for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
         phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
         phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]
         phaseDiagram[i, PGStop .≥ bathIntVals] .= phaseMaps["LM"]
+    end
+
+    mkpath(SAVEDIR)
+    jldopen(savePath, "w"; compress = true) do f
+        for (kondoJ, r) in zip(kondoJVals, criticalBathIntResults)
+            f[keyFunc(kondoJ)] = (r[1], r[2])
+        end
     end
     return phaseDiagram
 end

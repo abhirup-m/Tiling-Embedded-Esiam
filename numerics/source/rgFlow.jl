@@ -1,7 +1,4 @@
-using LinearAlgebra
-using Distributed
-using ProgressMeter
-using Serialization
+using LinearAlgebra, Distributed, ProgressMeter
 include("./helpers.jl")
 
 
@@ -215,13 +212,19 @@ end
         J_val::Float64,
         bathIntStr::Float64,
         orbitals::Tuple{String,String};
-        progressbarEnabled=false
+        progressbarEnabled=false,
+        loadData::Bool=false,
+        saveData::Bool=true,
     )
 
-    savePath = joinpath(SAVEDIR, "rgflow-$(size_BZ)-$(omega_by_t)-$(J_val)-$(bathIntStr)-$(join(orbitals))")
+    savePath = joinpath(SAVEDIR, "rgflow-$(size_BZ)-$(omega_by_t)-$(J_val)-$(bathIntStr)-$(join(orbitals)).jld2")
     mkpath(SAVEDIR)
-    if isfile(savePath)
-        return deserialize(savePath)
+    if isfile(savePath) && loadData
+        _, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
+        kondoJArray = zeros(size_BZ^2, size_BZ^2, 2)
+        kondoJArray[:, :, 1] .= initialiseKondoJ(size_BZ, orbitals[1], trunc(Int, (size_BZ + 1) / 2), J_val)[:, :, 1]
+        kondoJArray[:, :, 2] = jldopen(savePath)["kondoRenorm"]
+        return kondoJArray, dispersionArray
     end
 
 
@@ -288,6 +291,8 @@ end
         kondoJArray[:, :, stepIndex+1] = round.(kondoJArrayNext, digits=trunc(Int, -log10(TOLERANCE)))
         proceed_flags = proceed_flags_updated
     end
-    serialize(savePath, (kondoJArray[:, :, [1, size(kondoJArray)[3]]], dispersionArray))
+    if saveData
+        jldsave(savePath; compress=true, kondoRenorm=kondoJArray[:, :, end])
+    end
     return kondoJArray, dispersionArray
 end

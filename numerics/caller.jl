@@ -13,14 +13,15 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1000
+maxSize = 600
 WmaxSize = 600
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
-bathIntLegs = 3
+bathIntLegs = 1
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
+                         25 => -1.0 .* [0, 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
                          33 => -1.0 .* [0, 2.8, 5.6, 5.89, 5.92, 5.93] ./ size_BZ,
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.55, 8.77, 8.8] ./ size_BZ,
@@ -255,7 +256,7 @@ function LocalSpecFunc(
     freqValuesZoom2 = 1.
     specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
-    standDev = (0.1, 0.1 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
+    standDev = (0.3, 0.2 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
     resonanceHeight = 0.
     effective_Wval = 0.
 
@@ -269,8 +270,6 @@ function LocalSpecFunc(
         effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
-            #=specFunc = CSV.File(savePath) .|> first=#
-            #=specFunc = readdlm(savePath) |> vec=#
             specFunc = jldopen(savePath)["impSpecFunc"]
         else
             hamiltDetails = Dict(
@@ -283,7 +282,7 @@ function LocalSpecFunc(
                                  "globalField" => GLOBALFIELD,
                                 )
             specFunc, standDevInner = localSpecFunc(hamiltDetails, effectiveNumShells, 
-                                                    specFuncDictFunc, freqValues, standDev[1], standDev[2],
+                                                    impSpecFunc, freqValues, standDev[1], standDev[2],
                                                     effectiveMaxSize; resonanceHeight=resonanceHeight,
                                                     heightTolerance=1e-3, bathIntLegs=bathIntLegs,
                                                     addPerStep=1)
@@ -292,9 +291,139 @@ function LocalSpecFunc(
             jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits))
         end
         if W_val == 0. && fixHeight
-            resonanceHeight = specFunc[freqValues ≥ 0][1]
+            resonanceHeight = specFunc[freqValues .≥ 0][1]
         end
         standDev = (standDevInner, standDev[2])
+        push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+    end
+    plotSpecFunc(specFuncResults, freqValues[abs.(freqValues) .≤ freqValuesZoom1], "impSpecFunc_$(size_BZ).pdf")
+    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 1], "impSpecFuncTrunc_$(size_BZ).pdf")
+end
+
+
+function KspaceLocalSpecFunc(
+        kstate::Vector{Float64},
+        size_BZ::Int64;
+        loadData::Bool=false,
+    )
+    W_val_arr = NiceValues(size_BZ)[[3, 5, 6]]
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+    freqValues = collect(-15:0.005:15)
+    freqValuesZoom1 = 13.
+    freqValuesZoom2 = 1.
+    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    standDev = (0.2, 0.01 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
+    effective_Wval = 0.
+
+    for W_val in W_val_arr
+
+        effectiveNumShells = W_val == 0 ? numShells : 1
+        effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
+        #=kstate = [-3π/4, -π/4]=#
+        savePath = joinpath(SAVEDIR, "klocal-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(map2DTo1D(kstate..., size_BZ))-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
+        if ispath(savePath) && loadData
+            specFunc = jldopen(savePath)["specFuncKstate"]
+        else
+            hamiltDetailsUp = Dict(
+                                 "dispersion" => dispersion,
+                                 "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                                 "orbitals" => orbitals,
+                                 "size_BZ" => size_BZ,
+                                 "bathIntForm" => bathIntForm,
+                                 "W_val" => effective_Wval,
+                                 "globalField" => -GLOBALFIELD/100,
+                                )
+            hamiltDetailsDown = Dict(
+                                 "dispersion" => dispersion,
+                                 "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                                 "orbitals" => orbitals,
+                                 "size_BZ" => size_BZ,
+                                 "bathIntForm" => bathIntForm,
+                                 "W_val" => effective_Wval,
+                                 "globalField" => GLOBALFIELD/100,
+                                )
+            specFunc = 1. .* (
+                               kspaceLocalSpecFunc(hamiltDetailsUp, effectiveNumShells, 
+                                                    kspaceSpecFunc, freqValues, standDev[1], standDev[2],
+                                                    effectiveMaxSize, kstate; bathIntLegs=bathIntLegs,
+                                                    addPerStep=1)
+                               #=.+ kspaceLocalSpecFunc(hamiltDetailsDown, effectiveNumShells, =#
+                               #=                     kspaceSpecFunc, freqValues, standDev[1], standDev[2],=#
+                               #=                     effectiveMaxSize, kstate; bathIntLegs=bathIntLegs,=#
+                               #=                     addPerStep=1)=#
+                              )
+
+            if maximum(specFunc) > 0
+                roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
+                specFunc = round.(specFunc, digits=roundDigits)
+            end
+            jldsave(savePath; specFuncKstate=specFunc)
+        end
+        push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+    end
+    plotSpecFunc(specFuncResults, freqValues[abs.(freqValues) .≤ freqValuesZoom1], "kspaceSpecFunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")
+    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 1], "kspaceSpecFuncTrunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")
+end
+
+
+function RealSpaceOffDiagSpecFunc(
+        size_BZ::Int64;
+        loadData::Bool=false,
+    )
+    W_val_arr = NiceValues(size_BZ)[[1, 6]]
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+    freqValues = collect(-15:0.005:15)
+    freqValuesZoom1 = 13.
+    freqValuesZoom2 = 1.
+    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    standDev = (0.1, 0.1 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
+    effective_Wval = 0.
+
+    standDevInner = standDev[1]
+    for W_val in W_val_arr
+        specFunc = 0 .* freqValues
+
+        effectiveNumShells = W_val == 0 ? numShells : 1
+        effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
+        fermiSurfacePoints1D = getIsoEngCont(dispersion, 0.)
+        fermiSurfacePoints2D = map1DTo2D.(fermiSurfacePoints1D, size_BZ)
+        filteredPoints1D = [fermiSurfacePoints1D[i] for (i, (kx, ky)) in enumerate(fermiSurfacePoints2D) if kx + ky ≤ 0 && ky ≥ 0]
+        filteredPoints2D = map1DTo2D.(filteredPoints1D, size_BZ)
+
+        @showprogress for (kpoint, kstate) in zip(filteredPoints1D, filteredPoints2D)
+            kstate = map1DTo2D(kpoint, size_BZ)
+            savePath = joinpath(SAVEDIR, "rlocal-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(kpoint)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
+            if ispath(savePath) && loadData
+                specFunc = jldopen(savePath)["specFuncKstate"]
+            else
+                hamiltDetails = Dict(
+                                     "dispersion" => dispersion,
+                                     "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                                     "orbitals" => orbitals,
+                                     "size_BZ" => size_BZ,
+                                     "bathIntForm" => bathIntForm,
+                                     "W_val" => effective_Wval,
+                                     "globalField" => GLOBALFIELD,
+                                    )
+                specFuncKstate = kspaceLocalSpecFunc(hamiltDetails, effectiveNumShells, 
+                                                        kspaceSpecFunc, freqValues, standDev[1], standDev[2],
+                                                        effectiveMaxSize, kstate; bathIntLegs=bathIntLegs,
+                                                        addPerStep=1)
+                specFunc .+= 2 * cos(kstate[2]) .* specFuncKstate
+
+                if maximum(specFuncKstate) > 0
+                    roundDigits = trunc(Int, log(1/maximum(specFuncKstate)) + 7)
+                    specFuncKstate = round.(specFuncKstate, digits=roundDigits)
+                end
+                jldsave(savePath; specFuncKstate=specFuncKstate)
+            end
+        end
+        standDev = (standDevInner, standDev[2])
+        #=specFunc ./= sum(specFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)=#
         push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
         push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
     end
@@ -374,10 +503,14 @@ function TiledSpinCorr(
     close(f)
 end
 
-#=@time ScattProb(49)=#
 size_BZ = 49
-@time KondoCouplingMap(size_BZ; loadData=false)
-@time ImpurityCorrelations(size_BZ; loadData=false)
-@time LocalSpecFunc(size_BZ; loadData=false, fixHeight=true)
-@time TiledSpinCorr(size_BZ; loadData=false)
-@time PhaseDiagram(size_BZ, 1e-3; loadData=false)
+#=@time ScattProb(size_BZ)=#
+#=@time KondoCouplingMap(size_BZ; loadData=false)=#
+#=@time ImpurityCorrelations(size_BZ; loadData=false)=#
+#=@time LocalSpecFunc(size_BZ; loadData=false, fixHeight=true)=#
+@time KspaceLocalSpecFunc([-π/2, -π/2], size_BZ; loadData=false)
+@time KspaceLocalSpecFunc([-π, 0.], size_BZ; loadData=false)
+@time KspaceLocalSpecFunc([-π/4, -3π/4], size_BZ; loadData=false)
+#=@time RealSpaceOffDiagSpecFunc(size_BZ; loadData=false)=#
+#=@time TiledSpinCorr(size_BZ; loadData=false)=#
+#=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#

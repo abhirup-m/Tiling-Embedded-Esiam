@@ -121,7 +121,7 @@ end
                              pointsSequence,
                              bathIntFunc;
                              bathIntLegs=bathIntLegs,
-                             globalField=1e-8,
+                             globalField=hamiltDetails["globalField"],
                              couplingTolerance=1e-10,
                             )
     indexPartitions = [2 + 2 * length(pivotPoints)]
@@ -183,11 +183,12 @@ function iterDiagSpecFunc(
         sortedPoints::Vector{Int64},
         specFuncDict::Dict,
         bathIntLegs::Int64,
-        addPerStep::Int64,
         freqValues::Vector{Float64},
-        standDev::Union{Float64, Vector{Float64}},
-        silent::Bool,
-        broadFuncType::String,
+        standDev::Union{Float64, Vector{Float64}};
+        addPerStep::Int64=2,
+        silent::Bool=false,
+        broadFuncType::String="gauss",
+        normEveryStep::Bool=true,
     )
 
     bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
@@ -195,17 +196,25 @@ function iterDiagSpecFunc(
                                                          hamiltDetails["size_BZ"],
                                                          points)
                             
+    #=hybridisationArray = 0.0 .* [(sort(hamiltDetails["kondoJArray"][point, sortedPoints], by=abs, rev=true)[1] * impCorr) for point in sortedPoints]=#
+    #=localField = ifelse(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints] .|> abs |> maximum == 0, -4., 0.)=#
     hamiltonian = KondoModel(
                              hamiltDetails["dispersion"][sortedPoints],
                              hamiltDetails["kondoJArray"][sortedPoints, sortedPoints],
-                             sortedPoints,
-                             bathIntFunc;
+                             sortedPoints, bathIntFunc;
                              bathIntLegs=bathIntLegs,
                              globalField=hamiltDetails["globalField"],
+                             #=impurityField=localField,=#
                              couplingTolerance=1e-10,
                             )
-    append!(hamiltonian, [("n", [1], -6), ("n", [2], -6), ("nn", [1, 2], 12.)])
-    indexPartitions = [2]
+
+    # impurity local terms
+    impCorr = 14.
+    push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
+    push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
+    push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
+
+    indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
     end
@@ -216,13 +225,16 @@ function iterDiagSpecFunc(
                                                          maxSize;
                                                          symmetries=Char['N', 'S'],
                                                          #=magzReq=(m, N) -> -1 ≤ m ≤ 2,=#
-                                                         occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
-                                                         silent=false,
+                                                         #=occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,=#
+                                                         silent=silent,
                                                          maxMaxSize=maxSize,
                                                          specFuncDefDict=specFuncDict,
                                                         ) 
-    totalSpecFunc = IterSpecFunc(savePaths, specFuncOperators, freqValues, standDev;
-                                 normEveryStep=true, degenTol=1e-10, silent=silent, broadFuncType=broadFuncType,
+    totalSpecFunc, specFuncMatrix = IterSpecFunc(savePaths, specFuncOperators, 
+                                 freqValues, standDev;
+                                 normEveryStep=normEveryStep, degenTol=1e-10, 
+                                 silent=true, broadFuncType=broadFuncType,
+                                 returnEach=true,
                            )
     return totalSpecFunc
 
@@ -437,80 +449,58 @@ function localSpecFunc(
 end
 
 
-function correlationMap2Point(
+function kspaceLocalSpecFunc(
         hamiltDetails::Dict,
         numShells::Int64,
-        correlationFuncDict::Dict,
-        maxSize::Int64;
-        probePoints::Vector{Int64}=Int64[],
+        specFuncDictFunc::Function,
+        freqValues::Vector{Float64},
+        standDevInner::Union{Vector{Float64}, Float64},
+        standDevOuter::Union{Vector{Float64}, Float64},
+        maxSize::Int64,
+        kspacePoint::Vector{Float64};
         bathIntLegs::Int64=2,
+        addPerStep::Int64=1,
+        maxIter::Int64=20,
+        broadFuncType::String="gauss",
     )
     size_BZ = hamiltDetails["size_BZ"]
-
-    # initialise zero array for storing correlations
-    
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
-                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && cutoffEnergy ≥ dispersion[p] ≥ 0
+    SWIndices = [p for p in 1:size_BZ^2 if 
+                 #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
+                 #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
+                 map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&
+                 abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
-
-    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
-    symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
-    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
-                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
-                                     for p in SWIndices]
-    symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
-    calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
+    rotationMatrix(rotateAngle) = [cos(rotateAngle) -sin(rotateAngle); sin(rotateAngle) cos(rotateAngle)]
+    equivalentPoints = [rotationMatrix(rotateAngle) * kspacePoint for rotateAngle in (0, π/2, π, 3π/2)]
+    distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
+                        for p in SWIndices
+                       ]
+    sortedPoints = SWIndices[sortperm(distancesFromPivot)]
     
-    oppositePoints = Dict{Int64, Vector{Int64}}()
-    for point in calculatePoints
-        reflectDiagonal = map2DTo1D(reverse(map1DTo2D(point, size_BZ))..., size_BZ)
-        reflectFS = map2DTo1D((-1 .* reverse(map1DTo2D(point, size_BZ)) .+ [-π, -π])..., size_BZ)
-        reflectBoth = map2DTo1D((-1 .* map1DTo2D(point, size_BZ) .+ [-π, -π])..., size_BZ)
-        oppositePoints[point] = [reflectDiagonal, reflectFS, reflectBoth]
+    specDictSet = specFuncDictFunc(length(sortedPoints), (3, 4))
+    if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
+        delete!(specDictSet, "Sd+")
+        delete!(specDictSet, "Sd-")
     end
 
-    twoPointResults = Dict(k => zeros(length(probePoints), size_BZ^2) for k in keys(correlationFuncDict))
-
-    if isempty(probePoints)
-        probePoints = sort(calculatePoints)
+    specFunc = zeros(length(freqValues))
+    for (name, specFuncDict) in specDictSet
+        standDev = ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter)
+        broadType = ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
+        specFunc .+= iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+                                      specFuncDict, bathIntLegs, freqValues, 
+                                      standDev; addPerStep=addPerStep,
+                                      silent=false, broadFuncType=broadType,
+                                      normEveryStep=false,
+                                    )
     end
-    for pivotIndex in eachindex(probePoints)
-        desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
-        results = @showprogress desc=desc @distributed (d1, d2) -> mergewith(+, d1, d2) for pivotPoint2 in calculatePoints
-            for k in keys(correlationFuncDict)
-                correlationFuncDict[k][1] = probePoints[pivotIndex]
-            end
-            corrNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint2], symmetricPairsNode, copy(correlationFuncDict), Dict(), Dict(), bathIntLegs)
-            corrAntiNode = iterDiagResults(hamiltDetails, maxSize, [pivotPoint2], symmetricPairsAntiNode, copy(correlationFuncDict), Dict(), Dict(), bathIntLegs)
-            avgCorr = mergewith(+, corrNode, corrAntiNode)
-            map!(v -> v ./ 2, values(avgCorr))
-            avgCorr
-        end
-        results = PropagateIndices(calculatePoints, results, size_BZ, oppositePoints)
-        for (k, v) in results
-            twoPointResults[k][pivotIndex, :] .= v
-        end
-    end
+    specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
 
-    twoPointResultsBool = Dict()
-    for (name, results) in twoPointResults
-        @assert !any(isnan.(results))
-        twoPointResultsBool[name] = map(r -> abs(r) ≤ 1e-6 ? -1 : 1, results)
-    end
-    return twoPointResults, twoPointResultsBool
-end
-
-
-function CorrelationTiling(
-        corrResults::Vector{Float64}
-    )
-    tiledResults = zeros(repeat(length(corrResults), 2)...)
-    return results, results_bool
+    return specFunc
 end
 
 

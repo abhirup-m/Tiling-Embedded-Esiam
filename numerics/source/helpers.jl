@@ -238,7 +238,7 @@ end
 end
 
 
-function specFuncDictFunc(
+function impSpecFunc(
         numBathPoints::Int64,
     )
     siamSpecDict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])
@@ -250,4 +250,39 @@ function specFuncDictFunc(
         append!(kondoSpecDict["destroy"], [("+--", [1, 2, 2 * index + 1], 1.), ("+--", [2, 1, 2 * index + 2], 1.),])
     end
     return siamSpecDict, kondoSpecDict
+end
+
+
+function kspaceSpecFunc(
+        numBathPoints::Int64,
+        kpointIndices::NTuple{2, Int64},
+    )
+    specDictSet = Dict{String, Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}}()
+
+    # composite excitation where a bath k-state is created (|n_{k↑} = 0⟩ → |n_{k↑} = 1⟩) 
+    # along with the destruction of the impurity down state (|n_{d↓} = 0⟩ → |n_{d↓} = 1⟩).
+    # Overall spin is conserved, in line with the local Fermi liquid excitations
+    specDictSet["cd_down"] = Dict("create" => [("+-", [kpointIndices[1], 2], 1.)],
+                                "destroy" => [("+-", [2, kpointIndices[1]], 1.)],
+                               )
+    specDictSet["cd_up"] = Dict("create" => [("+-", [kpointIndices[2], 1], 1.)],
+                                "destroy" => [("+-", [1, kpointIndices[2]], 1.)],
+                               )
+    specDictSet["cdagd_down"] = Dict("create" => [("++", [kpointIndices[1], 2], 1.)],
+                                "destroy" => [("--", [2, kpointIndices[1]], 1.)],
+                               )
+    specDictSet["cdagd_up"] = Dict("create" => [("++", [kpointIndices[2], 1], 1.)],
+                                "destroy" => [("--", [1, kpointIndices[2]], 1.)],
+                               )
+
+    # composite excitation where a bath k-state is created (|n_{k↑} = 0⟩ → |n_{k↑} = 1⟩) 
+    # along with a down-flip of the impurity spin (|↑⟩ → |↓⟩).
+    # Overall spin is conserved, in line with the local Fermi liquid excitations
+    specDictSet["Sd-"] = Dict("create" => [("++-", [kpointIndices[1], 2, 1], 1.)],
+                                "destroy" => [("+--", [1, 2, kpointIndices[1]], 1.)],
+                               )
+    specDictSet["Sd+"] = Dict("create" => [("++-", [kpointIndices[2], 1, 2], 1.)],
+                                "destroy" => [("+--", [2, 1, kpointIndices[2]], 1.)],
+                               )
+    return specDictSet
 end

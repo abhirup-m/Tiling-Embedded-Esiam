@@ -5,7 +5,8 @@
 \begin{document}
 
 \title{\bf A Unitary RG-based Auxiliary Model Approach to Strongly-Correlated Electrons}
-\author{Abhirup Mukherjee, N.S. Vidhyadhiraja, A. Taraphder, Siddhartha Lal}
+\author{Abhirup Mukherjee, Siddhartha Lal}
+\affiliation{Department of Physical Sciences, Indian Institute of Science Education and Research-Kolkata, Mohanpur Campus, West Bengal 741246, India}
 \date{\today}
 \maketitle
 \tableofcontents
@@ -289,7 +290,7 @@ In order to study the mechanism behind the destabilisation of the Kondo cloud th
 	\label{cfnode}
 \end{figure}
 
-\subsection{Nature of the metal near the transition}
+\subsection{Comments on the nature of the metal near the transition}
 Some thoughts about the nature of the metal near the transition:
 \begin{itemize}
 	\item Typically, there arises some kind of degeneracy close to points of Kondo breakdown. In this model, this presumably happens when each Fermi surface point \(k\) starting from the antinodes begin to decouple from the Kondo cloud; at every such point, the local moment state \(\ket{\sigma_d,n_k=0(2)}\) and the singlet state \(\sum_\sigma \sigma\ket{\sigma_d,-\sigma_k}\) become degenerate.
@@ -297,6 +298,110 @@ Some thoughts about the nature of the metal near the transition:
 	\item With regards to the metal arising from the singular nodal points just before the transition, we can carry out the following calculation. In order to obtain the low-lying excitations, we treat the largest Kondo scattering terms (which turn out to be the ones at and between the nodes) as a perturbation above the bath interaction term, and ignore all other Kondo scattering terms (which are either already irrelevant or much smaller than the ones at the node). Integrating out the impurity dynamics in this fashion should (-> verify) lead to density-density interactions at the node (\(\mathcal{U}n_{k \uparrow} n_{k \downarrow}\) as well as between the nodes (\(\mathcal{U}n_{k \uparrow} n_{{k + Q} \downarrow}\), where \(Q = \left(\pi, \pi\right) \)). The low-lying excitations are therefore described by a Hatsugai-Kohmoto model (HKM).
 	\item The emergence of the HKM indicates that the nodal points harbour a non-Fermi liquid. Since the model is exactly solvable, one can try to calculate various diagnostics such as the quasiparticle residue and the self-energy. It is also interesting to note that a similar trick was employed in our 1CK work to obtain the effective theory for the Kondo cloud; there, because of the more democratic nature of the Kondo interaction (in \(k-\)space), the effective theory had all kinds of terms (not just the HKM). That was of course associated with local Fermi liquid behaviour. It appears, therefore, that the selective irrelevance of certain \(k-\)modes on the Fermi surface in terms of Kondo screening transforms the "all-to-all" Kondo cloud theory into the non-Fermi liquid HKM near the transition.
 \end{itemize}
+
+\subsection{Low-energy effective theory for gapless excitations near the transition}
+As the bath interaction \(W\) is tuned through the L-PG phase, the nodal region is the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, where only the nodal region is hybridising with the impurity spin through Kondo interactions. This is done by retaining only those scattering processes that originate from (or end at) the nodal point, \(\vec k_N = \left(\pi/2, \pi/2\right)\). The other leg of the scattering vertices will involve \(k-\)space points in the immediate vicinity of the node (\(\vec k_N + \vec q, |\vec q| \ll \pi\)), since these are the strongest. For these points, the Kondo terms can be written as
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	\tilde H_\text{imp-cbath} = \frac{1}{2}\sum_{\vec q, |\vec q| \ll \pi}\sum_{\alpha,\beta} J^*(\vec k_N, \vec k_N + \vec q)\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta}\left(c^\dagger_{\vec k_N,\alpha}c_{\vec k_N + \vec q,\beta} + c^\dagger_{\vec k_N + \vec q,\alpha}c_{\vec k_N,\beta}\right) ~,
+\end{aligned}\end{equation}
+where the scattered momentum \(\vec k_N + \vec q\) resides in a small ball around the node \(\vec k_N\). \(J^*(\vec k_N, \vec k_N + \vec q)\) is the low-energy fixed point value of the coupling for such scattering processes. Throughout the rest of this section, we use the shorthand \(J^*(\vec q)\) to represent \(J^*(\vec k_N, \vec k_N + \vec q)\).
+
+From symmetry considerations, we need to consider other processes as well: the Kondo term changes sign under \(\vec k_N \to \vec k_N + \vec Q\) in one leg of the vertex (where \(\vec Q = \left( -\pi, -\pi \right) \), and remains invariant under transformation of both legs. This leads to three more classes of terms in the Hamiltonian:
+\begin{equation}\begin{aligned}
+	\tilde H_\text{imp-cbath} =& \frac{1}{2}\sum_{\vec q,\alpha,\beta}J^*(\vec q)\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta}\left(c^\dagger_{\vec k_N,\alpha}c_{\vec k_N + \vec q,\beta} + c^\dagger_{\vec k_N + \vec q,\alpha}c_{\vec k_N,\beta} + c^\dagger_{\vec k_N + \vec Q,\alpha}c_{\vec k_N + \vec Q + \vec q,\beta} + c^\dagger_{\vec k_N + \vec Q + \vec q,\alpha}c_{\vec k_N + \vec Q,\beta}\right) ~,\\
+			   & - \frac{1}{2}\sum_{\vec q}\sum_{\alpha,\beta}J^*(\vec q)\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta}\left(c^\dagger_{\vec k_N + \vec Q,\alpha}c_{\vec k_N + \vec q,\beta} + c^\dagger_{\vec k_N + \vec q,\alpha}c_{\vec k_N + \vec Q,\beta} + c^\dagger_{\vec k_N,\alpha}c_{\vec k_N + \vec Q + \vec q,\beta} + c^\dagger_{\vec k_N + \vec Q + \vec q,\alpha}c_{\vec k_N,\beta}\right) ~.
+\end{aligned}\end{equation}
+\end{widetext}
+
+In order to simplify the Hamiltonian, we define new fermionic operators
+\begin{equation}\begin{aligned}
+	a_{\vec k, \sigma} = \frac{1}{\sqrt 2}\left(c_{\vec k,\sigma} + c_{\vec k + \vec Q, \sigma}\right)~,
+	b_{\vec k, \sigma} = \frac{1}{\sqrt 2}\left(c_{\vec k,\sigma} - c_{\vec k + \vec Q, \sigma}\right)~,
+\end{aligned}\end{equation}
+where \(\vec k\) is the momentum quantum number (chosen to lie in a small window around \(\left( \pi/2,\pi/2 \right) \)) and \(\sigma\) is the spin quantum number. That the operators are fermionic can be easily verified:
+\begin{equation}\begin{aligned}
+	\left\{ a_{\vec k,\sigma}, a^\dagger_{\vec k^\prime,\sigma^\prime} \right\} &= \left[\delta_{\vec k, \vec k^\prime} + \frac{1}{2}\left(\delta_{\vec k + \vec Q, \vec k^\prime} + \delta_{\vec k, \vec k^\prime + \vec Q}\right)  \right] \delta_{\sigma,\sigma^\prime} \\
+	&= \delta_{\vec k, \vec k^\prime}\delta_{\sigma,\sigma^\prime}~,\\
+	\left\{ b_{\vec k,\sigma}, b^\dagger_{\vec k^\prime,\sigma^\prime} \right\} &= \left[\delta_{\vec k, \vec k^\prime} - \frac{1}{2}\left(\delta_{\vec k + \vec Q, \vec k^\prime} + \delta_{\vec k, \vec k^\prime + \vec Q}\right)  \right] \delta_{\sigma,\sigma^\prime} \\
+	&= \delta_{\vec k, \vec k^\prime}\delta_{\sigma,\sigma^\prime}~,\\
+	\left\{ a_{\vec k,\sigma}, b^\dagger_{\vec k^\prime,\sigma^\prime} \right\} &= \left\{ b_{\vec k,\sigma}, a^\dagger_{\vec k^\prime,\sigma^\prime} \right\} = 0~,
+\end{aligned}\end{equation}
+where both \(\vec k\) and \(\vec k^\prime\) are chosen from a small window around the node, so their difference is also small and it is therefore guaranteed that \(|\vec k - \vec k^\prime| \neq |\vec Q|\), rendering both \(\delta_{\vec k + \vec Q, \vec k^\prime}\) and \(\delta_{\vec k, \vec k^\prime + \vec Q}\) zero. For convenience, we define the new number operators
+\begin{equation}\begin{aligned}
+	N_{\vec k,\sigma} = a^\dagger_{\vec k}a_{\vec k},~ \bar N_{\vec k,\sigma} = b^\dagger_{\vec k}b_{\vec k}~.
+\end{aligned}\end{equation}
+
+We have the following useful relation between the corresponding number operators:
+\begin{equation}\begin{aligned}\label{numberOperatorRelation}
+	\hat n_{\vec k,\sigma} + \hat n_{\vec k + \vec Q, \sigma} = N_{\vec k, \sigma} + \bar N_{\vec k,\sigma}~.
+\end{aligned}\end{equation}
+
+The Hamiltonian takes the following form in terms of these new degrees of freedom:
+\begin{equation}\begin{aligned}
+	&\tilde H_\text{imp-cbath} = \\
+	&\sum_{\vec q,\alpha,\beta}J^*(\vec q)\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta} \left(b^\dagger_{\vec k_N,\alpha}b_{\vec k_N + \vec q,\beta} + b^\dagger_{\vec k_N + \vec q,\alpha}b_{\vec k_N,\beta}\right)~.
+\end{aligned}\end{equation}
+We now proceed to rewrite the other parts of the Hamiltonian in terms of these new degrees of freedom. The kinetic energy can be written as
+\begin{equation}\begin{aligned}
+	\tilde H_\text{cbath} &= \sum_{\vec q,\sigma}\varepsilon_{\vec k_N + \vec q}\left(\hat n_{\vec k_N + \vec q,\sigma} - \hat n_{\vec k_N + \vec Q + \vec q,\sigma}\right)\\
+				&= \sum_{\vec q,\sigma}\varepsilon_{\vec k_N + \vec q}\left(a^\dagger_{\vec k_N + \vec q,\sigma} b_{\vec k_N + \vec q,\sigma} + b^\dagger_{\vec k_N + \vec q,\sigma} a_{\vec k_N + \vec q,\sigma}\right)~.
+\end{aligned}\end{equation}
+
+We also consider a simplified form of the bath interaction, taking into account the density-density correlations in \(k-\)space:
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	\tilde H_\text{cbath-int} =& -W\sum_{\vec q,\sigma}\left(\hat n_{\vec k + \vec q,\sigma} + \hat n_{\vec k + \vec Q + \vec q,\sigma}\right) + W\sum_{\vec q_1,\vec q_2}\left( \hat n_{\vec k_N + \vec q_1, \uparrow} + \hat n_{\vec k_N + \vec Q + \vec q_1, \uparrow} \right) \left( \hat n_{\vec k_N + \vec q_2, \downarrow} + \hat n_{\vec k_N + \vec Q + \vec q_2, \downarrow} \right)~,\\
+	=& -W\sum_{\vec q,\sigma}\left(N_{\vec k_N + \vec q,\sigma} + \bar N_{\vec k_N + \vec q,\sigma}\right) + W\sum_{\vec q_1,\vec q_2}\left( N_{\vec k_N + \vec q_1,\uparrow} + \bar N_{\vec k_N + \vec q_1,\uparrow} \right) \left( N_{\vec k_N + \vec q_2,\downarrow} + \bar N_{\vec k_N + \vec q_2,\downarrow} \right)~.
+\end{aligned}\end{equation}
+\end{widetext}
+We used eq.~\ref{numberOperatorRelation} in order to obtain the final form. Since the Hamiltonian is defined in a small window around the nodal point, the kinetic energy is the smallest term in the Hamiltonian. We therefore ignore it for the time-being, and address the two other terms. Since both \(\tilde H_\text{imp-cbath}\) and \(\tilde H_\text{cbath-int}\) commute with \(N_{\vec k, \sigma}\), we replace the local objects \(\sum_{\vec q}N_{\vec k_N + \vec q,\sigma}\) in \(\tilde H_\text{cbath-int}\) with \(\frac{1}{2}\) since the bath is always at half-filling. This results in a simplified Hamiltonian for just the \(b^\dagger\) degrees of freedom:
+\begin{equation}\begin{aligned}
+	\tilde H =& -\frac{1}{2}W\sum_{\vec q,\sigma}\bar N_{\vec k_N + \vec q,\sigma} + W\sum_{\vec q_1,\vec q_2}\bar N_{\vec k_N + \vec q_1,\uparrow} \bar N_{\vec k_N + \vec q_2,\downarrow}\\
+			  &+ \sum_{\vec q,\alpha,\beta}J^*(\vec q)\vec{S}_d\cdot\vec{\sigma}_{\alpha\beta} \left(b^\dagger_{\vec k_N,\alpha}b_{\vec k_N + \vec q,\beta} + b^\dagger_{\vec k_N + \vec q,\alpha}b_{\vec k_N,\beta}\right)
+\end{aligned}\end{equation}
+
+For bath interaction strength close to the critical value (\(W \lesssim W_c\)), the fixed point coupling value \(J^*\) is much smaller than \(W\). In order to obtain the gapless excitations of the system arising from the presence of the impurity site, we integrate out the impurity dynamics via a Schrieffer-Wolff transformation. The perturbation term \(\mathcal{V}\) then consists of Hamiltonian terms that modify the impurity configuration,
+\begin{equation}\begin{aligned}
+	\mathcal{V} &= V + V^\dagger,\\
+	V^\dagger &= \frac{1}{2}\sum_{\vec q}J^*(\vec q)\vec{S}_d^+ \left(b^\dagger_{\vec k_N,\downarrow}b_{\vec k_N + \vec q, \uparrow} + b^\dagger_{\vec k_N + \vec q,\downarrow}b_{\vec k_N, \uparrow}\right)~,
+\end{aligned}\end{equation}
+while the ``non-interacting" Hamiltonian is
+\begin{equation}\begin{aligned}
+	H_D &= -\frac{1}{2}W\sum_{\vec q,\sigma}\bar N_{\vec k_N + \vec q,\sigma} + W\sum_{\vec q_1,\vec q_2}\bar N_{\vec k_N + \vec q_1,\uparrow} \bar N_{\vec k_N + \vec q_2,\downarrow}~.
+\end{aligned}\end{equation}
+The renormalisation in the dynamics of \(b^\dagger_{\vec k,\sigma}\) are given by
+\begin{equation}\begin{aligned}
+	\Delta \tilde H &= \mathcal{P}_L \mathcal{V}^\dagger \mathcal{P}_H\frac{1}{E_L - H_D} \mathcal{V} \mathcal{P}_L\\
+					&= \mathcal{P}_L \left[V \mathcal{P}_H\frac{1}{E_L - H_D} V^\dagger + V^\dagger \mathcal{P}_H\frac{1}{E_L - H_D} V \right]\mathcal{P}_L~,
+\end{aligned}\end{equation}
+where \(E_L\) is the energy of the ground state of \(H_D\), \(-(E_L - H_D)\) is the excitation energy of the state generated upon applying the perturbation \(V\), and \(\mathcal{P}_{L(H)}\) projects onto the low(high)-energy subspace. For the present Hamiltonian, the low-energy state (associated with \(E_L\)) is the one that minimises the bath interaction term \(\tilde H_\text{cbath-int}\); since the coupling \(W\) is negative, it projects out the spin sector of each \(k-\)state at low energies, leading to the following ground state:
+\begin{equation}\begin{aligned}
+	\ket{L} = \otimes_{\vec q}\frac{1}{\sqrt 2}\left(b^\dagger_{\vec k_N + \vec q, \uparrow}b^\dagger_{\vec k_N + \vec q, \downarrow} + 1\right) \ket{0}
+\end{aligned}\end{equation}
+where \(\ket{0}\) is the \(\bar N_{k \uparrow} = \bar N_{k \downarrow} = 0\) state. The state \(\ket{L}\) is at zero energy. High-energy states are obtained by applying, on the state \(\ket{L}\), the excitation operator \(b^\dagger_{\vec k_N,\sigma}b_{\vec k_N + \vec q,\bar\sigma}\) or its hermitian conjugate. The operator converts a double and a hole to spin states, incurring a total excitation cost of \(-W = |W|\).
+
+We now calculate the various terms in \(\Delta \tilde H\):
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	&\mathcal{P}_L V^\dagger \mathcal{P}_H\frac{1}{E_L - H_D} V \mathcal{P}_L \\
+	&= -\frac{{J^*(q)}^2}{4W}\left(\frac{1}{2} + S_d^z\right) \sum_{\vec q}\left(b^\dagger_{\vec k_N,\downarrow}b_{\vec k_N + \vec q, \uparrow} + b^\dagger_{\vec k_N + \vec q,\downarrow}b_{\vec k_N, \uparrow}\right) \left(b^\dagger_{\vec k_N,\uparrow}b_{\vec k_N + \vec q, \downarrow} + b^\dagger_{\vec k_N + \vec q,\uparrow}b_{\vec k_N, \downarrow}\right)\\
+	&= -\frac{{J^*(q)}^2}{4W}\left(\frac{1}{2} + S_d^z\right) \sum_{\vec q}\left[\bar N_{\vec k_N, \downarrow}\left( 1 - \bar N_{\vec k_N + \vec q, \uparrow} \right) + \bar N_{\vec k_N + \vec q, \downarrow}\left( 1 - \bar N_{\vec k_N, \uparrow} \right) + b^\dagger_{\vec k_N, \downarrow} b^\dagger_{\vec k_N, \uparrow}b_{\vec k_N + \vec q, \downarrow} b_{\vec k_N + \vec q, \uparrow} + \text{h.c.}\right]~, \\
+	&\mathcal{P}_L V \mathcal{P}_H\frac{1}{E_L - H_D} V^\dagger \mathcal{P}_L \\
+	&= -\frac{{J^*(q)}^2}{4W}\left(\frac{1}{2} - S_d^z\right) \sum_{\vec q}\left[\bar N_{\vec k_N, \uparrow}\left( 1 - \bar N_{\vec k_N + \vec q, \downarrow} \right) + \bar N_{\vec k_N + \vec q, \uparrow}\left( 1 - \bar N_{\vec k_N, \downarrow} \right) + b^\dagger_{\vec k_N, \uparrow} b^\dagger_{\vec k_N, \downarrow}b_{\vec k_N + \vec q, \uparrow} b_{\vec k_N + \vec q, \downarrow} + \text{h.c.}\right] \\
+\end{aligned}\end{equation}
+\end{widetext}
+Adding both contributions and setting \(S_d^z = 0\) owing to local SU(2) symmetry on the impurity site in the absence of fluctuations, we get
+\begin{equation}\begin{aligned}
+	\Delta \tilde H = \sum_{\vec q,\sigma}\left[\Delta(\vec q)\bar N_{\vec k_N + \vec q, \sigma} -2\Delta(\vec q)\bar N_{\vec k_N, \sigma}\bar N_{\vec k_N + \vec q, \sigma}\right.\\
+	\left. -\Delta(\vec q) \left(b^\dagger_{\vec k_N, \sigma} b^\dagger_{\vec k_N, \bar\sigma} b_{\vec k_N + \vec q, \bar\sigma}b_{\vec k_N + \vec q, \sigma} + \text{h.c.}\right) \right]~,
+\end{aligned}\end{equation}
+where \(\Delta(q) = -{J^*(\vec q)}^2/8W\) is a positive energy scale.
+
+
+
+
+
 
 \section{The Tiling Algorithm}
 
@@ -829,7 +934,7 @@ In order to understand the nature of the transition in momentum space, we employ
 \clearpage
 
 
-\begin{widetext}
+% \begin{widetext}
 
 \section{The Mott MIT: a local perspective}
 \subsection{Gapping of the local spectral function and vanishing of correlations}
@@ -1397,7 +1502,7 @@ The states on the isoenergetic shell \(\pm|\varepsilon_j|\) come in particle-hol
 The bath correlation term \(W\) can undergo renormalisation only via scattering processes arising from itself. Irrespective of whether the state \({\bf q}\) being decoupled is in a particle or hole configuration in the initial many-body state, the propagator \(G = 1/(\omega - H_D)\) of the intermediate excited state is uniform, and equal to 
 \begin{equation}\begin{aligned}\label{propagatorW}
 	G_W = 1/\left(\omega - |\varepsilon_j|/2 + W_{\bf q}/2)\right)
-\end{itemize}
+\end{aligned}\end{equation}
 
 \section{The Tiling Algorithm}
 

@@ -181,15 +181,18 @@ function iterDiagSpecFunc(
         hamiltDetails::Dict,
         maxSize::Int64,
         sortedPoints::Vector{Int64},
-        specFuncDict::Dict,
+        specFuncDict::Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}},
         bathIntLegs::Int64,
         freqValues::Vector{Float64},
-        standDev::Union{Float64, Vector{Float64}};
+        standDev::Dict{String, Union{Float64, Vector{Float64}}};
         addPerStep::Int64=2,
         silent::Bool=false,
-        broadFuncType::String="gauss",
+        broadFuncType::Union{String, Dict{String, String}}="gauss",
         normEveryStep::Bool=true,
     )
+    if typeof(broadFuncType) == String
+        broadFuncType = Dict(name => broadFuncType for name in specFuncDict)
+    end
 
     bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
                                                          hamiltDetails["orbitals"][2],
@@ -230,12 +233,17 @@ function iterDiagSpecFunc(
                                                          maxMaxSize=maxSize,
                                                          specFuncDefDict=specFuncDict,
                                                         ) 
-    totalSpecFunc, specFuncMatrix = IterSpecFunc(savePaths, specFuncOperators, 
-                                 freqValues, standDev;
-                                 normEveryStep=normEveryStep, degenTol=1e-10, 
-                                 silent=true, broadFuncType=broadFuncType,
-                                 returnEach=true,
-                           )
+    totalSpecFunc = freqValues |> length |> zeros
+    for (name, operator) in specFuncOperators
+        standDevThis = ifelse
+        specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
+                                                standDev[name]; normEveryStep=normEveryStep, 
+                                                degenTol=1e-10, silent=true, 
+                                                broadFuncType=broadFuncType[name],
+                                                returnEach=true,
+                                               )
+        totalSpecFunc .+= specFunc
+    end
     return totalSpecFunc
 
 end
@@ -488,16 +496,14 @@ function kspaceLocalSpecFunc(
     end
 
     specFunc = zeros(length(freqValues))
-    for (name, specFuncDict) in specDictSet
-        standDev = ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter)
-        broadType = ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
-        specFunc .+= iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
-                                      specFuncDict, bathIntLegs, freqValues, 
-                                      standDev; addPerStep=addPerStep,
-                                      silent=false, broadFuncType=broadType,
-                                      normEveryStep=false,
-                                    )
-    end
+    standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
+    broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss") for name in keys(specDictSet))
+    specFunc = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+                                specDictSet, bathIntLegs, freqValues, 
+                                standDev; addPerStep=addPerStep,
+                                silent=false, broadFuncType=broadType,
+                                normEveryStep=false,
+                               )
     specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
 
     return specFunc

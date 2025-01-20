@@ -503,14 +503,14 @@ function TiledSpinCorr(
     close(f)
 end
 
-size_BZ = 49
+size_BZ = 33
 #=@time ScattProb(size_BZ)=#
 #=@time KondoCouplingMap(size_BZ; loadData=false)=#
 #=@time ImpurityCorrelations(size_BZ; loadData=false)=#
 #=@time LocalSpecFunc(size_BZ; loadData=false, fixHeight=true)=#
 @time KspaceLocalSpecFunc([-π/2, -π/2], size_BZ; loadData=false)
-@time KspaceLocalSpecFunc([-π, 0.], size_BZ; loadData=false)
-@time KspaceLocalSpecFunc([-π/4, -3π/4], size_BZ; loadData=false)
+#=@time KspaceLocalSpecFunc([-π, 0.], size_BZ; loadData=false)=#
+#=@time KspaceLocalSpecFunc([-π/4, -3π/4], size_BZ; loadData=false)=#
 #=@time RealSpaceOffDiagSpecFunc(size_BZ; loadData=false)=#
 #=@time TiledSpinCorr(size_BZ; loadData=false)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#

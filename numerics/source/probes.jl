@@ -1,8 +1,7 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-@everywhere using ProgressMeter, Combinatorics, Fermions
-#=include("/home/abhirup/storage/programmingProjects/fermions.jl/src/iterDiag.jl")=#
+@everywhere using ProgressMeter, Combinatorics, Serialization, Fermions
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -212,10 +211,11 @@ function iterDiagSpecFunc(
                             )
 
     # impurity local terms
-    impCorr = 14.
+    impCorr = 8
     push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
     push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
     push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
+    excludeRange = [0.5 * maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4]
 
     indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
@@ -235,12 +235,12 @@ function iterDiagSpecFunc(
                                                         ) 
     totalSpecFunc = freqValues |> length |> zeros
     for (name, operator) in specFuncOperators
-        standDevThis = ifelse
         specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
                                                 standDev[name]; normEveryStep=normEveryStep, 
                                                 degenTol=1e-10, silent=true, 
                                                 broadFuncType=broadFuncType[name],
                                                 returnEach=true,
+                                                excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
                                                )
         totalSpecFunc .+= specFunc
     end

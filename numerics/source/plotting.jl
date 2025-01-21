@@ -17,7 +17,7 @@ update_theme!(
                        markersize=20,
                       ),
               Lines = (
-                       linewidth = 4,
+                       linewidth = 3,
                      ),
               Legend = (
                         patchsize=(50,20),

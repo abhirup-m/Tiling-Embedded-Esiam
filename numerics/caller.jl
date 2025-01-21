@@ -13,8 +13,8 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 600
-WmaxSize = 600
+maxSize = 1600
+WmaxSize = 1600
 
 colmap = reverse(ColorSchemes.cherry)
 numShells = 1
@@ -307,14 +307,14 @@ function KspaceLocalSpecFunc(
         size_BZ::Int64;
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[[3, 5, 6]]
+    W_val_arr = NiceValues(size_BZ)[1:1]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
-    freqValues = collect(-15:0.005:15)
-    freqValuesZoom1 = 13.
-    freqValuesZoom2 = 1.
+    freqValues = collect(-15:0.001:15)
+    freqValuesZoom1 = 6.
+    freqValuesZoom2 = 0.3
     specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
-    standDev = (0.2, 0.01 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
+    standDev = (0.1, 0.01 .+ exp.(0.01 .* abs.(freqValues) ./ maximum(freqValues)))
     effective_Wval = 0.
 
     for W_val in W_val_arr
@@ -326,26 +326,17 @@ function KspaceLocalSpecFunc(
         if ispath(savePath) && loadData
             specFunc = jldopen(savePath)["specFuncKstate"]
         else
-            hamiltDetailsUp = Dict(
+            hamiltDetails = Dict(
                                  "dispersion" => dispersion,
                                  "kondoJArray" => kondoJArrays[W_val][:, :, end],
                                  "orbitals" => orbitals,
                                  "size_BZ" => size_BZ,
                                  "bathIntForm" => bathIntForm,
                                  "W_val" => effective_Wval,
-                                 "globalField" => -GLOBALFIELD/100,
-                                )
-            hamiltDetailsDown = Dict(
-                                 "dispersion" => dispersion,
-                                 "kondoJArray" => kondoJArrays[W_val][:, :, end],
-                                 "orbitals" => orbitals,
-                                 "size_BZ" => size_BZ,
-                                 "bathIntForm" => bathIntForm,
-                                 "W_val" => effective_Wval,
-                                 "globalField" => GLOBALFIELD/100,
+                                 "globalField" => -GLOBALFIELD,
                                 )
             specFunc = 1. .* (
-                               kspaceLocalSpecFunc(hamiltDetailsUp, effectiveNumShells, 
+                               kspaceLocalSpecFunc(hamiltDetails, effectiveNumShells, 
                                                     kspaceSpecFunc, freqValues, standDev[1], standDev[2],
                                                     effectiveMaxSize, kstate; bathIntLegs=bathIntLegs,
                                                     addPerStep=1)
@@ -365,7 +356,7 @@ function KspaceLocalSpecFunc(
         push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
     end
     plotSpecFunc(specFuncResults, freqValues[abs.(freqValues) .≤ freqValuesZoom1], "kspaceSpecFunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")
-    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ 1], "kspaceSpecFuncTrunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")
+    plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ freqValuesZoom2], "kspaceSpecFuncTrunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")
 end
 
 
@@ -503,7 +494,7 @@ function TiledSpinCorr(
     close(f)
 end
 
-size_BZ = 33
+size_BZ = 13
 #=@time ScattProb(size_BZ)=#
 #=@time KondoCouplingMap(size_BZ; loadData=false)=#
 #=@time ImpurityCorrelations(size_BZ; loadData=false)=#

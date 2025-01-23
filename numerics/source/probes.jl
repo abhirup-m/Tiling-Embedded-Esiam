@@ -176,7 +176,7 @@ end
 end
 
 
-function iterDiagSpecFunc(
+@everywhere function iterDiagSpecFunc(
         hamiltDetails::Dict,
         maxSize::Int64,
         sortedPoints::Vector{Int64},
@@ -188,6 +188,7 @@ function iterDiagSpecFunc(
         silent::Bool=false,
         broadFuncType::Union{String, Dict{String, String}}="gauss",
         normEveryStep::Bool=true,
+        onlyCoeffs::Vector{String}=String[],
     )
     if typeof(broadFuncType) == String
         broadFuncType = Dict(name => broadFuncType for name in specFuncDict)
@@ -198,8 +199,6 @@ function iterDiagSpecFunc(
                                                          hamiltDetails["size_BZ"],
                                                          points)
                             
-    #=hybridisationArray = 0.0 .* [(sort(hamiltDetails["kondoJArray"][point, sortedPoints], by=abs, rev=true)[1] * impCorr) for point in sortedPoints]=#
-    #=localField = ifelse(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints] .|> abs |> maximum == 0, -4., 0.)=#
     hamiltonian = KondoModel(
                              hamiltDetails["dispersion"][sortedPoints],
                              hamiltDetails["kondoJArray"][sortedPoints, sortedPoints],
@@ -211,11 +210,11 @@ function iterDiagSpecFunc(
                             )
 
     # impurity local terms
-    impCorr = 8
+    impCorr = 10
     push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
     push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
     push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
-    excludeRange = [0.5 * maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4]
+    excludeRange = [1 .* maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4]
 
     indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
@@ -233,18 +232,27 @@ function iterDiagSpecFunc(
                                                          maxMaxSize=maxSize,
                                                          specFuncDefDict=specFuncDict,
                                                         ) 
-    totalSpecFunc = freqValues |> length |> zeros
+
+    specFuncResults = Dict()
     for (name, operator) in specFuncOperators
-        specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
-                                                standDev[name]; normEveryStep=normEveryStep, 
-                                                degenTol=1e-10, silent=true, 
-                                                broadFuncType=broadFuncType[name],
-                                                returnEach=true,
-                                                excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
-                                               )
-        totalSpecFunc .+= specFunc
+        if name ∈ onlyCoeffs
+            specCoeffs = IterSpectralCoeffs(savePaths, operator;
+                                            degenTol=1e-10, 
+                                            excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
+                                           )
+            specFuncResults[name] = vcat(specCoeffs...)
+        else
+            specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
+                                                    standDev[name]; normEveryStep=normEveryStep, 
+                                                    degenTol=1e-10, silent=true, 
+                                                    broadFuncType=broadFuncType[name],
+                                                    returnEach=true, normalise=true,
+                                                    excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
+                                                   )
+            specFuncResults[name] = specFunc
+        end
     end
-    return totalSpecFunc
+    return specFuncResults
 
 end
 
@@ -464,12 +472,13 @@ function kspaceLocalSpecFunc(
         freqValues::Vector{Float64},
         standDevInner::Union{Vector{Float64}, Float64},
         standDevOuter::Union{Vector{Float64}, Float64},
-        maxSize::Int64,
-        kspacePoint::Vector{Float64};
+        maxSize::Int64;
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
+        targetHeight=0.,
+        standDevGuess=0.1,
     )
     size_BZ = hamiltDetails["size_BZ"]
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
@@ -483,30 +492,60 @@ function kspaceLocalSpecFunc(
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
     rotationMatrix(rotateAngle) = [cos(rotateAngle) -sin(rotateAngle); sin(rotateAngle) cos(rotateAngle)]
-    equivalentPoints = [rotationMatrix(rotateAngle) * kspacePoint for rotateAngle in (0, π/2, π, 3π/2)]
-    distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
-                        for p in SWIndices
-                       ]
-    sortedPoints = SWIndices[sortperm(distancesFromPivot)]
-    
-    specDictSet = specFuncDictFunc(length(sortedPoints), (3, 4))
-    if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
-        delete!(specDictSet, "Sd+")
-        delete!(specDictSet, "Sd-")
+
+    fermiPoints = [point for point in getIsoEngCont(hamiltDetails["dispersion"], 0.) if map1DTo2D(point, size_BZ)[1] ≤ 0 && map1DTo2D(point, size_BZ)[2] ≤ -π/2]
+    specCoeffsBZone = [NTuple{2, Float64}[] for _ in fermiPoints]
+    fixedContrib = [freqValues |> length |> zeros for _ in fermiPoints]
+    @showprogress for (index, kspacePoint) in fermiPoints |> enumerate
+        equivalentPoints = [rotationMatrix(rotateAngle) * map1DTo2D(kspacePoint, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
+        distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
+                            for p in SWIndices
+                           ]
+        sortedPoints = SWIndices[sortperm(distancesFromPivot)]
+        
+        specDictSet = specFuncDictFunc(length(sortedPoints), (3, 4))
+        if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
+            delete!(specDictSet, "Sd+")
+            delete!(specDictSet, "Sd-")
+        end
+
+        standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
+        broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss") for name in keys(specDictSet))
+        onlyCoeffs = ["Sd+", "Sd-"]
+        specFuncResults =iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+                                           specDictSet, bathIntLegs, freqValues, 
+                                           standDev; addPerStep=addPerStep,
+                                           silent=true, broadFuncType=broadType,
+                                           normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                          )
+        for name in keys(specDictSet)
+            if name ∉ onlyCoeffs
+                fixedContrib[index] .+= specFuncResults[name]
+            else
+                append!(specCoeffsBZone[index], specFuncResults[name])
+            end
+        end
+    end
+    specFunc, standDev = SpecFuncVariational(specCoeffsBZone, freqValues, targetHeight, 1e-3; 
+                                   degenTol=1e-10, normalise=true, silent=false, 
+                                   broadFuncType="lorentz", fixedContrib=fixedContrib,
+                                   standDevGuess=standDevGuess,
+                                  )
+
+    specFuncKSpace = [freqValues |> length |> zeros for _ in fermiPoints]
+    kspaceDOS = zeros(size_BZ^2)
+    for index in eachindex(fermiPoints)
+        centerSpecFunc = SpecFunc(specCoeffsBZone[index], freqValues, standDev;
+                                          normalise=true, silent=true, 
+                                          broadFuncType="lorentz",
+                                        )
+        centerArea = sum(centerSpecFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+        sideArea = sum(fixedContrib[index]) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+        kspaceDOS[fermiPoints[index]] = centerArea / (centerArea + sideArea)
+        specFuncKSpace[index] = Normalise(centerSpecFunc .+ fixedContrib[index], freqValues, true)
     end
 
-    specFunc = zeros(length(freqValues))
-    standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
-    broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss") for name in keys(specDictSet))
-    specFunc = iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
-                                specDictSet, bathIntLegs, freqValues, 
-                                standDev; addPerStep=addPerStep,
-                                silent=false, broadFuncType=broadType,
-                                normEveryStep=false,
-                               )
-    specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
-
-    return specFunc
+    return specFuncKSpace, specFunc, standDev, kspaceDOS
 end
 
 

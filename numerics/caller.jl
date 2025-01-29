@@ -1,7 +1,7 @@
 using Distributed, Random
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(20)
+    addprocs(10)
 end
 @everywhere using LinearAlgebra, CSV, JLD2, FileIO, CodecZlib
 
@@ -13,10 +13,10 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1000
-WmaxSize = 1000
+maxSize = 1500
+WmaxSize = 1500
 
-colmap = reverse(ColorSchemes.cherry)
+colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
 numShells = 1
 bathIntLegs = 1
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
@@ -26,7 +26,16 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.55, 8.77, 8.8] ./ size_BZ,
                          57 => -1.0 .* [0, 5., 10.2, 10.6, 10.852] ./ size_BZ,
-                         69 => -1.0 .* [0, 12.5, 13.1, 13.34] ./ size_BZ,
+                         69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
+                        )[size_BZ]
+transitionValues(size_BZ) = Dict{Int64, Float64}(
+                         13 => -1.0 * 1.6 / size_BZ,
+                         25 => -1.0 * 3.88 / size_BZ,
+                         33 => -1.0 * 5.92 / size_BZ,
+                         41 => -1.0 * 7.564 / size_BZ,
+                         49 => -1.0 * 8.77 / size_BZ,
+                         57 => -1.0 * 10.852 / size_BZ,
+                         69 => -1.0 * 13.34 / size_BZ,
                         )[size_BZ]
 
 get_x_arr(size_BZ) = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
@@ -50,17 +59,26 @@ function RGFlow(
     return kondoJArrays, dispersion
 end
 
-function ScattProb(size_BZ::Int64)
+function ScattProb(
+        size_BZ::Int64; 
+        loadData::Bool=false
+    )
     x_arr = get_x_arr(size_BZ)
     W_val_arr = NiceValues(size_BZ)
-    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
-    for W_val in W_val_arr
-        results_scaled, results_bool = scattProb(size_BZ, kondoJArrays[W_val], dispersion)
-
-        quadrantResult = results_bool[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
-        push!(saveNames, plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                     L"$\Gamma/\Gamma_0$", getlabelInt(W_val, size_BZ), reverse(colmap)))
+    results = [scattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
+    quadrantResults = [result[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)] 
+                       for result in results]
+    nonNaNData = filter(!isnan, vcat(values(quadrantResults)...))
+    if minimum(nonNaNData) < maximum(nonNaNData)
+        colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData)) .+ 0.
+    else
+        colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
+    end
+    for (W_val, result) in zip(W_val_arr, quadrantResults)
+        push!(saveNames, plotHeatmap(abs.(result), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                                     L"$\Gamma/\Gamma_0$", getlabelInt(W_val, size_BZ), colmap, colorbarLimits))
     end
     println("\n Saved at $(saveNames).")
     run(`pdfunite $(saveNames) scattprob.pdf`)
@@ -303,32 +321,36 @@ end
 
 
 function KspaceLocalSpecFunc(
-        kstate::Vector{Float64},
         size_BZ::Int64;
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 3, 5]]
-    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1, 4]]
+    #=W_val_arr = NiceValues(size_BZ)[1:1]=#
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-15:0.001:15)
     freqValuesZoom1 = 6.
     freqValuesZoom2 = 0.3
-    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
-    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
     standDev = (0.1, 0.0 .+ exp.(0.01 .* abs.(freqValues) ./ maximum(freqValues)))
     effective_Wval = 0.
     targetHeight = 0.0
     standDevGuess = 0.1
-    kspaceDOS = Dict{Float64, Vector{Float64}}(W_val => zeros(size_BZ^2) for W_val in W_val_arr)
-    saveNames = []
+    results = Dict{Float64, Dict{String, Vector{Float64}}}(W_val => Dict{String, Vector{Float64}}() 
+                                                           for W_val in W_val_arr
+                                                          )
+    saveNames = Dict(name => [] for name in ["kspaceDOS", "quasipRes"])
+    plotTitles = Dict("kspaceDOS" => L"$A_{\vec{k}}(\omega\to 0)$",
+                      "quasipRes" => L"$Z_{\vec{k}}$",
+                     )
 
     for W_val in W_val_arr
 
-        effectiveNumShells = W_val == 0 ? numShells : 1
-        effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
-        savePath = joinpath(SAVEDIR, "klocal-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(map2DTo1D(kstate..., size_BZ))-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
+        savePath = joinpath(SAVEDIR, "kspaceDOS-$(W_val)-$(effective_Wval)-$(size_BZ)-$(numShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
-            specFunc = jldopen(savePath)["specFuncKstate"]
+            results[W_val]["kspaceDOS"] = jldopen(savePath)["kspaceDOS"]
+            results[W_val]["quasipRes"] = jldopen(savePath)["quasipRes"]
+            targetHeight = jldopen(savePath)["locHeight"]
+            println("Collected W=$(W_val) from saved data. $(targetHeight)")
         else
             hamiltDetails = Dict(
                                  "dispersion" => dispersion,
@@ -339,37 +361,51 @@ function KspaceLocalSpecFunc(
                                  "W_val" => effective_Wval,
                                  "globalField" => -GLOBALFIELD,
                                 )
-            specFuncKSpace, specFunc, standDevGuess, kspaceDOS[W_val] = kspaceLocalSpecFunc(hamiltDetails, effectiveNumShells, 
+            specFuncKSpace, specFunc, standDevGuess, results[W_val] = KspaceLocalSpecFunc(hamiltDetails, numShells, 
                                            kspaceSpecFunc, freqValues, standDev[1], 
-                                           standDev[2], effectiveMaxSize; bathIntLegs=bathIntLegs,
-                                           addPerStep=1, targetHeight=ifelse(abs(W_val) > 0.6, 0., targetHeight),
+                                           standDev[2], maxSize; bathIntLegs=bathIntLegs,
+                                           addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(transitionValues(size_BZ)), 0., targetHeight),
                                            standDevGuess=standDevGuess,
                                           )
-            if maximum(specFunc) > 0
-                roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
-                specFunc = round.(specFunc, digits=roundDigits)
-            end
-            jldsave(savePath; specFuncKstate=specFunc)
+            targetHeight = specFunc[freqValues .≥ 0][1]
+
+            jldsave(savePath; 
+                    kspaceDOS=results[W_val]["kspaceDOS"],
+                    quasipRes=results[W_val]["quasipRes"],
+                    locHeight=specFunc[freqValues .≥ 0][1],
+                   )
         end
-        #=push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))=#
-        #=push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))=#
     end
 
-    for W_val in W_val_arr
-        quadrantResult = kspaceDOS[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
-        push!(saveNames, plotHeatmap(abs.(quadrantResult), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), (L"$ak_x/\pi$", L"$ak_y/\pi$"),
-                                           L"$A(\omega)$", getlabelInt(W_val, size_BZ), colmap))
+    for name in keys(saveNames)
+        quadrantResults = Dict(W_val => results[W_val][name][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)] 
+                               for W_val in W_val_arr)
+        nonNaNData = filter(!isnan, vcat(values(quadrantResults)...))
+        if minimum(nonNaNData) < maximum(nonNaNData)
+            colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
+        else
+            colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
+        end
+        for W_val in W_val_arr
+            push!(saveNames[name], plotHeatmap(abs.(quadrantResults[W_val]), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
+                                               (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], 
+                                               getlabelInt(W_val, size_BZ), colmap;
+                                               colorbarLimits=colorbarLimits,
+                                              )
+                 )
+        end
     end
 
-    if !isempty(saveNames)
-        f = open("plotData.txt", "a")
-        shellCommand = "pdfunite $(join(saveNames, " ")) kspaceDOS.pdf"
+    f = open("plotData.txt", "a")
+    for (name, files) in saveNames
+        if isempty(files)
+            continue
+        end
+        shellCommand = "pdfunite $(join(files, " ")) $(name).pdf"
         run(`sh -c $(shellCommand)`)
         write(f, shellCommand*"\n")
-        close(f)
     end
-    #=plotSpecFunc(specFuncResults, freqValues[abs.(freqValues) .≤ freqValuesZoom1], "kspaceSpecFunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")=#
-    #=plotSpecFunc(specFuncResultsTrunc, freqValues[abs.(freqValues) .≤ freqValuesZoom2], "kspaceSpecFuncTrunc_$(size_BZ)-$(map2DTo1D(kstate..., size_BZ)).pdf")=#
+    close(f)
 end
 
 
@@ -507,14 +543,12 @@ function TiledSpinCorr(
     close(f)
 end
 
-size_BZ = 13
-#=@time ScattProb(size_BZ)=#
+size_BZ = 25
+#=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ; loadData=false)=#
 #=@time ImpurityCorrelations(size_BZ; loadData=false)=#
 #=@time LocalSpecFunc(size_BZ; loadData=false, fixHeight=true)=#
-@time KspaceLocalSpecFunc([-π/2, -π/2], size_BZ; loadData=false)
-#=@time KspaceLocalSpecFunc([-π, 0.], size_BZ; loadData=false)=#
-#=@time KspaceLocalSpecFunc([-π/4, -3π/4], size_BZ; loadData=false)=#
+@time KspaceLocalSpecFunc(size_BZ; loadData=true)
 #=@time RealSpaceOffDiagSpecFunc(size_BZ; loadData=false)=#
 #=@time TiledSpinCorr(size_BZ; loadData=false)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#

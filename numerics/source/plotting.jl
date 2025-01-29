@@ -1,7 +1,7 @@
 using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
 
 # set_theme!(theme_latexfonts())
-set_theme!(merge(theme_ggplot2(), theme_latexfonts()))
+set_theme!(merge(theme_light(), theme_latexfonts()))
 update_theme!(
               figure_padding = 0,
               fontsize=28,
@@ -26,19 +26,28 @@ update_theme!(
                        ),
              )
 
-# colmap = ColorSchemes.cherry
 function plotHeatmap(
         matrixData::Union{Matrix{Int64}, Matrix{Float64}, Vector{Int64}, Vector{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
         axisLabels::NTuple{2, Union{String, LaTeXString}},
         title::Union{String, LaTeXString},
         annotation::Union{String, LaTeXString},
-        colmap;
+        colmap; 
+        colorbarLimits::Union{NTuple{2, Float64}, Nothing}=nothing,
         figSize::NTuple{2, Int64}=(300, 250),
         figPad::Union{NTuple{4, Float64}, Float64}=0.,
         colorScale::Function=identity,
     )
     matrixData = reshape(matrixData, length.(axisVals))
+
+    if isnothing(colorbarLimits)
+        nonNaNData = filter(!isnan, matrixData)
+        if minimum(nonNaNData) < maximum(nonNaNData)
+            colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
+        else
+            colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
+        end
+    end
     figure = Figure(size=figSize, figure_padding=figPad)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
@@ -50,6 +59,7 @@ function plotHeatmap(
              matrixData; 
              colormap=colmap,
              colorscale=colorScale,
+             colorrange=colorbarLimits,
             )
 
     fontsize = 28
@@ -57,11 +67,6 @@ function plotHeatmap(
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.6), color=:white)
 
-    if minimum(matrixData) < maximum(matrixData)
-        colorbarLimits = (minimum(matrixData), maximum(matrixData))
-    else
-        colorbarLimits = (minimum(matrixData)*(1-1e-5) - 1e-5, minimum(matrixData)*(1+1e-5) + 1e-5)
-    end
     Colorbar(figure[1, 2]; 
              limits=colorbarLimits,
              colormap=colmap,

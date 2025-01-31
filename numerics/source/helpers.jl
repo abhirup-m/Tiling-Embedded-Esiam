@@ -238,22 +238,20 @@ end
 end
 
 
-function impSpecFunc(
+function ImpurityExcitationOperators(
         numBathPoints::Int64,
     )
-    siamSpecDict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])
-    append!(siamSpecDict["create"], [("+", [1], 1.), ("+", [2], 1.)])
-    append!(siamSpecDict["destroy"], [("-", [1], 1.), ("-", [2], 1.)])
-    kondoSpecDict = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}("create" => [], "destroy" => [])
-    for index in 1:numBathPoints
-        append!(kondoSpecDict["create"], [("+-+", [2, 1, 2 * index + 1], 1.), ("+-+", [1, 2, 2 * index + 2], 1.),])
-        append!(kondoSpecDict["destroy"], [("+--", [1, 2, 2 * index + 1], 1.), ("+--", [2, 1, 2 * index + 2], 1.),])
-    end
-    return siamSpecDict, kondoSpecDict
+    specDictSet = Dict{String, Vector{Tuple{String,Vector{Int64}, Float64}}}()
+    specDictSet["cdagd_up"] = [("+", [1], 1.)]
+    specDictSet["cdagd_down"] = [("+", [2], 1.)]
+
+    specDictSet["Sd+"] = [("+-+", [1, 2, 2 * index + 2], 1.) for index in 1:numBathPoints]
+    specDictSet["Sd-"] = [("+-+", [2, 1, 2 * index + 1], 1.) for index in 1:numBathPoints]
+    return specDictSet
 end
 
 
-function kspaceSpecFunc(
+function KspaceExcitationOperators(
         numBathPoints::Int64,
         kpointIndices::NTuple{2, Int64},
     )

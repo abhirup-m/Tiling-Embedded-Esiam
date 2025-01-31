@@ -8,7 +8,7 @@ Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q
 at the RG fixed point.
 """
 
-@everywhere function scattProb(
+@everywhere function ScattProb(
         size_BZ::Int64,
         kondoJArray::Array{Float64,3},
         dispersion::Vector{Float64},
@@ -18,7 +18,7 @@ at the RG fixed point.
     results_scaled = zeros(size_BZ^2)
 
     # loop over all points k for which we want to calculate Γ(k).
-    Threads.@threads for point in 1:size_BZ^2
+    for point in 1:size_BZ^2
 
         targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
@@ -38,7 +38,7 @@ end
 Return the map of Kondo couplings M_k(q) = J^2_{k,q} given the state k.
 Useful for visualising how a single state k interacts with all other states q.
 """
-function kondoCoupMap(
+function KondoCoupMap(
         kx_ky::Tuple{Float64,Float64},
         size_BZ::Int64,
         kondoJArrayFull::Array{Float64,3};
@@ -57,7 +57,7 @@ function kondoCoupMap(
 end
 
 
-@everywhere function iterDiagResults(
+@everywhere function IterDiagResults(
         hamiltDetails::Dict,
         maxSize::Int64,
         pivotPoints::Vector{Int64},
@@ -70,7 +70,7 @@ end
         addPerStep::Int64,
     )
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
-    corrResults = Dict{String, Vector{Float64}}(k => zeros(hamiltDetails["size_BZ"]^2) for k in allKeys)
+    corrResults = Dict{String, Vector{Float64}}(k => repeat([NaN], hamiltDetails["size_BZ"]^2) for k in allKeys)
 
     nonPivotPoints = filter(∉(pivotPoints), sortedPoints)
     pointsSequence = vcat(pivotPoints, nonPivotPoints)
@@ -128,6 +128,10 @@ end
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
     end
     hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
+    @assert all(!isempty, hamiltonianFamily)
+    for hamiltonian in hamiltonianFamily
+        @assert all(!isempty, hamiltonian)
+    end
     iterDiagResults = nothing
     id = nothing
     while true
@@ -176,7 +180,7 @@ end
 end
 
 
-@everywhere function iterDiagSpecFunc(
+@everywhere function IterDiagSpecFunc(
         hamiltDetails::Dict,
         maxSize::Int64,
         sortedPoints::Vector{Int64},
@@ -205,7 +209,6 @@ end
                              sortedPoints, bathIntFunc;
                              bathIntLegs=bathIntLegs,
                              globalField=hamiltDetails["globalField"],
-                             #=impurityField=localField,=#
                              couplingTolerance=1e-10,
                             )
 
@@ -214,7 +217,7 @@ end
     push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
     push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
     push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
-    excludeRange = [1 .* maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4]
+    excludeRange = (maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4)
 
     indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
@@ -256,7 +259,7 @@ end
 
 end
 
-@everywhere function correlationMap(
+@everywhere function AuxiliaryCorrelations(
         hamiltDetails::Dict,
         numShells::Int64,
         correlationFuncDict::Dict,
@@ -293,19 +296,19 @@ end
     end
 
     if isfile(savePath) && loadData
-        #=corrResults = deserialize(savePath)=#
         corrResults = Dict{String, Vector{Float64}}()
         for (k, v) in load(savePath)
             corrResults[k] = v
         end
-        @assert issetequal(collect(keys(corrResults)), vcat(([correlationFuncDict, vneFuncDict, mutInfoFuncDict] .|> keys .|> collect)...))
-        corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
-        corrResultsBool = Dict()
-        for (name, results) in corrResults
-            @assert !any(isnan.(results))
-            corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
+        if issetequal(collect(keys(corrResults)), vcat(([correlationFuncDict, vneFuncDict, mutInfoFuncDict] .|> keys .|> collect)...))
+            corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+            corrResultsBool = Dict()
+            for (name, results) in corrResults
+                corrResultsBool[name] = [ifelse(isnan(r), r, abs(r) ≤ 1e-6 ? -1 : 1) for r in results]
+            end
+            println("Collected from saved data.")
+            return corrResults, corrResultsBool
         end
-        return corrResults, corrResultsBool
     end
 
     distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
@@ -318,15 +321,18 @@ end
     
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
 
-    corrNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, 
+    corrNode = @showprogress pmap(pivotPoint -> IterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, 
                                                                 correlationFuncDict, vneFuncDict, mutInfoFuncDict, 
                                                                 bathIntLegs, noSelfCorr, addPerStep),
                                   WorkerPool(1:numProcs), calculatePoints)
-    corrAntiNode = @showprogress pmap(pivotPoint -> iterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, 
+    corrAntiNode = @showprogress pmap(pivotPoint -> IterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, 
                                                                     correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs, 
                                                                     noSelfCorr, addPerStep), 
                                       WorkerPool(1:numProcs), calculatePoints)
-    corrResults = mergewith(+, corrNode..., corrAntiNode...)
+    corrResults = mergewith((V1, V2) -> [(isnan(v1) && isnan(v2)) ? NaN : ((isnan(v1) || isnan(v2)) ? filter(!isnan, [v1, v2])[1] : (v1 + v2))
+                                         for (v1, v2) in zip(V1, V2)], 
+                            corrNode..., corrAntiNode...
+                           )
     map!(v -> v ./ 2, values(corrResults))
 
     if !isempty(savePath)
@@ -342,8 +348,7 @@ end
 
     corrResultsBool = Dict()
     for (name, results) in corrResults
-        @assert !any(isnan.(results))
-        corrResultsBool[name] = [abs(r) ≤ 1e-6 ? -1 : 1 for r in results]
+        corrResultsBool[name] = [ifelse(isnan(r), r, abs(r) ≤ 1e-6 ? -1 : 1) for r in results]
     end
     return corrResults, corrResultsBool
 end
@@ -353,13 +358,13 @@ function localSpecFuncAverage(
         argsNode,
         argsAntinode
     )
-    specFuncOuter = iterDiagSpecFunc(argsNode...)
-    specFuncOuter .+= iterDiagSpecFunc(argsAntinode...)
+    specFuncOuter = IterDiagSpecFunc(argsNode...)
+    specFuncOuter .+= IterDiagSpecFunc(argsAntinode...)
     return specFuncOuter
 end
 
 
-function localSpecFunc(
+function AuxiliaryLocalSpecfunc(
         hamiltDetails::Dict,
         numShells::Int64,
         specFuncDictFunc::Function,
@@ -367,19 +372,18 @@ function localSpecFunc(
         standDevInner::Union{Vector{Float64}, Float64},
         standDevOuter::Union{Vector{Float64}, Float64},
         maxSize::Int64;
-        resonanceHeight::Float64=0.,
+        targetHeight::Float64=0.,
+        standDevGuess::Float64=0.1,
         heightTolerance::Float64=1e-4,
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
     )
-    if resonanceHeight < 0
-        resonanceHeight = 0
+    if targetHeight < 0
+        targetHeight = 0
     end
-    if resonanceHeight > 0
-        @assert typeof(standDevInner) == Float64
-    end
+
     size_BZ = hamiltDetails["size_BZ"]
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
@@ -391,81 +395,53 @@ function localSpecFunc(
                  map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
-    distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 for node in NODAL_POINTS])
+    distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 
+                                  for node in NODAL_POINTS])
                         for p in SWIndices
                        ]
     distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- antinode) .^ 2)^0.5
                                      for antinode in ANTINODAL_POINTS])
                             for p in SWIndices
                            ]
+    @assert distancesFromNode |> length == distancesFromAntiNode |> length
+
     sortedPointsNode = SWIndices[sortperm(distancesFromNode)]
     sortedPointsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
-    @assert length(sortedPointsAntiNode) == length(sortedPointsNode)
     
-    siamSpecDictNode, kondoSpecDictNode = specFuncDictFunc(length(sortedPointsNode))
-    siamSpecDictAntiNode, kondoSpecDictAntiNode = specFuncDictFunc(length(sortedPointsAntiNode))
-    specFunc = zeros(length(freqValues))
-    specFuncArgsNode = [
-                    hamiltDetails, maxSize, sortedPointsNode,
-                    siamSpecDictNode, bathIntLegs, addPerStep,
-                    freqValues, standDevOuter, true, "gauss"
-                   ]
-    specFuncArgsAntinode = deepcopy(specFuncArgsNode)
-    specFuncArgsAntinode[3] = sortedPointsAntiNode
-    specFuncOuter = localSpecFuncAverage(specFuncArgsNode, specFuncArgsAntinode)
+    onlyCoeffs = ["Sd+", "Sd-"]
+    specDictSet = ImpurityExcitationOperators(length(SWIndices))
+    standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
+    broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
+                                     for name in keys(specDictSet)
+                                    )
+    specFuncResultsNode =IterDiagSpecFunc(hamiltDetails, maxSize, sortedPointsNode,
+                                          specDictSet, bathIntLegs, freqValues, 
+                                          standDev; addPerStep=addPerStep,
+                                          silent=true, broadFuncType=broadType,
+                                          normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                      )
+    specFuncResultsAntiNode =IterDiagSpecFunc(hamiltDetails, maxSize, sortedPointsAntiNode,
+                                              specDictSet, bathIntLegs, freqValues, 
+                                              standDev; addPerStep=addPerStep,
+                                              silent=true, broadFuncType=broadType,
+                                              normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                             )
 
-    error = 1.
-    numIter = 0
-    increment = 0.
-    specFuncArgsNode[4], specFuncArgsNode[end] = kondoSpecDictNode, "lorentz"
-    specFuncArgsAntinode[4], specFuncArgsAntinode[end] = kondoSpecDictAntiNode, "lorentz"
-    while abs(error) > heightTolerance && numIter < maxIter
-        numIter += 1
-        specFuncArgsNode[end-2], specFuncArgsAntinode[end-2] = standDevInner, standDevInner
-        specFuncInner = localSpecFuncAverage(specFuncArgsNode, specFuncArgsAntinode) / length(sortedPointsNode)
-        specFunc = specFuncInner + specFuncOuter
-        specFunc ./= sum(specFunc .* (maximum(freqValues) - minimum(freqValues)) / (length(freqValues)-1))
-        if resonanceHeight == 0
-            break
-        end
+    fixedContrib = [specFuncResultsNode["cdagd_up"], specFuncResultsNode["cdagd_down"], specFuncResultsAntiNode["cdagd_up"], specFuncResultsAntiNode["cdagd_down"]]
+    specCoeffs = [specFuncResultsNode["Sd+"], specFuncResultsNode["Sd-"], specFuncResultsAntiNode["Sd+"], specFuncResultsAntiNode["Sd-"]]
+    @time output = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3; 
+                                 degenTol=1e-10, silent=false, 
+                                 broadFuncType="lorentz", 
+                                 fixedContrib=fixedContrib,
+                                 standDevGuess=standDevGuess,
+                                )
+    _, localSpecFunc, standDevInner = output
 
-        newError = (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight
-        if numIter == 1
-            standDevInner = (1 + newError) * standDevInner
-            increment = 0.1 * standDevInner
-            error = newError
-            display((standDevInner, error, increment))
-            numIter += 1
-            continue
-        end
-
-        if abs(error - newError) > newError || error * newError < 0
-            increment /= 2
-        end
-        error = newError
-        if error > 0
-            if standDevInner ≤ increment
-                increment /= 2
-            end
-            standDevInner += increment
-        else
-            standDevInner -= increment
-        end
-        display((standDevInner, error, increment))
-    end
-
-    if resonanceHeight > 0 && (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight < heightTolerance
-        println("Converged in $(numIter-1) runs: η=$(standDevInner)")
-    end
-    if resonanceHeight > 0 && (specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight > heightTolerance
-        println("Failed to converge: error=$((specFunc[freqValues .≥ 0][1] - resonanceHeight) / resonanceHeight)")
-    end
-
-    return specFunc, standDevInner
+    return localSpecFunc, standDevInner
 end
 
 
-function KspaceLocalSpecFunc(
+function LatticeKspaceDOS(
         hamiltDetails::Dict,
         numShells::Int64,
         specFuncDictFunc::Function,
@@ -473,12 +449,13 @@ function KspaceLocalSpecFunc(
         standDevInner::Union{Vector{Float64}, Float64},
         standDevOuter::Union{Vector{Float64}, Float64},
         maxSize::Int64;
+        onlyAt::Union{Nothing,NTuple{2, Float64}}=nothing,
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
-        targetHeight=0.,
-        standDevGuess=0.1,
+        targetHeight::Float64=0.,
+        standDevGuess::Float64=0.1,
     )
 
     size_BZ = hamiltDetails["size_BZ"]
@@ -510,7 +487,11 @@ function KspaceLocalSpecFunc(
 
     onlyCoeffs = ["Sd+", "Sd-"]
     specDictSet = specFuncDictFunc(length(SWIndices), (3, 4))
-    function SpecFuncResultsPoint(kspacePoint)
+
+    function SpectralCoeffsAtKpoint(
+            kspacePoint::Int64,
+            onlyCoeffs::Vector{String},
+        )
         equivalentPoints = [rotationMatrix(rotateAngle) * map1DTo2D(kspacePoint, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
         distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
                             for p in SWIndices
@@ -526,7 +507,7 @@ function KspaceLocalSpecFunc(
         broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
                                          for name in keys(specDictSet)
                                         )
-        specFuncResultsPoint =iterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
+        specFuncResultsPoint = IterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
                                            specDictSet, bathIntLegs, freqValues, 
                                            standDev; addPerStep=addPerStep,
                                            silent=true, broadFuncType=broadType,
@@ -535,7 +516,14 @@ function KspaceLocalSpecFunc(
         return specFuncResultsPoint
     end
 
-    specFuncResults = @showprogress pmap(k -> SpecFuncResultsPoint(k), calculatePoints)
+    if !isnothing(onlyAt)
+        pointIndex = map2DTo1D(onlyAt..., size_BZ)
+        specFuncResults = SpectralCoeffsAtKpoint(pointIndex, String[])
+        specFunc = Normalise(sum(values(specFuncResults)), freqValues, true)
+        return specFunc
+    end
+
+    specFuncResults = @showprogress pmap(k -> SpectralCoeffsAtKpoint(k, onlyCoeffs), calculatePoints)
     for (index, specFuncResultsPoint) in enumerate(specFuncResults)
         for (name, val) in specFuncResultsPoint 
             if name ∉ onlyCoeffs
@@ -574,42 +562,6 @@ function KspaceLocalSpecFunc(
 end
 
 
-function transitionPoints(size_BZ_max::Int64, W_by_J_max::Float64, omega_by_t::Float64, J_val::Float64, orbitals::Tuple{String,String}; figScale::Float64=1.0, saveDir::String="./data/")
-    size_BZ_min = 5
-    size_BZ_vals = size_BZ_min:4:size_BZ_max
-    antinodeTransition = Float64[]
-    nodeTransition = Float64[]
-    for (kvals, array) in zip([(-pi / 2, -pi / 2), (0.0, -pi)], [nodeTransition, antinodeTransition])
-        W_by_J_bracket = [0, W_by_J_max]
-        @showprogress for (i, size_BZ) in enumerate(size_BZ_vals)
-            if i > 1
-                W_by_J_bracket = [array[i-1], W_by_J_max]
-            end
-            kpoint = map2DTo1D(kvals..., size_BZ)
-            while maximum(W_by_J_bracket) - minimum(W_by_J_bracket) > 0.1
-                bools = []
-                for W_by_J in [W_by_J_bracket[1], sum(W_by_J_bracket) / 2, W_by_J_bracket[2]]
-                    kondoJArrayFull, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, J_val * W_by_J, orbitals)
-                    results, results_bool = mapProbeNameToProbe("scattProb", size_BZ, kondoJArrayFull, W_by_J * J_val, dispersion, orbitals)
-                    push!(bools, results_bool[kpoint] == 0)
-                end
-                if bools[1] == false && bools[3] == true
-                    if bools[2] == true
-                        W_by_J_bracket[2] = sum(W_by_J_bracket) / 2
-                    else
-                        W_by_J_bracket[1] = sum(W_by_J_bracket) / 2
-                    end
-                else
-                    W_by_J_bracket[2] = W_by_J_bracket[1]
-                    W_by_J_bracket[1] = 0
-                end
-            end
-            push!(array, sum(W_by_J_bracket) / 2)
-        end
-    end
-end
-
-
 @everywhere function PhaseIndex(
         size_BZ::Int64,
         omega_by_t::Float64,
@@ -621,7 +573,7 @@ end
     averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
     @assert averageKondoScale > RG_RELEVANCE_TOL
     kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
-    scattProbBool = scattProb(size_BZ, kondoJArray, dispersion)[2]
+    scattProbBool = ScattProb(size_BZ, kondoJArray, dispersion)[2]
     if all(>(0), scattProbBool[fermiPoints])
         return 1
     elseif !all(==(0), scattProbBool[fermiPoints])

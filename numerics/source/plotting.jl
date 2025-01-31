@@ -1,16 +1,19 @@
 using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
 
+const FONTSIZE = 28
 # set_theme!(theme_latexfonts())
 set_theme!(merge(theme_light(), theme_latexfonts()))
 update_theme!(
               figure_padding = 0,
-              fontsize=28,
+              fontsize=FONTSIZE,
               Axis = (
                 leftspinevisible = true,
                 bottomspinevisible = true,
                 rightspinevisible = true,
                 topspinevisible = true,
                 spinewidth = 1.5,
+                xticklabelsize = 24,
+                yticklabelsize = 24,
                      ),
               ScatterLines = (
                        linewidth = 6,
@@ -25,6 +28,7 @@ update_theme!(
                         valign = :top,
                        ),
              )
+
 
 function plotHeatmap(
         matrixData::Union{Matrix{Int64}, Matrix{Float64}, Vector{Int64}, Vector{Float64}},
@@ -42,7 +46,9 @@ function plotHeatmap(
 
     if isnothing(colorbarLimits)
         nonNaNData = filter(!isnan, matrixData)
-        if minimum(nonNaNData) < maximum(nonNaNData)
+        if isempty(nonNaNData)
+            colorbarLimits = (-1, 1)
+        elseif minimum(nonNaNData) < maximum(nonNaNData)
             colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
         else
             colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
@@ -54,7 +60,7 @@ function plotHeatmap(
               ylabel=axisLabels[2], 
               title=title,
              )
-    heatmap!(ax, 
+    hm = heatmap!(ax, 
              axisVals..., 
              matrixData; 
              colormap=colmap,
@@ -62,15 +68,11 @@ function plotHeatmap(
              colorrange=colorbarLimits,
             )
 
-    fontsize = 28
     gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=:top, halign=:right)
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
-    Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(fontsize, 1.6), color=:white)
+    Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
 
-    Colorbar(figure[1, 2]; 
-             limits=colorbarLimits,
-             colormap=colmap,
-            )
+    Colorbar(figure[1, 2], hm)
     savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename
@@ -108,21 +110,23 @@ function plotPhaseDiagram(
 end
 
 
-function plotSpecFunc(
-        specFuncArr::Vector{Tuple{LaTeXString, Vector{Float64}}},
-        freqValues::Vector{Float64},
+function plotLines(
+        nameValuePairs::Dict{LaTeXString, Vector{Float64}},
+        xvalues::Vector{Float64},
+        xlabel::LaTeXString,
+        ylabel::LaTeXString,
         saveName::String,
     )
     f = Figure(figure_padding=4)
     ax = Axis(f[1, 1],
-        xlabel = L"frequence ($\omega$)",
-        ylabel = L"impurity spectral function $A(\omega)$",
+        xlabel = xlabel,
+        ylabel = ylabel,
     )
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
-    for (i, (label, specFunc)) in enumerate(specFuncArr)
-        lines!(freqValues, specFunc; label=label, linestyle=linestyles[((i - 1) % 6) + 1])
+    for (i, (name, yvalues)) in enumerate(nameValuePairs)
+        lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1])
     end
     axislegend()
     save(saveName, current_figure())
-    return nothing
+    return saveName
 end

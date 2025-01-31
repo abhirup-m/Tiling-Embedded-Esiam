@@ -47,4 +47,3 @@ POINTS(num_kspace) = [
 (@isdefined PROCEED_FLAGS) || const PROCEED_FLAGS = fill(1, SIZE_BZ[1]^2, SIZE_BZ[1]^2)
 (@isdefined INNER_INDICES_ONE) || const INNER_INDICES_ONE = [2, 3, 6, 7, 8, 11, 12, 16, 17, 18, 22, 23]
 (@isdefined EXCLUDED_INDICES_ONE) || const EXCLUDED_INDICES_ONE = [24, 19, 20, 14, 15, 9, 10, 4]
-

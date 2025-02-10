@@ -799,9 +799,9 @@ In order to obtain a low-energy effective Hamiltonian for the impurity sites ari
 \end{aligned}\end{equation}
 The operator \(\mathcal{P}_L\) projects onto the low-energy subspace \(\ket{\Psi_L}\) - this ensures that we remain in the low-energy subspace at the beginning and at the end of the total process. The Greens function \(G = (E_L - H_0)^{-1}\) incorporates the excitation energy to go from the low-energy subspace \(\ket{\Psi}_L\) (of energy \(E_L\)) to the excited subspace \(\ket{\Psi}_H\) of energy \(E_L + U/2\). Substituting the form of the perturbation Hamiltonian and the excitation energy into the above expression gives
 \begin{equation}\begin{aligned}\label{effHam1}
-	H_\text{eff} = \frac{V(U/2)^2}{-U/2}\sum_{\sigma,\sigma^\prime} \left[c^\dagger_{1\sigma}c_{2\sigma}c^\dagger_{2\sigma^\prime}c_{1\sigma^\prime} + c^\dagger_{2\sigma}c_{1\sigma}c^\dagger_{1\sigma^\prime}c_{2\sigma^\prime}\right] ~.
+	H_\text{eff} = \frac{V_H^2}{-U/2}\sum_{\sigma,\sigma^\prime} \left[c^\dagger_{1\sigma}c_{2\sigma}c^\dagger_{2\sigma^\prime}c_{1\sigma^\prime} + c^\dagger_{2\sigma}c_{1\sigma}c^\dagger_{1\sigma^\prime}c_{2\sigma^\prime}\right] ~.
 \end{aligned}\end{equation}
-where \(V(U/2)\) is the impurity-bath hybridisation at energy scales of the order of the Mott gap, in the sense of an RG flow. Terms with consecutive creation or annihilation operators on the same site are prohibited because each site is singly-occupied in the ground state. It is now easy to cast this Hamiltonian into a more recognizable form. For \(\sigma^\prime=\sigma\), we get
+where \(V_H \equiv V(\omega \to U/2)\) is the impurity-bath hybridisation at energy scales of the order of the Mott gap, in the sense of an RG flow. Terms with consecutive creation or annihilation operators on the same site are prohibited because each site is singly-occupied in the ground state. It is now easy to cast this Hamiltonian into a more recognizable form. For \(\sigma^\prime=\sigma\), we get
 \begin{equation}\begin{aligned}
 	\sum_{\sigma}\delta_{\sigma,\sigma^\prime}c^\dagger_{1\sigma}c_{2\sigma}c^\dagger_{2\sigma^\prime}c_{1\sigma^\prime} = \sum_\sigma \left(n_{1\sigma} - n_{1\sigma}n_{2\sigma}\right) ~,
 \end{aligned}\end{equation}
@@ -818,9 +818,9 @@ where the first equation is simply the condition of half-filling at each site, a
 
 Substituting everything back into eq.~\ref{effHam1} and dropping constant terms gives
 \begin{equation}\begin{aligned}
-	H_\text{eff} = 2\frac{V(U/2)^2}{U/2}\left(2S_1^z S_2^z + S_1^+S_2^- + S_1^-S_2^+\right) = J_\text{eff} {\bf S}_1\cdot{\bf S}_2~,
+	H_\text{eff} = 2\frac{V_H^2}{U/2}\left(2S_1^z S_2^z + S_1^+S_2^- + S_1^-S_2^+\right) = J_\text{eff} {\bf S}_1\cdot{\bf S}_2~,
 \end{aligned}\end{equation}
-where the effective antiferromagnetic Heisenberg coupling is \(J_\text{eff} = \frac{8V(U/2)^2}{U}\).
+where the effective antiferromagnetic Heisenberg coupling is \(J_\text{eff} = \frac{8V_H^2}{U}\).
 
 
 

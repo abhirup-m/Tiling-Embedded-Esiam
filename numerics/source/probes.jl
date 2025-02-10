@@ -486,7 +486,6 @@ function LatticeKspaceDOS(
     fixedContrib = [freqValues |> length |> zeros for _ in calculatePoints]
 
     onlyCoeffs = ["Sd+", "Sd-"]
-    specDictSet = specFuncDictFunc(length(SWIndices), (3, 4))
 
     function SpectralCoeffsAtKpoint(
             kspacePoint::Int64,
@@ -498,6 +497,7 @@ function LatticeKspaceDOS(
                            ]
         sortedPoints = SWIndices[sortperm(distancesFromPivot)]
         
+        specDictSet = specFuncDictFunc(length(SWIndices), (3, 4))
         if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
             delete!(specDictSet, "Sd+")
             delete!(specDictSet, "Sd-")
@@ -534,7 +534,7 @@ function LatticeKspaceDOS(
         end
     end
 
-    centerSpecFuncArr, localSpecFunc, standDev = SpecFuncVariational(specCoeffsBZone, freqValues, targetHeight, 1e-3; 
+    centerSpecFuncArr, localSpecFunc, standDevFinal = SpecFuncVariational(specCoeffsBZone, freqValues, targetHeight, 1e-3; 
                                    degenTol=1e-10, silent=false, 
                                    broadFuncType="lorentz", fixedContrib=fixedContrib,
                                    standDevGuess=standDevGuess,
@@ -558,7 +558,7 @@ function LatticeKspaceDOS(
     results = PropagateIndices(calculatePoints, results, size_BZ, 
                                  oppositePoints)
 
-    return specFuncKSpace, localSpecFunc, standDev, results
+    return specFuncKSpace, localSpecFunc, standDevFinal, results
 end
 
 

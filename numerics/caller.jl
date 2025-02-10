@@ -1,7 +1,7 @@
 using Distributed, Random
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(10)
+    addprocs(8)
 end
 @everywhere using LinearAlgebra, CSV, JLD2, FileIO, CodecZlib
 
@@ -27,6 +27,7 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          49 => -1.0 .* [0, 4.1, 8.19, 8.55, 8.77, 8.8] ./ size_BZ,
                          57 => -1.0 .* [0, 5., 10.2, 10.6, 10.852] ./ size_BZ,
                          69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
+                         77 => -1.0 .* [0., 14.04, 14.5, 14.99] ./ size_BZ,
                         )[size_BZ]
 transitionValues(size_BZ) = Dict{Int64, Float64}(
                          13 => -1.0 * 1.6 / size_BZ,
@@ -36,6 +37,7 @@ transitionValues(size_BZ) = Dict{Int64, Float64}(
                          49 => -1.0 * 8.77 / size_BZ,
                          57 => -1.0 * 10.852 / size_BZ,
                          69 => -1.0 * 13.34 / size_BZ,
+                         77 => -1.0 * 14.99 / size_BZ,
                         )[size_BZ]
 
 get_x_arr(size_BZ) = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
@@ -67,7 +69,7 @@ function ScattProb(
     )
     x_arr = get_x_arr(size_BZ)
     W_val_arr = NiceValues(size_BZ)
-    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
     results = [ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
     quadrantResults = [result[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)] 
@@ -99,7 +101,7 @@ function KondoCouplingMap(
         size_BZ::Int64;
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 3, 5]]
+    W_val_arr = NiceValues(size_BZ)[[1, 3, 4]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     saveNames = Dict(name => [] for name in ["node", "antinode"])
     titles = Dict(
@@ -297,7 +299,7 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[1:2:5]
+    W_val_arr = NiceValues(size_BZ)
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
@@ -371,9 +373,9 @@ function AuxiliaryMomentumSpecfunc(
         kpoint::NTuple{2, Float64};
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[4:4]
+    W_val_arr = NiceValues(size_BZ)
     #=W_val_arr = NiceValues(size_BZ)[1:1]=#
-    kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-15:0.005:15)
     freqValuesZoom1 = 6.
     freqValuesZoom2 = 0.3
@@ -432,8 +434,8 @@ function LatticeKspaceDOS(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 4]]
-    #=W_val_arr = NiceValues(size_BZ)[1:1]=#
+    #=W_val_arr = NiceValues(size_BZ)=#
+    W_val_arr = NiceValues(size_BZ)[1:1]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-15:0.001:15)
     freqValuesZoom1 = 6.
@@ -451,10 +453,10 @@ function LatticeKspaceDOS(
                      )
 
     for W_val in W_val_arr
-
         savePath = joinpath(SAVEDIR, "kspaceDOS-$(W_val)-$(effective_Wval)-$(size_BZ)-$(numShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
             results[W_val]["kspaceDOS"] = jldopen(savePath)["kspaceDOS"]
+            nodeIndex = map2DTo1D(-π/2, -π/2, size_BZ)
             results[W_val]["quasipRes"] = jldopen(savePath)["quasipRes"]
             targetHeight = jldopen(savePath)["locHeight"]
             println("Collected W=$(W_val) from saved data. $(targetHeight)")
@@ -497,7 +499,7 @@ function LatticeKspaceDOS(
             push!(saveNames[name], plotHeatmap(abs.(quadrantResults[W_val]), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
                                                (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], 
                                                getlabelInt(W_val, size_BZ), colmap;
-                                               colorbarLimits=colorbarLimits,
+                                               #=colorbarLimits=colorbarLimits,=#
                                               )
                  )
         end
@@ -508,7 +510,7 @@ function LatticeKspaceDOS(
         if isempty(files)
             continue
         end
-        shellCommand = "pdfunite $(join(files, " ")) $(name).pdf"
+        shellCommand = "pdfunite $(join(files, " ")) $(name)-$(size_BZ).pdf"
         run(`sh -c $(shellCommand)`)
         write(f, shellCommand*"\n")
     end
@@ -601,12 +603,13 @@ function TiledSpinCorr(
     close(f)
 end
 
-size_BZ = 13
-@time ScattProb(size_BZ; loadData=false)
-@time KondoCouplingMap(size_BZ)
-@time AuxiliaryCorrelations(size_BZ; loadData=false)
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=true)
-@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)
+size_BZ = 77
+#=@time ScattProb(size_BZ; loadData=true)=#
+#=@time KondoCouplingMap(size_BZ)=#
+#=@time AuxiliaryCorrelations(49; loadData=false)=#
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=true)=#
+#=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
+#=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 @time LatticeKspaceDOS(size_BZ; loadData=false)
-@time TiledSpinCorr(size_BZ; loadData=false)
-@time PhaseDiagram(size_BZ, 1e-3; loadData=false)
+#=@time TiledSpinCorr(size_BZ; loadData=false)=#
+#=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#

@@ -657,19 +657,27 @@ These terms describe excitations that start and propagate within the same auxili
 \begin{equation}\begin{aligned}
 	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r})\mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
 \end{aligned}\end{equation}
+With an eye towards introducing the impurity operators into the correlations, we insert a complete basis defined by the eigenstates \(\left\{\ket{\psi_n\left({\bf r}_c\right)}\right\} \) of the auxiliary model into the expression:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\sum_{n}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r}) \ket{\psi_n\left({\bf r}_c\right)}\bra{\psi_n\left({\bf r}_c\right)} \mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+
 For the excitations that exist purely in the conduction bath \(({\bf r} \neq {\bf r}_c)\), the excitation operators must be suitably modified (see the arguments around eq.~\ref{tmatrix}) in order to incorporate Kondo screening. The modified excitation operators are generally defined as
 \begin{equation}\begin{aligned}\label{operatorTmatrix}
-\mathcal{\tilde O} = \mathcal{O} \left[\sum_{\sigma}\left(c^\dagger_{d\sigma} + \text{h.c.}\right) + S_d^+ + \text{h.c.}\right] ~.
+	\mathcal{\tilde O}({\bf r}) = \mathcal{O}({\bf r})\mathcal{O}^\dagger(d) \mathcal{P}_\text{gs} ~,
 \end{aligned}\end{equation}
-The operator multiplying the old correlation operator represents all possible excitations of the impurity site, and ensure that the bath and impurity excitation processes take place in correlation. With this modified operator, this class of correlation functions can be written as
+where \(\mathcal{O}^\dagger(d)\) is the hermitian conjugate of the correlation operator \(\mathcal{O}\), but applied on the impurity sites. This therefore constitutes a time-reversed scattering process on the impurity site relative to the process in the bath. The operator \(\mathcal{P}_\text{gs}\) projects onto the ground state of the auxiliary model, since we are interested in ground state correlations. The operator multiplying the old correlation operator represents all possible excitations of the impurity site, and ensure that the bath and impurity excitation processes take place in correlation. The projector ensures that only tripartite correlations between the impurity site and the two momentum states are captured by the correlation, which is what's desired within the tiling method.
+
+With this modified operator, this class of correlation functions can be written as
 \begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r} }\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r})\mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r} }\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
 \end{aligned}\end{equation}
+This can be interpreted as the fact that within our auxiliary model formalism, the correlation between the sites \({\bf r}\) and \({\bf \Delta + r}\) can only occur through a transition process that connect one of the sites with the impurity site and then a return process that connects the impurity site with the other site.
 
 \subsubsection{Inter-auxiliary model contributions: \({\bf r}^\prime \neq 0\)}
 These are the most non-local contributions, and involve excitations that connect different auxiliary models:
 \begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}^\prime \neq 0}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r})\mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}^\prime \neq 0}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
 \end{aligned}\end{equation}
 
 \subsection{Momentum-space correlation functions}
@@ -706,7 +714,128 @@ For this expression, we again defined \({\bf \Delta}\) similar to before, and ca
 As it stands, operators like \(\mathcal{O}({\bf k}_1)\) act purely on the conduction bath degrees of freedom. In order to incorporate impurity-bath correlation effects, we modify these operators using the appropriate \(T-\)matrices, by employing eq.~\ref{operatorTmatrix}. The final computations are carried out using these modified operators.
 
 
-\section{Entanglement measures}
+\section{Entanglement}
+We will now describe the prescription of calculating entanglement measures of the lattice model from within our auxiliary model treatment. In this section, we are interested mainly in two such measures, the entanglement entropy and the mutual information. Given a pure state \(\ket{\Psi}\) describing the complete system, the entanglement entropy \(S_\text{EE}(\nu)\) of a subsystem \(\nu\) quantifies the entanglement of \(\nu\) with the rest of the subsystem, and is defined as
+\begin{equation}\begin{aligned}
+	S_\text{EE}(\nu) = -\text{Tr}\left[\rho(\nu)\log \rho(\nu)\right],\quad \rho(\nu) = \text{Tr}_\nu\left[\ket{\Psi}\bra{\Psi}\right] 
+\end{aligned}\end{equation}
+where \(\text{Tr}\left[\cdot\right] \) is the trace operator, and \(\rho(\nu)\) is the reduced density matrix for the subsystem \(\nu\) obtained by taking the partial trace \(\text{Tr}_\nu\) (over the states of \(\nu\)) of the full density matrix \(\rho = \ket{\Psi}\bra{\Psi}\). If the subsystem \(\nu\) describes local regions in real space (or states in \(k-\)space), we might be interested in the entanglement between two such subsystems \(\nu_1\) and \(\nu_2\). The correct measure to quantify such entanglement is the mutual information:
+\begin{equation}\begin{aligned}
+	I_2(\nu_1,\nu_2) = S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) - S_\text{EE}(\nu_1 \cup \nu_2)~,
+\end{aligned}\end{equation}
+where \(\nu_1 \cup \nu_2\) is a larger subsystem formed by combining \(\nu_1\) and \(\nu_2\).
+
+In line with our auxiliary model strategy, entanglement measures in the auxiliary model must involve the impurity site - this means, for example, that entanglement measures must always be correlated with the impurity site, through mutual information and higher-party measures (\(I_3,~I_4\) and so on). This requires us to express the entanglement entropy as a function of these higher-party measures, and we will now derive such a relation.
+
+\subsection{Decomposition of entanglement entropy in terms of multipartite information \(I_n\)}
+We first define a partitioning of the entire system into \(N\) disjoint regions, \(\mathcal{S}_N = \left\{ \nu_1, \nu_2,\ldots\nu_N\right\} \). Going beyond bipartite mutual information, one can define the \(n-\)partite information \(I_n\) between the members of \(\mathcal{S}_n = \left\{\nu_1,\nu_2,\ldots,\nu_n\right\} \), which is itself a subset of the exhaustive set of regions \(\mathcal{S}_N\):
+\begin{equation}\begin{aligned}
+	I_n(\nu_1,\ldots,\nu_n) = \sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}(\sigma)~,
+\end{aligned}\end{equation}
+where \(\sigma\) is a subset drawn from the power set of \(\mathcal{S}_n\), and \(|\sigma|\) is the number of members in the subset \(\sigma\). The 4-partite information can be written as
+\begin{equation}\begin{aligned}
+	I_4 = & ~ S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) + S_\text{EE}(\nu_3) + S_\text{EE}(\nu_4) \\
+		  & - S_\text{EE}(\nu_1 \cup \nu_2) - S_\text{EE}(\nu_1 \cup \nu_3) - S_\text{EE}(\nu_1 \cup \nu_4) - S_\text{EE}(\nu_2 \cup \nu_3) - S_\text{EE}(\nu_2 \cup \nu_4) - S_\text{EE}(\nu_3 \cup \nu_4) \\
+		  & + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_3) + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_4) + S_\text{EE}(\nu_1 \cup \nu_3 \cup \nu_4) + S_\text{EE}(\nu_2 \cup \nu_3 \cup \nu_4)\\
+		  & + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_3 \cup \nu_4)~.
+\end{aligned}\end{equation}
+One can also define the average \(n-\)partite information, \(\bar I_n\):
+\begin{equation}\begin{aligned}
+\bar I_n = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N} I_n(\nu_1,\ldots,\nu_n) = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}(\sigma)~.
+\end{aligned}\end{equation}
+This can be simplified by bringing the summations over \(\nu_i\) inside the summation over \(\sigma\):
+\begin{equation}\begin{aligned}
+	\bar I_n = \frac{1}{N^n}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} \sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N}S_\text{EE}(\sigma) = \sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}^{(|\sigma|)} ~,
+\end{aligned}\end{equation}
+where we have define the average entanglement entropy for subsystem size \(|\sigma|\), 
+\begin{equation}\begin{aligned}
+	S_\text{EE}^{(|\sigma|)} = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \ldots\sum_{\nu_n \in \mathcal{S}_N}S_\text{EE}(\sigma)~.
+\end{aligned}\end{equation}
+The advantage of doing this is that \(S_\text{EE}^{(|\sigma|)}\) depends only on the length \(|\sigma|\), not on the elements themselves. This allows us to carry out the sum over \(\sigma\), for a fixed \(|\sigma|\):
+\begin{equation}\begin{aligned}
+	\bar I_n = \sum_{l=1}^n  (-1)^{1+l} S_\text{EE}^{(l)}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right),\atop{|\sigma|=l}} = \sum_{l=1}^n  (-1)^{1+l} \binom{n}{l} S_\text{EE}^{(l)} ~,
+\end{aligned}\end{equation}
+where \(\binom{n}{l} = \frac{n!}{l!~(n-l)!}\) is the number of subsets of \(\mathcal{S}_n\) that have length \(l\). With most of the machinery in place, we would now like to express the entanglement entropy \(S_\text{EE}\) purely in terms multipartite measures \(I_n\), for the reasons stated above. For a system that is invariant under real-space translation (as our lattice model is), the entanglement entropy of any real-space interval should only depend on the extent of the interval. It therefore suffices to calculate the entanglement entropy averaged over all such intervals, and the corresponding measure in our formulation is \(S_\text{EE}^{(1)}\). 
+
+We will now express \(S_\text{EE}^{(1)}\) in terms of \(\bar I_n\), by eliminating \(S_\text{EE}^{(l)} (l > 1)\) from the equations. We adopt the ansatz
+\begin{equation}\begin{aligned}\label{expansion}
+	S_\text{EE}^{(1)} = \sum_{n=2}^N \lambda_n \bar I_n = S_\text{EE}^{(1)}\sum_{n=2}^N n \lambda_n - \sum_{l=2}^{N-1} S_\text{EE}^{(l)} (-1)^{l} \sum_{n=l}^N \binom{n}{l} \lambda_n~,
+\end{aligned}\end{equation}
+where the \(N-1\) coefficients \(\left\{ \lambda_n \right\} \) will be determined by requiring that the \(S_\text{EE}^{(l)} (l > 1)\) vanish on the right-hand side, as well as by matching the coefficients of \(S_\text{EE}^{(1)}\) on both sides. Note that \(l\) runs only upto \(N-1\) in the second term; this is because, \(S_\text{EE}^{(N)}\) is the entanglement entropy of the full system and hence automatically zero. The equations are
+\begin{gather}\label{equation1}
+	\sum_{n=2}^N n \lambda_n = 1,\\
+	\sum_{n=l}^N \binom{n}{l} \lambda_n = 0;~l=2,\ldots,N-1~.
+\end{gather}
+We focus on the second equation first, since it is very short for \(l\) close to \(N\). For \(l=N-1\) and \(l=N-2\), we get
+\begin{equation}\begin{aligned}
+	l=N-1:~&\lambda_{N-1} + N\lambda_{N} = 0 \implies &\lambda_{N-1} = -N \lambda_N\\
+	l=N-2:~&\lambda_{N-2} + \left(N-1\right) \lambda_{N-1} + \frac{N(N-1)}{2}\lambda_{N} = 0 \implies &\lambda_{N-2} = \frac{N(N-1)}{2}\lambda_N~.
+\end{aligned}\end{equation}
+We extrapolate this to the general solution,
+\begin{equation}\begin{aligned}\label{coeffSolution}
+	\lambda_{N-m} = (-1)^m \binom{N}{m} \lambda_N,~m>0,
+\end{aligned}\end{equation}
+and then prove that if this is true for \(\lambda_{N-m}\), it also solves the equation for \(\lambda_{N-m-1}\), thus amounting to a proof by mathematical induction. The general equation for \(\lambda_{N-m-1}\) is
+\begin{equation}\begin{aligned}
+	\sum_{n=N-m-1}^N \binom{n}{N-m-1} \lambda_n = 0 \implies \lambda_{N-m-1} + \sum_{m^\prime=0}^{m}\binom{N-m^\prime}{N-m-1} \lambda_{N-m^\prime} = 0~.
+\end{aligned}\end{equation}
+Substituting the extrapolated solution gives
+\begin{equation}\begin{aligned}
+	\lambda_{N-m-1} = -\sum_{m^\prime=0}^{m} (-1)^{m^\prime}\binom{N-m^\prime}{N-m-1} \binom{N}{m^\prime} \lambda_N = \binom{N}{m+1} \lambda_N\sum_{m^\prime=0}^{m} (-1)^{m^\prime + 1}\binom{m+1}{m^\prime} = (-1)^{m+1}\binom{N}{m+1} \lambda_N~,
+\end{aligned}\end{equation}
+which is consistent with the general solution eq.~\ref{coeffSolution}. This determines all coefficients \(\lambda_n\) for \(n < N\) in terms of \(\lambda_N\). To determine \(\lambda_N\) itself, we use eq.~\ref{equation1}. Substituting eq.~\ref{coeffSolution} into it gives
+\begin{equation}\begin{aligned}\label{finalCoeff}
+	\lambda_N \sum_{n=2}^N n (-1)^{N-n} \binom{N}{n} = 1 \implies \lambda_N =  \frac{(-1)^N}{N}~.
+\end{aligned}\end{equation}
+The decomposition of entanglement entropy into multipartite measures is now complete:
+\begin{equation}\begin{aligned}
+	S_\text{EE}^{(1)} &= \sum_{n=2}^N \lambda_n \bar I_n,\\
+	\bar I_n &= \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N} I_n(\nu_1,\ldots,\nu_n),\\
+	\lambda_{n} &= (-1)^{N-n} \binom{N}{m} \lambda_N (m>0),\quad \lambda_N = \frac{(-1)^N}{N}~.
+\end{aligned}\end{equation}
+
+\subsection{Real-space entanglement}
+The simplest measure to look at is the entanglement entropy of a local state, in real space. This suggests a partitioning of the system such that each \(\nu_i\) describes a lattice site. Since the local entanglement entropy will be uniform at each lattice site for a system with translation invariance, it suffices to calculate the real-space averaged entanglement entropy \(\frac{1}{N}\sum_{{\bf r}}S_\text{EE}\left( {\bf r} \right) \). But given our real-space partitioning, this is equivalent to calculating \(S_\text{EE}^{(1)}\). Within our auxiliary model formalism, all correlations must derive from the impurity site. This can be formally expressed as subtracting the contribution obtained in the absence of the impurity site. Accordingly, in every \(\bar I_n\), we retain only those terms that involve the impurity site:
+\begin{equation}\begin{aligned}\label{localEnt}
+	S_\text{EE}^{\text{loc}} = \lambda_1 \bar I_2(d,{\bf r}) + \lambda_2 \bar I_3(d,{\bf r},{\bf r}^\prime) + \ldots~,
+\end{aligned}\end{equation}
+where \(\bar I_2(d,{\bf r}_1)\) is the mutual information between the impurity site and any conduction bath site \({\bf r}\), averaged over all bath sites, while \(\bar I_3(d,{\bf r},{\bf r}^\prime)\) is the tripartite mutual information between the impurity site and two other bath sites, averaged over all pairs of bath sites \(\left({\bf r},{\bf r}^\prime\right) \), and so on. We emphasise that \({\bf r}_1\) and \({\bf r}_2\) are dummy indices that are ultimately averaged over, and they have been added simply to indicate how the averaging is carried out.
+
+This approach can be extended to calculate the entanglement entropy \(S_\text{EE}(L)\) of a region of space (containing, say, \(L\) sites). We now partition the system into disjoint continuous chunks \(\nu_i^{(L)}\), of size \(L\). For the impurity model, this leads to a chunk \(\nu^{(L)}_d\) that involves the impurity site, and other chunks \(\nu^{(L)}_{{\bf r}}\) without it. In terms of the \(n-\)partite information, we get
+\begin{equation}\begin{aligned}
+	S_\text{EE}(L) = \lambda_1 \bar I_2(\nu^{(L)}_d,\nu^{(L)}_{\bf r}) + \lambda_2 \bar I_3(\nu^{(L)}_d,\nu^{(L)}_{\bf r},\nu^{(L)}_{\bf r^\prime}) + \ldots~,
+\end{aligned}\end{equation}
+where the averaging is now over the chunks \(\nu^{(L)}_{\bf r}\) that do not involve the impurity site.
+
+\subsection{Momentum-space entanglement}
+In order to calculate entanglement entropy of \(k-\)states, some modifications are required. By partitioning the system in \(k-\)space, one again obtains an equation similar to eq.\ref{localEnt}:
+\begin{equation}\begin{aligned}
+	\bar S_\text{EE} = \lambda_1 \bar I_2(d,{\bf k}) + \lambda_2 \bar I_3(d,{\bf k},{\bf k}^\prime) + \ldots~,
+\end{aligned}\end{equation}
+but \(\bar S_\text{EE}\) is now an average over \(k-\)space entanglement, and the \(\bar I_n\) involve similar averages of the \(k-\)states of the conduction bath. Because of the average on the left-hand side, it is not possible to extract the entanglement entropy of a single \(k-\)mode (which we call \({\bf q}\)) from this expression. 
+
+To proceed, we employ the following trick. We consider a slightly different scenario for eq.~\ref{expansion}: the averages are now carried out over all states except \({\bf q}\). For the sake of keeping the notation unchanged, we let \(N\) be the number of elements in this modified set. Eq.~\ref{expansion} will again hold true, apart from the inclusion of the term \(S_\text{EE}^{(N)}\) on the right-hand side; this term was zero in the original calculation (see discussion immediately below eq.~\ref{expansion}) because there it represented the entanglement entropy of the full state (which is always in a pure state and therefore not entangled). In this new scenario, \(S_\text{EE}^{(N)}\) refers to the entanglement entropy of all states apart from \({\bf q}\) (or equivalently of just \({\bf q}\)), and is not {\it a priori} zero. The equations for the \(\lambda_n\), however, remain unchanged, and one carry out the same derivation to obtain the same results. The only difference is that the decomposition of \(\bar S_\text{EE}\) in this "cavity" system will now involve the additional term \(S_\text{EE}^{(N)}\):
+\begin{equation}\begin{aligned}
+	\bar S_\text{EE, {\bf q}} &= \sum_{n=2}^N \lambda_n \bar I_{n, {\bf q}} + S_\text{EE}^{(N)}(-1)^N \lambda_N~.
+\end{aligned}\end{equation}
+The \({\bf q}\) in the subscripts refers to the fact that these quantities are calculated in the cavity representation (that is, in the absence of \({\bf q}\)). The final step is to note that since \(S_\text{EE}^{(N)}\) does not scale with the system size \(N\) whle \(\lambda_N\) scales as \(1/N\) (eq.~\ref{finalCoeff}), the last term drops out from the above equation in the limit of \(N \gg 1\).
+
+The reason for considering the cavity representation is the following: the entanglement entropy of just the \({\bf q}\) state can be obtained as the difference between the average in the full system and the average in the cavity:
+\begin{equation}\begin{aligned}
+	S_\text{EE}({\bf q}) \equiv N\left(\bar S_\text{EE} - \bar S_\text{EE, {\bf q}}\right) ~.
+\end{aligned}\end{equation}
+Comparing the decompositions in the presence and absence of \({\bf q}\), it is easy to see that the only terms that survive the difference are those that involve \({\bf q}\):
+\begin{equation}\begin{aligned}
+	S_\text{EE}({\bf q}) = \lambda_1 I_2(d,{\bf q}) + \lambda_2 \bar I_3(d,{\bf q},{\bf k}) + \ldots~,
+\end{aligned}\end{equation}
+where the first term is just the mutual information between the impurity site and the momentum state \({\bf q}\), while the second term is a tripartite information among the impurity site, \({\bf q}\) and \({\bf k}\), with \({\bf k}\) being averaged over the conduction bath states.
+
+The above arguments do not require \({\bf q}\) to be a single momentum state; the entanglement entropy of a patch of \(k-\)states \(q_1, q_2, \ldots, q_L\) can be obtained simply by replacing \({\bf q}\) with \(q_1\cup q_2\ldots q_L\). The average over \({\bf k}\) is then also replaced by an average similar collections of \(k-\)states. These two results together also allow us to calculate the mutual information between two \(k-\)states.
+
+
+ 
+
+\section{Entanglement - Older Version}
 In order to relate bipartite measures of entanglement (such as the entanglement entropy and mutual information) across the tiling algorithm, we will express the matrix elements of an arbitrary reduced density matrix (RDM) in terms of generalised correlation functions. Since these correlation functions can always be computed using the algorithm provided in the previous section, this suffices to compute the RDM using auxiliary model calculations. If the RDM is known, other bipartite measures can be easily calculated.
 
 We consider the \(T=0\) density matrix, \(\tilde\rho_\text{gs} = \ket{\Psi}_\text{gs}\bra{{\Psi}_\text{gs}}\) of the lattice model, and a division of the total degrees of freedom (real or momentum space) into two sets \(A\) and \(B\). If basis set for the two subsystems are \(\left\{ \ket{A_i} \right\} \) and \(\left\{ B_j \right\} \), the ground state can be written as
@@ -750,24 +879,30 @@ This means the RDM element for this subspace, at the location \((00, 01)\), is e
 
 Other measures like mutual information can be obtained by using these elementary measures.
 
-\section{Metal-insulator transition in the Lattice Model}
+\section{Insights on the Mott MIT on the lattice model}
 \subsection{Momentum-space picture etc etc}
 In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.23\textwidth]{tiledSF-1.pdf}
-	\includegraphics[width=0.23\textwidth]{tiledSF-2.pdf}
-	\caption{tiledSF.pdf}
+	\includegraphics[width=0.24\textwidth]{tiledSF-1.pdf}
+	\includegraphics[width=0.24\textwidth]{tiledSF-2.pdf}
+	\includegraphics[width=0.24\textwidth]{tiledSF-3.pdf}
+	\includegraphics[width=0.24\textwidth]{tiledSF-4.pdf}
+	\caption{Spin-flip correlations \(\left<S(k_N)^+, S({\bf k})^-\right>\) between the nodal point \(k_N = \left( -\pi/2, -\pi/2\right)\) and an arbitrary \(k-\)point on the Fermi surface. In the absence of bath interaction (first panel), the correlations are somewhat uniformly distributed along the Fermi surface. As we enter the pseudogap (second panel), the spin-correlations near the antinode vanish, indicating that they have been removed from the metallic excitations. Passing through the pseudogap involves in the extensions of the gapped region (third panel), until finally only the node remains (fourth panel).}
+	\label{tiledSF}
+\end{figure}
+
+\subsection{Fermi surface destablisation through the pseudogap}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-2.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-3.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-4.pdf}
+	\caption{One-particle \(k-\)space spectral function. In the absence of bath interactions, all points on Fermi surface are gapless (first panel). Proceeding through the pseudogap results in the gapping out of Fermi surface points starting from the antinode (second panel) and approaching the node (third panel), until finally only the node remains at the critical point (fourth panel).}
 	\label{fig:tiledSF-pdf}
 \end{figure}
-% \begin{figure*}[htpb]
-% 	\centering
-% 	\includegraphics[width=\textwidth]{charge-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
-% \end{figure*}
-% \begin{figure*}[htpb]
-% 	\centering
-% 	\includegraphics[width=\textwidth]{vne-p-p_37_-2.0_-1.7297_-0.0_0.1.pdf}
-% \end{figure*}
+
 
 \subsection{Heisenberg model as a low-energy description of the insulator}
 

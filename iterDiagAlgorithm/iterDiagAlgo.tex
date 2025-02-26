@@ -3,6 +3,8 @@
 \begin{document}
 
 \title{Iterative Ground State Approach Algorithm}
+\author{Abhirup Mukherjee}
+\affiliation{EPQM}
 \begin{abstract}
 	The following is the algorithm for performing an iterative diagonalization of fermionic systems. It is mostly similar to DMRG and NRG, and allows obtaining the low-energy spectrum of large many-body Hamiltonians.
 \end{abstract}
@@ -147,7 +149,7 @@ Let the starting Hamiltonian be \(H_0(L_0)\), consisting of \(L_0\) single-parti
 \begin{itemize}
 	\item[{\it S1.}] Construct the complete Hamiltonian matrix \(H_0\) in our present basis using the field operators \(\left\{c_j\right\}\). Diagonalise the Hamiltonian (of size \(D_0 \times D_0\)) and obtain the eigenvalues \({E_n}\) and eigenstates \({X_n}\). Each \(X_n\) is a column vector of size \(D_0\).
 	\item[{\it S2.}] Retain at most \(M_s\) number of eigenstates, preferring the ones with lower energy. The reduced basis for this rotated truncated subspace is constructed by stacking the column vectors \(X_n\) horizontally:
-		\begin{equation}\begin{aligned}
+		\begin{equation}\begin{aligned}\label{rotationMatrix}
 			R = [X_1 X_2 \ldots X_{M_s}]_{D_0\times M_s}~.
 		\end{aligned}\end{equation}
 		This matrix also acts as the transformation to rotates and truncate all operators from the old basis into the new one.
@@ -182,4 +184,93 @@ The single-impurity Anderson model at half-filling is obtained by setting \(H_\t
 \includegraphics[width=0.48\textwidth]{spinflipcomparison.pdf}
 \label{comparisonSIAM}
 \end{widetext}
+
+\section{Transforming Across Reduced Bases}
+\subsection{The problem of mixing states across Hamiltonians}
+Consider the following problem: We have a quantum impurity problem that undergoes a transition from a Kondo-screened phase to a local moment phase through a critical point, and we wish to study the nature of the critical point. In order to take account of the enhanced fluctuations arising at the critical point because of the degeneracy between the Kondo-screened ground state \(\ket{\Psi_\text{KS}}\) and the local moment state \(\ket{\Psi_\text{LM}}\), it is helpful to use a superposition ground state, of the form
+\begin{equation}\begin{aligned}\label{superposition}
+	\ket{\Psi_c} = \frac{1}{\sqrt 2}\left(\ket{\Psi_\text{KS}} + \ket{\Psi_\text{LM}}\right) ~.
+\end{aligned}\end{equation}
+More explicitly, \(\ket{\Psi_\text{KS}}\) and \(\ket{\Psi_\text{LM}}\) are obtained as ground states of the low-energy Hamiltonians \(H_\text{KS}\) and \(H_\text{LM}\) in the Kondo-screened and local moment phases respectively. If we use the iterative diagonalisation algorithm described above to obtain these states, the state vectors will be represented in terms of inconsistent basis states. That is, \(\ket{\Psi_\text{KS}}\) will be represented in terms of the eigenstates of \(H_\text{KS}\), while \(\ket{\Psi_\text{LM}}\) will be available in terms of the eigenstates of \(H_\text{LM}\), making the addition operation in eq.~\ref{superposition} tricky (we can only add two column vectors if they are in the same basis).
+
+\subsection{Basis transformation of states}
+In order to remedy this, it is necessary to transform one of the states into the basis of the other. Suppose we are given two states \(\ket{\Psi^{(1)}}\) and \(\ket{\Psi^{(2)}}\) written in two basis sets \(\left\{ \ket{b^{(1)}_i}\right\} \) and \(\left\{ \ket{b^{(2)}_i}\right\} \),
+\begin{equation}\begin{aligned}
+	\ket{\Psi^{(1)}} = \begin{pmatrix} c_1^{(1)} ~ c_2^{(1)} ~ \ldots ~ c_N^{(1)} \end{pmatrix}^T = \sum_i c_i^{(1)} \ket{b_i^{(1)}},\\
+	\ket{\Psi^{(2)}} = \begin{pmatrix} c_1^{(2)} ~ c_2^{(2)} ~ \ldots ~ c_N^{(2)} \end{pmatrix}^T = \sum_i c_i^{(2)} \ket{b_i^{(2)}}.
+\end{aligned}\end{equation}
+We can transform \(\ket{\Psi^{(1)}}\) into the basis \(\left\{ \ket{b^{(2)}_i}\right\} \) by inserting an identity resolution:
+\begin{equation}\begin{aligned}
+	\ket{\Psi^{(1)}} &= \sum_{i, j} c_i^{(1)} \ket{b_j^{(2)}}\braket{b_j^{(2)}|b_i^{(1)}} \\
+					 &= \sum_{j} \left(\sum_i c_i^{(1)} M^{2, 1}_{ji} \right)\ket{b_j^{(2)}},
+\end{aligned}\end{equation}
+where \(M^{2, 1}_{ji} = \braket{b_j^{(2)}|b_i^{(1)}}\). This can also be represented as a matrix multiplication operation:
+\begin{equation}\begin{aligned}\label{stateTransform}
+	\Psi^{(1)}\vert_{1} \to \Psi^{(1)}\vert_{2} = \hat M^{2, 1}~\Psi^{(1)}\vert_{1}~,
+\end{aligned}\end{equation}
+where \(\Psi^{(1)}\vert_{1}\) and \(\Psi^{(1)}\vert_{2}\) are the column vector representations of the state \(\ket{\Psi^{(1)}}\) in the first basis and second basis respectively, and \(\hat M^{2, 1}\) is the matrix (obviously in the first basis, since it is multiplied with a state in that basis) defined by the matrix elements \(\hat M^{2, 1}_{ij} = \braket{b_i^{(2)} | b_j^{(1)}}\). In summary, eq.\ref{stateTransform} is the recipe for transforming the representation of a state from one basis to another.
+	
+\subsection{The problem of incompatible basis sets}
+Formulating eq.~\ref{stateTransform} above for the problem laid out in the first part of this section, we interpret \(\ket{\Psi_\text{LM}}\) as \(\ket{\Psi^{(1)}}\) (the state whose representation needs to be modified), and we interpret the two basis sets \(\left\{ \ket{b^{(1)}_i}\right\}\) and \(\left\{ \ket{b^{(2)}_i}\right\}\) as the eigenbasis of \(H_\text{LM}\) and \(H_\text{KS}\) respectively:
+\begin{equation}\begin{aligned}
+	\left\{ \ket{b^{(1)}_i}\right\} &= \left\{ \ket{b^{\text{LM}}_i}\right\}\\
+	\left\{ \ket{b^{(2)}_i}\right\} &= \left\{ \ket{b^{\text{KS}}_i}\right\}~.
+\end{aligned}\end{equation}
+More specifically, the iterative diagonalisation of \(H_\text{LM}\) will lead to a sequence of Hamiltonians (with increasing number of one-particle states), and the eigenbasis of each such Hamiltonian acts as the basis for the next Hamiltonian in the sequence (the initial Hamiltonian is written in the local computational basis); \(\left\{ \ket{b^{\text{LM}}_i}\right\}\) is then the basis in which the final Hamiltonian and its ground state is expressed (before it is diagonalised). Same holds for the other Hamiltonian \(H_\text{KS}\) and the basis \(\left\{ \ket{b^{\text{KS}}_i}\right\}\).
+
+The creation of the matrix \(\hat M\) requires the calculation of inner products between basis vectors of two distinct basis sets. This can be carried out in practise only if the vectors of both sets are themselves represented in a common basis (the inner product is essentially the multiplication of a row matrix with a column matrix, and the two matrices must be written in the same basis). This reveals a problem in the application of eq.~\ref{stateTransform} directly to the problem at hand: a calculation of the kind 
+\begin{equation}\begin{aligned}
+	\hat M^{\text{KS}, \text{LM}}_{i,j} = \braket{b^{\text{KS}}_i | b^{\text{LM}}_j}~,
+\end{aligned}\end{equation}
+followed by
+\begin{equation}\begin{aligned}
+	 \ket{\Psi_\text{LM}} \to \hat M^{\text{KS},\text{LM}}\ket{\Psi_\text{LM}}~,
+\end{aligned}\end{equation}
+is incorrect; this is because, the final basis sets in the iterative diagonalisation of the two Hamiltonians are written in the next to last basis set of the same Hamiltonian, which means that \(\left\{ \ket{b^{\text{LM}}_j}\right\}\) and \(\left\{ \ket{b^{\text{KS}}_i}\right\}\) are not available in the same basis.
+
+\subsection{Transforming both states to a common basis}
+As pointed out above, it is not possible to directly construct a basis transformation operator \(\hat M\) that places both \(\ket{\Psi_\text{LM}}\) and \(\ket{\Psi_\text{KS}}\)  in the same basis. We therefore adopt a different strategy: we will transform both the states, individually, to the completely local single-particle basis (CLSB). This CLSB is, in fact, the starting point of any iterative diagonalisation procedure - it is the basis in which the first Hamiltonian of the flow is constructed. 
+
+For concreteness, let the basis set in which the \(j^\text{th}\) Hamiltonian \(H_j\) is written be \(B_j\). An important point is that the explicit basis vectors of the set \(B_j\) are available (during the actual computation) only in the earlier basis (even though \(H_j\) itself is written using the \(j^\text{th}\) basis). This continues all the way back to \(B_2\), where \(B_2\) is the second basis set and is represented in terms of the CLSB \(B_1\); \(B_1\) is written in its own basis.
+
+Let the final ground state (after the \(N^\text{th}\) diagonalisation) be \(\ket{\Psi_N^{(N)}}\). The superscript indicates that the state is computationally expressed in the basis \(B_N\). The first step is to express this state in the basis \(B_{N-1}\). Following our earlier discussion, this can be achieved through
+\begin{equation}\begin{aligned}
+	\ket{\Psi_N^{(N)}} \to \ket{\Psi_N^{(N - 1)}} = \hat M^{N-1, N}\ket{\Psi_N^{(N)}}~,
+\end{aligned}\end{equation}
+where the basis transformation matrix is expressed in the basis \(B_N\), and its elements are given by
+\begin{equation}\begin{aligned}\label{actualTransform}
+	\hat M^{N-1, N}_{i, j} = \braket{B_{N-1, i}^{(N-1)} | B_{N, j}^{(N-1)}}~;
+\end{aligned}\end{equation}
+the subscripts indicate that the state is the \(i^\text{th}\) (or the \(j^\text{th}\)) basis vector the \((N-1)^\text{th}\) (or the \(N^\text{th}\) basis set. The superscript indicates that both the basis vectors are computationally represented in the \((N-1)^\text{th}\) basis. This of course means that the basis vectors of \(B_{N-1}\) will be very simple. Assuming there as \(D\) states in \(B_{N-1}\), we have
+\begin{equation}\begin{aligned}\label{identity}
+	B_{N-1} = \left\{ \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0\end{pmatrix}, \begin{pmatrix} 0 \\ 1 \\ \vdots \\ 0\end{pmatrix} \ldots \begin{pmatrix} 0 \\ 0 \\ \vdots \\ 1\end{pmatrix}\right\} = \left\{ P^1_D, P^2_D, \ldots, P^D_D \right\} ~,
+\end{aligned}\end{equation}
+where \(P^i_D\) is the vector of size \(D\) with 1 at the \(i^\text{th}\) position and zeros elsewhere. 
+
+More specifically, let's say that we are retaining \(M_s\) number of eigenstates at each step of the iterative diagonalisation process. By diagonalisating the Hamiltonian \(H_{N-1}\) (which is written in the basis \(B_{N-1}\)), we obtain \(M_s\) eigenstates \( \left\{ \ket{e^i_{N-1}}; i=1,2,\ldots,M_s\right\} \). If we insert, say, another qubit into the system for the next step, we can only retain at most \(M_s/2\) of these eigenstates (the qubit itself will increase the number of states by a factor of 2, leading to the required \(M_s\) number of basis states). The complete basis \(B_{N}\) is obtained by rotating and truncating the existing system into the basis \(\left\{\ket{e^i_{N-1}}; i=1,2,\ldots,M_s/2\right\}\) and then taking the direct product of these states with the CLSB of the newly added qubit, which is just identity \(\mathbb{I}(2)\):
+\begin{equation}\begin{aligned}\label{Nthstep}
+	B_{N} = \left\{\ket{e^i_{N-1}}; i=1 \to M_s/2\right\}  \otimes \mathbb{I}(2)~.
+\end{aligned}\end{equation}
+The representation of \(B_N\) is therefore sort of hybrid - it uses the basis \(B_{N-1}\) for the old qubits (\(M_s/2\) states)	but uses the CLSB for the newly added qubit (2 states). That's just because the newly added qubit wasn't available when \(B_{N-1}\) was constructed, so the old basis \(B_{N-1}\) cannot account for that. In order to use eq.~\ref{actualTransform}, \(B_{N-1}\) and \(B_N\) must be in the same representation and of the same dimensions.  For the older qubits, we have \(B_{N-1} = \mathbb I(M_s/2)\) (via eq.~\ref{identity}). For the new qubits, we again use the CLSB, which leads to the full \(B_{N-1}\),
+\begin{equation}\begin{aligned}\label{brokenidentity}
+	B_{N-1} = \mathbb I(M_s/2) \otimes \mathbb I(2) = \left\{ P^i_{M_s}; i=1\to M_s \right\} ~,
+\end{aligned}\end{equation}
+which keeps eq.~\ref{identity} unchanged but gives us a clearer picture of what's going on. In fact, we can simplify eq.~\ref{actualTransform} by combining eqs.~\ref{Nthstep} and \ref{brokenidentity}. Since the new qubits are represented by identity matrices in both basis sets, it is only the old qubits whose states changes during the basis transformation. Therefore, the full transformation matrix \(\hat M^{N-1, N}\) can be split into two parts, one for the old qubits and one for the new qubits:
+\begin{equation}\begin{aligned}
+	\hat M^{N_1, N} \otimes \mathbb{I}(2),~\hat M^{N-1, N}_{i, j} = \braket{P^i_{M_s/2} | e^j_{N-1}}~.
+\end{aligned}\end{equation}
+The structure of the matrix element implies that the matrix \(\hat M^{N-1, N}\) has the eigenvectors \(\ket{e^j}\) as its columns. We conclude from this that the matrix \(\hat M^{N-1, N}\) is simply the diagonalising matrix \(R^{N-1}\) obtained after diagonalisation of the Hamiltonian \(H_{N-1}\) (see eq.~\ref{rotationMatrix}).
+
+None of the arguments was specific to the final step of the iterative diagonalisation procedure, so we can immediately write down the general expressions for transforming a state \(\ket{\Psi_N^n}\) from \(B_n\) to \(B_{n-1}\):
+\begin{equation}\begin{aligned}
+\ket{\Psi_N^{(n)}} \to \ket{\Psi_N^{(n - 1)}} = \left( R^{n-1} \otimes \mathbb{I}(\Delta) \right) \ket{\Psi_N^{(n)}},
+\end{aligned}\end{equation}
+where \(\Delta\) is the number of states that must be padded in order to make up the correct dimension of the transformation operator.
+
+
+
+
+
+
+
 \end{document}

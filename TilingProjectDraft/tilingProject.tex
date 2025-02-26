@@ -1,5 +1,5 @@
 \documentclass[reprint,hidelinks,onecolumn]{revtex4-2}
-\usepackage{braket,amsmath,color,graphicx,bookmark,bm}
+\usepackage{braket,amsmath,color,graphicx,bookmark,bm,amssymb}
 \graphicspath{{./figures/}}
 \bibliographystyle{apsrev4-2}
 \begin{document}
@@ -231,80 +231,6 @@ This choice does not lead to a factorisation of the momentum-space dependence, a
 	&-\sum_{{\bf q} \in \text{PS}} \frac{J^2 f_{\bar p(\bar d)}\left({\bf k}_2 - {\bf q}\right) f_{\bar p(\bar d)}\left({\bf q} - {\bf k}_1\right) - 4JW f_{\bar p(\bar d)}\left({\bf k}_2 - {\bf k}_1\right)}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}
 \end{aligned}\end{equation}
 The first term in the numerator does not depend only on the momentum difference \({\bf k}_2 - {\bf k}_1\), unlike the bare Kondo coupling. This leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
-
-\section{Low-energy description of the embedded eSIAM}
-\subsection{Zero temperature phase diagram}
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{phaseDiagram.pdf}
-	\includegraphics[width=0.24\textwidth]{impSpecFuncTrunc_49.pdf}
-	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Right}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase.}
-	\label{phaseDiagram}
-\end{figure}
-
-\subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
-We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
-
-We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
-\begin{equation}\begin{aligned}
-	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
-\end{aligned}\end{equation}
-where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. 
-
-\begin{figure}[!htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-6.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-7.pdf}
-	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. Each plot shows whether \(\Gamma({\bf k}\) is relevant (black) or irrelevant (white). The antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
-	\label{gamma_kxky}
-\end{figure}
-
-\subsection{Spin-correlations across the pseudogap}
-In figure ~\ref{spinCorr}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{SF-1.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-3.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-5.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-6.pdf}
-	\caption{\(k-\)space distribution of spin-flip scattering correlation \(\chi_s(d,\vec k)\) (defined in the main text). The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last \(k-\)point to decouple from the impurity.}
-	\label{spinCorr}
-\end{figure}
-
-As a second probe of the pseudogapping phenomenon, we have also studied the entanglement entropy (EE) \(S_\text{EE}(\vec k)\), which is just the von Neumann entropy \(-\text{Tr}\left[\rho \ln \rho\right] \) of the reduced density matrix \(\rho_{\vec k}\) for each \(k-\)state. In accordance with the Kondo spin correlations \(\chi_s\), the EE shows the sequential decoupling, from the impurity, of the antinodes followed by the nodes. 
-
-Studies of \(k-\)space mutual information, \(I_2(\vec k, k_\text{N})\) and \(I_2(\vec k, k_\text{AN})\), between any given \(k-\)state and the node and antinode respectively, have revealed that each point interacts most strongly with it's own neighbourhood (see Supplementary Materials). This feature is in contrast to the charge-transfer correlations in the bath, that show ``long-ranged" interactions between the node and the antinode. These correlations will be discussed immediately after this, and are primarily responsible for driving the impurity transition and destabilising the Kondo cloud.
-
-\subsection{Charge correlations}
-In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
-\begin{figure}[!htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
-	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
-	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
-	\label{cfnode}
-\end{figure}
-
-\subsection{Emergence of a two-channel Kondo Model as the low-energy theory near the transition}
-As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
-\begin{itemize}
-	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
-	\item One momentum from the neighbourhood around \({\bf k}_N\), while the other from the neighbourhood around \({\bf k}_N + \left( \pi, \pi \right) \)~.
-\end{itemize}
-The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
-
-Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is captured by the following simplified Hamiltonian:
-\begin{equation}\begin{aligned}\label{twoChannel}
-H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
-\end{aligned}\end{equation}
-where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment.
-
-Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels. Given that this is a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point. Signatures of the quantum critical nature include power-law divergence in various correlation functions as temperature \(T \to 0\), and non-Fermi liquid excitations replacing the local Fermi liquid.
 
 \section{The Tiling Algorithm}
 
@@ -725,163 +651,118 @@ where \(\text{Tr}\left[\cdot\right] \) is the trace operator, and \(\rho(\nu)\) 
 \end{aligned}\end{equation}
 where \(\nu_1 \cup \nu_2\) is a larger subsystem formed by combining \(\nu_1\) and \(\nu_2\).
 
-In line with our auxiliary model strategy, entanglement measures in the auxiliary model must involve the impurity site - this means, for example, that entanglement measures must always be correlated with the impurity site, through mutual information and higher-party measures (\(I_3,~I_4\) and so on). This requires us to express the entanglement entropy as a function of these higher-party measures, and we will now derive such a relation.
-
-\subsection{Decomposition of entanglement entropy in terms of multipartite information \(I_n\)}
-We first define a partitioning of the entire system into \(N\) disjoint regions, \(\mathcal{S}_N = \left\{ \nu_1, \nu_2,\ldots\nu_N\right\} \). Going beyond bipartite mutual information, one can define the \(n-\)partite information \(I_n\) between the members of \(\mathcal{S}_n = \left\{\nu_1,\nu_2,\ldots,\nu_n\right\} \), which is itself a subset of the exhaustive set of regions \(\mathcal{S}_N\):
-\begin{equation}\begin{aligned}
-	I_n(\nu_1,\ldots,\nu_n) = \sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}(\sigma)~,
-\end{aligned}\end{equation}
-where \(\sigma\) is a subset drawn from the power set of \(\mathcal{S}_n\), and \(|\sigma|\) is the number of members in the subset \(\sigma\). The 4-partite information can be written as
-\begin{equation}\begin{aligned}
-	I_4 = & ~ S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) + S_\text{EE}(\nu_3) + S_\text{EE}(\nu_4) \\
-		  & - S_\text{EE}(\nu_1 \cup \nu_2) - S_\text{EE}(\nu_1 \cup \nu_3) - S_\text{EE}(\nu_1 \cup \nu_4) - S_\text{EE}(\nu_2 \cup \nu_3) - S_\text{EE}(\nu_2 \cup \nu_4) - S_\text{EE}(\nu_3 \cup \nu_4) \\
-		  & + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_3) + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_4) + S_\text{EE}(\nu_1 \cup \nu_3 \cup \nu_4) + S_\text{EE}(\nu_2 \cup \nu_3 \cup \nu_4)\\
-		  & + S_\text{EE}(\nu_1 \cup \nu_2 \cup \nu_3 \cup \nu_4)~.
-\end{aligned}\end{equation}
-One can also define the average \(n-\)partite information, \(\bar I_n\):
-\begin{equation}\begin{aligned}
-\bar I_n = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N} I_n(\nu_1,\ldots,\nu_n) = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}(\sigma)~.
-\end{aligned}\end{equation}
-This can be simplified by bringing the summations over \(\nu_i\) inside the summation over \(\sigma\):
-\begin{equation}\begin{aligned}
-	\bar I_n = \frac{1}{N^n}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} \sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N}S_\text{EE}(\sigma) = \sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right)} (-1)^{1 + |\sigma|} S_\text{EE}^{(|\sigma|)} ~,
-\end{aligned}\end{equation}
-where we have define the average entanglement entropy for subsystem size \(|\sigma|\), 
-\begin{equation}\begin{aligned}
-	S_\text{EE}^{(|\sigma|)} = \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \ldots\sum_{\nu_n \in \mathcal{S}_N}S_\text{EE}(\sigma)~.
-\end{aligned}\end{equation}
-The advantage of doing this is that \(S_\text{EE}^{(|\sigma|)}\) depends only on the length \(|\sigma|\), not on the elements themselves. This allows us to carry out the sum over \(\sigma\), for a fixed \(|\sigma|\):
-\begin{equation}\begin{aligned}
-	\bar I_n = \sum_{l=1}^n  (-1)^{1+l} S_\text{EE}^{(l)}\sum_{\sigma \in \mathcal{P}\left(\mathcal{S}_n\right),\atop{|\sigma|=l}} = \sum_{l=1}^n  (-1)^{1+l} \binom{n}{l} S_\text{EE}^{(l)} ~,
-\end{aligned}\end{equation}
-where \(\binom{n}{l} = \frac{n!}{l!~(n-l)!}\) is the number of subsets of \(\mathcal{S}_n\) that have length \(l\). With most of the machinery in place, we would now like to express the entanglement entropy \(S_\text{EE}\) purely in terms multipartite measures \(I_n\), for the reasons stated above. For a system that is invariant under real-space translation (as our lattice model is), the entanglement entropy of any real-space interval should only depend on the extent of the interval. It therefore suffices to calculate the entanglement entropy averaged over all such intervals, and the corresponding measure in our formulation is \(S_\text{EE}^{(1)}\). 
-
-We will now express \(S_\text{EE}^{(1)}\) in terms of \(\bar I_n\), by eliminating \(S_\text{EE}^{(l)} (l > 1)\) from the equations. We adopt the ansatz
-\begin{equation}\begin{aligned}\label{expansion}
-	S_\text{EE}^{(1)} = \sum_{n=2}^N \lambda_n \bar I_n = S_\text{EE}^{(1)}\sum_{n=2}^N n \lambda_n - \sum_{l=2}^{N-1} S_\text{EE}^{(l)} (-1)^{l} \sum_{n=l}^N \binom{n}{l} \lambda_n~,
-\end{aligned}\end{equation}
-where the \(N-1\) coefficients \(\left\{ \lambda_n \right\} \) will be determined by requiring that the \(S_\text{EE}^{(l)} (l > 1)\) vanish on the right-hand side, as well as by matching the coefficients of \(S_\text{EE}^{(1)}\) on both sides. Note that \(l\) runs only upto \(N-1\) in the second term; this is because, \(S_\text{EE}^{(N)}\) is the entanglement entropy of the full system and hence automatically zero. The equations are
-\begin{gather}\label{equation1}
-	\sum_{n=2}^N n \lambda_n = 1,\\
-	\sum_{n=l}^N \binom{n}{l} \lambda_n = 0;~l=2,\ldots,N-1~.
-\end{gather}
-We focus on the second equation first, since it is very short for \(l\) close to \(N\). For \(l=N-1\) and \(l=N-2\), we get
-\begin{equation}\begin{aligned}
-	l=N-1:~&\lambda_{N-1} + N\lambda_{N} = 0 \implies &\lambda_{N-1} = -N \lambda_N\\
-	l=N-2:~&\lambda_{N-2} + \left(N-1\right) \lambda_{N-1} + \frac{N(N-1)}{2}\lambda_{N} = 0 \implies &\lambda_{N-2} = \frac{N(N-1)}{2}\lambda_N~.
-\end{aligned}\end{equation}
-We extrapolate this to the general solution,
-\begin{equation}\begin{aligned}\label{coeffSolution}
-	\lambda_{N-m} = (-1)^m \binom{N}{m} \lambda_N,~m>0,
-\end{aligned}\end{equation}
-and then prove that if this is true for \(\lambda_{N-m}\), it also solves the equation for \(\lambda_{N-m-1}\), thus amounting to a proof by mathematical induction. The general equation for \(\lambda_{N-m-1}\) is
-\begin{equation}\begin{aligned}
-	\sum_{n=N-m-1}^N \binom{n}{N-m-1} \lambda_n = 0 \implies \lambda_{N-m-1} + \sum_{m^\prime=0}^{m}\binom{N-m^\prime}{N-m-1} \lambda_{N-m^\prime} = 0~.
-\end{aligned}\end{equation}
-Substituting the extrapolated solution gives
-\begin{equation}\begin{aligned}
-	\lambda_{N-m-1} = -\sum_{m^\prime=0}^{m} (-1)^{m^\prime}\binom{N-m^\prime}{N-m-1} \binom{N}{m^\prime} \lambda_N = \binom{N}{m+1} \lambda_N\sum_{m^\prime=0}^{m} (-1)^{m^\prime + 1}\binom{m+1}{m^\prime} = (-1)^{m+1}\binom{N}{m+1} \lambda_N~,
-\end{aligned}\end{equation}
-which is consistent with the general solution eq.~\ref{coeffSolution}. This determines all coefficients \(\lambda_n\) for \(n < N\) in terms of \(\lambda_N\). To determine \(\lambda_N\) itself, we use eq.~\ref{equation1}. Substituting eq.~\ref{coeffSolution} into it gives
-\begin{equation}\begin{aligned}\label{finalCoeff}
-	\lambda_N \sum_{n=2}^N n (-1)^{N-n} \binom{N}{n} = 1 \implies \lambda_N =  \frac{(-1)^N}{N}~.
-\end{aligned}\end{equation}
-The decomposition of entanglement entropy into multipartite measures is now complete:
-\begin{equation}\begin{aligned}
-	S_\text{EE}^{(1)} &= \sum_{n=2}^N \lambda_n \bar I_n,\\
-	\bar I_n &= \frac{1}{N^n}\sum_{\nu_1 \in \mathcal{S}_N} \sum_{\nu_2 \in \mathcal{S}_N}\ldots\sum_{\nu_n \in \mathcal{S}_N} I_n(\nu_1,\ldots,\nu_n),\\
-	\lambda_{n} &= (-1)^{N-n} \binom{N}{m} \lambda_N (m>0),\quad \lambda_N = \frac{(-1)^N}{N}~.
-\end{aligned}\end{equation}
-
 \subsection{Real-space entanglement}
-The simplest measure to look at is the entanglement entropy of a local state, in real space. This suggests a partitioning of the system such that each \(\nu_i\) describes a lattice site. Since the local entanglement entropy will be uniform at each lattice site for a system with translation invariance, it suffices to calculate the real-space averaged entanglement entropy \(\frac{1}{N}\sum_{{\bf r}}S_\text{EE}\left( {\bf r} \right) \). But given our real-space partitioning, this is equivalent to calculating \(S_\text{EE}^{(1)}\). Within our auxiliary model formalism, all correlations must derive from the impurity site. This can be formally expressed as subtracting the contribution obtained in the absence of the impurity site. Accordingly, in every \(\bar I_n\), we retain only those terms that involve the impurity site:
-\begin{equation}\begin{aligned}\label{localEnt}
-	S_\text{EE}^{\text{loc}} = \lambda_1 \bar I_2(d,{\bf r}) + \lambda_2 \bar I_3(d,{\bf r},{\bf r}^\prime) + \ldots~,
-\end{aligned}\end{equation}
-where \(\bar I_2(d,{\bf r}_1)\) is the mutual information between the impurity site and any conduction bath site \({\bf r}\), averaged over all bath sites, while \(\bar I_3(d,{\bf r},{\bf r}^\prime)\) is the tripartite mutual information between the impurity site and two other bath sites, averaged over all pairs of bath sites \(\left({\bf r},{\bf r}^\prime\right) \), and so on. We emphasise that \({\bf r}_1\) and \({\bf r}_2\) are dummy indices that are ultimately averaged over, and they have been added simply to indicate how the averaging is carried out.
-
-This approach can be extended to calculate the entanglement entropy \(S_\text{EE}(L)\) of a region of space (containing, say, \(L\) sites). We now partition the system into disjoint continuous chunks \(\nu_i^{(L)}\), of size \(L\). For the impurity model, this leads to a chunk \(\nu^{(L)}_d\) that involves the impurity site, and other chunks \(\nu^{(L)}_{{\bf r}}\) without it. In terms of the \(n-\)partite information, we get
+Real-space entanglement measures can be used to probe delocalisation-localisation transitions. The simplest such measure is the entanglement of a local mode. Since the local entanglement entropy will be uniform at each lattice site for a system with translation invariance, it suffices to calculate the real-space averaged entanglement entropy \(S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}S_\text{EE}\left( {\bf r} \right) \). By visualising the lattice model as a superposition of auxiliary models placed at various sites (eq.~\ref{tilingPrescriptionFinal}), the real space average of the lattice model can be thought of as an average over sites of a particular impurity model, and then a second average over all the impurity models. But since all all impurity models are equivalent to each other, the second average is redundant. Secondly, all correlations must derive from the impurity site, which can be formally encoded by subtracting, from this average, the corresponding contribution obtained in the absence of the impurity site. In total, the lattice-auxiliary model relation for the local entanglement entropy can be written as
 \begin{equation}\begin{aligned}
-	S_\text{EE}(L) = \lambda_1 \bar I_2(\nu^{(L)}_d,\nu^{(L)}_{\bf r}) + \lambda_2 \bar I_3(\nu^{(L)}_d,\nu^{(L)}_{\bf r},\nu^{(L)}_{\bf r^\prime}) + \ldots~,
+	S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}\left[S_\text{EE}({\bf r}_d + {\bf r}) - S_\text{EE}^{(0)}({\bf r}_d + {\bf r})\right] ~,
 \end{aligned}\end{equation}
-where the averaging is now over the chunks \(\nu^{(L)}_{\bf r}\) that do not involve the impurity site.
+where \({\bf r}_d\) is the impurity site position, \({\bf r}\) is the distance of a conduction bath site from the impurity site (can be zero), and \(S_\text{EE}({\bf r}_d + {\bf r})\) is the entanglement entropy, calculated within the impurity model, at the locatiom \({\bf r}_d + {\bf r}\). \(S^{(0)}_\text{EE}({\bf r}_d + {\bf r})\) is the same entanglement entropy, but calculated for an impurity model but with vanishing impurity-bath hybridisation and bath interaction.
 
 \subsection{Momentum-space entanglement}
-In order to calculate entanglement entropy of \(k-\)states, some modifications are required. By partitioning the system in \(k-\)space, one again obtains an equation similar to eq.\ref{localEnt}:
+Entanglement measures in \(k-\)space can provide valuable information regarding the Fermi surface structure and the nature of gapless excitations proximate to it. The most elementary measure is the entanglement entropy \(S_\text{EE}({\bf q})\) of a single excitation carrying momentum \({\bf q}\). Unlike \(S_\text{EE}^\text{loc}\), this does not involve an average, and involves a single computation:
 \begin{equation}\begin{aligned}
-	\bar S_\text{EE} = \lambda_1 \bar I_2(d,{\bf k}) + \lambda_2 \bar I_3(d,{\bf k},{\bf k}^\prime) + \ldots~,
+	S_\text{EE}^\text{loc} = S_\text{EE}({\bf q}) - S_\text{EE}^{(0)}({\bf q})~.
 \end{aligned}\end{equation}
-but \(\bar S_\text{EE}\) is now an average over \(k-\)space entanglement, and the \(\bar I_n\) involve similar averages of the \(k-\)states of the conduction bath. Because of the average on the left-hand side, it is not possible to extract the entanglement entropy of a single \(k-\)mode (which we call \({\bf q}\)) from this expression. 
+It is possible to improve this by considering inter-auxiliary model contributions in the reduced density matrix \(\rho({\bf q})\). On the lattice model, \(\rho({\bf q})\) is defined as
+\begin{equation}\begin{aligned}\label{SEE-k}
+	\rho({\bf q}) = \text{Tr}_{\bf q}\left[\ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\right] ~,
+\end{aligned}\end{equation}
+where \(\text{Tr}_{\bf q}\left[\cdot\right]\) is the partial trace over the Hilbert space of \({\bf q}\), and \(\ket{\Psi_\text{gs}}\) is the tiled ground state. Using eq.~\ref{groundstateProposal}, we can write the ground state in terms of those of the auxiliary model. These leads to two classes of terms, one purely within a single auxiliary model ground state \(\ket{\psi_\text{gs}}\), and the other involving transitions across auxiliary models:
+\begin{equation}\begin{aligned}
+	\rho({\bf q}) = \text{Tr}_{\bf q}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d)}\right] + \frac{1}{N}\text{Tr}_{\bf q}\sum_{{\bf r}}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d + {\bf r})}\right]~,
+\end{aligned}\end{equation}
+where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The first term leads to the expression in eq.~\ref{SEE-k}, while the second term can be used to improve this estimate. Away from any quantum critical points, the localised nature of the impurity-bath hybridisation ensures that impurity correlations decay exponentially away from the transition. This ensures that the second term is very small away from a critical point. We therefore restrict ourselves to just the first term in the present work.
 
-To proceed, we employ the following trick. We consider a slightly different scenario for eq.~\ref{expansion}: the averages are now carried out over all states except \({\bf q}\). For the sake of keeping the notation unchanged, we let \(N\) be the number of elements in this modified set. Eq.~\ref{expansion} will again hold true, apart from the inclusion of the term \(S_\text{EE}^{(N)}\) on the right-hand side; this term was zero in the original calculation (see discussion immediately below eq.~\ref{expansion}) because there it represented the entanglement entropy of the full state (which is always in a pure state and therefore not entangled). In this new scenario, \(S_\text{EE}^{(N)}\) refers to the entanglement entropy of all states apart from \({\bf q}\) (or equivalently of just \({\bf q}\)), and is not {\it a priori} zero. The equations for the \(\lambda_n\), however, remain unchanged, and one carry out the same derivation to obtain the same results. The only difference is that the decomposition of \(\bar S_\text{EE}\) in this "cavity" system will now involve the additional term \(S_\text{EE}^{(N)}\):
-\begin{equation}\begin{aligned}
-	\bar S_\text{EE, {\bf q}} &= \sum_{n=2}^N \lambda_n \bar I_{n, {\bf q}} + S_\text{EE}^{(N)}(-1)^N \lambda_N~.
-\end{aligned}\end{equation}
-The \({\bf q}\) in the subscripts refers to the fact that these quantities are calculated in the cavity representation (that is, in the absence of \({\bf q}\)). The final step is to note that since \(S_\text{EE}^{(N)}\) does not scale with the system size \(N\) whle \(\lambda_N\) scales as \(1/N\) (eq.~\ref{finalCoeff}), the last term drops out from the above equation in the limit of \(N \gg 1\).
+\section{Low-energy description of the embedded eSIAM}
+\subsection{Zero temperature phase diagram}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{phaseDiagram.pdf}
+	\includegraphics[width=0.24\textwidth]{impSpecFuncTrunc_49.pdf}
+	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Right}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase.}
+	\label{phaseDiagram}
+\end{figure}
 
-The reason for considering the cavity representation is the following: the entanglement entropy of just the \({\bf q}\) state can be obtained as the difference between the average in the full system and the average in the cavity:
-\begin{equation}\begin{aligned}
-	S_\text{EE}({\bf q}) \equiv N\left(\bar S_\text{EE} - \bar S_\text{EE, {\bf q}}\right) ~.
-\end{aligned}\end{equation}
-Comparing the decompositions in the presence and absence of \({\bf q}\), it is easy to see that the only terms that survive the difference are those that involve \({\bf q}\):
-\begin{equation}\begin{aligned}
-	S_\text{EE}({\bf q}) = \lambda_1 I_2(d,{\bf q}) + \lambda_2 \bar I_3(d,{\bf q},{\bf k}) + \ldots~,
-\end{aligned}\end{equation}
-where the first term is just the mutual information between the impurity site and the momentum state \({\bf q}\), while the second term is a tripartite information among the impurity site, \({\bf q}\) and \({\bf k}\), with \({\bf k}\) being averaged over the conduction bath states.
+\subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
+We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
 
-The above arguments do not require \({\bf q}\) to be a single momentum state; the entanglement entropy of a patch of \(k-\)states \(q_1, q_2, \ldots, q_L\) can be obtained simply by replacing \({\bf q}\) with \(q_1\cup q_2\ldots q_L\). The average over \({\bf k}\) is then also replaced by an average similar collections of \(k-\)states. These two results together also allow us to calculate the mutual information between two \(k-\)states.
+We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
+\begin{equation}\begin{aligned}
+	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
+\end{aligned}\end{equation}
+where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. 
 
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-6.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-7.pdf}
+	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. Each plot shows whether \(\Gamma({\bf k})\) is relevant (white) or irrelevant (black). The antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
+	\label{gamma_kxky}
+\end{figure}
 
- 
+\subsection{Spin-correlations across the pseudogap}
+In figure ~\ref{spinCorr}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
 
-\section{Entanglement - Older Version}
-In order to relate bipartite measures of entanglement (such as the entanglement entropy and mutual information) across the tiling algorithm, we will express the matrix elements of an arbitrary reduced density matrix (RDM) in terms of generalised correlation functions. Since these correlation functions can always be computed using the algorithm provided in the previous section, this suffices to compute the RDM using auxiliary model calculations. If the RDM is known, other bipartite measures can be easily calculated.
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{SF-1.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-3.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-5.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-6.pdf}
+	\caption{\(k-\)space distribution of spin-flip scattering correlation \(\chi_s(d,\vec k)\) (defined in the main text). The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last \(k-\)point to decouple from the impurity.}
+	\label{spinCorr}
+\end{figure}
 
-We consider the \(T=0\) density matrix, \(\tilde\rho_\text{gs} = \ket{\Psi}_\text{gs}\bra{{\Psi}_\text{gs}}\) of the lattice model, and a division of the total degrees of freedom (real or momentum space) into two sets \(A\) and \(B\). If basis set for the two subsystems are \(\left\{ \ket{A_i} \right\} \) and \(\left\{ B_j \right\} \), the ground state can be written as
-\begin{equation}\begin{aligned}
-	\ket{\Psi}_\text{gs} = \sum_{i,j}C_{i,j}\ket{A_i}\ket{B_j}~.
-\end{aligned}\end{equation}
-Tracing out the states of subsystem B leads to the RDM for subsystem A:
-\begin{equation}\begin{aligned}
-	\tilde \rho^{(A)} = \sum_k\braket{B_k | \rho | B_k} = \sum_{{i_1},{i_2}, k}C_{{i_1},k}C^*_{{i_2},k}\ket{A_{i_1}}\bra{A_{i_2}},~~\tilde \rho^{(A)}_{{i_1},{i_2}} = \sum_k C_{{i_1},k}C^*_{{i_2},k}~.
-\end{aligned}\end{equation}
-We will now show that the product of coefficients \(C_{i,k}C^*_{j,k}\) can also be obtained through expectation value calculations of product operators in the subspace of \(A\). Consider the following transition operator:
-\begin{equation}\begin{aligned}
-	P^{(A)}_{i_1,i_2} = \ket{A_{i_1}}\bra{A_{i_2}}~.
-\end{aligned}\end{equation}
-The RDM elements are expectation values of this operator in the ground state:
-\begin{equation}\begin{aligned}
-	\braket{P^{(A)}_{i_1,i_2}} = \sum_k C_{{i_1},k}C^*_{{i_2},k} = \tilde \rho^{(A)}_{{i_1},{i_2}}~.
-\end{aligned}\end{equation}
+As a second probe of the pseudogapping phenomenon, we have also studied the entanglement entropy (EE) \(S_\text{EE}(\vec k)\), which is just the von Neumann entropy \(-\text{Tr}\left[\rho \ln \rho\right] \) of the reduced density matrix \(\rho_{\vec k}\) for each \(k-\)state. In accordance with the Kondo spin correlations \(\chi_s\), the EE shows the sequential decoupling, from the impurity, of the antinodes followed by the nodes. 
 
-We now argue that these expectation values are simply correlation functions corresponding to products of local operators. If the subsystem \(A\) is composed of \(N_A\) one-particle Hilbert spaces \(A^{(\nu)}\), any basis state \(\ket{A_{i}}\) can be written as the product of one-particle basis states: 
-\begin{equation}\begin{aligned}
-	\ket{A_i} = \otimes_{\nu=1}^{N_A}\ket{s_\nu(A_i)}~,
-\end{aligned}\end{equation}
-where \(s_\nu(A_i)\) can be 0 or 1 and represents the configuration (occupied/unoccupied) of the local degree of freedom \(A^{(\nu)}\) in the basis state \(\ket{A_i}\), and \(\ket{s_\nu(A_i)}\) is the state of \(A^{(\nu)}\) in that configuration. The transition operator \(P^{(A)}_{i_1,i_2}\) can therefore be written as 
-\begin{equation}\begin{aligned}
-	P^{(A)}_{i_1,i_2} = \ket{s_1(A_{i_1})}\otimes\ket{s_2(A_{i_1})} \ldots\otimes\ket{s_{N_A}(A_{i_1})}\bra{s_{N_A}(A_{i_2})}\otimes\ldots\bra{s_2(A_{i_2})}\otimes\bra{s_1(A_{i_2})}~.
-\end{aligned}\end{equation}
-This can be converted into a second-quantised operator, by making the substitution:
-\begin{equation}\begin{aligned}
-	\ket{s} \to 
-	\begin{cases}
-		c^\dagger,~\text{if }s=1,\\
-		1-n,~\text{if }s=0,	
-	\end{cases}~.
-\end{aligned}\end{equation}
-As an example, for a two-qubit subspace \(A\), the transition operator \(P^{(A)}_{00,01}\) between the states \(i_1=00\) (both unoccupied) and \(i_2=01\) (only one occupied) can be expressed as
-\begin{equation}\begin{aligned}
-	P^{(A)}_{00,01} = \ket{0}_1\ket{0}_2\bra{1}_2\bra{0}_1 = (1-n_1)(1-n_2)(1-n_2)c_1 = c_1(1-n_2)~.
-\end{aligned}\end{equation}
-This means the RDM element for this subspace, at the location \((00, 01)\), is equal to the ground state expectation value of the operator \(c_1(1-n_2)\). The process of calculating such expectation values, within the present algorithm, has already been explained in Sec.~\ref{staticCorr}. Note that this allows the computation of reduced density matrix for real-space as well as momentum-space partitioning.
+Studies of \(k-\)space mutual information, \(I_2(\vec k, k_\text{N})\) and \(I_2(\vec k, k_\text{AN})\), between any given \(k-\)state and the node and antinode respectively, have revealed that each point interacts most strongly with it's own neighbourhood (see Supplementary Materials). This feature is in contrast to the charge-transfer correlations in the bath, that show ``long-ranged" interactions between the node and the antinode. These correlations will be discussed immediately after this, and are primarily responsible for driving the impurity transition and destabilising the Kondo cloud.
 
-Other measures like mutual information can be obtained by using these elementary measures.
+\subsection{Charge correlations}
+In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
+	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
+	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
+	\label{cfnode}
+\end{figure}
 
-\section{Insights on the Mott MIT on the lattice model}
-\subsection{Momentum-space picture etc etc}
-In order to understand the nature of the transition in momentum space, we employ the expression obtained in the previous sections and compute the spectral function, self-energy and correlation functions in the top right quadrant of the first Brillouin zone. We first show the \(k-\)space spectral functions near zero frequency, in Fig.~\ref{kspace_specfunc}.
+\subsection{Emergence of a two-channel Kondo Model as the low-energy theory near the transition}
+As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
+\begin{itemize}
+	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
+	\item One momentum from the neighbourhood around \({\bf k}_N\), while the other from the neighbourhood around \({\bf k}_N + \left( \pi, \pi \right) \)~.
+\end{itemize}
+The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
+
+Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is captured by the following simplified Hamiltonian:
+\begin{equation}\begin{aligned}\label{twoChannel}
+H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
+\end{aligned}\end{equation}
+where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment.
+
+Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels. Given that this is a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point. Signatures of the quantum critical nature include power-law divergence in various correlation functions as temperature \(T \to 0\), and non-Fermi liquid excitations replacing the local Fermi liquid.
+
+\section{Journey Through the Pseudogap on The Lattice model}
+We have already seen from the lattice-embedded impurity model that the impurity phase transition is anisotropic in \(k-\)space. This has consequences for the metal-insulator transition of the lattice model. We now describe, in terms of correlations, how the Fermi surface of the lattice model is destabilised when the system is tuned through the pseudogap. For this, we employ the relations we derived between correlations on the impurity model and those on the lattice model.
+
+\subsection{One-particle \(k-\)space spectral function}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-2.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-3.pdf}
+	\includegraphics[width=0.23\textwidth]{kspaceDOS-4.pdf}
+	\caption{One-particle \(k-\)space spectral function. In the absence of bath interactions, all points on Fermi surface are gapless (first panel). Proceeding through the pseudogap results in the gapping out of Fermi surface points starting from the antinode (second panel) and approaching the node (third panel), until finally only the node remains at the critical point (fourth panel).}
+	\label{fig:tiledSF-pdf}
+\end{figure}
+
+\subsection{Momentum-space spin-correlations}
+We first look at static spin correlations \(\chi_s(k_1, k_2) = \frac{1}{2}\left<S_{k_1}^+ S_{k_2}^- + \text{h.c.} \right>\). These processes correspond to the gapless excitations of the Fermi liquid phase. We find that 
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.24\textwidth]{tiledSF-1.pdf}
@@ -892,16 +773,6 @@ In order to understand the nature of the transition in momentum space, we employ
 	\label{tiledSF}
 \end{figure}
 
-\subsection{Fermi surface destablisation through the pseudogap}
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
-	\includegraphics[width=0.23\textwidth]{kspaceDOS-2.pdf}
-	\includegraphics[width=0.23\textwidth]{kspaceDOS-3.pdf}
-	\includegraphics[width=0.23\textwidth]{kspaceDOS-4.pdf}
-	\caption{One-particle \(k-\)space spectral function. In the absence of bath interactions, all points on Fermi surface are gapless (first panel). Proceeding through the pseudogap results in the gapping out of Fermi surface points starting from the antinode (second panel) and approaching the node (third panel), until finally only the node remains at the critical point (fourth panel).}
-	\label{fig:tiledSF-pdf}
-\end{figure}
 
 
 \subsection{Heisenberg model as a low-energy description of the insulator}
@@ -1238,15 +1109,17 @@ with the average computed in the interacting cavity model that has the impurity 
 \section{Zero temperature Greens function in frequency domain}
 
 \label{appx-spectral-func}
-The impurity retarded Green's function (assuming the Hamiltonian to be time-independent, which it is) is defined as
+
+\subsection{Spectral representation of Greens function}
+The impurity retarded Green's function is defined as
 \begin{equation}\begin{aligned}
-	G_{dd}^\sigma(t) = -i\theta(t) \left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right>
+	G_{d\sigma}(t) = -i\theta(t) \left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right>
 \end{aligned}\end{equation}
-where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma = c_{d\sigma} + S_d^- c_{0\overline\sigma} + S_d^z c_{0\sigma}\) is the excitation whose spectral function we are interested in. The excitations defined in \(\mathcal{O}\) incorporates both single-particle excitations brought about by the hybridisation as well as two-particle spin excitations brought about by the spin-exchange term. What follows is a standard calculation where we write the Green's function in the Lehmann-Kallen representation. The ensemble average for an arbitrary operator \(\hat M\) can be written in terms of the exact eigenstates of the fixed point Hamiltonian:
+where the average \(\left< \right>\) is over a canonical ensemble at temperature \(T\), and \(\mathcal{O}_\sigma\) is the excitation whose spectral function we are interested in. What follows is a standard calculation where we write the Green's function in the spectral representation. The ensemble average for the operator \(\mathcal{O}_\sigma\) can be written in terms of the exact eigenstates of the Hamiltonian:
 \begin{equation}\begin{aligned}
-	H^* \ket{n} &= E_n^* \ket{n}, ~ ~ ~\left<\hat M \right> &\equiv \frac{1}{Z}\sum_n \bra{n} \hat M \ket{n} e^{-\beta E_n^*}
+	H \ket{n} &= E_n \ket{n}, \quad\left<\mathcal{O}_\sigma\right> &\equiv \frac{1}{Z}\sum_n \braket{n | \mathcal{O}_\sigma | n} e^{-\beta E_n}
 \end{aligned}\end{equation}
-where \(Z = \sum_n e^{-\beta E_n^*}\) is the fixed point partition function and \(\left\{ \ket{n} \right\} \) is the set of eigenfunctions of the fixed point Hamiltonian. We can therefore write
+where \(Z = \sum_n e^{-\beta E_n}\) is the partition function and \(\left\{ \ket{n} \right\} \) is the set of eigenfunctions of the Hamiltonian. We can therefore write
 \begin{equation}\begin{aligned}
 	&\left<\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\}  \right> \\
 	&= \frac{1}{Z}\sum_{m}e^{-\beta E_m}\bra{m}\left\{ \mathcal{O}_{\sigma}(t),\mathcal{O}^\dagger_{\sigma} \right\} \ket{m}\\
@@ -1257,49 +1130,127 @@ where \(Z = \sum_n e^{-\beta E_n^*}\) is the fixed point partition function and 
 \end{aligned}\end{equation}
 The time-domain impurity Green's function can thus be written as (this is the so-called Lehmann-Kallen representation)
 \begin{equation}\begin{aligned}
-	G_{dd}^\sigma = -i\theta(t)\frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
+	G_{d\sigma} = -i\theta(t)\frac{1}{Z}\sum_{m,n}e^{i\left( E_m - E_n \right)  t}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\\
 \end{aligned}\end{equation}
 We are interested in the frequency domain form.
 \begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega) &= \int_{-\infty}^\infty dt e^{i \omega t}G_{d d}^\sigma(t) \\
-			       &= \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t}
+	G_{d d}^\sigma(\omega) &= \int_{-\infty}^\infty dt e^{i \left(\omega \right)t}G_{d d}^\sigma(t) \\
+			       &= \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left(\omega + E_m - E_n \right)t}
 \end{aligned}\end{equation}
 To evaluate the time-integral, we will use the integral representation of the Heaviside function:
 \begin{equation}\begin{aligned}
-	\theta(t) = \frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty \frac{1}{x- i\eta}e^{ixt}dx
+	\theta(t) = -\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty \frac{1}{x + i\eta}e^{-ixt}dx
 \end{aligned}\end{equation}
-With this definition, the integral in \(G_{dd}^\sigma(\omega)\) becomes
+With this definition, the integral in \(G_{d\sigma}(\omega)\) becomes
 \begin{equation}\begin{aligned}
-	\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + E_m - E_n \right)t} &= \left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta}\int_{-\infty}^\infty dt e^{i\left( \omega + E_m - E_n + x\right)t} \\
-									     &=\left(-i\right)\frac{1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x- i\eta} 2\pi \delta\left( \omega + E_m - E_n + x\right) \\
-									     &=\left(-i\right)\frac{1}{i}\lim_{\eta \to 0^+} \frac{-1}{\omega + E_m - E_n- i\eta} \\
-									     &=\frac{1}{\omega + E_m - E_n} \\
+	\left(-i\right)\int_{-\infty}^\infty dt \theta(t)e^{i\left( \omega + i0^+ + E_m - E_n \right)t} &= \left(-i\right)\frac{-1}{2\pi i}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x+ i\eta}\int_{-\infty}^\infty dt e^{i\left( \omega + i0^+ + E_m - E_n - x\right)t} \\
+									     &=\frac{1}{2\pi}\lim_{\eta \to 0^+} \int_{-\infty}^\infty dx\frac{1}{x+ i\eta} 2\pi \delta\left( \omega + i0^+ + E_m - E_n - x\right) \\
+									     &=\frac{1}{\omega + E_m - E_n + i0^+}~.
 \end{aligned}\end{equation}
 The frequency-domain Green's function is thus
 \begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n}
+	G_{d d}^\sigma(\omega) = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\frac{1}{\omega + E_m - E_n + i0^+}
 \end{aligned}\end{equation}
-The zero temperature Green's function is obtained by taking the limit of \(\beta \to \infty\). In both the partition function as well as inside the summation, the only term that will survive is the exponential of the ground state energy \(E_0\).
+The infinitesimally positive imaginary part in the denominator shifts the poles onto the lower half of the complex plane, leaving it analytic in the upper half: this is necessary to make the retarded Greens function causal.
+
+\subsection{Real and imaginary parts - The Sokhotski-Plemelj theorem}
+In order to write down the real and imaginary parts of the Greens function, we first prove the {\it Sokhotski-Plemelj} formula:
+\begin{equation}\begin{aligned}\label{SokhotskiPlemelj}
+	\lim_{\eta \to 0^+} \frac{1}{x + i \eta} = P\left(\frac{1}{x}\right) - i \pi \delta(x)~.
+\end{aligned}\end{equation}
+where \(P(f(x))\) is the Cauchy principal value, defined as 
+\begin{equation}\begin{aligned}
+	P\left[\int_{-\infty}^{\infty}\frac{dx}{x}\right] = \int_{-\infty}^{0^-}\frac{dx}{x} + \int_{0^+}^{\infty}\frac{dx}{x}~.
+\end{aligned}\end{equation}
+
+To prove the above identity, we integrate the left-hand side using a test function \(f(x)\):
+\begin{equation}\begin{aligned}\label{twoIntegrals}
+	\lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)}{x + i \eta} &= \lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)\left( x - i\eta \right) }{x^2 + \eta^2} \\
+																				 &= \lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~f(x)\left[\frac{x}{x^2 + \eta^2} - i\eta\frac{1}{x^2 + \eta^2}\right]
+\end{aligned}\end{equation}
+The first integral can be split into three parts:
+\begin{equation}\begin{aligned}
+	\lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~f(x)\frac{x}{x^2 + \eta^2} &= \lim_{\eta \to 0^+}\lim_{\varepsilon_\to 0^+}\left[\int_{-\infty}^{-\varepsilon} \text{dx}~\frac{f(x) x}{x^2 + \eta^2} + \int_{\varepsilon}^{\infty} \text{dx}~\frac{f(x)x}{x^2 + \eta^2} + \int_{-\varepsilon}^{\varepsilon} \text{dx}~\frac{f(x)x}{x^2 + \eta^2}\right]
+\end{aligned}\end{equation}
+For the first two parts, it is safe to take the limit of \(\eta\), because \(x\) is always non-vanishing there. For the third part, we can approximate \(f(x)\) as \(f(0)\) in the neighbourhood \(x \in \left[-\varepsilon, \varepsilon\right], \varepsilon \to 0 \). This leaves an odd function \(x/(x^2 + \eta^2)\) as the integrand, being integrated over a symmetric range. The third term therefore vanishes. In total, we get
+\begin{equation}\begin{aligned}\label{integral1}
+	\lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~f(x)\frac{x}{x^2 + \eta^2} &= \int_{-\infty}^{-\varepsilon} \text{dx}~\frac{f(x)}{x} + \int_{\varepsilon}^{\infty} \text{dx}~\frac{f(x)}{x}  = P\left(\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)}{x}\right) ~.
+\end{aligned}\end{equation}
+To evaluate the second integral of eq.~\ref{twoIntegrals}, we note that the only region in which the integrand is non-zero is when \(|x| \simeq 0\); there, we again approximate \(f(x)\) as \(f(0)\). The remaining integral can then be evaluated easily:
+\begin{equation}\begin{aligned}\label{integral2}
+	-i\lim_{\eta \to 0^+}\eta\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)}{x^2 + \eta^2} = -i \lim_{\eta \to 0^+}\eta f(0)\int_{-\infty}^{\infty} \frac{\text{dx}}{x^2 + \eta^2} = -i \pi f(0),
+\end{aligned}\end{equation}
+where we used \(\int \frac{dx}{x^2 + \eta^2} = \frac{1}{\eta} \arctan\left( x/\eta \right) \). Combining eqs.~\ref{twoIntegrals},\ref{integral1} and \ref{integral2}, we get
+\begin{equation}\begin{aligned}
+	\lim_{\eta \to 0^+}\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)}{x + i \eta} = P\left(\int_{-\infty}^{\infty} \text{dx}~\frac{f(x)}{x}\right) - i\pi \int_{-\infty}^{\infty} \text{dx}~f(x)\delta(x)~.
+\end{aligned}\end{equation}
+This proves eq.~\ref{SokhotskiPlemelj}.
+
+The Sokhotski-Plemelj formula allows us to split the spectral representation into a real and an imaginary part:
+\begin{equation}\begin{aligned}
+	G_{d\sigma}^\prime = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)P\left(\frac{1}{\omega + E_m - E_n}\right)\\
+	G_{d\sigma}^{\prime\prime} = -\pi\frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\delta\left(\omega + E_m - E_n\right)~.
+\end{aligned}\end{equation}
+The spectral function, specifically, is defined as follows:
+\begin{equation}\begin{aligned}
+	A_{d\sigma}(\omega) = -\frac{1}{\pi}G_{d\sigma}^\prime = \frac{1}{Z}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left( e^{-\beta E_m} + e^{-\beta E_n}\right)\delta\left(\omega + E_m - E_n\right)
+\end{aligned}\end{equation}
+
+\subsection{Zero temperature spectral function}
+We specialise to zero temperature by taking the limit of \(\beta \to \infty\). In both the partition function as well as inside the summation, the only term that will survive is the exponential of the ground state energy \(E_\text{GS}\).
 \begin{equation*}\begin{aligned}
-	Z \equiv \sum_m e^{-\beta E_m} \implies \lim_{\beta \to \infty}Z = d_0 e^{-\beta E_0}, && E_0 \equiv \text{min}\left\{ E_n \right\} 
+	Z \equiv \sum_m e^{-\beta E_m} \implies \lim_{\beta \to \infty}Z = d_\text{GS} e^{-\beta E_\text{GS}}, && E_\text{GS} \equiv \text{min}\left\{ E_n \right\} 
 \end{aligned}\end{equation*}
-where \(d_0\) is the degeneracy of the ground state. The Greens function then simplifies to
+where \(d_\text{GS}\) is the degeneracy of the ground state. The spectral function then simplifies to
 \begin{equation}\begin{aligned}
 	\label{Gf_lk}
-	G_{d d}^\sigma(\omega, \beta \to \infty) &= \frac{1}{d_0e^{-\beta E_0}}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left[e^{-\beta E_m}\delta_{E_m, E_0} + e^{-\beta E_n}\delta_{E_n, E_0}\right]\frac{1}{\omega + E_m - E_n}\\
-						 &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n}\right]\\
+	A_{d\sigma} &= \frac{1}{d_\text{GS}e^{-\beta E_\text{GS}}}\sum_{m,n}||\bra{m}\mathcal{O}_{\sigma}\ket{n}||^2\left[e^{-\beta E_m}\delta_{E_m, E_\text{GS}} + e^{-\beta E_n}\delta_{E_n, E_\text{GS}}\right]\delta\left(\omega + E_m - E_n\right)\\
+											 &= \frac{1}{d_\text{GS}}\sum_{n,n_\text{GS}}\left[||\bra{n_\text{GS}}\mathcal{O}_{\sigma}\ket{n}||^2\delta\left(\omega + E_\text{GS} - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{n_\text{GS}}||^2\delta\left(\omega - E_\text{GS} + E_n\right)\right]\\
 \end{aligned}\end{equation}
-The label 0 sums over all states \(\ket{0}\) with energy \(E_0\). The spectral function is the imaginary part of this Green's function. To extract the imaginary part, we insert an infinitesimal imaginary part in the denominator:
+The label \(n_\text{GS}\) sums over all states \(\ket{n_\text{GS}}\) with energy \(E_\text{GS}\). In practise, we evaluate this expression by replacing the formal Dirac delta functions with "nascent" ones, such as a Lorentzian function with a sufficiently sharp peak.
+
+\subsection{Reconstructing full Green function from spectral function: Kramers-Kronig relations}
+As mentioned earlier, the retarded Greens function \(G_R(\omega + i 0^+)\) has a complex pole in the lower half of the complex plane. In the following, the frequency \(\omega\) is assumed to be complex. Consider the integral
 \begin{equation}\begin{aligned}
-	G_{d d}^\sigma(\omega, \eta) = \frac{1}{d_0}\lim_{\eta \to 0^-}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\frac{1}{\omega + E_0 - E_n + i\eta} + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\frac{1}{\omega - E_0 + E_n + i\eta}\right]\\
+	I(\omega) = \oint_C d\omega^\prime \frac{G_R(\omega^\prime)}{\omega^\prime - \omega},~\omega \in \mathbb{R}~.
 \end{aligned}\end{equation}
-The spectral function at zero temperature can then be written as
+The contour \(C\) encloses the entirety of the upper half of the complex plane as well as almost all points of the real line but avoids the pole at \(\omega^\prime = \omega\) by forming a semicircle about that point that extends into the upper half of the plane. Since the integrand is completely analytic in the region enclosed by the contour (recall again that \(G_R\) is analytic in the upper half), the integral evaluates to zero (by Cauchy's theorem):
+\begin{equation}\begin{aligned}\label{zerointegral}
+	I(\omega) = 0~.
+\end{aligned}\end{equation}
+One can also evaluate the integral along each part of the contour. The semicircular part contributes zero: this is because while the length of the semicircular arc goes as \(|\omega^\prime|\), the integrand vanishes faster than \(1/|\omega^\prime|\) as \(|\omega^\prime| \to \infty\) (this assumes that the Green function vanishes in the limit of \(\omega \to \infty\)). The part of the contour along the real axis can now be evaluated. The two parts of the contour on either side of the pole contribute
 \begin{equation}\begin{aligned}
-	\mathcal{A(\omega)} &= -\frac{1}{\pi}\text{ Im }\left[G_{dd}^\sigma\left( \omega \right) \right] \\
-			    &= \frac{1}{d_0}\frac{1}{\pi}\text{ Im }\left[\lim_{\eta \to 0^-}\sum_{n,0}\left(\frac{-i\eta ||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2}{\left(\omega + E_0 - E_n\right)^2 + \eta^2} + \frac{-i\eta ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2}{\left(\omega - E_0 + E_n\right)^2 + \eta^2}\right)\right]\\
-			    &= \frac{1}{d_0}\frac{1}{\pi}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\pi\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\pi\delta\left(\omega - E_0 + E_n\right)\right]\\
-			    &= \frac{1}{d_0}\sum_{n,0}\left[||\bra{0}\mathcal{O}_{\sigma}\ket{n}||^2\delta\left(\omega + E_0 - E_n\right) + ||\bra{n}\mathcal{O}_{\sigma}\ket{0}||^2\delta\left(\omega - E_0 + E_n\right)\right]\\
+	\int_{-\infty}^{\omega - 0^+}d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} + \int_{\omega + 0^+}^{\infty}d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} = P\int_{-\infty}^{\infty}d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega}
 \end{aligned}\end{equation}
+To evaluate the part of the integral along the small semicircular around \(\omega^\prime = \omega\) (that extends into the upper half), we argue that this contribution should be equal to that obtained by taking the semicircle that goes instead into the lower half but circulates in the opposite direction. Each of these contributions should, in turn, be equal to that obtained from joining these two contours. But joining these contours leads to a closed integral about the pole at \(\omega^\prime = \omega\), which is equal to \(2\pi G_R(\omega)\).
+\begin{equation}\begin{aligned}
+	\int_\text{upper} d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} = \int_\text{lower} d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} = \frac{1}{2}\oint_{C(\omega)} d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} = i\pi G_R(\omega)~.
+\end{aligned}\end{equation}
+Combining the last two equations, we get
+\begin{equation}\begin{aligned}
+	I(\omega) = P\int_{-\infty}^{\infty}d\omega^\prime~\frac{G_R(\omega^\prime)}{\omega^\prime - \omega} + i\pi G_R(\omega)~.
+\end{aligned}\end{equation}
+Comparing with eq.~\ref{zerointegral} and separating into real part \(G_R^\prime\) and imaginary part \(G_R^{\prime\prime}\) gives
+\begin{equation}\begin{aligned}
+	P\int_{-\infty}^{\infty}d\omega^\prime~\frac{\left[G_R^\prime(\omega^\prime) + i G_R^{\prime\prime}(\omega^\prime)\right]}{\omega^\prime - \omega} + \pi\left[-G_R^{\prime\prime}(\omega) + i G_R^\prime(\omega) \right]= 0~.
+\end{aligned}\end{equation}
+Comparing the imaginary parts gives
+\begin{equation}\begin{aligned}
+	\pi G_R^\prime(\omega) = P\int_{-\infty}^{\infty}d\omega^\prime~\frac{G_R^{\prime\prime}(\omega^\prime)}{\omega^\prime - \omega}~.
+\end{aligned}\end{equation}
+The spectral function was defined above as \(-1/\pi\) times the imaginary part of the Greens function. Exchanging \(G_R^{\prime\prime}\) for \(A\) gives
+\begin{equation}\begin{aligned}
+	G_R^\prime(\omega) = -P\int_{-\infty}^{\infty}d\omega^\prime~\frac{A(\omega^\prime)}{\omega^\prime - \omega}~.
+\end{aligned}\end{equation}
+This provides a way of calculating the real part of the Greens function if the spectral function is already known.
+
+
+
+
+
+
+
+
 
 \section{Properties of the Bloch states}
 

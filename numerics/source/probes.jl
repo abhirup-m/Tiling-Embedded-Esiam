@@ -62,7 +62,7 @@ end
         maxSize::Int64,
         pivotPoints::Vector{Int64},
         sortedPoints::Vector{Int64},
-        correlationFuncDict::Dict,
+        correlationFuncDict::Dict{String, Tuple{Union{Nothing, Int64}, Function}},
         vneFuncDict::Dict,
         mutInfoFuncDict::Dict,
         bathIntLegs::Int64,
@@ -262,7 +262,7 @@ end
 @everywhere function AuxiliaryCorrelations(
         hamiltDetails::Dict,
         numShells::Int64,
-        correlationFuncDict::Dict,
+        correlationFuncDict::Dict{String, Tuple{Union{Nothing, Int64}, Function}},
         maxSize::Int64,
         savePath::String;
         vneFuncDict::Dict=Dict(),
@@ -351,16 +351,6 @@ end
         corrResultsBool[name] = [ifelse(isnan(r), r, abs(r) ≤ 1e-6 ? -1 : 1) for r in results]
     end
     return corrResults, corrResultsBool
-end
-
-
-function localSpecFuncAverage(
-        argsNode,
-        argsAntinode
-    )
-    specFuncOuter = IterDiagSpecFunc(argsNode...)
-    specFuncOuter .+= IterDiagSpecFunc(argsAntinode...)
-    return specFuncOuter
 end
 
 
@@ -560,6 +550,7 @@ function LatticeKspaceDOS(
 
     return specFuncKSpace, localSpecFunc, standDevFinal, results
 end
+
 
 
 @everywhere function PhaseIndex(

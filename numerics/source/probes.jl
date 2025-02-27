@@ -113,7 +113,9 @@ end
                                                          hamiltDetails["orbitals"][2],
                                                          hamiltDetails["size_BZ"],
                                                          points)
-                            
+    if "chemPot" in keys(hamiltDetails)
+        hamiltDetails["dispersion"][pointsSequence] .+= hamiltDetails["chemPot"]
+    end    
     hamiltonian = KondoModel(
                              hamiltDetails["dispersion"][pointsSequence],
                              hamiltDetails["kondoJArray"][pointsSequence, pointsSequence],
@@ -139,7 +141,7 @@ end
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
-                          magzReq=(m, N) -> -1 ≤ m ≤ 2,
+                          #=magzReq=(m, N) -> -1 ≤ m ≤ 2,=#
                           occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
                           correlationDefDict=correlationDefDict,
                           vneDefDict=vneDefDict,

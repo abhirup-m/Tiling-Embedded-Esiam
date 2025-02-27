@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1500
+maxSize = 2000
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -630,7 +630,7 @@ function TiledEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[5, 6]]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     vnEntropyArr = Float64[]
@@ -703,10 +703,10 @@ size_BZ = 33
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
-#=@time TiledEntanglement(size_BZ; loadData=false);=#
+@time TiledEntanglement(size_BZ; loadData=false);

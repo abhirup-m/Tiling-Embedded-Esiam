@@ -773,6 +773,20 @@ We first look at static spin correlations \(\chi_s(k_1, k_2) = \frac{1}{2}\left<
 	\label{tiledSF}
 \end{figure}
 
+\subsection{Entanglement entropy and Mutual information}
+\begin{figure}[htpb]
+	\includegraphics[width=0.24\textwidth]{S_k-1.pdf}
+	\includegraphics[width=0.24\textwidth]{S_k-2.pdf}
+	\includegraphics[width=0.24\textwidth]{S_k-3.pdf}
+	\includegraphics[width=0.24\textwidth]{S_k-4.pdf}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.24\textwidth]{I2_k_N-1.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_N-2.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_N-3.pdf}
+	% \includegraphics[width=0.24\textwidth]{I2_k_N-4.pdf}
+\end{figure}
 
 
 \subsection{Heisenberg model as a low-energy description of the insulator}
@@ -1236,13 +1250,13 @@ Comparing with eq.~\ref{zerointegral} and separating into real part \(G_R^\prime
 \end{aligned}\end{equation}
 Comparing the imaginary parts gives
 \begin{equation}\begin{aligned}
-	\pi G_R^\prime(\omega) = P\int_{-\infty}^{\infty}d\omega^\prime~\frac{G_R^{\prime\prime}(\omega^\prime)}{\omega^\prime - \omega}~.
+	G_R^\prime(\omega) = \frac{1}{\pi}P\int_{-\infty}^{\infty}d\omega^\prime~\frac{G_R^{\prime\prime}(\omega^\prime)}{\omega^\prime - \omega} = - \mathcal{H}\left[G_R^{\prime\prime}(\omega)\right] ~,
 \end{aligned}\end{equation}
-The spectral function was defined above as \(-1/\pi\) times the imaginary part of the Greens function. Exchanging \(G_R^{\prime\prime}\) for \(A\) gives
+where \(\mathcal{H}\left[g(\omega)\right]=\frac{1}{\pi}P\int_{-\infty}^{\infty}d\omega^\prime~\frac{g(\omega^\prime)}{\omega - \omega^\prime}\) is the Hilbert transform of the function \(g(\omega)\). The spectral function was defined above as \(-1/\pi\) times the imaginary part of the Greens function. Exchanging \(G_R^{\prime\prime}\) for \(A\) gives
 \begin{equation}\begin{aligned}
-	G_R^\prime(\omega) = -P\int_{-\infty}^{\infty}d\omega^\prime~\frac{A(\omega^\prime)}{\omega^\prime - \omega}~.
+	G_R^\prime(\omega) = \pi \mathcal{H}\left[A(\omega)\right]~.
 \end{aligned}\end{equation}
-This provides a way of calculating the real part of the Greens function if the spectral function is already known.
+This provides a method for calculating the real part of a Greens function if the spectral function is already known.
 
 
 

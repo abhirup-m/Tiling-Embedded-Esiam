@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 2000
+maxSize = 1500
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -299,24 +299,26 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[[1]]
+    W_val_arr = NiceValues(size_BZ)
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(-15:0.005:15)
-    freqValuesZoom1 = 13.
+    freqValues = collect(-20:0.001:20)
+    freqValuesZoom1 = 5.
     freqValuesZoom2 = 1.
-    specFuncResults = Dict{LaTeXString, Vector{Float64}}()
-    specFuncResultsTrunc = Dict{LaTeXString, Vector{Float64}}()
-    imagSelfEnergyResults = Dict{LaTeXString, Vector{Float64}}()
-    realSelfEnergyResults = Dict{LaTeXString, Vector{Float64}}()
+    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    imagSelfEnergyResults = Tuple{LaTeXString, Vector{Float64}}[]
+    realSelfEnergyResults = Tuple{LaTeXString, Vector{Float64}}[]
     standDev = (0.1, 0.0 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
     targetHeight = 0.
     effective_Wval = 0.
     standDevGuess = 0.1
 
     standDevInner = standDev[1]
+
+    nonIntSpecFunc = nothing
     for W_val in W_val_arr
 
         if abs(W_val) > abs(transitionValues(size_BZ))
@@ -348,15 +350,21 @@ function AuxiliaryLocalSpecfunc(
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
             jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits))
         end
-        _, _, realSelfEnergy, imagSelfEnergy = SelfEnergy(specFunc, freqValues)
         if W_val == 0. && fixHeight
             targetHeight = specFunc[freqValues .≥ 0][1]
         end
         standDev = (standDevInner, standDev[2])
-        specFuncResults[getlabelInt(W_val, size_BZ)] = specFunc[abs.(freqValues) .≤ freqValuesZoom1]
-        specFuncResultsTrunc[getlabelInt(W_val, size_BZ)] = specFunc[abs.(freqValues) .≤ freqValuesZoom2]
-        realSelfEnergyResults[getlabelInt(W_val, size_BZ)] = realSelfEnergy[abs.(freqValues) .≤ freqValuesZoom1]
-        imagSelfEnergyResults[getlabelInt(W_val, size_BZ)] = imagSelfEnergy[abs.(freqValues) .≤ freqValuesZoom1]
+        push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+        if isnothing(nonIntSpecFunc)
+            nonIntSpecFunc = specFunc
+        end
+        g1, g2, selfEnergy = SelfEnergy((nonIntSpecFunc, specFunc), freqValues)
+        push!(realSelfEnergyResults, (getlabelInt(W_val, size_BZ), real(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(imagSelfEnergyResults, (getlabelInt(W_val, size_BZ), imag(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
+        for (k, v) in imagSelfEnergyResults
+            v[abs.(v) .> 100] .= sign.(v)[abs.(v) .> 100] * 100
+        end
     end
     plotLines(specFuncResults, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
@@ -373,13 +381,13 @@ function AuxiliaryLocalSpecfunc(
     plotLines(realSelfEnergyResults, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
               L"\omega", 
-              L"\Sigma_R(\omega)",
+              L"\Sigma^\prime(\omega)",
               "sigmaReal_$(size_BZ).pdf",
              )
     plotLines(imagSelfEnergyResults, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
               L"\omega", 
-              L"\Sigma_I(\omega)",
+              L"\Sigma^{\prime\prime}(\omega)",
               "sigmaImag_$(size_BZ).pdf",
              )
 end
@@ -691,14 +699,14 @@ function TiledEntanglement(
 end
 
 
-size_BZ = 49
+size_BZ = 33
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
+@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
-@time TiledEntanglement(size_BZ; loadData=false);
+#=@time TiledEntanglement(size_BZ; loadData=false);=#

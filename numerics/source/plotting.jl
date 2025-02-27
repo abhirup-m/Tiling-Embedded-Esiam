@@ -111,7 +111,7 @@ end
 
 
 function plotLines(
-        nameValuePairs::Dict{LaTeXString, Vector{Float64}},
+        nameValuePairs::Vector{Tuple{LaTeXString, Vector{Float64}}},
         xvalues::Vector{Float64},
         xlabel::LaTeXString,
         ylabel::LaTeXString,

@@ -1,7 +1,7 @@
 using Distributed, Random
 
 if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(3)
+    addprocs(2)
 end
 @everywhere using LinearAlgebra, CSV, JLD2, FileIO, CodecZlib
 
@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 2000
+maxSize = 500
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -299,18 +299,19 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1,]]
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(-20:0.001:20)
-    freqValuesZoom1 = 5.
-    freqValuesZoom2 = 1.
-    specFuncResults = Tuple{LaTeXString, Vector{Float64}}[]
-    specFuncResultsTrunc = Tuple{LaTeXString, Vector{Float64}}[]
-    imagSelfEnergyResults = Tuple{LaTeXString, Vector{Float64}}[]
-    realSelfEnergyResults = Tuple{LaTeXString, Vector{Float64}}[]
+    freqValues = collect(-20:0.0005:20)
+    freqValuesZoom1 = 10.
+    freqValuesZoom2 = 0.4
+    specFuncFull = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    imagSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
+    imagSelfEnergyTrunc = Tuple{LaTeXString, Vector{Float64}}[]
+    realSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     standDev = (0.1, 0.0 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
     targetHeight = 0.
     effective_Wval = 0.
@@ -318,15 +319,21 @@ function AuxiliaryLocalSpecfunc(
 
     standDevInner = standDev[1]
 
+    deltaFunctionGamma = 1e-2
     nonIntSpecFunc = nothing
+    fermiPoints = getIsoEngCont(dispersion, 0.)
     for W_val in W_val_arr
 
         if abs(W_val) > abs(transitionValues(size_BZ))
             targetHeight = 0.
+            kondoTemp = 1.
+        else
+            kondoTemp = (sum(abs.(kondoJArrays[W_val][fermiPoints, fermiPoints, end])) 
+                         / sum(abs.(kondoJArrays[W_val][fermiPoints, fermiPoints, 1]))
+                        )^0.75
         end
         effectiveNumShells = W_val == 0 ? numShells : 1
-        effectiveMaxSize = W_val ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
-        savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
+        savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
             specFunc = jldopen(savePath)["impSpecFunc"]
             println("Collected W=$(W_val) from saved data.")
@@ -337,15 +344,17 @@ function AuxiliaryLocalSpecfunc(
                                  "orbitals" => orbitals,
                                  "size_BZ" => size_BZ,
                                  "bathIntForm" => bathIntForm,
-                                 "W_val" => effective_Wval,
+                                 "W_val" => W_val,
                                  "globalField" => GLOBALFIELD,
+                                 "J_val_bare" => J_val,
                                 )
-            specFunc, standDevGuess = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
+            @time specFunc, standDevGuess = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
                                                     ImpurityExcitationOperators, freqValues, standDev[1], 
-                                                    standDev[2], effectiveMaxSize; 
+                                                    standDev[2], maxSize; 
                                                     targetHeight=targetHeight, heightTolerance=1e-3,
                                                     bathIntLegs=bathIntLegs, addPerStep=1, 
-                                                    standDevGuess=standDevGuess
+                                                    standDevGuess=standDevInner,
+                                                    kondoTemp=kondoTemp,
                                                    )
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
             jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits))
@@ -354,41 +363,65 @@ function AuxiliaryLocalSpecfunc(
             targetHeight = specFunc[freqValues .≥ 0][1]
         end
         standDev = (standDevInner, standDev[2])
-        push!(specFuncResults, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
-        push!(specFuncResultsTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+        push!(specFuncFull, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(specFuncTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+
         if isnothing(nonIntSpecFunc)
-            nonIntSpecFunc = specFunc
+            nonIntGamma = 2 / (π * specFunc[freqValues .≥ 0][1])
+            nonIntSpecFunc = (1/π) * (nonIntGamma / 2) ./ (freqValues.^2 .+ (nonIntGamma / 2)^2)
+            selfEnergyTol = 1e-2
+            selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues)
+            while abs(imag(selfEnergy)[freqValues .≥ 0][1]) > selfEnergyTol
+                if imag(selfEnergy)[freqValues .≥ 0][1] > 0
+                    nonIntGamma /= 1.005
+                else
+                    nonIntGamma *= 1.005
+                end
+                nonIntSpecFunc = (1/π) * (nonIntGamma / 2) ./ (freqValues.^2 .+ (nonIntGamma / 2)^2)
+                selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues)
+            end
         end
-        g1, g2, selfEnergy = SelfEnergy((nonIntSpecFunc, specFunc), freqValues)
-        push!(realSelfEnergyResults, (getlabelInt(W_val, size_BZ), real(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
-        push!(imagSelfEnergyResults, (getlabelInt(W_val, size_BZ), imag(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
-        for (k, v) in imagSelfEnergyResults
-            v[abs.(v) .> 100] .= sign.(v)[abs.(v) .> 100] * 100
+
+        selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues)
+        push!(realSelfEnergy, (getlabelInt(W_val, size_BZ), real(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), imag(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom1]))
+        push!(imagSelfEnergyTrunc, (getlabelInt(W_val, size_BZ), imag(selfEnergy)[abs.(freqValues) .≤ freqValuesZoom2]))
+
+        for (k, v) in imagSelfEnergy
+            v[abs.(v) .> 10] .= sign.(v)[abs.(v) .> 10] * 10
         end
     end
-    plotLines(specFuncResults, 
+    plotLines(specFuncFull, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
               L"\omega", 
               L"A(\omega)",
               "impSpecFunc_$(size_BZ).pdf",
              )
-    plotLines(specFuncResultsTrunc, 
+    plotLines(specFuncTrunc, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom2],
               L"\omega", 
               L"A(\omega)",
               "impSpecFuncTrunc_$(size_BZ).pdf",
              )
-    plotLines(realSelfEnergyResults, 
+    plotLines(realSelfEnergy, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
               L"\omega", 
               L"\Sigma^\prime(\omega)",
               "sigmaReal_$(size_BZ).pdf",
              )
-    plotLines(imagSelfEnergyResults, 
+    plotLines(imagSelfEnergy, 
               freqValues[abs.(freqValues) .≤ freqValuesZoom1], 
               L"\omega", 
               L"\Sigma^{\prime\prime}(\omega)",
-              "sigmaImag_$(size_BZ).pdf",
+              "sigmaImag_$(size_BZ).pdf";
+              ylimits=(-10., 10.),
+             )
+    plotLines(imagSelfEnergyTrunc, 
+              freqValues[abs.(freqValues) .≤ freqValuesZoom2], 
+              L"\omega", 
+              L"\Sigma^{\prime\prime}(\omega)",
+              "sigmaImag-trunc_$(size_BZ).pdf",
+              #=ylimits=(-1., 1.),=#
              )
 end
 
@@ -630,7 +663,7 @@ function TiledEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[5, 6]]
+    W_val_arr = NiceValues(size_BZ)
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     vnEntropyArr = Float64[]
@@ -703,10 +736,10 @@ size_BZ = 33
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
+@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
-@time TiledEntanglement(size_BZ; loadData=false);
+#=@time TiledEntanglement(size_BZ; loadData=false);=#

@@ -115,7 +115,8 @@ function plotLines(
         xvalues::Vector{Float64},
         xlabel::LaTeXString,
         ylabel::LaTeXString,
-        saveName::String,
+        saveName::String;
+        ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
     )
     f = Figure(figure_padding=4)
     ax = Axis(f[1, 1],
@@ -127,6 +128,9 @@ function plotLines(
         lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1])
     end
     axislegend()
+    if !isnothing(ylimits)
+        ylims!(ax, ylimits...)
+    end
     save(saveName, current_figure())
     return saveName
 end

@@ -195,12 +195,13 @@ end
         broadFuncType::Union{String, Dict{String, String}}="gauss",
         normEveryStep::Bool=true,
         onlyCoeffs::Vector{String}=String[],
+        kondoTemp::Float64=1.,
     )
     if typeof(broadFuncType) == String
         broadFuncType = Dict(name => broadFuncType for name in specFuncDict)
     end
 
-    bathIntFunc = points -> hamiltDetails["bathIntForm"](hamiltDetails["W_val"], 
+    bathIntFunc = points -> hamiltDetails["bathIntForm"](0., 
                                                          hamiltDetails["orbitals"][2],
                                                          hamiltDetails["size_BZ"],
                                                          points)
@@ -215,11 +216,11 @@ end
                             )
 
     # impurity local terms
-    impCorr = 10
+    impCorr = 5 * (2 + 5 * abs(hamiltDetails["W_val"]))
     push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
     push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
     push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
-    excludeRange = (maximum(hamiltDetails["kondoJArray"][sortedPoints, sortedPoints]), impCorr/4)
+    excludeRange = (hamiltDetails["J_val_bare"], impCorr/4)
 
     indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
@@ -242,17 +243,17 @@ end
     for (name, operator) in specFuncOperators
         if name ∈ onlyCoeffs
             specCoeffs = IterSpectralCoeffs(savePaths, operator;
-                                            degenTol=1e-10, 
+                                            degenTol=1e-10, silent=silent,
                                             excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
                                            )
-            specFuncResults[name] = vcat(specCoeffs...)
+            scaledSpecCoeffs = NTuple{2, Float64}[(weight * kondoTemp, pole) for (weight, pole) in vcat(specCoeffs...)]
+            specFuncResults[name] = scaledSpecCoeffs
         else
             specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
                                                     standDev[name]; normEveryStep=normEveryStep, 
-                                                    degenTol=1e-10, silent=true, 
+                                                    degenTol=1e-10, silent=silent, 
                                                     broadFuncType=broadFuncType[name],
                                                     returnEach=true, normalise=false,
-                                                    excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
                                                    )
             specFuncResults[name] = specFunc
         end
@@ -371,6 +372,7 @@ function AuxiliaryLocalSpecfunc(
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
+        kondoTemp::Float64=1.,
     )
     if targetHeight < 0
         targetHeight = 0
@@ -406,22 +408,28 @@ function AuxiliaryLocalSpecfunc(
     broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
                                      for name in keys(specDictSet)
                                     )
-    specFuncResultsNode =IterDiagSpecFunc(hamiltDetails, maxSize, sortedPointsNode,
-                                          specDictSet, bathIntLegs, freqValues, 
-                                          standDev; addPerStep=addPerStep,
-                                          silent=true, broadFuncType=broadType,
-                                          normEveryStep=false, onlyCoeffs=onlyCoeffs,
-                                      )
-    specFuncResultsAntiNode =IterDiagSpecFunc(hamiltDetails, maxSize, sortedPointsAntiNode,
-                                              specDictSet, bathIntLegs, freqValues, 
-                                              standDev; addPerStep=addPerStep,
-                                              silent=true, broadFuncType=broadType,
-                                              normEveryStep=false, onlyCoeffs=onlyCoeffs,
-                                             )
+    fixedContrib = Vector{Float64}[]
+    specCoeffs = Vector{Tuple{Float64, Float64}}[]
 
-    fixedContrib = [specFuncResultsNode["cdagd_up"], specFuncResultsNode["cdagd_down"], specFuncResultsAntiNode["cdagd_up"], specFuncResultsAntiNode["cdagd_down"]]
-    specCoeffs = [specFuncResultsNode["Sd+"], specFuncResultsNode["Sd-"], specFuncResultsAntiNode["Sd+"], specFuncResultsAntiNode["Sd-"]]
-    @time output = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3; 
+    for (i, sortedPoints) in enumerate([sortedPointsNode, sortedPointsAntiNode])
+        for (j, energySign) in enumerate([1, -1])
+            hamiltDetailsModified = deepcopy(hamiltDetails)
+            hamiltDetailsModified["dispersion"][sortedPoints] = energySign .* (10 .^ range(-3, stop=0., length=length(sortedPoints)))
+            specFuncResults = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
+                                                  specDictSet, bathIntLegs, freqValues, 
+                                                  standDev; addPerStep=addPerStep,
+                                                  silent=false, broadFuncType=broadType,
+                                                  normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                                  kondoTemp=kondoTemp,
+                                              )
+            push!(fixedContrib, specFuncResults["cdagd_up"])
+            push!(fixedContrib, specFuncResults["cdagd_down"])
+            push!(specCoeffs, specFuncResults["Sd+"])
+            push!(specCoeffs, specFuncResults["Sd-"])
+        end
+    end
+
+    output = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3;
                                  degenTol=1e-10, silent=false, 
                                  broadFuncType="lorentz", 
                                  fixedContrib=fixedContrib,

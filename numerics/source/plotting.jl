@@ -38,9 +38,10 @@ function plotHeatmap(
         annotation::Union{String, LaTeXString},
         colmap; 
         colorbarLimits::Union{NTuple{2, Float64}, Nothing}=nothing,
-        figSize::NTuple{2, Int64}=(300, 250),
+        figSize::NTuple{2, Int64}=(200, 200),
         figPad::Union{NTuple{4, Float64}, Float64}=0.,
         colorScale::Function=identity,
+        marker::Union{Nothing, Vector{Float64}}=nothing,
     )
     matrixData = reshape(matrixData, length.(axisVals))
 
@@ -54,11 +55,13 @@ function plotHeatmap(
             colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
         end
     end
-    figure = Figure(size=figSize, figure_padding=figPad)
+    figure = Figure(figure_padding=figPad)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
               title=title,
+              width=figSize[1],
+              height=figSize[2],
              )
     hm = heatmap!(ax, 
              axisVals..., 
@@ -67,12 +70,18 @@ function plotHeatmap(
              colorscale=colorScale,
              colorrange=colorbarLimits,
             )
+    if !isnothing(marker)
+        hlines!(ax, marker[2], color=:gray, linestyle=:dash)
+        vlines!(ax, marker[1], color=:gray, linestyle=:dash)
+        #=scatter!(ax, marker...; markersize=10, color=RGBAf(0, 0, 0, 0), strokecolor=:gray, strokewidth=2)=#
+    end
 
     gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=:top, halign=:right)
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
 
     Colorbar(figure[1, 2], hm)
+    resize_to_layout!(figure)
     savename = joinpath("raw_figures", randstring(5) * ".pdf")
     save(savename, figure)
     return savename

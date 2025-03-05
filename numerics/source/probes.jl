@@ -52,7 +52,9 @@ function KondoCoupMap(
     results = zeros(size_BZ^2) 
     results[otherPoints] .= kondoJArrayFull[kspacePoint, otherPoints, end]
     results_bare = kondoJArrayFull[kspacePoint, :, 1]
-    results_bool = [r / r_b <= RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
+    reference = sum(abs.(results_bare)) / length(results_bare)
+    @assert reference > RG_RELEVANCE_TOL
+    results_bool = [abs(r / reference) ≤ RG_RELEVANCE_TOL ? -1 : 1 for (r, r_b) in zip(results, results_bare)]
     return results, results_bare, results_bool
 end
 
@@ -102,10 +104,8 @@ end
         secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), pointsSequence)
         for pivotIndex in pivotIndices
             partyA, partyB = func(pivotIndex, secondIndex)
-            if sort(partyA) ≠ sort(partyB)
-                mutInfoDefDict[name * join(pivotIndex)] = (partyA, partyB)
-                mapCorrNameToIndex[name * join(pivotIndex)] = (name, pointsSequence[pivotIndex])
-            end
+            mutInfoDefDict[name * join(pivotIndex)] = (partyA, partyB)
+            mapCorrNameToIndex[name * join(pivotIndex)] = (name, pointsSequence[pivotIndex])
         end
     end
 
@@ -266,8 +266,8 @@ end
         hamiltDetails::Dict,
         numShells::Int64,
         correlationFuncDict::Dict{String, Tuple{Union{Nothing, Int64}, Function}},
-        maxSize::Int64,
-        savePath::String;
+        maxSize::Int64;
+        savePath::Union{Nothing, Function}=nothing,
         vneFuncDict::Dict=Dict(),
         mutInfoFuncDict::Dict=Dict(),
         bathIntLegs::Int64=2,
@@ -298,13 +298,16 @@ end
         oppositePoints[point] = [reflectDiagonal, reflectFS, reflectBoth]
     end
 
-    if isfile(savePath) && loadData
+    if !isnothing(savePath) && loadData
         corrResults = Dict{String, Vector{Float64}}()
-        for (k, v) in load(savePath)
-            corrResults[k] = v
+        allCorrelationKeys = vcat(([correlationFuncDict, vneFuncDict, mutInfoFuncDict] .|> keys .|> collect)...)
+        for corrName in allCorrelationKeys
+            savePathCorr = savePath(corrName)
+            if isfile(savePathCorr)
+                corrResults[corrName] = load(savePathCorr)[corrName]
+            end
         end
-        if issetequal(collect(keys(corrResults)), vcat(([correlationFuncDict, vneFuncDict, mutInfoFuncDict] .|> keys .|> collect)...))
-            corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+        if length(corrResults) == length(allCorrelationKeys)
             corrResultsBool = Dict()
             for (name, results) in corrResults
                 corrResultsBool[name] = [ifelse(isnan(r), r, abs(r) ≤ 1e-6 ? -1 : 1) for r in results]
@@ -332,22 +335,23 @@ end
                                                                     correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs, 
                                                                     noSelfCorr, addPerStep), 
                                       WorkerPool(1:numProcs), calculatePoints)
+
     corrResults = mergewith((V1, V2) -> [(isnan(v1) && isnan(v2)) ? NaN : ((isnan(v1) || isnan(v2)) ? filter(!isnan, [v1, v2])[1] : (v1 + v2))
                                          for (v1, v2) in zip(V1, V2)], 
                             corrNode..., corrAntiNode...
                            )
     map!(v -> v ./ 2, values(corrResults))
 
-    if !isempty(savePath)
+    corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
+
+    if !isnothing(savePath)
         mkpath(SAVEDIR)
-        jldopen(savePath, "w"; compress = true) do file
-            for (k, v) in corrResults
-                file[k] = v
+        for (corrName, corrValue) in corrResults
+            jldopen(savePath(corrName), "w"; compress = true) do file
+                file[corrName] = corrValue
             end
         end
     end
-
-    corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
     corrResultsBool = Dict()
     for (name, results) in corrResults

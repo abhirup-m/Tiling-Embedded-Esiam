@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 500
+maxSize = 10
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -22,9 +22,9 @@ bathIntLegs = 2
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
                          25 => -1.0 .* [0, 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
-                         33 => -1.0 .* [0, 2.8, 5.6, 5.89, 5.92, 5.93] ./ size_BZ,
+                         33 => -1.0 .* [0, 2.8, 5.6, 5.7, 5.89, 5.92, 5.93] ./ size_BZ,
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
-                         49 => -1.0 .* [0, 4.1, 8.19, 8.55, 8.77, 8.8] ./ size_BZ,
+                         49 => -1.0 .* [0, 4.1, 8.19, 8.4, 8.55, 8.77, 8.8] ./ size_BZ,
                          57 => -1.0 .* [0, 5., 10.2, 10.6, 10.852] ./ size_BZ,
                          69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
                          77 => -1.0 .* [0., 14.04, 14.5, 14.99] ./ size_BZ,
@@ -101,8 +101,9 @@ function KondoCouplingMap(
         size_BZ::Int64;
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 3, 4]]
+    W_val_arr = NiceValues(size_BZ)[[1, 3, 4, 5]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
+    node = map2DTo1D(-π/2, -π/2, size_BZ)
     saveNames = Dict(name => [] for name in ["node", "antinode"])
     titles = Dict(
                   "node" => L"J(k_\mathrm{N}, \vec{k})",
@@ -111,18 +112,17 @@ function KondoCouplingMap(
     corrResults = Dict(W_val => Dict() for W_val in W_val_arr)
     bareResults = Dict("node" => Float64[], "antinode" => Float64[])
     for W_val in W_val_arr
-        results, bareResults["node"], results_bool = KondoCoupMap((π/2, π/2), size_BZ, kondoJArrays[W_val]; 
+        results, bareResults["node"], results_bool = KondoCoupMap((-π/2, -π/2), size_BZ, kondoJArrays[W_val]; 
                                                            #=mapAmong=(kx, ky) -> abs(abs(kx) + abs(ky) - π) < 10^(-0.5),=#
                                                           )
-        corrResults[W_val] = Dict("node" => results)
+        corrResults[W_val] = Dict("node" => results_bool)
         results, bareResults["antinode"], results_bool = KondoCoupMap((π/1, 0.), size_BZ, kondoJArrays[W_val]; 
                                                            #=mapAmong=(kx, ky) -> abs(abs(kx) + abs(ky) - π) < 10^(-0.5),=#
                                                           )
         corrResults[W_val]["antinode"] = results
     end
     for name in keys(saveNames)
-        nonNaNData = filter(!isnan, vcat([corrResults[W_val][name] for W_val in W_val_arr]...))
-        append!(nonNaNData, filter(!isnan, bareResults[name]))
+        nonNaNData = vcat([corrResults[W_val][name] for W_val in W_val_arr]..., bareResults[name])
         if minimum(nonNaNData) < maximum(nonNaNData)
             colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData)) .+ 0.
         else
@@ -157,6 +157,25 @@ function KondoCouplingMap(
         write(f, shellCommand*"\n")
     end
     close(f)
+end
+
+
+function ChannelDecoupling(
+        size_BZ::Int64; 
+        loadData::Bool=false,
+    )
+    W_val_arr = range(0, transitionValues(size_BZ), length=2) |> collect
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
+    pivotPoint = map2DTo1D(π/2, π/2, size_BZ)
+    decoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) ≥ 0, getIsoEngCont(dispersion, 0.))
+    decoupledKondoStrength = Float64[]
+
+    for W_val in W_val_arr
+        kondoJArray = kondoJArrays[W_val][pivotPoint, decoupledPoints, end]
+        push!(decoupledKondoStrength, sum(abs.(kondoJArray)))
+    end
+    p = plot(W_val_arr, decoupledKondoStrength)
+    display(p)
 end
 
 
@@ -666,9 +685,14 @@ function TiledEntanglement(
     W_val_arr = NiceValues(size_BZ)
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
-    vnEntropyArr = Float64[]
+    vnEntropy = Dict{Float64, Vector{Float64}}()
+    mutInfoNode = Dict{Float64, Vector{Float64}}()
+    mutInfoEdge = Dict{Float64, Vector{Float64}}()
+
+    pivotPoints = Dict{Float64, Int64}()
     saveNames = Dict("S_k"=> String[], 
-                     "I2_k_kN"=> String[]
+                     "I2_k_kN"=> String[],
+                     "I2_k_edge"=> String[],
                     )
     node = map2DTo1D(-π/2, -π/2, size_BZ)
 
@@ -676,13 +700,27 @@ function TiledEntanglement(
                                     "SEE_k" => i -> [2 * i + 1,]
                                    )
 
-    mutInfoDef = Dict{String, Tuple{Union{Int64, Nothing}, Function}}(
-                      "I2_k_kN" => (node, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
-                     )
+    cutoffEnergy = dispersion[div(size_BZ - 1, 2) + 2 - numShells]
+    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
+                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
+                 && abs(cutoffEnergy) ≥ abs(dispersion[p])
+                ]
+    savePaths = Dict(W_val => corrName -> joinpath(SAVEDIR, "$(W_val)-0.0-$(size_BZ)-$(1)-$(maxSize)-$(bathIntLegs)-$(corrName).jld2") for W_val in W_val_arr)
 
-    for W_val in W_val_arr
-        println(W_val)
-        #=println(kondoJArrays[W_val][:, :, end])=#
+    @time Threads.@threads for W_val in W_val_arr
+        scattProbBool = ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2]
+        connectedPoints = filter(p -> scattProbBool[p] > 0, SWIndices)
+        if !isempty(connectedPoints)
+            pivot = sort(connectedPoints)[1]
+        else
+            pivot = sort(SWIndices)[end]
+        end
+        pivotPoints[W_val] = pivot
+
+        mutInfoDef = Dict{String, Tuple{Union{Int64, Nothing}, Function}}(
+                          "I2_k_edge" => (pivot, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
+                          "I2_k_kN" => (node, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
+                         )
         hamiltDetailsDict = Dict("dispersion" => dispersion,
                                  "kondoJArray" => kondoJArrays[W_val][:, :, end],
                                  "orbitals" => orbitals,
@@ -692,15 +730,19 @@ function TiledEntanglement(
                                  "globalField" => 1e1 * GLOBALFIELD,
                                 )
         results, _ = AuxiliaryCorrelations(hamiltDetailsDict, numShells, Dict{String, Tuple{Union{Nothing, Int64}, Function}}(),
-                                           maxSize, joinpath(SAVEDIR, randstring());
+                                           maxSize; savePath=savePaths[W_val],
                                            vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                            addPerStep=1, loadData=loadData,
                                           )
-
-        quadrantResult = results["SEE_k"][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+        vnEntropy[W_val] = results["SEE_k"]
+        mutInfoNode[W_val] = results["I2_k_kN"]
+        mutInfoEdge[W_val] = results["I2_k_edge"]
+    end
+    for W_val in W_val_arr
+        quadrantResult = vnEntropy[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
         push!(saveNames["S_k"],
               plotHeatmap(quadrantResult,
-                          (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
+                          (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
                           (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                           L"$S_\text{EE}(k)$", 
                           getlabelInt(W_val, size_BZ), 
@@ -708,14 +750,27 @@ function TiledEntanglement(
                          )
              )
 
-        quadrantResult = results["I2_k_kN"][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
+        quadrantResult = mutInfoNode[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
         push!(saveNames["I2_k_kN"],
               plotHeatmap(quadrantResult,
-                          (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
+                          (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
                           (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                           L"$I_2(k, k_N)$", 
                           getlabelInt(W_val, size_BZ), 
-                          colmap
+                          colmap;
+                          marker=map1DTo2D(node, size_BZ) ./ π,
+                         )
+             )
+
+        quadrantResult = mutInfoEdge[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
+        push!(saveNames["I2_k_edge"],
+              plotHeatmap(quadrantResult,
+                          (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
+                          (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                          L"$I_2(k, k_\text{edge})$", 
+                          getlabelInt(W_val, size_BZ), 
+                          colmap;
+                          marker=map1DTo2D(pivotPoints[W_val], size_BZ) ./ π,
                          )
              )
     end
@@ -733,13 +788,14 @@ end
 
 
 size_BZ = 33
+#=@time ChannelDecoupling(size_BZ; loadData=false)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
-#=@time TiledEntanglement(size_BZ; loadData=false);=#
+@time TiledEntanglement(size_BZ; loadData=true);

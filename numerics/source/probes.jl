@@ -104,8 +104,10 @@ end
         secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), pointsSequence)
         for pivotIndex in pivotIndices
             partyA, partyB = func(pivotIndex, secondIndex)
-            mutInfoDefDict[name * join(pivotIndex)] = (partyA, partyB)
-            mapCorrNameToIndex[name * join(pivotIndex)] = (name, pointsSequence[pivotIndex])
+            if partyA ≠ partyB
+                mutInfoDefDict[name * join(pivotIndex)] = (partyA, partyB)
+                mapCorrNameToIndex[name * join(pivotIndex)] = (name, pointsSequence[pivotIndex])
+            end
         end
     end
 

@@ -174,29 +174,32 @@ function ChannelDecoupling(
         size_BZ::Int64; 
         loadData::Bool=false,
     )
-    W_val_arr = range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=12) |> collect
+    W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=30) |> collect
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     pivotPoint = map2DTo1D(-π/2, -π/2, size_BZ)
-    decoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) < 0 && abs(dispersion[p]) < 0.13 * maximum(dispersion), 1:size_BZ^2)
-    encoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) > 0 && abs(dispersion[p]) < 0.13 * maximum(dispersion), 1:size_BZ^2)
+    decoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) < 0 && abs(dispersion[p]) < 0.14 * maximum(dispersion), 1:size_BZ^2)
+    encoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) > 0 && abs(dispersion[p]) < 0.14 * maximum(dispersion), 1:size_BZ^2)
     acrossQuadrantStrengthRatio = Float64[]
 
     for W_val in W_val_arr
-        scattProbDecoup = kondoJArrays[W_val][pivotPoint, decoupledPoints, end] .|> abs |> sum
-        scattProbEncoup = kondoJArrays[W_val][pivotPoint, encoupledPoints, end] .|> abs |> sum
+        #=scattProbDecoup = kondoJArrays[W_val][pivotPoint, decoupledPoints, end] .|> abs |> sum=#
+        #=scattProbEncoup = kondoJArrays[W_val][pivotPoint, encoupledPoints, end] .|> abs |> sum=#
+        scattProbDecoup = maximum(kondoJArrays[W_val][pivotPoint, decoupledPoints, end])
+        scattProbEncoup = maximum(kondoJArrays[W_val][pivotPoint, encoupledPoints, end])
         push!(acrossQuadrantStrengthRatio, scattProbDecoup / scattProbEncoup)
     end
     println(acrossQuadrantStrengthRatio)
     W_val_decouple = W_val_arr[abs.(acrossQuadrantStrengthRatio) .< 1e-2][1]
 
-    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", acrossQuadrantStrengthRatio)],
-              -1 .* W_val_arr ./ J_val,
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", acrossQuadrantStrengthRatio[1:1:end])],
+              -1 .* W_val_arr[1:1:end] ./ J_val,
               L"-W/J", 
-              L"\Gamma^T/\Gamma^N",
-              "quadrantDecouple-$(size_BZ).pdf";
+              L"J^T_\text{max}/J_\text{max}^N",
+              "quadrantMaxKondo-$(size_BZ).pdf";
               scatter=true,
-              vlines=[("L-PG start", - 1 .* pseudogapStart(size_BZ) / J_val), ("L-PG end", -1 .* pseudogapEnd(size_BZ) / J_val), (L"$W^*$", -1 .* W_val_decouple / J_val)],
+              vlines=[("PG start", - 1 .* pseudogapStart(size_BZ) / J_val), ("PG end", -1 .* pseudogapEnd(size_BZ) / J_val), (L"$W^*$", -1 .* W_val_decouple / J_val)],
               figPad=(0, 10, 0, 2),
+              legendPos="lb",
              )
 end
 

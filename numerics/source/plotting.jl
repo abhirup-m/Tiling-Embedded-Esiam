@@ -128,9 +128,12 @@ function plotLines(
         scatter::Bool=false,
         vlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
         hlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
-        figSize::NTuple{2, Int64}=(350, 250),
+        figSize::NTuple{2, Int64}=(300, 250),
         figPad::Union{Number, NTuple{4, Number}},
+        legendPos::String="rt",
     )
+    @assert legendPos ∈ Iterators.product(["r", "l", "c"], ["t", "b", "c"]) .|> join |> vec
+
     f = Figure(figure_padding=figPad)
     ax = Axis(f[1, 1],
         xlabel = xlabel,
@@ -159,19 +162,19 @@ function plotLines(
         end
     end
 
-    vlineColors = cgrad(:viridis, 4; categorical=true)
-    for (i, (label, xloc)) in enumerate(vlines)
+    if length(vlines) + length(hlines) > 0
+        lineColors = cgrad(:Dark2_8, length(vlines) + length(hlines); categorical=true)
+        for (i, (label, xloc)) in enumerate(vlines)
+            vlines!(ax, xloc, label=label, color=lineColors[i], linestyle=linestyles[i])
+        end
+        for (i, (label, yloc)) in enumerate(hlines)
+            hlines!(ax, yloc, label=label, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
+        end
         needsLegend = true
-        vlines!(ax, xloc, label=label, color=vlineColors[i], linestyle=linestyles[i])
-    end
-    hlineColors = vlineColors |> reverse
-    for (i, (label, yloc)) in enumerate(hlines)
-        needsLegend = true
-        hlines!(ax, yloc, label=label, color=hlineColors[i], linestyle=linestyles[i])
     end
 
     if needsLegend
-        axislegend()
+        axislegend(position=Symbol(legendPos))
     end
 
     if !isnothing(ylimits)

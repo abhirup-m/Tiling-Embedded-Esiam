@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 10
+maxSize = 15
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -21,7 +21,7 @@ numShells = 1
 bathIntLegs = 2
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
-                         25 => -1.0 .* [0, 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
+                         25 => -1.0 .* [0, 2., 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
                          33 => -1.0 .* [0, 2.8, 5.6, 5.7, 5.89, 5.92, 5.93] ./ size_BZ,
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.4, 8.55, 8.77, 8.8] ./ size_BZ,
@@ -343,7 +343,7 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[[1,]]
+    W_val_arr = NiceValues(size_BZ)[[1, 3, 4]]
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
@@ -356,6 +356,7 @@ function AuxiliaryLocalSpecfunc(
     imagSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     imagSelfEnergyTrunc = Tuple{LaTeXString, Vector{Float64}}[]
     realSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
+    quasipResidueArr = Float64[]
     standDev = (0.1, 0.0 .+ exp.(abs.(freqValues) ./ maximum(freqValues)))
     targetHeight = 0.
     effective_Wval = 0.
@@ -374,12 +375,13 @@ function AuxiliaryLocalSpecfunc(
         else
             kondoTemp = (sum(abs.(kondoJArrays[W_val][fermiPoints, fermiPoints, end])) 
                          / sum(abs.(kondoJArrays[W_val][fermiPoints, fermiPoints, 1]))
-                        )^0.75
+                        )^1
         end
         effectiveNumShells = W_val == 0 ? numShells : 1
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
             specFunc = jldopen(savePath)["impSpecFunc"]
+            quasipResidue = jldopen(savePath)["quasipResidue"]
             println("Collected W=$(W_val) from saved data.")
         else
             hamiltDetails = Dict(
@@ -392,7 +394,7 @@ function AuxiliaryLocalSpecfunc(
                                  "globalField" => GLOBALFIELD,
                                  "J_val_bare" => J_val,
                                 )
-            @time specFunc, standDevGuess = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
+            @time specFunc, standDevGuess, quasipResidue = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
                                                     ImpurityExcitationOperators, freqValues, standDev[1], 
                                                     standDev[2], maxSize; 
                                                     targetHeight=targetHeight, heightTolerance=1e-3,
@@ -401,14 +403,16 @@ function AuxiliaryLocalSpecfunc(
                                                     kondoTemp=kondoTemp,
                                                    )
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
-            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits))
+            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue)
         end
         if W_val == 0. && fixHeight
             targetHeight = specFunc[freqValues .≥ 0][1]
         end
+
         standDev = (standDevInner, standDev[2])
         push!(specFuncFull, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom1]))
         push!(specFuncTrunc, (getlabelInt(W_val, size_BZ), specFunc[abs.(freqValues) .≤ freqValuesZoom2]))
+        push!(quasipResidueArr, quasipResidue)
 
         if isnothing(nonIntSpecFunc)
             nonIntGamma = 2 / (π * specFunc[freqValues .≥ 0][1])
@@ -465,7 +469,12 @@ function AuxiliaryLocalSpecfunc(
               L"\omega", 
               L"\Sigma^{\prime\prime}(\omega)",
               "sigmaImag-trunc_$(size_BZ).pdf",
-              #=ylimits=(-1., 1.),=#
+             )
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr)], 
+              -1 .* W_val_arr / J_val,
+              L"-W/J", 
+              L"Z_\text{imp}",
+              "localQPResidue_$(size_BZ).pdf",
              )
 end
 
@@ -812,12 +821,12 @@ function TiledEntanglement(
 end
 
 
-size_BZ = 49
-@time ChannelDecoupling(size_BZ; loadData=true)
+size_BZ = 13
+#=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
+@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#

@@ -129,7 +129,7 @@ function plotLines(
         vlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
         hlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
         figSize::NTuple{2, Int64}=(300, 250),
-        figPad::Union{Number, NTuple{4, Number}},
+        figPad::Union{Number, NTuple{4, Number}}=0,
         legendPos::String="rt",
     )
     @assert legendPos ∈ Iterators.product(["r", "l", "c"], ["t", "b", "c"]) .|> join |> vec

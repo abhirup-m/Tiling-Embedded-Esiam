@@ -414,36 +414,46 @@ function AuxiliaryLocalSpecfunc(
     broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
                                      for name in keys(specDictSet)
                                     )
-    fixedContrib = Vector{Float64}[]
-    specCoeffs = Vector{Tuple{Float64, Float64}}[]
+    fixedContrib = Vector{Float64}[Float64[] for _ in 1:8]
+    specCoeffs = Vector{Tuple{Float64, Float64}}[Tuple{Float64, Float64}[] for _ in 1:8]
 
-    for (i, sortedPoints) in enumerate([sortedPointsNode, sortedPointsAntiNode])
+    @sync for (i, sortedPoints) in enumerate([sortedPointsNode, sortedPointsAntiNode])
         for (j, energySign) in enumerate([1, -1])
-            hamiltDetailsModified = deepcopy(hamiltDetails)
-            hamiltDetailsModified["dispersion"][sortedPoints] = energySign .* (10 .^ range(-3, stop=0., length=length(sortedPoints)))
-            specFuncResults = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
-                                                  specDictSet, bathIntLegs, freqValues, 
-                                                  standDev; addPerStep=addPerStep,
-                                                  silent=false, broadFuncType=broadType,
-                                                  normEveryStep=false, onlyCoeffs=onlyCoeffs,
-                                                  kondoTemp=kondoTemp,
-                                              )
-            push!(fixedContrib, specFuncResults["cdagd_up"])
-            push!(fixedContrib, specFuncResults["cdagd_down"])
-            push!(specCoeffs, specFuncResults["Sd+"])
-            push!(specCoeffs, specFuncResults["Sd-"])
+            Threads.@spawn begin
+                threadCounter = Dict((1, 1) => 1, (1, 2) => 2, (2, 1) => 3, (2, 2) => 4)[(i, j)]
+                hamiltDetailsModified = deepcopy(hamiltDetails)
+                hamiltDetailsModified["dispersion"][sortedPoints] = energySign .* (10 .^ range(-3, stop=0., length=length(sortedPoints)))
+                specFuncResults = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
+                                                      specDictSet, bathIntLegs, freqValues, 
+                                                      standDev; addPerStep=addPerStep,
+                                                      silent=false, broadFuncType=broadType,
+                                                      normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                                      kondoTemp=kondoTemp,
+                                                  )
+                fixedContrib[2 * threadCounter - 1] = specFuncResults["cdagd_up"]
+                fixedContrib[2 * threadCounter] = specFuncResults["cdagd_down"]
+                specCoeffs[2 * threadCounter - 1] = specFuncResults["Sd+"]
+                specCoeffs[2 * threadCounter] = specFuncResults["Sd-"]
+            end
         end
     end
 
-    output = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3;
+    insideArea = sum(sum(fetch.([Threads.@spawn SpecFunc(specCoeff, freqValues, standDevInner; normalise=false) 
+                                       for specCoeff in specCoeffs]))) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+    outsideArea = 0
+    for specFunc in fixedContrib
+        outsideArea += sum(specFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+    end
+    quasipResidue = insideArea / (insideArea + outsideArea)
+
+    _, localSpecFunc, standDevInner = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3;
                                  degenTol=1e-10, silent=false, 
                                  broadFuncType="lorentz", 
                                  fixedContrib=fixedContrib,
                                  standDevGuess=standDevGuess,
                                 )
-    _, localSpecFunc, standDevInner = output
 
-    return localSpecFunc, standDevInner
+    return localSpecFunc, standDevInner, quasipResidue
 end
 
 

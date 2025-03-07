@@ -73,7 +73,6 @@ function plotHeatmap(
     if !isnothing(marker)
         hlines!(ax, marker[2], color=:gray, linestyle=:dash)
         vlines!(ax, marker[1], color=:gray, linestyle=:dash)
-        #=scatter!(ax, marker...; markersize=10, color=RGBAf(0, 0, 0, 0), strokecolor=:gray, strokewidth=2)=#
     end
 
     gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=:top, halign=:right)
@@ -126,20 +125,60 @@ function plotLines(
         ylabel::LaTeXString,
         saveName::String;
         ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
+        scatter::Bool=false,
+        vlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
+        hlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
+        figSize::NTuple{2, Int64}=(350, 250),
+        figPad::Union{Number, NTuple{4, Number}},
     )
-    f = Figure(figure_padding=4)
+    f = Figure(figure_padding=figPad)
     ax = Axis(f[1, 1],
         xlabel = xlabel,
         ylabel = ylabel,
+        width=figSize[1],
+        height=figSize[2],
     )
+    needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
+    markers = [:circle, :rect, :diamond, :hexagon, :xcross]
     for (i, (name, yvalues)) in enumerate(nameValuePairs)
-        lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1])
+        if !scatter
+            if !isempty(name)
+                lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1])
+                needsLegend = true
+            else
+                lines!(xvalues, yvalues; linestyle=linestyles[((i - 1) % 6) + 1])
+            end
+        else
+            if !isempty(name)
+                needsLegend = true
+                scatter!(xvalues, yvalues; label=name, marker=markers[((i - 1) % 5) + 1])
+            else
+                scatter!(xvalues, yvalues; marker=markers[((i - 1) % 5) + 1])
+            end
+        end
     end
-    axislegend()
+
+    vlineColors = cgrad(:viridis, 4; categorical=true)
+    for (i, (label, xloc)) in enumerate(vlines)
+        needsLegend = true
+        vlines!(ax, xloc, label=label, color=vlineColors[i], linestyle=linestyles[i])
+    end
+    hlineColors = vlineColors |> reverse
+    for (i, (label, yloc)) in enumerate(hlines)
+        needsLegend = true
+        hlines!(ax, yloc, label=label, color=hlineColors[i], linestyle=linestyles[i])
+    end
+
+    if needsLegend
+        axislegend()
+    end
+
     if !isnothing(ylimits)
         ylims!(ax, ylimits...)
     end
+    resize_to_layout!(f)
+
     save(saveName, current_figure())
     return saveName
 end

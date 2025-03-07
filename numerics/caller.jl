@@ -29,7 +29,7 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
                          77 => -1.0 .* [0., 14.04, 14.5, 14.99] ./ size_BZ,
                         )[size_BZ]
-transitionValues(size_BZ) = Dict{Int64, Float64}(
+pseudogapEnd(size_BZ) = Dict{Int64, Float64}(
                          13 => -1.0 * 1.6 / size_BZ,
                          25 => -1.0 * 3.88 / size_BZ,
                          33 => -1.0 * 5.92 / size_BZ,
@@ -38,6 +38,16 @@ transitionValues(size_BZ) = Dict{Int64, Float64}(
                          57 => -1.0 * 10.852 / size_BZ,
                          69 => -1.0 * 13.34 / size_BZ,
                          77 => -1.0 * 14.99 / size_BZ,
+                        )[size_BZ]
+pseudogapStart(size_BZ) = Dict{Int64, Float64}(
+                         13 => -1.0 * 1.5 / size_BZ,
+                         25 => -1.0 * 3.63 / size_BZ,
+                         33 => -1.0 * 5.6 / size_BZ,
+                         41 => -1.0 * 7.13 / size_BZ,
+                         49 => -1.0 * 8.19 / size_BZ,
+                         57 => -1.0 * 10.2 / size_BZ,
+                         69 => -1.0 * 12.5 / size_BZ,
+                         77 => -1.0 * 14.04 / size_BZ,
                         )[size_BZ]
 
 get_x_arr(size_BZ) = collect(range(K_MIN, stop=K_MAX, length=size_BZ) ./ pi)
@@ -164,18 +174,30 @@ function ChannelDecoupling(
         size_BZ::Int64; 
         loadData::Bool=false,
     )
-    W_val_arr = range(0, transitionValues(size_BZ), length=2) |> collect
+    W_val_arr = range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=12) |> collect
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
-    pivotPoint = map2DTo1D(π/2, π/2, size_BZ)
-    decoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) ≥ 0, getIsoEngCont(dispersion, 0.))
-    decoupledKondoStrength = Float64[]
+    pivotPoint = map2DTo1D(-π/2, -π/2, size_BZ)
+    decoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) < 0 && abs(dispersion[p]) < 0.13 * maximum(dispersion), 1:size_BZ^2)
+    encoupledPoints = filter(p -> prod(map1DTo2D(p, size_BZ)) > 0 && abs(dispersion[p]) < 0.13 * maximum(dispersion), 1:size_BZ^2)
+    acrossQuadrantStrengthRatio = Float64[]
 
     for W_val in W_val_arr
-        kondoJArray = kondoJArrays[W_val][pivotPoint, decoupledPoints, end]
-        push!(decoupledKondoStrength, sum(abs.(kondoJArray)))
+        scattProbDecoup = kondoJArrays[W_val][pivotPoint, decoupledPoints, end] .|> abs |> sum
+        scattProbEncoup = kondoJArrays[W_val][pivotPoint, encoupledPoints, end] .|> abs |> sum
+        push!(acrossQuadrantStrengthRatio, scattProbDecoup / scattProbEncoup)
     end
-    p = plot(W_val_arr, decoupledKondoStrength)
-    display(p)
+    println(acrossQuadrantStrengthRatio)
+    W_val_decouple = W_val_arr[abs.(acrossQuadrantStrengthRatio) .< 1e-2][1]
+
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", acrossQuadrantStrengthRatio)],
+              -1 .* W_val_arr ./ J_val,
+              L"-W/J", 
+              L"\Gamma^T/\Gamma^N",
+              "quadrantDecouple-$(size_BZ).pdf";
+              scatter=true,
+              vlines=[("L-PG start", - 1 .* pseudogapStart(size_BZ) / J_val), ("L-PG end", -1 .* pseudogapEnd(size_BZ) / J_val), (L"$W^*$", -1 .* W_val_decouple / J_val)],
+              figPad=(0, 10, 0, 2),
+             )
 end
 
 
@@ -343,7 +365,7 @@ function AuxiliaryLocalSpecfunc(
     fermiPoints = getIsoEngCont(dispersion, 0.)
     for W_val in W_val_arr
 
-        if abs(W_val) > abs(transitionValues(size_BZ))
+        if abs(W_val) > abs(pseudogapEnd(size_BZ))
             targetHeight = 0.
             kondoTemp = 1.
         else
@@ -550,7 +572,7 @@ function LatticeKspaceDOS(
             specFuncKSpace, specFunc, standDevGuess, results[W_val] = LatticeKspaceDOS(hamiltDetails, numShells, 
                                            KspaceExcitationOperators, freqValues, standDev[1], 
                                            standDev[2], maxSize; bathIntLegs=bathIntLegs,
-                                           addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(transitionValues(size_BZ)), 0., targetHeight),
+                                           addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight),
                                            standDevGuess=standDevGuess,
                                           )
             targetHeight = specFunc[freqValues .≥ 0][1]
@@ -787,8 +809,8 @@ function TiledEntanglement(
 end
 
 
-size_BZ = 33
-#=@time ChannelDecoupling(size_BZ; loadData=false)=#
+size_BZ = 49
+@time ChannelDecoupling(size_BZ; loadData=true)
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
@@ -798,4 +820,4 @@ size_BZ = 33
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
-@time TiledEntanglement(size_BZ; loadData=true);
+#=@time TiledEntanglement(size_BZ; loadData=true);=#

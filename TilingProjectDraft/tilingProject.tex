@@ -739,7 +739,16 @@ As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal po
 \end{itemize}
 The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
 
-Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is captured by the following simplified Hamiltonian:
+Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{quadrantMaxKondo-49.pdf}
+	\caption{}
+	\label{channelDecoupling}
+\end{figure}
+
+This is captured by the following simplified Hamiltonian:
 \begin{equation}\begin{aligned}\label{twoChannel}
 H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
 \end{aligned}\end{equation}
@@ -776,16 +785,23 @@ We first look at static spin correlations \(\chi_s(k_1, k_2) = \frac{1}{2}\left<
 \subsection{Entanglement entropy and Mutual information}
 \begin{figure}[htpb]
 	\includegraphics[width=0.24\textwidth]{S_k-1.pdf}
-	\includegraphics[width=0.24\textwidth]{S_k-2.pdf}
 	\includegraphics[width=0.24\textwidth]{S_k-3.pdf}
 	\includegraphics[width=0.24\textwidth]{S_k-4.pdf}
+	\includegraphics[width=0.24\textwidth]{S_k-5.pdf}
 \end{figure}
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.24\textwidth]{I2_k_N-1.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_N-2.pdf}
 	\includegraphics[width=0.24\textwidth]{I2_k_N-3.pdf}
-	% \includegraphics[width=0.24\textwidth]{I2_k_N-4.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_N-4.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_N-5.pdf}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.24\textwidth]{I2_k_edge-1.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_edge-3.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_edge-4.pdf}
+	\includegraphics[width=0.24\textwidth]{I2_k_edge-5.pdf}
 \end{figure}
 
 

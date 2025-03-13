@@ -197,7 +197,6 @@ end
         broadFuncType::Union{String, Dict{String, String}}="gauss",
         normEveryStep::Bool=true,
         onlyCoeffs::Vector{String}=String[],
-        kondoTemp::Float64=1.,
     )
     if typeof(broadFuncType) == String
         broadFuncType = Dict(name => broadFuncType for name in specFuncDict)
@@ -217,12 +216,13 @@ end
                              couplingTolerance=1e-10,
                             )
 
+    kondoTemp = 1.0 * (sum(hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs) / sum(hamiltDetails["kondoJArray_bare"][sortedPoints[1], sortedPoints] .|> abs))^0.5
+
     # impurity local terms
-    impCorr = 5 * (2 + 5 * abs(hamiltDetails["W_val"]))
-    push!(hamiltonian, ("n",  [1], -impCorr/2)) # Ed nup
-    push!(hamiltonian, ("n",  [2], -impCorr/2)) # Ed ndown
-    push!(hamiltonian, ("nn",  [1, 2], impCorr)) # U nup ndown
-    excludeRange = (hamiltDetails["J_val_bare"], impCorr/4)
+    push!(hamiltonian, ("n",  [1], -hamiltDetails["imp_corr"]/2)) # Ed nup
+    push!(hamiltonian, ("n",  [2], -hamiltDetails["imp_corr"]/2)) # Ed ndown
+    push!(hamiltonian, ("nn",  [1, 2], hamiltDetails["imp_corr"])) # U nup ndown
+    excludeRange = (1.0 * maximum(hamiltDetails["kondoJArray_bare"]), hamiltDetails["imp_corr"]/4)
 
     indexPartitions = [10]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
@@ -378,7 +378,6 @@ function AuxiliaryLocalSpecfunc(
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
-        kondoTemp::Float64=1.,
     )
     if targetHeight < 0
         targetHeight = 0
@@ -392,7 +391,7 @@ function AuxiliaryLocalSpecfunc(
     SWIndices = [p for p in 1:size_BZ^2 if 
                  #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
                  #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
-                 map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&
+                 #=map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&=#
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
     distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 
@@ -414,26 +413,31 @@ function AuxiliaryLocalSpecfunc(
     broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
                                      for name in keys(specDictSet)
                                     )
-    fixedContrib = Vector{Float64}[Float64[] for _ in 1:8]
-    specCoeffs = Vector{Tuple{Float64, Float64}}[Tuple{Float64, Float64}[] for _ in 1:8]
+    sortedPointsSets = [sortedPointsNode, sortedPointsAntiNode]
+    energySigns = [1, -1]
+    argsPermutations = [(p, s) for p in sortedPointsSets for s in energySigns]
+    specFuncResultsGathered = repeat(Any[nothing], length(argsPermutations))
 
-    @sync for (i, sortedPoints) in enumerate([sortedPointsNode, sortedPointsAntiNode])
-        for (j, energySign) in enumerate([1, -1])
-            Threads.@spawn begin
-                threadCounter = Dict((1, 1) => 1, (1, 2) => 2, (2, 1) => 3, (2, 2) => 4)[(i, j)]
-                hamiltDetailsModified = deepcopy(hamiltDetails)
-                hamiltDetailsModified["dispersion"][sortedPoints] = energySign .* (10 .^ range(-3, stop=0., length=length(sortedPoints)))
-                specFuncResults = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
-                                                      specDictSet, bathIntLegs, freqValues, 
-                                                      standDev; addPerStep=addPerStep,
-                                                      silent=false, broadFuncType=broadType,
-                                                      normEveryStep=false, onlyCoeffs=onlyCoeffs,
-                                                      kondoTemp=kondoTemp,
-                                                  )
-                fixedContrib[2 * threadCounter - 1] = specFuncResults["cdagd_up"]
-                fixedContrib[2 * threadCounter] = specFuncResults["cdagd_down"]
-                specCoeffs[2 * threadCounter - 1] = specFuncResults["Sd+"]
-                specCoeffs[2 * threadCounter] = specFuncResults["Sd-"]
+    @sync for (threadCounter, (sortedPoints, energySign)) in enumerate(argsPermutations)
+        Threads.@spawn begin
+            hamiltDetailsModified = deepcopy(hamiltDetails)
+            hamiltDetailsModified["imp_corr"] = hamiltDetails["imp_corr"] * energySign
+            specFuncResultsGathered[threadCounter] = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
+                                                  specDictSet, bathIntLegs, freqValues, 
+                                                  standDev; addPerStep=addPerStep,
+                                                  silent=false, broadFuncType=broadType,
+                                                  normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                              )
+        end
+    end
+    fixedContrib = Vector{Float64}[]
+    specCoeffs = Vector{Tuple{Float64, Float64}}[]
+    for specFuncResults in specFuncResultsGathered
+        for (key, val) in specFuncResults
+            if key ∈ onlyCoeffs
+                push!(specCoeffs, val)
+            else
+                push!(fixedContrib, val)
             end
         end
     end

@@ -14,6 +14,8 @@ update_theme!(
                 spinewidth = 1.5,
                 xticklabelsize = 24,
                 yticklabelsize = 24,
+                xminorgridvisible=false,
+                xmajorgridvisible=false,
                      ),
               ScatterLines = (
                        linewidth = 6,
@@ -125,12 +127,14 @@ function plotLines(
         ylabel::LaTeXString,
         saveName::String;
         ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
+        xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         scatter::Bool=false,
         vlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
         hlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
         figSize::NTuple{2, Int64}=(300, 250),
         figPad::Union{Number, NTuple{4, Number}}=0,
         legendPos::String="rt",
+        linewidth::Number=4,
     )
     @assert legendPos ∈ Iterators.product(["r", "l", "c"], ["t", "b", "c"]) .|> join |> vec
 
@@ -146,11 +150,11 @@ function plotLines(
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
     for (i, (name, yvalues)) in enumerate(nameValuePairs)
         if !scatter
-            if !isempty(name)
-                lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1])
-                needsLegend = true
+            if isempty(name)
+                lines!(xvalues, yvalues; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             else
-                lines!(xvalues, yvalues; linestyle=linestyles[((i - 1) % 6) + 1])
+                lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                needsLegend = true
             end
         else
             if !isempty(name)
@@ -179,6 +183,9 @@ function plotLines(
 
     if !isnothing(ylimits)
         ylims!(ax, ylimits...)
+    end
+    if !isnothing(xlimits)
+        xlims!(ax, xlimits...)
     end
     resize_to_layout!(f)
 

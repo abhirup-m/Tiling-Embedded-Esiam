@@ -272,14 +272,15 @@ function AuxiliaryCorrelations(
             if spinOnly && effective_Wval ≠ 0
                 continue
             end
-            hamiltDetails["W_val"] = effective_Wval
             effectiveNumShells = W_val == 0 ? numShells : 1
             effectiveMaxSize = effective_Wval ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
+            savePaths = corrName -> joinpath(SAVEDIR, "$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(corrName).jld2")
+            hamiltDetails["W_val"] = effective_Wval
             println("\n W = $(W_val), eff_W=$(effective_Wval), $(effectiveNumShells) shells, maxSize = $(effectiveMaxSize)")
-            savePath = joinpath(SAVEDIR, "imp-corr-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(effectiveMaxSize)-$(bathIntLegs).jld2")
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
                 results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
-                                                effectiveMaxSize, savePath; 
+                                                effectiveMaxSize; 
+                                                savePath=savePaths,
                                                 vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                                 bathIntLegs=bathIntLegs,
                                                 noSelfCorr=["cfnode", "cfantinode"], 
@@ -287,14 +288,16 @@ function AuxiliaryCorrelations(
                                                 loadData=loadData
                                                )
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
-                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize, savePath;
+                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, spinCorrelation, effectiveMaxSize;
+                                                savePath=savePaths,
                                                 vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                                 bathIntLegs=bathIntLegs, 
                                                 addPerStep=1, numProcs=2,
                                                 loadData=loadData
                                                )
             else # case of W != 0 and considering the actual W as effective W, for charge
-                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize, savePath;
+                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
+                                                savePath=savePaths,
                                                 bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"], 
                                                 addPerStep=1, numProcs=2,
                                                 loadData=loadData
@@ -304,6 +307,9 @@ function AuxiliaryCorrelations(
         end
     end
     for (name, saveName) in saveNames
+        if spinOnly && name ∈ ["doubOcc", "cfnode", "cfantinode"]
+            continue
+        end
         quadrantResults = Dict(W_val => corrResults[W_val][name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)] for W_val in W_val_arr)
 
         nonNaNData = filter(!isnan, vcat([quadrantResults[W_val] for W_val in W_val_arr]...))
@@ -439,13 +445,14 @@ function AuxiliaryLocalSpecfunc(
               "sigmaReal_$(size_BZ).pdf";
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
              )
-    plotLines(imagSelfEnergy,
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", pair[2]) for pair in imagSelfEnergy],
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"\Sigma^{\prime\prime}(\omega)",
               "sigmaImag_$(size_BZ).pdf";
               ylimits=(-10., 0.1),
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
+              linewidth=1,
              )
     plotLines(imagSelfEnergy,
               freqValues ./ freqScaleFactor,
@@ -660,13 +667,14 @@ function TiledSpinCorr(
                             )
 
     effectiveNumShells = Dict(W_val => ifelse(W_val == 0, numShells, 1) for W_val in W_val_arr)
-    savePaths = Dict(W_val => joinpath(SAVEDIR, "tiled-spin-corr-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells[W_val])-$(maxSize)-$(bathIntLegs).jld2") for W_val in W_val_arr)
+    savePaths = Dict(W_val => corrName -> joinpath(SAVEDIR, "$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells[W_val])-$(maxSize)-$(bathIntLegs)-$(corrName).jld2") for W_val in W_val_arr)
     for W_val in W_val_arr
         results, _ = AuxiliaryCorrelations(
                                             hamiltDetailsDict[W_val], 
                                             effectiveNumShells[W_val], 
                                             spinCorrelation, 
-                                            maxSize,savePaths[W_val]; 
+                                            maxSize;
+                                            savePath=savePaths[W_val],
                                             loadData=loadData,
                                             numProcs=nprocs(),
                                            )
@@ -805,12 +813,12 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 13
+size_BZ = 49
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
-#=@time AuxiliaryCorrelations(size_BZ; loadData=false)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)
+@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#

@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 500
+maxSize = 1000
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -348,12 +348,13 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = NiceValues(size_BZ)[[1, 3, 5]]
+    W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.99 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]
+    W_val_arr_plot = filter(≠(0.6 * pseudogapStart(size_BZ)), W_val_arr)
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(-200:0.01:200)
+    freqValues = collect(-200:0.1:200)
     specFuncFull = Tuple{LaTeXString, Vector{Float64}}[]
     imagSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     realSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
@@ -372,7 +373,6 @@ function AuxiliaryLocalSpecfunc(
     nonIntSpecFunc = nothing
     fermiPoints = getIsoEngCont(dispersion, 0.)
     for W_val in W_val_arr
-
         effectiveNumShells = W_val == 0 ? numShells : 1
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
         if ispath(savePath) && loadData
@@ -394,7 +394,8 @@ function AuxiliaryLocalSpecfunc(
             @time specFunc, standDevGuess, quasipResidue = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
                                                     ImpurityExcitationOperators, freqValues, standDev[1], 
                                                     standDev[2], maxSize; 
-                                                    targetHeight=targetHeight, heightTolerance=1e-3,
+                                                    targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight), 
+                                                    heightTolerance=1e-3,
                                                     bathIntLegs=bathIntLegs, addPerStep=1, 
                                                     standDevGuess=standDevInner,
                                                    )
@@ -462,11 +463,13 @@ function AuxiliaryLocalSpecfunc(
               xlimits=(-freqValuesZoom2, freqValuesZoom2),
               ylimits=(-5., 5.),
              )
-    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr)], 
-              -1 .* W_val_arr / J_val,
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / quasipResidueArr[1])], 
+              -1 .* W_val_arr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / J_val,
               L"-W/J", 
-              L"Z_\text{imp}",
-              "localQPResidue_$(size_BZ).pdf",
+              L"Z_\text{imp} / Z_\text{FL}",
+              "localQPResidue_$(size_BZ).pdf";
+              scatter=true,
+              vlines=Tuple{AbstractString, Float64}[(L"PG start", - 1 .* pseudogapStart(size_BZ) / J_val), (L"PG end", -1 .* pseudogapEnd(size_BZ) / J_val)],
              )
 end
 
@@ -813,12 +816,12 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 49
+size_BZ = 25
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
-@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)
-#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=true)=#
+#=@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)=#
+@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#

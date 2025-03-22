@@ -19,7 +19,6 @@ at the RG fixed point.
 
     # loop over all points k for which we want to calculate Γ(k).
     for point in 1:size_BZ^2
-
         targetStatesForPoint = collect(1:size_BZ^2)[abs.(dispersion).<=abs(dispersion[point])]
 
         # calculate the sum over q
@@ -202,21 +201,22 @@ end
         broadFuncType = Dict(name => broadFuncType for name in specFuncDict)
     end
 
-    bathIntFunc = points -> hamiltDetails["bathIntForm"](0., 
+    bathIntFunc = points -> hamiltDetails["bathIntForm"](0.,
+                                                         # hamiltDetails["W_val"],
                                                          hamiltDetails["orbitals"][2],
                                                          hamiltDetails["size_BZ"],
                                                          points)
                             
     hamiltonian = KondoModel(
                              hamiltDetails["dispersion"][sortedPoints],
-                             hamiltDetails["kondoJArray"][sortedPoints, sortedPoints],
+                             hamiltDetails["kondoJArray"][sortedPoints, sortedPoints] ./ length(sortedPoints),
                              sortedPoints, bathIntFunc;
                              bathIntLegs=bathIntLegs,
                              globalField=hamiltDetails["globalField"],
                              couplingTolerance=1e-10,
                             )
 
-    kondoTemp = 1.0 * (sum(hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs) / sum(hamiltDetails["kondoJArray_bare"][sortedPoints[1], sortedPoints] .|> abs))^0.5
+    kondoTemp = (sum(hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs) / sum(hamiltDetails["kondoJArray_bare"][sortedPoints[1], sortedPoints] .|> abs))^0.6
 
     # impurity local terms
     push!(hamiltonian, ("n",  [1], -hamiltDetails["imp_corr"]/2)) # Ed nup
@@ -224,18 +224,18 @@ end
     push!(hamiltonian, ("nn",  [1, 2], hamiltDetails["imp_corr"])) # U nup ndown
     excludeRange = (1.0 * maximum(hamiltDetails["kondoJArray_bare"]), hamiltDetails["imp_corr"]/4)
 
-    indexPartitions = [10]
+    indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * length(sortedPoints)
         push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
     end
     hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
-
+    
     savePaths, resultsDict, specFuncOperators = IterDiag(
                                                          hamiltonianFamily, 
                                                          maxSize;
                                                          symmetries=Char['N', 'S'],
-                                                         #=magzReq=(m, N) -> -1 ≤ m ≤ 2,=#
-                                                         #=occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,=#
+                                                         magzReq=(m, N) -> -3 ≤ m ≤ 4,
+                                                         occReq=(x, N) -> div(N, 2) - 4 ≤ x ≤ div(N, 2) + 4,
                                                          silent=silent,
                                                          maxMaxSize=maxSize,
                                                          specFuncDefDict=specFuncDict,
@@ -246,16 +246,16 @@ end
         if name ∈ onlyCoeffs
             specCoeffs = IterSpectralCoeffs(savePaths, operator;
                                             degenTol=1e-10, silent=silent,
-                                            excludeLevels= E -> excludeRange[1] < E < excludeRange[2],
+                                            #=excludeLevels= E -> excludeRange[1] < E < excludeRange[2],=#
                                            )
             scaledSpecCoeffs = NTuple{2, Float64}[(weight * kondoTemp, pole) for (weight, pole) in vcat(specCoeffs...)]
             specFuncResults[name] = scaledSpecCoeffs
         else
-            specFunc, specFuncMatrix = IterSpecFunc(savePaths, operator, freqValues, 
+            specFunc = IterSpecFunc(savePaths, operator, freqValues, 
                                                     standDev[name]; normEveryStep=normEveryStep, 
-                                                    degenTol=1e-10, silent=silent, 
+                                                    degenTol=1e-10, silent=false, 
                                                     broadFuncType=broadFuncType[name],
-                                                    returnEach=true, normalise=false,
+                                                    returnEach=false, normalise=false,
                                                    )
             specFuncResults[name] = specFunc
         end
@@ -388,12 +388,18 @@ function AuxiliaryLocalSpecfunc(
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if 
-                 #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
-                 #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
+    SWIndicesAll = [p for p in 1:size_BZ^2 if 
+                 map1DTo2D(p, size_BZ)[1] ≤ 0 &&
+                 map1DTo2D(p, size_BZ)[2] ≤ 0 &&
                  #=map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2] &&=#
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
+
+    SWIndices = filter(p -> maximum(abs.(hamiltDetails["kondoJArray"][p, SWIndicesAll])) > 0, SWIndicesAll)
+    if length(SWIndices) == 1
+        push!(SWIndices, SWIndicesAll[findfirst(∉(SWIndices), SWIndicesAll)])
+    end
+    println(length(SWIndices))
     distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 
                                   for node in NODAL_POINTS])
                         for p in SWIndices
@@ -414,6 +420,10 @@ function AuxiliaryLocalSpecfunc(
                                      for name in keys(specDictSet)
                                     )
     sortedPointsSets = [sortedPointsNode, sortedPointsAntiNode]
+    #=sortedPointsSets = [sortedPointsNode]=#
+    #=sortedPointsSets = [sortedPointsAntiNode]=#
+    #=energySigns = [1]=#
+    #=energySigns = [-1]=#
     energySigns = [1, -1]
     argsPermutations = [(p, s) for p in sortedPointsSets for s in energySigns]
     specFuncResultsGathered = repeat(Any[nothing], length(argsPermutations))
@@ -422,6 +432,7 @@ function AuxiliaryLocalSpecfunc(
         Threads.@spawn begin
             hamiltDetailsModified = deepcopy(hamiltDetails)
             hamiltDetailsModified["imp_corr"] = hamiltDetails["imp_corr"] * energySign
+            hamiltDetailsModified["W_val"] = hamiltDetails["W_val"] * energySign
             specFuncResultsGathered[threadCounter] = IterDiagSpecFunc(hamiltDetailsModified, maxSize, deepcopy(sortedPoints),
                                                   specDictSet, bathIntLegs, freqValues, 
                                                   standDev; addPerStep=addPerStep,
@@ -442,22 +453,22 @@ function AuxiliaryLocalSpecfunc(
         end
     end
 
-    insideArea = sum(sum(fetch.([Threads.@spawn SpecFunc(specCoeff, freqValues, standDevInner; normalise=false) 
-                                       for specCoeff in specCoeffs]))) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
-    outsideArea = 0
-    for specFunc in fixedContrib
-        outsideArea += sum(specFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
-    end
-    quasipResidue = insideArea / (insideArea + outsideArea)
-
-    _, localSpecFunc, standDevInner = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3;
+    insideArea = sum(sum([SpecFunc(coeffs, freqValues, standDevInner; normalise=false) for coeffs in specCoeffs])) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+    centerSpecFuncArr, localSpecFunc, standDevInner = SpecFuncVariational(specCoeffs, freqValues, targetHeight, 1e-3;
                                  degenTol=1e-10, silent=false, 
                                  broadFuncType="lorentz", 
                                  fixedContrib=fixedContrib,
                                  standDevGuess=standDevGuess,
                                 )
 
-    return localSpecFunc, standDevInner, quasipResidue
+    outsideArea = 0
+    for specFunc in fixedContrib
+        outsideArea += sum(specFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+    end
+    println("Areas = ", (insideArea, outsideArea))
+    quasipResidue = insideArea / (insideArea + outsideArea)
+
+    return localSpecFunc, standDevInner, quasipResidue, centerSpecFuncArr
 end
 
 
@@ -486,7 +497,7 @@ function LatticeKspaceDOS(
     SWIndices = [p for p in 1:size_BZ^2 if 
                  #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
                  #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
-                 map1DTo2D(p, size_BZ)[1] ≤ -map1DTo2D(p, size_BZ)[2] &&
+                 #=map1DTo2D(p, size_BZ)[1] ≤ -map1DTo2D(p, size_BZ)[2] &&=#
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
     calculatePoints = [p for p in SWIndices

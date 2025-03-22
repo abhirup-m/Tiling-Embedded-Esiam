@@ -135,6 +135,8 @@ function plotLines(
         figPad::Union{Number, NTuple{4, Number}}=0,
         legendPos::String="rt",
         linewidth::Number=4,
+        xscale::Function=identity,
+        yscale::Function=identity,
     )
     @assert legendPos ∈ Iterators.product(["r", "l", "c"], ["t", "b", "c"]) .|> join |> vec
 
@@ -144,6 +146,8 @@ function plotLines(
         ylabel = ylabel,
         width=figSize[1],
         height=figSize[2],
+        xscale=xscale,
+        yscale=yscale,
     )
     needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
@@ -169,12 +173,21 @@ function plotLines(
     if length(vlines) + length(hlines) > 0
         lineColors = cgrad(:Dark2_8, length(vlines) + length(hlines); categorical=true)
         for (i, (label, xloc)) in enumerate(vlines)
-            vlines!(ax, xloc, label=label, color=lineColors[i], linestyle=linestyles[i])
+            if isempty(label)
+                vlines!(ax, xloc, color=lineColors[i], linestyle=linestyles[i])
+            else
+                vlines!(ax, xloc, label=label, color=lineColors[i], linestyle=linestyles[i])
+                needsLegend = true
+            end
         end
         for (i, (label, yloc)) in enumerate(hlines)
-            hlines!(ax, yloc, label=label, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
+            if isempty(label)
+                hlines!(ax, yloc, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
+            else
+                hlines!(ax, yloc, label=label, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
+                needsLegend = true
+            end
         end
-        needsLegend = true
     end
 
     if needsLegend

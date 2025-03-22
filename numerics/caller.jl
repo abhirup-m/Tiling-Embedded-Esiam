@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1000
+maxSize = 500
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -78,7 +78,7 @@ function ScattProb(
         loadData::Bool=false
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[6]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
     results = [ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
@@ -348,18 +348,19 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.99 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]
-    W_val_arr_plot = filter(≠(0.6 * pseudogapStart(size_BZ)), W_val_arr)
+    W_val_arr = range(0.0, 1.1 * pseudogapEnd(size_BZ), length=28) |> collect
+    #=W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]=#
+    #=W_val_arr = NiceValues(size_BZ)[[1,2,3,6]]=#
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(-200:0.1:200)
+    freqValues = collect(-200:0.005:200)
     specFuncFull = Tuple{LaTeXString, Vector{Float64}}[]
     imagSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     realSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     quasipResidueArr = Float64[]
-    standDev = (0.5, exp.(abs.(freqValues).^2 ./ maximum(freqValues)))
+    standDev = (1.5, exp.(3 .* abs.(freqValues).^0.5 ./ maximum(freqValues)^0.5))
     targetHeight = 0.
     effective_Wval = 0.
     standDevGuess = 0.1
@@ -378,6 +379,7 @@ function AuxiliaryLocalSpecfunc(
         if ispath(savePath) && loadData
             specFunc = jldopen(savePath)["impSpecFunc"]
             quasipResidue = jldopen(savePath)["quasipResidue"]
+            centerSpec = jldopen(savePath)["centerSpec"]
             println("Collected W=$(W_val) from saved data.")
         else
             hamiltDetails = Dict(
@@ -389,87 +391,103 @@ function AuxiliaryLocalSpecfunc(
                                  "W_val" => W_val,
                                  "globalField" => GLOBALFIELD,
                                  "kondoJArray_bare" => kondoJArrays[W_val][:, :, 1],
-                                 "imp_corr" => 2 * (10 + 10 * abs(W_val)),
+                                 "imp_corr" => 2 * (25 + 10 * abs(W_val)),
                                 )
-            @time specFunc, standDevGuess, quasipResidue = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
+            @time specFunc, standDevGuess, quasipResidue, centerSpecFuncArr = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
                                                     ImpurityExcitationOperators, freqValues, standDev[1], 
                                                     standDev[2], maxSize; 
                                                     targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight), 
                                                     heightTolerance=1e-3,
-                                                    bathIntLegs=bathIntLegs, addPerStep=1, 
+                                                    bathIntLegs=2, addPerStep=1, 
                                                     standDevGuess=standDevInner,
                                                    )
+            println("QPR = ", quasipResidue)
+            centerSpec = sum(centerSpecFuncArr)
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
-            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue)
+            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue, centerSpec=sum(centerSpecFuncArr))
         end
-        map!(A -> A > 10^(-4) ? A : 0., specFunc, specFunc)
         if W_val == 0. && fixHeight
             targetHeight = specFunc[freqValues .≥ 0][1]
         end
 
         standDev = (standDevInner, standDev[2])
-        push!(specFuncFull, (getlabelInt(W_val, size_BZ), specFunc))
-        push!(quasipResidueArr, quasipResidue)
 
         selfEnergy = nothing
         if isnothing(nonIntSpecFunc)
             nonIntGamma = 2 / (π * specFunc[freqValues .≥ 0][1])
-            nonIntSpecFunc = (1/π) * (nonIntGamma / 2) ./ (freqValues.^2 .+ (nonIntGamma / 2)^2)
+            #=nonIntSpecFunc = specFunc=#
+            nonIntSpecFunc = centerSpec
+            #=nonIntSpecFunc[abs.(freqValues) .≥ 2.5 * freqScaleFactor] .= 1e-8=#
+            #=nonIntSpecFunc = (1/π) * (nonIntGamma / 2) ./ (freqValues.^2 .+ (nonIntGamma / 2)^2)=#
         end
+        #=specFunc[abs.(specFunc) .≤ 1e-4] .= 0=#
+        #=nonIntSpecFunc[abs.(nonIntSpecFunc) .≤ 1e-4] .= 0=#
+        println("SE-end = ", specFunc[freqValues .≥ freqValuesZoom2 * freqScaleFactor][1])
 
-        selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues; normalise=true)
+        selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues; normalise=false)
         imagSelfEnergyCurrent = imag(selfEnergy) .- imag(selfEnergy)[freqValues .≥ 0][1]
         imagSelfEnergyCurrent[imagSelfEnergyCurrent .≥ 0] .= 0
 
-        push!(realSelfEnergy, (getlabelInt(W_val, size_BZ), real(selfEnergy)))
-        push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), imagSelfEnergyCurrent))
+        push!(specFuncFull, (getlabelInt(W_val, size_BZ), specFunc))
+        push!(quasipResidueArr, quasipResidue)
+        if abs(W_val) > abs(W_val_arr[1])
+            push!(realSelfEnergy, (getlabelInt(W_val, size_BZ), real(selfEnergy) ./ freqScaleFactor))
+            push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), -1 .* imagSelfEnergyCurrent ./ freqScaleFactor))
+        end
 
     end
+    println(quasipResidueArr)
     plotLines(specFuncFull, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"A(\omega)",
-              "impSpecFunc_$(size_BZ).pdf";
+              "impSpecFunc_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
+              linewidth=1.5,
+              figPad=5,
              )
     plotLines(specFuncFull, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"A(\omega)",
-              "impSpecFuncTrunc_$(size_BZ).pdf";
+              "impSpecFuncTrunc_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom2, freqValuesZoom2),
              )
     plotLines(realSelfEnergy, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
-              L"\Sigma^\prime(\omega)",
-              "sigmaReal_$(size_BZ).pdf";
+              L"-\Sigma^\prime(\omega) / D",
+              "sigmaReal_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
-             )
-    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", pair[2]) for pair in imagSelfEnergy],
-              freqValues ./ freqScaleFactor,
-              L"\omega", 
-              L"\Sigma^{\prime\prime}(\omega)",
-              "sigmaImag_$(size_BZ).pdf";
-              ylimits=(-10., 0.1),
-              xlimits=(-freqValuesZoom1, freqValuesZoom1),
-              linewidth=1,
              )
     plotLines(imagSelfEnergy,
               freqValues ./ freqScaleFactor,
               L"\omega", 
-              L"\Sigma^{\prime\prime}(\omega)",
-              "sigmaImag-trunc_$(size_BZ).pdf";
-              xlimits=(-freqValuesZoom2, freqValuesZoom2),
-              ylimits=(-5., 5.),
+              L"-\Sigma^{\prime\prime}(\omega) / D",
+              "sigmaImag_$(size_BZ)-$(maxSize).pdf";
+              ylimits=(-0.1, 2.),
+              xlimits=(-1 * freqValuesZoom1, 1 * freqValuesZoom1),
+              linewidth=1.5,
+              figPad=10.,
              )
-    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / quasipResidueArr[1])], 
-              -1 .* W_val_arr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / J_val,
+    plotLines(imagSelfEnergy,
+              freqValues ./ freqScaleFactor,
+              L"\omega", 
+              L"-\Sigma^{\prime\prime}(\omega)/D",
+              "sigmaImag-trunc_$(size_BZ)-$(maxSize).pdf";
+              xlimits=(-freqValuesZoom2, freqValuesZoom2),
+              ylimits=(0., 5/8),
+              linewidth=1.5,
+              figPad=5,
+             )
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr)], 
+              -1 .* W_val_arr / J_val,
               L"-W/J", 
-              L"Z_\text{imp} / Z_\text{FL}",
-              "localQPResidue_$(size_BZ).pdf";
+              L"Z_\text{imp}",
+              "localQPResidue_$(size_BZ)-$(maxSize).pdf";
               scatter=true,
-              vlines=Tuple{AbstractString, Float64}[(L"PG start", - 1 .* pseudogapStart(size_BZ) / J_val), (L"PG end", -1 .* pseudogapEnd(size_BZ) / J_val)],
+              vlines=Tuple{AbstractString, Float64}[("", - 1 .* pseudogapStart(size_BZ) / J_val), ("", -1 .* pseudogapEnd(size_BZ) / J_val)],
+              yscale=log10,
              )
 end
 
@@ -816,7 +834,7 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 25
+size_BZ = 49
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#

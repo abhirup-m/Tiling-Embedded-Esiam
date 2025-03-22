@@ -14,8 +14,9 @@
 
 (@isdefined OMEGA_BY_t) || const OMEGA_BY_t = -2.
 
-(@isdefined NODAL_POINTS) || const NODAL_POINTS = [(-π/2, -π/2), (-π/2, π/2), (π/2, -π/2), (π/2, π/2)]
-(@isdefined ANTINODAL_POINTS) || const ANTINODAL_POINTS = [(0., π), (0., -π), (π, 0.), (-π, 0.)]
+(@isdefined NODAL_POINTS) || const NODAL_POINTS = [(-π/2, -π/2), (-π/2, π/2), (π/2, π/2), (π/2, -π/2)]
+(@isdefined ANTINODAL_POINTS) || const ANTINODAL_POINTS = [(-π, 0.), (0., π), (π, 0.), (0., -π)]
+(@isdefined CENTRAL_POINTS) || const CENTRAL_POINTS = [0.5 .* (p1 .+ p2) for (p1, p2) in zip(NODAL_POINTS, ANTINODAL_POINTS)]
 
 (@isdefined FIG_SIZE) || const FIG_SIZE = (700, 350)
 (@isdefined RG_RELEVANCE_TOL) || const RG_RELEVANCE_TOL = 1e-2

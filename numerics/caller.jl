@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1000
+maxSize = 500
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -78,7 +78,7 @@ function ScattProb(
         loadData::Bool=false
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[6]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
     results = [ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
@@ -348,7 +348,9 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.99 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]
+    W_val_arr = range(0.0, pseudogapEnd(size_BZ), length=6) |> collect
+    #=W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]=#
+    #=W_val_arr = NiceValues(size_BZ)[[1, 2, 6,]]=#
     W_val_arr_plot = filter(≠(0.6 * pseudogapStart(size_BZ)), W_val_arr)
     if fixHeight
         @assert 0 ∈ W_val_arr
@@ -375,7 +377,7 @@ function AuxiliaryLocalSpecfunc(
     for W_val in W_val_arr
         effectiveNumShells = W_val == 0 ? numShells : 1
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
-        if ispath(savePath) && loadData
+        if ispath(savePath) && loadData && W_val == W_val_arr[1]
             specFunc = jldopen(savePath)["impSpecFunc"]
             quasipResidue = jldopen(savePath)["quasipResidue"]
             println("Collected W=$(W_val) from saved data.")
@@ -396,9 +398,10 @@ function AuxiliaryLocalSpecfunc(
                                                     standDev[2], maxSize; 
                                                     targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight), 
                                                     heightTolerance=1e-3,
-                                                    bathIntLegs=bathIntLegs, addPerStep=1, 
+                                                    bathIntLegs=2, addPerStep=1, 
                                                     standDevGuess=standDevInner,
                                                    )
+            println("QPR = ", quasipResidue)
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
             jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue)
         end
@@ -425,32 +428,33 @@ function AuxiliaryLocalSpecfunc(
         push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), imagSelfEnergyCurrent))
 
     end
+    println(quasipResidueArr)
     plotLines(specFuncFull, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"A(\omega)",
-              "impSpecFunc_$(size_BZ).pdf";
+              "impSpecFunc_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
              )
     plotLines(specFuncFull, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"A(\omega)",
-              "impSpecFuncTrunc_$(size_BZ).pdf";
+              "impSpecFuncTrunc_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom2, freqValuesZoom2),
              )
     plotLines(realSelfEnergy, 
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"\Sigma^\prime(\omega)",
-              "sigmaReal_$(size_BZ).pdf";
+              "sigmaReal_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
              )
     plotLines(Tuple{LaTeXString, Vector{Float64}}[("", pair[2]) for pair in imagSelfEnergy],
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"\Sigma^{\prime\prime}(\omega)",
-              "sigmaImag_$(size_BZ).pdf";
+              "sigmaImag_$(size_BZ)-$(maxSize).pdf";
               ylimits=(-10., 0.1),
               xlimits=(-freqValuesZoom1, freqValuesZoom1),
               linewidth=1,
@@ -459,17 +463,18 @@ function AuxiliaryLocalSpecfunc(
               freqValues ./ freqScaleFactor,
               L"\omega", 
               L"\Sigma^{\prime\prime}(\omega)",
-              "sigmaImag-trunc_$(size_BZ).pdf";
+              "sigmaImag-trunc_$(size_BZ)-$(maxSize).pdf";
               xlimits=(-freqValuesZoom2, freqValuesZoom2),
               ylimits=(-5., 5.),
              )
-    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / quasipResidueArr[1])], 
-              -1 .* W_val_arr[W_val_arr .≠ 0.6 * pseudogapStart(size_BZ)] / J_val,
+    plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr)], 
+              -1 .* W_val_arr / J_val,
               L"-W/J", 
-              L"Z_\text{imp} / Z_\text{FL}",
-              "localQPResidue_$(size_BZ).pdf";
+              L"Z_\text{imp}",
+              "localQPResidue_$(size_BZ)-$(maxSize).pdf";
               scatter=true,
-              vlines=Tuple{AbstractString, Float64}[(L"PG start", - 1 .* pseudogapStart(size_BZ) / J_val), (L"PG end", -1 .* pseudogapEnd(size_BZ) / J_val)],
+              vlines=Tuple{AbstractString, Float64}[("", - 1 .* pseudogapStart(size_BZ) / J_val), ("", -1 .* pseudogapEnd(size_BZ) / J_val)],
+              yscale=log10,
              )
 end
 
@@ -816,12 +821,12 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 25
+size_BZ = 49
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)
+@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=false)
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true)=#

@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 500
+maxSize = 100
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -348,9 +348,9 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    W_val_arr = range(0.0, 1.1 * pseudogapEnd(size_BZ), length=28) |> collect
+    #=W_val_arr = range(0.0, 1.0 * pseudogapEnd(size_BZ), length=10) |> collect=#
     #=W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]=#
-    #=W_val_arr = NiceValues(size_BZ)[[1,2,3,6]]=#
+    W_val_arr = NiceValues(size_BZ)[[1,6]]
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
@@ -370,13 +370,12 @@ function AuxiliaryLocalSpecfunc(
 
     standDevInner = standDev[1]
 
-    deltaFunctionGamma = 1e-2
     nonIntSpecFunc = nothing
     fermiPoints = getIsoEngCont(dispersion, 0.)
     for W_val in W_val_arr
         effectiveNumShells = W_val == 0 ? numShells : 1
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
-        if ispath(savePath) && loadData
+        if ispath(savePath) && loadData && W_val == W_val_arr[1]
             specFunc = jldopen(savePath)["impSpecFunc"]
             quasipResidue = jldopen(savePath)["quasipResidue"]
             centerSpec = jldopen(savePath)["centerSpec"]
@@ -404,7 +403,7 @@ function AuxiliaryLocalSpecfunc(
             println("QPR = ", quasipResidue)
             centerSpec = sum(centerSpecFuncArr)
             roundDigits = trunc(Int, log(1/maximum(specFunc)) + 7)
-            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue, centerSpec=sum(centerSpecFuncArr))
+            jldsave(savePath; impSpecFunc=round.(specFunc, digits=roundDigits), quasipResidue=quasipResidue, centerSpec=centerSpec)
         end
         if W_val == 0. && fixHeight
             targetHeight = specFunc[freqValues .≥ 0][1]
@@ -412,27 +411,17 @@ function AuxiliaryLocalSpecfunc(
 
         standDev = (standDevInner, standDev[2])
 
-        selfEnergy = nothing
         if isnothing(nonIntSpecFunc)
-            nonIntGamma = 2 / (π * specFunc[freqValues .≥ 0][1])
-            #=nonIntSpecFunc = specFunc=#
             nonIntSpecFunc = centerSpec
-            #=nonIntSpecFunc[abs.(freqValues) .≥ 2.5 * freqScaleFactor] .= 1e-8=#
-            #=nonIntSpecFunc = (1/π) * (nonIntGamma / 2) ./ (freqValues.^2 .+ (nonIntGamma / 2)^2)=#
         end
-        #=specFunc[abs.(specFunc) .≤ 1e-4] .= 0=#
-        #=nonIntSpecFunc[abs.(nonIntSpecFunc) .≤ 1e-4] .= 0=#
-        println("SE-end = ", specFunc[freqValues .≥ freqValuesZoom2 * freqScaleFactor][1])
 
-        selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues; normalise=false)
-        imagSelfEnergyCurrent = imag(selfEnergy) .- imag(selfEnergy)[freqValues .≥ 0][1]
-        imagSelfEnergyCurrent[imagSelfEnergyCurrent .≥ 0] .= 0
+        selfEnergy = SelfEnergyHelper(specFunc, freqValues, nonIntSpecFunc; normalise=true, pinBottom=abs(W_val) ≤ abs(pseudogapEnd(size_BZ)))
 
         push!(specFuncFull, (getlabelInt(W_val, size_BZ), specFunc))
         push!(quasipResidueArr, quasipResidue)
         if abs(W_val) > abs(W_val_arr[1])
             push!(realSelfEnergy, (getlabelInt(W_val, size_BZ), real(selfEnergy) ./ freqScaleFactor))
-            push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), -1 .* imagSelfEnergyCurrent ./ freqScaleFactor))
+            push!(imagSelfEnergy, (getlabelInt(W_val, size_BZ), -1 .* imag(selfEnergy) ./ freqScaleFactor))
         end
 
     end
@@ -465,7 +454,7 @@ function AuxiliaryLocalSpecfunc(
               L"\omega", 
               L"-\Sigma^{\prime\prime}(\omega) / D",
               "sigmaImag_$(size_BZ)-$(maxSize).pdf";
-              ylimits=(-0.1, 2.),
+              ylimits=(-0.1, 1e1),
               xlimits=(-1 * freqValuesZoom1, 1 * freqValuesZoom1),
               linewidth=1.5,
               figPad=10.,
@@ -559,55 +548,46 @@ function LatticeKspaceDOS(
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = NiceValues(size_BZ)=#
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1, 3]]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(-15:0.001:15)
+    freqValues = collect(-200:0.1:200)
     freqValuesZoom1 = 6.
     freqValuesZoom2 = 0.3
-    standDev = (0.1, 0.0 .+ exp.(0.01 .* abs.(freqValues) ./ maximum(freqValues)))
+    standDev = (1., exp.(abs.(freqValues) ./ maximum(freqValues)))
     effective_Wval = 0.
     targetHeight = 0.0
-    standDevGuess = 0.1
+    standDevGuess = standDev[1]
     results = Dict{Float64, Dict{String, Vector{Float64}}}(W_val => Dict{String, Vector{Float64}}() 
                                                            for W_val in W_val_arr
                                                           )
-    saveNames = Dict(name => [] for name in ["kspaceDOS", "quasipRes"])
+    saveNames = Dict(name => [] for name in ["kspaceDOS", "quasipRes", "selfEnergyKspace"])
     plotTitles = Dict("kspaceDOS" => L"$A_{\vec{k}}(\omega\to 0)$",
                       "quasipRes" => L"$Z_{\vec{k}}$",
+                      "selfEnergyKspace" => L"$\Sigma^{\prime\prime}\left(\vec{k}, \omega \to 0\right)$",
                      )
+    nonIntSpecBzone = nothing
 
     for W_val in W_val_arr
         savePath = joinpath(SAVEDIR, "kspaceDOS-$(W_val)-$(effective_Wval)-$(size_BZ)-$(numShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
-        if ispath(savePath) && loadData
-            results[W_val]["kspaceDOS"] = jldopen(savePath)["kspaceDOS"]
-            nodeIndex = map2DTo1D(-π/2, -π/2, size_BZ)
-            results[W_val]["quasipRes"] = jldopen(savePath)["quasipRes"]
-            targetHeight = jldopen(savePath)["locHeight"]
-            println("Collected W=$(W_val) from saved data. $(targetHeight)")
-        else
-            hamiltDetails = Dict(
-                                 "dispersion" => dispersion,
-                                 "kondoJArray" => kondoJArrays[W_val][:, :, end],
-                                 "orbitals" => orbitals,
-                                 "size_BZ" => size_BZ,
-                                 "bathIntForm" => bathIntForm,
-                                 "W_val" => effective_Wval,
-                                 "globalField" => -GLOBALFIELD,
-                                )
-            specFuncKSpace, specFunc, standDevGuess, results[W_val] = LatticeKspaceDOS(hamiltDetails, numShells, 
-                                           KspaceExcitationOperators, freqValues, standDev[1], 
-                                           standDev[2], maxSize; bathIntLegs=bathIntLegs,
-                                           addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight),
-                                           standDevGuess=standDevGuess,
-                                          )
-            targetHeight = specFunc[freqValues .≥ 0][1]
-
-            jldsave(savePath; 
-                    kspaceDOS=results[W_val]["kspaceDOS"],
-                    quasipRes=results[W_val]["quasipRes"],
-                    locHeight=specFunc[freqValues .≥ 0][1],
-                   )
-        end
+        hamiltDetails = Dict(
+                             "dispersion" => dispersion,
+                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                             "orbitals" => orbitals,
+                             "size_BZ" => size_BZ,
+                             "bathIntForm" => bathIntForm,
+                             "W_val" => effective_Wval,
+                             "globalField" => -GLOBALFIELD,
+                             "kondoJArray_bare" => kondoJArrays[W_val][:, :, 1],
+                             "imp_corr" => 2 * (25 + 10 * abs(W_val)),
+                            )
+        specFuncKSpace, specFunc, standDevGuess, results[W_val], nonIntSpecBzone = LatticeKspaceDOS(hamiltDetails, numShells, 
+                                       KspaceExcitationOperators, freqValues, standDev[1], 
+                                       standDev[2], maxSize, savePath; loadData=loadData, bathIntLegs=bathIntLegs,
+                                       addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight),
+                                       standDevGuess=standDevGuess, nonIntSpecBzone=nonIntSpecBzone,
+                                       selfEnergyWindow=0.5,
+                                      )
+        targetHeight = specFunc[freqValues .≥ 0][1]
     end
 
     for name in keys(saveNames)

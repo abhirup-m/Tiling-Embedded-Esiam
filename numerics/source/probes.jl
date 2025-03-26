@@ -32,6 +32,22 @@ at the RG fixed point.
     return results_scaled, results_bool
 end
 
+function SelfEnergyHelper(
+        specFunc::Vector{Float64},
+        freqValues::Vector{Float64},
+        nonIntSpecFunc::Vector{Float64};
+        pinBottom::Bool=true,
+        normalise::Bool=true,
+    )
+    specFunc .+= 1e-8
+    selfEnergy = SelfEnergy(nonIntSpecFunc, specFunc, freqValues; normalise=normalise)
+    imagSelfEnergyCurrent = imag(selfEnergy)
+    if pinBottom
+        imagSelfEnergyCurrent .-= imagSelfEnergyCurrent[freqValues .≥ 0][1]
+    end
+    imagSelfEnergyCurrent[imagSelfEnergyCurrent .≥ 0] .= 0
+    return real(selfEnergy) .+ 1im .* imagSelfEnergyCurrent
+end
 
 """
 Return the map of Kondo couplings M_k(q) = J^2_{k,q} given the state k.
@@ -246,7 +262,6 @@ end
         if name ∈ onlyCoeffs
             specCoeffs = IterSpectralCoeffs(savePaths, operator;
                                             degenTol=1e-10, silent=silent,
-                                            #=excludeLevels= E -> excludeRange[1] < E < excludeRange[2],=#
                                            )
             scaledSpecCoeffs = NTuple{2, Float64}[(weight * kondoTemp, pole) for (weight, pole) in vcat(specCoeffs...)]
             specFuncResults[name] = scaledSpecCoeffs
@@ -378,6 +393,7 @@ function AuxiliaryLocalSpecfunc(
         addPerStep::Int64=1,
         maxIter::Int64=20,
         broadFuncType::String="gauss",
+        nonIntSpecFunc::Union{Nothing,Vector{Number}}=nothing,
     )
     if targetHeight < 0
         targetHeight = 0
@@ -396,10 +412,9 @@ function AuxiliaryLocalSpecfunc(
                 ]
 
     SWIndices = filter(p -> maximum(abs.(hamiltDetails["kondoJArray"][p, SWIndicesAll])) > 0, SWIndicesAll)
-    if length(SWIndices) == 1
+    while length(SWIndices) < 2
         push!(SWIndices, SWIndicesAll[findfirst(∉(SWIndices), SWIndicesAll)])
     end
-    println(length(SWIndices))
     distancesFromNode = [minimum([sum((map1DTo2D(p, size_BZ) .- node) .^ 2)^0.5 
                                   for node in NODAL_POINTS])
                         for p in SWIndices
@@ -420,10 +435,6 @@ function AuxiliaryLocalSpecfunc(
                                      for name in keys(specDictSet)
                                     )
     sortedPointsSets = [sortedPointsNode, sortedPointsAntiNode]
-    #=sortedPointsSets = [sortedPointsNode]=#
-    #=sortedPointsSets = [sortedPointsAntiNode]=#
-    #=energySigns = [1]=#
-    #=energySigns = [-1]=#
     energySigns = [1, -1]
     argsPermutations = [(p, s) for p in sortedPointsSets for s in energySigns]
     specFuncResultsGathered = repeat(Any[nothing], length(argsPermutations))
@@ -460,12 +471,10 @@ function AuxiliaryLocalSpecfunc(
                                  fixedContrib=fixedContrib,
                                  standDevGuess=standDevGuess,
                                 )
-
     outsideArea = 0
     for specFunc in fixedContrib
         outsideArea += sum(specFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
     end
-    println("Areas = ", (insideArea, outsideArea))
     quasipResidue = insideArea / (insideArea + outsideArea)
 
     return localSpecFunc, standDevInner, quasipResidue, centerSpecFuncArr
@@ -479,7 +488,9 @@ function LatticeKspaceDOS(
         freqValues::Vector{Float64},
         standDevInner::Union{Vector{Float64}, Float64},
         standDevOuter::Union{Vector{Float64}, Float64},
-        maxSize::Int64;
+        maxSize::Int64,
+        savePath::String;
+        loadData::Bool=false,
         onlyAt::Union{Nothing,NTuple{2, Float64}}=nothing,
         bathIntLegs::Int64=2,
         addPerStep::Int64=1,
@@ -487,22 +498,21 @@ function LatticeKspaceDOS(
         broadFuncType::String="gauss",
         targetHeight::Float64=0.,
         standDevGuess::Float64=0.1,
+        nonIntSpecBzone::Union{Vector{Vector{Float64}}, Nothing}=nothing,
+        selfEnergyWindow::Float64=0.,
     )
-
     size_BZ = hamiltDetails["size_BZ"]
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
     SWIndices = [p for p in 1:size_BZ^2 if 
-                 #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
-                 #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
+                 map1DTo2D(p, size_BZ)[1] ≤ 0 &&
+                 map1DTo2D(p, size_BZ)[2] ≤ 0 &&
                  #=map1DTo2D(p, size_BZ)[1] ≤ -map1DTo2D(p, size_BZ)[2] &&=#
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
-    calculatePoints = [p for p in SWIndices
-                       if 0 ≥ map1DTo2D(p, size_BZ)[1] ≥ map1DTo2D(p, size_BZ)[2]
-                      ]
+    calculatePoints = filter(p -> 0 ≥ map1DTo2D(p, size_BZ)[1] ≥ map1DTo2D(p, size_BZ)[2], SWIndices)
 
     oppositePoints = Dict{Int64, Vector{Int64}}()
     for point in calculatePoints
@@ -513,83 +523,126 @@ function LatticeKspaceDOS(
     end
     rotationMatrix(rotateAngle) = [cos(rotateAngle) -sin(rotateAngle); sin(rotateAngle) cos(rotateAngle)]
 
-    specCoeffsBZone = [NTuple{2, Float64}[] for _ in calculatePoints]
-    fixedContrib = [freqValues |> length |> zeros for _ in calculatePoints]
+    if ispath(savePath) && loadData
+        centerSpecFuncArr=jldopen(savePath)["centerSpecFuncArr"]
+        fixedContrib=jldopen(savePath)["fixedContrib"]
+        localSpecFunc=jldopen(savePath)["localSpecFunc"]
+        standDevFinal=jldopen(savePath)["standDevFinal"]
+        println("Collected $(savePath) from saved data.")
+    else
 
-    onlyCoeffs = ["Sd+", "Sd-"]
+        specCoeffsBZone = [NTuple{2, Float64}[] for _ in calculatePoints]
+        fixedContrib = [freqValues |> length |> zeros for _ in calculatePoints]
 
-    function SpectralCoeffsAtKpoint(
-            kspacePoint::Int64,
-            onlyCoeffs::Vector{String},
-        )
-        equivalentPoints = [rotationMatrix(rotateAngle) * map1DTo2D(kspacePoint, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
-        distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
-                            for p in SWIndices
-                           ]
-        sortedPoints = SWIndices[sortperm(distancesFromPivot)]
-        
-        specDictSet = specFuncDictFunc(length(SWIndices), (3, 4))
-        if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
-            delete!(specDictSet, "Sd+")
-            delete!(specDictSet, "Sd-")
+        onlyCoeffs = ["Sd+", "Sd-"]
+
+        function SpectralCoeffsAtKpoint(
+                kspacePoint::Int64,
+                onlyCoeffs::Vector{String};
+                invert::Bool=false,
+            )
+            equivalentPoints = [rotationMatrix(rotateAngle) * map1DTo2D(kspacePoint, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
+            distancesFromPivot = [minimum([sum((map1DTo2D(p, size_BZ) .- pivot) .^ 2)^0.5 for pivot in equivalentPoints])
+                                for p in SWIndices
+                               ]
+            sortedPoints = SWIndices[sortperm(distancesFromPivot)]
+            
+            specDictSet = specFuncDictFunc(length(SWIndices), (3, 4))
+            if hamiltDetails["kondoJArray"][sortedPoints[1], sortedPoints] .|> abs |> maximum == 0 
+                delete!(specDictSet, "Sd+")
+                delete!(specDictSet, "Sd-")
+            end
+
+            standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
+            broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
+                                             for name in keys(specDictSet)
+                                            )
+
+            hamiltDetailsModified = deepcopy(hamiltDetails)
+            if invert
+                hamiltDetailsModified["imp_corr"] = hamiltDetails["imp_corr"] * -1
+                hamiltDetailsModified["W_val"] = hamiltDetails["W_val"] * -1
+            end
+            specFuncResultsPoint = IterDiagSpecFunc(hamiltDetailsModified, maxSize, sortedPoints,
+                                               specDictSet, bathIntLegs, freqValues, 
+                                               standDev; addPerStep=addPerStep,
+                                               silent=true, broadFuncType=broadType,
+                                               normEveryStep=false, onlyCoeffs=onlyCoeffs,
+                                              )
+            return specFuncResultsPoint
         end
 
-        standDev = Dict{String, Union{Float64, Vector{Float64}}}(name => ifelse(name ∈ ("Sd+", "Sd-"), standDevInner, standDevOuter) for name in keys(specDictSet))
-        broadType = Dict{String, String}(name => ifelse(name ∈ ("Sd+", "Sd-"), "lorentz", "gauss")
-                                         for name in keys(specDictSet)
-                                        )
-        specFuncResultsPoint = IterDiagSpecFunc(hamiltDetails, maxSize, sortedPoints,
-                                           specDictSet, bathIntLegs, freqValues, 
-                                           standDev; addPerStep=addPerStep,
-                                           silent=true, broadFuncType=broadType,
-                                           normEveryStep=false, onlyCoeffs=onlyCoeffs,
-                                          )
-        return specFuncResultsPoint
-    end
+        if !isnothing(onlyAt)
+            pointIndex = map2DTo1D(onlyAt..., size_BZ)
+            specFuncResults = SpectralCoeffsAtKpoint(pointIndex, String[])
+            specFunc = Normalise(sum(values(specFuncResults)), freqValues, true)
+            return specFunc
+        end
 
-    if !isnothing(onlyAt)
-        pointIndex = map2DTo1D(onlyAt..., size_BZ)
-        specFuncResults = SpectralCoeffsAtKpoint(pointIndex, String[])
-        specFunc = Normalise(sum(values(specFuncResults)), freqValues, true)
-        return specFunc
-    end
-
-    specFuncResults = @showprogress pmap(k -> SpectralCoeffsAtKpoint(k, onlyCoeffs), calculatePoints)
-    for (index, specFuncResultsPoint) in enumerate(specFuncResults)
-        for (name, val) in specFuncResultsPoint 
-            if name ∉ onlyCoeffs
-                fixedContrib[index] .+= val
-            else
-                append!(specCoeffsBZone[index], val)
+        @time specFuncResultsParticle = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])# @showprogress pmap(k -> SpectralCoeffsAtKpoint(k, onlyCoeffs), calculatePoints)
+        @time specFuncResultsHole = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])# @showprogress pmap(k -> SpectralCoeffsAtKpoint(k, onlyCoeffs), calculatePoints)
+        for specFuncResults in [specFuncResultsParticle, specFuncResultsHole]
+            for (index, specFuncResultsPoint) in enumerate(specFuncResults)
+                for (name, val) in specFuncResultsPoint 
+                    if name ∉ onlyCoeffs
+                        fixedContrib[index] .+= val
+                    else
+                        append!(specCoeffsBZone[index], val)
+                    end
+                end
             end
         end
+
+        centerSpecFuncArr, localSpecFunc, standDevFinal = SpecFuncVariational(specCoeffsBZone, freqValues, targetHeight, 1e-3; 
+                                       degenTol=1e-10, silent=false, 
+                                       broadFuncType="lorentz", fixedContrib=fixedContrib,
+                                       standDevGuess=standDevGuess,
+                                      )
+        jldsave(savePath; 
+                centerSpecFuncArr=centerSpecFuncArr,
+                fixedContrib=fixedContrib,
+                localSpecFunc=localSpecFunc,
+                standDevFinal=standDevFinal,
+               )
     end
 
-    centerSpecFuncArr, localSpecFunc, standDevFinal = SpecFuncVariational(specCoeffsBZone, freqValues, targetHeight, 1e-3; 
-                                   degenTol=1e-10, silent=false, 
-                                   broadFuncType="lorentz", fixedContrib=fixedContrib,
-                                   standDevGuess=standDevGuess,
-                                  )
-
+    antinode = map2DTo1D(0., -π, size_BZ)
     specFuncKSpace = [freqValues |> length |> zeros for _ in calculatePoints]
 
-    results = Dict("kspaceDOS" => zeros(size_BZ^2), "quasipRes" => zeros(size_BZ^2))
+    results = Dict("kspaceDOS" => zeros(size_BZ^2), "quasipRes" => zeros(size_BZ^2), "selfEnergyKspace" => zeros(size_BZ^2))
 
-    results["kspaceDOS"][:, :] .= NaN
-    results["quasipRes"][:, :] .= NaN
+    results["kspaceDOS"] .= NaN
+    results["quasipRes"] .= NaN
+    results["selfEnergyKspace"] .= NaN
 
     for (index, centerSpecFunc) in enumerate(centerSpecFuncArr)
-            centerArea = sum(centerSpecFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
-            sideArea = sum(fixedContrib[index]) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
-            results["quasipRes"][calculatePoints[index]] = centerArea / (centerArea + sideArea)
-            specFuncKSpace[index] = Normalise(centerSpecFunc .+ fixedContrib[index], freqValues, true)
-            results["kspaceDOS"][calculatePoints[index]] = specFuncKSpace[index][freqValues .≥ 0][1]
+        centerArea = sum(centerSpecFunc) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+        sideArea = sum(fixedContrib[index]) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)
+        results["quasipRes"][calculatePoints[index]] = centerArea / (centerArea + sideArea)
+        specFuncKSpace[index] = Normalise(centerSpecFunc .+ fixedContrib[index], freqValues, true)
+        results["kspaceDOS"][calculatePoints[index]] = specFuncKSpace[index][freqValues .≥ 0][1]
+    end
+
+    if isnothing(nonIntSpecBzone)
+        nonIntSpecBzone = [zeros(length(freqValues)) for _ in calculatePoints]
+        for (index, centerSpecFunc) in enumerate(centerSpecFuncArr)
+            nonIntSpecBzone[index] = centerSpecFunc
+        end
+    end
+
+    for index in eachindex(calculatePoints)
+        selfEnergyPoint = SelfEnergy(nonIntSpecBzone[index], specFuncKSpace[index], freqValues; normalise=false)
+        realSelfEnergy = real(selfEnergyPoint)
+        imagSelfEnergy = imag(selfEnergyPoint) .- imag(selfEnergyPoint)[freqValues .≥ 0][1]
+        imagSelfEnergy[imagSelfEnergy .≥ 0] .= 0
+        selfEnergyPoint = realSelfEnergy .+ 1im .* imagSelfEnergy
+        results["selfEnergyKspace"][calculatePoints[index]] = log(abs(sum(imagSelfEnergy[abs.(freqValues) .< selfEnergyWindow]) * (maximum(freqValues) - minimum(freqValues)) / (length(freqValues) - 1)))
     end
 
     results = PropagateIndices(calculatePoints, results, size_BZ, 
                                  oppositePoints)
 
-    return specFuncKSpace, localSpecFunc, standDevFinal, results
+    return specFuncKSpace, localSpecFunc, standDevFinal, results, nonIntSpecBzone
 end
 
 

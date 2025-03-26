@@ -13,7 +13,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 100
+maxSize = 500
 WmaxSize = 500
 
 colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
@@ -548,7 +548,7 @@ function LatticeKspaceDOS(
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = NiceValues(size_BZ)=#
-    W_val_arr = NiceValues(size_BZ)[[1, 3]]
+    W_val_arr = NiceValues(size_BZ)[[1, 3, 4, 5]]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-200:0.1:200)
     freqValuesZoom1 = 6.
@@ -585,7 +585,7 @@ function LatticeKspaceDOS(
                                        standDev[2], maxSize, savePath; loadData=loadData, bathIntLegs=bathIntLegs,
                                        addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight),
                                        standDevGuess=standDevGuess, nonIntSpecBzone=nonIntSpecBzone,
-                                       selfEnergyWindow=0.5,
+                                       selfEnergyWindow=0.1,
                                       )
         targetHeight = specFunc[freqValues .≥ 0][1]
     end
@@ -603,7 +603,7 @@ function LatticeKspaceDOS(
             push!(saveNames[name], plotHeatmap(abs.(quadrantResults[W_val]), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
                                                (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], 
                                                getlabelInt(W_val, size_BZ), colmap;
-                                               #=colorbarLimits=colorbarLimits,=#
+                                               colorbarLimits=colorbarLimits,
                                               )
                  )
         end
@@ -814,15 +814,15 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 49
+size_BZ = 13
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
-#=@time LatticeKspaceDOS(size_BZ; loadData=true)=#
+@time LatticeKspaceDOS(size_BZ; loadData=true)
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#

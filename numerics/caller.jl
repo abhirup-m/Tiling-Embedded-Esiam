@@ -1,8 +1,8 @@
 using Distributed, Random
 
-if length(Sys.cpu_info()) > 10 && nprocs() == 1
-    addprocs(2)
-end
+#=if length(Sys.cpu_info()) > 10 && nprocs() == 1=#
+#=    addprocs(2)=#
+#=end=#
 @everywhere using LinearAlgebra, CSV, JLD2, FileIO, CodecZlib
 
 @everywhere include("./source/constants.jl")
@@ -545,10 +545,11 @@ end
 function LatticeKspaceDOS(
         size_BZ::Int64;
         loadData::Bool=false,
+        singleThread::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    #=W_val_arr = NiceValues(size_BZ)=#
-    W_val_arr = NiceValues(size_BZ)[[1, 3, 4, 5]]
+    W_val_arr = NiceValues(size_BZ)
+    #=W_val_arr = NiceValues(size_BZ)[[1, 2]]=#
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-200:0.1:200)
     freqValuesZoom1 = 6.
@@ -557,13 +558,13 @@ function LatticeKspaceDOS(
     effective_Wval = 0.
     targetHeight = 0.0
     standDevGuess = standDev[1]
-    results = Dict{Float64, Dict{String, Vector{Float64}}}(W_val => Dict{String, Vector{Float64}}() 
-                                                           for W_val in W_val_arr
-                                                          )
     saveNames = Dict(name => [] for name in ["kspaceDOS", "quasipRes", "selfEnergyKspace"])
+    quadrantResults = Dict{String, Dict{Float64, Vector{Float64}}}(name => Dict{Float64, Vector{Float64}}() 
+                                                                   for name in keys(saveNames)
+                                                          )
     plotTitles = Dict("kspaceDOS" => L"$A_{\vec{k}}(\omega\to 0)$",
                       "quasipRes" => L"$Z_{\vec{k}}$",
-                      "selfEnergyKspace" => L"$\Sigma^{\prime\prime}\left(\vec{k}, \omega \to 0\right)$",
+                      "selfEnergyKspace" => L"$-\Sigma^{\prime\prime}\left(\vec{k}, \omega \to 0\right)$",
                      )
     nonIntSpecBzone = nothing
 
@@ -580,30 +581,28 @@ function LatticeKspaceDOS(
                              "kondoJArray_bare" => kondoJArrays[W_val][:, :, 1],
                              "imp_corr" => 2 * (25 + 10 * abs(W_val)),
                             )
-        specFuncKSpace, specFunc, standDevGuess, results[W_val], nonIntSpecBzone = LatticeKspaceDOS(hamiltDetails, numShells, 
+        specFuncKSpace, specFunc, standDevGuess, results, nonIntSpecBzone = LatticeKspaceDOS(hamiltDetails, numShells, 
                                        KspaceExcitationOperators, freqValues, standDev[1], 
                                        standDev[2], maxSize, savePath; loadData=loadData, bathIntLegs=bathIntLegs,
                                        addPerStep=1, targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight),
                                        standDevGuess=standDevGuess, nonIntSpecBzone=nonIntSpecBzone,
-                                       selfEnergyWindow=0.1,
+                                       selfEnergyWindow=0.19,
+                                       singleThread=false,
                                       )
+        for (name, val) in results
+            quadrantResults[name][W_val] = results[name][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
+        end
         targetHeight = specFunc[freqValues .≥ 0][1]
     end
 
     for name in keys(saveNames)
-        quadrantResults = Dict(W_val => results[W_val][name][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)] 
-                               for W_val in W_val_arr)
-        nonNaNData = filter(!isnan, vcat(values(quadrantResults)...))
-        if minimum(nonNaNData) < maximum(nonNaNData)
-            colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
-        else
-            colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
-        end
+        colorbarLimits = ColorbarLimits(quadrantResults[name])
         for W_val in W_val_arr
-            push!(saveNames[name], plotHeatmap(abs.(quadrantResults[W_val]), (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
+            push!(saveNames[name], plotHeatmap(quadrantResults[name][W_val], (x_arr[x_arr .≥ 0], x_arr[x_arr .≥ 0]), 
                                                (L"$ak_x/\pi$", L"$ak_y/\pi$"), plotTitles[name], 
                                                getlabelInt(W_val, size_BZ), colmap;
                                                colorbarLimits=colorbarLimits,
+                                               colorScale=ifelse(name == "selfEnergyKspace", log10, identity),
                                               )
                  )
         end
@@ -814,7 +813,7 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 13
+size_BZ = 77
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
@@ -822,7 +821,7 @@ size_BZ = 13
 #=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
-@time LatticeKspaceDOS(size_BZ; loadData=true)
+@time LatticeKspaceDOS(size_BZ; loadData=false, singleThread=true)
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#

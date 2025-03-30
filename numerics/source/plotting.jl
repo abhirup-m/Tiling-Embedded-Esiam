@@ -32,6 +32,27 @@ update_theme!(
              )
 
 
+function ColorbarLimits(
+        quadrantResults::Vector{Float64},
+    )
+    nonNaNData = filter(!isnan, quadrantResults)
+    if minimum(nonNaNData) < maximum(nonNaNData)
+        colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
+    else
+        colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
+    end
+    return colorbarLimits
+end
+
+
+function ColorbarLimits(
+        quadrantResults::Dict{Float64, Vector{Float64}}
+    )
+    gatheredResults = vcat(values(quadrantResults)...)
+    return ColorbarLimits(gatheredResults)
+end
+
+
 function plotHeatmap(
         matrixData::Union{Matrix{Int64}, Matrix{Float64}, Vector{Int64}, Vector{Float64}},
         axisVals::NTuple{2, Vector{Float64}},
@@ -45,18 +66,11 @@ function plotHeatmap(
         colorScale::Function=identity,
         marker::Union{Nothing, Vector{Float64}}=nothing,
     )
-    matrixData = reshape(matrixData, length.(axisVals))
 
     if isnothing(colorbarLimits)
-        nonNaNData = filter(!isnan, matrixData)
-        if isempty(nonNaNData)
-            colorbarLimits = (-1, 1)
-        elseif minimum(nonNaNData) < maximum(nonNaNData)
-            colorbarLimits = (minimum(nonNaNData), maximum(nonNaNData))
-        else
-            colorbarLimits = (minimum(nonNaNData)*(1-1e-5) - 1e-5, minimum(nonNaNData)*(1+1e-5) + 1e-5)
-        end
+        colorbarLimits = ColorbarLimits(matrixData)
     end
+    matrixData = reshape(matrixData, length.(axisVals))
     figure = Figure(figure_padding=figPad)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 

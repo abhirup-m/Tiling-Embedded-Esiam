@@ -268,7 +268,7 @@ end
         else
             specFunc = IterSpecFunc(savePaths, operator, freqValues, 
                                                     standDev[name]; normEveryStep=normEveryStep, 
-                                                    degenTol=1e-10, silent=false, 
+                                                    degenTol=1e-10, silent=silent, 
                                                     broadFuncType=broadFuncType[name],
                                                     returnEach=false, normalise=false,
                                                    )
@@ -500,6 +500,7 @@ function LatticeKspaceDOS(
         standDevGuess::Float64=0.1,
         nonIntSpecBzone::Union{Vector{Vector{Float64}}, Nothing}=nothing,
         selfEnergyWindow::Float64=0.,
+        singleThread::Bool=false,
     )
     size_BZ = hamiltDetails["size_BZ"]
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
@@ -507,9 +508,9 @@ function LatticeKspaceDOS(
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
     SWIndicesAll = [p for p in 1:size_BZ^2 if 
-                 map1DTo2D(p, size_BZ)[1] ≤ 0 &&
-                 map1DTo2D(p, size_BZ)[2] ≤ 0 &&
-                 #=map1DTo2D(p, size_BZ)[1] ≤ -map1DTo2D(p, size_BZ)[2] &&=#
+                 #=map1DTo2D(p, size_BZ)[1] ≤ 0 &&=#
+                 #=map1DTo2D(p, size_BZ)[2] ≤ 0 &&=#
+                 map1DTo2D(p, size_BZ)[1] ≤ -map1DTo2D(p, size_BZ)[2] &&
                  abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
     calculatePoints = filter(p -> 0 ≥ map1DTo2D(p, size_BZ)[1] ≥ map1DTo2D(p, size_BZ)[2], SWIndicesAll)
@@ -574,7 +575,7 @@ function LatticeKspaceDOS(
             specFuncResultsPoint = IterDiagSpecFunc(hamiltDetailsModified, maxSize, sortedPoints,
                                                specDictSet, bathIntLegs, freqValues, 
                                                standDev; addPerStep=addPerStep,
-                                               silent=true, broadFuncType=broadType,
+                                               silent=false, broadFuncType=broadType,
                                                normEveryStep=false, onlyCoeffs=onlyCoeffs,
                                               )
             return specFuncResultsPoint
@@ -588,9 +589,14 @@ function LatticeKspaceDOS(
         end
 
         specFuncResults = Any[nothing, nothing]
-        @time @sync begin
-            @async specFuncResults[1] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
-            @async specFuncResults[2] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
+        @sync begin
+            if !singleThread
+                @async specFuncResults[1] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
+                @async specFuncResults[2] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
+            else
+                @async specFuncResults[1] = fetch.(Threads.@spawn [SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
+                @async specFuncResults[2] = fetch.(Threads.@spawn [SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
+            end
         end
         for results in specFuncResults
             for (index, specFuncResultsPoint) in enumerate(results)
@@ -645,10 +651,9 @@ function LatticeKspaceDOS(
                                                                                normalise=true, 
                                                                                pinBottom=maximum(abs.(hamiltDetails["kondoJArray"][calculatePoints[index], SWIndicesAll])) > 0
                                                                               ))
-        results["selfEnergyKspace"][calculatePoints[index]] = sum(imagSelfEnergy[abs.(freqValues) .≤ selfEnergyWindow]) * (maximum(freqValues) - minimum(freqValues)) ./ (length(freqValues) -1)
-    end
-    for (index, v) in enumerate(results["selfEnergyKspace"])
-        results["selfEnergyKspace"][index] = abs(v) > 1e2 ? 1e2 : v
+        results["selfEnergyKspace"][calculatePoints[index]] = -(sum(imagSelfEnergy[abs.(freqValues) .≤ selfEnergyWindow]) * (maximum(freqValues) - minimum(freqValues)) ./ (length(freqValues) -1))
+        results["selfEnergyKspace"][calculatePoints[index]] = minimum((1e2, results["selfEnergyKspace"][calculatePoints[index]]))
+        results["selfEnergyKspace"][calculatePoints[index]] = maximum((1e-2, results["selfEnergyKspace"][calculatePoints[index]]))
     end
 
     results = PropagateIndices(calculatePoints, results, size_BZ, 

@@ -150,7 +150,7 @@ function getUpperQuadrantLowerIndices(size_BZ)
 end
 
 
-# propagate results from lower octant to upper octant
+# symmetrise results from lower octant to whole Brillouin zone
 function PropagateIndices(
         innerPoints::Vector{Int64}, 
         corrResults::Dict{String, Vector{Float64}}, 

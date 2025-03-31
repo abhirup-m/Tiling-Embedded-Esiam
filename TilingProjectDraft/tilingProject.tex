@@ -674,17 +674,20 @@ where \(\text{Tr}_{\bf q}\left[\cdot\right]\) is the partial trace over the Hilb
 where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The first term leads to the expression in eq.~\ref{SEE-k}, while the second term can be used to improve this estimate. Away from any quantum critical points, the localised nature of the impurity-bath hybridisation ensures that impurity correlations decay exponentially away from the transition. This ensures that the second term is very small away from a critical point. We therefore restrict ourselves to just the first term in the present work.
 
 \section{Low-energy description of the embedded eSIAM}
-\subsection{Zero temperature phase diagram}
+\subsection{Zero temperature phase diagram and impurity site dynamics}
+The ground state phase diagram of the impurity model is shown in the left panel of Fig.~\ref{phaseDiagram}. We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling \(J\), the impurity site undergoes a transition from a screened paramagnetic phase (dark green) to an unscreened local moment phase (yellow), through an intermediate pseudogapped regime (pink). The nature of pseudogapped phase will be clarified in the upcoming sections. The phase transition is seen through the evolution of the local spectral function (middle panel of Fig.~\ref{phaseDiagram}); increasing the ratio \(W/J\) leads to the sharpening of the central Kondo resonance, indicating that the local Fermi liquid excitations are becoming poorer. At the transition, the extremely sharp peak disappears and we are left with a hard gap at zero frequency. A complimentary picture is painted by the imaginary part \(\Sigma^{\prime\prime}\) of the impurity self-energy. The poles in \(\Sigma^{\prime\prime}\) are the edges of the central Kondo resonance, and its sharpening leads to the coalescing of the poles.
+
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.23\textwidth]{phaseDiagram.pdf}
-	\includegraphics[width=0.24\textwidth]{impSpecFuncTrunc_49.pdf}
-	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Right}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase.}
+	\includegraphics[width=0.32\textwidth]{phaseDiagram.pdf}
+	\includegraphics[width=0.32\textwidth]{impSpecFunc_49-1000.pdf}
+	\includegraphics[width=0.32\textwidth]{sigmaImag_49-1000.pdf}
+	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations and the \(k-\)space density of states. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Middle}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase. {\bf Right:} Imaginary part of impurity self-energy. Poles represent the beginning of the optical gap between the central Kondo resonance and the Hubbard sidebands. Increasing the bath interaction leads to the coalescing of the poles (due to the sharpening of the Kondo resonance), ultimately leading to a zero frequency pole  in the local moment phase.}
 	\label{phaseDiagram}
 \end{figure}
 
 \subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
-We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling  \(J\), the impurity site undergoes a transition from a screened paramagnetic phase to an unscreened local moment phase, similar to the extended-SIAM. The transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
+We now discuss the intervening pseudogapped regime (pink region) of the phase diagram. We find that the process of Kondo breakdown in our model occurs anisotropically in our model - the transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
 
 We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
 \begin{equation}\begin{aligned}
@@ -694,10 +697,10 @@ where the other momentum \({\bf q}\) is summed over all the momentum states that
 
 \begin{figure}[!htpb]
 	\centering
+	\includegraphics[width=0.23\textwidth]{scattProb-1.pdf}
 	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-4.pdf}
 	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-6.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-7.pdf}
 	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. Each plot shows whether \(\Gamma({\bf k})\) is relevant (white) or irrelevant (black). The antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
 	\label{gamma_kxky}
 \end{figure}
@@ -731,7 +734,7 @@ In order to study the mechanism behind the destabilisation of the Kondo cloud th
 	\label{cfnode}
 \end{figure}
 
-\subsection{Emergence of a two-channel Kondo Model as the low-energy theory near the transition}
+\subsection{Emergence of a two-channel Kondo Model as the low-energy theory in the pseudogap phase}
 As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
 \begin{itemize}
 	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
@@ -739,27 +742,37 @@ As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal po
 \end{itemize}
 The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
 
-Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
+Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (left panel of Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
 
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.45\textwidth]{quadrantMaxKondo-49.pdf}
-	\caption{}
+	\includegraphics[width=0.45\textwidth]{localQPResidue.pdf}
+	\caption{Left: Ratio between the maximum values of the fixed point values of the Kondo couplings for scattering processes between and within the regions \(S^+\) and \(S^-\). The vanishing of the fixed point ratio indicates that the pseudogap regime features a singular low-energy effective theory, where the Fermi surface neighbourhood splits into two disconnected regions with no explicit term in the Hamiltonian connecting them directly. Right: The quasiparticle residue \(Z_\text{imp}\) of the local gapless excitations in various regions. The vanishingly small values of \(Z_\text{imp}\) lend more support to the two-channel (and hence the non-Fermi liquid) nature of the low-energy physics in the pseudogap regime.}
 	\label{channelDecoupling}
 \end{figure}
 
-This is captured by the following simplified Hamiltonian:
+The decoupling of the \(k-\)space regions \(S^\pm\) is captured by the following simplified low-energy Hamiltonian:
 \begin{equation}\begin{aligned}\label{twoChannel}
 H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
 \end{aligned}\end{equation}
 where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment.
 
-Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels. Given that this is a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point. Signatures of the quantum critical nature include power-law divergence in various correlation functions as temperature \(T \to 0\), and non-Fermi liquid excitations replacing the local Fermi liquid.
+Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels. It is well-known that the two-channel Kondo model hosts non-Fermi liquid excitations at low-energies; this is also corroborated by our calculations of the quasiparticle residue \(Z_\text{imp}\) for the local gapless excitations. For a single-particle Greens function of an interacting model, the quasiparticle residue \(Z\) is defined as
+\begin{equation}\begin{aligned}
+	G = Z G^{(0)} + G_\text{inc}~,
+\end{aligned}\end{equation}
+where \(G^{(0)}\) is the non-interacting Greens function and \(G_\text{inc}\) is contribution to the Greens function arising from incoherent short-lived excitations. Small values of \(Z\) indicate that the excitations cannot be described in terms of a Fermi liquid theory. Indeed, as shown in the right panel of Fig.~\ref{channelDecoupling}, the quasiparticle residue \(Z_\text{imp}\) of the impurity excitations becomes vanishingly small in the pseudogap region, signalling that the excitations are of a non-Fermi liquid nature.
+
+Given that this is a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point. Signatures of the quantum critical nature include power-law divergence in various correlation functions as temperature \(T \to 0\), and non-Fermi liquid excitations replacing the local Fermi liquid.
 
 \section{Journey Through the Pseudogap on The Lattice model}
 We have already seen from the lattice-embedded impurity model that the impurity phase transition is anisotropic in \(k-\)space. This has consequences for the metal-insulator transition of the lattice model. We now describe, in terms of correlations, how the Fermi surface of the lattice model is destabilised when the system is tuned through the pseudogap. For this, we employ the relations we derived between correlations on the impurity model and those on the lattice model.
 
-\subsection{One-particle \(k-\)space spectral function}
+\subsection{\(k-\)space spectral function and self-energy}
+The primary indicator of the pseudogapping nature of the transition is of course the \(k-\)space density of states or the spectral function, shown in Fig.~\ref{tiledSpecFunc}. For \(W=0\), all points on the Fermi surface are gapless. As we enter the pseudogap, the region around the antinodes lose all spectral weight and become gapped. Increasing the value of \(W\) further leads to the enlargement of the gapped region; exactly at the transition, we end up with a singular Fermi surface composed of just the nodal points.
+
+This is also supported by our computations of the \(k-\)space self-energy. We show the zero frequency value of the \(k-\)space self-energy in Fig.~\ref{selfenergy}. This is computed from using Dyson's equation \(\Sigma_k = 1/G_k^{(0)} - 1/G_k\), where \(G_k\) is the interacting \(k-\)space Greens function while \(G_k^{(0)}\) is the non-interacting \(W=0\) Greens function. We find that the beginning of the pseudogap is marked by poles in the self-energy at the antinodal points; at the transition, only the nodes display vanishing self-energy at zero frequency.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
@@ -767,7 +780,16 @@ We have already seen from the lattice-embedded impurity model that the impurity 
 	\includegraphics[width=0.23\textwidth]{kspaceDOS-3.pdf}
 	\includegraphics[width=0.23\textwidth]{kspaceDOS-4.pdf}
 	\caption{One-particle \(k-\)space spectral function. In the absence of bath interactions, all points on Fermi surface are gapless (first panel). Proceeding through the pseudogap results in the gapping out of Fermi surface points starting from the antinode (second panel) and approaching the node (third panel), until finally only the node remains at the critical point (fourth panel).}
-	\label{fig:tiledSF-pdf}
+	\label{tiledSpecFunc}
+\end{figure}
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{selfEnergyKspace-1.pdf}
+	\includegraphics[width=0.23\textwidth]{selfEnergyKspace-2.pdf}
+	\includegraphics[width=0.23\textwidth]{selfEnergyKspace-3.pdf}
+	\includegraphics[width=0.23\textwidth]{selfEnergyKspace-4.pdf}
+	\caption{\(k-\)space self-energy. For \(W=0\), the self-energy is vanishingly small, leading to a Fermi liquid phase described by well-defined quasiparticles. Inside the pseudogap, the self-energy diverges near the antinodes, leading to their gapping. The coexistence of gapped and gapless points on the Fermi surface in the pseudogapped region leads to non-Fermi liquid behaviour of the gapless excitations, as captured by the emergent two-channel behaviour within the impurity model. The metal at the transition is supported only the four nodal points.}
+	\label{selfenergy}
 \end{figure}
 
 \subsection{Momentum-space spin-correlations}

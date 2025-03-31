@@ -375,7 +375,7 @@ function AuxiliaryLocalSpecfunc(
     for W_val in W_val_arr
         effectiveNumShells = W_val == 0 ? numShells : 1
         savePath = joinpath(SAVEDIR, "imp-specfunc-$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(maximum(freqValues))-$(length(freqValues))-$(GLOBALFIELD).jld2")
-        if ispath(savePath) && loadData && W_val == W_val_arr[1]
+        if ispath(savePath) && loadData
             specFunc = jldopen(savePath)["impSpecFunc"]
             quasipResidue = jldopen(savePath)["quasipResidue"]
             centerSpec = jldopen(savePath)["centerSpec"]

@@ -145,8 +145,10 @@ where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of t
 
 The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
 
-\section{Extending the Anderson impurity model}
-We have shown in a previous work that by including a local attractive interacting on the conduction bath site coupled to the impurity site of the Anderson impurity model, one can obtain an impurity phase transition from a screened phase to an unscreened local moment phase at a certain critical value of the attractive interaction strength. We now consider a more realistic form of this model, by embedding the impurity site into the lattice of a 2D  conduction bath and accounting for the lowering of the \(s-\)wave symmetry of the interactions down to just the \(C_4\) symmetry of the 2D square lattice. A general structure of such a model is shown in fig.~\ref{embeddedEsiam}; one of the sites of the 2D square lattice is identified as the impurity, while the four nearest-neghbours interact directly with this impurity site. 
+\section{Extending the Anderson Model To a Lattice-Embedded Impurity Model}
+Crucial to our method is the choice of an impurity auxiliary model that is able to capture important aspects of the lattice model in a local sense. Some of us have shown in a previous work~\cite{Mukherjee_2023} that almost all aspects of the Mott metal-insulator transition on the infinite dimensional Hubbard model on the Bethe lattice (as seen, for example, from dynamical mean-field theory~\cite{georges1996}) can be captured from a simple extension of the Anderson impurity model (eSIAM). The extension involves including a local attractive interacting \(U_b\) on the conduction bath site coupled to the impurity site; by tuning the ratio of \(|U_b|\) and the Kondo coupling \(J\), we obtained an impurity phase transition from a screened phase to an unscreened local moment phase. Since the impurity site of the auxiliary model is a representative of each correlated site on the lattice, the mapping to the lattice model then involves identifying the locally gapless impurity phase with the bulk gapless of the lattice model. In other words, the ability of the impurity site to participate in low-energy excitations corresponds to the ability of an electron, within the lattice model, to delocalise from one site into the rest of the lattice. In the same vein, a local moment phase of the impurity model maps to a gapped Mott insulating phase on the lattice model, where there's a charge gap to electron hopping processes.
+
+In the present work, the goal is to tackle interacting fermions on a 2D square lattice, which makes it important for us to incorporate the effects of the lattice within the impurity model. More specifically, while the impurity-bath interactions on the infinite dimensional Bethe lattice are \(s-\)wave symmetric, that is not a realistic form for a 2D lattice. To make a realistic impurity model, we embed the impurity site into the lattice of a 2D conduction bath, and lower the \(s-\)wave symmetry of the interactions down to the \(C_4\) symmetry of the 2D square lattice. A general structure of such a model is shown in fig.~\ref{embeddedEsiam}; one of the sites of the 2D square lattice is identified as the impurity (red), while the four nearest-neghbours (navy blue) interact directly with this impurity site through a \(C_4\)-symmetric interaction.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.2\textwidth]{pWaveEsiam.pdf}
@@ -162,51 +164,53 @@ where \(H_\text{cbath}\) is the kinetic energy arising out of nearest-neighbour 
 \begin{equation}\begin{aligned}
 	H_\text{cbath} = -2t\sum_{{\bf k}}\left[\cos(ak_x) + \cos(ak_y)\right] c^\dagger_{{\bf k},\sigma}c_{{\bf k},\sigma}~.
 \end{aligned}\end{equation}
-The form of the impurity-bath interaction \(H_\text{imp-cbath}\) and the local interaction \(H_\text{cbath-int}\) in the bath can be of various forms, depending in the choice of the bath orbital which participates in the interaction. We now consider some interesting cases:
-\paragraph{\(d-\)wave interactions:} This is the case when a coherent \(d-\)wave combination of the bath sites closest to the impurity participates in the interaction:
+For the impurity-bath interaction \(H_\text{imp-cbath}\) and the local interaction \(H_\text{cbath-int}\) in the bath, we take the simplest choices consistent with the 2D square lattice geometry:
 \begin{equation}\begin{aligned}
-	d_{\sigma} &= \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} - c^\dagger_{U\sigma} - c^\dagger_{D\sigma}\right)~,
+	H_\text{imp-cbath} &=\frac{1}{2} J\sum_{\sigma_1,\sigma_2}\sum_{Z} {\bf S}_d\cdot c^\dagger_{Z\sigma_1}{\boldsymbol \tau}_{\sigma_1,\sigma_2} c_{Z\sigma_2}~,\\
+	H_\text{cbath-int} &= -\frac{W}{2}\sum_{Z} \left(n_{Z\uparrow} - n_{Z\downarrow}\right)^2 ~,
 \end{aligned}\end{equation}
-leading to the interaction terms
-\begin{equation}\begin{aligned}
-	H^{(d)}_\text{imp-cbath} &= J\vec{S}_d\cdot\frac{1}{2}\sum_{\sigma_1,\sigma_2}\vec{\tau}_{\sigma_1,\sigma_2} d^\dagger_{\sigma_1}d_{\sigma_2}~,\\
-	H^{(d)}_\text{cbath-int} &= -\frac{W}{2}\left(d^\dagger_{\uparrow}d_{\uparrow} - d^\dagger_{\downarrow}d_{\downarrow}\right)^2~,
-\end{aligned}\end{equation}
-where \(\vec \tau\) is the vector of sigma matrices, \(\sigma_1,\sigma_2\) are spin indices, and \(L,R,U,D\) represent the four lattice sites ({\it L}eft, {\it R}ight, {\it U}p, {\it D}own) closest to the impurity. When Fourier-transformed to momentum space, it gives rise to the momentum-dependent couplings
-\begin{equation}\begin{aligned}\label{d-wave k-space}
-	J_{{\bf k}_1, {\bf k}_2} = J f_{\pi}\left({\bf k}_1\right) f_{\pi}\left({\bf k}_2\right) ~,\quad W_{\left\{ k_i \right\} } = W\prod_{i=1,2,3,4}f_{\pi}(k_i)~,
-\end{aligned}\end{equation}
-where \(f_{\pi}({\bf k}) = \cos\left( ak_x \right) - \cos\left( ak_y \right) \) is the \(d-\)wave symmetric functional form in \(k-\)space.
-\paragraph{\(p-\)wave interaction:} One can also consider the case when the \(p-\)wave orbital of the nearest sites participates in the interaction:
-\begin{equation}\begin{aligned}
-	p_{\sigma} &= \frac{1}{2}\left(c^\dagger_{L,\sigma} + c^\dagger_{R,\sigma} + c^\dagger_{U\sigma} + c^\dagger_{D\sigma}\right)~,\\
-	H^{(p)}_\text{imp-cbath} &= J\vec{S}_d\cdot\frac{1}{2}\sum_{\sigma_1,\sigma_2}\vec{\tau}_{\sigma_1,\sigma_2} p^\dagger_{\sigma_1}p_{\sigma_2}~,\\
-	H^{(p)}_\text{cbath-int} &= -\frac{W}{2}\left(p^\dagger_{\uparrow}p_{\uparrow} - p^\dagger_{\downarrow}p_{\downarrow}\right)^2~.
-\end{aligned}\end{equation}
-The momentum-dependent Kondo coupling in this case is 
-\begin{equation}\begin{aligned}\label{p-wave k-space}
-	J_{{\bf k}_1, {\bf k}_2} = J f_{{2\pi}}\left({\bf k}_1\right) f_{{2\pi}}\left({\bf k}_2\right) ~, \quad W_{\left\{ k_i \right\} } = W\prod_{i=1,2,3,4}f_{{2\pi}}(k_i)~,
-\end{aligned}\end{equation}
-where \(f_{2\pi}({\bf k}) = \cos\left( ak_x \right) + \cos\left( ak_y \right)\) is the form for the \(p-\)wave symmetric function.
+where \(Z\) sums over all nearest-neighbour sites of the impurity site (navy blue circles in Fig.~\ref{embeddedEsiam}, henceforth referred to as bath zeroth sites). The impurity interacts with the bath zeroth sites in \(H_\text{imp-cbath}\) through four local Kondo terms, of uniform strength. The other term \(H_\text{cbath-int}\) represents local Hubbard interactions on the four zeroth sites, again of uniform strength.
 
-Note that both these interactions involve not only local terms as well as quasi-local terms in the form of off-site interactions that connect the impurity site with multiple bath sites. An example of such a term is \(\vec{S}_d\cdot\frac{1}{2}\sum_{\sigma_1,\sigma_2}\vec{\tau}_{\sigma_1,\sigma_2} c^\dagger_{R,\sigma_1}c_{U,\sigma_2}\), which couples the impurity site with both the right and up sites in the bath. One can consider simple modifications of these cases by retaining only the on-site terms in the interaction Hamiltonian. This gives us the modified \(d-\)wave and \(p-\)wave symmetries:
+The 2D structure of the impurity model and its distinction from the infinite-dimensional counterpart becomes apparent once we transform the Hamiltonian to momentum space:
 \begin{equation}\begin{aligned}
-	H^{(\bar d(\bar p))}_\text{imp-cbath} &= J\vec{S}_d\cdot\frac{1}{2}\sum_{\sigma_1,\sigma_2}\vec{\tau}_{\sigma_1,\sigma_2} \sum_{i \in \left\{L,R,U,D\right\}} \lambda_i c^\dagger_{i,\sigma_1}c_{i,\sigma_2}~,\\
-	H^{(\bar d(\bar p))}_\text{cbath-int} &= -\frac{W}{2}\sum_{i \in \left\{L,R,U,D\right\}} \lambda_i \left(c^\dagger_{i, \uparrow}c_{i, \uparrow} - c^\dagger_{i, \downarrow}c_{i, \downarrow}\right) ~,
+	J_{{\bf k}, {\bf k}^\prime} &= \frac{J}{2}\left[\cos\left({\bf k}_x - {\bf k}^\prime_x\right) + \cos\left({\bf k}_y - {\bf k}^\prime_y\right)\right] ~,\\
+	W_{{\bf k}, {\bf k}^\prime,{\bf q}, {\bf q}^\prime} &= W\left[\cos\left({\bf k}_x - {\bf k}^\prime_x + {\bf q}_x - {\bf q}^\prime_x\right) + \cos\left({\bf k}_y - {\bf k}^\prime_y + {\bf q}_y - {\bf q}^\prime_y\right)\right] ~.
 \end{aligned}\end{equation}
-where \(\lambda_R = \lambda_L = \lambda_U = \lambda_D = 1\) for the \(\bar p\)-wave case, but \(\lambda_R = \lambda_L = -\lambda_U = -\lambda_D = 1\) for the \(\bar d\)-wave case. The \(k-\)dependent couplings have the form
-\begin{equation}\begin{aligned}
-	J_{{\bf k}_1, {\bf k}_2} &= J f_{\bar d(\bar p)}\left({\bf k}_1 -{\bf k}_2\right),\\
-	W_{\left\{ \bf k_i \right\} } &= Wf_{\bar d(\bar p)}\left({\bf k}_1 -{\bf k}_2 + {\bf k}_3 -{\bf k}_4\right) ,
-\end{aligned}\end{equation}
-where 
-\begin{equation}\begin{aligned}
-	&f_{\bar d(\bar p)}\left({\bf k}_1 -{\bf k}_2 + {\bf k}_3 -{\bf k}_4\right) \\
-	&= \frac{1}{2}\left[\lambda_R \cos\left(k_{1x} - k_{2x} + k_{3x} - k_{4x}\right) \right.\\
-	&\quad\left. + \lambda_U \cos\left(k_{1y} - k_{2y} + k_{3y} - k_{4y}\right)\right] ~.
-\end{aligned}\end{equation}
+where the subscripts \(x\) and \(y\) represent components of the momenta vector. This form shows that the Kondo coupling is no longer independent of the exchange momentum, and encodes information of the lattice geometry in it.
 
-\subsection{Unitary RG analysis of the model}
+\subsection{The unitary renormalisation group method}
+In order to obtain the various low-energy phases of our impurity model, we perform a scaling analysis of the associated Hamiltonian using the recently developed unitary renormalisation group (URG) method \cite{anirbanurg1,anirbanurg2}. The method has been applied successfully on a wide variety of problems of correlated fermions~\cite{santanukagome,1dhubjhep,anirbanmott2,anirbanmott1,siddharthacpi,anirban_kondo,Patra_2023,anirbanurg1,anirbanurg2}. The method proceeds by resolving quantum fluctuations in high-energy degrees of freedom, leading to a low-energy Hamiltonian with renormalised couplings and new emergent degrees of freedom. Typically, for a system with Fermi energy \(\epsilon_F\) and bandwidth \(E_N\), the sequence of isoenergetic shells \(\left\{E_{(j)}\right\}, E_{j}\in \left[E_0, E_N\right] \) define the states whose quantum fluctuations we sequentially resolve. The momentum states lying on shells \(E_N\) that are far away from the Fermi surface comprise the UV states, while those on shells near the Fermi surface comprise the IR states. This scheme is shown in Fig.~\eqref{zeromode-bare}.
+
+\begin{figure}[!htb]
+	\includegraphics[width=0.3\textwidth]{urgScheme.pdf}
+	\caption{High energy - low energy scheme defined and used in the URG method. The states away from the Fermi surface (\(E_N\) in the figure) form the UV subspace and are decoupled first, leading to a Hamiltonian which is more block-diagonal and comprised of only the IR states near the Fermi surface (\(E_0\) in the figure).}
+	\label{zeromode-bare}
+\end{figure}
+
+As a result of the URG transformations, the Hamiltonian \(H_{(j)}\) at a given RG step \(j\) involves scattering processes between the \(k-\)states that have energies lower than \(D_{(j+1)}\). The unitary transformation \(U_{(j)}\) is then defined so as to remove the number fluctuations of the currently most energetic set of states \(D_{(j)}\)~\cite{anirbanurg1,anirbanurg2}:
+\begin{eqnarray}
+	H_{(j-1)} = U_{(j)} H_{(j)} U^\dagger_{(j)}~, \text{such that} ~\left[H_{(j-1)}, \hat n_{j}\right] =0~.
+\end{eqnarray}
+The eigenvalue of $\hat{n}_{j}$ has, thus, been rendered an integral of motion (IOM) under the RG transformation.
+
+The unitary transformations can be expressed in terms of a generator \(\eta_{(j)}\) that has fermionic algebra~\cite{anirbanurg1,anirbanurg2}:
+\begin{eqnarray}
+	\label{unitary}
+	U_{(j)} = \frac{1}{\sqrt 2}\left(1 + \eta_{(j)} - \eta_{(j)}^\dagger\right)~,~ \quad\left\{ \eta_{(j)},\eta_{(j)}^\dagger \right\} = 1~,
+\end{eqnarray}
+where \(\left\{\cdot\right\}\) is the anticommutator. The unitary operator \(U_{(j)}\) that appears in Eq.~\eqref{unitary} can be cast into the well-known general form \(U = e^\mathcal{S}, \mathcal{S} = \frac{\pi}{4}\left( \eta^\dagger_{(j)} - \eta_{(j)} \right)\) that a unitary operator can take, defined by an anti-Hermitian operator \(\mathcal{S}\). The generator \(\eta_{(j)}\) is given by the expression~\cite{anirbanurg1,anirbanurg2}
+\begin{eqnarray}
+	\eta^\dagger_{(j)} = \frac{1}{\hat \omega_{(j)} - \text{Tr}\left(H_{(j)} \hat n_{j}\right) } c^\dagger_{j} \text{Tr}\left(H_{(j)}c_{j}\right)~.
+\end{eqnarray}
+The operators \(\eta_{(j)},\eta^\dagger_{(j)}\) behave as the many-particle analogues of the single-particle field operators \(c_j,c^\dagger_j\) - they change the occupation number of the single-particle Fock space \(\ket{n_j}\).  The important operator \(\hat \omega_{(j)}\) originates from the quantum fluctuations that exist in the problem because of the non-commutation of the kinetic energy terms and the interaction terms in the Hamiltonian:
+\begin{eqnarray}
+	\hat \omega_{(j)} = H_{(j-1)} - H^i_{(j)}~.
+	\label{omega}
+\end{eqnarray}
+\(H^i_{(j)}\) is the part of \(H_{(j)}\) that commutes with \(\hat n_j\) but does {\it not} commute with at least one \(\hat n_l\) for \(l < j\). The RG flow continues up to energy \(D^*\), where a fixed point is reached from the vanishing of the RG function. 
+Detailed comparisons of the URG with other methods (e.g., the functional RG, spectrum bifurcation RG etc.) can be found in Refs.~\cite{anirbanmott1,anirbanurg1}.
+
+\subsection{Unitary RG analysis of the embedded eSIAM}
 We studied the low-energy physics of this model through a unitary renormalisation group calculation that decouples the high-energy modes of the conduction bath and incorporates their effects in the form of renormalised Hamiltonian couplings. We find that the bath interaction \(W\) remains marginal (does not undergo any renormalisation), while the renormalisation in the momentum-resolved Kondo coupling \(J^{(j)}\) at the \(j^\text{th}\) step is of the form
 \begin{equation}\begin{aligned}\label{KondoRGequation}
 	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2}~,
@@ -217,20 +221,150 @@ where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\t
 \end{aligned}\end{equation}
 These transformations involve translating one or both momenta through the center of the Brillouin zone.
 
-We now consider some specific cases of these results.
-\paragraph{Interactions with off-site terms:}
-The case with the complete \(d-\)wave and \(p-\)wave terms enjoy a factorisation of the momentum space couplings into functions of the participating momenta, as shown in eq.~\ref{d-wave k-space} and \ref{p-wave k-space}. This factorisation also translates into the RG equation, ensuring that the momentum space Kondo coupling retains its form, and renormalisation occurs only in the magnitude \(J\), through the equation
+With our chosen momentum-space dependence of the Kondo coupling and bath interaction, the form of the Kondo coupling morphs during the RG flow, allowing the emergence of new degrees of freedom that screen the impurity at low-energies. At the first step, the RG equation can be written down explicitly as
 \begin{equation}\begin{aligned}
-	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} &= f_{{2\pi}(\pi)}\left({\bf k}_1\right) f_{{2\pi}(\pi)}\left({\bf k}_2\right) \Delta J~,\\
-\Delta J &= \sum_{{\bf q} \in \text{PS}} \frac{-f_{2\pi(\pi)}({\bf q})^2\left[J^2 + 4JWf_{2\pi(\pi)}({\bf q})^2\right]}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_{2\pi(\pi)}({\bf q})^2 + \frac{W}{2}f_{2\pi(\pi)}({\bf q})^4}~.
+	&\Delta J^{(0)}_{{\bf k}, {\bf k}^\prime} = -\sum_{{\bf q} \in \text{PS}} \frac{J^2 \frac{1}{2}\sum_a\cos\left({\bf k}^\prime_a - {\bf q}_a\right)\frac{1}{2}\sum_a\cos\left({\bf q}_a - {\bf k}_a\right) - 2JW \sum_a\cos\left({\bf k}^\prime_a - {\bf k}_a\right)}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}~,
 \end{aligned}\end{equation}
-\paragraph{Interactions without off-site terms:}
-This choice does not lead to a factorisation of the momentum-space dependence, and the form of the Kondo coupling therefore morphs during the RG flow, allowing the emergence of new degrees of freedom that screen the impurity at low-energies. At the first step, the RG equation can be written down explicitly as
+where \(a\) sums over the \(x\) and \(y\) components of the momenta. We see that unlike the bare Kondo coupling \(J_{{\bf k}, {\bf k}^\prime}\) that depends only on the momentum difference \({\bf k} - {\bf k}^\prime\), the renormalisation \(\Delta J^{(0)}\) depends on products of the momenta. This shows the form of the Kondo coupling continuously changes under renormalisation.
+
+\section{Low-energy description of the embedded eSIAM}
+\subsection{Zero temperature phase diagram and impurity site dynamics}
+The ground state phase diagram of the impurity model is shown in the left panel of Fig.~\ref{phaseDiagram}. We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling \(J\), the impurity site undergoes a transition from a screened paramagnetic phase (dark green) to an unscreened local moment phase (yellow), through an intermediate pseudogapped regime (pink). The nature of pseudogapped phase will be clarified in the upcoming sections. The phase transition is seen through the evolution of the local spectral function (middle panel of Fig.~\ref{phaseDiagram}); increasing the ratio \(W/J\) leads to the sharpening of the central Kondo resonance, indicating that the local Fermi liquid excitations are becoming poorer. At the transition, the extremely sharp peak disappears and we are left with a hard gap at zero frequency. A complimentary picture is painted by the imaginary part \(\Sigma^{\prime\prime}\) of the impurity self-energy. The poles in \(\Sigma^{\prime\prime}\) are the edges of the central Kondo resonance, and its sharpening leads to the coalescing of the poles.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.32\textwidth]{phaseDiagram.pdf}
+	\includegraphics[width=0.32\textwidth]{impSpecFunc_49-1000.pdf}
+	\includegraphics[width=0.32\textwidth]{sigmaImag_49-1000.pdf}
+	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations and the \(k-\)space density of states. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Middle}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase. {\bf Right:} Imaginary part of impurity self-energy. Poles represent the beginning of the optical gap between the central Kondo resonance and the Hubbard sidebands. Increasing the bath interaction leads to the coalescing of the poles (due to the sharpening of the Kondo resonance), ultimately leading to a zero frequency pole  in the local moment phase.}
+	\label{phaseDiagram}
+\end{figure}
+
+\subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
+We now discuss the intervening pseudogapped regime (pink region) of the phase diagram. We find that the process of Kondo breakdown in our model occurs anisotropically in our model - the transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
+
+We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
 \begin{equation}\begin{aligned}
-	&\Delta J^{(0)}_{{\bf k}_1, {\bf k}_2} =\\
-	&-\sum_{{\bf q} \in \text{PS}} \frac{J^2 f_{\bar p(\bar d)}\left({\bf k}_2 - {\bf q}\right) f_{\bar p(\bar d)}\left({\bf q} - {\bf k}_1\right) - 4JW f_{\bar p(\bar d)}\left({\bf k}_2 - {\bf k}_1\right)}{\omega - \frac{1}{2}|\varepsilon_j| + \frac{J}{4}f_\mathcal{D}({\bf q})^2 + \frac{W}{4}}
+	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
 \end{aligned}\end{equation}
-The first term in the numerator does not depend only on the momentum difference \({\bf k}_2 - {\bf k}_1\), unlike the bare Kondo coupling. This leads to a new \(k-\)space dependence of the Kondo coupling at the second step, hence leading to a modified RG equation if one makes the \(k-\)dependence explicit.
+where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. 
+
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{scattProb-1.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-4.pdf}
+	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
+	\caption{Variation of the total scattering probability \(\Gamma({\bf k})\) (defined in the main text) as \(W/J\) is increased from left to right. Each plot shows whether \(\Gamma({\bf k})\) is RG-relevant (pink) or irrelevant (black). RG-relevant values of \(\Gamma({\bf k})\) indicate that the \(k-\)point participates in Kondo screening at low-energies, while an irrelevant value indicates that the \(k-\)point is decoupled from the impurity site. As \(W/J\) is made more negative, the antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
+	\label{gamma_kxky}
+\end{figure}
+
+\subsection{Spin-correlations across the pseudogap}
+In figure ~\ref{spinCorr}, we show the evolution of the spin-spin correlation \(\chi_s(d,\vec k) = \left<{\bf S_d}\cdot{\bf S}_{\vec k}\right>\) in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{SF-1.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-2.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-3.pdf}
+	\includegraphics[width=0.23\textwidth]{SF-4.pdf}
+	\caption{\(k-\)space distribution of spin-spin correlation \(\chi_s(d,\vec k)\) (defined in the main text). The last three figures show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last \(k-\)point to decouple from the impurity.}
+	\label{spinCorr}
+\end{figure}
+
+\subsection{Charge correlations}
+In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
+\begin{figure}[!htpb]
+	\centering
+	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
+	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
+	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
+	\label{cfnode}
+\end{figure}
+
+\section{Nature of Gapless Excitations in the Impurity Pseudogap}
+\subsection{Emergence of a two-channel Kondo Model}
+As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
+\begin{itemize}
+	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
+	\item One momentum from the neighbourhood around \({\bf k}_N\), while the other from the neighbourhood around \({\bf k}_N + \left( \pi, \pi \right) \)~.
+\end{itemize}
+The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
+
+Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (left panel of Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{quadrantMaxKondo-49.pdf}
+	\includegraphics[width=0.45\textwidth]{localQPResidue.pdf}
+	\caption{Left: Ratio between the maximum values of the fixed point values of the Kondo couplings for scattering processes between and within the regions \(S^+\) and \(S^-\). The vanishing of the fixed point ratio indicates that the pseudogap regime features a singular low-energy effective theory, where the Fermi surface neighbourhood splits into two disconnected regions with no explicit term in the Hamiltonian connecting them directly. Right: The quasiparticle residue \(Z_\text{imp}\) of the local gapless excitations in various regions. The vanishingly small values of \(Z_\text{imp}\) lend more support to the two-channel (and hence the non-Fermi liquid) nature of the low-energy physics in the pseudogap regime.}
+	\label{channelDecoupling}
+\end{figure}
+
+The decoupling of the \(k-\)space regions \(S^\pm\) is captured by the following simplified low-energy Hamiltonian:
+\begin{equation}\begin{aligned}\label{twoChannel}
+H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
+\end{aligned}\end{equation}
+where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment. Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels.
+
+\subsection{Marginal Fermi liquid behaviour in the pseudogap}
+It is well-known that the two-channel Kondo model hosts non-Fermi liquid excitations at low-energies~\cite{Tsvelick_weigmann_mchannel_1985,emery_kivelson}; that this also happens in the present model is corroborated by our calculations of the quasiparticle residue \(Z_\text{imp}\) for the local gapless excitations. For a single-particle Greens function of an interacting model, the quasiparticle residue \(Z\) is defined as the spectral weight of low-energy resonance within the spectral function:
+\begin{equation}\begin{aligned}
+	G_k = \frac{Z}{\omega - \varepsilon_k - i \Sigma^{\prime\prime}} + G_\text{incoh}~,\quad 1/Z = 1- \frac{d \Sigma^{\prime}}{d\omega}~,
+\end{aligned}\end{equation}
+where \(\Sigma^\prime\) and \(\Sigma^{\prime\prime}\) are the real and imaginary parts of the self-energy, and \(G_\text{incoh}\) is contribution to the Greens function arising from incoherent short-lived excitations as well as high-energy features that are decoupled from the low-energy excitations~\cite{varma-physrevlett.63.1996}. Small values of \(Z\) indicate that the excitations cannot be described in terms of a Fermi liquid theory. Indeed, as shown in the right panel of Fig.~\ref{channelDecoupling}, the quasiparticle residue \(Z_\text{imp}\) of the impurity excitations becomes vanishingly small in the pseudogap region, signalling that the excitations are of a non-Fermi liquid nature. Given that the pseudogap phase is close to a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point.
+
+Coleman and Ioffe have shown that by mapping the two-channel Kondo problem to a "compactified" form where the impurity spin hybridises with the spin and isospin degrees of freedom of a single conduction channel, the impurity self-energy can be shown to display marginal Fermi liquid behaviour~\cite{Coleman_tsvelik,Schofield1997}:
+\begin{equation}\begin{aligned}
+	\Sigma \propto \omega \ln \omega~.
+\end{aligned}\end{equation}
+As some of us have shown in a previous work~\cite{Patra2023MCK}, this can also be obtained from a renormalisation group calculation of the low-energy excitations of the two-channel overscreened fixed point. For the sake of completeness, we have reproduced the calculation here. By considering minimal hopping into the conduction bath, the low-energy excitations above the 2CK ground state are described by the following Hamiltonian~\cite{Patra2023MCK}:
+\begin{eqnarray}
+	\label{nfl_terms}
+	H_\mathrm{eff} =& \frac{8t^2}{{J}}\left[\left(S^z_{0,1}\right)^2 S^+_{0,2} + \left(S^z_{0,2}\right)^2 S^+_{0,1}\right] \left(S^-_{1,1} + S^-_{1,2}\right) + \mathrm{h.c.};
+\end{eqnarray}
+where \({\boldsymbol S}_{i,l} = \frac{1}{2}\sum_{\sigma_1,\sigma_2}c^\dagger_{i,\sigma_1,l}{\boldsymbol \sigma}_{\sigma_1,\sigma_2}c_{i,\sigma_2,l}\) are spin operators for the \(i^\text{th}\) site on the \(l^\text{th}\) conduction channel (\(l\) can be 1 or 2 for a two-channel model). The labels \(\sigma_1\) and \(\sigma_2\) are spin indices that can be \(\pm 1\). The site index \(0\) represents the bath sites connected immediately to the impurity site. The operator \(c^\dagger_{i,\sigma,l}\) creates an electron with spin \(\sigma\) on the \(i^\text{th}\) site of the \(l^\text{th}\) conduction channel.
+
+We will Fourier transform this effective Hamiltonian into \(k-\)space:
+\begin{eqnarray}
+	\label{k_space_od}
+	\frac{2t^2}{J}\sum_{\left\{k_i,k_i^\prime\right\}}\sum_{\sigma, l} &\left(e^{i\left(k_1 - k_1^\prime\right)a}c^\dagger_{k\sigma,l}c_{k^\prime\sigma,l}c^\dagger_{k_2 \uparrow, \bar l}c_{k_2^\prime \downarrow,\bar l}c^\dagger_{k_1 \downarrow,\bar l}c_{k_1^\prime \uparrow, \bar l} + \mathrm{h.c.}\right) ~.\qquad
+\end{eqnarray}
+Such a three particle interaction term was also obtained for the NFL phase of the 2D Hubbard model from a URG treatment (see Appendix B of Ref.\cite{anirbanmott1}). The channel indices in Eq.~\ref{k_space_od} can be mapped to the normal directions in~\cite{anirbanmott1}. The 2 particle-1 hole interaction in Eq.~\ref{k_space_od} has a diagonal component which can be obtained by setting \(k=k^\prime, k_1 = k_2^\prime\) and \(k_2 = k_1^\prime\):
+\begin{eqnarray}
+	H_\mathrm{MFL} &= \sum_{k, k_1, \atop{k_2,\sigma,  l}} \frac{2t^2e^{i\left(k_1 - k_2\right)a}}{J} \hat n_{k\sigma,l} \hat n_{k_2 \uparrow, \bar l}\left(1 - \hat n_{k_1 \downarrow,\bar l}\right) + \mathrm{h.c.}\nonumber\\
+	&= \sum_{k, k_1, \atop{k_2,\sigma,  l}} \frac{4t^2}{J} \cos a\left(k_1 - k_2\right)  \hat n_{k\sigma,l} \hat n_{k_2 \uparrow, \bar l}\left(1 - \hat n_{k_1 \downarrow,\bar l}\right).\qquad 
+\end{eqnarray}
+The most dominant contribution comes from \(k_1 = k_2 = k^\prime\), revealing the non-Fermi liquid metal~\cite{cox_jarrell_two_channel_rev,Andrei1995}:
+\begin{eqnarray}
+	\label{mfl_large}
+	H^*_\mathrm{MFL} = \frac{4t^2}{J} \sum_{\sigma, k, k^\prime, l} \hat n_{k\sigma,l} \hat n_{k^\prime \uparrow, \bar l}\left(1 - \hat n_{k^\prime \downarrow,\bar l}\right)~.
+\end{eqnarray}
+A non-local version of this effective Hamiltonian was found to describe the normal phase of the Mott insulator of the 2D Hubbard model, as seen from a URG analysis~\cite{anirbanmott1,anirbanmott2}. Following~\cite{anirbanmott1}, one can track the RG evolution of the dual coupling \(R_j = \frac{4t^2}{J_j}\) at the \(j^\mathrm{th}\) RG step, in the form of the URG equation
+\begin{eqnarray}
+	\Delta R_j =- \frac{R_j^2}{\omega - \epsilon_{j}/2 - R_j/8}~.
+\end{eqnarray}
+In the RG equation, \(\epsilon_{j}\) represents the energy of the \(j^\mathrm{th}\) isoenergetic shell. It is seen from 
+the RG equation that \(R\) is relevant in the range of \(\omega < \frac{1}{2}\epsilon_j\) that has been used throughout, leading to a fixed-point at \(R^*/8 = \omega - \frac{1}{2}\epsilon^*)\). The relevance of \(R\) is expected because the strong coupling \(J\) is irrelevant and \(R \sim 1/J\).
+
+The renormalisation in \(R\) leads to a renormalisation in the single-particle self-energy~\cite{anirbanmott1}. The \(k-\)space-averaged self-energy renormalisation is
+\begin{eqnarray}
+	\Delta \Sigma(\omega) = \rho {R^*}^2\int_0^{\epsilon^*} \frac{d\epsilon_j}{\omega - \epsilon_j/2 + R_j/8}~.
+\end{eqnarray}
+The density of states can be approximated to be \(N^*/R^*\), where \(N^*\) is the total number of states over the interval \(R^*\). As suggested by the fixed point value of \(R_j\), we can approximate its behaviour near the fixed point by a linear dependence on the dispersion \(\epsilon_j\). The two limits of the integration are the starting and ending points of the RG. We start the RG very close to the Fermi surface and move towards the fixed point \(\epsilon^*\). Near the starting point, we substitute \(\epsilon = 0\) and \(R = \omega\), following the fixed point condition. From the fixed point condition, we also substitute \(R^*/8 = \omega - \frac{1}{2}\epsilon^*\). On defining \(\bar \omega = N^* \left(\omega - \frac{1}{2}\epsilon^*\right)\), we can write
+\begin{eqnarray}
+	\label{self_energy}
+	\Delta \Sigma(\omega) \sim  \bar \omega \ln \frac{N^* \omega}{\bar \omega}~.
+\end{eqnarray}
+The self-energy also provides the quasiparticle residue for each channel\cite{anirbanmott1}:
+\begin{eqnarray}
+	Z(\bar\omega) = \left(2 - \ln \frac{2\bar\omega}{N^* \omega}\right) ^{-1}~.
+\end{eqnarray}
+As \(\omega \to 0\), the \(Z\) vanishes, implying that the ground state is {\it not adiabatically connected} to the Fermi gas in the presence of the NFL terms.
+This is the orthogonality catastrophe~\cite{varma2002singular,anderson_infraredcat,yamada_catastrophe,yamada1979orthogonality} in the two-channel Kondo problem, and it is brought about by the presence of the channel-non diagonal terms in Eq.~\ref{mfl_large}.
+
 
 \section{The Tiling Algorithm}
 
@@ -391,7 +525,7 @@ In the tight-binding approach to lattice problems, the full Hamiltonian is descr
 \begin{equation}\begin{aligned}
 	T^\dagger(n{\bf a})\ket{\Psi_{{\bf k}}} = \sum_{i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_{i + n}} = e^{-in{\bf k}\cdot{\bf a}}\ket{\Psi_{\bf k}}
 \end{aligned}\end{equation}
-The definition and some properties of these global translation operations were provided in subsection~\ref{formalDescription}. It was shown there that they share eigenstates with the total momentum operator. In a lattice model, this continuous symmetry gets lowered to its discrete form: the total {\it crystal} momentum is conserved by any scattering process. As a result, the eigenstates can be labelled using the combined index \(s = \left({\bf k}, n\right) \) where \({\bf k}\) is the total crystal momentum and \(n\) is a band index \(n\).
+The definition and some properties of these global translation operations were provided in Appendix~\ref{BlochProperties}. It was shown there that they share eigenstates with the total momentum operator. In a lattice model, this continuous symmetry gets lowered to its discrete form: the total {\it crystal} momentum is conserved by any scattering process. As a result, the eigenstates can be labelled using the combined index \(s = \left({\bf k}, n\right) \) where \({\bf k}\) is the total crystal momentum and \(n\) is a band index \(n\).
 
 The eigenstates \(\ket{\Psi_{s}}\) (\(s = \left({\bf k}, n\right)\)) of the lattice Hamiltonians obtained using eq.~\ref{tilingPrescriptionFinal} also enjoy a {\it many-body} Bloch's theorem~\cite{stoyanova}, because the tiling procedure restores the translation symmetry of the Hamiltonian (as shown in eq.~\ref{translationSymmetry}). This means that the {\it local} eigenstates \(\ket{\psi_n\left({\bf r}_d\right)}\) (with the impurity located at an arbitrary position \({\bf r}_d\)) of the unit cell auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) defined in eq.~\ref{unitCellHamiltonian} can be used to construct eigenstates of the lattice Hamiltonian. The index \(n(=0,1,\ldots)\) in the subscript indicates that it is the \(n^\text{th}\) eigenstate of the auxiliary model.
 
@@ -673,98 +807,6 @@ where \(\text{Tr}_{\bf q}\left[\cdot\right]\) is the partial trace over the Hilb
 \end{aligned}\end{equation}
 where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The first term leads to the expression in eq.~\ref{SEE-k}, while the second term can be used to improve this estimate. Away from any quantum critical points, the localised nature of the impurity-bath hybridisation ensures that impurity correlations decay exponentially away from the transition. This ensures that the second term is very small away from a critical point. We therefore restrict ourselves to just the first term in the present work.
 
-\section{Low-energy description of the embedded eSIAM}
-\subsection{Zero temperature phase diagram and impurity site dynamics}
-The ground state phase diagram of the impurity model is shown in the left panel of Fig.~\ref{phaseDiagram}. We find that upon tuning the ratio \(W/J\) of the bath interaction strength \(W\) and the Kondo coupling \(J\), the impurity site undergoes a transition from a screened paramagnetic phase (dark green) to an unscreened local moment phase (yellow), through an intermediate pseudogapped regime (pink). The nature of pseudogapped phase will be clarified in the upcoming sections. The phase transition is seen through the evolution of the local spectral function (middle panel of Fig.~\ref{phaseDiagram}); increasing the ratio \(W/J\) leads to the sharpening of the central Kondo resonance, indicating that the local Fermi liquid excitations are becoming poorer. At the transition, the extremely sharp peak disappears and we are left with a hard gap at zero frequency. A complimentary picture is painted by the imaginary part \(\Sigma^{\prime\prime}\) of the impurity self-energy. The poles in \(\Sigma^{\prime\prime}\) are the edges of the central Kondo resonance, and its sharpening leads to the coalescing of the poles.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.32\textwidth]{phaseDiagram.pdf}
-	\includegraphics[width=0.32\textwidth]{impSpecFunc_49-1000.pdf}
-	\includegraphics[width=0.32\textwidth]{sigmaImag_49-1000.pdf}
-	\caption{{\bf Left}: Zero temperature phase diagram of the embedded impurity model, obtained by tracking impurity-bath spin correlations. The pink phase is characterised by perfect Kondo screening and local Fermi liquid excitations (L-FL), leading to non-zero spin-correlations all over the Fermi surface of the conduction electrons. The red phase is a local pseudogap (L-PG)  phase, where a part of the Fermi surface (starting from the antinodal regions) no longer participates in Kondo screening. This leads to "Fermi arc"-like behaviour in the spin-correlations and the \(k-\)space density of states. The black phase is a local moment (LM) phase, where the impurity is completely decoupled from the conduction electrons. {\bf Middle}: Local spectral function of the impurity site. The blue curve is the normal Kondo resonance in the absence of any bath interaction. The yellow and green curves show the sharpening the spectral function through the locally pseudogapped phase, as momentum states are expelled from the Kondo cloud. The final pink curve shows the charge gap in the local moment phase. {\bf Right:} Imaginary part of impurity self-energy. Poles represent the beginning of the optical gap between the central Kondo resonance and the Hubbard sidebands. Increasing the bath interaction leads to the coalescing of the poles (due to the sharpening of the Kondo resonance), ultimately leading to a zero frequency pole  in the local moment phase.}
-	\label{phaseDiagram}
-\end{figure}
-
-\subsection{Presence of a local pseuodogapping transition with electronic differentiation in momentum space}
-We now discuss the intervening pseudogapped regime (pink region) of the phase diagram. We find that the process of Kondo breakdown in our model occurs anisotropically in our model - the transition starts through the removal, from the Kondo cloud, of the antinodal points of the conduction bath Fermi surface. This is followed by the sequential removal of points away from the antinodes, with the nodal points being removed at the very end. This electronic differentiation is a novel feature of this model that arises because of the more realistic embedding of the impurity site into the conduction bath lattice.
-
-We quantify the removal of these points by the vanishing (up to a tolerance) of the average renormalised scattering probability 
-\begin{equation}\begin{aligned}
-	\Gamma^*({\bf k}) = \sum_{{\bf q} < \Lambda^*} \left(J^*_{{\bf k}, {\bf q}}\right)^2~,
-\end{aligned}\end{equation}
-where the other momentum \({\bf q}\) is summed over all the momentum states that reside within the fixed point window. The quantity \(\Gamma({\bf k})\) therefore quantifies the degree to which the state \({\bf k}\) is participating in screening the impurity at low energies. The \(k-\)space forms of this quantity at various values of \(W/J\) is shown in fig.~\ref{gamma_kxky}, and the difference in the behaviour of the nodal and antinodel points is apparent. 
-
-\begin{figure}[!htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{scattProb-1.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-3.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-4.pdf}
-	\includegraphics[width=0.23\textwidth]{scattProb-5.pdf}
-	\caption{Variation of \(\Gamma\) as \(W/J\) is increased from left to right and top to bottom. Each plot shows whether \(\Gamma({\bf k})\) is relevant (white) or irrelevant (black). The antinodal points are the first state to be removed from the Kondo cloud, while the node is the last to be removed.}
-	\label{gamma_kxky}
-\end{figure}
-
-\subsection{Spin-correlations across the pseudogap}
-In figure ~\ref{spinCorr}, we show the evolution of the spin-flip correlations \(\chi_s(d,\vec k) = \left<S_d^+ S_{\vec k}^- + \text{h.c.}\right>\) in \(k-\)space, as the system is tuned through the pseudogap. At vanishing value of the interaction \(W\), the spin correlations are concentrated around the antinode, because of the \(p-\)wave nature of the Kondo interaction. At the entry into the pseudogap, the correlations become more pronounced near the nodes and become suppressed near the antinodes, signalling that the latter parts will gap out first. The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last to decouple from the impurity.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{SF-1.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-3.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-5.pdf}
-	\includegraphics[width=0.23\textwidth]{SF-6.pdf}
-	\caption{\(k-\)space distribution of spin-flip scattering correlation \(\chi_s(d,\vec k)\) (defined in the main text). The last three figures \((W/J=-1.74, -1.83, -1.84)\) show how \(k-\)points starting from the antinode progressively exit the Kondo cloud, the node being the last \(k-\)point to decouple from the impurity.}
-	\label{spinCorr}
-\end{figure}
-
-As a second probe of the pseudogapping phenomenon, we have also studied the entanglement entropy (EE) \(S_\text{EE}(\vec k)\), which is just the von Neumann entropy \(-\text{Tr}\left[\rho \ln \rho\right] \) of the reduced density matrix \(\rho_{\vec k}\) for each \(k-\)state. In accordance with the Kondo spin correlations \(\chi_s\), the EE shows the sequential decoupling, from the impurity, of the antinodes followed by the nodes. 
-
-Studies of \(k-\)space mutual information, \(I_2(\vec k, k_\text{N})\) and \(I_2(\vec k, k_\text{AN})\), between any given \(k-\)state and the node and antinode respectively, have revealed that each point interacts most strongly with it's own neighbourhood (see Supplementary Materials). This feature is in contrast to the charge-transfer correlations in the bath, that show ``long-ranged" interactions between the node and the antinode. These correlations will be discussed immediately after this, and are primarily responsible for driving the impurity transition and destabilising the Kondo cloud.
-
-\subsection{Charge correlations}
-In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
-\begin{figure}[!htpb]
-	\centering
-	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
-	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
-	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
-	\label{cfnode}
-\end{figure}
-
-\subsection{Emergence of a two-channel Kondo Model as the low-energy theory in the pseudogap phase}
-As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
-\begin{itemize}
-	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
-	\item One momentum from the neighbourhood around \({\bf k}_N\), while the other from the neighbourhood around \({\bf k}_N + \left( \pi, \pi \right) \)~.
-\end{itemize}
-The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
-
-Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (left panel of Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
-
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.45\textwidth]{quadrantMaxKondo-49.pdf}
-	\includegraphics[width=0.45\textwidth]{localQPResidue.pdf}
-	\caption{Left: Ratio between the maximum values of the fixed point values of the Kondo couplings for scattering processes between and within the regions \(S^+\) and \(S^-\). The vanishing of the fixed point ratio indicates that the pseudogap regime features a singular low-energy effective theory, where the Fermi surface neighbourhood splits into two disconnected regions with no explicit term in the Hamiltonian connecting them directly. Right: The quasiparticle residue \(Z_\text{imp}\) of the local gapless excitations in various regions. The vanishingly small values of \(Z_\text{imp}\) lend more support to the two-channel (and hence the non-Fermi liquid) nature of the low-energy physics in the pseudogap regime.}
-	\label{channelDecoupling}
-\end{figure}
-
-The decoupling of the \(k-\)space regions \(S^\pm\) is captured by the following simplified low-energy Hamiltonian:
-\begin{equation}\begin{aligned}\label{twoChannel}
-H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\bf q}c^\dagger_{{\bf q}\sigma}c_{{\bf q}\sigma} + \sum_{{\bf q}_1\in S,{\bf q}_2\in S}\sum_{\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot {\bf \sigma}_{\alpha\beta}c^\dagger_{{\bf q}_1\alpha}c_{{\bf q}_2\beta}~,
-\end{aligned}\end{equation}
-where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment.
-
-Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels. It is well-known that the two-channel Kondo model hosts non-Fermi liquid excitations at low-energies; this is also corroborated by our calculations of the quasiparticle residue \(Z_\text{imp}\) for the local gapless excitations. For a single-particle Greens function of an interacting model, the quasiparticle residue \(Z\) is defined as
-\begin{equation}\begin{aligned}
-	G = Z G^{(0)} + G_\text{inc}~,
-\end{aligned}\end{equation}
-where \(G^{(0)}\) is the non-interacting Greens function and \(G_\text{inc}\) is contribution to the Greens function arising from incoherent short-lived excitations. Small values of \(Z\) indicate that the excitations cannot be described in terms of a Fermi liquid theory. Indeed, as shown in the right panel of Fig.~\ref{channelDecoupling}, the quasiparticle residue \(Z_\text{imp}\) of the impurity excitations becomes vanishingly small in the pseudogap region, signalling that the excitations are of a non-Fermi liquid nature.
-
-Given that this is a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point. Signatures of the quantum critical nature include power-law divergence in various correlation functions as temperature \(T \to 0\), and non-Fermi liquid excitations replacing the local Fermi liquid.
 
 \section{Journey Through the Pseudogap on The Lattice model}
 We have already seen from the lattice-embedded impurity model that the impurity phase transition is anisotropic in \(k-\)space. This has consequences for the metal-insulator transition of the lattice model. We now describe, in terms of correlations, how the Fermi surface of the lattice model is destabilised when the system is tuned through the pseudogap. For this, we employ the relations we derived between correlations on the impurity model and those on the lattice model.
@@ -806,24 +848,22 @@ We first look at static spin correlations \(\chi_s(k_1, k_2) = \frac{1}{2}\left<
 
 \subsection{Entanglement entropy and Mutual information}
 \begin{figure}[htpb]
-	\includegraphics[width=0.24\textwidth]{S_k-1.pdf}
-	\includegraphics[width=0.24\textwidth]{S_k-3.pdf}
-	\includegraphics[width=0.24\textwidth]{S_k-4.pdf}
-	\includegraphics[width=0.24\textwidth]{S_k-5.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-1.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-2.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-3.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-4.pdf}
 \end{figure}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.24\textwidth]{I2_k_N-1.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_N-3.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_N-4.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_N-5.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-1.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-2.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-3.pdf}
 \end{figure}
 \begin{figure}[htpb]
 	\centering
-	\includegraphics[width=0.24\textwidth]{I2_k_edge-1.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_edge-3.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_edge-4.pdf}
-	\includegraphics[width=0.24\textwidth]{I2_k_edge-5.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-1.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-2.pdf}
+	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-3.pdf}
 \end{figure}
 
 
@@ -879,132 +919,6 @@ Substituting everything back into eq.~\ref{effHam1} and dropping constant terms 
 	H_\text{eff} = 2\frac{V_H^2}{U/2}\left(2S_1^z S_2^z + S_1^+S_2^- + S_1^-S_2^+\right) = J_\text{eff} {\bf S}_1\cdot{\bf S}_2~,
 \end{aligned}\end{equation}
 where the effective antiferromagnetic Heisenberg coupling is \(J_\text{eff} = \frac{8V_H^2}{U}\).
-
-
-
-
-
-
-
-\clearpage
-
-
-
-\section{The Mott MIT: a local perspective}
-\subsection{Gapping of the local spectral function and vanishing of correlations}
-% At a critical value \(U_b = -J/4\) of the local correlation \(U_b\) on the bath zeroth site, the couplings \(J\) and \(V\) of the auxiliary model become irrelevant while \(U\) becomes remains non-zero, leading to a low-energy phase where the impurity is cut off from the conduction bath. This is the local moment phase, where low-energy excitations have been gapped out.
-% \begin{figure}[htpb]
-% 	\centering
-% 	\includegraphics[width=0.48\textwidth]{phase-map-MIT.pdf}
-% 	\includegraphics[width=0.48\textwidth]{spectral-function_dd.pdf}
-% 	\caption{{\it Left:} Phase diagram of the extended SIAM auxiliary model. As the parameter \(r\) is tuned through 0.25, the metallic blue phase changes into the insulating violet phase. {\it Right:} Local spectral function of the auxiliary model. It shows a hard gap for \(r/r_c > 1\).}
-% 	\label{spec_func_mit}
-% \end{figure}
-%
-% The impurity local spectral function \(\mathcal{A}_{dd}(\omega)\) and the impurity-bath real space off-diagonal spectral function \(\mathcal{A}_{dz}(\omega)\) reveal a gap in the spectrum at low \(\omega\) for \(U_b > J/4\). We show the former in fig.~\ref{spec_func_mit}. The gap in the former shows the absence of any gapless excitations that can allow the impurity configuration to fluctuate, while the vanishing of the off-diagonal spectral function shows that this is because the entanglement between the impurity and the bath has been quenched. 
-%
-% In Fig.~\ref{spin-charge-correlations}, we show the behaviour of the spin-flip and charge isospin-flip correlations between two neighbouring real space sites, as well as the mutual real space entanglement and mutual information. Both show a sharp fall on crossing the transition, demonstrating the destruction of the Kondo cloud and the stabilisation of the local moment on the impurity. Importantly, they charge correlations show a rise very close to the transition (can be seen as a single elevated blue point near \(r = 0.25\) in the left panel of Fig.~\ref{spin-charge-correlations}); this indicates that the transition is precipitated by the growth of pairing correlations.
-%
-% \begin{figure}[!htb]
-% \centering
-% 	\includegraphics[width=0.48\textwidth]{spin-charge-corr-full.pdf}
-% 	\includegraphics[width=0.48\textwidth]{impEE-mutinfo-d0.pdf}
-% 	\caption{{\it Left}: Spin-flip correlations(red) and charge-flip correlations(blue) in real space. The former increases as the system moves into the Kondo regime, and then vanishes at the transition. The latter decreases as the charge content is removed from the ground state in the Kondo regime, but shows a sudden increase at the transition. {\it Right}: Real space Entanglement and mutual information. Both vanish in the local moment phase.}
-% 	\label{spin-charge-correlations}
-% \end{figure}
-
-\subsection{Value of the critical paramter for the bulk model}
-Using the mappings between the auxiliary model parameters and the bulk parameters (eq.~\ref{couplingsMappings}), one can define a critical value \(r^{*}\) of the ratio \(r = U_{H-H}/J_{H-H}\) at the critical points \(-U_b/J=1/4\) \textit{for a given and fixed value of \(U\)}. We will now argue that this critical point describes a metal-insulator transition. For \(r < r^{*}\), the well-defined low-\(\omega\) central peak in the impurity spectral function, as well as the large mutual and information correlations, in the ground state, among the members of the Kondo cloud or between the impurity and the zeroth site show that the impurity and the bath are very strongly entangled. This means that both the local and the nearest-neighbour Greens functions have poles at low\(-\omega\) and support the propagation of electrons through gapless excitations. Since the spectral function is also very simply related to that of the auxiliary model, the former also shows the same zero-energy resonance. 
-
-On the other side \(r > r^{*}\) of the critical point, we know that the impurity gets decoupled from the bath, leading to the transformation of poles into zeros in the Greens functions. This is demonstrated through the gapping of the impurity spectral function in fig.~\ref{spec_func_mit}, and it describes an insulating phase where the electrons get "jammed" in the local states. By the same argument as above, the bulk spectral function also sees a gap in this phase when the impurity spectral function is gapped.
-
-Finally, using relations \eqref{couplingsMappings} between the auxiliary model couplings and the bulk parameters, we can offer a functional form for the critical value of the parameter $r^{*} = U_{H-H}^{*}/J_{H-H}^{*}$. Using \(U_{H-H}^{*} = U^* + U_b\) and \(J_{H-H}^{*} = 2J^*\) (following \eqref{couplingsMappings}), we get
-\begin{equation}\begin{aligned}
-	r^{*} &=& \frac{1}{2}\left(\frac{U^{*}}{J^{*}} + \frac{U_b}{J^*}\right)
-\end{aligned}\end{equation}
-where $U^{*}$ and $J^{*}$ are the values of the on-site and Kondo couplings of the auxiliary model at the auxiliary model (i.e., the extended SIAM with a correlated bath) at the transition between the Kondo screened and the local moment phases. By using the auxiliary model criticality condition \(-4U_b = J^*\), the bulk criticality parameter \(r^*\) takes the form
-\begin{equation}\begin{aligned}
-	r^{*} &=& \frac{1}{2}\left(\frac{U^{*}}{J^{*}} - \frac{1}{4}\right)
-\end{aligned}\end{equation}
-Parametrising the bath correlation coupling as $U_{b}=-\frac{U}{10}$, we obtain $U^{*}/J^{*}=5/2$, and $r^{*} = 9/8$ for the 2D square lattice Hubbard-Heisenberg model. The reduction in the value of \(r\) from \(2.5\) in the auxiliary model to \(~1.1\) in the bulk model can be attributed to (i) the reduction in the effective bulk repulsion \(U\) due to the competition coming from the attractive \(U_b\), and (ii) increased hybdridisation through \(J\) due to the presence of multiple auxiliary models that connect two lattice sites.
-
-
-\section{Emergence of effectively pseudogapped Anderson model at the MIT}
-%\begin{itemize}
-%\item 
-We begin by recalling that the RG equation (in the weak coupling limit) of the \(J-U_b\) model that emerges in the Kondo limit of the eSIAM is similar to that of the pseudogapped Anderson model~\cite{fritzvojta2004} that has a bath density of states of the form \(\rho\sim |\omega|^\alpha\). If we define the dimensionless Kondo coupling \(g = \rho J\) and the dimensionless bath coupling \(u = \rho U_b\), the RG equation for \(g\),
-\begin{equation}\begin{aligned}
-	\Delta g \simeq g^2 + 4gu~,
-\end{aligned}\end{equation}
-can be mapped to the corresponding RG equation for the pseudogapped Kondo model,
-\begin{equation}\begin{aligned}
-	\Delta g = g^2 - \alpha g~,
-\end{aligned}\end{equation}
-with the identification \(\alpha = -4u = -4\rho U_b\). Specifically, this corresponds to a Kondo model that is coupled to a conduction bath with a single-particle density of states that is vanishing (pseudogapped): $\rho\sim |\omega|^{\alpha}$~.
-\par
-Now, following the work by Si and Kotliar~\cite{kotliarsi_1993}, the impurity self-energy of the \(J-U_b\) model takes the form
-	\begin{equation}\begin{aligned}
-		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}}~,
-	\end{aligned}\end{equation}
-	where the exponent \(\gamma_{dd}\) can be written in terms of the phase shifts (at the RG fixed point) \(\delta^*_\text{sp}\) and \(\delta^*_\text{ch}\) suffered by the conduction electrons due to the potentials \(J\) and \(U_b\) respectively in the Hamiltonian:
-	\begin{equation}\begin{aligned}
-		\gamma_{dd} = \frac{5}{4} - \left[ \frac{1}{\pi}\left( \delta^*_\text{sp} + \delta^*_\text{ch} \right) - \frac{1}{2}  \right]^2 - \left( \frac{\delta^*_\text{ch}}{\pi} \right)^2~.
-	\end{aligned}\end{equation}
-	The phase shifts are given by \(\delta^*_\text{sp}=\arctan\left( \pi g/2 \right) \) and \(\delta^*_\text{ch}=\arctan\left( \pi u/2 \right) \). In the small coupling limit, these can be approximated as \(\delta^*_\text{sp}=\pi g/2\) and \(\delta^*_\text{ch}=\pi u/2\).
-\par 
-We now focus on the quantum critical point \(g = -4u\) of our model. At this point, the phase shifts get related to each other: \(\delta^*_\text{sp} = -4\delta^*_\text{ch}\), so that the exponent of the self-energy takes the form
-	\begin{equation}\begin{aligned}
-		\gamma_{dd} \simeq 1 - \frac{3}{\pi}\delta^*_\text{ch} = 1 + \frac{3}{8}\alpha
-	\end{aligned}\end{equation}
-	where we have used the fact that for our model, the effective pseudogap parameter \(\alpha\) is set to \(-4u\). The local self-energy then vanishes as
-	\begin{equation}\begin{aligned}
-		\Sigma_{dd} \sim |\omega|^{\gamma_{dd}} = |\omega|^{1 + \frac{3}{8}\alpha}
-	\end{aligned}\end{equation}
-The power-law exponent $\gamma_{dd}=1 + \frac{3}{8}\alpha$ lies in the following range: $1\leq \gamma_{dd} \leq 2$. This can be compared with the expression \(\sim|\omega|^{2-3\alpha}\) of the impurity self-energy obtained in ref.~\cite{fritzvojta2004} where the power law exponent ranges between $1/2$ and $2$. In a similar manner, the self-energy \(\Sigma_{dz}\) for scattering processes that connect the impurity site and the bath zeroth site can also be obtained. The exponent \(\gamma_{dz}\) for this self-energy is given by \(\gamma_{dz} = 2 - 2\gamma_{dd}\), so that this non-local self-energy diverges as
-\begin{equation}\begin{aligned}\label{selfenergydivergence}
-	\Sigma_{dz} \sim |\omega|^{- \frac{3}{4}\alpha}~.
-\end{aligned}\end{equation}
-
-We will now relate the auxiliary model self-energies \(\Sigma_{dd}\) and \(\Sigma_{dz}\) with their bulk (or lattice) model counterparts using the lattice Dyson equation. We consider self-energy matrices \(\Sigma\) and \(\Sigma_\text{aux}\) constructed out of real-space self-energies:
-\begin{equation}\begin{aligned}
-	\Sigma(\omega) = \begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} ,\quad \Sigma_\text{aux}(\omega) = \begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix}~,
-\end{aligned}\end{equation}
-where \(\Sigma_\text{loc}\) is the real-space local self-energy and \(\Sigma_\text{near-n}\) is the self-energy for nearest-neighbour scattering processes. Using Dyson's equation, we can write
-\begin{equation}\begin{aligned}
-	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} = \begin{bmatrix} G^{(0)}_\text{loc}(\omega) && G^{(0)}_\text{near-n}(\omega) \\ G^{(0)}_\text{near-n}(\omega) && G^{(0)}_\text{loc}(\omega)\end{bmatrix}^{-1} - \begin{bmatrix} G_\text{loc}(\omega) && G_\text{near-n}(\omega) \\ G_\text{near-n}(\omega) && G_\text{loc}(\omega)\end{bmatrix}^{-1}~,
-\end{aligned}\end{equation}
-and
-\begin{equation}\begin{aligned}
-	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} = \begin{bmatrix} \mathcal{G}^{(0)}_{dd}(\omega) && \mathcal{G}^{(0)}_{dz}(\omega) \\ \mathcal{G}^{(0)}_{dz}(\omega) && \mathcal{G}^{(0)}_{dd}(\omega)\end{bmatrix}^{-1} - \begin{bmatrix} \mathcal{G}_{dd}(\omega) && \mathcal{G}_{dz}(\omega) \\ \mathcal{G}_{dz}(\omega) && \mathcal{G}_{dd}(\omega)\end{bmatrix}^{-1}~,
-\end{aligned}\end{equation}
-where the superscript \((0)\) indicates that the corresponding quantity has to be calculated from the non-interacting model. We now evaluate the second inverse matrix in each of the two equations, and expression the lattice Greens functions in terms of the auxiliary mode Greens functions (using eqs.~\ref{greens_func_relation} and \ref{greens_func_relation_near}). We get
-\begin{equation}\begin{aligned}
-	\begin{bmatrix} \Sigma_{dd}(\omega) && \Sigma_{dz}(\omega) \\ \Sigma_{dz}(\omega) && \Sigma_{dd}(\omega)\end{bmatrix} &= 1/\mathcal{G}^{(0)} - \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\mathcal{G}_{dz} \\ -\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~,\\
-	\begin{bmatrix} \Sigma_\text{loc}(\omega) && \Sigma_\text{near-n}(\omega) \\ \Sigma_\text{near-n}(\omega) && \Sigma_\text{loc}(\omega)\end{bmatrix} &= 1/G^{(0)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{Z}^2}\begin{bmatrix} \mathcal{G}_{dd} && -\frac{1}{\mathcal{Z}}\mathcal{G}_{dz} \\ -\frac{1}{\mathcal{Z}}\mathcal{G}_{dz} && \mathcal{G}_{dd}\end{bmatrix}~.
-\end{aligned}\end{equation}
-This allows us to write down expressions for the off-diagonal self-energies, in terms of Greens functions, without evaluating the non-singular contribution coming from the non-interacting matrix:
-\begin{equation}\begin{aligned}
-	\Sigma_{dz} = \left(1/\mathcal{G}^{(0)}\right)_{dz} + \frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2} \mathcal{G}_{dz},\quad \Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{\lambda_{\vec k_0}^2}{\mathcal{Z}}\frac{1}{\mathcal{G}_{dd}^2 - \mathcal{G}_{dz}^2 / \mathcal{Z}^2} \mathcal{G}_{dz}
-\end{aligned}\end{equation}
-The divergence of \(\Sigma_{dz}\) shown in eq.~\ref{selfenergydivergence} as \(\omega \to 0\) has to arise from the second term in the expression for \(\Sigma_{dz}\) above as it contains the effects of inter-particle correlations.
-%, because the non-interacting Greens function has well-defined poles which kill the first term. 
-Importantly, we note that the second term in the expression for \(\Sigma_\text{near-n}\) is very similar to the diverging term in \(\Sigma_{dz}\), differing only through the presence of some finite (i.e., non-divergent) non-zero factors of \(\lambda_{\vec k_0}^2\) and \(\mathcal{Z}\). We therefore conclude that the non-local self-energy of the lattice model $\Sigma_\text{near-n}$ contains the same power-law divergence  as $\Sigma_{dz}$ upon taking the limit $\omega\to 0$:
-\begin{equation}\begin{aligned}
-	\Sigma_\text{near-n}\left( \omega \right) \sim \omega^{-3\alpha/4}~.
-\end{aligned}\end{equation}
-By a similar argument, the local self-energy is found to vanish as \(\omega \to 0\). We have seen above that we can approximate the \(k-\)space self-energy in terms of these two real-space self-energies (eq.\eqref{selfenergy1}):
-\begin{equation}\begin{aligned}
-	\Sigma(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~~\textrm{where}~\tilde{\Sigma}(\vec k, \omega)=\xi_{\vec k}\Sigma_\text{near-n}~,
-\end{aligned}\end{equation}
-and $\xi_{\vec{k}}$ is the electronic lattice dispersion (in units of the hopping amplitude $t$). It is clear from the expression that the divergent $\Sigma_\text{near-n}$ does not affect the single-particle self-energy $\Sigma(\vec k,\omega)$ at the Fermi surface, i.e., for $\xi_{\vec{k}}= 0$, but $\Sigma(\vec k,\omega)$ diverges everywhere else in the Brillouin zone. This corresponds to a gapless non-Fermi liquid metal present at the QCP, corresponding to a system with Landau quasiparticle poles precisely on the Fermi surface but which are destroyed everywhere else.
-
-Now, following the arguments laid out in Ref.\cite{sujan2023}, the single-particle spectral function $A(\omega,\vec{k})$ will vanish (i.e., be pseudogapped) for excitations away from a critical Fermi surface~(see Chapter 8 of Ref.\cite{carr2010})
-\begin{equation}
-A(\vec{k},\omega) \sim |\omega|^{\frac{3}{4}\alpha}~.
-\end{equation}	
-This corresponds to the vanishing of the residue of the Landau quasiparticle precisely at the metal-insulator transition, and the emergence of a gapless non-Fermi liquid ``local quantum critical" metal~\cite{Si2001}. Further, the fact that the single-particle self-energy $\Sigma(\vec k, \omega)$ vanishes precisely at the Fermi surface signals the fact that the Luttinger's count for states on the Fermi surface is preserved and identical to that in the Fermi liquid phase. 
-
-
 
 \section{Topological nature of the transition}
 Since the impurity charge hybridising with the bath contributes to the total Luttinger volume of the system~\cite{martin1982fermi}, decoupling of the impurity from the conduction bath leads to a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
@@ -1304,7 +1218,7 @@ This provides a method for calculating the real part of a Greens function if the
 
 
 
-\section{Properties of the Bloch states}
+\section{Properties of the Bloch states}\label{BlochProperties}
 
 \subsection{Translation invariance}
 It is easy to verify that \(\Psi_{\vec k}\left(\left\{ {\bf r}_k \right\}  \right) \) transforms like Bloch functions under translation by a displacement \({\bf r}\):
@@ -1416,14 +1330,6 @@ The self-energies arising from the correlation \(U\) can also be obtained using 
 \begin{equation}\begin{aligned}
 	\Sigma_{i,\sigma} = \pm\frac{U}{2}\sigma
 \end{aligned}\end{equation}
-
-\section{Analytic consistency check - On the Bethe lattice}
-We now apply our approach to the case of infinite number of nearest-neighbours $\mathcal{Z}\to\infty$ (the coordination number, and effectively the dimension), where the correct scaling of the $t^{H}$ hopping parameter is $t^{H}\to t^{H}/\sqrt{\mathcal{Z}}$~\cite{metzner_volhardt_1989,georges_kotliar_1992,pruschke_cox_jarrel_1993}, such that DMFT obtains a metal-insulator transition in that limit~\cite{georges1996}. It is well known from the works of Müller-Hartmann as well as Metzner and Vollhardt that self-energy arising from the correlations loses all momentum-dependence and becomes purely local~\cite{Muller-Hartmann1989,metzner_volhardt_1989}. This simplification is what makes DMFT exact in the limit of infinite dimensions. This simplification is also explicit in our formalism, as can be seen in the expression of the Self-energy (eq.~\eqref{selfenergy1}). Upon taking the limit of \(\mathcal{Z}\to\infty\), the non-local terms drop out:
-\begin{equation}\begin{aligned}
-	\lim_{\mathcal{Z}\to\infty}\Sigma_{H-H}(\vec k,\omega) = \frac{\left(\lambda_{\vec k_0}^{(0)}\right)^2}{\mathcal{G}^{(0)}_{dd}(\omega)} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}(\omega)} = \Sigma_\text{loc}(\omega)~,
-\end{aligned}\end{equation}
-making the self-energy completely local.
-
 
 \section{Derivation of RG equations for the embedded e-SIAM}
 \subsection{RG scheme}

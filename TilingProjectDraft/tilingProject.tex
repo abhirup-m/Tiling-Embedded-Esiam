@@ -11,40 +11,9 @@
 \maketitle
 \tableofcontents
 
-\section{What is the minimal impurity model for a Mott metal-insulator transition?}
-The Hubbard model is one of the fundamental models for strong electronic correlation; in its simplest form, it features a single band of conduction electrons hopping on a lattice and interacting via local correlations that provide a cost \(U\) if any site is doubly occupied:
-\begin{equation}\begin{aligned}
-	H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) + U\sum_i \hat n_{i \uparrow} \hat n_{i \downarrow} - \mu \sum_{i,\sigma}\hat n_{i\sigma}~.
-\end{aligned}\end{equation}
-The model can be made particle-hole symmetric by choosing \(\mu = U/2\):
-\[H_\text{hubb} = -t\sum_{\left<i,j \right>,\sigma}\left(c^\dagger_{i\sigma}c_{j\sigma}+\text{h.c.}\right) - \frac{U}{2}\sum_i \left(\hat n_{i \uparrow} - \hat n_{i \downarrow}\right)^2\]
-There are two trivial limits of the model. At \(U=0\), the bath consists of just a kinetic energy part, and the ground state is just a filled Fermi sea. At \(t=0\), each lattice site decouples from the rest and becomes a local moment, which under symmetry-breaking becomes a Néel antiferromagnet. This suggests that on increasing \(U/t\) beyond some critical value, the system might undergo a phase transition from a metallic state to an insulating state~\cite{Mott_1949}. This transition is reflected in the local spectral function - while it has a well-defined zero energy peak in the metallic phase, it is gapped in the insulating phase.
 
-One method of studying Hubbard models is through auxiliary models, described in the next section. Auxiliary models are simpler versions of the full Hamiltonian that are able to capture the essential physics. For example, a correlated impurity interacting with a conduction bath is a potential auxiliary model for the Hubbard Hamiltonian:
-\begin{equation}\begin{aligned}
-\label{clus_bath_siam}
-\mathcal{H}_\text{SIAM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow} - t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) \\
-+ V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
-\end{aligned}\end{equation}
-The impurity has onsite energy \(\epsilon_d\) and an onsite correlation \(U\). It hybridises into the bath through \(V\).
+\section{The philosophy of auxiliary model methods}
 
-If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
-
-This difference in the type of conduction baths is utilised in dynamical mean-field theory to describe various phases of the bulk system.
-This is done through the DMFT algorithm: one starts with a non-interacting bath, but depending on the value of \(U\), the conduction bath then gets modified and we ultimately end up with something that is different from what we started with.
-For small \(U\), the bath does not change much and we retain the central resonance of the impurity spectral function.
-This then describes a metal in the bulk.
-For larger values of \(U\), however, the bath changes significantly such that its density of states becomes non-constant.
-Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk.
-\textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=0.45\textwidth]{dos_diff.pdf}
-\caption{Various kinds of bath that an impurity can hybridise into. The left panel shows a non-interacting conduction band with a flat density of states. The right panel shows an interacting bath with an energy-dependent density of states. In the latter case, the impurity "feels" a reduced effective bandwidth defined by the width of the central peak.}
-\end{figure}
-
-\section{Philosophy of auxiliary model methods}
 The present method is a realisation of the general method of using simpler systems called auxiliary models to study bulk systems~\cite{martin_2016}. In general, a full Hamiltonian can be separated into the Hamiltonians for a particular subsystem \(S\), the rest of the system \(R\), and the interactions between \(S\) and \(R\).
 \begin{equation}\begin{aligned}
 	\mathcal{H} &= \mathcal{H}_S\ket{S}\bra{S} + \mathcal{H}_R \ket{R}\bra{R} + \mathcal{H}_{SR} \ket{S}\bra{R} \\
@@ -67,7 +36,10 @@ The subsystem \(S\) is usually taken to be the "cluster", and consequently, \(R\
 The smaller system is typically chosen such that its eigenstates are known exactly.
 Progress is then made by choosing a simpler version of \(H_R\) and a simpler form also for its coupling \(H_{RS}\) with the smaller system.
 This combination of the cluster and the simpler bath is then called the \textit{auxiliary system}.
-A typical auxiliary system for the Hubbard model would be the SIAM, where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{RS}\).
+A typical auxiliary system for the Hubbard model could, potentially, be the single-impurity Anderson model (SIAM), where the impurity represents an arbitrary site \(p\) of the lattice, the bath represents the rest of the lattice sites and the hybridisation term between the impurity and the bath represents the coupling term \(H_{RS}\):
+\begin{equation}\begin{aligned}\label{clus_bath_siam}
+	\mathcal{H}_\text{SIAM} = \underbrace{\epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow}}_{H_S} + \underbrace{- t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right)}_{H_{R}} + \underbrace{V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right)}_{H_{SR}}~.
+\end{aligned}\end{equation}
 Such a construction is shown in fig.~\ref{cluster-bath}.
 \begin{figure}[!htb]
 	\centering
@@ -77,73 +49,455 @@ Such a construction is shown in fig.~\ref{cluster-bath}.
 \end{figure}
 \textit{It should be noted that any reasonable choice of the cluster and bath would break the translational symmetry of the full model}. To allow computing quantities, one would need to make the bath (which is a much larger system) simpler than the cluster (which is a single site). This distinction breaks the translational symmetry of the Hubbard model. For eg., if one chooses eq.~\ref{clus_bath_siam} as the auxiliary system, then the fact that the impurity has an onsite correlation while the bath does not means we have broken the symmetry between the cluster and the bath.
 
-\subsection*{Dynamical mean-field theory - an example of an auxiliary model approach}
-Dynamical mean-field theory is an approximation scheme that use impurity models to obtain Greens functions of bulk systems of strong correlation~\cite{kotliar1996,kotliar1992}. The essential idea is to find the most suitable impurity model that replicates the full Hamiltonian. This is done through the following algorithm. Given a bulk Hamiltonian with on=site correlation \(U\) and a non-interacting \(k-\)space Greens function \(G_{k,0}\) for the bath:
-\begin{itemize}
-	\item[1.] We first create an impurity model with on-site correlation \(U\) and non-interacting impurity Greens function \(G_{i,0} = \sum_k G_{k,0}\).
-		\[\mathcal{H}_\text{aux} = H_\text{imp}(U) -t \sum_\sigma \left(c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) + H_\text{bath}\left(t,G_{i,0}\right)\]
-
-	\item[2.] This impurity model is solved using some method like numerical renormalisation group, and the self-energy \(\Sigma_\text{aux}\) of the impurity is obtained.
-
-	\item[3.] The impurity self-energy is now {\it equated} with the bath momentum-space self-energy:
-		\[\Sigma_{k}(\omega) = \Sigma_\text{aux}(\omega)\]
-		Since the impurity is purely local, this is an approximation that involves replacing a non-local quantity by its purely local component: \(\Sigma_{k}(\omega) = \sum_{{\bf r}}e^{i \vec{k}\cdot\vec{r}}\Sigma_{{\bf r}}(\omega) \simeq \Sigma_{{\bf r} = 0}(\omega)\). This approximation is a result of the single-site nature of the cluster of the chosen auxiliary model - larger clusters with more impurities can generate non-local components. This local approximation becomes exact in the limit of large system dimension \(w\), because it can be shown that the non-local components of the self-energy scale as \(w^{-3/2}\).
-
-	\item[4.] With this updated bath self-energy, we now create a new \(k-\)space Greens function for the bath:
-		\begin{equation}\begin{aligned}
-		G_{i}(\omega) &= \sum_k G_{k}(\omega) \\
-			      &= \sum_k \frac{1}{\omega - H_\text{bath}(k) - \Sigma_k(\omega)} \\
-			      &= \sum_k \frac{1}{\omega - H_\text{bath}(k) - \Sigma_\text{aux}(\omega)}
-		\end{aligned}\end{equation}
-	This interacting Greens function is then used to obtain the updated non-interacting Greens function, using Dyson's equation:
-	\[G_{i,0} = \frac{1}{1/G_{i} + \Sigma_\text{aux}}\]
-	\item[5.] Repeat the algorithm from step 1 with the updated \(G_{i,0}\), until \(\Sigma_\text{aux}\) stops changing.
-\end{itemize}
-The stopping condition is the consistency relation that makes the bath and impurity self-energies equal.
-
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.35\textwidth]{dmft_scheme.pdf}
-\end{figure}
-
-
 \section{A ``bottoms-up" approach to using auxiliary models}
-As mentioned in the previous section, the question we are posing is the following: what is the simplest auxiliary model of impurity in a bath that can capture the metal-insulator transition in a Hubbard-like model of correlated electrons. We approach this problem in a constructionist/bottoms-up way: we first identity an appropriate quantum impurity model (fig.~\ref{cluster-bath}) that shows an impurity phase transition, and then create a bulk model out of this auxiliary model. The bulk model hence created will then show a metal-insulator transition. 
 
-The impurity models are studied using the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}. The leap to the bulk model is then made by applying lattice translation operators on the auxiliary model. This process, referred to as tiling here, relates the auxiliary model Hamiltonian with that of the bulk, and hence allows connecting the Greens functions and other related quantities across dimensions. One nice outcome is that since the auxiliary model has multiple sites, there is a real-space off-diagonal component of the self-energy, and this leads to a \(k-\)dependence in the self-energy of the bulk, which is in contrast with the lack of \(k-\)dependence in single-site DMFT.  
-
-In our approach, the auxiliary models can be chosen in various ways. The simplest choice is of course the single-impurity Anderson model of eq.~\ref{clus_bath_siam}:
-\begin{equation}\begin{aligned}
-\mathcal{H}_\text{SIAM} = \epsilon_d \hat n_d + U \hat n_{d \uparrow} \hat n_{d \downarrow} - t\sum_{\left<i,j \right>, \sigma}\left(c^\dagger_{i\sigma}c_{j\sigma} + \text{h.c.}\right) \\
-+ V\sum_\sigma \left( c^\dagger_{d\sigma}c_{0\sigma} + \text{h.c.}\right) 
-\end{aligned}\end{equation}
-This model does not show any impurity phase transition - the impurity is always screened~\cite{hrk_wilson_1980,wilson1975,bullaNRGreview}. Correlation can be introduced into the auxiliary model in two ways:
+The present work is aimed towards developing a new auxiliary model method to study correlated electronic systems. We first outline the main steps of the method, to make it more convenient for the reader to following the next sections:
 \begin{itemize}
-	\item[1.] The impurity or the bath can be made to have additional interaction: 
-\begin{gather}
-\mathcal{H}_\text{aux} = H_\text{SIAM} + J \vec{S}_d\cdot\vec{s}_0 - \frac{1}{2}U_b \left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2
-\end{gather}
-The additional terms are (i) a spin-exchange interaction between the impurity site and the zeroth site, and (ii) a local correlation on the zeroth site.
-\item[2.] The second method is to make the cluster itself more complicated. That is, one can introduce multiple impurity sites that are connected via the hopping:
-	\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{aux} = -\frac{U}{2}\sum_{d_i}\left(\hat n_{d_i \uparrow} - \hat n_{d_i \downarrow}\right) ^2 + V\sum_{d_i}\sum_\sigma\left( c^\dagger_{d_i\sigma}c_{0\sigma} + \text{h.c.} \right) \\
-	+ \text{K.E.} - t\sum_{\sigma}\left(c^\dagger_{d_1\sigma}c_{d_2\sigma} + \text{h.c.}\right)
-	\end{aligned}\end{equation}
-	
+	\item The first step is to identify the correct impurity model which can faithfully capture the physics of lattice model we are trying to solve (see Subsection \ref{identifyModel}). This model must be solved using an impurity solver. In the present work, we use the recently-developed unitary renormalisation group method~\cite{anirbanmott1,anirbanmott2,anirbanurg1,anirbanurg2,siddharthacpi,santanukagome}.
+	\item The leap to the bulk model is then made by applying lattice translation operators on the impurity model. This process, referred to as tiling here, allows us to reconstruct the lattice model Hamiltonian from that of the auxiliary model (see Subsection~\ref{tilingsubsection}).
+	\item Once the Hamiltonians are linked, it is possible to relate the eigenstates and correlations functions between the auxiliary model and lattice model, using a manybody version of Bloch's theorem (see Section~\ref{tilingProcedure}).
 \end{itemize}
 
-\begin{figure}[!htb]
- 	\centering
- 	\includegraphics[width=0.35\textwidth]{gen_siam.pdf}
- 	\caption{Cluster+bath construction of auxiliary model. It consists of a cluster (red square) hybridising with a bath (ring) by hopping into and out of the zeroth site (pink). The other sites (green) form the rest of the bath. Just the cluster and the zeroth site have onsite correlations.}
- \end{figure}
- The next step in the programme is to tile the real-space lattice with this cluster+bath Hamiltonian \(\tilde H\) to restore translational invariance (shown in a later section), and obtain a new bulk Hamiltonian for correlated electrons, $\tilde H = T\left[ \mathcal{H}_\text{aux} \right] T^{-1}$, where $T$ denotes the operator that performs the set of iterative real-space translations, and enables the cluster-bath (auxiliary model) Hamiltonian to span the target real-space lattice. Given a general auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}\), the result of tiling can be written very generally as
- \begin{equation}\begin{aligned}
-	 \tilde H = \sum_{\left\{i_1,i_2,...\right\}} \mathcal{H}_\text{aux}\left(\left\{i_1,i_2,...\right\}\right)
- \end{aligned}\end{equation}
-where \(\left\{i_1,i_2,...\right\}\) represents the indices for the members of the cluster. To reiterate, what that means is that we have placed the cluster+bath system at all lattice point sets \(\left\{i_1,i_2,...\right\}\) to reconstruct a new model of correlated electrons. The answer to how closely $\tilde H$ approximates a target model of correlated electrons lies in (i) the choice of the cluster-bath construction of the auxiliary model, and (ii) the accuracy of the URG procedure on the auxiliary model.
+\subsection{Formal description of the ``tiling" procedure}\label{tilingsubsection}
 
-The strategy, therefore, is to relate Hamiltonians, wavefunctions and hence correlation functions of the bulk model to those of the auxiliary model. One can then substitute the information obtained from solutions of the auxiliary model, and thereby calculate quantities on the bulk lattice model.
+We will now define the {\it tiling} procedure by which we can recreate the complete lattice model by using instances of an auxiliary model Hamiltonian. The first step is of course to identify an impurity model that can act as a good auxiliary model for out lattice model. The local behaviour of this impurity model should reflect the essential local physics of the lattice model. Typically, we will consider impurity model geometries where the real-space bath site connected directly to the impurity also harbours some kind of local interaction. We will henceforth refer to this site as the zeroth site. In the case where multiple sites are connected directly to the impurity, we will choose one of these sites for reference and call that the {\it bath zeroth site} throughout.
+
+In order to identify a {\it unit cell} for our tiling procedure, we place the impurity site at a reference site \({\bf r}_d\) of our lattice, and the bath zeroth site at a nearest-neighbour site \({\bf z}\), and label the corresponding auxiliary model Hamiltonian as \(\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})\). The unit cell at the position \({\bf r}_d\) is then obtained by placing the zeroth site on all nearest-neighbours of \({\bf r}_d\) and averaging over these configurations:
+\begin{equation}\begin{aligned}\label{unitCellHamiltonian}
+	\mathcal{H}_\text{aux}({\bf r}_d) = \frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})~,
+\end{aligned}\end{equation}
+where \({\bf z}\) is summed over all nearest-neighbours of \({\bf r}_d\) and \(\mathcal{Z}\) is the number of such nearest-neighbours.
+
+In order to create the bulk model, we now need to translate this auxiliary model over the entire lattice. For this, we define {\it many-particle global} translation operators \(T({\bf a})\) that translate all positions by a vector \({\bf a}\). In terms of manybody states and operators, their action is defined as 
+\begin{equation}\begin{aligned}\label{translationDefinition}
+	&T^\dagger({\bf a}) \ket{{\bf r}_1, {\bf r}_2,\ldots} = \ket{{\bf r}_1 + {\bf a}}\otimes\ket{{\bf r}_2 + {\bf a}}\ldots\otimes\ket{{\bf r}_n + {\bf a}}\\
+	&T^\dagger({\bf a}) \mathcal{O}\left({\bf r}_1, {\bf r}_2,\ldots\right)T({\bf a}) = \mathcal{O}\left({\bf r}_1 + {\bf a}, {\bf r}_2 + {\bf a},\ldots\right)~,
+\end{aligned}\end{equation}
+where \(\ket{{\bf r}_1, {\bf r}_2,\ldots}\) is a state in the manyparticle Fock-space basis with the particles localised at the specified positions. For example, for a local fermionic creation operator \(c^\dagger({\bf r})\), we have 
+\begin{equation}\begin{aligned}
+	T^\dagger({\bf a}) c^\dagger({\bf r}) T({\bf a}) = c^\dagger({\bf r} + {\bf a})~.
+\end{aligned}\end{equation}
+It acts similarly on the auxiliary model Hamiltonian:
+\begin{equation}\begin{aligned}
+	T^\dagger({\bf a})\mathcal{H}_\text{aux}({\bf r}_d)T({\bf a}) = \mathcal{H}_\text{aux}({\bf r}_d + {\bf a})~,
+\end{aligned}\end{equation}
+translating all sites by the vector \({\bf a}\). By introducing the Fourier transform to momentum space,
+\begin{equation}\begin{aligned}
+	\ket{{\bf r}_1, {\bf r}_2,\ldots} = \otimes_{j=1}^N \int d{\bf k}_j e^{-i {\bf r}_j\cdot{\bf k}_j} \ket{{\bf k}_j}~,
+\end{aligned}\end{equation}
+it is easy to see that the total momentum states are eigenstates of the global translation operators:
+\begin{equation}\begin{aligned}
+	T^\dagger({\bf a})\ket{{\bf k}_1, {\bf k}_2,\ldots} &= \otimes_{j=1}^N \int d{\bf r}_j e^{i {\bf r}_j\cdot{\bf k}_j} T^\dagger({\bf a})\ket{{\bf r}_j}~,\\
+							    &=\otimes_{j=1}^N \int d{\bf r}_j e^{i {\bf r}_j\cdot{\bf k}_j} \ket{{\bf r}_j + {\bf a}}\\
+							    &=e^{-i {\bf a}_j\cdot{\bf k}_\text{tot}}\ket{{\bf k}_1, {\bf k}_2,\ldots},
+\end{aligned}\end{equation}
+where \({\bf k}_\text{tot} = \sum_j {\bf k}_j\) is the total momentum.
+
+The auxiliary model, being an impurity model, lacks translation symmetry. The lattice model does remain invariant under global translation operations. In order to reconstruct the full lattice model and restore its translation invariance, we translate the unit cell across all sites of the lattice:
+\begin{equation}\begin{aligned}
+	\label{tilingPrescription}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})\\
+				&= \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d)T({\bf r} - {\bf r}_d)~ \\
+				&= \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d)~ \\
+\end{aligned}\end{equation}
+where \({\bf r}\) sums over all lattice sites.
+
+\subsection{Extending the Anderson impurity model: Identifying the correct auxiliary model}\label{identifyModel}
+The standard Anderson model consists of a correlated impurity site coupled with a non-interacting conduction bath. The double occupancy cost on the impurity is \(U\), while the single-particle hopping strength between the impurity and the conduction bath is \(V\). If the impurity site hybridises with a {\it non-interacting} bath defined by a uniform density of states, the impurity spectral function is found to have a well-defined Kondo resonance at low temperatures. Such a model does not exhibit a phase transition; the low-energy phase is one of strong-coupling for all parameter regimes. Increasing the impurity correlation \(U\) only serves to reduce the width of the central peak at the cost of the appearance of side bands at energy scales of the order of \(U\), but the resonance never dies. The situation is however different if the impurity is embedded in a correlated conduction bath with a non-trivial density of states. For the case of a conduction band with the DOS shown in the right of the figure below, the impurity hybridises into a reduced bandwidth because of the correlation on the lattice~\cite{held_2013}.
+
+This difference in the type of conduction baths is utilised in dynamical mean-field theory to describe various phases of the bulk system.
+This is done through the DMFT algorithm: one starts with a non-interacting bath, but depending on the value of \(U\), the conduction bath then gets modified and we ultimately end up with something that is different from what we started with.
+For small \(U\), the bath does not change much and we retain the central resonance of the impurity spectral function.
+This then describes a metal in the bulk.
+For larger values of \(U\), however, the bath changes significantly such that its density of states becomes non-constant.
+Above a critical \(U_c\), the impurity spectral function gets gapped out, and that then describes the insulating phase in the bulk.
+\textit{This leaves open the following question: What is the minimal correlation one can insert into the non-interacting bath (of a single-impurity Anderson model) that can capture both the metallic and insulating phases of the bulk model?}
+
+We have recently studied an extended Anderson impurity model (e-SIAM) where we introduced an explicit Kondo coupling \(J\) and a local correlation \(U_b\) on the bath zeroth site, which is the site connected to the impurity (see \cite{gazizovaleblanc2023} for some recent findings of non-local effective attractive interactions within the Hubbard model). The Hamiltonian of the e-SIAM for a half-filled impurity site is of the form
+\begin{equation}\begin{aligned}
+	\label{siam_attr}
+	\mathcal{H}_\text{E-S} = \mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} + \mathcal{H}_\text{imp-cbath}~,
+\end{aligned}\end{equation}
+where 
+\begin{itemize}
+	\item \(\mathcal{H}_\text{cbath} = -\frac{1}{\mathcal{Z}}t\sum_{i=0,1,\ldots;\sigma}\left(c^\dagger_{i,\sigma}c_{i+1,\sigma} + \text{h.c.}\right) - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2\) is the Hamiltonian of the conduction bath consisting of a kinetic energy term and some local interaction terms on the zeroth site,
+	\item \(\mathcal{H}_\text{imp} = - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2\) is the Hamiltonian for the localised impurity site, and
+	\item \(\mathcal{H}_\text{imp-bath} = J {\bf S}_d\cdot{\bf S}_0 - V \sum_{\sigma} \left(c^\dagger_{0\sigma} c_{d\sigma} + h.c.\right)\) describes the interaction between the impurity orbitals and the conduction bath.
+\end{itemize}
+Here, \(c_{d\sigma}\) is the impurity electron operator, \(c_{i\sigma}\) is the conduction bath electron operator, \(c_{0,\sigma}\) is the bath zeroth site operator, \({\bf S}_d\) is the impurity spin operator and \({\bf S}_0 = \sum_{\alpha,\beta}{\bf \sigma}c^\dagger_{0,\alpha}c_{0,\beta}\) is the operator for the local spin in the conduction bath. We have found that the e-SIAM has a stable local moment phase for \(U_b < -J/4\) with an antiferromagnetic Kondo coupling (\(J > 0\)). We have also shown that this model captures much of the phenomenology of the infinite dimensional Hubbard model (as discovered via DMFT), such as a second-order phase transition at \(T=0\) and the presence of an optical gap in the local spectral function beyond a certain value of interaction strength. Note that the impurity site and the conduction bath are both at half-filling.
+
+\subsection{Tiling towards a Hubbard-Heisenberg model with an embedded extended SIAM}
+In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, where the impurity site coupled to the conduction bath purely through the s-wave channel. We will show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. The generalisation involve allowing an arbitrary filling on the impurity site and in the conduction bath, through two additional parameter: (i) a particle-hole asymmetry parameter \(\eta\) for the impurity site, (ii) a chemical potential for the conduction bath, and (iii) embedding the impurity into the lattice of the 2D conduction bath. This modified impurity model is shown in Fig.~\ref{embeddedEsiam}. The first term modifies the impurity Hamiltonian \(\mathcal{H}_\text{imp}\) into
+\begin{equation}\begin{aligned}\label{onsiteHamiltonian}
+	\mathcal{H}_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~.
+\end{aligned}\end{equation}
+where we have placed the impurity site at the position \({\bf r}_d\). The second term modifies the conduction bath Hamiltonian \(\mathcal{H}_\text{cbath}\):
+\begin{equation}\begin{aligned}\label{bathHamiltonian}
+	\mathcal{H}_\text{cbath} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{1}{2 \mathcal{Z}}U_b\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
+\end{aligned}\end{equation}
+where \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\).
+
+In this notation, the interaction Hamiltonian can be written as
+\begin{equation}\begin{aligned}\label{interactionHamiltonian}
+	\mathcal{H}_\text{imp-cbath} = \frac{J}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}\sum_{{\bf z}\in\text{NN}({\bf r}_d)} {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} - \frac{V}{\sqrt{\mathcal{Z}}}\sum_{\sigma} \sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)
+\end{aligned}\end{equation}
+where \(\boldsymbol \tau = \left( \tau_x, \tau_y, \tau_z \right) \) is the vector of Pauli matrices. \(\sigma\) and \(\sigma^\prime\) can be \(\pm 1\) and represent up and down configurations.
+
+We now follow the prescription laid out in eq.~\ref{tilingPrescription}. The tiled Hamiltonian can be written as 
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{tiled} = \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} + \mathcal{H}_\text{imp-cbath}\right]T({\bf r} - {\bf r}_d)~.
+\end{aligned}\end{equation}
+Note that in comparison to eq.~\ref{tilingPrescription}, we have dropped the sum over the zeroth sites, because our impurity model Hamiltonian (defined using eqs.~\ref{onsiteHamiltonian} through \ref{interactionHamiltonian}) already contains a sum over these zeroth sites.
+
+We consider the effect of the translation operations on each part of the Hamiltonian. We first have
+\begin{equation}\begin{aligned}
+	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d) \\
+	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{U_b}{2\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}\right]T({\bf r} - {\bf r}_d) \\
+	=& -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{U_b}{2\mathcal{Z}}\sum_{\bf r}\sum_{{\bf z}\in\text{NN}\left({\bf r}\right)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i}\sum_{{\bf r} \neq {\bf r}_i}\hat n_{{\bf r}_i,\sigma}\\
+	=& -\frac{1}{\sqrt\mathcal{Z}}(N-2)t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
+\end{aligned}\end{equation}
+In the first step, the factor of \(\mathcal{Z}\) is cancelled out by the trivial sum over \({\bf r}_0\) in the first and third terms. At the last step, the three terms simplified for the following reasons. The inequality \(\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}\) in the first term ensures that each nearest-neighbour pair appears in \(N-2\) instances of the auxiliary model, \(N\) being the total number of lattice sites; the two instances that do not contribute are the ones in which the impurity site itself is at \({\bf r}_i\) or \({\bf r}_j\). For the second term, the double sum \(\sum_{\bf r}\sum_{{\bf z} \in \text{NN}({\bf r})}\) evaluates to \(\mathcal{Z}\sum_{\bf r}\), because each point on the lattice appears \(\mathcal{W}\) times in the summation. This factor of \(\mathcal{W}\) cancels the one in the denominator. In the third term, the inner summation simply evaluates to \(N-1\), and we finally replace the dummy index \({\bf r}_i\) with \({\bf r}\). 
+
+The next part is
+\begin{equation}\begin{aligned}
+	\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp}T({\bf r} - {\bf r}_d) = -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~.
+\end{aligned}\end{equation}
+This is obtained simply by replacing the impurity position \({\bf r}_d\) with the translated position \({\bf r}\), generating a translation-invariant Hubbard term (the first term) and a finite chemical potential (second term).
+
+We now consider the final term:
+\begin{equation}\begin{aligned}
+	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp-cbath}T({\bf r} - {\bf r}_d)\\
+	&=\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} - \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)\\
+	&=\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r})}\left[\frac{1}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right. -  \frac{1}{\sqrt\mathcal{Z}}\left.\sum_{\sigma} V\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]\\
+					 &=\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]\\
+\end{aligned}\end{equation}
+At the last step, each nearest-neighbour pair of sites \({\bf r}_i, {\bf r}_j\) appear 2 times in the summation, because any site is a member of two distinct nearest-neighbour pairs. We have also defined \({\bf S}_{{\bf r}_j} =\sum_{\sigma,\sigma^\prime} {\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime}\) as the local spin operator.
+
+The total tiled Hamiltonian is therefore
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{tiled} = -\frac{N-2}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>,\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma} - \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}\\
+	+ \sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]
+\end{aligned}\end{equation}
+While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms). Upon removing these repeated terms, the tiled Hamiltonian becomes
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - (N-3)\mathcal{H}_\text{cbath-nint}\\
+							 &= -\frac{1}{\sqrt\mathcal{Z}}(t + 2V)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \frac{1}{2}\left(U + U_b\right)\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \left(\eta + 2\mu\right) \sum_{{\bf r}}\hat n_{{\bf r},\sigma} + \frac{2}{\mathcal{Z}}J\sum_{\left< {\bf r}_i, {\bf r}_j\right>} {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j}
+\end{aligned}\end{equation}
+
+The result of the tiling operations is a Hubbard-Heisenberg model, of the form
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{HH} &= -\frac{1}{\sqrt\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma} + \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}{\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  ~,
+\end{aligned}\end{equation}
+where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
+\begin{equation}\begin{aligned}\label{couplingsMappings}
+	\tilde t = t+2V,~~ \tilde U = U + U_b, ~ ~ \tilde \mu = 2\mu + \eta,~ ~ \tilde J = 2J~.
+\end{aligned}\end{equation}
+In summary, the appropriate method for reconstructing the lattice model Hamiltonian is therefore
+\begin{equation}\begin{aligned}\label{tilingPrescriptionFinal}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - N\mathcal{H}_\text{cbath-nint}~,
+\end{aligned}\end{equation}
+where we replaced \(N-3\) with \(N\) assuming a large number of sites. Using this, the extended-SIAM gets ``expanded" into a Hubbard-Heisenberg model.
+
+\subsection{Translation symmetry and a conserved total momentum}
+From the form in eq.~\ref{tilingPrescriptionFinal}, the tiled Hamiltonian is symmetric under global many-body translations of the kind defined in eq.~\ref{translationDefinition}, by arbitrary lattice spacings:
+\begin{equation}\begin{aligned}\label{translationSymmetry}
+	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})T({\bf a}) = \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r + a}) = \sum_{{\bf r}^\prime}\mathcal{H}_\text{aux}({\bf r}^\prime)\\
+	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{cbath-nint}T({\bf a}) = \mathcal{H}_\text{cbath-nint}\\
+	&\implies T({\bf a})^\dagger\mathcal{H}_\text{tiled}T({\bf a}) = \mathcal{H}_\text{tiled}~.
+\end{aligned}\end{equation}
+In the first equation, we used the fact that the translation operator simply translates the auxiliary model at the position \({\bf r}\) into another one at the position \({\bf r} + {\bf a}\). Since both are part of the summation, the summation remains unchanged. The second equation uses the fact that the Hamiltonian \(\mathcal{H}_\text{cbath-nint}\) is that of a tight-binding model and is therefore translation-invariant. The fact that the Hamiltonian \(\mathcal{H}_\text{tiled}\) commutes with the many-body translation operator implies that the total crystal momentum \(\vec k\) is a conserved quantity.
+
+\subsection{Form of the eigenstates: Bloch's theorem}
+In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full eigenstate \(\ket{\Psi}\) is then obtained by constructing liner combinations of the eigenstates \(\ket{\psi_i}\) of the local Hamiltonians such that \(\ket{\Psi}\) satisfies Bloch's theorem: \(\ket{\Psi_{\bf k}} = \sum_{i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_i}\), where \({\bf r}_i\) sums over the positions of the local Hamiltonians. Bloch's theorem ensures that eigenstates satisfy the following relation under a translation operation by an arbitrary number of lattice spacings \({n\bf a}\):
+\begin{equation}\begin{aligned}
+	T^\dagger(n{\bf a})\ket{\Psi_{{\bf k}}} = \sum_{i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_{i + n}} = e^{-in{\bf k}\cdot{\bf a}}\ket{\Psi_{\bf k}}
+\end{aligned}\end{equation}
+The definition and some properties of these global translation operations were provided in Appendix~\ref{BlochProperties}. It was shown there that they share eigenstates with the total momentum operator. In a lattice model, this continuous symmetry gets lowered to its discrete form: the total {\it crystal} momentum is conserved by any scattering process. As a result, the eigenstates can be labelled using the combined index \(s = \left({\bf k}, n\right) \) where \({\bf k}\) is the total crystal momentum and \(n\) is a band index \(n\).
+
+The eigenstates \(\ket{\Psi_{s}}\) (\(s = \left({\bf k}, n\right)\)) of the lattice Hamiltonians obtained using eq.~\ref{tilingPrescriptionFinal} also enjoy a {\it many-body} Bloch's theorem~\cite{stoyanova}, because the tiling procedure restores the translation symmetry of the Hamiltonian (as shown in eq.~\ref{translationSymmetry}). This means that the {\it local} eigenstates \(\ket{\psi_n\left({\bf r}_d\right)}\) (with the impurity located at an arbitrary position \({\bf r}_d\)) of the unit cell auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) defined in eq.~\ref{unitCellHamiltonian} can be used to construct eigenstates of the lattice Hamiltonian. The index \(n(=0,1,\ldots)\) in the subscript indicates that it is the \(n^\text{th}\) eigenstate of the auxiliary model.
+
+The state \(\ket{\psi_n\left({\bf r}_d\right)}\) does not specify the position of the zeroth site, because the unit cell Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) itself has been averaged over \(\mathcal{Z}\) zeroth sites. Accordingly, we can express the averaged eigenstate \(\ket{\psi_n\left({\bf r}_d\right)}\) as
+\begin{equation}\begin{aligned}
+	\ket{\psi_n\left({\bf r}_d\right)} = \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z} \in \text{NN}({\bf r}_d)}\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}~,
+\end{aligned}\end{equation}
+where \(\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}\) is an auxiliary model eigenstate with the impurity and zeroth sites placed at \({\bf r}_d\) and \({\bf z}\). With this in mind, the following unnormalised combination of the auxiliary model eigenstates satisfies a many-particle equivalent of Bloch's theorem~\cite{stoyanova}:
+\begin{equation}\begin{aligned}\label{eigenstateProposal}
+	\ket{\Psi_{s}} \equiv \ket{\Psi_{{\bf k}, n}} &= \frac{1}{\sqrt N}\sum_{{\bf r}_d} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_{n}\left({\bf r}_d\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}_d}\sum_{{\bf z} \in \text{NN}({\bf r}_d)} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_{n}\left({\bf r}_d, {\bf z}\right)}~,
+\end{aligned}\end{equation}
+where \(N\) is the total number of lattice sites and \({\bf r}_d\) is summed over all lattice spacings. The set of \(n=0\) states form the lowest band in the spectrum of the lattice, while higher values of \(n\) produce the more energetic bands. The ground state \(s = s_0\) is obtained by setting \({\bf k}\) and \(n\) to 0:
+\begin{equation}\begin{aligned}\label{groundstateProposal}
+	\ket{\Psi_\text{gs}} \equiv \ket{\Psi_{s_0}} &= \frac{1}{\sqrt N}\sum_{{\bf r}_d} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_\text{gs}\left({\bf r}_d\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}_d}\sum_{{\bf z} \in \text{NN}({\bf r}_d)} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_\text{gs}\left({\bf r}_d, {\bf z}\right)}
+\end{aligned}\end{equation}
+
+
+\section{Mapping Static and Dynamic Correlations from the Auxiliary Model to the Lattice Model}\label{tilingProcedure}
+\subsection{One-Particle Greens Functions: Momentum-space}
+In the previous part, we proposed a form for the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{gs}}\) of the auxiliary models.
+In this section, we will relate one-particle Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model. We define the retarded time-domain lattice \(k-\)space Greens function at zero temperature as
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; t) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c_{{\bf K}\sigma}(t), c^\dagger_{{\bf K}\sigma} \right\} | \Psi_\text{gs}}~.
+\end{aligned}\end{equation}
+where the bulk Hamiltonian \(H_\text{tiled}\) leads to the dynamics of the annihilation operators at time \(t\): 
+\begin{equation}\begin{aligned}\label{heisenberg}
+	c_{{\bf K}\sigma}(t) = e^{it H_\text{tiled} }c_{{\bf K}\sigma}e^{-i t H_\text{tiled}}~.
+\end{aligned}\end{equation}
+We now proceed to simplify one of the terms of the anticommutator (for simplicity of notation):
+\begin{equation}\begin{aligned}\label{greensFunction1}
+	&\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_{\vec r,\vec \Delta}e^{-i{\bf K}_0\cdot\vec\Delta}\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
+\end{aligned}\end{equation}
+To make further progress, we insert the identity resolution \(1 = \sum_s\ket{\Psi_s}\bra{\Psi_s}\) in between the two operators, where \(s=\left({\bf k}, n\right)\) sums over all eigenstates (with energies \(\tilde E_s\)). The lattice eigenstates themselves can again be written in terms of those of the auxiliary model, using eq.~\ref{eigenstateProposal}:
+\begin{equation}\begin{aligned}
+	\ket{\Psi_s}\bra{\Psi_s} = \sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\vec k\cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)}~.
+\end{aligned}\end{equation}
+With this, eq.~\ref{greensFunction1} becomes
+	\begin{equation}\begin{aligned}\label{greensfunction2}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\vec k_0\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
+\end{aligned}\end{equation}
+In order to bring this expression closer to the form of an auxiliary model Greens function, we would like to transform the initial and final states \(\ket{\psi(\vec r)}\) and \(\ket{\psi(\vec r + \vec \Delta)}\) to apply to the same auxiliary model. This is done by using the relation: \(\ket{\psi(\vec r + \Delta)} = T^\dagger(\vec \Delta)\ket{\psi(\vec r)}\), where \(T^\dagger(\vec \Delta)\) translates all lattice sites by the vector \(\vec\Delta\).
+\begin{equation}\begin{aligned}
+	\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = \braket{\psi_{0}(\vec r) | T(\vec \Delta) c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = \braket{\psi_{0}(\vec r) | T(\vec \Delta) c_{{\bf K}\sigma}(t) T^\dagger(\vec \Delta) | \psi_n(\vec r^\prime+\vec \Delta^\prime - \vec \Delta)}
+\end{aligned}\end{equation}
+The effect of the translation operators on the \(k-\)space annihilation operator can be easily ascertained by transforming it to real-space, using the Fourier transform definition
+\begin{equation}\begin{aligned}\label{fourTransf}
+	c({\bf K}) = \frac{1}{\sqrt N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r})~.
+\end{aligned}\end{equation}
+Upon applying this, we get
+\begin{equation}\begin{aligned}\label{translationOnField}
+	T\left(\vec a\right) c({\bf K}) T^\dagger\left(\vec a\right) = \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}T\left(\vec a\right) c({\bf r}) T^\dagger\left(\vec a\right) = \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r} - \vec a) = e^{-i{\bf K}\cdot\vec a}c({\bf K})~.
+\end{aligned}\end{equation}
+Using this identity on the above expression gives
+\begin{equation}\begin{aligned}
+	\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = e^{-i{\bf K} \cdot \vec \Delta}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime - \vec \Delta)}
+\end{aligned}\end{equation}
+Finally replacing this all the way back into eq.~\ref{greensfunction2} gives
+	\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\left(\vec k_0 + {\bf K}\right)\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime - \vec\Delta)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
+\end{aligned}\end{equation}
+To further unify the operators, we make the substitution \(\vec \Delta^\prime \to \vec \Delta^\prime + \vec \Delta\), leading to the expression
+	\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\left(\vec k_0 + {\bf K} - \vec k\right)\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
+\end{aligned}\end{equation}
+The sum over \(\vec\Delta\) can now be carried out, resulting in
+\begin{equation}\begin{aligned}\label{greensfunction3}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N}\sum_n\sum_{\vec r,\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~,
+\end{aligned}\end{equation}
+where the sum over \(s=(\vec k, n)\) has been reduced to a sum over the auxiliary model eigenstate index \(n\) because of the Kronecker delta \(\delta\left(\vec k_0 + {\bf K} - \vec k\right)\). This can be further simplified by splitting the sum over \(\vec\Delta^\prime\) into positive and negative parts and then making the transformation \(\vec r^\prime \to \vec r^\prime + \vec \Delta^\prime\):
+\begin{equation}\begin{aligned}
+	\sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} &= \frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} + e^{-i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime-\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)}\right] \\
+																																												   &= \frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} + e^{-i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\right] \\
+\end{aligned}\end{equation}
+For each pair of \(\vec r^\prime\) and \(\vec\Delta^\prime\), the term within the box brackets has the form of a two-level Hamiltonian between the states \(\ket{\psi_n(\vec r^\prime)}\) and \(\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\), with a tunnelling amplitude \(e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\). The term can therefore be written in the eigenbasis of this Hamiltonian:
+\begin{equation}\begin{aligned}
+	\sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} &=\frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right],
+\end{aligned}\end{equation}
+where \(\ket{\chi_n^\pm(\vec r^\prime,\vec\Delta^\prime)} = \frac{1}{\sqrt 2}\left[\ket{\psi_n(\vec r^\prime)} \pm e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime + \vec\Delta^\prime)}\right] \) are the eigenvectors of the tunnelling Hamiltonian with eigenvalues \(\pm 1\) respectively. With this basis transformation, we can rewrite eq.~\ref{greensfunction3} as
+\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{2N}\sum_n\sum_{\vec r,\vec r^\prime,\vec \Delta^\prime} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right] c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
+\end{aligned}\end{equation}
+
+In order to make the expression more transparent, we consider the various components separately:
+\paragraph{\(\vec r^\prime = \vec r,~\vec\Delta^\prime=0\)}:
+\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+These terms represent those contributions to the total Greens function that arise from excitations that start and end at a specific auxiliary model (at \(\vec r\)), and also evolve dynamically within the same auxiliary model. These terms are therefore exactly equal to the auxiliary model Greens function at position \(\vec r\), and are the most dominant contribution due to the localised nature of the impurity model.
+
+\paragraph{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime=0\)}:
+\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{N}\sum_n\sum_{\vec r, \vec r^\prime \neq \vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+These are more non-local contributions; they involve excitations whose time evolution is governed by a different auxiliary model than the terminal one. These contributions are highly suppressed in the Kondo screened phase because of the strong entanglement of the singlet ground state.
+
+\paragraph{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime \neq 0\)}:
+\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{2N}\sum_n\sum_{\vec r,\vec r^\prime \neq \vec r,\vec \Delta^\prime \neq 0} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right] c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+These are the most non-local contributions; they involve excitations whose time evolution is governed by three different auxiliary models. Accordingly, these contributions are further suppressed.
+
+We now consider each type of contribution in more detail.
+\subsection{\(\vec r^\prime = \vec r,~\vec\Delta^\prime=0\)}
+Restricting ourselves to just the single auxiliary model contributions gives
+\begin{equation}\begin{aligned}
+		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+We first consider more carefully the transition operator \(\mathcal{T}_{{\bf K}\sigma} = c_{{\bf K}\sigma}\) for the 1-particle excitation giving rise to the above Greens function. Within our auxiliary model approach, gapless excitations within the lattice model are represented by gapless excitations of the impurity site, specifically those that screen the impurity site and form the local Fermi liquid. As a result, the uncoordinated \(\mathcal{T}-\)matrix for the lattice model must be replaced by a combined \(\mathcal{T}-\)matrix within the impurity model that captures those gapless excitations that occur in connection with the impurity, and projects out the uncorrelated excitations that take place even when the impurity site is decoupled from the bath.
+
+In order to construct this auxiliary model \(\mathcal{T}-\)matrix, we note that the impurity site can have both spin and charge excitations. Considering both excitations, the modified \(\mathcal{T}-\)matrix that constructs \(k-\)space excitations in correlation with the impurity site are
+\begin{equation}\begin{aligned}\label{tmatrix}
+	\mathcal{T}_{{\bf K}\sigma} = c_{{\bf K}\sigma}\left(\sum_{\sigma^\prime}c^\dagger_{d\sigma} + \text{h.c.}\right) + c_{{\bf K}\sigma}\left(S_d^+ + \text{h.c.}\right)~,
+\end{aligned}\end{equation}
+leading to the updated expression for the complete Greens function:
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | \left[\mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+
+In order to convert this into a more useful form, we use eq.~\ref{heisenberg}:
+\begin{equation}\begin{aligned}
+		\braket{\psi_{0}(\vec r) | \mathcal{T}_{{\bf K}\sigma}(t) | \psi_n(\vec r)} = \braket{\psi_{0}(\vec r) | e^{it H_\text{tiled} }\mathcal{T}_{{\bf K}\sigma}e^{-i t H_\text{tiled}} | \psi_n(\vec r)}~.
+\end{aligned}\end{equation}
+Guided by the relation in eq.~\ref{tilingPrescriptionFinal} \(H_\text{tiled} = \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - N\mathcal{H}_\text{cbath-nint}\) between the tiled Hamiltonian and the auxiliary model, we assume that the operator \(e^{-i t H_\text{tiled}}\) acting on the state \(\ket{\psi_n(\vec r)}\) involves the excitation energy \(E_n\) of only a single auxiliary model. Specifically, \(E_n\) is the energy of the eigenstate \(\ket{\psi_n(\vec r)}\). This is supported by the fact that this class of contributions to the Greens function is completed within a single auxiliary model. Accordingly, we replace \(H_\text{tiled}\) with \(E_n - \varepsilon_{\bf k} \), where \(\varepsilon_{\bf k}\) are the eigenenergies of the non-interacting conduction bath \(\mathcal{H}_\text{cbath-nint}\) and \({\bf k}\) is the crystal momentum associated with the state \(\ket{\psi_n(\vec r)}\). This momentum was found to be constrained to \({\bf k}_0 + {\bf K}\) below eq.~\ref{greensfunction3}. In the same way, the action of \(H_\text{tiled}\) on the terminal state \(\ket{\psi_{0}(\vec r)}\) gives \(E_0 - \varepsilon_{\bf k_0}\), where \(E_0\) is the ground state energy of the auxiliary model at \({\bf r}\). Applying this to our expression gives
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | \left[e^{-it\omega_p} \mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + e^{-it\omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~,
+\end{aligned}\end{equation}
+where \(\omega_p = (E_n - \varepsilon_{\bf k_0 + \bf K}) - (E_0 - \varepsilon_{\bf k_0})\) is the particle-excitation cost and \(\omega_h = -\omega_p\) is the hole-excitation cost. We now introduce the Fourier transform \(g(\omega) = \int~dt~ e^{i\omega T}f(t)\) to obtain the frequency-domain Greens function in its spectral representation:
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; \omega) = \frac{1}{N}\sum_{\vec r}\sum_n \braket{\psi_{0}(\vec r) | \left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}\right] | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+For each value of \({\vec r}\), the term within that summation is simply the Greens function (for the excitation \(\mathcal{T}_{{\bf K}\sigma}\)) of the auxiliary model with the impurity site at \({\vec r}\). Since all these impurity models are physically equivalent (because of translation invariance), we can replace the average over \({\bf r}\) with the value obtained from any one auxiliary model.
+\begin{equation}\begin{aligned}\label{kspaceGreensFunction}
+	\tilde G({\bf K}\sigma; \omega) &= \sum_n \braket{\psi_{0} | \left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma} \ket{\psi_n}\bra{\psi_n} \mathcal{T}_{{\bf K}\sigma}^\dagger + \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n}\bra{\psi_n} \mathcal{T}_{{\bf K}\sigma}\right] | \psi_{0}} \\
+									&= G^>(\mathcal{T}^\dagger_{{\bf K}\sigma}, \omega - \varepsilon_{{\bf k}_0 + {\bf K}}) + G^<(\mathcal{T}^\dagger_{{\bf K}\sigma}, \omega + \varepsilon_{{\bf k}_0 + {\bf K}})~,
+\end{aligned}\end{equation}
+where \(G^>(\mathcal{O}^\dagger, t) = -i\braket{\mathcal{O}(t)\mathcal{O}^\dagger}\) and \(G^<(\mathcal{O}^\dagger, t) = -i\braket{\mathcal{O}^\dagger\mathcal{O}(t)}\) are the greater and lesser Greens function for the auxiliary model.
+
+\subsection{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime=0\)}
+Allowing for more non-local contributions, and updating the \(\mathcal{T}-\)matrix similar to the previous section gives the following Greens function:
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r, \vec r^\prime} \braket{\psi_{0}(\vec r) | \left[\mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+In order to allow computations within a single auxiliary model, we replace the translated state \(\ket{\psi_n(\vec r^\prime)}\) with \(T^\dagger(\vec r \to \vec r^\prime)\ket{\psi_n(\vec r)} \), where \(T^\dagger(\vec r - \vec r^\prime)\) translates all sites by the vector \(\vec r^\prime - \vec r\). This leads to a modified correlation function but within a single auxiliary model:
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_{n,\vec r, \vec r^\prime} \bra{\psi_{0}(\vec r)} &\left[\mathcal{T}_{{\bf K}\sigma}(t)T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}^\dagger + \right. \\
+								&\left. \mathcal{T}^\dagger_{{\bf K}\sigma}T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}(t)\right] \ket{\psi_{0}(\vec r)} ~.
+\end{aligned}\end{equation}
+In fact, by the same arguments as in the previous section, we can obtain a frequency-resolved Greens function:
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; \omega) = \sum_n \bra{\psi_{0}} &\left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma}(t)T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n}\bra{\psi_n}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}^\dagger + \right.\\
+															&\left. \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma}T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n}\bra{\psi_n}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}(t)\right] \ket{\psi_{0}} ~.
+\end{aligned}\end{equation}
+To obtain the above, we used the fact that \(H_\text{tiled}\) commutes with the translation operator.
+
+%TODO
+%By expanding in terms of the small parameter $\frac{\lambda_{\vec k_0}^2}{\mathcal{Z}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}}$, this expression for $\Sigma_{H-H}(\vec k,\omega)$ can be recast in the following form:
+%\begin{equation}\begin{aligned}
+%	\Sigma_{H-H}(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~\label{selfenergy2}
+%\end{aligned}\end{equation}
+%where $\Sigma_\text{loc}$ and $\Sigma_\text{near-n}$ correspond to the local and nearest-neighbour self-energies defined on the real-space lattice 
+%\begin{eqnarray}
+%\Sigma_\text{loc}(\omega) &=& \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}^{(0)}} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}}~,\\ 
+%\tilde{\Sigma}(\vec k, \omega)&=&\xi_{\vec k}\Sigma_\text{near-n}~,~\Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{\lambda_{\vec k_0}^2}{\mathcal{Z}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}^2}~.
+%\end{eqnarray}
+%We note that the form of $\Sigma(\vec k, \omega)$ obtained by us is similar to the form proposed on phenomenological grounds in the generalised DMFT + $\Sigma$ approach~\cite{sadovskii2012}.
+
+\subsection{Equal-Time Ground State Correlators: Real-space}\label{staticCorr}
+We first consider a real-space operator \(\mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r})\) that quantifies the presence of correlations over a distance \({\bf \Delta}\). The correlation function itself is given by the expectation value of this operator in the ground state:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) = \braket{\Psi_\text{gs} | \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) | \Psi_\text{gs}}~.
+\end{aligned}\end{equation}
+To obtain a tractable expression for this, we first replace the full ground state with its expression in terms of the auxiliary model ground states (eq.~\ref{groundstateProposal}):
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) = \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_1 + {\bf r}^\prime + {\bf r}_c + {\bf r}\right)  | \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_1 + {\bf r}_c + {\bf r}\right)} e^{-i{\bf k}_0\cdot\left({\bf r}_1 - {\bf r}_2\right)}~,
+\end{aligned}\end{equation}
+where \({\bf r}_1\) and \({\bf r}_1 + {\bf r}^\prime\) are the positions of the incoming and outgoing auxiliary model states, relative to \({\bf r}_c + {\bf r}\), and \({\bf k}_0\) is the crystal momentum of the ground state (which we will immediately set to zero). In order to convert the incoming and outgoing states into the same auxiliary mode at a reference location \({\bf r}_c\) (which would then allow computations purely within a single auxiliary model), we use the relation: \(\ket{\psi_\text{gs}\left({\bf x}\right)} = T^\dagger\left({\bf x} - {\bf r}_c\right)\psi_\text{gs}\ket{\psi\left({\bf r}_c \right)}\). Substituting this appropriately for both the auxiliary model states gives:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_1 + {\bf r}^\prime + {\bf r}\right) \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) T^\dagger\left({\bf r}_1 + {\bf r}\right) | \psi_\text{gs}\left({\bf r}_c\right)}\\
+								  &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}^\prime\right) \mathcal{O}({\bf \Delta} - {\bf r}_1) \mathcal{O}^\dagger(- {\bf r}_1) | \psi_\text{gs}\left({\bf r}_c\right)}\\
+								  &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{O}({\bf \Delta} - {\bf r}_1) \mathcal{O}^\dagger(- {\bf r}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+As a final cosmetic change, we transform \({\bf r}_1 \to -{\bf r}\):
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) = \frac{1}{N}\sum_{{\bf r},{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{O}({\bf \Delta} + {\bf r}) \mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+Like in the Greens function calculation, we now consider the various kinds of contributions separately.
+
+\subsubsection{Intra-auxiliary model contributions: \({\bf r}^\prime = 0\)}
+These terms describe excitations that start and propagate within the same auxiliary model, upto a distance \({\bf \Delta}\):
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r})\mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+With an eye towards introducing the impurity operators into the correlations, we insert a complete basis defined by the eigenstates \(\left\{\ket{\psi_n\left({\bf r}_c\right)}\right\} \) of the auxiliary model into the expression:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\sum_{n}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r}) \ket{\psi_n\left({\bf r}_c\right)}\bra{\psi_n\left({\bf r}_c\right)} \mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+
+For the excitations that exist purely in the conduction bath \(({\bf r} \neq {\bf r}_c)\), the excitation operators must be suitably modified (see the arguments around eq.~\ref{tmatrix}) in order to incorporate Kondo screening. The modified excitation operators are generally defined as
+\begin{equation}\begin{aligned}\label{operatorTmatrix}
+	\mathcal{\tilde O}({\bf r}) = \mathcal{O}({\bf r})\mathcal{O}^\dagger(d) \mathcal{P}_\text{gs} ~,
+\end{aligned}\end{equation}
+where \(\mathcal{O}^\dagger(d)\) is the hermitian conjugate of the correlation operator \(\mathcal{O}\), but applied on the impurity sites. This therefore constitutes a time-reversed scattering process on the impurity site relative to the process in the bath. The operator \(\mathcal{P}_\text{gs}\) projects onto the ground state of the auxiliary model, since we are interested in ground state correlations. The operator multiplying the old correlation operator represents all possible excitations of the impurity site, and ensure that the bath and impurity excitation processes take place coherently. The projector ensures that only tripartite correlations between the impurity site and the two momentum states are captured by the correlation, which is what's desired within the tiling method.
+
+With this modified operator, this class of correlation functions can be written as
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r} }\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+This can be interpreted as the fact that within our auxiliary model formalism, the correlation between the sites \({\bf r}\) and \({\bf \Delta + r}\) can only occur through a transition process that connect one of the sites with the impurity site and then a return process that connects the impurity site with the other site.
+
+\subsubsection{Inter-auxiliary model contributions: \({\bf r}^\prime \neq 0\)}
+These are the most non-local contributions, and involve excitations that connect different auxiliary models:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}^\prime \neq 0}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+
+\subsection{Equal-Time Ground State Correlators: Momentum-space}
+We now consider momentum space correlations, through a general operator \(\mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1)\):
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) = \braket{\Psi_\text{gs} | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \Psi_\text{gs}}~.
+\end{aligned}\end{equation}
+Note that \(\mathcal{O}\) itself is a two-particle operator. To obtain a tractable expression for this, we first replace the full ground state with its expression in terms of the auxiliary model ground states (eq.~\ref{groundstateProposal}):
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) = \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_2\right)  | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_1\right)}~,
+\end{aligned}\end{equation}
+where \({\bf r}_1\) and \({\bf r}_2 \) are the positions of the incoming and outgoing auxiliary model states. In order to convert the incoming and outgoing states into the same auxiliary mode at a reference location \({\bf r}_c\) (which would then allow computations purely within a single auxiliary model), we use the relation: \(\ket{\psi_\text{gs}\left({\bf x}\right)} = T^\dagger\left({\bf x} - {\bf r}_c\right)\psi_\text{gs}\ket{\psi\left({\bf r}_c \right)}\). Substituting this appropriately for both the auxiliary model states gives:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_c\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) T^\dagger\left({\bf r}_1 - {\bf r}_c\right) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+In order to simplify the translation operators, we can use eq.~\ref{translationOnField}. For that, we would need to know whether the operator \(\mathcal{O}\) involves a net transfer of momentum. If \(\mathcal{O}({\bf k})\) commutes with the total number operator \(n_{\bf k} = \sum_\sigma n_{{\bf k},\sigma}\), there is no momentum transfer. Examples of such operators are spin operators, \(S_{\alpha\beta}({\bf k}) \equiv c^\dagger_{{\bf k \alpha}}c_{{\bf k}\beta}\), and density operators \(n_{{\bf k}\alpha}\). If \(\mathcal{O}({\bf k})\) does not commute with \(n_{\bf k}\), there is a net transfer of momentum, and one such operator would be the charge isospin operator \(C^+({\bf k}) = c^\dagger_{{\bf k}\uparrow}c^\dagger_{{\bf k}\downarrow}\). For the first kind of operators, we have \(T({\bf a})\mathcal{O}({\bf k})T^\dagger({\bf a}) = \mathcal{O}({\bf k})\), while the for the latter, we get \(T({\bf a})\mathcal{O}({\bf k})T^\dagger({\bf a}) = e^{-{\bf a}\cdot{\bf 2k}}\mathcal{O}({\bf k})\), where \(2{\bf k}\) represents the momentum being transferred by the operator. We consider the two cases separately.
+
+\subsubsection{Momentum-conserving operators: \(\left[\mathcal{O}({\bf k}), n_{{\bf k}}\right] = 0\)}
+For these operators, the expression for the correlation gives
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_1\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}\\
+										 &=\sum_{{\bf \Delta}}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf \Delta}\right) | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+To obtain the last form, we defined \({\bf \Delta}={\bf r}_2 - {\bf r}_1\) as the distance between the incoming and outgoing auxiliary model states, and preformed the sum over the free variable \({\bf r}_1\) to cancel out the factor of \(1/N\). Just like before, this expression can be decomposed into a term that involves a single auxiliary model and other terms that involve two distinct auxiliary models. By making the identification of the right transition operator \(\mathcal{\tilde O}({\bf k}) = \mathcal{O}({\bf k})\mathcal{O}^\dagger(d)\mathcal{P}_\text{gs}\), we get
+\begin{equation}\begin{aligned}\label{kspaceCorrelation}
+C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \sum_{{\bf \Delta}}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf \Delta}\right) | \mathcal{\tilde O}({\bf k}_2) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+
+\subsubsection{Non-momentum-conserving operators: \(\left[\mathcal{O}({\bf k}), n_{{\bf k}}\right] \neq 0\)}
+This class of operators incur an additional phase factor of \(e^{-{\bf a}\cdot{\bf 2k}}\) when the translation operators are translated across them:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_1\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}e^{2i\left( {\bf r}_1 - {\bf r}_c \right) \cdot \left( {\bf k}_1 - {\bf k}_2 \right)} \\
+										 &= \delta_{{\bf k}_1, {\bf k}_2}\sum_{{\bf \Delta}}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf \Delta}\right) | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+For this expression, we again defined \({\bf \Delta}\) similar to before, and carried out the sum of \({\bf r}_1\) involving the exponential to obtain a factor of \(N \delta_{{\bf k}_1, {\bf k}_2}\). The Kronecker delta factor is a manifestation of translational invariance and the associated total momentum conservation.
+
+As it stands, operators like \(\mathcal{O}({\bf k}_1)\) act purely on the conduction bath degrees of freedom. In order to incorporate impurity-bath correlation effects, we modify these operators using the appropriate \(T-\)matrices, by employing eq.~\ref{operatorTmatrix}. The final computations are carried out using these modified operators.
+
+
+\subsection{Entanglement Measures}
+We will now describe the prescription of calculating entanglement measures of the lattice model from within our auxiliary model treatment. In this section, we are interested mainly in two such measures, the entanglement entropy and the mutual information. Given a pure state \(\ket{\Psi}\) describing the complete system, the entanglement entropy \(S_\text{EE}(\nu)\) of a subsystem \(\nu\) quantifies the entanglement of \(\nu\) with the rest of the subsystem, and is defined as
+\begin{equation}\begin{aligned}
+	S_\text{EE}(\nu) = -\text{Tr}\left[\rho(\nu)\log \rho(\nu)\right],\quad \rho(\nu) = \text{Tr}_\nu\left[\ket{\Psi}\bra{\Psi}\right] 
+\end{aligned}\end{equation}
+where \(\text{Tr}\left[\cdot\right] \) is the trace operator, and \(\rho(\nu)\) is the reduced density matrix (RDM) for the subsystem \(\nu\) obtained by taking the partial trace \(\text{Tr}_\nu\) (over the states of \(\nu\)) of the full density matrix \(\rho = \ket{\Psi}\bra{\Psi}\). If the subsystem \(\nu\) describes local regions in real space (or states in \(k-\)space), we might be interested in the entanglement between two such subsystems \(\nu_1\) and \(\nu_2\). The correct measure to quantify such entanglement is the mutual information:
+\begin{equation}\begin{aligned}
+	I_2(\nu_1,\nu_2) = S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) - S_\text{EE}(\nu_1 \cup \nu_2)~,
+\end{aligned}\end{equation}
+where \(\nu_1 \cup \nu_2\) is a larger subsystem formed by combining \(\nu_1\) and \(\nu_2\).
+
+\subsubsection{Real-space entanglement}
+Real-space entanglement measures can be used to probe delocalisation-localisation transitions. The simplest such measure is the entanglement of a local mode. Since the local entanglement entropy will be uniform at each lattice site for a system with translation invariance, it suffices to calculate the real-space averaged entanglement entropy \(S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}S_\text{EE}\left( {\bf r} \right) \). By visualising the lattice model as a superposition of auxiliary models placed at various sites (eq.~\ref{tilingPrescriptionFinal}), the real space average of the lattice model can be thought of as an average over sites of a particular impurity model, and then a second average over all the impurity models. But since all all impurity models are equivalent to each other, the second average is redundant. Secondly, all correlations must derive from the impurity site, which can be formally encoded by subtracting, from this average, the corresponding contribution obtained in the absence of the impurity site. In total, the lattice-auxiliary model relation for the local entanglement entropy can be written as
+\begin{equation}\begin{aligned}
+	S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}\left[S_\text{EE}({\bf r}_d + {\bf r}) - S_\text{EE}^{(0)}({\bf r}_d + {\bf r})\right] ~,
+\end{aligned}\end{equation}
+where \({\bf r}_d\) is the impurity site position, \({\bf r}\) is the distance of a conduction bath site from the impurity site (can be zero), and \(S_\text{EE}({\bf r}_d + {\bf r})\) is the entanglement entropy, calculated within the impurity model, at the locatiom \({\bf r}_d + {\bf r}\). \(S^{(0)}_\text{EE}({\bf r}_d + {\bf r})\) is the same entanglement entropy, but calculated for an impurity model with vanishing impurity-bath hybridisation and bath interaction.
+
+\subsubsection{Momentum-space entanglement}
+Entanglement measures in \(k-\)space can provide valuable information regarding the Fermi surface structure and the nature of gapless excitations proximate to it. The most elementary measure is the entanglement entropy \(S_\text{EE}({\bf q})\) of a single excitation carrying momentum \({\bf q}\). Unlike \(S_\text{EE}^\text{loc}\), this does not involve an average, and involves a single computation:
+\begin{equation}\begin{aligned}
+	\tilde S_\text{EE}({\bf q}) = S_\text{EE}({\bf q}) - S_\text{EE}^{(0)}({\bf q})~.
+\end{aligned}\end{equation}
+It is possible to improve this by considering inter-auxiliary model contributions in the reduced density matrix \(\rho({\bf q})\). On the lattice model, \(\rho({\bf q})\) is defined as
+\begin{equation}\begin{aligned}\label{SEE-k}
+	\rho({\bf q}) = \text{Tr}_{\bf q}\left[\ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\right] ~,
+\end{aligned}\end{equation}
+where \(\text{Tr}_{\bf q}\left[\cdot\right]\) is the partial trace over the Hilbert space of \({\bf q}\), and \(\ket{\Psi_\text{gs}}\) is the tiled ground state. Using eq.~\ref{groundstateProposal}, we can write the ground state in terms of those of the auxiliary model. These leads to two classes of terms, one purely within a single auxiliary model ground state \(\ket{\psi_\text{gs}}\), and the other involving transitions across auxiliary models:
+\begin{equation}\begin{aligned}\label{RDMTiled}
+	\rho({\bf q}) \sim \text{Tr}_{\bf q}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d)}\right] + \frac{1}{N}\text{Tr}_{\bf q}\sum_{{\bf r}}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d + {\bf r})}\right]~,
+\end{aligned}\end{equation}
+where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The \(\sim\) indicates that the RDM needs to be normalised. The first term leads to the expression in eq.~\ref{SEE-k}, while the second term can be used to improve this estimate. Away from any quantum critical points, the localised nature of the impurity-bath hybridisation ensures that impurity correlations decay exponentially away from the transition. This ensures that the second term is very small away from a critical point. We therefore restrict ourselves to just the first term in the present work.
+
 
 \section{Extending the Anderson Model To a Lattice-Embedded Impurity Model}
 Crucial to our method is the choice of an impurity auxiliary model that is able to capture important aspects of the lattice model in a local sense. Some of us have shown in a previous work~\cite{Mukherjee_2023} that almost all aspects of the Mott metal-insulator transition on the infinite dimensional Hubbard model on the Bethe lattice (as seen, for example, from dynamical mean-field theory~\cite{georges1996}) can be captured from a simple extension of the Anderson impurity model (eSIAM). The extension involves including a local attractive interacting \(U_b\) on the conduction bath site coupled to the impurity site; by tuning the ratio of \(|U_b|\) and the Kondo coupling \(J\), we obtained an impurity phase transition from a screened phase to an unscreened local moment phase. Since the impurity site of the auxiliary model is a representative of each correlated site on the lattice, the mapping to the lattice model then involves identifying the locally gapless impurity phase with the bulk gapless of the lattice model. In other words, the ability of the impurity site to participate in low-energy excitations corresponds to the ability of an electron, within the lattice model, to delocalise from one site into the rest of the lattice. In the same vein, a local moment phase of the impurity model maps to a gapped Mott insulating phase on the lattice model, where there's a charge gap to electron hopping processes.
@@ -276,15 +630,15 @@ In figure ~\ref{spinCorr}, we show the evolution of the spin-spin correlation \(
 In order to study the mechanism behind the destabilisation of the Kondo cloud through the pseudogap, we calculate the \(k-\)space double occupancy \(\left<n_{\vec k \uparrow} n_{\vec k \downarrow}\right>\) and \(k-\)space charge-transfer correlation \(\chi_c(\vec k, \vec q) = \left<c^\dagger_{\vec k \uparrow} c^\dagger_{\vec k \downarrow} c_{\vec q \downarrow}c_{\vec q \uparrow}\right>\) (Fig.~\ref{cfnode}). We find that the entry into the pseudogap is marked by an increase of doubly-occupied states near the antinode in comparison to \(W=0\). These pairs likely lead to the concomitant vanishing of spin-correlations near the antinode at the same value of \(W\), as seen in Fig.~\ref{spinCorr}. More insight on the nature of these correlations are obtained from the fluctuations \(\chi_c(\vec k, \vec q)\) starting from the node \((\vec q = k_\text{N})\) and antinode \(\left( \vec q = k_\text{AN}\right) \). Interestingly, we find strong pair-transfer interactions between the node and antinode. Within the pseudogap, this leads to charge-isospin flip correlations between the decoupled antinodal region and the still-coupled nodal region.
 \begin{figure}[!htpb]
 	\centering
-	\includegraphics[width=0.23\textwidth]{doubOcc-1.pdf}
-	\includegraphics[width=0.23\textwidth]{doubOcc-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfantinode-3.pdf}
-	\includegraphics[width=0.23\textwidth]{cfnode-3.pdf}
+	\includegraphics[width=0.23\textwidth]{cfnode-1.pdf}
+	\includegraphics[width=0.23\textwidth]{cfnode-2.pdf}
+	\includegraphics[width=0.23\textwidth]{cfantinode-1.pdf}
+	\includegraphics[width=0.23\textwidth]{cfantinode-2.pdf}
 	\caption{{\it Top panels}: Distribution of double occupancy at \(W=0\) and \(W=-1.74\) (entry into the pseudogap). While the double occupancy is concentrated near the nodes at \(W=0\), it rises near the antinodes at the start of the pseudogap, signalling its destabilisation. {\it Bottom panels}: Charge-transfer correlation \(\chi_c\) (defined in main text) starting from antinode (left) and node (right), at the beginning of the pseudogap phase. Strong node-antinode correlations are clearly visible.}
 	\label{cfnode}
 \end{figure}
 
-\section{Nature of Gapless Excitations in the Impurity Pseudogap}
+\section{Nature of Gapless Excitations in the Impurity Pseudogap}\label{2CKEmerge}
 \subsection{Emergence of a two-channel Kondo Model}
 As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
 \begin{itemize}
@@ -293,7 +647,7 @@ As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal po
 \end{itemize}
 The second class is tied to the first through a symmetry of the Hamiltonian (eq.~\ref{hamiltonanSymms}). The crucial feature of these processes is that each node only interacts with the other node directly opposite to it across the origin. That is, \(\left(\pi/2, \pi/2\right) \) and \(\left(-\pi/2, -\pi/2\right) \) only interact between themselves, while \(\left(\pi/2, -\pi/2\right) \) and \(\left(-\pi/2, \pi/2\right) \) form their own pair of connected regions. 
 
-Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (left panel of Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime.
+Let \(S^\pm\) be the set of momentum states in a small window around nodes along \(k_x = \pm k_y\). As discussed immediately above, the Kondo spin-exchange term close to the transition does not lead to scattering of any \(k-\)state from \(S^+\) to \(S^-\). This is verified by calculating the ratio \(\text{max}\left\{ J_{k^+_1, k^-_2} \right\} / \text{max}\left\{ J_{k^+_1, k^+_2} \right\}\), where the maximum in the numerator is calculated from all the low-energy (fixed point) Kondo scattering processes that connect the two sets \(S^\pm\), while the denominator maximum is from within the set \(S^+\). This ratio vanishes (left panel of Fig.~\ref{channelDecoupling}) within the local pseudogap regime, indicating that no direct Kondo scattering process persists between the two sectors \(S^\pm\) at low energies, deep within the pseudogap regime. We call the value of \(W\) at which this ratio vanishes \(W^*\).
 
 \begin{figure}[htpb]
 	\centering
@@ -309,7 +663,7 @@ H_\text{eff} = H(S^+) + H(S^-);~H(S) = \sum_{{\bf q}\in S,\sigma}\varepsilon_{\b
 \end{aligned}\end{equation}
 where \(H(S^\pm)\) represents the dynamics of momentum states residing in regions \(S^\pm\). The only source of information transfer between the two regions is the fact that they interact with the same impurity local moment. Eq.\ref{twoChannel} tells us that the low-energy dynamics of the embedded eSIAM close to the Kondo-breakdown transition is governed by an emergent {\bf two-channel Kondo model}, with the conduction bath states in the sets \(S^\pm\) making up the two channels.
 
-\subsection{Marginal Fermi liquid behaviour in the pseudogap}
+\subsection{Marginal Fermi liquid behaviour in the pseudogap}\label{marginalFL}
 It is well-known that the two-channel Kondo model hosts non-Fermi liquid excitations at low-energies~\cite{Tsvelick_weigmann_mchannel_1985,emery_kivelson}; that this also happens in the present model is corroborated by our calculations of the quasiparticle residue \(Z_\text{imp}\) for the local gapless excitations. For a single-particle Greens function of an interacting model, the quasiparticle residue \(Z\) is defined as the spectral weight of low-energy resonance within the spectral function:
 \begin{equation}\begin{aligned}
 	G_k = \frac{Z}{\omega - \varepsilon_k - i \Sigma^{\prime\prime}} + G_\text{incoh}~,\quad 1/Z = 1- \frac{d \Sigma^{\prime}}{d\omega}~,
@@ -365,456 +719,23 @@ The self-energy also provides the quasiparticle residue for each channel\cite{an
 As \(\omega \to 0\), the \(Z\) vanishes, implying that the ground state is {\it not adiabatically connected} to the Fermi gas in the presence of the NFL terms.
 This is the orthogonality catastrophe~\cite{varma2002singular,anderson_infraredcat,yamada_catastrophe,yamada1979orthogonality} in the two-channel Kondo problem, and it is brought about by the presence of the channel-non diagonal terms in Eq.~\ref{mfl_large}.
 
-
-\section{The Tiling Algorithm}
-
-\subsection{Formal description of the tiling procedure}
-We will now define the {\it tiling} procedure by which we can recreate the complete lattice model by using instances of an auxiliary model Hamiltonian. The first step is of course to identify an impurity model that can act as a good auxiliary model for out lattice model. The local behaviour of this impurity model should reflect the essential local physics of the lattice model. Typically, we will consider impurity model geometries where the real-space bath site connected directly to the impurity also harbours some kind of local interaction. We will henceforth refer to this site as the zeroth site. In the case where multiple sites are connected directly to the impurity, we will choose one of these sites for reference and call that the {\it bath zeroth site} throughout.
-
-In order to identify a {\it unit cell} for our tiling procedure, we place the impurity site at a reference site \({\bf r}_d\) of our lattice, and the bath zeroth site at a nearest-neighbour site \({\bf z}\), and label the corresponding auxiliary model Hamiltonian as \(\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})\). The unit cell at the position \({\bf r}_d\) is then obtained by placing the zeroth site on all nearest-neighbours of \({\bf r}_d\) and averaging over these configurations:
-\begin{equation}\begin{aligned}\label{unitCellHamiltonian}
-	\mathcal{H}_\text{aux}({\bf r}_d) = \frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})~,
-\end{aligned}\end{equation}
-where \({\bf z}\) is summed over all nearest-neighbours of \({\bf r}_d\) and \(\mathcal{Z}\) is the number of such nearest-neighbours.
-
-In order to create the bulk model, we now need to translate this auxiliary model over the entire lattice. For this, we define {\it many-particle global} translation operators \(T({\bf a})\) that translate all positions by a vector \({\bf a}\). In terms of manybody states and operators, their action is defined as 
-\begin{equation}\begin{aligned}\label{translationDefinition}
-	&T^\dagger({\bf a}) \ket{{\bf r}_1, {\bf r}_2,\ldots} = \ket{{\bf r}_1 + {\bf a}}\otimes\ket{{\bf r}_2 + {\bf a}}\ldots\otimes\ket{{\bf r}_n + {\bf a}}\\
-	&T^\dagger({\bf a}) \mathcal{O}\left({\bf r}_1, {\bf r}_2,\ldots\right)T({\bf a}) = \mathcal{O}\left({\bf r}_1 + {\bf a}, {\bf r}_2 + {\bf a},\ldots\right)~,
-\end{aligned}\end{equation}
-where \(\ket{{\bf r}_1, {\bf r}_2,\ldots}\) is a state in the manyparticle Fock-space basis with the particles localised at the specified positions. For example, for a local fermionic creation operator \(c^\dagger({\bf r})\), we have 
-\begin{equation}\begin{aligned}
-	T^\dagger({\bf a}) c^\dagger({\bf r}) T({\bf a}) = c^\dagger({\bf r} + {\bf a})~.
-\end{aligned}\end{equation}
-It acts similarly on the auxiliary model Hamiltonian:
-\begin{equation}\begin{aligned}
-	T^\dagger({\bf a})\mathcal{H}_\text{aux}({\bf r}_d)T({\bf a}) = \mathcal{H}_\text{aux}({\bf r}_d + {\bf a})~,
-\end{aligned}\end{equation}
-translating all sites by the vector \({\bf a}\). By introducing the Fourier transform to momentum space,
-\begin{equation}\begin{aligned}
-	\ket{{\bf r}_1, {\bf r}_2,\ldots} = \otimes_{j=1}^N \int d{\bf k}_j e^{-i {\bf r}_j\cdot{\bf k}_j} \ket{{\bf k}_j}~,
-\end{aligned}\end{equation}
-it is easy to see that the total momentum states are eigenstates of the global translation operators:
-\begin{equation}\begin{aligned}
-	T^\dagger({\bf a})\ket{{\bf k}_1, {\bf k}_2,\ldots} &= \otimes_{j=1}^N \int d{\bf r}_j e^{i {\bf r}_j\cdot{\bf k}_j} T^\dagger({\bf a})\ket{{\bf r}_j}~,\\
-							    &=\otimes_{j=1}^N \int d{\bf r}_j e^{i {\bf r}_j\cdot{\bf k}_j} \ket{{\bf r}_j + {\bf a}}\\
-							    &=e^{-i {\bf a}_j\cdot{\bf k}_\text{tot}}\ket{{\bf k}_1, {\bf k}_2,\ldots},
-\end{aligned}\end{equation}
-where \({\bf k}_\text{tot} = \sum_j {\bf k}_j\) is the total momentum.
-
-The auxiliary model, being an impurity model, lacks translation symmetry. The lattice model does remain invariant under global translation operations. In order to reconstruct the full lattice model and restore its translation invariance, we translate the unit cell across all sites of the lattice:
-\begin{equation}\begin{aligned}
-	\label{tilingPrescription}
-	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})\\
-				&= \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d)T({\bf r} - {\bf r}_d)~ \\
-				&= \frac{1}{\mathcal{Z}}\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{aux}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d)~ \\
-\end{aligned}\end{equation}
-where \({\bf r}\) sums over all lattice sites.
-
-\subsection{Extending the Anderson impurity model: Identifying the correct auxiliary model}
-The standard Anderson model consists of a correlated impurity site coupled with a non-interacting conduction bath. The double occupancy cost on the impurity is \(U\), while the single-particle hopping strength between the impurity and the conduction bath is \(V\). Such a model does not exhibit a phase transition; the low-energy phase is one of strong-coupling for all parameter regimes. We have recently studied an extended Anderson impurity model (e-SIAM) where we introduced an explicit Kondo coupling \(J\) and a local correlation \(U_b\) on the bath zeroth site, which is the site connected to the impurity (see \cite{gazizovaleblanc2023} for some recent findings of non-local effective attractive interactions within the Hubbard model). The Hamiltonian of the e-SIAM for a half-filled impurity site is of the form
-\begin{equation}\begin{aligned}
-	\label{siam_attr}
-	\mathcal{H}_\text{E-S} = \mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} + \mathcal{H}_\text{imp-cbath}~,
-\end{aligned}\end{equation}
-where 
-\begin{itemize}
-	\item \(\mathcal{H}_\text{cbath} = -\frac{1}{\mathcal{Z}}t\sum_{i=0,1,\ldots;\sigma}\left(c^\dagger_{i,\sigma}c_{i+1,\sigma} + \text{h.c.}\right) - \frac{1}{2}U_b\left(\hat n_{0 \uparrow} - \hat n_{0 \downarrow}\right)^2\) is the Hamiltonian of the conduction bath consisting of a kinetic energy term and some local interaction terms on the zeroth site,
-	\item \(\mathcal{H}_\text{imp} = - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2\) is the Hamiltonian for the localised impurity site, and
-	\item \(\mathcal{H}_\text{imp-bath} = J {\bf S}_d\cdot{\bf S}_0 - V \sum_{\sigma} \left(c^\dagger_{0\sigma} c_{d\sigma} + h.c.\right)\) describes the interaction between the impurity orbitals and the conduction bath.
-\end{itemize}
-Here, \(c_{d\sigma}\) is the impurity electron operator, \(c_{i\sigma}\) is the conduction bath electron operator, \(c_{0,\sigma}\) is the bath zeroth site operator, \({\bf S}_d\) is the impurity spin operator and \({\bf S}_0 = \sum_{\alpha,\beta}{\bf \sigma}c^\dagger_{0,\alpha}c_{0,\beta}\) is the operator for the local spin in the conduction bath. We have found that the e-SIAM has a stable local moment phase for \(U_b < -J/4\) with an antiferromagnetic Kondo coupling (\(J > 0\)). We have also shown that this model captures much of the phenomenology of the infinite dimensional Hubbard model (as discovered via DMFT), such as a second-order phase transition at \(T=0\) and the presence of an optical gap in the local spectral function beyond a certain value of interaction strength. Note that the impurity site and the conduction bath are both at half-filling.
-
-\subsection{Tiling towards a Hubbard-Heisenberg model with an embedded extended SIAM}
-In this subsection, we provide an explicit example of constructing a lattice model. We will consider a slightly more generalised version of the extended SIAM described in the previous section, where the impurity site coupled to the conduction bath purely through the s-wave channel. We will show that that model leads to a form of a Hubbard-Heisenberg model upon restoring translation invariance via repeated translation operations. The generalisation involve allowing an arbitrary filling on the impurity site and in the conduction bath, through two additional parameter: (i) a particle-hole asymmetry parameter \(\eta\) for the impurity site, (ii) a chemical potential for the conduction bath, and (iii) embedding the impurity into the lattice of the 2D conduction bath. This modified impurity model is shown in Fig.~\ref{embeddedEsiam}. The first term modifies the impurity Hamiltonian \(\mathcal{H}_\text{imp}\) into
-\begin{equation}\begin{aligned}\label{onsiteHamiltonian}
-	\mathcal{H}_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~.
-\end{aligned}\end{equation}
-where we have placed the impurity site at the position \({\bf r}_d\). The second term modifies the conduction bath Hamiltonian \(\mathcal{H}_\text{cbath}\):
-\begin{equation}\begin{aligned}\label{bathHamiltonian}
-	\mathcal{H}_\text{cbath} &= -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
-							 &- \frac{1}{2 \mathcal{Z}}U_b\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
-\end{aligned}\end{equation}
-where \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\).
-
-In this notation, the interaction Hamiltonian can be written as
-\begin{equation}\begin{aligned}\label{interactionHamiltonian}
-	\mathcal{H}_\text{imp-cbath} &= \frac{J}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}\sum_{{\bf z}\in\text{NN}({\bf r}_d)} {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \\
-								 & - \frac{V}{\sqrt{\mathcal{Z}}}\sum_{\sigma} \sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)
-\end{aligned}\end{equation}
-where \(\boldsymbol \tau = \left( \tau_x, \tau_y, \tau_z \right) \) is the vector of Pauli matrices. \(\sigma\) and \(\sigma^\prime\) can be \(\pm 1\) and represent up and down configurations.
-
-We now follow the prescription laid out in eq.~\ref{tilingPrescription}. The tiled Hamiltonian can be written as 
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{tiled} = \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\mathcal{H}_\text{cbath} + \mathcal{H}_\text{imp} \right.\\
-\left.+ \mathcal{H}_\text{imp-cbath}\right]T({\bf r} - {\bf r}_d)~.
-\end{aligned}\end{equation}
-Note that in comparison to eq.~\ref{tilingPrescription}, we have dropped the sum over the zeroth sites, because our impurity model Hamiltonian (defined using eqs.~\ref{onsiteHamiltonian} through \ref{interactionHamiltonian}) already contains a sum over these zeroth sites.
-
-We consider the effect of the translation operations on each part of the Hamiltonian. We first have
-\begin{equation}\begin{aligned}
-	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{cbath}({\bf r}_d, {\bf z})T({\bf r} - {\bf r}_d) \\
-	=& \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[-\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \right.\\
-	 &\left.- \frac{U_b}{2\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}\right]T({\bf r} - {\bf r}_d) \\
-	=& -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\sum_{{\bf r}\neq{\bf r}_i,{\bf r}_j}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
-	 &- \frac{U_b}{2\mathcal{Z}}\sum_{\bf r}\sum_{{\bf z}\in\text{NN}\left({\bf r}\right)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i}\sum_{{\bf r} \neq {\bf r}_i}\hat n_{{\bf r}_i,\sigma}\\
-	=& -\frac{1}{\sqrt\mathcal{Z}}(N-2)t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right)\\
-	 &- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
-\end{aligned}\end{equation}
-In the first step, the factor of \(\mathcal{Z}\) is cancelled out by the trivial sum over \({\bf r}_0\) in the first and third terms. At the last step, the three terms simplified for the following reasons. The inequality \(\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}\) in the first term ensures that each nearest-neighbour pair appears in \(N-2\) instances of the auxiliary model, \(N\) being the total number of lattice sites; the two instances that do not contribute are the ones in which the impurity site itself is at \({\bf r}_i\) or \({\bf r}_j\). For the second term, the double sum \(\sum_{\bf r}\sum_{{\bf z} \in \text{NN}({\bf r})}\) evaluates to \(\mathcal{Z}\sum_{\bf r}\), because each point on the lattice appears \(\mathcal{W}\) times in the summation. This factor of \(\mathcal{W}\) cancels the one in the denominator. In the third term, the inner summation simply evaluates to \(N-1\), and we finally replace the dummy index \({\bf r}_i\) with \({\bf r}\). 
-
-The next part is
-\begin{equation}\begin{aligned}
-	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp}T({\bf r} - {\bf r}_d) \\
-	=& -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~.
-\end{aligned}\end{equation}
-This is obtained simply by replacing the impurity position \({\bf r}_d\) with the translated position \({\bf r}\), generating a translation-invariant Hubbard term (the first term) and a finite chemical potential (second term).
-
-We now consider the final term:
-\begin{equation}\begin{aligned}
-	&\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\mathcal{H}_\text{imp-cbath}T({\bf r} - {\bf r}_d)\\
-	&=\sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)\left[\frac{1}{\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
-				     &-  \left. \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\sum_{\sigma} V \left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]T({\bf r} - {\bf r}_d)\\
-	&=\sum_{{\bf r}}\sum_{{\bf z}\in\text{NN}({\bf r})}\left[\frac{1}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}J {\bf S}_{{\bf r}}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \right.\\
-				     &-  \frac{1}{\sqrt\mathcal{Z}}\left.\sum_{\sigma} V\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)\right]\\
-					 &=\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]\\
-\end{aligned}\end{equation}
-At the last step, each nearest-neighbour pair of sites \({\bf r}_i, {\bf r}_j\) appear 2 times in the summation, because any site is a member of two distinct nearest-neighbour pairs. We have also defined \({\bf S}_{{\bf r}_j} =\sum_{\sigma,\sigma^\prime} {\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime}\) as the local spin operator.
-
-The total tiled Hamiltonian is therefore
-\begin{equation}\begin{aligned}
-	&\mathcal{H}_\text{tiled} \\
-	&= -\frac{N-2}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>,\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
-	&- \frac{1}{2}U_b\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}\\
-	& + \sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]
-\end{aligned}\end{equation}
-While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms). Upon removing these repeated terms, the tiled Hamiltonian becomes
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - (N-3)\mathcal{H}_\text{cbath-nint}\\
-							 &= -\frac{1}{\sqrt\mathcal{Z}}(t + 2V)\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
-							 &- \frac{1}{2}\left(U + U_b\right)\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \left(\eta + 2\mu\right) \sum_{{\bf r}}\hat n_{{\bf r},\sigma} \\
-							 &+ \frac{2}{\mathcal{Z}}J\sum_{\left< {\bf r}_i, {\bf r}_j\right>} {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j}
-\end{aligned}\end{equation}
-
-The result of the tiling operations is a Hubbard-Heisenberg model, of the form
-\begin{equation}\begin{aligned}
-	\mathcal{H}_\text{HH} &= -\frac{1}{\sqrt\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\\
-						  &+ \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}{\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  ~,
-\end{aligned}\end{equation}
-where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
-\begin{equation}\begin{aligned}\label{couplingsMappings}
-	\tilde t = t+2V,~~ \tilde U = U + U_b, ~ ~ \tilde \mu = 2\mu + \eta,~ ~ \tilde J = 2J~.
-\end{aligned}\end{equation}
-In summary, the appropriate method for reconstructing the lattice model Hamiltonian is therefore
-\begin{equation}\begin{aligned}\label{tilingPrescriptionFinal}
-	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - N\mathcal{H}_\text{cbath-nint}~,
-\end{aligned}\end{equation}
-where we replaced \(N-3\) with \(N\) assuming a large number of sites. Using this, the extended-SIAM gets ``expanded" into a Hubbard-Heisenberg model.
-
-\subsection{Translation symmetry and a conserved total momentum}
-From the form in eq.~\ref{tilingPrescriptionFinal}, the tiled Hamiltonian is symmetric under global many-body translations of the kind defined in eq.~\ref{translationDefinition}, by arbitrary lattice spacings:
-\begin{equation}\begin{aligned}\label{translationSymmetry}
-	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r})T({\bf a}) = \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r + a}) = \sum_{{\bf r}^\prime}\mathcal{H}_\text{aux}({\bf r}^\prime)\\
-	&T({\bf a})^\dagger\sum_{{\bf r}}\mathcal{H}_\text{cbath-nint}T({\bf a}) = \mathcal{H}_\text{cbath-nint}\\
-	&\implies T({\bf a})^\dagger\mathcal{H}_\text{tiled}T({\bf a}) = \mathcal{H}_\text{tiled}~.
-\end{aligned}\end{equation}
-In the first equation, we used the fact that the translation operator simply translates the auxiliary model at the position \({\bf r}\) into another one at the position \({\bf r} + {\bf a}\). Since both are part of the summation, the summation remains unchanged. The second equation uses the fact that the Hamiltonian \(\mathcal{H}_\text{cbath-nint}\) is that of a tight-binding model and is therefore translation-invariant. The fact that the Hamiltonian \(\mathcal{H}_\text{tiled}\) commutes with the many-body translation operator implies that the total crystal momentum \(\vec k\) is a conserved quantity.
-
-\section{Form of the eigenstates: Bloch's theorem}
-In the tight-binding approach to lattice problems, the full Hamiltonian is described by adding the localised Hamiltonians at each site, and the full eigenstate \(\ket{\Psi}\) is then obtained by constructing liner combinations of the eigenstates \(\ket{\psi_i}\) of the local Hamiltonians such that \(\ket{\Psi}\) satisfies Bloch's theorem: \(\ket{\Psi_{\bf k}} = \sum_{i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_i}\), where \({\bf r}_i\) sums over the positions of the local Hamiltonians. Bloch's theorem ensures that eigenstates satisfy the following relation under a translation operation by an arbitrary number of lattice spacings \({n\bf a}\):
-\begin{equation}\begin{aligned}
-	T^\dagger(n{\bf a})\ket{\Psi_{{\bf k}}} = \sum_{i} e^{i {\bf k}\cdot{\bf r}_i} \ket{\psi_{i + n}} = e^{-in{\bf k}\cdot{\bf a}}\ket{\Psi_{\bf k}}
-\end{aligned}\end{equation}
-The definition and some properties of these global translation operations were provided in Appendix~\ref{BlochProperties}. It was shown there that they share eigenstates with the total momentum operator. In a lattice model, this continuous symmetry gets lowered to its discrete form: the total {\it crystal} momentum is conserved by any scattering process. As a result, the eigenstates can be labelled using the combined index \(s = \left({\bf k}, n\right) \) where \({\bf k}\) is the total crystal momentum and \(n\) is a band index \(n\).
-
-The eigenstates \(\ket{\Psi_{s}}\) (\(s = \left({\bf k}, n\right)\)) of the lattice Hamiltonians obtained using eq.~\ref{tilingPrescriptionFinal} also enjoy a {\it many-body} Bloch's theorem~\cite{stoyanova}, because the tiling procedure restores the translation symmetry of the Hamiltonian (as shown in eq.~\ref{translationSymmetry}). This means that the {\it local} eigenstates \(\ket{\psi_n\left({\bf r}_d\right)}\) (with the impurity located at an arbitrary position \({\bf r}_d\)) of the unit cell auxiliary model Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) defined in eq.~\ref{unitCellHamiltonian} can be used to construct eigenstates of the lattice Hamiltonian. The index \(n(=0,1,\ldots)\) in the subscript indicates that it is the \(n^\text{th}\) eigenstate of the auxiliary model.
-
-The state \(\ket{\psi_n\left({\bf r}_d\right)}\) does not specify the position of the zeroth site, because the unit cell Hamiltonian \(\mathcal{H}_\text{aux}({\bf r}_d)\) itself has been averaged over \(\mathcal{Z}\) zeroth sites. Accordingly, we can express the averaged eigenstate \(\ket{\psi_n\left({\bf r}_d\right)}\) as
-\begin{equation}\begin{aligned}
-	\ket{\psi_n\left({\bf r}_d\right)} = \frac{1}{\sqrt\mathcal{Z}}\sum_{{\bf z} \in \text{NN}({\bf r}_d)}\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}~,
-\end{aligned}\end{equation}
-where \(\ket{\psi_n\left({\bf r}_d, {\bf z}\right)}\) is an auxiliary model eigenstate with the impurity and zeroth sites placed at \({\bf r}_d\) and \({\bf z}\). With this in mind, the following unnormalised combination of the auxiliary model eigenstates satisfies a many-particle equivalent of Bloch's theorem~\cite{stoyanova}:
-\begin{equation}\begin{aligned}\label{eigenstateProposal}
-	\ket{\Psi_{s}} \equiv \ket{\Psi_{{\bf k}, n}} &= \frac{1}{\sqrt N}\sum_{{\bf r}_d} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_{n}\left({\bf r}_d\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}_d}\sum_{{\bf z} \in \text{NN}({\bf r}_d)} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_{n}\left({\bf r}_d, {\bf z}\right)}~,
-\end{aligned}\end{equation}
-where \(N\) is the total number of lattice sites and \({\bf r}_d\) is summed over all lattice spacings. The set of \(n=0\) states form the lowest band in the spectrum of the lattice, while higher values of \(n\) produce the more energetic bands. The ground state \(s = s_0\) is obtained by setting \({\bf k}\) and \(n\) to 0:
-\begin{equation}\begin{aligned}\label{groundstateProposal}
-	\ket{\Psi_\text{gs}} \equiv \ket{\Psi_{s_0}} &= \frac{1}{\sqrt N}\sum_{{\bf r}_d} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_\text{gs}\left({\bf r}_d\right)} = \frac{1}{\sqrt{\mathcal{Z} N}}\sum_{{\bf r}_d}\sum_{{\bf z} \in \text{NN}({\bf r}_d)} e^{i {\bf k}\cdot{\bf r}_d} \ket{\psi_\text{gs}\left({\bf r}_d, {\bf z}\right)}
-\end{aligned}\end{equation}
-
-\section{One-Particle Greens Functions}
-\subsection{Momentum-space}
-In the previous part, we proposed a form for the ground state \(\ket{\Psi_\text{gs}}\) of the bulk Hamiltonian in terms of the ground-states \(\ket{\psi_\text{gs}}\) of the auxiliary models.
-In this section, we will relate one-particle Greens functions of the bulk lattice to those of the auxiliary model. We will assume that the auxiliary model Hilbert space has the same dimensions as that of the bulk lattice model. We define the retarded time-domain lattice \(k-\)space Greens function at zero temperature as
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; t) = -i\theta(t) \braket{\Psi_\text{gs} | \left\{ c_{{\bf K}\sigma}(t), c^\dagger_{{\bf K}\sigma} \right\} | \Psi_\text{gs}}~.
-\end{aligned}\end{equation}
-where the bulk Hamiltonian \(H_\text{tiled}\) leads to the dynamics of the annihilation operators at time \(t\): 
-\begin{equation}\begin{aligned}\label{heisenberg}
-	c_{{\bf K}\sigma}(t) = e^{it H_\text{tiled} }c_{{\bf K}\sigma}e^{-i t H_\text{tiled}}~.
-\end{aligned}\end{equation}
-We now proceed to simplify one of the terms of the anticommutator (for simplicity of notation):
-\begin{equation}\begin{aligned}\label{greensFunction1}
-	&\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_{\vec r,\vec \Delta}e^{-i{\bf K}_0\cdot\vec\Delta}\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
-\end{aligned}\end{equation}
-To make further progress, we insert the identity resolution \(1 = \sum_s\ket{\Psi_s}\bra{\Psi_s}\) in between the two operators, where \(s=\left({\bf k}, n\right)\) sums over all eigenstates (with energies \(\tilde E_s\)). The lattice eigenstates themselves can again be written in terms of those of the auxiliary model, using eq.~\ref{eigenstateProposal}:
-\begin{equation}\begin{aligned}
-	\ket{\Psi_s}\bra{\Psi_s} = \sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\vec k\cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)}~.
-\end{aligned}\end{equation}
-With this, eq.~\ref{greensFunction1} becomes
-	\begin{equation}\begin{aligned}\label{greensfunction2}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\vec k_0\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
-\end{aligned}\end{equation}
-In order to bring this expression closer to the form of an auxiliary model Greens function, we would like to transform the initial and final states \(\ket{\psi(\vec r)}\) and \(\ket{\psi(\vec r + \vec \Delta)}\) to apply to the same auxiliary model. This is done by using the relation: \(\ket{\psi(\vec r + \Delta)} = T^\dagger(\vec \Delta)\ket{\psi(\vec r)}\), where \(T^\dagger(\vec \Delta)\) translates all lattice sites by the vector \(\vec\Delta\).
-\begin{equation}\begin{aligned}
-	\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = \braket{\psi_{0}(\vec r) | T(\vec \Delta) c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = \braket{\psi_{0}(\vec r) | T(\vec \Delta) c_{{\bf K}\sigma}(t) T^\dagger(\vec \Delta) | \psi_n(\vec r^\prime+\vec \Delta^\prime - \vec \Delta)}
-\end{aligned}\end{equation}
-The effect of the translation operators on the \(k-\)space annihilation operator can be easily ascertained by transforming it to real-space, using the Fourier transform definition
-\begin{equation}\begin{aligned}\label{fourTransf}
-	c({\bf K}) = \frac{1}{\sqrt N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r})~.
-\end{aligned}\end{equation}
-Upon applying this, we get
-\begin{equation}\begin{aligned}\label{translationOnField}
-	T\left(\vec a\right) c({\bf K}) T^\dagger\left(\vec a\right) = \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}T\left(\vec a\right) c({\bf r}) T^\dagger\left(\vec a\right) = \frac{1}{N}\sum_{\bf r}e^{-i{\bf K}\cdot{\bf r}}c({\bf r} - \vec a) = e^{-i{\bf K}\cdot\vec a}c({\bf K})~.
-\end{aligned}\end{equation}
-Using this identity on the above expression gives
-\begin{equation}\begin{aligned}
-	\braket{\psi_{0}(\vec r+\vec \Delta) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime)} = e^{-i{\bf K} \cdot \vec \Delta}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) | \psi_n(\vec r^\prime+\vec \Delta^\prime - \vec \Delta)}
-\end{aligned}\end{equation}
-Finally replacing this all the way back into eq.~\ref{greensfunction2} gives
-	\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\left(\vec k_0 + {\bf K}\right)\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime - \vec\Delta)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
-\end{aligned}\end{equation}
-To further unify the operators, we make the substitution \(\vec \Delta^\prime \to \vec \Delta^\prime + \vec \Delta\), leading to the expression
-	\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N^2}\sum_s\sum_{\vec r,\vec \Delta}\sum_{\vec r^\prime,\vec \Delta^\prime}e^{-i\left(\vec k_0 + {\bf K} - \vec k\right)\cdot\vec\Delta} e^{i\vec k\cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
-\end{aligned}\end{equation}
-The sum over \(\vec\Delta\) can now be carried out, resulting in
-\begin{equation}\begin{aligned}\label{greensfunction3}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N}\sum_n\sum_{\vec r,\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~,
-\end{aligned}\end{equation}
-where the sum over \(s=(\vec k, n)\) has been reduced to a sum over the auxiliary model eigenstate index \(n\) because of the Kronecker delta \(\delta\left(\vec k_0 + {\bf K} - \vec k\right)\). This can be further simplified by splitting the sum over \(\vec\Delta^\prime\) into positive and negative parts and then making the transformation \(\vec r^\prime \to \vec r^\prime + \vec \Delta^\prime\):
-\begin{equation}\begin{aligned}
-	\sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} &= \frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} + e^{-i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime-\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)}\right] \\
-																																												   &= \frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} + e^{-i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\right] \\
-\end{aligned}\end{equation}
-For each pair of \(\vec r^\prime\) and \(\vec\Delta^\prime\), the term within the box brackets has the form of a two-level Hamiltonian between the states \(\ket{\psi_n(\vec r^\prime)}\) and \(\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\), with a tunnelling amplitude \(e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\). The term can therefore be written in the eigenbasis of this Hamiltonian:
-\begin{equation}\begin{aligned}
-	\sum_{\vec r^\prime,\vec \Delta^\prime} e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime+\vec \Delta^\prime)}\bra{\psi_n(\vec r^\prime)} &=\frac{1}{2}\sum_{\vec r^\prime,\vec \Delta^\prime}\left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right],
-\end{aligned}\end{equation}
-where \(\ket{\chi_n^\pm(\vec r^\prime,\vec\Delta^\prime)} = \frac{1}{\sqrt 2}\left[\ket{\psi_n(\vec r^\prime)} \pm e^{i\left( \vec k_0 + {\bf K} \right) \cdot\vec\Delta^\prime}\ket{\psi_n(\vec r^\prime + \vec\Delta^\prime)}\right] \) are the eigenvectors of the tunnelling Hamiltonian with eigenvalues \(\pm 1\) respectively. With this basis transformation, we can rewrite eq.~\ref{greensfunction3} as
-\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{2N}\sum_n\sum_{\vec r,\vec r^\prime,\vec \Delta^\prime} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right] c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)}~.
-\end{aligned}\end{equation}
-
-In order to make the expression more transparent, we consider the various components separately:
-\paragraph{\(\vec r^\prime = \vec r,~\vec\Delta^\prime=0\)}:
-\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-These terms represent those contributions to the total Greens function that arise from excitations that start and end at a specific auxiliary model (at \(\vec r\)), and also evolve dynamically within the same auxiliary model. These terms are therefore exactly equal to the auxiliary model Greens function at position \(\vec r\), and are the most dominant contribution due to the localised nature of the impurity model.
-
-\paragraph{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime=0\)}:
-\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{N}\sum_n\sum_{\vec r, \vec r^\prime \neq \vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-These are more non-local contributions; they involve excitations whose time evolution is governed by a different auxiliary model than the terminal one. These contributions are highly suppressed in the Kondo screened phase because of the strong entanglement of the singlet ground state.
-
-\paragraph{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime \neq 0\)}:
-\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} \to \frac{1}{2N}\sum_n\sum_{\vec r,\vec r^\prime \neq \vec r,\vec \Delta^\prime \neq 0} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \left[ \ket{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^+(\vec r^\prime,\vec\Delta^\prime)} - \ket{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\bra{\chi_n^-(\vec r^\prime,\vec\Delta^\prime)}\right] c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-These are the most non-local contributions; they involve excitations whose time evolution is governed by three different auxiliary models. Accordingly, these contributions are further suppressed.
-
-We now consider each type of contribution in more detail.
-\subsection{\(\vec r^\prime = \vec r,~\vec\Delta^\prime=0\)}
-Restricting ourselves to just the single auxiliary model contributions gives
-\begin{equation}\begin{aligned}
-		\braket{\Psi_\text{gs} | c_{{\bf K}\sigma}(t) c^\dagger_{{\bf K}\sigma} | \Psi_\text{gs}} = \frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | c_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} c^\dagger_{{\bf K}\sigma} | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-We first consider more carefully the transition operator \(\mathcal{T}_{{\bf K}\sigma} = c_{{\bf K}\sigma}\) for the 1-particle excitation giving rise to the above Greens function. Within our auxiliary model approach, gapless excitations within the lattice model are represented by gapless excitations of the impurity site, specifically those that screen the impurity site and form the local Fermi liquid. As a result, the uncoordinated \(\mathcal{T}-\)matrix for the lattice model must be replaced by a combined \(\mathcal{T}-\)matrix within the impurity model that captures those gapless excitations that occur in connection with the impurity, and projects out the uncorrelated excitations that take place even when the impurity site is decoupled from the bath.
-
-In order to construct this auxiliary model \(\mathcal{T}-\)matrix, we note that the impurity site can have both spin and charge excitations. Considering both excitations, the modified \(\mathcal{T}-\)matrix that constructs \(k-\)space excitations in correlation with the impurity site are
-\begin{equation}\begin{aligned}\label{tmatrix}
-	\mathcal{T}_{{\bf K}\sigma} = c_{{\bf K}\sigma}\left(\sum_{\sigma^\prime}c^\dagger_{d\sigma} + \text{h.c.}\right) + c_{{\bf K}\sigma}\left(S_d^+ + \text{h.c.}\right)~,
-\end{aligned}\end{equation}
-leading to the updated expression for the complete Greens function:
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | \left[\mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-
-In order to convert this into a more useful form, we use eq.~\ref{heisenberg}:
-\begin{equation}\begin{aligned}
-		\braket{\psi_{0}(\vec r) | \mathcal{T}_{{\bf K}\sigma}(t) | \psi_n(\vec r)} = \braket{\psi_{0}(\vec r) | e^{it H_\text{tiled} }\mathcal{T}_{{\bf K}\sigma}e^{-i t H_\text{tiled}} | \psi_n(\vec r)}~.
-\end{aligned}\end{equation}
-Guided by the relation in eq.~\ref{tilingPrescriptionFinal} \(H_\text{tiled} = \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - N\mathcal{H}_\text{cbath-nint}\) between the tiled Hamiltonian and the auxiliary model, we assume that the operator \(e^{-i t H_\text{tiled}}\) acting on the state \(\ket{\psi_n(\vec r)}\) involves the excitation energy \(E_n\) of only a single auxiliary model. Specifically, \(E_n\) is the energy of the eigenstate \(\ket{\psi_n(\vec r)}\). This is supported by the fact that this class of contributions to the Greens function is completed within a single auxiliary model. Accordingly, we replace \(H_\text{tiled}\) with \(E_n - \varepsilon_{\bf k} \), where \(\varepsilon_{\bf k}\) are the eigenenergies of the non-interacting conduction bath \(\mathcal{H}_\text{cbath-nint}\) and \({\bf k}\) is the crystal momentum associated with the state \(\ket{\psi_n(\vec r)}\). This momentum was found to be constrained to \({\bf k}_0 + {\bf K}\) below eq.~\ref{greensfunction3}. In the same way, the action of \(H_\text{tiled}\) on the terminal state \(\ket{\psi_{0}(\vec r)}\) gives \(E_0 - \varepsilon_{\bf k_0}\), where \(E_0\) is the ground state energy of the auxiliary model at \({\bf r}\). Applying this to our expression gives
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r} \braket{\psi_{0}(\vec r) | \left[e^{-it\omega_p} \mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + e^{-it\omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~,
-\end{aligned}\end{equation}
-where \(\omega_p = (E_n - \varepsilon_{\bf k_0 + \bf K}) - (E_0 - \varepsilon_{\bf k_0})\) is the particle-excitation cost and \(\omega_h = -\omega_p\) is the hole-excitation cost. We now introduce the Fourier transform \(g(\omega) = \int~dt~ e^{i\omega T}f(t)\) to obtain the frequency-domain Greens function in its spectral representation:
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; \omega) = \frac{1}{N}\sum_{\vec r}\sum_n \braket{\psi_{0}(\vec r) | \left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-For each value of \({\vec r}\), the term within that summation is simply the Greens function (for the excitation \(\mathcal{T}_{{\bf K}\sigma}\)) of the auxiliary model with the impurity site at \({\vec r}\). Since all these impurity models are physically equivalent (because of translation invariance), we can replace the average over \({\bf r}\) with the value obtained from any one auxiliary model.
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; \omega) = \sum_n \braket{\psi_{0} | \left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n}\bra{\psi_n} \mathcal{T}_{{\bf K}\sigma}^\dagger + \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n}\bra{\psi_n} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}} ~.
-\end{aligned}\end{equation}
-
-\subsection{\(\vec r^\prime \neq \vec r,~\vec\Delta^\prime=0\)}
-Allowing for more non-local contributions, and updating the \(\mathcal{T}-\)matrix similar to the previous section gives the following Greens function:
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_n\sum_{\vec r, \vec r^\prime} \braket{\psi_{0}(\vec r) | \left[\mathcal{T}_{{\bf K}\sigma}(t) \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} \mathcal{T}_{{\bf K}\sigma}^\dagger + \mathcal{T}^\dagger_{{\bf K}\sigma} \ket{\psi_n(\vec r^\prime)}\bra{\psi_n(\vec r^\prime)} \mathcal{T}_{{\bf K}\sigma}(t)\right] | \psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-In order to allow computations within a single auxiliary model, we replace the translated state \(\ket{\psi_n(\vec r^\prime)}\) with \(T^\dagger(\vec r \to \vec r^\prime)\ket{\psi_n(\vec r)} \), where \(T^\dagger(\vec r - \vec r^\prime)\) translates all sites by the vector \(\vec r^\prime - \vec r\). This leads to a modified correlation function but within a single auxiliary model:
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; t) = -i\theta(t)\frac{1}{N}\sum_{n,\vec r, \vec r^\prime} \bra{\psi_{0}(\vec r)} &\left[\mathcal{T}_{{\bf K}\sigma}(t)T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}^\dagger + \right. \\
-								&\left. \mathcal{T}^\dagger_{{\bf K}\sigma}T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n(\vec r)}\bra{\psi_n(\vec r)}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}(t)\right] \ket{\psi_{0}(\vec r)} ~.
-\end{aligned}\end{equation}
-In fact, by the same arguments as in the previous section, we can obtain a frequency-resolved Greens function:
-\begin{equation}\begin{aligned}
-	\tilde G({\bf K}\sigma; \omega) = \sum_n \bra{\psi_{0}} &\left[\frac{1}{\omega - \omega_p} \mathcal{T}_{{\bf K}\sigma}(t)T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n}\bra{\psi_n}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}^\dagger + \right.\\
-															&\left. \frac{1}{\omega - \omega_h} \mathcal{T}^\dagger_{{\bf K}\sigma}T^\dagger(\vec r - \vec r^\prime) \ket{\psi_n}\bra{\psi_n}T(\vec r - \vec r^\prime) \mathcal{T}_{{\bf K}\sigma}(t)\right] \ket{\psi_{0}} ~.
-\end{aligned}\end{equation}
-To obtain the above, we used the fact that \(H_\text{tiled}\) commutes with the translation operator.
-
-%TODO
-%By expanding in terms of the small parameter $\frac{\lambda_{\vec k_0}^2}{\mathcal{Z}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}}$, this expression for $\Sigma_{H-H}(\vec k,\omega)$ can be recast in the following form:
-%\begin{equation}\begin{aligned}
-%	\Sigma_{H-H}(\vec k, \omega) \simeq \Sigma_\text{loc}(\omega) + \tilde{\Sigma}(\vec k, \omega)~,~\label{selfenergy2}
-%\end{aligned}\end{equation}
-%where $\Sigma_\text{loc}$ and $\Sigma_\text{near-n}$ correspond to the local and nearest-neighbour self-energies defined on the real-space lattice 
-%\begin{eqnarray}
-%\Sigma_\text{loc}(\omega) &=& \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}^{(0)}} - \frac{\lambda_{\vec k_0}^2}{\mathcal{G}_{dd}}~,\\ 
-%\tilde{\Sigma}(\vec k, \omega)&=&\xi_{\vec k}\Sigma_\text{near-n}~,~\Sigma_\text{near-n} = \left(1/G^{(0)}\right)_\text{near-n} + \frac{\lambda_{\vec k_0}^2}{\mathcal{Z}}\frac{\mathcal{G}_{dz}}{\mathcal{G}_{dd}^2}~.
-%\end{eqnarray}
-%We note that the form of $\Sigma(\vec k, \omega)$ obtained by us is similar to the form proposed on phenomenological grounds in the generalised DMFT + $\Sigma$ approach~\cite{sadovskii2012}.
-
-\section{Equal-Time Ground State Correlators}\label{staticCorr}
-Properties of the ground state can be probed using static correlation functions that are expectation values of operators that propagate excitations. We will consider general correlations, in real and momentum space.
-\subsection{Real-space correlation functions}
-We first consider a real-space operator \(\mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r})\) that quantifies the presence of correlations over a distance \({\bf \Delta}\). The correlation function itself is given by the expectation value of this operator in the ground state:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) = \braket{\Psi_\text{gs} | \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) | \Psi_\text{gs}}~.
-\end{aligned}\end{equation}
-To obtain a tractable expression for this, we first replace the full ground state with its expression in terms of the auxiliary model ground states (eq.~\ref{groundstateProposal}):
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) = \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_1 + {\bf r}^\prime + {\bf r}_c + {\bf r}\right)  | \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_1 + {\bf r}_c + {\bf r}\right)} e^{-i{\bf k}_0\cdot\left({\bf r}_1 - {\bf r}_2\right)}~,
-\end{aligned}\end{equation}
-where \({\bf r}_1\) and \({\bf r}_1 + {\bf r}^\prime\) are the positions of the incoming and outgoing auxiliary model states, relative to \({\bf r}_c + {\bf r}\), and \({\bf k}_0\) is the crystal momentum of the ground state (which we will immediately set to zero). In order to convert the incoming and outgoing states into the same auxiliary mode at a reference location \({\bf r}_c\) (which would then allow computations purely within a single auxiliary model), we use the relation: \(\ket{\psi_\text{gs}\left({\bf x}\right)} = T^\dagger\left({\bf x} - {\bf r}_c\right)\psi_\text{gs}\ket{\psi\left({\bf r}_c \right)}\). Substituting this appropriately for both the auxiliary model states gives:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_1 + {\bf r}^\prime + {\bf r}\right) \mathcal{O}({\bf r} + {\bf \Delta})\mathcal{O}^\dagger({\bf r}) T^\dagger\left({\bf r}_1 + {\bf r}\right) | \psi_\text{gs}\left({\bf r}_c\right)}\\
-								  &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}^\prime\right) \mathcal{O}({\bf \Delta} - {\bf r}_1) \mathcal{O}^\dagger(- {\bf r}_1) | \psi_\text{gs}\left({\bf r}_c\right)}\\
-								  &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{O}({\bf \Delta} - {\bf r}_1) \mathcal{O}^\dagger(- {\bf r}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-As a final cosmetic change, we transform \({\bf r}_1 \to -{\bf r}\):
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) = \frac{1}{N}\sum_{{\bf r},{\bf r}^\prime}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{O}({\bf \Delta} + {\bf r}) \mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-Like in the Greens function calculation, we now consider the various kinds of contributions separately.
-
-\subsubsection{Intra-auxiliary model contributions: \({\bf r}^\prime = 0\)}
-These terms describe excitations that start and propagate within the same auxiliary model, upto a distance \({\bf \Delta}\):
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r})\mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-With an eye towards introducing the impurity operators into the correlations, we insert a complete basis defined by the eigenstates \(\left\{\ket{\psi_n\left({\bf r}_c\right)}\right\} \) of the auxiliary model into the expression:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}}\sum_{n}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{O}({\bf \Delta} + {\bf r}) \ket{\psi_n\left({\bf r}_c\right)}\bra{\psi_n\left({\bf r}_c\right)} \mathcal{O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-
-For the excitations that exist purely in the conduction bath \(({\bf r} \neq {\bf r}_c)\), the excitation operators must be suitably modified (see the arguments around eq.~\ref{tmatrix}) in order to incorporate Kondo screening. The modified excitation operators are generally defined as
-\begin{equation}\begin{aligned}\label{operatorTmatrix}
-	\mathcal{\tilde O}({\bf r}) = \mathcal{O}({\bf r})\mathcal{O}^\dagger(d) \mathcal{P}_\text{gs} ~,
-\end{aligned}\end{equation}
-where \(\mathcal{O}^\dagger(d)\) is the hermitian conjugate of the correlation operator \(\mathcal{O}\), but applied on the impurity sites. This therefore constitutes a time-reversed scattering process on the impurity site relative to the process in the bath. The operator \(\mathcal{P}_\text{gs}\) projects onto the ground state of the auxiliary model, since we are interested in ground state correlations. The operator multiplying the old correlation operator represents all possible excitations of the impurity site, and ensure that the bath and impurity excitation processes take place in correlation. The projector ensures that only tripartite correlations between the impurity site and the two momentum states are captured by the correlation, which is what's desired within the tiling method.
-
-With this modified operator, this class of correlation functions can be written as
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r} }\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-This can be interpreted as the fact that within our auxiliary model formalism, the correlation between the sites \({\bf r}\) and \({\bf \Delta + r}\) can only occur through a transition process that connect one of the sites with the impurity site and then a return process that connects the impurity site with the other site.
-
-\subsubsection{Inter-auxiliary model contributions: \({\bf r}^\prime \neq 0\)}
-These are the most non-local contributions, and involve excitations that connect different auxiliary models:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf \Delta}) \to \frac{1}{N}\sum_{{\bf r}^\prime \neq 0}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf r}^\prime\right) | \mathcal{\tilde O}({\bf \Delta} + {\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf r}) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-
-\subsection{Momentum-space correlation functions}
-We now consider momentum space correlations, through a general operator \(\mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1)\):
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) = \braket{\Psi_\text{gs} | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \Psi_\text{gs}}~.
-\end{aligned}\end{equation}
-Note that \(\mathcal{O}\) itself is a two-particle operator. To obtain a tractable expression for this, we first replace the full ground state with its expression in terms of the auxiliary model ground states (eq.~\ref{groundstateProposal}):
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) = \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_2\right)  | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_1\right)}~,
-\end{aligned}\end{equation}
-where \({\bf r}_1\) and \({\bf r}_2 \) are the positions of the incoming and outgoing auxiliary model states. In order to convert the incoming and outgoing states into the same auxiliary mode at a reference location \({\bf r}_c\) (which would then allow computations purely within a single auxiliary model), we use the relation: \(\ket{\psi_\text{gs}\left({\bf x}\right)} = T^\dagger\left({\bf x} - {\bf r}_c\right)\psi_\text{gs}\ket{\psi\left({\bf r}_c \right)}\). Substituting this appropriately for both the auxiliary model states gives:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_c\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) T^\dagger\left({\bf r}_1 - {\bf r}_c\right) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-In order to simplify the translation operators, we can use eq.~\ref{translationOnField}. For that, we would need to know whether the operator \(\mathcal{O}\) involves the net transfer of momentum. If \(\mathcal{O}({\bf k})\) commutes with the total number operator \(n_{\bf k} = \sum_\sigma n_{{\bf k},\sigma}\), there is no momentum transfer. Examples of such operators are spin operators, \(S_{\alpha\beta}({\bf k}) \equiv c^\dagger_{{\bf k \alpha}}c_{{\bf k}\beta}\), and density operators \(n_{{\bf k}\alpha}\). If \(\mathcal{O}({\bf k})\) does not commute with \(n_{\bf k}\), there is a net transfer of momentum, and one such operator would be the charge isospin operator \(C^+({\bf k}) = c^\dagger_{{\bf k}\uparrow}c^\dagger_{{\bf k}\downarrow}\). For the first kind of operators, we have \(T({\bf a})\mathcal{O}({\bf k})T^\dagger({\bf a}) = \mathcal{O}({\bf k})\), while the for the latter, we get \(T({\bf a})\mathcal{O}({\bf k})T^\dagger({\bf a}) = e^{-{\bf a}\cdot{\bf 2k}}\mathcal{O}({\bf k})\), where \(2{\bf k}\) represents the momentum being transferred by the operator. We consider the two cases separately.
-
-\subsubsection{Momentum-conserving operators: \(\left[\mathcal{O}({\bf k}), n_{{\bf k}}\right] = 0\)}
-For these operators, the expression for the correlation gives
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_1\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}\\
-										 &=\sum_{{\bf r},{\bf \Delta}}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf \Delta}\right) | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-To obtain the last form, we defined \({\bf \Delta}={\bf r}_2 - {\bf r}_1\) as the distance between the incoming and outgoing auxiliary model states, and preformed the sum over the free variable \({\bf r}_1\) to cancel out the factor of \(1/N\). Just like before, this expression can be decomposed into a term that involves a single auxiliary model and other terms that involve two distinct auxiliary models.
-
-\subsubsection{Non-momentum-conserving operators: \(\left[\mathcal{O}({\bf k}), n_{{\bf k}}\right] \neq 0\)}
-This class of operators incur an additional phase factor of \(e^{-{\bf a}\cdot{\bf 2k}}\) when the translation operators are translated across them:
-\begin{equation}\begin{aligned}
-	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \frac{1}{N}\sum_{{\bf r}_1,{\bf r}_2}\braket{\psi_\text{gs}\left({\bf r}_c\right) | T\left({\bf r}_2 - {\bf r}_1\right) \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}e^{2i\left( {\bf r}_1 - {\bf r}_c \right) \cdot \left( {\bf k}_1 - {\bf k}_2 \right)} \\
-										 &= \delta_{{\bf k}_1, {\bf k}_2}\sum_{{\bf \Delta}}\braket{\psi_\text{gs}\left({\bf r}_c + {\bf \Delta}\right) | \mathcal{O}({\bf k}_2)\mathcal{O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
-\end{aligned}\end{equation}
-For this expression, we again defined \({\bf \Delta}\) similar to before, and carried out the sum of \({\bf r}_1\) involving the exponential to obtain a factor of \(N \delta_{{\bf k}_1, {\bf k}_2}\). The Kronecker delta factor is a manifestation of translational invariance and the associated total momentum conservation.
-
-As it stands, operators like \(\mathcal{O}({\bf k}_1)\) act purely on the conduction bath degrees of freedom. In order to incorporate impurity-bath correlation effects, we modify these operators using the appropriate \(T-\)matrices, by employing eq.~\ref{operatorTmatrix}. The final computations are carried out using these modified operators.
-
-
-\section{Entanglement}
-We will now describe the prescription of calculating entanglement measures of the lattice model from within our auxiliary model treatment. In this section, we are interested mainly in two such measures, the entanglement entropy and the mutual information. Given a pure state \(\ket{\Psi}\) describing the complete system, the entanglement entropy \(S_\text{EE}(\nu)\) of a subsystem \(\nu\) quantifies the entanglement of \(\nu\) with the rest of the subsystem, and is defined as
-\begin{equation}\begin{aligned}
-	S_\text{EE}(\nu) = -\text{Tr}\left[\rho(\nu)\log \rho(\nu)\right],\quad \rho(\nu) = \text{Tr}_\nu\left[\ket{\Psi}\bra{\Psi}\right] 
-\end{aligned}\end{equation}
-where \(\text{Tr}\left[\cdot\right] \) is the trace operator, and \(\rho(\nu)\) is the reduced density matrix for the subsystem \(\nu\) obtained by taking the partial trace \(\text{Tr}_\nu\) (over the states of \(\nu\)) of the full density matrix \(\rho = \ket{\Psi}\bra{\Psi}\). If the subsystem \(\nu\) describes local regions in real space (or states in \(k-\)space), we might be interested in the entanglement between two such subsystems \(\nu_1\) and \(\nu_2\). The correct measure to quantify such entanglement is the mutual information:
-\begin{equation}\begin{aligned}
-	I_2(\nu_1,\nu_2) = S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) - S_\text{EE}(\nu_1 \cup \nu_2)~,
-\end{aligned}\end{equation}
-where \(\nu_1 \cup \nu_2\) is a larger subsystem formed by combining \(\nu_1\) and \(\nu_2\).
-
-\subsection{Real-space entanglement}
-Real-space entanglement measures can be used to probe delocalisation-localisation transitions. The simplest such measure is the entanglement of a local mode. Since the local entanglement entropy will be uniform at each lattice site for a system with translation invariance, it suffices to calculate the real-space averaged entanglement entropy \(S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}S_\text{EE}\left( {\bf r} \right) \). By visualising the lattice model as a superposition of auxiliary models placed at various sites (eq.~\ref{tilingPrescriptionFinal}), the real space average of the lattice model can be thought of as an average over sites of a particular impurity model, and then a second average over all the impurity models. But since all all impurity models are equivalent to each other, the second average is redundant. Secondly, all correlations must derive from the impurity site, which can be formally encoded by subtracting, from this average, the corresponding contribution obtained in the absence of the impurity site. In total, the lattice-auxiliary model relation for the local entanglement entropy can be written as
-\begin{equation}\begin{aligned}
-	S_\text{EE}^\text{loc} = \frac{1}{N}\sum_{{\bf r}}\left[S_\text{EE}({\bf r}_d + {\bf r}) - S_\text{EE}^{(0)}({\bf r}_d + {\bf r})\right] ~,
-\end{aligned}\end{equation}
-where \({\bf r}_d\) is the impurity site position, \({\bf r}\) is the distance of a conduction bath site from the impurity site (can be zero), and \(S_\text{EE}({\bf r}_d + {\bf r})\) is the entanglement entropy, calculated within the impurity model, at the locatiom \({\bf r}_d + {\bf r}\). \(S^{(0)}_\text{EE}({\bf r}_d + {\bf r})\) is the same entanglement entropy, but calculated for an impurity model but with vanishing impurity-bath hybridisation and bath interaction.
-
-\subsection{Momentum-space entanglement}
-Entanglement measures in \(k-\)space can provide valuable information regarding the Fermi surface structure and the nature of gapless excitations proximate to it. The most elementary measure is the entanglement entropy \(S_\text{EE}({\bf q})\) of a single excitation carrying momentum \({\bf q}\). Unlike \(S_\text{EE}^\text{loc}\), this does not involve an average, and involves a single computation:
-\begin{equation}\begin{aligned}
-	S_\text{EE}^\text{loc} = S_\text{EE}({\bf q}) - S_\text{EE}^{(0)}({\bf q})~.
-\end{aligned}\end{equation}
-It is possible to improve this by considering inter-auxiliary model contributions in the reduced density matrix \(\rho({\bf q})\). On the lattice model, \(\rho({\bf q})\) is defined as
-\begin{equation}\begin{aligned}\label{SEE-k}
-	\rho({\bf q}) = \text{Tr}_{\bf q}\left[\ket{\Psi_\text{gs}}\bra{\Psi_\text{gs}}\right] ~,
-\end{aligned}\end{equation}
-where \(\text{Tr}_{\bf q}\left[\cdot\right]\) is the partial trace over the Hilbert space of \({\bf q}\), and \(\ket{\Psi_\text{gs}}\) is the tiled ground state. Using eq.~\ref{groundstateProposal}, we can write the ground state in terms of those of the auxiliary model. These leads to two classes of terms, one purely within a single auxiliary model ground state \(\ket{\psi_\text{gs}}\), and the other involving transitions across auxiliary models:
-\begin{equation}\begin{aligned}
-	\rho({\bf q}) = \text{Tr}_{\bf q}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d)}\right] + \frac{1}{N}\text{Tr}_{\bf q}\sum_{{\bf r}}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d + {\bf r})}\right]~,
-\end{aligned}\end{equation}
-where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The first term leads to the expression in eq.~\ref{SEE-k}, while the second term can be used to improve this estimate. Away from any quantum critical points, the localised nature of the impurity-bath hybridisation ensures that impurity correlations decay exponentially away from the transition. This ensures that the second term is very small away from a critical point. We therefore restrict ourselves to just the first term in the present work.
-
-
-\section{Journey Through the Pseudogap on The Lattice model}
-We have already seen from the lattice-embedded impurity model that the impurity phase transition is anisotropic in \(k-\)space. This has consequences for the metal-insulator transition of the lattice model. We now describe, in terms of correlations, how the Fermi surface of the lattice model is destabilised when the system is tuned through the pseudogap. For this, we employ the relations we derived between correlations on the impurity model and those on the lattice model.
+\section{Journey Through the Pseudogap on The Lattice model: Spectral Function, Spin Correlations and Entanglement}
+Having studied the phase diagram of the lattice-embdedded impurity model, we now proceed to translate our results into the translation-invariant lattice model. For this, we use the results that we obtained in Sec.~\ref{tilingProcedure}. In particular, we focus in this section on the implications of the impurity model pseudogap phase on the lattice model. We find that the anistropic decoupling, from the impurity dynamics, of the conduction bath low-energy states leads to the formation of a partially gapped Fermi surface in the correlated model. The partial gapping is signalled by the replacement of Greens function poles with zeroes in the antinodal region.
 
 \subsection{\(k-\)space spectral function and self-energy}
-The primary indicator of the pseudogapping nature of the transition is of course the \(k-\)space density of states or the spectral function, shown in Fig.~\ref{tiledSpecFunc}. For \(W=0\), all points on the Fermi surface are gapless. As we enter the pseudogap, the region around the antinodes lose all spectral weight and become gapped. Increasing the value of \(W\) further leads to the enlargement of the gapped region; exactly at the transition, we end up with a singular Fermi surface composed of just the nodal points.
+The primary indicator of the pseudogapping nature of the transition is of course the \(k-\)space density of states or the spectral function \(\tilde A_{\bf k}(\omega)\). We calculate \(\tilde A_{\bf k}(\omega)\) from the impurity-bath spectral function computations carried out for the impurity model, using the following expression that was obtained previously (eq.~\ref{kspaceGreensFunction}):
+\begin{equation}\begin{aligned}
+	\tilde G({\bf K}\sigma; \omega) = G^>(\mathcal{T}^\dagger_{{\bf K}\sigma}, \omega - \varepsilon_{{\bf K}}) + G^<(\mathcal{T}^\dagger_{{\bf K}\sigma}, \omega + \varepsilon_{{\bf K}})~,
+\end{aligned}\end{equation}
+where \(\mathcal{T}_{{\bf K}\sigma} = c_{{\bf K}\sigma}\left(\sum_{\sigma^\prime}c^\dagger_{d\sigma} + \text{h.c.}\right) + c_{{\bf K}\sigma}\left(S_d^+ + \text{h.c.}\right)\) was defined in eq.~\ref{tmatrix}, and \(G^>(\mathcal{O}^\dagger, t) = -i\braket{\mathcal{O}(t)\mathcal{O}^\dagger}\) and \(G^<(\mathcal{O}^\dagger, t) = -i\braket{\mathcal{O}^\dagger\mathcal{O}(t)}\) are the greater and lesser Greens function for the auxiliary model, and \(\varepsilon_{{\bf K}}\) is the excitation energy associated with the momentum state \({\bf K}\), as determined by the dispersion on the lattice. In order to determine the low-energy behaviour in \(k-\)space, the zero frequency value \(\tilde A_{\bf k}(\omega \simeq 0)\) of the spectral function on the Fermi surface points is shown in Fig.~\ref{tiledSpecFunc} for various values of \(W/J\). 
 
-This is also supported by our computations of the \(k-\)space self-energy. We show the zero frequency value of the \(k-\)space self-energy in Fig.~\ref{selfenergy}. This is computed from using Dyson's equation \(\Sigma_k = 1/G_k^{(0)} - 1/G_k\), where \(G_k\) is the interacting \(k-\)space Greens function while \(G_k^{(0)}\) is the non-interacting \(W=0\) Greens function. We find that the beginning of the pseudogap is marked by poles in the self-energy at the antinodal points; at the transition, only the nodes display vanishing self-energy at zero frequency.
+We find that the Fermi surface remains completely gapless (seen through large non-zero values at zero frequency) for small values of \(W\) (first plot). However, if \(W\) is made sufficiently large, a partial gap opens up on the Fermi surface, starting from the antinode. Increasing the value of \(W/J\) leads to enlargement of the gapped region; exactly at the transition, we end up with a singular Fermi surface composed of just the nodal points.
+
+In order to better understand the nature of the metal in the partially gapped region, we have also calculated the \(k-\)space self-energy \(\tilde \Sigma({\bf k}(\omega)\), using Dyson's equation:
+\begin{equation}\begin{aligned}
+	\tilde \Sigma({\bf k}(\omega) = 1/\tilde G^{(0)}_{\bf k}(\omega) - 1/\tilde G_{\bf k}(\omega)~,
+\end{aligned}\end{equation}
+where \(\tilde G_k\) is the interacting \(k-\)space Greens function (whose spectral function is shown in Fig.~\ref{tiledSpecFunc}) while \(\tilde G_k^{(0)}\) is the non-interacting \(W=0\) Greens function. We show the zero frequency value of the self-energy in Fig.~\ref{selfenergy}, and the partial gapping of the Fermi surface is seen to arise from the appearance of poles in the self-energy at the antinodal region. As the partial gap expands, more and more \(k-\)space points exhibit poles in their self-energy. This, along with the behaviour of the spectral function, indicates that in the pseudogap region, the disconnected Fermi surface coexists with a Luttinger surface.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
@@ -835,36 +756,63 @@ This is also supported by our computations of the \(k-\)space self-energy. We sh
 \end{figure}
 
 \subsection{Momentum-space spin-correlations}
-We first look at static spin correlations \(\chi_s(k_1, k_2) = \frac{1}{2}\left<S_{k_1}^+ S_{k_2}^- + \text{h.c.} \right>\). These processes correspond to the gapless excitations of the Fermi liquid phase. We find that 
+To gain more insight on the nature of the fluctuations in various phases, we study the spin-spin correlation, \(\tilde \chi_s({\bf k}_1, {\bf k}_2) = \frac{1}{2}\left<{\boldsymbol S}_{{\bf k}_1}\cdot {\boldsymbol S}_{{\bf k}_2}\right>\), where \({\bf S}({\bf k}) = \sum_{\alpha\beta}c^\dagger_{{\bf k}\alpha}{\boldsymbol \sigma}_{\alpha \beta}c_{{\bf k}\beta}\). These correlations are again obtained from computations within the auxiliary model, using the relation obtained in eq.~\ref{kspaceCorrelation}. While the full expression contains contributions from various combinations of auxiliary models, in the present work we focus on the intra-auxiliary model contribution which is the largest term:
+\begin{equation}\begin{aligned}
+	C_{\mathcal{O}}({\bf k}_1,{\bf k}_2) &= \braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}({\bf k}_2) | \psi_\text{gs}\left({\bf r}_c\right)}\braket{\psi_\text{gs}\left({\bf r}_c\right) | \mathcal{\tilde O}^\dagger({\bf k}_1) | \psi_\text{gs}\left({\bf r}_c\right)}~.
+\end{aligned}\end{equation}
+The results for Fermi surface points are shown in Fig.~\ref{tiledSF}. We find that at small values of the bath interaction (first plot from left), the spin correlations are spread out uniformly on the Fermi surface, and are quite small in magnitude. This is likely because of the weakly correlated nature of the Fermi liquid. As we enter the pseudogap (second plot from left and beyond), the spin correlations of the antinodal region vanish. Along with the divergence of self-energy observed along the same points, this indicates that the antinodal region no longer participates in scattering processes that can renormalise the metal. The nodal region, however, sees an enhancement of spin correlations, particularly in it's neighbourhood. This is a sign that the metallic excitations are becoming highly correlated through the pseudogap.
+
+
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.24\textwidth]{tiledSF-1.pdf}
 	\includegraphics[width=0.24\textwidth]{tiledSF-2.pdf}
 	\includegraphics[width=0.24\textwidth]{tiledSF-3.pdf}
 	\includegraphics[width=0.24\textwidth]{tiledSF-4.pdf}
-	\caption{Spin-flip correlations \(\left<S(k_N)^+, S({\bf k})^-\right>\) between the nodal point \(k_N = \left( -\pi/2, -\pi/2\right)\) and an arbitrary \(k-\)point on the Fermi surface. In the absence of bath interaction (first panel), the correlations are somewhat uniformly distributed along the Fermi surface. As we enter the pseudogap (second panel), the spin-correlations near the antinode vanish, indicating that they have been removed from the metallic excitations. Passing through the pseudogap involves in the extensions of the gapped region (third panel), until finally only the node remains (fourth panel).}
+	\caption{Spin-spin correlations \(\chi_s\) (defined in main text) between the nodal point \(k_N = \left( -\pi/2, -\pi/2\right)\) and an arbitrary \(k-\)point on the Fermi surface. In the absence of bath interaction (first panel), the correlations are somewhat uniformly distributed along the Fermi surface, and quite small. This describes the Fermi liquid phase of the lattice model. As we enter the pseudogap (second panel and beyond), the spin-correlations near the antinode vanish, indicating that they have been removed from the metallic excitations, while the correlations near the nodal point become enhanced because of the increasingly correlated nature of the metal.}
 	\label{tiledSF}
 \end{figure}
 
 \subsection{Entanglement entropy and Mutual information}
+We have also used our method to study the \(k-\)space entanglement entropy and mutual information within the lattice model, in order to probe the transition and the pseudogap. Given a pure state \(\ket{\Psi}\) describing the complete system, the entanglement entropy \(S_\text{EE}(\nu)\) of a subsystem \(\nu\) quantifies the entanglement of \(\nu\) with the rest of the subsystem, and is defined as
+\begin{equation}\begin{aligned}
+	S_\text{EE}(\nu) = -\text{Tr}\left[\rho(\nu)\log \rho(\nu)\right],\quad \rho(\nu) = \text{Tr}_\nu\left[\ket{\Psi}\bra{\Psi}\right] 
+\end{aligned}\end{equation}
+where \(\text{Tr}\left[\cdot\right] \) is the trace operator, and \(\rho(\nu)\) is the reduced density matrix (RDM) for the subsystem \(\nu\) obtained by taking the partial trace \(\text{Tr}_\nu\) (over the states of \(\nu\)) of the full density matrix \(\rho = \ket{\Psi}\bra{\Psi}\). If the subsystem \(\nu\) describes local regions in real space (or states in \(k-\)space), we might be interested in the entanglement between two such subsystems \(\nu_1\) and \(\nu_2\). The correct measure to quantify such entanglement is the mutual information:
+\begin{equation}\begin{aligned}
+	I_2(\nu_1,\nu_2) = S_\text{EE}(\nu_1) + S_\text{EE}(\nu_2) - S_\text{EE}(\nu_1 \cup \nu_2)~,
+\end{aligned}\end{equation}
+where \(\nu_1 \cup \nu_2\) is a larger subsystem formed by combining \(\nu_1\) and \(\nu_2\).
+
+We have already shown how to obtain the RDM for a \(k-\)state from our approach, in eq.~\ref{RDMTiled}:
+\begin{equation}\begin{aligned}
+	\tilde \rho({\bf k}) \sim \text{Tr}_{\bf k}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d)}\right] + \frac{1}{N}\text{Tr}_{\bf k}\sum_{{\bf r}}\left[\ket{\psi_\text{gs}({\bf r}_d)}\bra{\psi_\text{gs}({\bf r}_d + {\bf r})}\right]~,
+\end{aligned}\end{equation}
+where \(\ket{\psi_\text{gs}({\bf r}_d)}\) is a reference auxiliary model ground state, and \(\ket{\psi_\text{gs}({\bf r}_d + {\bf r})}\) sums over other auxiliary models at increasing distances from this reference model. The \(\sim\) indicates that the RDM needs to be normalised. In the present work, we have restricted our results to the intra-auxiliary model contribution (first term). We show, in Fig.~\ref{tiledEntanglement}, the results of entanglement calculations on the Fermi surface. The entanglement entropy distribution (top panel) in \(k-\)space shows how the partial gapping leads to the elimination of the antinodal \(k-\)modes from the ground state and excitations and the consequent vanishing of their entanglement. We also plot, in the lower panel, the mutual information between (i) an arbitrary \(k-\)state and the nodal point, and (ii) an arbitrary \(k-\)state and the edge of the disconnected Fermi surface in the pseudogap. While the nodal point is seen to remain somewhat strongly entangled with the other Fermi surface points, the edge of the ``Fermi arc" has minimal entanglement until the system comes close to the critical point.
+
 \begin{figure}[htpb]
 	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-1.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-2.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-3.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_SEE_k-4.pdf}
-\end{figure}
-\begin{figure}[htpb]
-	\centering
+
 	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-1.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-2.pdf}
-	\includegraphics[width=0.24\textwidth]{tiled_I2_k_N-3.pdf}
-\end{figure}
-\begin{figure}[htpb]
-	\centering
-	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-1.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-2.pdf}
 	\includegraphics[width=0.24\textwidth]{tiled_I2_k_edge-3.pdf}
+	\caption{Top panel: Entanglement entropy \(S_\text{EE}({\bf k})\) on the Fermi surface. Similar to the correlations, the entanglement in the \(W=0\) model remains uniformly spread out over the Fermi surface. As the Fermi surface progressively shrinks, the entanglement gets concentrated to the nodal points. Bottom panel: Mutual information \(I_2\) between (i) an arbitrary \(k-\)state and the nodal point (first and second plots), and (ii) an arbitrary \(k-\)state and the edge of the disconnected Fermi surface in the pseudogap (third and fourth plots). The ends of the partial Fermi surface appear to be weakly entangled to the rest of the Fermi surface, while the nodal points remain strongly entangled all the way through to the transition.}
+	\label{tiledEntanglement}
 \end{figure}
+
+\section{Nature of Low-Energy Excitations in Various Regimes}
+\subsection{Metallic Regime}
+\paragraph{Fermi liquid excitations, \(|W| < |W|^*\):}
+As discussed in Sec.~\ref{2CKEmerge}, the effective description of the impurity model for \(|W| > |W|^*\) becomes that of a 2CK. Prior to that (\(|W| < |W|^*\)), the entire Fermi surface continues to screen the impurity, and this leads to local Fermi liquid description of the impurity excitations. Using our translation operator prescription for mapping an impurity model to a lattice model (eq.~\ref{tilingPrescription}), these local Fermi liquid excitations arising from each auxiliary model coherently combine to create extended Fermi liquid excitations in the lattice model. This is therefore the nature of the metal for \(|W| < |W|^*\), and further support for this is found from the non-zero values of the quasiparticle residue in this regime (right panel of Fig.~\ref{channelDecoupling}).
+
+\paragraph{Marginal Fermi liquid, \(|W| > |W|^*\):}
+We have demonstrated in Subsection.~\ref{marginalFL} that the low-lying excitations of the pseudogap phase are described by a marginal Fermi liquid. This is linked to the fact that the excitations within the impurity model become many-particle in nature - they involve fluctuations on multiple sites. This should be contrasted with the local Fermi liquid excitations that involve only the conduction bath site next to the zeroth site. Upon tiling, we can immediately see that the resulting metal is not a Fermi liquid; the extended excitations will involve excitations of multiple \(k-\)states, and just not a simple superposition of \(1-\)particle excitations (that gave rise to the Fermi liquid). The build up of additional correlations within the marginal Fermi liquid (in comparison to the Fermi liquid) can also be ascertained from the fact that the local physics is determined by an impurity model which is highly local in \(k-\)space (due to the decoupling of the Fermi arms, see Sec.~\ref{2CKEmerge}). Such a local-in-\(k-\)space impurity model is highly non-local in real-space, consisting of long-ranged interactions between the impurity and the conduction bath. This is another signature of the non-Fermi liquid nature of the excitations obtained upon tiling.
+
+\paragraph{At the critical point}
 
 
 \subsection{Heisenberg model as a low-energy description of the insulator}
@@ -873,7 +821,7 @@ In the insulating phase, the ground state of each auxiliary model hosts a decoup
 
 For simplicity, we consider two impurity sites labelled \(1\) and \(2\) associated with two nearest-neighbour auxiliary models. The ground state subspace is four-fold degenerate:
 \begin{equation}\begin{aligned}
-	\ket{\Psi_L} = \left\{\ket{\sigma_1,\sigma_2}\right\}~,\quad \sigma_i = \pm 1
+	\ket{\Psi_L} = \left\{\ket{\sigma_1,\sigma_2}\right\}~,\quad \sigma_i = \pm 1~,
 \end{aligned}\end{equation}
 where \(\sigma_i\) is the spin state of site \(i\). This ground state is derived from the following "zeroth order" Hamiltonian that emerges in the local moment phase of the auxiliary models when all scattering processes between the impurity and conduction bath are RG-irrelevant:
 \begin{equation}\begin{aligned}
@@ -920,58 +868,58 @@ Substituting everything back into eq.~\ref{effHam1} and dropping constant terms 
 \end{aligned}\end{equation}
 where the effective antiferromagnetic Heisenberg coupling is \(J_\text{eff} = \frac{8V_H^2}{U}\).
 
-\section{Topological nature of the transition}
-Since the impurity charge hybridising with the bath contributes to the total Luttinger volume of the system~\cite{martin1982fermi}, decoupling of the impurity from the conduction bath leads to a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
-\begin{equation}\begin{aligned}
-	\label{lutt_change}
-	\mathcal{N}_L^\text{lm} - \mathcal{N}_L^\text{sc} = 1
-\end{aligned}\end{equation}
-where \(\mathcal{N}_L^\text{lm},\mathcal{N}_L^\text{sc}\) are the Luttinger volumes at the local moment and strong-coupling fixed points respectively. This equation expresses the fact that the Luttinger volume of the bath increases by \(1\) when the system is tuned from LM to SC, and this happens because the single-particle impurity excitation in the lower-Hubbard at the atomic limit gets transferred to the bath Greens function in the process. The quantity which tracks this transfer is therefore \(\mathcal{N}_\text{imp}\), the number of poles minus the number of zeros in the impurity Greens function at and below the Fermi surface:
-\begin{equation}\begin{aligned}
-	\label{imp_count_def}
-	\mathcal{N}_\text{imp} = \begin{cases}
-		1 & \text{ at LM}\\
-		0 & \text{ at SC}
-	\end{cases}\implies \Delta \mathcal{N}_\text{imp} = 1
-\end{aligned}\end{equation}
-The Luttinger volume \(\mathcal{N}_L\) is related to this impurity count by the equation
-\begin{equation}\begin{aligned}
-	\mathcal{N}_L = \mathcal{N} - \mathcal{N}_\text{imp}
-\end{aligned}\end{equation}
-where \(\mathcal{N}\) is the total number of electrons in the system, accounting for the spin degeneracy. If we keep this total number fixed (isolated system), the changes in the impurity count and Luttinger volume become constrained: 
-\begin{equation}\begin{aligned}
-	\Delta \mathcal{N}_L = - \Delta \mathcal{N}_\text{imp}~.
-\end{aligned}\end{equation}
-Eq.~\ref{imp_count_def} then readily implies eq.~\ref{lutt_change}.
-
-In order to connect this impurity topological change with the bulk model, we write the total number of particles in the bulk system in the following manner:
-\begin{equation}\begin{aligned}
-	\mathcal{N} = \mathcal{N}_\text{loc} + \mathcal{N}_\text{deloc}
-\end{aligned}\end{equation}
-\(\mathcal{N}_\text{loc}\) is the number of real poles minus the number of zeros of the local Greens function. \(\mathcal{N}_\text{deloc}\) is the number of real poles minus the number of zeros of the \(k-\)space Greens functions. The former (latter) contributes only in the insulating (metallic) phase, because in the metallic (insulating) phase, the local (\(k-\)space) Greens function develop imaginary self-energy and the real poles in these Greens functions get replaced by imaginary poles. Together, these two terms accurately count the total number of particles in both these phases. These two terms are defined as
-\begin{equation}\begin{aligned}
-	\mathcal{N}_\text{loc} = \sum_i \mathcal{N}_i = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_i(z)\right], ~ ~ ~\mathcal{N}_\text{deloc} = \sum_k \mathcal{N}_k = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_k(z)\right] = \mathcal{N}_L
-\end{aligned}\end{equation}
-\(G_i(z)\) is the local Greens function at site \(i\) of the bulk model, and \(G_k(z)\) is the \(k-\)space Greens function in the bulk model. \(N_\text{deloc}\) is just the Luttinger volume \(\mathcal{N}_L\) of the bulk system. With this, the total number of particles in the bulk can be expressed as
-\begin{equation}\begin{aligned}
-	\label{bulk_total}
-	\mathcal{N} = \sum_i \mathcal{N}_i + \mathcal{N}_\text{L}
-\end{aligned}\end{equation}
-From eq.~\ref{greens_func_relation}, we know that the bulk local Greens function is proportional to that of the auxiliary model, and that gives \(\sum_i \mathcal{N}_i = \mathcal{N}_\text{imp}\sum_i = \mathcal{N} \mathcal{N}_\text{imp}\). There we used the fact that for a half-filled system, the total number of sites is equal to the total number of particles in the system. Substituting this into eq.~\ref{bulk_total} and again using \(\Delta \mathcal{N} = 0\) gives
-\begin{equation}\begin{aligned}
-	\mathcal{N} = \mathcal{N} \mathcal{N}_\text{imp} + \mathcal{N}_\text{L} \implies \Delta \mathcal{N}_\text{L} = - \mathcal{N} \Delta \mathcal{N}_\text{imp}
-\end{aligned}\end{equation}
-We already know that \(\Delta \mathcal{N}_\text{imp}=1\) across the transition, so we get
-\begin{equation}\begin{aligned}
-	\mathcal{N}_L^\text{metal} - \mathcal{N}_L^\text{insulator} = \mathcal{N}\left(\mathcal{N}_\text{imp}^\text{sc} - \mathcal{N}_\text{imp}^\text{lm}\right) = \mathcal{N}
-\end{aligned}\end{equation}
-The metal-insulator transition is therefore characterised by a change in the topological quantity \(\mathcal{N}_L\). The topological nature arises from the fact that it can be expressed in terms of winding numbers related to the corresponding Greens functions. \(\mathcal{N}_\text{imp}\), which derives from the impurity Greens function \(G_d\), is related to the winding numbers of the curves \(\text{Det}[G_d^{-1}(\Gamma^<)]\) and \(\text{Det}[G_d^{-1}(\Gamma^0)]\). The winding number is simply the number of times this function encircles the origin when traced on the curves \(\Gamma^<\) and \(\Gamma^0\) that enclose all poles inside and on the Fermi surface respectively. An example of such a winding number is shown in fig.~\ref{imp_winding}.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.4\textwidth]{windingNumbers.pdf}
-	\caption{The green lines describe the winding number related to the impurity Greens function, while the blue lines do it for the bath. At the local moment fixed point \(V=0\), the impurity has a winding number of 1 because the curve encircles the origin once. At the strong-coupling fixed point, this winding number becomes zero, indicated by the fact that the curve does not encircle the origin even once. The reduction in the winding number on the part of the impurity is directly linked to the increase in the winding number of the bath - it encircles the origin once at the local moment fixed point but twice at strong-coupling.}
-	\label{imp_winding}
-\end{figure}
+% \section{Topological nature of the transition}
+% Since the impurity charge hybridising with the bath contributes to the total Luttinger volume of the system~\cite{martin1982fermi}, decoupling of the impurity from the conduction bath leads to a difference in the value of the Luttinger volume between the local moment (LM) and the strong-coupling (SC) fixed points. If we define \(\mathcal{N}_L\) as the Luttinger volume with the spin-degeneracy accounted for, we can write
+% \begin{equation}\begin{aligned}
+% 	\label{lutt_change}
+% 	\mathcal{N}_L^\text{lm} - \mathcal{N}_L^\text{sc} = 1
+% \end{aligned}\end{equation}
+% where \(\mathcal{N}_L^\text{lm},\mathcal{N}_L^\text{sc}\) are the Luttinger volumes at the local moment and strong-coupling fixed points respectively. This equation expresses the fact that the Luttinger volume of the bath increases by \(1\) when the system is tuned from LM to SC, and this happens because the single-particle impurity excitation in the lower-Hubbard at the atomic limit gets transferred to the bath Greens function in the process. The quantity which tracks this transfer is therefore \(\mathcal{N}_\text{imp}\), the number of poles minus the number of zeros in the impurity Greens function at and below the Fermi surface:
+% \begin{equation}\begin{aligned}
+% 	\label{imp_count_def}
+% 	\mathcal{N}_\text{imp} = \begin{cases}
+% 		1 & \text{ at LM}\\
+% 		0 & \text{ at SC}
+% 	\end{cases}\implies \Delta \mathcal{N}_\text{imp} = 1
+% \end{aligned}\end{equation}
+% The Luttinger volume \(\mathcal{N}_L\) is related to this impurity count by the equation
+% \begin{equation}\begin{aligned}
+% 	\mathcal{N}_L = \mathcal{N} - \mathcal{N}_\text{imp}
+% \end{aligned}\end{equation}
+% where \(\mathcal{N}\) is the total number of electrons in the system, accounting for the spin degeneracy. If we keep this total number fixed (isolated system), the changes in the impurity count and Luttinger volume become constrained: 
+% \begin{equation}\begin{aligned}
+% 	\Delta \mathcal{N}_L = - \Delta \mathcal{N}_\text{imp}~.
+% \end{aligned}\end{equation}
+% Eq.~\ref{imp_count_def} then readily implies eq.~\ref{lutt_change}.
+%
+% In order to connect this impurity topological change with the bulk model, we write the total number of particles in the bulk system in the following manner:
+% \begin{equation}\begin{aligned}
+% 	\mathcal{N} = \mathcal{N}_\text{loc} + \mathcal{N}_\text{deloc}
+% \end{aligned}\end{equation}
+% \(\mathcal{N}_\text{loc}\) is the number of real poles minus the number of zeros of the local Greens function. \(\mathcal{N}_\text{deloc}\) is the number of real poles minus the number of zeros of the \(k-\)space Greens functions. The former (latter) contributes only in the insulating (metallic) phase, because in the metallic (insulating) phase, the local (\(k-\)space) Greens function develop imaginary self-energy and the real poles in these Greens functions get replaced by imaginary poles. Together, these two terms accurately count the total number of particles in both these phases. These two terms are defined as
+% \begin{equation}\begin{aligned}
+% 	\mathcal{N}_\text{loc} = \sum_i \mathcal{N}_i = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_i(z)\right], ~ ~ ~\mathcal{N}_\text{deloc} = \sum_k \mathcal{N}_k = \oint \frac{dz}{2\pi i}n_F(z) \text{Tr}\left[G_k(z)\right] = \mathcal{N}_L
+% \end{aligned}\end{equation}
+% \(G_i(z)\) is the local Greens function at site \(i\) of the bulk model, and \(G_k(z)\) is the \(k-\)space Greens function in the bulk model. \(N_\text{deloc}\) is just the Luttinger volume \(\mathcal{N}_L\) of the bulk system. With this, the total number of particles in the bulk can be expressed as
+% \begin{equation}\begin{aligned}
+% 	\label{bulk_total}
+% 	\mathcal{N} = \sum_i \mathcal{N}_i + \mathcal{N}_\text{L}
+% \end{aligned}\end{equation}
+% From eq.~\ref{greens_func_relation}, we know that the bulk local Greens function is proportional to that of the auxiliary model, and that gives \(\sum_i \mathcal{N}_i = \mathcal{N}_\text{imp}\sum_i = \mathcal{N} \mathcal{N}_\text{imp}\). There we used the fact that for a half-filled system, the total number of sites is equal to the total number of particles in the system. Substituting this into eq.~\ref{bulk_total} and again using \(\Delta \mathcal{N} = 0\) gives
+% \begin{equation}\begin{aligned}
+% 	\mathcal{N} = \mathcal{N} \mathcal{N}_\text{imp} + \mathcal{N}_\text{L} \implies \Delta \mathcal{N}_\text{L} = - \mathcal{N} \Delta \mathcal{N}_\text{imp}
+% \end{aligned}\end{equation}
+% We already know that \(\Delta \mathcal{N}_\text{imp}=1\) across the transition, so we get
+% \begin{equation}\begin{aligned}
+% 	\mathcal{N}_L^\text{metal} - \mathcal{N}_L^\text{insulator} = \mathcal{N}\left(\mathcal{N}_\text{imp}^\text{sc} - \mathcal{N}_\text{imp}^\text{lm}\right) = \mathcal{N}
+% \end{aligned}\end{equation}
+% The metal-insulator transition is therefore characterised by a change in the topological quantity \(\mathcal{N}_L\). The topological nature arises from the fact that it can be expressed in terms of winding numbers related to the corresponding Greens functions. \(\mathcal{N}_\text{imp}\), which derives from the impurity Greens function \(G_d\), is related to the winding numbers of the curves \(\text{Det}[G_d^{-1}(\Gamma^<)]\) and \(\text{Det}[G_d^{-1}(\Gamma^0)]\). The winding number is simply the number of times this function encircles the origin when traced on the curves \(\Gamma^<\) and \(\Gamma^0\) that enclose all poles inside and on the Fermi surface respectively. An example of such a winding number is shown in fig.~\ref{imp_winding}.
+% \begin{figure}[!htb]
+% 	\centering
+% 	\includegraphics[width=0.4\textwidth]{windingNumbers.pdf}
+% 	\caption{The green lines describe the winding number related to the impurity Greens function, while the blue lines do it for the bath. At the local moment fixed point \(V=0\), the impurity has a winding number of 1 because the curve encircles the origin once. At the strong-coupling fixed point, this winding number becomes zero, indicated by the fact that the curve does not encircle the origin even once. The reduction in the winding number on the part of the impurity is directly linked to the increase in the winding number of the bath - it encircles the origin once at the local moment fixed point but twice at strong-coupling.}
+% 	\label{imp_winding}
+% \end{figure}
 
 
 \clearpage

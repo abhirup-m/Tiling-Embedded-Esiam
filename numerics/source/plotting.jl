@@ -112,13 +112,15 @@ function plotPhaseDiagram(
         savename::String,
         colmap,
     )
-    figure = Figure(size=(350, 300), figure_padding=(0, 8, 4, 8))
+    figure = Figure(figure_padding=(0, 30, 5, 10))
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
               xticklabelsize=22,
               yticklabelsize=22,
               xscale=log10,
+              width=250,
+              height=200,
              )
 
     for v in unique(matrixData)
@@ -130,6 +132,7 @@ function plotPhaseDiagram(
              colormap=colmap,
             )
     figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., -10.), patchcolor=:transparent, patchlabelgap=-10, colgap=0)
+    resize_to_layout!(figure)
     save(savename, figure)
 end
 

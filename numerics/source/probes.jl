@@ -89,8 +89,9 @@ end
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
     corrResults = Dict{String, Vector{Float64}}(k => repeat([NaN], hamiltDetails["size_BZ"]^2) for k in allKeys)
 
-    nonPivotPoints = filter(∉(pivotPoints), sortedPoints)
-    pointsSequence = vcat(pivotPoints, nonPivotPoints)
+    #=nonPivotPoints = filter(∉(pivotPoints), sortedPoints)=#
+    #=pointsSequence = vcat(pivotPoints, nonPivotPoints)=#
+    pointsSequence = copy(sortedPoints)
 
     mapCorrNameToIndex = Dict()
     correlationDefDict = Dict{String, Vector{Tuple{String, Vector{Int64}, Float64}}}()
@@ -117,6 +118,9 @@ end
     mutInfoDefDict = Dict{String, NTuple{2, Vector{Int64}}}()
     for (name, (secondMomentum, func)) in mutInfoFuncDict
         secondIndex = isnothing(secondMomentum) ? nothing : findfirst(==(secondMomentum), pointsSequence)
+        if !isnothing(secondMomentum) && isnothing(secondIndex)
+            continue
+        end
         for pivotIndex in pivotIndices
             partyA, partyB = func(pivotIndex, secondIndex)
             if partyA ≠ partyB
@@ -151,6 +155,7 @@ end
     for hamiltonian in hamiltonianFamily
         @assert all(!isempty, hamiltonian)
     end
+
     iterDiagResults = nothing
     id = nothing
     while true
@@ -290,8 +295,9 @@ end
         bathIntLegs::Int64=2,
         noSelfCorr::Vector{String}=String[],
         addPerStep::Int64=1,
-        numProcs::Int64=1,
+        numProcs::Int64=nprocs(),
         loadData::Bool=false,
+        sortByDistance::Bool=false,
     )
 
     size_BZ = hamiltDetails["size_BZ"]
@@ -300,9 +306,11 @@ end
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
-                 && map1DTo2D(p, size_BZ)[2] ≤ 0 
-                 && abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
+    SWIndices = [p for p in 1:size_BZ^2 if
+                 map1DTo2D(p, size_BZ)[1] ≤ 0 &&
+                 map1DTo2D(p, size_BZ)[2] ≤ 0 &&
+                 #=map1DTo2D(p, size_BZ)[1] < -map1DTo2D(p, size_BZ)[2] &&=#
+                 abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p])
                 ]
 
     calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
@@ -334,30 +342,53 @@ end
         end
     end
 
-    distancesFromNode = [sum((map1DTo2D(p, size_BZ) .- (-π/2, -π/2)) .^ 2)^0.5 for p in SWIndices]
-    symmetricPairsNode = SWIndices[sortperm(distancesFromNode)]
-    distancesFromAntiNode = [minimum([sum((map1DTo2D(p, size_BZ) .- (-π, 0.)) .^ 2)^0.5,
-                                      sum((map1DTo2D(p, size_BZ) .- (0., -π)) .^ 2)^0.5])
-                                     for p in SWIndices
-                                    ]
-    symmetricPairsAntiNode = SWIndices[sortperm(distancesFromAntiNode)]
-    
-    desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
+    node = map2DTo1D(-π/2, -π/2, size_BZ)
+    antinode = map2DTo1D(-π, 0., size_BZ)
+    distancesFromNode = [hamiltDetails["kondoJArray"][p, node] |> abs for p in SWIndices]
+    symmetricPairsNode = Dict() 
+    symmetricPairsAntiNode = Dict() 
+    symmetricPairsSelf = Dict() 
+    connectedPoints = filter(p -> hamiltDetails["kondoJArray"][p, SWIndices] .|> abs |> maximum > 0, SWIndices)
 
-    corrNode = @showprogress pmap(pivotPoint -> IterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsNode, 
-                                                                correlationFuncDict, vneFuncDict, mutInfoFuncDict, 
-                                                                bathIntLegs, noSelfCorr, addPerStep),
-                                  WorkerPool(1:numProcs), calculatePoints)
-    corrAntiNode = @showprogress pmap(pivotPoint -> IterDiagResults(hamiltDetails, maxSize, [pivotPoint], symmetricPairsAntiNode, 
-                                                                    correlationFuncDict, vneFuncDict, mutInfoFuncDict, bathIntLegs, 
-                                                                    noSelfCorr, addPerStep), 
+    for pivot in calculatePoints
+        for (dict, refpoint) in zip([symmetricPairsNode, symmetricPairsAntiNode, symmetricPairsSelf], [node, antinode, pivot])
+            if sortByDistance
+                distancesFromRef = [MinimalDistance(p, pivot) for p in SWIndices if p ≠ pivot]
+            else
+                distancesFromRef = [hamiltDetails["kondoJArray"][p, refpoint] |> abs for p in SWIndices if p ≠ pivot]
+            end
+            dict[pivot] = [[pivot]; filter(≠(pivot), SWIndices)[sortperm(distancesFromRef, rev=true)]]
+            if hamiltDetails["W_val"] == 0
+                filter!(p -> p ∈ connectedPoints, dict[pivot])
+                if length(dict[pivot]) < 2
+                    dict[pivot] = [pivot, filter(≠(pivot), SWIndices)[sortperm(distancesFromRef, rev=true)][1]]
+                end
+            end
+        end
+    end
+
+    desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
+    corrResults = Dict{String, Vector{Float64}}()
+    for dict in [symmetricPairsNode, symmetricPairsAntiNode, symmetricPairsSelf]
+
+        corr = @showprogress pmap(pivot -> IterDiagResults(hamiltDetails, maxSize, [pivot], dict[pivot], 
+                                                                    correlationFuncDict, vneFuncDict, mutInfoFuncDict, 
+                                                                    bathIntLegs, noSelfCorr, addPerStep),
                                       WorkerPool(1:numProcs), calculatePoints)
 
-    corrResults = mergewith((V1, V2) -> [(isnan(v1) && isnan(v2)) ? NaN : ((isnan(v1) || isnan(v2)) ? filter(!isnan, [v1, v2])[1] : (v1 + v2))
-                                         for (v1, v2) in zip(V1, V2)], 
-                            corrNode..., corrAntiNode...
-                           )
-    map!(v -> v ./ 2, values(corrResults))
+        mergewith!((V1, V2) -> [(isnan(v1) && isnan(v2)) ? NaN : ((isnan(v1) || isnan(v2)) ? filter(!isnan, [v1, v2])[1] : (v1 + v2))
+                                             for (v1, v2) in zip(V1, V2)], 
+                                corrResults, corr..., 
+                               )
+    end
+    map!(v -> v ./ 3, values(corrResults))
+    for (name, val) in corrResults
+        for index in SWIndices
+            if isnan(corrResults[name][index])
+                corrResults[name][index] = 0
+            end
+        end
+    end
 
     corrResults = PropagateIndices(calculatePoints, corrResults, size_BZ, oppositePoints)
 
@@ -531,7 +562,6 @@ function LatticeKspaceDOS(
         standDevFinal=jldopen(savePath)["standDevFinal"]
         println("Collected $(savePath) from saved data.")
     else
-
         specCoeffsBZone = [NTuple{2, Float64}[] for _ in calculatePoints]
         fixedContrib = [freqValues |> length |> zeros for _ in calculatePoints]
 
@@ -594,8 +624,10 @@ function LatticeKspaceDOS(
                 @async specFuncResults[1] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
                 @async specFuncResults[2] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
             else
-                @async specFuncResults[1] = fetch.(Threads.@spawn [SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
-                @async specFuncResults[2] = fetch.(Threads.@spawn [SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
+                for k in calculatePoints
+                    push!(specFuncResults[1], SpectralCoeffsAtKpoint(k, onlyCoeffs))
+                    push!(specFuncResults[2], SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true))
+                end
             end
         end
         for results in specFuncResults
@@ -744,7 +776,12 @@ function PhaseDiagram(
         loadedData = Dict()
     end
     keyFunc(kondoJ) = "$(tolerance)-$(kondoJ)"
-    criticalBathIntResults = @showprogress pmap(kondoJ -> keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)
+    criticalBathIntResults = [[0., 0.] for _ in kondoJVals]
+    @showprogress Threads.@threads for index in eachindex(kondoJVals)
+        kondoJ = kondoJVals[index]
+        criticalBathIntResults[index] .= keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData)
+    end
+    #=@time criticalBathIntResults = @showprogress pmap(kondoJ -> keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)=#
     for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
         phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
         phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]

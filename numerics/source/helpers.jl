@@ -272,3 +272,14 @@ function KspaceExcitationOperators(
     specDictSet["Sd+"] = [("++-", [kpointIndices[2], 1, 2], 1.)]
     return specDictSet
 end
+
+
+function MinimalDistance(
+        point1::Int64,
+        point2::Int64,
+    )
+    rotationMatrix(rotateAngle) = [cos(rotateAngle) -sin(rotateAngle); sin(rotateAngle) cos(rotateAngle)]
+    equivalentPoints1 = [rotationMatrix(rotateAngle) * map1DTo2D(point1, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
+    equivalentPoints2 = [rotationMatrix(rotateAngle) * map1DTo2D(point2, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
+    return minimum([(p1 .- p2) .^ 2 .|> sum for p1 in equivalentPoints1 for p2 in equivalentPoints2])
+end

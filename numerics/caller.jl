@@ -1,8 +1,8 @@
-using Distributed, Random
+using Distributed, Random, ProgressMeter
 
-#=if length(Sys.cpu_info()) > 10 && nprocs() == 1=#
-#=    addprocs(2)=#
-#=end=#
+if length(Sys.cpu_info()) > 10 && nprocs() == 1
+    addprocs(1)
+end
 @everywhere using LinearAlgebra, CSV, JLD2, FileIO, CodecZlib
 
 @everywhere include("./source/constants.jl")
@@ -16,9 +16,10 @@ global J_val = 0.1
 maxSize = 500
 WmaxSize = 500
 
-colmap = ColorSchemes.thermal # ColorSchemes.thermal # reverse(ColorSchemes.cherry)
+colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
+phasesColmap = reverse(ColorSchemes.cherry)
 numShells = 1
-bathIntLegs = 2
+bathIntLegs = 3
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
                          25 => -1.0 .* [0, 2., 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
@@ -27,7 +28,7 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          49 => -1.0 .* [0, 4.1, 8.19, 8.4, 8.55, 8.77, 8.8] ./ size_BZ,
                          57 => -1.0 .* [0, 5., 10.2, 10.6, 10.852] ./ size_BZ,
                          69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
-                         77 => -1.0 .* [0., 14.04, 14.5, 14.99] ./ size_BZ,
+                         77 => -1.0 .* [0., 14.04, 14.5, 14.99, 15.0] ./ size_BZ,
                         )[size_BZ]
 pseudogapEnd(size_BZ) = Dict{Int64, Float64}(
                          13 => -1.0 * 1.6 / size_BZ,
@@ -78,7 +79,7 @@ function ScattProb(
         loadData::Bool=false
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[6]]
+    W_val_arr = NiceValues(size_BZ)
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
     results = [ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
@@ -206,11 +207,12 @@ end
 function AuxiliaryCorrelations(
         size_BZ::Int64; 
         spinOnly::Bool=false,
+        chargeOnly::Bool=false,
         loadData::Bool=false,
         loadId::String="",
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1, 2]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     spinCorrelation = Dict{String, Tuple{Union{Nothing, Int64}, Function}}("SF" => (nothing, (i, j) -> [
                                              ("nn", [1, 2, 2 * i + 1, 2 * i + 1], -0.25),
@@ -272,19 +274,29 @@ function AuxiliaryCorrelations(
             if spinOnly && effective_Wval ≠ 0
                 continue
             end
+            if chargeOnly && effective_Wval == 0 && W_val != 0
+                continue
+            end
             effectiveNumShells = W_val == 0 ? numShells : 1
             effectiveMaxSize = effective_Wval ≠ 0 ? (maxSize > WmaxSize ? WmaxSize : maxSize) : maxSize
             savePaths = corrName -> joinpath(SAVEDIR, "$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-$(corrName).jld2")
             hamiltDetails["W_val"] = effective_Wval
             println("\n W = $(W_val), eff_W=$(effective_Wval), $(effectiveNumShells) shells, maxSize = $(effectiveMaxSize)")
             if effective_Wval == W_val == 0 # case of W = 0, for both spin and charge
-                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, merge(spinCorrelation, chargeCorrelation),
+                if spinOnly
+                    correlationsDict = spinCorrelation
+                elseif chargeOnly
+                    correlationsDict = chargeCorrelation
+                else
+                    correlationsDict = merge(spinCorrelation, chargeCorrelation)
+                end
+                results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, correlationsDict,
                                                 effectiveMaxSize; 
                                                 savePath=savePaths,
                                                 vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                                 bathIntLegs=bathIntLegs,
                                                 noSelfCorr=["cfnode", "cfantinode"], 
-                                                addPerStep=1, numProcs=2,
+                                                addPerStep=1,
                                                 loadData=loadData
                                                )
             elseif effective_Wval == 0 && W_val != 0 # case of W != 0, but setting effective W to 0 for spin
@@ -292,15 +304,16 @@ function AuxiliaryCorrelations(
                                                 savePath=savePaths,
                                                 vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                                 bathIntLegs=bathIntLegs, 
-                                                addPerStep=1, numProcs=2,
+                                                addPerStep=1,
                                                 loadData=loadData
                                                )
             else # case of W != 0 and considering the actual W as effective W, for charge
                 results, _ = AuxiliaryCorrelations(hamiltDetails, effectiveNumShells, chargeCorrelation, effectiveMaxSize;
                                                 savePath=savePaths,
                                                 bathIntLegs=bathIntLegs, noSelfCorr=["cfnode", "cfantinode"], 
-                                                addPerStep=1, numProcs=2,
-                                                loadData=loadData
+                                                addPerStep=1,
+                                                loadData=loadData,
+                                                sortByDistance=true,
                                                )
             end
             merge!(corrResults[W_val], results)
@@ -310,7 +323,10 @@ function AuxiliaryCorrelations(
         if spinOnly && name ∈ ["doubOcc", "cfnode", "cfantinode"]
             continue
         end
-        quadrantResults = Dict(W_val => corrResults[W_val][name][filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)] for W_val in W_val_arr)
+        if chargeOnly && name ∉ ["doubOcc", "cfnode", "cfantinode"]
+            continue
+        end
+        quadrantResults = Dict(W_val => corrResults[W_val][name][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)] for W_val in W_val_arr)
 
         nonNaNData = filter(!isnan, vcat([quadrantResults[W_val] for W_val in W_val_arr]...))
         if minimum(nonNaNData) < maximum(nonNaNData)
@@ -325,7 +341,7 @@ function AuxiliaryCorrelations(
                                         plotTitles[name], 
                                         getlabelInt(W_val, size_BZ), 
                                         colmap;
-                                        colorbarLimits=colorbarLimits,
+                                        #=colorbarLimits=colorbarLimits,=#
                                        )
                  )
         end
@@ -350,7 +366,7 @@ function AuxiliaryLocalSpecfunc(
     )
     #=W_val_arr = range(0.0, 1.0 * pseudogapEnd(size_BZ), length=10) |> collect=#
     #=W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]=#
-    W_val_arr = NiceValues(size_BZ)[[1,6]]
+    W_val_arr = NiceValues(size_BZ)[[1,2,6,7]]
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
@@ -548,7 +564,7 @@ function LatticeKspaceDOS(
         singleThread::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1,2,3,4]]
     #=W_val_arr = NiceValues(size_BZ)[[1, 2]]=#
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     freqValues = collect(-200:0.1:200)
@@ -626,13 +642,13 @@ function PhaseDiagram(
         tolerance::Float64;
         loadData::Bool=false,
     )
-    kondoJVals = 10 .^ (-1.5:0.01:-0.4)
-    bathIntVals = collect(-0.0:-0.001:-0.5)
+    kondoJVals = 10 .^ (-1.5:0.01:-0.6)
+    bathIntVals = collect(-0.12:-0.0001:-0.2)
     phaseLabels = ["L-FL", "L-PG", "LM"]
     phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, tolerance, Dict(phaseLabels .=> 1:3); loadData=loadData)
     plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (kondoJVals, -1 .* bathIntVals),
                      (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
-                     colmap[[2, 5, 8]])
+                     phasesColmap[[2, 5, 8]])
 end
 
 function TiledSpinCorr(
@@ -640,20 +656,27 @@ function TiledSpinCorr(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1, 3, 4, 5]]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
     node = map2DTo1D(-π/2, -π/2, size_BZ)
     antinode = map2DTo1D(-π, 0., size_BZ)
-    spinCorrelation = Dict()
-    spinCorrelation["SF1"] = (node, (i, j) -> [("+-+-", [2 * i + 1, 2 * i + 2, 2, 1], 1.)]) # S_d^+c^†_{k↑}_{k↓}c^†_{q↓}_{q↑}S_d^-
-    spinCorrelation["SF2"] = (node, (i, j) -> [("+-+-", [2 * j + 1, 2 * j + 2, 2, 1], 1.)]) # S_d^+c^†_{k↑}_{k↓}c^†_{q↓}_{q↑}S_d^-
+    spinCorrelation = Dict{String, Tuple{Union{Nothing, Int64}, Function}}("SF" => (nothing, (i, j) -> [
+                                             ("nn", [1, 2, 2 * i + 1, 2 * i + 1], -0.25),
+                                             ("nn", [1, 2, 2 * i + 2, 2 * i + 2], 0.25),
+                                             ("nn", [2, 1, 2 * i + 1, 2 * i + 1], 0.25),
+                                             ("nn", [2, 1, 2 * i + 1, 2 * i + 2], -0.25),
+                                             ("+-+-", [1, 2, 2 * i + 2, 2 * i + 1], -0.5),
+                                             ("+-+-", [2, 1, 2 * i + 1, 2 * i + 2], -0.5),
+                                            ]
+                                   )
+                          )
 
     saveNames = Dict(name => [] for name in ["tiledSF"])
     plotTitles = Dict("tiledSF" => L"$\chi_s(k_\text{N}, \textbf{k})$",
                      )
 
     name = "tiledSF"
-    effective_Wval = 0.
+    effective_Wval = -0.
     hamiltDetailsDict = Dict(W_val => Dict(
                                            "dispersion" => dispersion,
                                            "kondoJArray" => kondoJArrays[W_val][:, :, end],
@@ -678,8 +701,7 @@ function TiledSpinCorr(
                                             loadData=loadData,
                                             numProcs=nprocs(),
                                            )
-        corrResults = Dict("sf" => results["SF1"] .* results["SF2"] )
-        tiledCorrelation = sum(values(corrResults)) / length(values(corrResults))
+        tiledCorrelation = results["SF"][node] .* results["SF"]
         quadrantResult = tiledCorrelation[filter(p -> all(map1DTo2D(p, size_BZ) .≥ 0), 1:size_BZ^2)]
         push!(saveNames[name], 
               plotHeatmap(quadrantResult .|> abs, 
@@ -709,7 +731,7 @@ function TiledEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1,3,4,5]]
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     vnEntropy = Dict{Float64, Vector{Float64}}()
@@ -717,15 +739,18 @@ function TiledEntanglement(
     mutInfoEdge = Dict{Float64, Vector{Float64}}()
 
     pivotPoints = Dict{Float64, Int64}()
-    saveNames = Dict("S_k"=> String[], 
-                     "I2_k_kN"=> String[],
-                     "I2_k_edge"=> String[],
+    saveNames = Dict("tiled_SEE_k"=> String[], 
+                     "tiled_I2_k_N"=> String[],
+                     "tiled_I2_k_edge"=> String[],
                     )
     node = map2DTo1D(-π/2, -π/2, size_BZ)
 
     vneDef = Dict{String, Function}(
-                                    "SEE_k" => i -> [2 * i + 1,]
+                                    "vne_k" => i -> [2 * i + 1,]
                                    )
+    mutInfoDef = Dict{String, Tuple{Union{Int64, Nothing}, Function}}(
+                      "I2_k_N" => (node, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
+                     )
 
     cutoffEnergy = dispersion[div(size_BZ - 1, 2) + 2 - numShells]
     SWIndices = [p for p in 1:size_BZ^2 if map1DTo2D(p, size_BZ)[1] < 0
@@ -734,7 +759,7 @@ function TiledEntanglement(
                 ]
     savePaths = Dict(W_val => corrName -> joinpath(SAVEDIR, "$(W_val)-0.0-$(size_BZ)-$(1)-$(maxSize)-$(bathIntLegs)-$(corrName).jld2") for W_val in W_val_arr)
 
-    @time Threads.@threads for W_val in W_val_arr
+    @time for W_val in W_val_arr
         scattProbBool = ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2]
         connectedPoints = filter(p -> scattProbBool[p] > 0, SWIndices)
         if !isempty(connectedPoints)
@@ -744,10 +769,7 @@ function TiledEntanglement(
         end
         pivotPoints[W_val] = pivot
 
-        mutInfoDef = Dict{String, Tuple{Union{Int64, Nothing}, Function}}(
-                          "I2_k_edge" => (pivot, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
-                          "I2_k_kN" => (node, (i, j) -> ([2 * i + 1,], [2 * j + 1,])),
-                         )
+        mutInfoDef["I2_k_edge"] = (pivot, (i, j) -> ([2 * i + 1,], [2 * j + 1,]))
         hamiltDetailsDict = Dict("dispersion" => dispersion,
                                  "kondoJArray" => kondoJArrays[W_val][:, :, end],
                                  "orbitals" => orbitals,
@@ -761,13 +783,13 @@ function TiledEntanglement(
                                            vneFuncDict=vneDef, mutInfoFuncDict=mutInfoDef, 
                                            addPerStep=1, loadData=loadData,
                                           )
-        vnEntropy[W_val] = results["SEE_k"]
-        mutInfoNode[W_val] = results["I2_k_kN"]
+        vnEntropy[W_val] = results["vne_k"]
+        mutInfoNode[W_val] = results["I2_k_N"]
         mutInfoEdge[W_val] = results["I2_k_edge"]
     end
     for W_val in W_val_arr
         quadrantResult = vnEntropy[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
-        push!(saveNames["S_k"],
+        push!(saveNames["tiled_SEE_k"],
               plotHeatmap(quadrantResult,
                           (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
                           (L"$ak_x/\pi$", L"$ak_y/\pi$"),
@@ -778,7 +800,7 @@ function TiledEntanglement(
              )
 
         quadrantResult = mutInfoNode[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
-        push!(saveNames["I2_k_kN"],
+        push!(saveNames["tiled_I2_k_N"],
               plotHeatmap(quadrantResult,
                           (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
                           (L"$ak_x/\pi$", L"$ak_y/\pi$"),
@@ -790,7 +812,7 @@ function TiledEntanglement(
              )
 
         quadrantResult = mutInfoEdge[W_val][filter(p -> all(map1DTo2D(p, size_BZ) .≤ 0), 1:size_BZ^2)]
-        push!(saveNames["I2_k_edge"],
+        push!(saveNames["tiled_I2_k_edge"],
               plotHeatmap(quadrantResult,
                           (x_arr[x_arr .≤ 0], x_arr[x_arr .≤ 0]), 
                           (L"$ak_x/\pi$", L"$ak_y/\pi$"),
@@ -813,15 +835,16 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 77
+size_BZ = 49
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
-#=@time AuxiliaryCorrelations(size_BZ; loadData=true, spinOnly=true)=#
-#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=false)=#
+#=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
+@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
-@time LatticeKspaceDOS(size_BZ; loadData=false, singleThread=true)
+#=@time LatticeKspaceDOS(size_BZ; loadData=true, singleThread=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
-#=@time PhaseDiagram(size_BZ, 1e-3; loadData=false)=#
+#=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#

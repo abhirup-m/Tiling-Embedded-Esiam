@@ -638,8 +638,8 @@ In order to study the mechanism behind the destabilisation of the Kondo cloud th
 	\label{cfnode}
 \end{figure}
 
-\section{Nature of Gapless Excitations in the Impurity Pseudogap}\label{2CKEmerge}
-\subsection{Emergence of a two-channel Kondo Model}
+\section{Nature of Gapless Excitations in the Impurity Pseudogap}
+\subsection{Emergence of a two-channel Kondo Model}\label{2CKEmerge}
 As the bath interaction \(W\) is tuned through the L-PG phase, the four nodal points in the Brillouin zone are the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, focusing on scattering processes involving the nodal region. Specifically, for the Kondo term \(J_{{\bf k}_1, {\bf k}_2})\), we find that only the following classes of scattering processes survive close to the critical point:
 \begin{itemize}
 	\item Both momenta in a neighbourhood around \({\bf k}_N\), where \({\bf k}_N\) can be any of the four nodal points,
@@ -718,6 +718,98 @@ The self-energy also provides the quasiparticle residue for each channel\cite{an
 \end{eqnarray}
 As \(\omega \to 0\), the \(Z\) vanishes, implying that the ground state is {\it not adiabatically connected} to the Fermi gas in the presence of the NFL terms.
 This is the orthogonality catastrophe~\cite{varma2002singular,anderson_infraredcat,yamada_catastrophe,yamada1979orthogonality} in the two-channel Kondo problem, and it is brought about by the presence of the channel-non diagonal terms in Eq.~\ref{mfl_large}.
+
+\subsection{Emergence of long-ranged interactions near the NFL-Mott insulator transition}
+As the bath interaction \(W\) is tuned through the L-PG phase, the nodal region is the last to decouple from the impurity. This allows us to write down a simpler Kondo model near the transition, where only the nodal region is hybridising with the impurity spin through Kondo interactions. This is done by retaining only those scattering processes \({\bf k}_1 \to {\bf k}_2\) that originate from and end at \(k-\)points within a small neighborhood of width \(|{\bf q}|\) around the four nodal points: \({\bf k}_1, {\bf k}_2 \in {\bf N} + {\bf q}, |{\bf q}| \ll \pi\), where \({\bf N}\) can be any one of the four nodal points \({\bf N}_{1} = \left(\pi/2, \pi/2\right), {\bf N}_{2} = \left(-\pi/2, \pi/2\right)\) and \({\bf N}_1 + {\bf Q}_1\) and \({\bf N}_{2} + {\bf Q}_2\), where \({\bf Q}_1 = \left(-\pi,-\pi \right)\) and \({\bf Q}_2 = \left( \pi, -\pi \right) \) are the two nesting vectors. We have already seen, in Subsection ~\ref{2CKEmerge}, that the pseudogap regime displays a decoupling of the Brillouin zone into sets of points that have no explicit connecting term in the Hamiltonian. Near the transition, the neighbourhoods of \({\bf N}_{1}\) and \({\bf N}_{1} + {\bf Q}_1\) form one such connected set, while the other two nodes \({\bf N}_{2}\) and \({\bf N}_{2} + {\bf Q}_2\) form another connected set, but these two sets are disconnected from each other, in the sense of a two-channel model. 
+
+With these considerations, the simplified low-energy model near the transition describing the Kondo scattering processes can be written as
+\begin{equation}\begin{aligned}
+	\tilde H_\text{imp-cbath} = \frac{1}{2}\sum_{l=1,2}\sum_{{\bf q}_1, {\bf q}_2}\sum_{\alpha,\beta}J^*({\bf q}_1, {\bf q}_2){\bf S}_d\cdot{\boldsymbol \sigma}_{\alpha\beta}&\left(c^\dagger_{{\bf N}_l + {\bf q}_1,\alpha}c_{{\bf N}_l + {\bf q}_2,\beta} + c^\dagger_{{\bf N}_l + {\bf Q}_l + {\bf q}_1,\alpha}c_{{\bf N}_l + {\bf Q}_l + {\bf q}_2,\beta} \right. \\
+&\left. - c^\dagger_{{\bf N}_l + {\bf Q}_l + {\bf q}_1,\alpha}c_{{\bf N}_l + {\bf q}_2,\beta} - c^\dagger_{{\bf N}_l + {\bf q}_1,\alpha}c_{{\bf N}_l + {\bf Q}_l + {\bf q}_2,\beta}\right)~.
+\end{aligned}\end{equation}
+where \(J^*({\bf q}_1, {\bf q}_2)\) is the Kondo coupling for the scattering processes involving \({\bf q}_1\) and \({\bf q}_2\) and a common nodal point between them. For scattering processes that involve two opposite nodal points (that is, connected by one of the nesting vectors \({\bf Q}_l\), the Kondo coupling is \(-J^*({\bf q}_1, {\bf q}_2)\), which explains the negative signs in the third and fourth terms. An explanation of the various dummy indices is in order. The label \(l\) can take values 1 or 2, allowing us to consider both the decoupled sets (associated with \({\bf N}_1\) and \({\bf N}_2\)). It also labels the nesting vectors \({\bf Q}_l\) associated with the two sets. \(\alpha\) and \(\beta\) indicate spin indices, and \({\bf q}_1\) and \({\bf q}_2\) represent incoming and outgoing momenta in the scattering processes.
+
+Because of the decoupling of the channel \(l=1\) and \(l=2\), we consider only the \(l=1\) channel for the rest of the calculations in this section, and we comment at the end on what the presence of two channels means for the results. In order to simplify the Hamiltonian, we define new fermionic operators
+\begin{equation}\begin{aligned}
+	\psi_{{\bf q}, \sigma} = \frac{1}{\sqrt 2}\left(c_{{\bf N}_1 + {\bf q},\sigma} + c_{{\bf N}_1 + {\bf Q}_1 + {\bf q}, \sigma}\right)~,
+	\phi_{{\bf q}, \sigma} = \frac{1}{\sqrt 2}\left(c_{{\bf N}_1 + {\bf q},\sigma} - c_{{\bf N}_1 + {\bf Q}_1 + {\bf q}, \sigma}\right)~,
+\end{aligned}\end{equation}
+The operator satisfy fermionic anticommutation relations:
+\begin{equation}\begin{aligned}
+	\left\{ \psi_{{\bf q},\sigma}, {\psi}^\dagger_{{\bf q}^\prime,\sigma} \right\} &= \left[\delta_{{\bf q}, {\bf q}^\prime} + \frac{1}{2}\left(\delta_{{\bf q} + {\bf Q}_1, {\bf q}^\prime} + \delta_{{\bf q}, {\bf q}^\prime + {\bf Q}_1}\right)  \right] \delta_{\sigma,\sigma^\prime} \\
+																							   &= \delta_{{\bf q}, {\bf q}^\prime}\delta_{\sigma,\sigma^\prime}~,\\
+	\left\{ \phi_{{\bf q},\sigma}, {\phi}^\dagger_{{\bf q}^\prime,\sigma} \right\} &= \left[\delta_{{\bf q}, {\bf q}^\prime} - \frac{1}{2}\left(\delta_{{\bf q} + {\bf Q}_1, {\bf q}^\prime} + \delta_{{\bf q}, {\bf q}^\prime + {\bf Q}_1}\right)  \right] \delta_{\sigma,\sigma^\prime} \\
+																				  &= \delta_{{\bf q}, {\bf q}^\prime}\delta_{\sigma,\sigma^\prime}~,\\
+	\left\{ \psi_{{\bf q},\sigma}, {\phi}^\dagger_{{\bf q}^\prime,\sigma} \right\} &= \left\{ \phi_{{\bf q},\sigma}, {\psi}^\dagger_{{\bf q}^\prime,\sigma} \right\} = 0~,
+\end{aligned}\end{equation}
+where both \({\bf q}\) and \({\bf q}^\prime\) are chosen from a small window around the nodes, so their difference is also small and it is therefore guaranteed that \(|{\bf q} - {\bf q}^\prime| \neq |{\bf Q}_1|\), rendering both \(\delta_{{\bf q} + {\bf Q}_1, {\bf q}^\prime}\) and \(\delta_{{\bf q}, {\bf q}^\prime + {\bf Q}_1}\) zero. For convenience, we define new number operators for the sum and relative degrees of freedom:
+\begin{equation}\begin{aligned}
+	s_{{\bf q},\sigma} = {\psi}^\dagger_{{\bf q}} {\psi}_{{\bf q}},~ r_{{\bf q},\sigma} = {\phi}^\dagger_{{\bf q}} {\phi}_{{\bf q}}~.
+\end{aligned}\end{equation}
+We then have the following useful relation between the corresponding number operators \(n = c^\dagger c\):
+\begin{equation}\begin{aligned}\label{numberOperatorRelation}
+	n_{{\bf N}_1 + {\bf q},\sigma} + n_{{\bf N}_1 + {\bf q} + {\bf Q}_1, \sigma} = s_{{\bf q}, \sigma} + r_{{\bf q},\sigma}~.
+\end{aligned}\end{equation}
+
+We find that the sum degrees of freedom \(s_{{\bf q},\sigma}\) do not enter the Kondo scattering Hamiltonian \(\tilde H_\text{imp-cbath}\) (for the single channel \(l=1\)), and it is expressed purely in terms of the relative degrees of freedom:
+\begin{equation}\begin{aligned}
+	\tilde H_\text{imp-cbath} = \sum_{{\bf q}_1, {\bf q}_2,\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot{\boldsymbol\sigma}_{\alpha\beta} {\phi}^\dagger_{{\bf q}_1\alpha} \phi_{{\bf q}_2\beta}~.
+\end{aligned}\end{equation}
+We now proceed to rewrite the other parts of the Hamiltonian in terms of these new degrees of freedom. The kinetic energy can be written as
+\begin{equation}\begin{aligned}\label{kineticEnergy}
+	\tilde H_\text{cbath} &= \sum_{{\bf q},\sigma}\varepsilon_{{\bf N}_1 + {\bf q}}\left(n_{{\bf N}_1 + {\bf q},\sigma} - n_{{\bf N}_1 + {\bf Q}_1 + {\bf q},\sigma}\right)\\
+						  &= \sum_{{\bf q},\sigma}\epsilon_{{\bf q}}\left({\psi}^\dagger_{{\bf q},\sigma} {\phi}_{{\bf q},\sigma} + {\phi}^\dagger_{{\bf q},\sigma} \psi_{{\bf q},\sigma}\right)~,
+\end{aligned}\end{equation}
+where \(\epsilon_{{\bf q}}\) is a shorthand for \(\varepsilon_{{\bf N}_1 + {\bf q}}\).
+We also consider a simplified form of the bath interaction (for the channel \(l=1\)), taking into account the density-density correlations in \(k-\)space:
+\begin{widetext}
+\begin{equation}\begin{aligned}
+	\tilde H_\text{cbath-int} =& -W\sum_{{\bf q},\sigma}\left(n_{{\bf N}_1 + {\bf q},\sigma} + n_{{\bf N}_1 + {\bf Q}_1 + {\bf q},\sigma}\right) + W\sum_{{\bf q}_1,{\bf q}_2}\left(n_{{\bf N}_{1} + {\bf q}_1, \uparrow} + n_{{\bf N}_{1} + {\bf Q}_{1} + {\bf q}_1, \uparrow} \right) \left( n_{{\bf N}_{1} + {\bf q}_2, \downarrow} + n_{{\bf N}_{1} + {\bf Q}_{1} + {\bf q}_2, \downarrow} \right)~,\\
+	=& -W\sum_{{\bf q},\sigma}\left(s_{{\bf q},\sigma} + r_{{\bf q},\sigma}\right) + W\sum_{{\bf q}_1,{\bf q}_2}\left(s_{{\bf q}_1,\uparrow} + r_{{\bf q}_1,\uparrow}\right) \left(s_{{\bf q}_2,\downarrow} + r_{{\bf q}_2,\downarrow}\right)~.
+\end{aligned}\end{equation}
+\end{widetext}
+We used eq.~\ref{numberOperatorRelation} in order to obtain the final form. Since the Hamiltonian is defined in a small window around the nodal point, the kinetic energy is the smallest term in the Hamiltonian. We therefore ignore it for the time-being, and address the two other terms. Since both \(\tilde H_\text{imp-cbath}\) and \(\tilde H_\text{cbath-int}\) commute with \(s_{{\bf q}, \sigma}\), we replace the local objects \(\sum_{\bf q}s_{{\bf q},\sigma}\) in \(\tilde H_\text{cbath-int}\) with \(\frac{1}{2}\) since the bath is always at half-filling. This results in a simplified Hamiltonian for just the \(\phi_{{\bf q},\sigma}\) degrees of freedom:
+\begin{equation}\begin{aligned}
+	\tilde H =& -\frac{1}{2}W\sum_{{\bf q},\sigma}r_{{\bf q},\sigma} + W\sum_{{\bf q}_1,{\bf q}_2}r_{{\bf q}_1,\uparrow} r_{{\bf q}_2,\downarrow} + \sum_{{\bf q}_1, {\bf q}_2,\alpha,\beta}J^*({\bf q}_1,{\bf q}_2){\bf S}_d\cdot{\boldsymbol\sigma}_{\alpha\beta} {\phi}^\dagger_{{\bf q}_1\alpha} \phi_{{\bf q}_2\beta}
+\end{aligned}\end{equation}
+
+For bath interaction strength close to the critical value (\(W \lesssim W_c\)), the fixed point coupling value \(J^*\) is much smaller than \(W\). In order to obtain the gapless excitations of the system arising from the presence of the impurity site, we integrate out the impurity dynamics via a Schrieffer-Wolff transformation. The perturbation term \(\mathcal{V}\) then consists of Hamiltonian terms that modify the impurity configuration,
+\begin{equation}\begin{aligned}
+	\mathcal{V} = \sum_{{\bf q}_1, {\bf q}_2}J^*({\bf q}_1,{\bf q}_2){S}_d^+{\phi}^\dagger_{{\bf q}_1 \downarrow} \phi_{{\bf q}_2 \uparrow} + \text{h.c.}~,
+\end{aligned}\end{equation}
+while the ``non-interacting" Hamiltonian is
+\begin{equation}\begin{aligned}
+	H_D &= -\frac{1}{2}W\sum_{{\bf q},\sigma}r_{{\bf q},\sigma} + W\sum_{{\bf q}_1,{\bf q}_2}r_{{\bf q}_1,\uparrow} r_{{\bf q}_2,\downarrow}~.
+\end{aligned}\end{equation}
+The renormalisation in the dynamics of \(b^\dagger_{\vec k,\sigma}\) are given by
+\begin{equation}\begin{aligned}
+	\Delta \tilde H &= \mathcal{P}_L \mathcal{V} \mathcal{P}_H\frac{1}{E_L - H_D} \mathcal{V} \mathcal{P}_L,
+\end{aligned}\end{equation}
+where \(E_L\) is the energy of the ground state of \(H_D\), \(-(E_L - H_D)\) is the excitation energy of the state generated upon applying the perturbation \(\mathcal{V}\), and \(\mathcal{P}_{L(H)}\) projects onto the low(high)-energy subspace. For the present Hamiltonian, the low-energy state (associated with \(E_L\)) is the one that minimises the bath interaction term \(\tilde H_\text{cbath-int}\); since the coupling \(W\) is negative, it projects out the spin sector of each \(k-\)state at low energies, leading to the following ground state:
+\begin{equation}\begin{aligned}
+	\ket{L} = \otimes_{\vec q}\frac{1}{\sqrt 2}\left(\phi^\dagger_{{\bf q}, \uparrow}\phi^\dagger_{{\bf q}, \downarrow} + 1\right) \ket{0}
+\end{aligned}\end{equation}
+where \(\ket{0}\) is the \(r_{{\bf q} \uparrow} = r_{{\bf q} \downarrow} = 0\) state. The state \(\ket{L}\) is at zero energy. High-energy states are obtained by applying, on the state \(\ket{L}\), the excitation operator \(\phi^\dagger_{{\bf q}_1,\sigma}\phi_{{\bf q}_2,\bar\sigma}\) or its hermitian conjugate. The operator converts a double and a hole to spin states, incurring a total excitation cost of \(-W = |W|\).
+
+We now calculate the various terms in \(\Delta \tilde H\):
+\begin{equation}\begin{aligned}
+	&\mathcal{P}_L \mathcal{V} \mathcal{P}_H\frac{1}{E_L - H_D} \mathcal{V} \mathcal{P}_L = \left(\frac{1}{2} + S_d^z\right) \sum_{{\bf q}_1,{\bf q}_2}\frac{{J^*({\bf q}_1,{\bf q}_2})^2}{-4W}\phi^\dagger_{{\bf q}_1,\downarrow}\phi_{{\bf q}_2, \uparrow} \left(\phi^\dagger_{{\bf q}_2,\uparrow}\phi_{{\bf q}_1, \downarrow} + (1 - \delta_{{\bf q}_1,{\bf q}_2})\phi^\dagger_{{\bf q}_1,\uparrow}\phi_{{\bf q}_2, \downarrow}\right)\\
+	&= -\sum_{{\bf q}_1,{\bf q}_2}\frac{{J^*({\bf q}_1,{\bf q}_2})^2}{4W}\left[r_{{\bf q}_1 \downarrow} \left(1 - r_{{\bf q}_2 \uparrow}\right) - (1 - \delta_{{\bf q}_1,{\bf q}_2})\phi^\dagger_{{\bf q}_1,\uparrow}\phi^\dagger_{{\bf q}_1,\downarrow}\phi_{{\bf q}_2, \downarrow}\phi_{{\bf q}_2, \uparrow}\right]\\
+	&\mathcal{P}_L \mathcal{V} \mathcal{P}_H\frac{1}{E_L - H_D} \mathcal{V} \mathcal{P}_L = \sum_{{\bf q}_1,{\bf q}_2}\frac{{J^*({\bf q}_1,{\bf q}_2})^2}{-4W}\left[r_{{\bf q}_1 \uparrow} \left(1 - r_{{\bf q}_2 \downarrow}\right) - (1 - \delta_{{\bf q}_1,{\bf q}_2})\phi^\dagger_{{\bf q}_1,\downarrow}\phi^\dagger_{{\bf q}_1,\uparrow}\phi_{{\bf q}_2, \uparrow}\phi_{{\bf q}_2, \downarrow}\right] \\
+\end{aligned}\end{equation}
+In both terms, we set \(S_d^z = 0\) owing to local SU(2) symmetry on the impurity site. Finally, we can treat the dispersion part of the Hamiltonian (eq.~\ref{kineticEnergy}) in the same way:
+\begin{equation}\begin{aligned}
+\mathcal{P}_L \mathcal{V} \mathcal{P}_H\frac{1}{E_L - H_D} \mathcal{V} \mathcal{P}_L &= \sum_{{\bf q},\sigma}\frac{\epsilon_{{\bf q}}^2}{-W}\left[\phi^\dagger_{{\bf q},\sigma}\psi_{{\bf q},\sigma}\psi^\dagger_{{\bf q},\sigma}\phi_{{\bf q},\sigma} + \psi^\dagger_{{\bf q},\sigma}\phi_{{\bf q},\sigma}\phi^\dagger_{{\bf q},\sigma}\psi_{{\bf q},\sigma}\right] \\
+&= -\frac{1}{2W}\sum_{{\bf q},\sigma}\epsilon_{{\bf q}}^2\phi^\dagger_{{\bf q},\sigma}\phi_{{\bf q},\sigma}~,
+\end{aligned}\end{equation}
+where, at the last step, we set \(\psi_{{\bf q},\sigma}\psi^\dagger_{{\bf q},\sigma} = 1/2\) owing to half-filling.
+
+
+\begin{equation}\begin{aligned}
+	\Delta \tilde H = \sum_{\vec q,\sigma}\left[\Delta(\vec q)\bar N_{\vec k_N + \vec q, \sigma} -2\Delta(\vec q)\bar N_{\vec k_N, \sigma}\bar N_{\vec k_N + \vec q, \sigma}\right.\\
+	\left. -\Delta(\vec q) \left(b^\dagger_{\vec k_N, \sigma} b^\dagger_{\vec k_N, \bar\sigma} b_{\vec k_N + \vec q, \bar\sigma}b_{\vec k_N + \vec q, \sigma} + \text{h.c.}\right) \right]~,
+\end{aligned}\end{equation}
+where \(\Delta(q) = -{J^*(\vec q)}^2/8W\) is a positive energy scale.
 
 \section{Journey Through the Pseudogap on The Lattice model: Spectral Function, Spin Correlations and Entanglement}
 Having studied the phase diagram of the lattice-embdedded impurity model, we now proceed to translate our results into the translation-invariant lattice model. For this, we use the results that we obtained in Sec.~\ref{tilingProcedure}. In particular, we focus in this section on the implications of the impurity model pseudogap phase on the lattice model. We find that the anistropic decoupling, from the impurity dynamics, of the conduction bath low-energy states leads to the formation of a partially gapped Fermi surface in the correlated model. The partial gapping is signalled by the replacement of Greens function poles with zeroes in the antinodal region.
@@ -812,7 +904,7 @@ As discussed in Sec.~\ref{2CKEmerge}, the effective description of the impurity 
 \paragraph{Marginal Fermi liquid, \(|W| > |W|^*\):}
 We have demonstrated in Subsection.~\ref{marginalFL} that the low-lying excitations of the pseudogap phase are described by a marginal Fermi liquid. This is linked to the fact that the excitations within the impurity model become many-particle in nature - they involve fluctuations on multiple sites. This should be contrasted with the local Fermi liquid excitations that involve only the conduction bath site next to the zeroth site. Upon tiling, we can immediately see that the resulting metal is not a Fermi liquid; the extended excitations will involve excitations of multiple \(k-\)states, and just not a simple superposition of \(1-\)particle excitations (that gave rise to the Fermi liquid). The build up of additional correlations within the marginal Fermi liquid (in comparison to the Fermi liquid) can also be ascertained from the fact that the local physics is determined by an impurity model which is highly local in \(k-\)space (due to the decoupling of the Fermi arms, see Sec.~\ref{2CKEmerge}). Such a local-in-\(k-\)space impurity model is highly non-local in real-space, consisting of long-ranged interactions between the impurity and the conduction bath. This is another signature of the non-Fermi liquid nature of the excitations obtained upon tiling.
 
-\paragraph{At the critical point}
+\paragraph{At the critical point, \(|W| \lesssim |W|^*\):}
 
 
 \subsection{Heisenberg model as a low-energy description of the insulator}

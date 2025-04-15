@@ -283,3 +283,33 @@ function MinimalDistance(
     equivalentPoints2 = [rotationMatrix(rotateAngle) * map1DTo2D(point2, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
     return minimum([(p1 .- p2) .^ 2 .|> sum for p1 in equivalentPoints1 for p2 in equivalentPoints2])
 end
+
+
+function Fourier(
+        kondoJArray::Array{Float64, 2};
+        integrateOver::Union{Nothing, Vector{Int64}}=nothing,
+        calculateFor::Union{Nothing, Vector{Int64}}=nothing,
+    )
+    numPoints = size(kondoJArray)[1] |> sqrt |> Int
+    if isnothing(integrateOver)
+        integrateOver = 1:numPoints^2
+    end
+    if isnothing(calculateFor)
+        calculateFor = 1:numPoints^2
+    end
+    kondoJRealSpace = 0 .* kondoJArray
+    @showprogress Threads.@threads for p1 in calculateFor
+        for p2 in calculateFor
+            r1, r2 = [map1DTo2D(p, numPoints) * 0.5 * numPoints / π for p in [p1, p2]]
+            p1_neg, p2_neg = (map2DTo1D((-1 .* r1)..., numPoints), map2DTo1D((-1 .* r2)..., numPoints))
+            if (p1_neg, p2_neg) ∈ keys(kondoJRealSpace)
+                kondoJRealSpace[p1, p2] = kondoJRealSpace[p1_neg, p2_neg]
+            else
+                kondoJRealSpace[p1, p2] = sum([kondoJArray[k1, k2] * cos(sum(r1 .* map1DTo2D(k1, numPoints)) - sum(r2 .* map1DTo2D(k2, numPoints)))
+                                                        for (k1, k2) in Iterators.product(integrateOver, integrateOver)])
+            end
+            kondoJRealSpace[p2, p1] = kondoJRealSpace[p1, p2]
+        end
+    end
+    return kondoJRealSpace
+end

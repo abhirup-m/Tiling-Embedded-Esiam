@@ -209,7 +209,6 @@ function AuxiliaryCorrelations(
         spinOnly::Bool=false,
         chargeOnly::Bool=false,
         loadData::Bool=false,
-        loadId::String="",
     )
     x_arr = get_x_arr(size_BZ)
     W_val_arr = NiceValues(size_BZ)[[1, 2]]
@@ -356,6 +355,54 @@ function AuxiliaryCorrelations(
         write(f, shellCommand*"\n")
     end
     close(f)
+end
+
+
+function AuxiliaryRealSpaceEntanglement(
+        size_BZ::Int64; 
+        loadData::Bool=false,
+    )
+    x_arr = get_x_arr(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[[1, 5]]
+    @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
+    saveNames = Dict(name => [] for name in ["I2_real"])
+    plotTitles = Dict("I2_di" => L"$I_2(d, {\bf r})$",
+                     )
+    corrResults = Tuple{LaTeXString, Vector{Float64}}[]
+    for W_val in W_val_arr
+        hamiltDetails = Dict(
+                             "dispersion" => dispersion,
+                             "kondoJArray" => kondoJArrays[W_val][:, :, end],
+                             "orbitals" => orbitals,
+                             "size_BZ" => size_BZ,
+                             "bathIntForm" => bathIntForm,
+                             "globalField" => GLOBALFIELD,
+                            )
+        effective_Wval = -0.0
+        effectiveNumShells = 1
+        effectiveMaxSize = maxSize
+        savePath = joinpath(SAVEDIR, "$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-I2-di.jld2")
+        hamiltDetails["W_val"] = effective_Wval
+        println("\n W = $(W_val), eff_W=$(effective_Wval), $(effectiveNumShells) shells, maxSize = $(effectiveMaxSize)")
+        r, x_arr = AuxiliaryRealSpaceEntanglement(
+                                                    hamiltDetails,
+                                                    effectiveNumShells,
+                                                    effectiveMaxSize; 
+                                                    savePath=savePath,
+                                                    addPerStep=1,
+                                                    loadData=loadData
+                                       )
+        println(r)
+        push!(corrResults, (L"", r))
+    end
+    #=plotLines(corrResults, =#
+    #=          1.0 .* x_arr,=#
+    #=          L"r_i", =#
+    #=          L"I_2(d:i)",=#
+    #=          "I2-di_$(size_BZ)-$(maxSize).pdf";=#
+    #=          linewidth=1.5,=#
+    #=          figPad=5,=#
+    #=         )=#
 end
 
 
@@ -835,12 +882,12 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 49
+size_BZ = 13
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
 #=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
-@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)
+#=@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)=#
 #=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=true, fixHeight=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
@@ -848,3 +895,4 @@ size_BZ = 49
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#
+AuxiliaryRealSpaceEntanglement(size_BZ)

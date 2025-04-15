@@ -89,8 +89,6 @@ end
     allKeys = vcat(keys(correlationFuncDict)..., keys(vneFuncDict)..., keys(mutInfoFuncDict)...)
     corrResults = Dict{String, Vector{Float64}}(k => repeat([NaN], hamiltDetails["size_BZ"]^2) for k in allKeys)
 
-    #=nonPivotPoints = filter(∉(pivotPoints), sortedPoints)=#
-    #=pointsSequence = vcat(pivotPoints, nonPivotPoints)=#
     pointsSequence = copy(sortedPoints)
 
     mapCorrNameToIndex = Dict()
@@ -201,6 +199,54 @@ end
     end
     return corrResults
 
+end
+
+
+@everywhere function IterDiagRealSpace(
+        hamiltDetails::Dict,
+        realSpaceKondoArray::Array{Float64, 2},
+        maxSize::Int64,
+        sortedIndices::Vector{Int64},
+        calculateFor::Vector{Int64},
+        addPerStep::Int64,
+    )
+    hamiltonian = KondoModel2D(realSpaceKondoArray, sortedIndices, HOP_T)
+    mutInfoDefDict = Dict("I2-d-$(i)" => ([1, 2], [2 * i + 1, 2 * i + 2]) for i in calculateFor)
+    indexPartitions = [4]
+    while indexPartitions[end] < 2 * length(sortedIndices)
+        push!(indexPartitions, indexPartitions[end] + 2 * addPerStep)
+    end
+    hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
+    @assert all(!isempty, hamiltonianFamily)
+    for hamiltonian in hamiltonianFamily
+        @assert all(!isempty, hamiltonian)
+    end
+    results = zeros(length(calculateFor))
+    id = nothing
+    while true
+        _, iterDiagResults, exitCode = IterDiag(
+                          hamiltonianFamily, 
+                          maxSize;
+                          symmetries=Char['N', 'S'],
+                          occReq=(x, N) -> div(N, 2) - 3 ≤ x ≤ div(N, 2) + 3,
+                          mutInfoDefDict=mutInfoDefDict,
+                          silent=false,
+                          maxMaxSize=maxSize,
+                         )
+        if exitCode > 0
+            id = rand()
+            println("Error code $(exitCode). Retry id=$(id).")
+        else
+            if !isnothing(id)
+                println("Passed $(id).")
+            end
+            for (i, p) in enumerate(calculateFor)
+                results[i] = iterDiagResults["I2-d-$(p)"]
+            end
+            break
+        end
+    end
+    return results
 end
 
 
@@ -406,6 +452,67 @@ end
         corrResultsBool[name] = [ifelse(isnan(r), r, abs(r) ≤ 1e-6 ? -1 : 1) for r in results]
     end
     return corrResults, corrResultsBool
+end
+
+
+@everywhere function AuxiliaryRealSpaceEntanglement(
+        hamiltDetails::Dict,
+        numShells::Int64,
+        maxSize::Int64;
+        savePath::Union{Nothing, String}=nothing,
+        addPerStep::Int64=1,
+        numProcs::Int64=nprocs(),
+        loadData::Bool=false,
+    )
+
+    size_BZ = hamiltDetails["size_BZ"]
+
+    cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
+
+    # pick out k-states from the southwest quadrant that have positive energies 
+    # (hole states can be reconstructed from them (p-h symmetry))
+    shellPoints = filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]), 1:size_BZ^2)
+
+    if !isnothing(savePath) && loadData
+        corrResults = Dict{String, Vector{Float64}}()
+        if isfile(savePath)
+            corrResults["I2-di"] = load(savePath)["I2-di"]
+            println("Collected from saved data.")
+            return corrResults
+        end
+    end
+
+    fermiSurfaceKondoArray = zeros(size_BZ^2, size_BZ^2)
+    fermiSurfaceKondoArray[shellPoints, shellPoints] .= hamiltDetails["kondoJArray"][shellPoints, shellPoints]
+    distances = [sum(map1DTo2D(p, size_BZ) .^ 2) for p in 1:size_BZ^2]
+    sortedIndices = (1:size_BZ^2)[sortperm(distances)]
+    impurity = Int((1 + size_BZ^2) / 2)
+    #=filter!(p -> impurity - size_BZ // 2 ≤ p ≤ impurity + size_BZ // 2, sortedIndices)=#
+
+    realSpaceKondoArray = Fourier(fermiSurfaceKondoArray; integrateOver=shellPoints, calculateFor=sortedIndices)
+
+    println(realSpaceKondoArray[impurity + 1, [impurity + 1, impurity - 1, impurity + size_BZ, impurity - size_BZ]])
+    calculateFor = [findfirst(==(impurity + p), sortedIndices) for p in 1:5 if impurity + p ∈ sortedIndices]
+    println(impurity)
+    println(sortedIndices)
+    println(calculateFor)
+
+    desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
+    @time corrResults = IterDiagRealSpace(hamiltDetails,
+                                0.1 .* realSpaceKondoArray,
+                                maxSize,
+                                sortedIndices,
+                                calculateFor,
+                                addPerStep,
+                               )
+    if !isnothing(savePath)
+        mkpath(SAVEDIR)
+        jldopen(savePath, "w"; compress = true) do file
+            file["I2-di"] = corrResults
+        end
+    end
+
+    return corrResults, calculateFor
 end
 
 

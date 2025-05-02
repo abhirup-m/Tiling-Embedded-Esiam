@@ -13,12 +13,12 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 500
+maxSize = 2000
 WmaxSize = 500
 
 colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
 phasesColmap = reverse(ColorSchemes.cherry)
-numShells = 1
+numShells = 3
 bathIntLegs = 3
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,

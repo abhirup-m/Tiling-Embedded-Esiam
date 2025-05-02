@@ -407,12 +407,17 @@ function AuxiliaryRealSpaceEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)[[1, 5]]
+    W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=20) |> collect
+    #=W_val_arr = NiceValues(size_BZ)[[1,3,5]]=#
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    saveNames = Dict(name => [] for name in ["I2_real"])
-    plotTitles = Dict("I2_di" => L"$I_2(d, {\bf r})$",
-                     )
-    corrResults = Tuple{LaTeXString, Vector{Float64}}[]
+
+    SF_di = Tuple{LaTeXString, Vector{Float64}}[]
+    I2_di = Tuple{LaTeXString, Vector{Float64}}[]
+    ZZ_di = Tuple{LaTeXString, Vector{Float64}}[]
+    I2_d0 = Float64[]
+    Sdz = Float64[]
+    xvals1 = nothing
+    xvals2 = nothing
     for W_val in W_val_arr
         hamiltDetails = Dict(
                              "dispersion" => dispersion,
@@ -423,31 +428,94 @@ function AuxiliaryRealSpaceEntanglement(
                              "globalField" => GLOBALFIELD,
                             )
         effective_Wval = -0.0
-        effectiveNumShells = 1
+        effectiveNumShells = numShells
         effectiveMaxSize = maxSize
         savePath = joinpath(SAVEDIR, "$(W_val)-$(effective_Wval)-$(size_BZ)-$(effectiveNumShells)-$(maxSize)-$(bathIntLegs)-I2-di.jld2")
         hamiltDetails["W_val"] = effective_Wval
         println("\n W = $(W_val), eff_W=$(effective_Wval), $(effectiveNumShells) shells, maxSize = $(effectiveMaxSize)")
-        r, x_arr = AuxiliaryRealSpaceEntanglement(
+        corrResults, xvals1, xvals2 = AuxiliaryRealSpaceEntanglement(
                                                     hamiltDetails,
                                                     effectiveNumShells,
                                                     effectiveMaxSize; 
                                                     savePath=savePath,
                                                     addPerStep=1,
-                                                    loadData=loadData
+                                                    loadData=loadData,
+                                                    numChannels=W_val ≤ pseudogapStart(size_BZ) ? 2 : 1
                                        )
-        println(r)
-        push!(corrResults, (L"", r))
+
+        if "SF-di" in keys(corrResults)
+            push!(SF_di, ("", map(x -> maximum((1e-6, abs(x))), corrResults["SF-di"] ./ corrResults["SF-di"][1])))
+        end
+        if "I2-di"in keys(corrResults)
+            push!(I2_di, (getlabelInt(W_val, size_BZ), map(x -> maximum((1e-6, x)), corrResults["I2-di"] ./ corrResults["I2-di"][1])))
+            push!(I2_d0, corrResults["I2-di"][1])
+        end
+        if "ZZ-di" in keys(corrResults)
+            push!(ZZ_di, (getlabelInt(W_val, size_BZ), map(x -> maximum((1e-6, abs(x))), corrResults["ZZ-di"] ./ corrResults["ZZ-di"][1])))
+        end
+        if "Sdz" in keys(corrResults)
+            push!(Sdz, corrResults["Sdz"])
+        end
     end
-    #=plotLines(corrResults, =#
-    #=          1.0 .* x_arr,=#
-    #=          L"r_i", =#
-    #=          L"I_2(d:i)",=#
-    #=          "I2-di_$(size_BZ)-$(maxSize).pdf";=#
-    #=          linewidth=1.5,=#
-    #=          figPad=5,=#
-    #=         )=#
-end
+
+    if !isempty(ZZ_di)
+        plotLines(ZZ_di, 
+                  xvals1 |> collect,
+                  L"$r$", 
+                  L"$\chi^{(zz)}_s(d,r) / \chi^{(zz)}_s(d,1)$",
+                  "ZZ-di_$(size_BZ)-$(maxSize).pdf";
+                  figPad=5,
+                  scatter=true,
+                  yscale=log10,
+                  plotRange=collect(1:2:length(xvals1)),
+                 )
+    end
+    if !isempty(SF_di)
+        plotLines(SF_di,
+                  xvals1 |> collect,
+                  L"$r$", 
+                  L"$\chi_s(d,r) / \chi_s(d,1)$",
+                  "SF-di_$(size_BZ)-$(maxSize).pdf";
+                  figPad=5,
+                  scatter=true,
+                  yscale=log10,
+                  plotRange=collect(1:2:length(xvals1)),
+                  legendPos=(0., 0.0),
+                 )
+    end
+    if !isempty(I2_di)
+        plotLines(I2_di, 
+                  xvals2 |> collect,
+                  L"$r$", 
+                  L"$I_2(d,r) / I_2(d,1)$",
+                  "I2-di_$(size_BZ)-$(maxSize).pdf";
+                  figPad=5,
+                  scatter=true,
+                  yscale=log10,
+                  legendPos=(0., 0.2),
+                 )
+        plotLines([("", I2_d0)], 
+                  -W_val_arr,
+                  L"$r_i$", 
+                  L"$I_2(d,1)$",
+                  "I2-d0_$(size_BZ)-$(maxSize).pdf";
+                  figPad=5,
+                  scatter=true,
+                 )
+    end
+    if !isempty(Sdz)
+        plotLines([("", Sdz .|> abs)], 
+                  -W_val_arr ./ J_val,
+                  L"$-W/J$", 
+                  L"$\langle{S_d^z}\rangle$",
+                  "Sdz_$(size_BZ)-$(maxSize).pdf";
+                  figPad=5,
+                  scatter=true,
+                  vlines=[(L"$W=W^*$", -pseudogapStart(size_BZ) / J_val)],
+                  legendPos=:lt,
+                  plotRange=collect(1:3:length(W_val_arr)),
+                 )
+    end
 
 
 function AuxiliaryLocalSpecfunc(

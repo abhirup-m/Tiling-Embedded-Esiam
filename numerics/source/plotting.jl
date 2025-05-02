@@ -1,8 +1,7 @@
 using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
 
 const FONTSIZE = 28
-# set_theme!(theme_latexfonts())
-set_theme!(merge(theme_light(), theme_latexfonts()))
+set_theme!(theme_latexfonts())
 update_theme!(
               figure_padding = 0,
               fontsize=FONTSIZE,
@@ -14,8 +13,8 @@ update_theme!(
                 spinewidth = 1.5,
                 xticklabelsize = 24,
                 yticklabelsize = 24,
-                xminorgridvisible=false,
-                xmajorgridvisible=false,
+                xgridvisible=false,
+                ygridvisible=false,
                      ),
               ScatterLines = (
                        linewidth = 6,
@@ -28,6 +27,9 @@ update_theme!(
                         patchsize=(50,20),
                         halign = :right,
                         valign = :top,
+                        labelsize = 18,
+                        backgroundcolor=(:gray, 0.2),
+                        framecolor=:transparent,
                        ),
              )
 
@@ -64,7 +66,7 @@ function plotHeatmap(
         figSize::NTuple{2, Int64}=(200, 200),
         figPad::Union{NTuple{4, Float64}, Float64}=0.,
         colorScale::Function=identity,
-        marker::Union{Nothing, NTuple{2, Float64}}=nothing,
+        marker::Union{Nothing, Vector{Float64}}=nothing,
         line::Vector{NTuple{2, Number}}=NTuple{2, Number}[],
         legendPos::NTuple{2, Symbol}=(:top, :right),
     )
@@ -142,24 +144,24 @@ end
 
 
 function plotLines(
-        nameValuePairs::Vector{Tuple{LaTeXString, Vector{Float64}}},
-        xvalues::Vector{Float64},
+        nameValuePairs::Union{Vector{Tuple{LaTeXString, Vector{Float64}}}, Vector{Tuple{String, Vector{Float64}}}},
+        xvalues::Union{Vector{Int64}, Vector{Float64}},
         xlabel::LaTeXString,
         ylabel::LaTeXString,
         saveName::String;
         ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         scatter::Bool=false,
-        vlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
-        hlines::Vector{Tuple{AbstractString, Float64}}=Tuple{AbstractString, Float64}[],
+        vlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
+        hlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
         figSize::NTuple{2, Int64}=(300, 250),
         figPad::Union{Number, NTuple{4, Number}}=0,
-        legendPos::String="rt",
+        legendPos::Union{Symbol, NTuple{2, Float64}}=:rt,
         linewidth::Number=4,
         xscale::Function=identity,
         yscale::Function=identity,
+        plotRange::Vector{Int64}=Int64[],
     )
-    @assert legendPos ∈ Iterators.product(["r", "l", "c"], ["t", "b", "c"]) .|> join |> vec
 
     f = Figure(figure_padding=figPad)
     ax = Axis(f[1, 1],
@@ -173,20 +175,24 @@ function plotLines(
     needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
+
     for (i, (name, yvalues)) in enumerate(nameValuePairs)
+        if isempty(plotRange)
+            plotRange = 1:length(yvalues)
+        end
         if !scatter
             if isempty(name)
-                lines!(xvalues, yvalues; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                lines!(xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             else
-                lines!(xvalues, yvalues; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                lines!(xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
                 needsLegend = true
             end
         else
             if !isempty(name)
                 needsLegend = true
-                scatter!(xvalues, yvalues; label=name, marker=markers[((i - 1) % 5) + 1])
+                scatter!(xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
             else
-                scatter!(xvalues, yvalues; marker=markers[((i - 1) % 5) + 1])
+                scatter!(xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
             end
         end
     end
@@ -212,7 +218,7 @@ function plotLines(
     end
 
     if needsLegend
-        axislegend(position=Symbol(legendPos))
+        axislegend(position=legendPos)
     end
 
     if !isnothing(ylimits)

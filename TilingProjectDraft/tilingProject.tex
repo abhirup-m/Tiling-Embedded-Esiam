@@ -573,7 +573,7 @@ where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\t
 \begin{equation}\begin{aligned}\label{hamiltonanSymms}
 	\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2} = \Delta J^{(j)}_{{\bf k}_1, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1 + \boldsymbol{\pi}, {\bf k}_2 + \boldsymbol{\pi}} = -\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2}~.
 \end{aligned}\end{equation}
-These transformations involve translating one or both momenta through the center of the Brillouin zone.
+These transformations involve translating one or both momenta through the center of the Brillouin zone. \textcolor{red}{Is this a d-wave symmetry of the RG equation?}
 
 With our chosen momentum-space dependence of the Kondo coupling and bath interaction, the form of the Kondo coupling morphs during the RG flow, allowing the emergence of new degrees of freedom that screen the impurity at low-energies. At the first step, the RG equation can be written down explicitly as
 \begin{equation}\begin{aligned}
@@ -670,9 +670,9 @@ It is well-known that the two-channel Kondo model hosts non-Fermi liquid excitat
 \end{aligned}\end{equation}
 where \(\Sigma^\prime\) and \(\Sigma^{\prime\prime}\) are the real and imaginary parts of the self-energy, and \(G_\text{incoh}\) is contribution to the Greens function arising from incoherent short-lived excitations as well as high-energy features that are decoupled from the low-energy excitations~\cite{varma-physrevlett.63.1996}. Small values of \(Z\) indicate that the excitations cannot be described in terms of a Fermi liquid theory. Indeed, as shown in the right panel of Fig.~\ref{channelDecoupling}, the quasiparticle residue \(Z_\text{imp}\) of the impurity excitations becomes vanishingly small in the pseudogap region, signalling that the excitations are of a non-Fermi liquid nature. Given that the pseudogap phase is close to a critical point in the impurity model phase diagram (separating the local Fermi liquid and local moment phases), it is not surprising that a quantum critical model emerges at that point.
 
-Coleman and Ioffe have shown that by mapping the two-channel Kondo problem to a ``compactified" form where the impurity spin hybridises with the spin and isospin degrees of freedom of a single conduction channel, the impurity self-energy can be shown to display marginal Fermi liquid behaviour~\cite{Coleman_tsvelik,Schofield1997}:
+Coleman and Ioffe have shown that by mapping the two-channel Kondo problem to a ``compactified" form where the impurity spin hybridises with the spin and isospin degrees of freedom of a single conduction channel, the impurity self-energy \(\Sigma = \Sigma^\prime + i\Sigma^{\prime\prime}\) can be shown to display marginal Fermi liquid behaviour~\cite{Coleman_tsvelik,Schofield1997}:
 \begin{equation}\begin{aligned}
-	\Sigma \propto \omega \ln \omega~.
+	\Sigma^\prime \propto \omega \ln \omega, ~\Sigma^{\prime\prime} \propto \omega~.
 \end{aligned}\end{equation}
 Some of us have shown in a previous work~\cite{Patra2023MCK} that this can also be obtained from a renormalisation group calculation of the low-energy excitations of the two-channel overscreened fixed point. For the sake of completeness, we have reproduced the calculation in Appendix~\ref{mflDerivation}.
 
@@ -701,9 +701,9 @@ where \(\epsilon_{\bf q}\) and \(u\) are emergent energy scales:
 \end{aligned}\end{equation}
 Eq.~\ref{HKModel} describes a Hatsugai-Kohmoto model~\cite{Baskaran1991,Hatsugai1992}, an exactly solvable model of correlated electrons; by tuning the ratio of the interaction strength \(u\) and the bandwidth \(w\), the model describes a transition between a non-Fermi liquid and a Mott insulator. The non-Fermi liquid nature of the gapless excitations in the metallic phase of the model manifests in the form of a divergent one-particle self-energy at the non-interacting Fermi surface~\cite{Phillips2020}:
 \begin{equation}\begin{aligned}
-	\Sigma_{{\bf q}}(\omega) = -\frac{u^2/4}{\omega - \epsilon_{\bf q}}, ~\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0)  \to \infty~.
+	\Sigma_{{\bf q}}(\omega) = -\frac{u^2/4}{\omega - \epsilon_{\bf q}}, ~\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0)  \to \infty~,
 \end{aligned}\end{equation}
-Beyond the transition and inside the Mott insulating phase, this zero frequency pole continues to exist and marks the hard gap in the spectral function for charge excitations.
+while the spectral function $A(k,\omega=0)$ shows a sharp peak at each of the four nodal Fermi surface points. This will be observed to lead to a nodal non-Fermi liquid metal shown below in Fig.\ref{tiledSpecFunc} (fourth panel). Beyond the transition and inside the Mott insulating phase, this zero frequency pole continues to exist and marks the hard gap in the spectral function for charge excitations. We note that the ${\bf q}_{1}\neq {\bf q}_{2}$ scattering processes correspond to the forward and tangential scattering of the coherent superposition of \({\bf N}_1 = \left(\pi/2, \pi/2\right)\) and its nested partner \({\bf N}_1 + {\bf Q}_1 = \left(-\pi/2, -\pi/2\right)\) along the respective Fermi arcs. Such scattering processes add non-singular contributions to the self-energy, and do not open gaps at the Fermi surface. WE EXPECT SUCH A NODAL NON-FERMI LIQUID METAL TO EXHIBIT VOLUME LAW SCALING OF THE BIPARTITION ENTANGLEMENT ENTROPY. 
 
 
 \section{Journey Through the Pseudogap on The Lattice model: Spectral Function, Spin Correlations and Entanglement}
@@ -722,7 +722,7 @@ In order to better understand the nature of the metal in the partially gapped re
 \begin{equation}\begin{aligned}
 	\tilde \Sigma({\bf k}(\omega) = 1/\tilde G^{(0)}_{\bf k}(\omega) - 1/\tilde G_{\bf k}(\omega)~,
 \end{aligned}\end{equation}
-where \(\tilde G_k\) is the interacting \(k-\)space Greens function (whose spectral function is shown in Fig.~\ref{tiledSpecFunc}) while \(\tilde G_k^{(0)}\) is the non-interacting \(W=0\) Greens function. We show the zero frequency value of the self-energy in Fig.~\ref{selfenergy}, and the partial gapping of the Fermi surface is seen to arise from the appearance of poles in the self-energy at the antinodal region. As the partial gap expands, more and more \(k-\)space points exhibit poles in their self-energy. This, along with the behaviour of the spectral function, indicates that in the pseudogap region, the disconnected Fermi surface coexists with a Luttinger surface.
+where \(\tilde G_k\) is the interacting \(k-\)space Greens function (whose spectral function is shown in Fig.~\ref{tiledSpecFunc}) while \(\tilde G_k^{(0)}\) is the non-interacting \(W=0\) Greens function. We show the zero frequency value of the self-energy in Fig.~\ref{selfenergy}, and the partial gapping of the Fermi surface is seen to arise from the appearance of poles in the self-energy at the antinodal region. As the partial gap expands, more and more \(k-\)space points exhibit poles in their self-energy. This, along with the behaviour of the spectral function, indicates that in the pseudogap region, the disconnected Fermi surface coexists with a Luttinger surface. WE EXPECT THAT THE JOURNEY THROUGH THE PSEUDOGAP DOES NOT VIOLATE LUTTINGER'S THEOREM; THIS CAN BE SEEN BY COUNTING BOTH THE POLES AND THE ZEROS OF THE SINGLE PARTICLE GREENS FUNCTION. CHECK.
 \begin{figure}[htpb]
 	\centering
 	\includegraphics[width=0.23\textwidth]{kspaceDOS-1.pdf}
@@ -801,6 +801,16 @@ We have demonstrated in Subsection.~\ref{marginalFL} that the low-lying excitati
 \subsection{At the critical point, \(|W| \lesssim |W|^*\)}
 Crucially, we find that during the passage through the pseudogap phase, the nature of the non-Fermi liquid metal itself morphs; the marginal Fermi liquid description is found to break down at the transition, and is replaced by the non-Fermi liquid excitations of a Hatsugai-Kohmoto model. The singular nature of the excitations in this regime can be ascertained from the self-energy displaying divergent behaviour (see Subsection~\ref{hkmEmerge}). This can be attributed to the extremely non-local form of the impurity model (arising from the fact that it couples to only the nodal points in \(k-\)space). This divergent self-energy is consistent with our numerical calculations of the impurity self-energy which showed that the self-energy poles approach the \(\omega=0\) point as the system is tuned towards the transition.
 
+In order to probe how the metal becomes increasingly correlated as it is tuned through the pseudogap, we compare the quasiparticle residue \(Z_\text{imp}\) and the scattering rate \(\Gamma\) of the quasiparticles, at the beginning and end of the pseudogap. For the regime \(|W| \gtrapprox |W|^*\), the low-energy excitations obey the marginal Fermi liquid theory: \(\Sigma^{\prime} \sim \omega\ln\omega, \Sigma^{\prime\prime}\sim-\omega\). This gives rise to a linear scattering rate \(\Gamma \sim \omega\) (arising from the imaginary part of the self-energy), and a logarithmically vanishing quasiparticle residue~\cite{varma2002singular}
+\begin{equation}\begin{aligned}
+Z_\text{imp}(\omega) = (1 - \frac{d\Sigma^\prime}{d\omega})^{-1} \sim (c - \ln \omega)^{-1}
+\end{aligned}\end{equation}
+where \(c\) is a constant. Close to the transition (\(|W| \lesssim |W_c|\)), the low-energy theory is described by a Hatsugai-Kohmoto model, with a diverging self-energy: 
+\begin{equation}\begin{aligned}
+	\Sigma({\bf k}) = U^2/\left(\omega - \epsilon_{\bf k}\right) = U^2 \left[\mathcal{P}(\frac{1}{\omega - \epsilon_{\bf k}}) - i\pi \delta(\omega - \epsilon_{\bf k})\right]~,
+\end{aligned}\end{equation}
+where \(\mathcal{P}\left(\cdot\right)\) represents the principal value, and we used the Sokhotski–Plemelj theorem to write down the final expression. For small but non-zero values of \(\omega - \epsilon_{\bf k}\), we get \(Z_\text{imp} \sim \omega^2/U^2 \). The metal near the transition therefore displays a much more rapid vanishing of the quasiparticle residue compared to the logarithmic vanishing for the marginal Fermi liquid. The scattering rate precisely at the surface \(\omega=\epsilon_{\bf k}\), in fact, diverges: \(\Gamma \sim U^2\delta(\omega - \epsilon_{\bf k})\), in contrast to the linearly vanishing scattering rate of the MFL.
+
 
 \subsection{Heisenberg model as a low-energy description of the Mott insulator}
 
@@ -850,15 +860,20 @@ A non-local version of this effective Hamiltonian was found to describe the norm
 In the RG equation, \(\epsilon_{j}\) represents the energy of the \(j^\mathrm{th}\) isoenergetic shell. It is seen from 
 the RG equation that \(R\) is relevant in the range of \(\omega < \frac{1}{2}\epsilon_j\) that has been used throughout, leading to a fixed-point at \(R^*/8 = \omega - \frac{1}{2}\epsilon^*)\). The relevance of \(R\) is expected because the strong coupling \(J\) is irrelevant and \(R \sim 1/J\).
 
-The renormalisation in \(R\) leads to a renormalisation in the single-particle self-energy~\cite{anirbanmott1}. The \(k-\)space-averaged self-energy renormalisation is
+The renormalisation in \(R\) leads to a renormalisation in the real part of the single-particle self-energy~\cite{anirbanmott1}. The \(k-\)space-averaged self-energy renormalisation is
 \begin{eqnarray}
-	\Delta \Sigma(\omega) = \rho {R^*}^2\int_0^{\epsilon^*} \frac{d\epsilon_j}{\omega - \epsilon_j/2 + R_j/8}~.
+	\Delta \Sigma^\prime(\omega) = \rho {R^*}^2\int_0^{\epsilon^*} \frac{d\epsilon_j}{\omega - \epsilon_j/2 + R_j/8}~.
 \end{eqnarray}
 The density of states can be approximated to be \(N^*/R^*\), where \(N^*\) is the total number of states over the interval \(R^*\). As suggested by the fixed point value of \(R_j\), we can approximate its behaviour near the fixed point by a linear dependence on the dispersion \(\epsilon_j\). The two limits of the integration are the starting and ending points of the RG. We start the RG very close to the Fermi surface and move towards the fixed point \(\epsilon^*\). Near the starting point, we substitute \(\epsilon = 0\) and \(R = \omega\), following the fixed point condition. From the fixed point condition, we also substitute \(R^*/8 = \omega - \frac{1}{2}\epsilon^*\). On defining \(\bar \omega = N^* \left(\omega - \frac{1}{2}\epsilon^*\right)\), we can write
 \begin{eqnarray}
 	\label{self_energy}
-	\Delta \Sigma(\omega) \sim  \bar \omega \ln \frac{N^* \omega}{\bar \omega}~.
+	\Delta \Sigma^\prime(\omega) \sim  \bar \omega \ln \frac{N^* \omega}{\bar \omega}~.
 \end{eqnarray}
+The imaginary part of the self-energy can be obtained using the Kramers-Kronig relations:
+\begin{equation}\begin{aligned}
+\Delta \Sigma^{\prime\prime}(\omega) = \frac{1}{\pi}\mathcal{P} \int_{-\infty}^\infty d\omega^\prime \frac{\Sigma^\prime(\omega^\prime)}{\omega - \omega^\prime} \sim -\bar\omega~.
+\end{aligned}\end{equation}
+
 The self-energy also provides the quasiparticle residue for each channel\cite{anirbanmott1}:
 \begin{eqnarray}
 	Z(\bar\omega) = \left(2 - \ln \frac{2\bar\omega}{N^* \omega}\right) ^{-1}~.

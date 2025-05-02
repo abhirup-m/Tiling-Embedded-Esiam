@@ -26,7 +26,7 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          33 => -1.0 .* [0, 2.8, 5.6, 5.7, 5.89, 5.92, 5.93] ./ size_BZ,
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.4, 8.55, 8.77, 8.8] ./ size_BZ,
-                         57 => -1.0 .* [0, 5., 10.2, 10.6, 10.852] ./ size_BZ,
+                         57 => -1.0 .* [0, 4., 7., 10.2, 10.6, 10.852] ./ size_BZ,
                          69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
                          77 => -1.0 .* [0., 14.04, 14.5, 14.99, 15.0] ./ size_BZ,
                         )[size_BZ]
@@ -105,6 +105,50 @@ function ScattProb(
     end
     println("\n Saved at $(saveNames).")
     run(`pdfunite $(saveNames) scattprob.pdf`)
+
+    node = map2DTo1D(π/2, π/2, size_BZ)
+    antinode = map2DTo1D(0., π/1, size_BZ)
+    mid = map2DTo1D(π/4, 3π/4, size_BZ)
+    saveNames = Dict(point => String[] for point in [node, antinode, mid])
+    for W_val in W_val_arr
+        for point in [node, antinode, mid]
+            matrix = kondoJArrays[W_val][point, :, end]
+            matrix[abs.(matrix) .< 1e-10] .= NaN
+            matrix[matrix .> 1e-10] .= 1
+            matrix[matrix .< -1e-10] .= -1
+            push!(saveNames[point], 
+                  plotHeatmap(matrix, 
+                              (x_arr, x_arr),
+                              (L"$ak_x/\pi$", L"$ak_y/\pi$"),
+                              L"$\Gamma/\Gamma_0$", 
+                              getlabelInt(W_val, size_BZ), 
+                              colmap[2:end];
+                              line=Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1],
+                              marker=Tuple(map1DTo2D(point, size_BZ) ./ π),
+                              legendPos=(:bottom, :left)
+                             )
+                 )
+        end
+    end
+    #=for point in [node, antinode, mid]=#
+    #=    matrix = kondoJArrays[W_val_arr[1]][point, :, 1]=#
+    #=    matrix[abs.(matrix) .< 1e-10] .= NaN=#
+    #=    matrix[matrix .> 1e-10] .= 1=#
+    #=    matrix[matrix .< -1e-10] .= -1=#
+    #=    push!(saveNames[point], =#
+    #=          plotHeatmap(matrix, =#
+    #=                      (x_arr, x_arr),=#
+    #=                      (L"$ak_x/\pi$", L"$ak_y/\pi$"),=#
+    #=                      L"$\Gamma/\Gamma_0$", =#
+    #=                      "bare",=#
+    #=                      colmap;=#
+    #=                      marker=map1DTo2D(point, size_BZ) ./ π=#
+    #=                     )=#
+    #=         )=#
+    #=end=#
+    run(`pdfunite $(saveNames[node]) kondoMapNode.pdf`)
+    run(`pdfunite $(saveNames[mid]) kondoMapMid.pdf`)
+    run(`pdfunite $(saveNames[antinode]) kondoMapAntinode.pdf`)
 end
 
 
@@ -882,9 +926,10 @@ function TiledEntanglement(
     close(f)
 end
 
-size_BZ = 13
+
+size_BZ = 57
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
-#=@time ScattProb(size_BZ; loadData=true)=#
+@time ScattProb(size_BZ; loadData=true)
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
 #=@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)=#
@@ -895,4 +940,4 @@ size_BZ = 13
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#
-AuxiliaryRealSpaceEntanglement(size_BZ)
+#=AuxiliaryRealSpaceEntanglement(size_BZ)=#

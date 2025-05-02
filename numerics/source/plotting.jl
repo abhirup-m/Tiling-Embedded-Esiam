@@ -64,7 +64,9 @@ function plotHeatmap(
         figSize::NTuple{2, Int64}=(200, 200),
         figPad::Union{NTuple{4, Float64}, Float64}=0.,
         colorScale::Function=identity,
-        marker::Union{Nothing, Vector{Float64}}=nothing,
+        marker::Union{Nothing, NTuple{2, Float64}}=nothing,
+        line::Vector{NTuple{2, Number}}=NTuple{2, Number}[],
+        legendPos::NTuple{2, Symbol}=(:top, :right),
     )
 
     if isnothing(colorbarLimits)
@@ -86,14 +88,16 @@ function plotHeatmap(
              colorscale=colorScale,
              colorrange=colorbarLimits,
             )
-    if !isnothing(marker)
-        hlines!(ax, marker[2], color=:gray, linestyle=:dash)
-        vlines!(ax, marker[1], color=:gray, linestyle=:dash)
-    end
-
-    gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=:top, halign=:right)
+    gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=legendPos[1], halign=legendPos[2])
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
+
+    if !isempty(line)
+        scatter!(ax, line .|> first, line .|> last, color = :gray, markersize=4)
+    end
+    if !isnothing(marker)
+        scatter!(ax, marker..., color=:orange, markersize=20)
+    end
 
     Colorbar(figure[1, 2], hm)
     resize_to_layout!(figure)

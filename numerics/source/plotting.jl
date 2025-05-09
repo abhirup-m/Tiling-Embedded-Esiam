@@ -95,10 +95,10 @@ function plotHeatmap(
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
 
     if !isempty(line)
-        scatter!(ax, line .|> first, line .|> last, color = :gray, markersize=4)
+        scatter!(ax, line .|> first, line .|> last, color = :maroon, markersize=4)
     end
     if !isnothing(marker)
-        scatter!(ax, marker..., color=:orange, markersize=20)
+        scatter!(ax, marker..., color=:gray, markersize=20)
     end
 
     Colorbar(figure[1, 2], hm)

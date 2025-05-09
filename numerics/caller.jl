@@ -27,7 +27,7 @@ NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          41 => -1.0 .* [0, 3.5, 7.13, 7.3, 7.5, 7.564, 7.6] ./ size_BZ,
                          49 => -1.0 .* [0, 4.1, 8.19, 8.4, 8.55, 8.77, 8.8] ./ size_BZ,
                          57 => -1.0 .* [0, 4., 7., 10.2, 10.6, 10.852] ./ size_BZ,
-                         69 => -1.0 .* [0, 6., 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
+                         69 => -1.0 .* [0, 3, 8, 12.5, 13.1, 13.34, 13.4] ./ size_BZ,
                          77 => -1.0 .* [0., 14.04, 14.5, 14.99, 15.0] ./ size_BZ,
                         )[size_BZ]
 pseudogapEnd(size_BZ) = Dict{Int64, Float64}(
@@ -79,7 +79,7 @@ function ScattProb(
         loadData::Bool=false
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = NiceValues(size_BZ)
+    W_val_arr = NiceValues(size_BZ)[2:4]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=loadData)
     saveNames = String[]
     results = [ScattProb(size_BZ, kondoJArrays[W_val], dispersion)[2] for W_val in W_val_arr]
@@ -113,7 +113,7 @@ function ScattProb(
     for W_val in W_val_arr
         for point in [node, antinode, mid]
             matrix = kondoJArrays[W_val][point, :, end]
-            matrix[abs.(matrix) .< 1e-10] .= NaN
+            matrix[abs.(matrix) .< 1e-10] .= 0
             matrix[matrix .> 1e-10] .= 1
             matrix[matrix .< -1e-10] .= -1
             push!(saveNames[point], 
@@ -122,30 +122,14 @@ function ScattProb(
                               (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                               L"$\Gamma/\Gamma_0$", 
                               getlabelInt(W_val, size_BZ), 
-                              colmap[2:end];
+                              ColorSchemes.viridis;
                               line=Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1],
-                              marker=Tuple(map1DTo2D(point, size_BZ) ./ π),
+                              marker=map1DTo2D(point, size_BZ) ./ π,
                               legendPos=(:bottom, :left)
                              )
                  )
         end
     end
-    #=for point in [node, antinode, mid]=#
-    #=    matrix = kondoJArrays[W_val_arr[1]][point, :, 1]=#
-    #=    matrix[abs.(matrix) .< 1e-10] .= NaN=#
-    #=    matrix[matrix .> 1e-10] .= 1=#
-    #=    matrix[matrix .< -1e-10] .= -1=#
-    #=    push!(saveNames[point], =#
-    #=          plotHeatmap(matrix, =#
-    #=                      (x_arr, x_arr),=#
-    #=                      (L"$ak_x/\pi$", L"$ak_y/\pi$"),=#
-    #=                      L"$\Gamma/\Gamma_0$", =#
-    #=                      "bare",=#
-    #=                      colmap;=#
-    #=                      marker=map1DTo2D(point, size_BZ) ./ π=#
-    #=                     )=#
-    #=         )=#
-    #=end=#
     run(`pdfunite $(saveNames[node]) kondoMapNode.pdf`)
     run(`pdfunite $(saveNames[mid]) kondoMapMid.pdf`)
     run(`pdfunite $(saveNames[antinode]) kondoMapAntinode.pdf`)
@@ -516,6 +500,7 @@ function AuxiliaryRealSpaceEntanglement(
                   plotRange=collect(1:3:length(W_val_arr)),
                  )
     end
+end
 
 
 function AuxiliaryLocalSpecfunc(
@@ -715,6 +700,7 @@ function AuxiliaryMomentumSpecfunc(
               "auxMomentumSpecFunc-$(trunc(kpoint[1], digits=3))-$(trunc(kpoint[2], digits=3))-$(size_BZ)-$(maxSize).pdf",
              )
 end
+
 
 
 function LatticeKspaceDOS(

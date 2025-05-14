@@ -19,8 +19,8 @@ WmaxSize = 500
 
 colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
 phasesColmap = reverse(ColorSchemes.cherry)
-numShells = 3
-bathIntLegs = 3
+numShells = 1
+bathIntLegs = 2
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
                          25 => -1.0 .* [0, 2., 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
@@ -509,15 +509,17 @@ function AuxiliaryLocalSpecfunc(
         fixHeight::Bool=false,
         loadData::Bool=false,
     )
-    #=W_val_arr = range(0.0, 1.0 * pseudogapEnd(size_BZ), length=10) |> collect=#
+    #=W_val_arr = range(0.0, 1.0 * pseudogapEnd(size_BZ), length=19) |> collect=#
+    W_val_arr = range(0.0, 1.05 * pseudogapEnd(size_BZ), length=4) |> collect
     #=W_val_arr = [[0.6 * pseudogapStart(size_BZ)]; range(0.9 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect]=#
-    W_val_arr = NiceValues(size_BZ)[[1, 6]]
+    #=W_val_arr = NiceValues(size_BZ)[[1, 6]]=#
     if fixHeight
         @assert 0 ∈ W_val_arr
     end
     kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
-    freqValues = collect(10 .^ range(-6, 2.3, length=400000)) # collect(-200:0.005:200)
-    freqValues = vcat(-1 .* sort(freqValues, rev=true), sort(freqValues))
+    freqValues = collect(-200:0.005:200)
+    #=freqValues = collect(10 .^ range(-6, 2.3, length=400000)) =#
+    #=freqValues = vcat(-1 .* sort(freqValues, rev=true), sort(freqValues))=#
     specFuncFull = Tuple{LaTeXString, Vector{Float64}}[]
     imagSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
     realSelfEnergy = Tuple{LaTeXString, Vector{Float64}}[]
@@ -641,9 +643,9 @@ function AuxiliaryLocalSpecfunc(
               #=scatter=true,=#
               figPad=5,
              )
-    for (n, SE) in imagSelfEnergy
-        println(log(SE[freqValues[freqValues .> 0]./freqScaleFactor .≥ 1e-2][1] / SE[freqValues[freqValues .> 0]./freqScaleFactor .≤ 0.5 * freqValuesZoom2][end]) / log(1e-2 / 0.5 * freqValuesZoom2))
-    end
+    #=for (n, SE) in imagSelfEnergy=#
+    #=    println(log(SE[freqValues[freqValues .> 0]./freqScaleFactor .≥ 1e-2][1] / SE[freqValues[freqValues .> 0]./freqScaleFactor .≤ 0.5 * freqValuesZoom2][end]) / log(1e-2 / 0.5 * freqValuesZoom2))=#
+    #=end=#
     plotLines(Tuple{LaTeXString, Vector{Float64}}[("", quasipResidueArr)], 
               -1 .* W_val_arr / J_val,
               L"-W/J", 
@@ -651,7 +653,7 @@ function AuxiliaryLocalSpecfunc(
               "localQPResidue_$(size_BZ)-$(maxSize).pdf";
               scatter=true,
               vlines=Tuple{LaTeXString, Float64}[("", - 1 .* pseudogapStart(size_BZ) / J_val), ("", -1 .* pseudogapEnd(size_BZ) / J_val)],
-              yscale=log10,
+              #=yscale=log10,=#
              )
 end
 
@@ -996,9 +998,9 @@ function TiledEntanglement(
 end
 
 
-size_BZ = 33
+size_BZ = 49
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
-@time ScattProb(size_BZ; loadData=true)
+#=@time ScattProb(size_BZ; loadData=true)=#
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
 #=@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)=#

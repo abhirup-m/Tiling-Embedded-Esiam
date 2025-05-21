@@ -20,7 +20,7 @@ WmaxSize = 500
 colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
 phasesColmap = reverse(ColorSchemes.cherry)
 numShells = 1
-bathIntLegs = 2
+bathIntLegs = 3
 NiceValues(size_BZ) = Dict{Int64, Vector{Float64}}(
                          13 => -1.0 .* [0., 1., 1.5, 1.55, 1.6, 1.61] ./ size_BZ,
                          25 => -1.0 .* [0, 2., 3.63, 3.7, 3.8, 3.88, 3.9] ./ size_BZ,
@@ -392,17 +392,26 @@ function AuxiliaryRealSpaceEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=20) |> collect
-    #=W_val_arr = NiceValues(size_BZ)[[1,3,5]]=#
+    #=W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect=#
+    W_val_arr = NiceValues(size_BZ)[1:6]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     SF_di = Tuple{LaTeXString, Vector{Float64}}[]
     I2_di = Tuple{LaTeXString, Vector{Float64}}[]
     ZZ_di = Tuple{LaTeXString, Vector{Float64}}[]
     I2_d0 = Float64[]
-    Sdz = Float64[]
+    Sdz_sq = Float64[]
     xvals1 = nothing
     xvals2 = nothing
+    #=freqValues = 10 .^ (-4:0.05:1.5)=#
+    #=freqValues = vcat(reverse(-freqValues), freqValues)=#
+    freqValues = collect(-40:1e-3:40)
+    freqScaleFactor = 8 * HOP_T
+    standDev = 0.01
+    f = Figure(figure_padding = 10, size=(900, 400))
+    #=ax = Axis(f[1, 1])=#
+    ax1 = Axis(f[1, 1], limits = (10. .^ (-3.5, -2), (1e-4, 0.5)), xscale=log10, yscale=log10)
+    ax2 = Axis(f[1, 2], limits = ((-5, 5), nothing))
     for W_val in W_val_arr
         hamiltDetails = Dict(
                              "dispersion" => dispersion,
@@ -411,6 +420,7 @@ function AuxiliaryRealSpaceEntanglement(
                              "size_BZ" => size_BZ,
                              "bathIntForm" => bathIntForm,
                              "globalField" => GLOBALFIELD,
+                             "imp_corr" => 2 * (25 + 10 * abs(W_val)),
                             )
         effective_Wval = -0.0
         effectiveNumShells = numShells
@@ -421,12 +431,34 @@ function AuxiliaryRealSpaceEntanglement(
         corrResults, xvals1, xvals2 = AuxiliaryRealSpaceEntanglement(
                                                     hamiltDetails,
                                                     effectiveNumShells,
-                                                    effectiveMaxSize; 
+                                                    effectiveMaxSize,
+                                                    standDev,
+                                                    freqValues;
                                                     savePath=savePath,
                                                     addPerStep=1,
                                                     loadData=loadData,
-                                                    numChannels=W_val ≤ pseudogapStart(size_BZ) ? 2 : 1
+                                                    numChannels=W_val ≤ pseudogapStart(size_BZ) ? 2 : 1,
                                        )
+
+        specFunc = zeros(freqValues |> length)
+        for (name, operator) in corrResults["SFO"]
+            specFunc_name = IterSpecFunc(corrResults["SP"], operator, freqValues, 
+                                                    standDev; normEveryStep=true, 
+                                                    degenTol=1e-10, silent=false, 
+                                                    broadFuncType="lorentz",
+                                                    returnEach=false, normalise=false,
+                                                    #=occReq=(x,N) -> x == div(N, 2),=#
+                                                    #=magzReq=(m,N) -> m == 0,=#
+                                                   )
+            #=if name ∈ ("Sd+", "Sd-")=#
+            #=    specFunc_name[abs.(freqValues) .≥ hamiltDetails["imp_corr"]] .= 0=#
+            #=end=#
+            specFunc .+= specFunc_name
+        end
+
+        specFunc /= Integrate(specFunc, freqValues)
+        scatter!(ax1, freqValues[freqValues .> 0] ./ freqScaleFactor, specFunc[freqValues .> 0], label=getlabelInt(W_val, size_BZ), markersize=4,)
+        scatter!(ax2, freqValues ./ freqScaleFactor, specFunc, label=getlabelInt(W_val, size_BZ), markersize=4,)
 
         if "SF-di" in keys(corrResults)
             push!(SF_di, ("", map(x -> maximum((1e-6, abs(x))), corrResults["SF-di"] ./ corrResults["SF-di"][1])))
@@ -438,11 +470,15 @@ function AuxiliaryRealSpaceEntanglement(
         if "ZZ-di" in keys(corrResults)
             push!(ZZ_di, (getlabelInt(W_val, size_BZ), map(x -> maximum((1e-6, abs(x))), corrResults["ZZ-di"] ./ corrResults["ZZ-di"][1])))
         end
-        if "Sdz" in keys(corrResults)
-            push!(Sdz, corrResults["Sdz"])
+        if "Sdz_sq" in keys(corrResults)
+            push!(Sdz_sq, corrResults["Sdz_sq"])
         end
     end
 
+    axislegend(ax1)
+    axislegend(ax2)
+    resize_to_layout!(f)
+    save("test.pdf", f)
     if !isempty(ZZ_di)
         plotLines(ZZ_di, 
                   xvals1 |> collect,
@@ -488,17 +524,18 @@ function AuxiliaryRealSpaceEntanglement(
                   scatter=true,
                  )
     end
-    if !isempty(Sdz)
-        plotLines([("", Sdz .|> abs)], 
+    if !isempty(Sdz_sq)
+        println(Sdz_sq)
+        plotLines([("", Sdz_sq .|> abs)], 
                   -W_val_arr ./ J_val,
                   L"$-W/J$", 
-                  L"$\langle{S_d^z}\rangle$",
-                  "Sdz_$(size_BZ)-$(maxSize).pdf";
+                  L"$\langle{\left(S_d^z\right)^2}\rangle$",
+                  "Sdz_sq_$(size_BZ)-$(maxSize).pdf";
                   figPad=5,
                   scatter=true,
                   vlines=[(L"$W=W^*$", -pseudogapStart(size_BZ) / J_val)],
                   legendPos=:lt,
-                  plotRange=collect(1:3:length(W_val_arr)),
+                  #=plotRange=collect(1:3:length(W_val_arr)),=#
                  )
     end
 end
@@ -561,7 +598,7 @@ function AuxiliaryLocalSpecfunc(
             @time specFunc, standDevGuess, quasipResidue, centerSpecFuncArr = AuxiliaryLocalSpecfunc(hamiltDetails, effectiveNumShells, 
                                                     ImpurityExcitationOperators, freqValues, standDev[1], 
                                                     standDev[2], maxSize; 
-                                                    targetHeight=ifelse(abs(W_val) > abs(pseudogapEnd(size_BZ)), 0., targetHeight), 
+                                                    targetHeight=ifelse(abs(W_val) ≥ abs(pseudogapStart(size_BZ)), 0., targetHeight), 
                                                     heightTolerance=1e-3,
                                                     bathIntLegs=2, addPerStep=1, 
                                                     standDevGuess=standDevInner,
@@ -1004,11 +1041,11 @@ size_BZ = 49
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
 #=@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)=#
-@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=true)
+#=@time AuxiliaryLocalSpecfunc(size_BZ; loadData=false, fixHeight=true)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-π/2, -π/2); loadData=false)=#
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ; loadData=true, singleThread=true)=#
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#
-#=AuxiliaryRealSpaceEntanglement(size_BZ)=#
+@time AuxiliaryRealSpaceEntanglement(size_BZ; loadData=false)

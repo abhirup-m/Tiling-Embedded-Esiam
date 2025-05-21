@@ -208,30 +208,29 @@ end
         maxSize::Int64,
         numBathSites::Int64,
         addPerStep::Int64,
+        standDev::Float64,
+        freqValues::Vector{Float64},
     )
     numChannels = length(realKondo1D)
-    #=for i in 1:2=#
-    #=    for (k, v) in realKondo1D[i]=#
-    #=        realKondo1D[i][k] = 10.=#
-    #=    end=#
-    #=end=#
+    realKondo1D = [Dict(k => vk for (k, vk) in v) for v in realKondo1D]
+    println(maximum(values(realKondo1D[1])))
+
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
+    append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
     mutInfoSites = 1:2:numBathSites
     mutInfoDefDict = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
     isingCorrDefDict = Dict("ZZ-d-$(i)" => [("nn", [1, 3 + 2 * numChannels * (i-1)], 0.25), ("nn", [1, 4 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 3 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 4 + 2 * numChannels * (i-1)], 0.25)] for i in 1:numBathSites)
-    Sdz = Dict("Sdz" => [("n", [1], 0.5), ("n", [2], -0.5)])
-    corrDefDict = Sdz
-    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz)=#
-    indexPartitions = [10]
+    Sdz_sq = Dict("Sdz_sq" => [("n", [1], 0.25), ("n", [2], 0.25), ("nn", [1, 2], -0.5)])
+    corrDefDict = Sdz_sq
+    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq)=#
+    indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * numChannels * numBathSites
         push!(indexPartitions, minimum((indexPartitions[end] + 2 * addPerStep, 2 + 2 * numChannels * numBathSites)))
     end
-    #=println(indexPartitions)=#
+
     hamiltonianFamily = MinceHamiltonian(hamiltonian, indexPartitions)
-    #=println(hamiltonianFamily)=#
-    #=println(hamiltonianFamily[2])=#
     @assert all(!isempty, hamiltonianFamily)
     for hamiltonian in hamiltonianFamily
         @assert all(!isempty, hamiltonian)
@@ -240,18 +239,23 @@ end
 
     id = nothing
     exitCode = 0
+    specDictSet = ImpurityExcitationOperators(1)
     while true
-        @time _, iterDiagResults = IterDiag(
+        @time savePaths, iterDiagResults, specFuncOperators = IterDiag(
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
-                          #=magzReq=(m, N) -> -2 ≤ m ≤ 3,=#
-                          #=occReq=(x, N) -> div(N, 2) - 4 ≤ x ≤ div(N, 2) + 4,=#
+                          #=magzReq=(m, N) -> -4 ≤ m ≤ 5,=#
+                          #=occReq=(x, N) -> div(N, 2) - 8 ≤ x ≤ div(N, 2) + 8,=#
                           #=mutInfoDefDict=deepcopy(mutInfoDefDict),=#
-                          correlationDefDict=deepcopy(corrDefDict),
+                          #=correlationDefDict=deepcopy(corrDefDict),=#
                           silent=false,
                           maxMaxSize=maxSize,
+                          specFuncDefDict=specDictSet,
                          )
+        results["SP"] = savePaths
+        results["SFO"] = specFuncOperators
+
         if exitCode > 0
             id = rand()
             println("Error code $(exitCode). Retry id=$(id).")
@@ -279,8 +283,8 @@ end
                     push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])
                 end
             end
-            if "Sdz" in keys(iterDiagResults)
-                results["Sdz"] = iterDiagResults["Sdz"]
+            if "Sdz_sq" in keys(iterDiagResults)
+                results["Sdz_sq"] = iterDiagResults["Sdz_sq"]
             end
             break
         end
@@ -497,7 +501,9 @@ end
 @everywhere function AuxiliaryRealSpaceEntanglement(
         hamiltDetails::Dict,
         numShells::Int64,
-        maxSize::Int64;
+        maxSize::Int64,
+        standDev::Float64,
+        freqValues::Vector{Float64};
         numChannels::Int64=1,
         savePath::Union{Nothing, String}=nothing,
         addPerStep::Int64=1,
@@ -508,16 +514,17 @@ end
     size_BZ = hamiltDetails["size_BZ"]
 
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
+    cutoffWindow = filter(p -> abs(hamiltDetails["dispersion"][p]) ≤ cutoffEnergy, 1:size_BZ^2)
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
     shellPointsChannels = []
     if numChannels == 1
         #=push!(shellPointsChannels, filter(p -> true, 1:size_BZ^2))=#
-        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]), 1:size_BZ^2))
+        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && (hamiltDetails["kondoJArray"][p,:] |> maximum |> abs > 1e-4), cutoffWindow))
     else
-        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && prod(map1DTo2D(p, size_BZ)) ≥ 0 && map1DTo2D(p, size_BZ)[1] ≠ 0, 1:size_BZ^2))
-        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && prod(map1DTo2D(p, size_BZ)) ≤ 0 && map1DTo2D(p, size_BZ)[2] ≠ 0, 1:size_BZ^2))
+        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && prod(map1DTo2D(p, size_BZ)) ≥ 0 && map1DTo2D(p, size_BZ)[1] ≠ 0 && (hamiltDetails["kondoJArray"][p,:] |> maximum |> abs > 1e-4), cutoffWindow))
+        push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && prod(map1DTo2D(p, size_BZ)) ≤ 0 && map1DTo2D(p, size_BZ)[2] ≠ 0 && (hamiltDetails["kondoJArray"][p,:] |> maximum |> abs > 1e-4), cutoffWindow))
     end
 
     if !isnothing(savePath) && loadData
@@ -525,26 +532,11 @@ end
         xvals1, xvals2 = nothing, nothing
         if isfile(savePath)
             content = load(savePath)
-            if "I2-di" in keys(content)
-                corrResults["I2-di"] = content["I2-di"]
-                xvals2 = content["xvals2"]
-                println("Collected from saved data.")
+            xvals1 = content["xvals1"]
+            xvals2 = content["xvals2"]
+            for (name, val) in content
+                corrResults[name] = val
             end
-            if "SF-di" in keys(content)
-                corrResults["SF-di"] = content["SF-di"]
-                xvals1 = content["xvals1"]
-                println("Collected from saved data.")
-            end
-            if "Sdz" in keys(content)
-                corrResults["Sdz"] = content["Sdz"]
-                println("Collected from saved data.")
-            end
-            if "ZZ-di" in keys(content)
-                corrResults["ZZ-di"] = content["ZZ-di"]
-                xvals1 = content["xvals1"]
-                println("Collected from saved data.")
-            end
-            println(corrResults)
             return corrResults, xvals1, xvals2
         end
     end
@@ -556,11 +548,8 @@ end
     distances = [trunc(sum((map1DTo2D(p, size_BZ) .* (size_BZ - 1)/ (2π)) .^ 2)^0.5, digits=6) for p in 1:size_BZ^2]
     sortedIndices = (1:size_BZ^2)[sortperm(distances)]
     impurity = Int((1 + size_BZ^2) / 2)
-    #=filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 1.3, sortedIndices)=#
-    #=filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[2] ≤ 1.3, sortedIndices)=#
-    #=filter!(p -> abs(prod(map1DTo2D(p, size_BZ))) ≤ 1e-10, sortedIndices)=#
 
-    filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 3 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
+    filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 11 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
     println(length(sortedIndices))
     println(length(shellPointsChannels[1]))
     #=@assert false=#
@@ -568,20 +557,7 @@ end
     realKondoChannels = [Fourier(fermSurfKondoChannels[i]; integrateOver=shellPointsChannels[i], calculateFor=sortedIndices) for i in 1:numChannels]
 
     kondoReal1D = [Dict{NTuple{2, Int64}, Float64}() for _ in 1:numChannels]
-    #=for (k, kondoMatrix) in enumerate([realKondoChannel1, realKondoChannel2])=#
-    #=    for (i1, d1) in enumerate(distances |> unique |> sort)=#
-    #=        for (i2, d2) in enumerate(distances |> unique |> sort)=#
-    #=            if 0 ∈ (d1, d2) || d2 < d1=#
-    #=                continue=#
-    #=            end=#
-    #=            set1 = sortedIndices[distances .== d1]=#
-    #=            println(set1)=#
-    #=            set2 = sortedIndices[distances .== d2]=#
-    #=            kondoReal1D[k][(i1-1, i2-1)] = sum(kondoMatrix[set1, set2]) / (length(set1) * length(set2))=#
-    #=            kondoReal1D[k][(i2-1, i1-1)] = kondoReal1D[k][(i1-1, i2-1)]'=#
-    #=        end=#
-    #=    end=#
-    #=end=#
+
     for (k, kondoMatrix) in enumerate(realKondoChannels)
         for (i1, p1) in enumerate(sortedIndices)
             for (i2, p2) in enumerate(sortedIndices)
@@ -599,23 +575,18 @@ end
                                 maxSize,
                                 length(sortedIndices)-1,
                                 addPerStep,
+                                standDev,
+                                freqValues,
                                )
+
+
     if !isnothing(savePath)
         mkpath(SAVEDIR)
         jldopen(savePath, "w"; compress = true) do file
-            if "I2-di" in keys(corrResults)
-                file["I2-di"] = corrResults["I2-di"]
-                file["xvals2"] = xvals2
-            end
-            if "SF-di" in keys(corrResults)
-                file["SF-di"] = corrResults["SF-di"]
-                file["xvals1"] = xvals1
-            end
-            if "ZZ-di" in keys(corrResults)
-                file["ZZ-di"] = corrResults["ZZ-di"]
-            end
-            if "Sdz" in keys(corrResults)
-                file["Sdz"] = corrResults["Sdz"]
+            file["xvals1"] = xvals1
+            file["xvals2"] = xvals2
+            for (name, val) in corrResults
+                file[name] = val
             end
         end
     end

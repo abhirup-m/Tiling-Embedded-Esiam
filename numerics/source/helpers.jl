@@ -311,5 +311,23 @@ function Fourier(
             kondoJRealSpace[p2, p1] = kondoJRealSpace[p1, p2]
         end
     end
+    #=return kondoJRealSpace ./ maximum(kondoJRealSpace)=#
+    #=return kondoJRealSpace ./ (numPoints)=#
+    if maximum(kondoJRealSpace) > 1
+        kondoJRealSpace .*= 5 / maximum(kondoJRealSpace)
+    end
+    if maximum(kondoJRealSpace) < 0.1
+        kondoJRealSpace .*= 0.1 / maximum(kondoJRealSpace)
+    end
+    #=kondoJRealSpace[abs.(kondoJRealSpace) .≥ 5] .= 5=#
     return kondoJRealSpace
+    #=return kondoJRealSpace .* (5 / maximum(kondoJRealSpace))=#
+end
+
+
+function Integrate(
+        yvals::Vector{Float64},
+        xvals::Vector{Float64},
+    )
+    return sum([y * (xvals[i+1] - xvals[i]) for (i, y) in enumerate(yvals[1:end-1])]) + yvals[end] * (xvals[end] - xvals[end-1])
 end

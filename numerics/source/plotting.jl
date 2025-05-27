@@ -161,6 +161,8 @@ function plotLines(
         xscale::Function=identity,
         yscale::Function=identity,
         plotRange::Vector{Int64}=Int64[],
+        saveForm::String="pdf",
+        splitLegends=nothing,
     )
 
     f = Figure(figure_padding=figPad)
@@ -171,30 +173,33 @@ function plotLines(
         height=figSize[2],
         xscale=xscale,
         yscale=yscale,
+        limits=(xlimits, ylimits),
     )
     needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
 
+    plots = []
     for (i, (name, yvalues)) in enumerate(nameValuePairs)
         if isempty(plotRange)
             plotRange = 1:length(yvalues)
         end
         if !scatter
             if isempty(name)
-                lines!(xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                pl = lines!(xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             else
-                lines!(xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
                 needsLegend = true
+                pl = lines!(xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             end
         else
             if !isempty(name)
                 needsLegend = true
-                scatter!(xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
             else
-                scatter!(xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
             end
         end
+        push!(plots, pl)
     end
 
     if length(vlines) + length(hlines) > 0
@@ -218,17 +223,18 @@ function plotLines(
     end
 
     if needsLegend
-        axislegend(position=legendPos)
+        if isnothing(splitLegends)
+            axislegend(position=legendPos)
+        else
+            for (inds, pos) in splitLegends
+                axislegend(ax, plots[inds], nameValuePairs[inds] .|> first, position=pos)
+            end
+        end
     end
 
-    if !isnothing(ylimits)
-        ylims!(ax, ylimits...)
-    end
-    if !isnothing(xlimits)
-        xlims!(ax, xlimits...)
-    end
     resize_to_layout!(f)
 
+    saveName = saveName * "." * saveForm
     save(saveName, current_figure())
     return saveName
 end

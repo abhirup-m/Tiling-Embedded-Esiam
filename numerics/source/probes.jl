@@ -208,7 +208,7 @@ end
         maxSize::Int64,
         numBathSites::Int64,
         addPerStep::Int64,
-        standDev::Float64,
+        standDev::Union{Float64, Vector{Float64}},
         freqValues::Vector{Float64},
     )
     numChannels = length(realKondo1D)
@@ -245,8 +245,8 @@ end
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
-                          #=magzReq=(m, N) -> -4 ≤ m ≤ 5,=#
-                          #=occReq=(x, N) -> div(N, 2) - 8 ≤ x ≤ div(N, 2) + 8,=#
+                          #=magzReq=(m, N) -> -3 ≤ m ≤ 4,=#
+                          #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
                           #=mutInfoDefDict=deepcopy(mutInfoDefDict),=#
                           #=correlationDefDict=deepcopy(corrDefDict),=#
                           silent=false,
@@ -502,7 +502,7 @@ end
         hamiltDetails::Dict,
         numShells::Int64,
         maxSize::Int64,
-        standDev::Float64,
+        standDev::Union{Float64, Vector{Float64}},
         freqValues::Vector{Float64};
         numChannels::Int64=1,
         savePath::Union{Nothing, String}=nothing,
@@ -527,6 +527,7 @@ end
         push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && prod(map1DTo2D(p, size_BZ)) ≤ 0 && map1DTo2D(p, size_BZ)[2] ≠ 0 && (hamiltDetails["kondoJArray"][p,:] |> maximum |> abs > 1e-4), cutoffWindow))
     end
 
+    println(savePath)
     if !isnothing(savePath) && loadData
         corrResults = Dict()
         xvals1, xvals2 = nothing, nothing
@@ -549,7 +550,7 @@ end
     sortedIndices = (1:size_BZ^2)[sortperm(distances)]
     impurity = Int((1 + size_BZ^2) / 2)
 
-    filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 11 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
+    filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 5.5 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
     println(length(sortedIndices))
     println(length(shellPointsChannels[1]))
     #=@assert false=#

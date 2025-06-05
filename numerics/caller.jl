@@ -393,7 +393,7 @@ function AuxiliaryRealSpaceEntanglement(
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect=#
-    W_val_arr = NiceValues(size_BZ)[1:4]
+    W_val_arr = NiceValues(size_BZ)[1:6:7]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     SF_di = Tuple{LaTeXString, Vector{Float64}}[]
@@ -402,28 +402,38 @@ function AuxiliaryRealSpaceEntanglement(
     I2_d0 = Float64[]
     Sdz_sq = Float64[]
     specFuncIn = Tuple{LaTeXString, Vector{Float64}}[]
+    specFuncFit = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncOut = Tuple{LaTeXString, Vector{Float64}}[]
     selfEnergyIn = Tuple{LaTeXString, Vector{Float64}}[]
+    selfEnergyFit = Tuple{LaTeXString, Vector{Float64}}[]
     selfEnergyOut = Tuple{LaTeXString, Vector{Float64}}[]
     xvals1 = nothing
     xvals2 = nothing
-    freqLimit1 = 0.1
-    freqLimit2 = 3.5
-    freqValues = collect(-50:1e-4:50)
+    freqLimit1 = 0.007
+    freqLimit2 = 4.5
+    freqValues = collect(-50:1e-3:50)
     freqScaleFactor = 8 * HOP_T
     #=standDev = 0.5 .* (1 .+ exp.(1 .* abs.(freqValues) ./ maximum(freqValues)))=#
-    standDev = 1.0 * ones(length(freqValues))
-    standDev[abs.(freqValues) .> freqScaleFactor] .*= (exp.(2.5 .* (abs.(freqValues) ./ freqScaleFactor .- 1)./ (maximum(freqValues)/freqScaleFactor - 1)))[abs.(freqValues) .> freqScaleFactor]
     f = Figure(figure_padding = 10, size=(900, 700))
     #=ax = Axis(f[1, 1])=#
     ax1 = Axis(f[1, 1], limits = ((-freqLimit1, freqLimit1), (1.5, 2.)), xscale=identity, yscale=identity)
     ax2 = Axis(f[1, 2], limits = ((-3.5, 3.5), nothing))
     ax3 = Axis(f[2, 1], limits = ((1e-3, 0.3), (1e-3, 0.3)), xscale=log10, yscale=log10)
     ax4 = Axis(f[2, 2], limits = ((-10, 10), (-1, 1)))
-    nonIntCoeffs = [(0.2, 0.)]
-    intCoeffs = NTuple{2, Float64}[]
-    poleRange = 0.2
+    poleRange = 0.4
     for W_val in W_val_arr
+        nonIntCoeffs = [(0.2, 0.)]
+        intCoeffs = NTuple{2, Float64}[]
+        standDev = 1.0 * ones(length(freqValues))
+        if abs(W_val) ≥ abs(pseudogapStart(size_BZ))
+            standDev = 0.2 * ones(length(freqValues))
+        end
+        impCorr = 1 * (30 + 120 * abs(W_val))
+        println("U=", impCorr)
+        standDev[freqValues .> impCorr/4] .+= 0.4 .* (abs.(impCorr/4 .- freqValues[freqValues .> impCorr/4])).^0.7
+        standDev[freqValues .< -impCorr/4] .+= 0.4 .* abs.(-impCorr/4 .- freqValues[freqValues .< -impCorr/4]).^0.7
+        #=standDev[2 * freqScaleFactor .> freqValues .> freqScaleFactor] .*= range(1, 20, length(freqValues[2 * freqScaleFactor .> freqValues .> freqScaleFactor]))=#
+
         hamiltDetails = Dict(
                              "dispersion" => dispersion,
                              "kondoJArray" => kondoJArrays[W_val][:, :, end],
@@ -431,7 +441,7 @@ function AuxiliaryRealSpaceEntanglement(
                              "size_BZ" => size_BZ,
                              "bathIntForm" => bathIntForm,
                              "globalField" => GLOBALFIELD,
-                             "imp_corr" => 1 * (25 + 10 * abs(W_val)),
+                             "imp_corr" => impCorr,
                             )
         effective_Wval = -0.0
         effectiveNumShells = numShells
@@ -464,39 +474,85 @@ function AuxiliaryRealSpaceEntanglement(
                                                    )
 
             specFunc_name = 0.5 .* (specFunc_name .+ reverse(specFunc_name))
-            specFunc_name /= Integrate(specFunc_name, freqValues ./ freqScaleFactor)
+            specFunc_name /= Integrate(specFunc_name, freqValues)
+            if name in ("Sd+", "Sd-") && abs(W_val) ≥ abs(pseudogapStart(size_BZ))
+                specFunc_name .*= corrResults["Tk"]^2
+            end
             specFunc .+= specFunc_name
 
             coeffs = IterSpectralCoeffs(corrResults["SP"], operator; 
                                         degenTol=1e-10, silent=false,
                                         excludeLevels=E->name in ("Sd+", "Sd-") ? E > poleRange : false,
                                        )
-            append!(intCoeffs, vcat(coeffs...))
+            coeffs = vcat(coeffs...)
+            if name in ("Sd+", "Sd-") && abs(W_val) ≥ abs(pseudogapStart(size_BZ))
+                coeffs = NTuple{2, Float64}[(c * corrResults["Tk"]^2, p) for (c, p) in coeffs]
+            end
+            append!(intCoeffs, coeffs)
         end
 
-        specFunc /= Integrate(specFunc, freqValues ./ freqScaleFactor)
+        specFunc /= Integrate(specFunc, freqValues)
+        println(specFunc[freqValues .>= 0][1])
+
         push!(specFuncIn, (getlabelInt(W_val, size_BZ), specFunc))
         push!(specFuncOut, (getlabelInt(W_val, size_BZ), specFunc))
 
-        model1(x, p) = p[1] ./ (abs.(x).^p[2] .+ p[3])
-        xvals = freqValues[abs.(freqValues) .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
-        fit = curve_fit(model1, xvals, specFunc[abs.(freqValues) .< freqLimit1 * freqScaleFactor], [0.00005, 2., 0.00002])
-        println(coef(fit))
-        println(stderror(fit))
-        push!(specFuncIn, (L"$n=%$(round(coef(fit)[2], digits=2))$", model1(freqValues ./ freqScaleFactor, coef(fit))))
+        fit_params = nothing
+        if abs(W_val) < abs(pseudogapStart(size_BZ))
+            push!(specFuncFit, (getlabelInt(W_val, size_BZ), 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- minimum(1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0])))
+            model1(x, p) = p[1] .* x.^p[2]
+            fit_params = [1, 2.] # [2., specFunc[freqValues .≥ 0][1]]
+            xvals = freqValues[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
+            yvals = 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- minimum(1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0])
+            fit = curve_fit(model1, xvals, yvals, fit_params)
+            fit_params = coef(fit)
+            println(stderror(fit))
+            push!(specFuncFit, (L"$n=%$(round(fit_params[2], digits=3))$", model1((freqValues ./ freqScaleFactor)[freqLimit1 * freqScaleFactor .> freqValues .≥ 0], fit_params)))
 
-        G, G0, SE = SelfEnergy(intCoeffs, nonIntCoeffs, freqValues; standDev=standDev[freqValues .≥ 0][1])
-        imagSelfEnergy = -(imag(SE) .- maximum(imag(SE)))
-        imagSelfEnergy = 0.5 .* (imagSelfEnergy .+ reverse(imagSelfEnergy))
-        model2(x, p) = p[1] .* (abs.(x).^p[2]) .+ imagSelfEnergy[freqValues .≥ 0][1]
-        fit_params = [50., 2.5, imagSelfEnergy[freqValues .≥ 0][1]]
-        fit = curve_fit(model2, xvals[xvals .> 0], imagSelfEnergy[0 .< freqValues .< freqLimit1 * freqScaleFactor], fit_params[1:2])
-        fit_params = coef(fit)
-        println(fit_params)
-        println(stderror(fit))
-        push!(selfEnergyIn, (getlabelInt(W_val, size_BZ), imagSelfEnergy[0 .< freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1]))
-        push!(selfEnergyIn, (L"$n=%$(round(fit_params[2], digits=3))$", model2(freqValues ./ freqScaleFactor, fit_params)[freqValues .> 0] .- minimum(model2(freqValues ./ freqScaleFactor, fit_params)[freqValues .> 0])))
-        push!(selfEnergyOut, (getlabelInt(W_val, size_BZ), imagSelfEnergy))
+            model2(x, p) = p[1] .* x.^p[2]
+            G, G0, SE = SelfEnergy(intCoeffs, nonIntCoeffs, freqValues; standDev=standDev[freqValues .≥ 0][1])
+            imagSelfEnergy = -(imag(SE) .- maximum(imag(SE)))
+            imagSelfEnergy = 0.5 .* (imagSelfEnergy .+ reverse(imagSelfEnergy))
+            fit_params = [50., 2.0]
+            fit = curve_fit(model2, xvals[xvals .≥ 0], imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1], fit_params)
+            fit_params = coef(fit)
+            println(fit_params)
+            println(stderror(fit))
+            push!(selfEnergyFit, (getlabelInt(W_val, size_BZ), imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1]))
+            push!(selfEnergyFit, (L"$n=%$(round(fit_params[2], digits=3))$", model2(freqValues[freqValues .≥ 0] ./ freqScaleFactor, fit_params)))
+            push!(selfEnergyIn, (getlabelInt(W_val, size_BZ), imagSelfEnergy))
+            push!(selfEnergyOut, (getlabelInt(W_val, size_BZ), imagSelfEnergy))
+
+        else
+            push!(specFuncFit, (getlabelInt(W_val, size_BZ), specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- specFunc[freqValues .≥ 0][1]))
+            model3(x, p) = p[1] .+ p[2].* x
+            fit_params = [3.5, 2.]
+            xvals = freqValues[freqScaleFactor * 10^(-4.2) .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
+            yvals = specFunc[freqScaleFactor * 10^(-4.2) .≤ freqValues .< freqLimit1 * freqScaleFactor] .- specFunc[freqValues .≥ 0.][1]
+            fit = curve_fit(model3, log10.(xvals), log10.(yvals), fit_params)
+            fit_params = coef(fit)
+            println(fit_params)
+            println(stderror(fit))
+            push!(specFuncFit, (L"$n=%$(round(fit_params[2], digits=3))$", (10^fit_params[1] .* ((abs.(freqValues) ./ freqScaleFactor) .^ fit_params[2]))[freqLimit1 * freqScaleFactor .> freqValues .≥ 0]))
+
+            model4(x, p) = p[1] .* x.^p[2]
+            G, G0, SE = SelfEnergy(intCoeffs, nonIntCoeffs, freqValues; standDev=standDev[freqValues .≥ 0][1])
+            imagSelfEnergy = -(imag(SE) .- maximum(imag(SE)))
+            imagSelfEnergy = 0.5 .* (imagSelfEnergy .+ reverse(imagSelfEnergy))
+            println("SE=",imagSelfEnergy[freqValues .>= 0][1])
+            xvals = freqValues[freqScaleFactor * 10^(-5) .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
+            yvals = 1 ./ imagSelfEnergy[freqScaleFactor * 10^(-5) .≤ freqValues .< freqLimit1 * freqScaleFactor] .- 1 / imagSelfEnergy[0 .≤ freqValues][1] # specFunc[freqScaleFactor * 10^(-4.2) .≤ freqValues .< freqLimit1 * freqScaleFactor] .- specFunc[freqValues .≥ 0.][1]
+            fit_params = [50., 2.0]
+            fit = curve_fit(model4, xvals, yvals, fit_params)
+            fit_params = coef(fit)
+            println(fit_params)
+            println(stderror(fit))
+            push!(selfEnergyFit, (getlabelInt(W_val, size_BZ), 1 ./ imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- 1 / imagSelfEnergy[0 .≤ freqValues][1]))
+            push!(selfEnergyFit, (L"$n=%$(round(fit_params[2], digits=3))$", model4(freqValues[freqValues .≥ 0] ./ freqScaleFactor, fit_params)))
+            push!(selfEnergyIn, (getlabelInt(W_val, size_BZ), imagSelfEnergy))
+            push!(selfEnergyOut, (getlabelInt(W_val, size_BZ), imagSelfEnergy))
+        end
+
 
 
         if "SF-di" in keys(corrResults)
@@ -584,7 +640,21 @@ function AuxiliaryRealSpaceEntanglement(
                   L"$A_d(\omega)$",
                   "Ad_zoomin_$(size_BZ)-$(maxSize)";
                   figPad=8,
-                  xlimits=(-freqLimit1, freqLimit1),
+                  xlimits=(-50 * freqLimit1, 50 * freqLimit1),
+                  ylimits=(0.0, 0.35),
+                 )
+    end
+    if !isempty(specFuncFit)
+        plotLines(specFuncFit,
+                  freqValues[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] ./ freqScaleFactor,
+                  L"$\omega$", 
+                  L"$A_d(\omega)$",
+                  "Ad_fit_$(size_BZ)-$(maxSize)";
+                  figPad=8,
+                  xlimits=(10^(-4), freqLimit1),
+                  ylimits=(1e-5, 0.4),
+                  xscale=log10,
+                  yscale=log10,
                  )
     end
     if !isempty(specFuncOut)
@@ -595,20 +665,33 @@ function AuxiliaryRealSpaceEntanglement(
                   "Ad_zoomout_$(size_BZ)-$(maxSize)";
                   figPad=5,
                   xlimits=(-freqLimit2, freqLimit2),
+                  #=ylimits = (-0.1, 0.1),=#
+                  #=hlines=[(L"z", 0.)],=#
                  )
     end
     if !isempty(selfEnergyIn)
         plotLines(selfEnergyIn,
-                  freqValues[freqValues .> 0] ./ freqScaleFactor,
+                  freqValues ./ freqScaleFactor,
                   L"$\omega$", 
-                  L"$A_d(\omega)$",
+                  L"$-\Sigma^{\prime\prime}_d(\omega)$",
                   "selfEnergy_d_zoomin_$(size_BZ)-$(maxSize)";
                   figPad=(5, 30, 5, 15),
+                  xlimits=(-50 * freqLimit1, 50 * freqLimit1),
+                  ylimits = (-0.1, 2.),
+                 )
+    end
+    if !isempty(selfEnergyFit)
+        plotLines(selfEnergyFit,
+                  freqValues[freqValues .≥ 0] ./ freqScaleFactor,
+                  L"$\omega$", 
+                  L"$-\Sigma^{\prime\prime}_d(\omega)$",
+                  "selfEnergy_d_fit_$(size_BZ)-$(maxSize)";
+                  figPad=(5, 30, 5, 15),
                   xlimits=(1e-4, freqLimit1),
-                  ylimits = (1e-8, 0.1),
+                  ylimits = (1e-7, 1e-1),
                   xscale=log10,
                   yscale=log10,
-                  splitLegends = ((1:2:7, :lt), (2:2:8, :rb)),
+                  #=splitLegends = ((1:2:7, :lt), (2:2:8, :rb)),=#
                  )
     end
     if !isempty(selfEnergyOut)

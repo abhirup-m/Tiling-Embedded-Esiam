@@ -44,8 +44,8 @@ function SelfEnergyHelper(
     imagSelfEnergyCurrent = imag(selfEnergy)
     if pinBottom
         imagSelfEnergyCurrent .-= imagSelfEnergyCurrent[freqValues .≥ 0][1]
+        imagSelfEnergyCurrent[imagSelfEnergyCurrent .≥ 0] .= 0
     end
-    imagSelfEnergyCurrent[imagSelfEnergyCurrent .≥ 0] .= 0
     return real(selfEnergy) .+ 1im .* imagSelfEnergyCurrent
 end
 
@@ -211,9 +211,8 @@ end
         standDev::Union{Float64, Vector{Float64}},
         freqValues::Vector{Float64},
     )
-    numChannels = length(realKondo1D)
-    realKondo1D = [Dict(k => vk for (k, vk) in v) for v in realKondo1D]
     println(maximum(values(realKondo1D[1])))
+    numChannels = length(realKondo1D)
 
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
@@ -551,11 +550,9 @@ end
     impurity = Int((1 + size_BZ^2) / 2)
 
     filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 5.5 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
-    println(length(sortedIndices))
-    println(length(shellPointsChannels[1]))
-    #=@assert false=#
 
     realKondoChannels = [Fourier(fermSurfKondoChannels[i]; integrateOver=shellPointsChannels[i], calculateFor=sortedIndices) for i in 1:numChannels]
+    kondoTemp = maximum(realKondoChannels[1])
 
     kondoReal1D = [Dict{NTuple{2, Int64}, Float64}() for _ in 1:numChannels]
 
@@ -579,6 +576,7 @@ end
                                 standDev,
                                 freqValues,
                                )
+    corrResults["Tk"] = kondoTemp
 
 
     if !isnothing(savePath)

@@ -311,17 +311,13 @@ function Fourier(
             kondoJRealSpace[p2, p1] = kondoJRealSpace[p1, p2]
         end
     end
-    #=return kondoJRealSpace ./ maximum(kondoJRealSpace)=#
-    #=return kondoJRealSpace ./ (numPoints)=#
-    if maximum(kondoJRealSpace) > 1
+    if maximum(kondoJRealSpace) > 5
         kondoJRealSpace .*= 5 / maximum(kondoJRealSpace)
     end
-    if maximum(kondoJRealSpace) < 0.1
-        kondoJRealSpace .*= 0.1 / maximum(kondoJRealSpace)
+    if maximum(kondoJRealSpace) < 0.3
+        kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)
     end
-    #=kondoJRealSpace[abs.(kondoJRealSpace) .≥ 5] .= 5=#
     return kondoJRealSpace
-    #=return kondoJRealSpace .* (5 / maximum(kondoJRealSpace))=#
 end
 
 

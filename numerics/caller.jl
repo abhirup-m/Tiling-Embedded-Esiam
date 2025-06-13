@@ -14,7 +14,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 2000
+maxSize = 100
 WmaxSize = 500
 
 colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
@@ -393,7 +393,7 @@ function AuxiliaryRealSpaceEntanglement(
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=10) |> collect=#
-    W_val_arr = NiceValues(size_BZ)[[1, 2, 5, 7, 9]]
+    W_val_arr = NiceValues(size_BZ)[[1, 2]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     SF_di = Tuple{LaTeXString, Vector{Float64}}[]

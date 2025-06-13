@@ -583,11 +583,13 @@ end
         mkpath(SAVEDIR)
         jldopen(savePath, "w"; compress = true) do file
             for (i, path) in enumerate(corrResults["SP"])
-                newPath = joinpath(SAVEDIR, Basename(path))
+                newPath = joinpath(SAVEDIR, basename(path))
                 cp(path, newPath, force=true)
                 corrResults["SP"][i] = newPath
             end
-            file = deepcopy(corrResults)
+            for (name, val) in corrResults
+                file[name] = val
+            end
             file["xvals1"] = xvals1
             file["xvals2"] = xvals2
         end

@@ -517,7 +517,7 @@ end
 
     # pick out k-states from the southwest quadrant that have positive energies 
     # (hole states can be reconstructed from them (p-h symmetry))
-    shellPointsChannels = []
+    shellPointsChannels = Vector{Int64}[]
     if numChannels == 1
         #=push!(shellPointsChannels, filter(p -> true, 1:size_BZ^2))=#
         push!(shellPointsChannels, filter(p -> abs(cutoffEnergy) ≥ abs(hamiltDetails["dispersion"][p]) && (hamiltDetails["kondoJArray"][p,:] |> maximum |> abs > 1e-4), cutoffWindow))
@@ -551,8 +551,8 @@ end
 
     filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 5.5 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
 
-    realKondoChannels = [Fourier(fermSurfKondoChannels[i]; integrateOver=shellPointsChannels[i], calculateFor=sortedIndices) for i in 1:numChannels]
-    kondoTemp = maximum(realKondoChannels[1])
+    realKondoChannels, kondoTemp = Fourier(fermSurfKondoChannels; shellPointsChannels=shellPointsChannels, calculateFor=sortedIndices)
+    #=kondoTemp = maximum(realKondoChannels[1])=#
 
     kondoReal1D = [Dict{NTuple{2, Int64}, Float64}() for _ in 1:numChannels]
 
@@ -582,11 +582,14 @@ end
     if !isnothing(savePath)
         mkpath(SAVEDIR)
         jldopen(savePath, "w"; compress = true) do file
+            for (i, path) in enumerate(corrResults["SP"])
+                newPath = joinpath(SAVEDIR, Basename(path))
+                cp(path, newPath, force=true)
+                corrResults["SP"][i] = newPath
+            end
+            file = deepcopy(corrResults)
             file["xvals1"] = xvals1
             file["xvals2"] = xvals2
-            for (name, val) in corrResults
-                file[name] = val
-            end
         end
     end
 

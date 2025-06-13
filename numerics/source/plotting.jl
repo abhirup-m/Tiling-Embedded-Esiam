@@ -163,6 +163,8 @@ function plotLines(
         plotRange::Vector{Int64}=Int64[],
         saveForm::String="pdf",
         splitLegends=nothing,
+        twin::Vector{Int64}=Int64[],
+        twinLabel::LaTeXString=L"",
     )
 
     f = Figure(figure_padding=figPad)
@@ -175,6 +177,20 @@ function plotLines(
         yscale=yscale,
         limits=(xlimits, ylimits),
     )
+    if !isempty(twin)
+        ax_twin = Axis(f[1, 1],
+            xlabel = xlabel,
+            ylabel = twinLabel,
+            width=figSize[1],
+            height=figSize[2],
+            xscale=xscale,
+            yscale=yscale,
+            limits=(xlimits, ylimits),
+            yaxisposition = :right,
+        )
+        hidespines!(ax_twin)
+        hidexdecorations!(ax_twin)
+    end
     needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
@@ -186,17 +202,17 @@ function plotLines(
         end
         if !scatter
             if isempty(name)
-                pl = lines!(xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             else
                 needsLegend = true
-                pl = lines!(xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
             end
         else
             if !isempty(name)
                 needsLegend = true
-                pl = scatter!(xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
             else
-                pl = scatter!(xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
             end
         end
         push!(plots, pl)

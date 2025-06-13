@@ -286,38 +286,46 @@ end
 
 
 function Fourier(
-        kondoJArray::Array{Float64, 2};
-        integrateOver::Union{Nothing, Vector{Int64}}=nothing,
+        fermSurfKondoChannels::Vector{Array{Float64, 2}};
+        shellPointsChannels::Union{Nothing, Vector{Vector{Int64}}}=nothing,
         calculateFor::Union{Nothing, Vector{Int64}}=nothing,
     )
-    numPoints = size(kondoJArray)[1] |> sqrt |> Int
-    if isnothing(integrateOver)
-        integrateOver = 1:numPoints^2
-    end
+    numPoints = size(fermSurfKondoChannels[1])[1] |> sqrt |> Int
     if isnothing(calculateFor)
         calculateFor = 1:numPoints^2
     end
-    kondoJRealSpace = 0 .* kondoJArray
-    @showprogress Threads.@threads for p1 in calculateFor
-        for p2 in calculateFor
-            r1, r2 = [map1DTo2D(p, numPoints) * 0.5 * numPoints / π for p in [p1, p2]]
-            p1_neg, p2_neg = (map2DTo1D((-1 .* r1)..., numPoints), map2DTo1D((-1 .* r2)..., numPoints))
-            if (p1_neg, p2_neg) ∈ keys(kondoJRealSpace)
-                kondoJRealSpace[p1, p2] = kondoJRealSpace[p1_neg, p2_neg]
-            else
-                kondoJRealSpace[p1, p2] = sum([kondoJArray[k1, k2] * cos(sum(r1 .* map1DTo2D(k1, numPoints)) - sum(r2 .* map1DTo2D(k2, numPoints)))
-                                                        for (k1, k2) in Iterators.product(integrateOver, integrateOver)])
-            end
-            kondoJRealSpace[p2, p1] = kondoJRealSpace[p1, p2]
+    realKondoChannels = Matrix{Float64}[]
+    kondoTemp = nothing
+    for (channel, kondoJArray) in enumerate(fermSurfKondoChannels)
+        if isnothing(shellPointsChannels)
+            integrateOver = 1:numPoints^2
+        else
+            integrateOver = shellPointsChannels[channel]
         end
+        kondoJRealSpace = 0 .* kondoJArray
+        @showprogress Threads.@threads for p1 in calculateFor
+            for p2 in calculateFor
+                r1, r2 = [map1DTo2D(p, numPoints) * 0.5 * numPoints / π for p in [p1, p2]]
+                p1_neg, p2_neg = (map2DTo1D((-1 .* r1)..., numPoints), map2DTo1D((-1 .* r2)..., numPoints))
+                if (p1_neg, p2_neg) ∈ keys(kondoJRealSpace)
+                    kondoJRealSpace[p1, p2] = kondoJRealSpace[p1_neg, p2_neg]
+                else
+                    kondoJRealSpace[p1, p2] = sum([kondoJArray[k1, k2] * cos(sum(r1 .* map1DTo2D(k1, numPoints)) - sum(r2 .* map1DTo2D(k2, numPoints)))
+                                                            for (k1, k2) in Iterators.product(integrateOver, integrateOver)])
+                end
+                kondoJRealSpace[p2, p1] = kondoJRealSpace[p1, p2]
+            end
+        end
+        kondoTemp = maximum(kondoJRealSpace)
+        if maximum(kondoJRealSpace) > 1
+            kondoJRealSpace .*= 1 / maximum(kondoJRealSpace)
+        end
+        if maximum(kondoJRealSpace) < 0.3
+            kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)
+        end
+        push!(realKondoChannels, kondoJRealSpace)
     end
-    if maximum(kondoJRealSpace) > 5
-        kondoJRealSpace .*= 5 / maximum(kondoJRealSpace)
-    end
-    if maximum(kondoJRealSpace) < 0.3
-        kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)
-    end
-    return kondoJRealSpace
+    return realKondoChannels, kondoTemp
 end
 
 

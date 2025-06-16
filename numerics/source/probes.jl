@@ -217,8 +217,9 @@ end
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
-    mutInfoSites = 1:2:numBathSites
-    mutInfoDefDict = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
+    mutInfoSites = [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
+    I2_di = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
+    I2_d0i = Dict("I2-d-0$(i)" => ([1, 2], [3, 4, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites[2:end])
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
     isingCorrDefDict = Dict("ZZ-d-$(i)" => [("nn", [1, 3 + 2 * numChannels * (i-1)], 0.25), ("nn", [1, 4 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 3 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 4 + 2 * numChannels * (i-1)], 0.25)] for i in 1:numBathSites)
     Sdz_sq = Dict("Sdz_sq" => [("n", [1], 0.25), ("n", [2], 0.25), ("nn", [1, 2], -0.5)])
@@ -240,20 +241,23 @@ end
     exitCode = 0
     specDictSet = ImpurityExcitationOperators(1)
     while true
-        @time savePaths, iterDiagResults, specFuncOperators = IterDiag(
+        @time output = IterDiag(
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
                           #=magzReq=(m, N) -> -3 ≤ m ≤ 4,=#
                           #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
-                          #=mutInfoDefDict=deepcopy(mutInfoDefDict),=#
+                          mutInfoDefDict=deepcopy(merge(I2_di, I2_d0i)),
                           #=correlationDefDict=deepcopy(corrDefDict),=#
                           silent=false,
                           maxMaxSize=maxSize,
-                          specFuncDefDict=specDictSet,
+                          #=specFuncDefDict=specDictSet,=#
                          )
+        #=savePaths, iterDiagResults, specFuncOperators = output=#
+        #=results["SFO"] = specFuncOperators=#
+        savePaths, iterDiagResults, exitCode = output
+
         results["SP"] = savePaths
-        results["SFO"] = specFuncOperators
 
         if exitCode > 0
             id = rand()
@@ -280,6 +284,12 @@ end
                         results["I2-di"] = Float64[]
                     end
                     push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])
+                end
+                if "I2-d-0$(i)" in keys(iterDiagResults)
+                    if "I2-d0i" ∉ keys(results)
+                        results["I2-d0i"] = Float64[]
+                    end
+                    push!(results["I2-d0i"], iterDiagResults["I2-d-0$(i)"])
                 end
             end
             if "Sdz_sq" in keys(iterDiagResults)

@@ -238,7 +238,7 @@ function plotLines(
         end
     end
 
-    if needsLegend
+    if needsLegend && length(nameValuePairs) > 1
         if isnothing(splitLegends)
             axislegend(position=legendPos)
         else

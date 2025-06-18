@@ -14,7 +14,7 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 200
+maxSize = 1000
 WmaxSize = 500
 
 colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
@@ -392,8 +392,8 @@ function AuxiliaryRealSpaceEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    #=W_val_arr = [[0.0]; collect(range(pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=3))]=#
-    W_val_arr = NiceValues(size_BZ)[[1, 7]]
+    W_val_arr = collect(range(0.94 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=14))
+    #=W_val_arr = NiceValues(size_BZ)[1:end-1]=#
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     SF_di = Tuple{LaTeXString, Vector{Float64}}[]
@@ -402,6 +402,7 @@ function AuxiliaryRealSpaceEntanglement(
     I2_d0 = Float64[]
     I3_d0i = Tuple{LaTeXString, Vector{Float64}}[]
     Sdz_sq = Float64[]
+    QFI = Float64[]
     specFuncIn = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncFit = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncOut = Tuple{LaTeXString, Vector{Float64}}[]
@@ -472,7 +473,7 @@ function AuxiliaryRealSpaceEntanglement(
             push!(I2_d0, corrResults["I2-di"][1])
         end
         if "I2-d0i"in keys(corrResults)
-            push!(I3_d0i, (getlabelInt(W_val, size_BZ), corrResults["I2-di"][1] .+ corrResults["I2-di"][2:end] .- corrResults["I2-d0i"]))
+            push!(I3_d0i, (getlabelInt(W_val, size_BZ), corrResults["I2-di"][end] .+ corrResults["I2-di"][1:end-1] .- corrResults["I2-d0i"]))
         end
         if "ZZ-di" in keys(corrResults)
             push!(ZZ_di, (getlabelInt(W_val, size_BZ), map(x -> maximum((1e-6, abs(x))), corrResults["ZZ-di"] ./ corrResults["ZZ-di"][1])))
@@ -480,9 +481,15 @@ function AuxiliaryRealSpaceEntanglement(
         if "Sdz_sq" in keys(corrResults)
             push!(Sdz_sq, corrResults["Sdz_sq"])
         end
+        if "n_tot_sq" in keys(corrResults) && "n_tot" in keys(corrResults)
+            push!(QFI, 4 * (corrResults["n_tot_sq"] - corrResults["n_tot"]^2))
+        end
+
+
         if "SFO" ∉ keys(corrResults)
             continue
         end
+
         println("Tk=", corrResults["Tk"])
         #=corrResults["Tk"] = maximum((0.01, minimum((1.,corrResults["Tk"]))))=#
         poleRange1 = ifelse(abs(W_val) < pseudogapStart(size_BZ), corrResults["Tk"], 0.1)
@@ -656,11 +663,26 @@ function AuxiliaryRealSpaceEntanglement(
                   xvals2 |> collect,
                   L"$r$", 
                   L"$I_3(d:r_0:r)$",
-                  "I2-d0i_$(size_BZ)-$(maxSize)";
+                  "I3-d0i_$(size_BZ)-$(maxSize)";
                   figPad=5,
                   scatter=true,
                   #=yscale=log10,=#
-                  legendPos=(0., 0.2),
+                  #=legendPos=(0., 0.2),=#
+                 )
+    end
+    if !isempty(QFI)
+        println(QFI)
+        plotLines([("", QFI)], 
+                  -W_val_arr ./ J_val,
+                  L"$-W/J$", 
+                  L"QFI",
+                  "qfi_$(size_BZ)-$(maxSize)";
+                  figPad=5,
+                  scatter=true,
+                  hlines=[(L"2-partite", 2.), (L"4-partite", 4.)],
+                  vlines=[(L"$W_\text{PG}$", abs(pseudogapStart(size_BZ)) / J_val),],
+                  legendPos=:lt,
+                  #=plotRange=collect(1:3:length(W_val_arr)),=#
                  )
     end
     if !isempty(Sdz_sq)
@@ -1282,4 +1304,4 @@ size_BZ = 33
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#
-@time AuxiliaryRealSpaceEntanglement(size_BZ; loadData=false)
+@time AuxiliaryRealSpaceEntanglement(size_BZ; loadData=true)

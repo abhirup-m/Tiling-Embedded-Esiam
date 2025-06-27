@@ -1,7 +1,7 @@
 using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
 
 const FONTSIZE = 28
-set_theme!(theme_latexfonts())
+set_theme!(merge(theme_minimal(), theme_latexfonts()))
 update_theme!(
               figure_padding = 0,
               fontsize=FONTSIZE,
@@ -17,19 +17,27 @@ update_theme!(
                 ygridvisible=false,
                      ),
               ScatterLines = (
-                       linewidth = 6,
-                       markersize=20,
+                       linewidth = 3,
+                       markersize=14,
+                       alpha=1.,
                       ),
+              Scatter = (
+                         alpha=1.,
+                        ),
               Lines = (
                        linewidth = 3,
+                       alpha=1.,
                      ),
               Legend = (
-                        patchsize=(50,20),
+                        patchsize=(30,20),
                         halign = :right,
                         valign = :top,
-                        labelsize = 18,
+                        labelsize = 15,
                         backgroundcolor=(:gray, 0.2),
-                        framecolor=:transparent,
+                        rowgap=2.,
+                        framevisible=true,
+                        framewidth=0,
+                        padding=5,
                        ),
              )
 
@@ -124,7 +132,7 @@ function plotPhaseDiagram(
               ylabel=axisLabels[2], 
               xticklabelsize=22,
               yticklabelsize=22,
-              xscale=log10,
+              #=xscale=log10,=#
               width=250,
               height=200,
              )
@@ -151,7 +159,8 @@ function plotLines(
         saveName::String;
         ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
-        scatter::Bool=false,
+        scatterLines::Vector{Int64}=Int64[],
+        scatter::Vector{Int64}=Int64[],
         vlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
         hlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
         figSize::NTuple{2, Int64}=(300, 250),
@@ -165,6 +174,8 @@ function plotLines(
         splitLegends=nothing,
         twin::Vector{Int64}=Int64[],
         twinLabel::LaTeXString=L"",
+        needsLegend::Bool=false,
+        colormap::Any=ColorSchemes.Paired_12,
     )
 
     f = Figure(figure_padding=figPad)
@@ -191,7 +202,6 @@ function plotLines(
         hidespines!(ax_twin)
         hidexdecorations!(ax_twin)
     end
-    needsLegend = false
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
 
@@ -200,45 +210,52 @@ function plotLines(
         if isempty(plotRange)
             plotRange = 1:length(yvalues)
         end
-        if !scatter
-            if isempty(name)
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
-            else
-                needsLegend = true
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth)
-            end
-        else
+        if i ∈ scatter
             if !isempty(name)
-                needsLegend = true
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[i])
             else
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+            end
+        end
+        if i ∈ scatterLines
+            if isempty(name)
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+            else
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+            end
+        end
+        if i ∉ scatter && i ∉ scatterLines
+            if isempty(name)
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[i])
+            else
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[i])
             end
         end
         push!(plots, pl)
     end
 
     if length(vlines) + length(hlines) > 0
-        lineColors = cgrad(:Dark2_8, length(vlines) + length(hlines); categorical=true)
-        for (i, (label, xloc)) in enumerate(vlines)
-            if isempty(label)
-                vlines!(ax, xloc, color=lineColors[i], linestyle=linestyles[i])
-            else
-                vlines!(ax, xloc, label=label, color=lineColors[i], linestyle=linestyles[i])
-                needsLegend = true
-            end
-        end
-        for (i, (label, yloc)) in enumerate(hlines)
-            if isempty(label)
-                hlines!(ax, yloc, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
-            else
-                hlines!(ax, yloc, label=label, color=lineColors[length(vlines) + i], linestyle=linestyles[i])
-                needsLegend = true
-            end
-        end
+        vlines!(ax, [loc for (_, loc) in vlines], linestyle=:dash, label=[lab for (lab, _) in vlines], colormap=:balance, color=[i - 1 for i in eachindex(vlines)])
+        hlines!(ax, [loc for (_, loc) in hlines], linestyle=:dash, label=[lab for (lab, _) in hlines], colormap=:balance, color=[length(vlines) + i - 1 for i in eachindex(hlines)])
+        #=for (i, (label, xloc)) in enumerate(vlines)=#
+        #=    if isempty(label)=#
+        #=        vlines!(ax, xloc, colormap=ColorSchemes.coolwarm, color=i:i, linestyle=:dash)=#
+        #=    else=#
+        #=        vlines!(ax, xloc, label=label, colormap=ColorSchemes.coolwarm, color=i:i, linestyle=:dash)=#
+        #=        needsLegend = true=#
+        #=    end=#
+        #=end=#
+        #=for (i, (label, yloc)) in enumerate(hlines)=#
+        #=    if isempty(label)=#
+        #=        hlines!(ax, yloc, colormap=ColorSchemes.coolwarm, color=length(vlines) + i, linestyle=:dash)=#
+        #=    else=#
+        #=        hlines!(ax, yloc, label=label, colormap=ColorSchemes.coolwarm, color=length(vlines) + i, linestyle=:dash)=#
+        #=        needsLegend = true=#
+        #=    end=#
+        #=end=#
     end
 
-    if needsLegend && length(nameValuePairs) > 1
+    if needsLegend
         if isnothing(splitLegends)
             axislegend(position=legendPos)
         else

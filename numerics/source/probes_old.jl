@@ -208,34 +208,21 @@ end
         maxSize::Int64,
         numBathSites::Int64,
         addPerStep::Int64,
+        standDev::Union{Float64, Vector{Float64}},
+        freqValues::Vector{Float64},
     )
-    println((maximum(values(realKondo1D[1])), numBathSites))
+    println(maximum(values(realKondo1D[1])))
     numChannels = length(realKondo1D)
 
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
-    mutInfoSites = 1:3:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
-    I2_di = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
-    I2_d0i = Dict("I2-d-0$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (mutInfoSites[end]-1), 4 + 2 * numChannels * (mutInfoSites[end]-1)]) for i in mutInfoSites[1:end-1])
+    mutInfoSites = 1:2:numBathSites
+    mutInfoDefDict = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
     isingCorrDefDict = Dict("ZZ-d-$(i)" => [("nn", [1, 3 + 2 * numChannels * (i-1)], 0.25), ("nn", [1, 4 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 3 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 4 + 2 * numChannels * (i-1)], 0.25)] for i in 1:numBathSites)
     Sdz_sq = Dict("Sdz_sq" => [("n", [1], 0.25), ("n", [2], 0.25), ("nn", [1, 2], -0.5)])
-    QFI = Dict("n_tot_sq" => Tuple{String, Vector{Int64}, Float64}[], "n_tot" => Tuple{String, Vector{Int64}, Float64}[])
-    up(k) = 1 + 2 * k
-    down(k) = up(k)
-    count = length(0:2:numChannels*(numBathSites-1))
-    for i in 0:2:numChannels*(numBathSites-1)
-        for j in 0:numChannels:numChannels*(numBathSites-1)
-            append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i), down(i), down(i+1), up(i+1), up(j), down(j), down(j+1), up(j+1)], 0.25 / count)])
-            append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i+1), down(i+1), down(i), up(i), up(j), down(j), down(j+1), up(j+1)], 0.25 / count)])
-            append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i+1), down(i+1), down(i), up(i), up(j+1), down(j+1), down(j), up(j)], 0.25 / count)])
-            append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i), down(i), down(i+1), up(i+1), up(j+1), down(j+1), down(j), up(j)], 0.25 / count)])
-        end
-        append!(QFI["n_tot"], [("+-+-", [up(i), down(i), down(i+1), up(i+1)], 0.5 / count)])
-        append!(QFI["n_tot"], [("+-+-", [up(i+1), down(i+1), down(i), up(i)], 0.5 / count)])
-    end
-    #=corrDefDict = Sdz_sq=#
+    corrDefDict = Sdz_sq
     #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq)=#
     indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * numChannels * numBathSites
@@ -253,24 +240,20 @@ end
     exitCode = 0
     specDictSet = ImpurityExcitationOperators(1)
     while true
-        @time output = IterDiag(
+        @time savePaths, iterDiagResults, specFuncOperators = IterDiag(
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
                           #=magzReq=(m, N) -> -3 ≤ m ≤ 4,=#
                           #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
-                          #=mutInfoDefDict=deepcopy(merge(I2_di, I2_d0i)),=#
-                          #=correlationDefDict=deepcopy(QFI),=#
+                          #=mutInfoDefDict=deepcopy(mutInfoDefDict),=#
+                          #=correlationDefDict=deepcopy(corrDefDict),=#
                           silent=false,
                           maxMaxSize=maxSize,
                           specFuncDefDict=specDictSet,
                          )
-        savePaths, iterDiagResults, specFuncOperators = output
-        results["SFO"] = specFuncOperators
-        #=savePaths, iterDiagResults, exitCode = output=#
-        #=savePaths, iterDiagResults = output=#
         results["SP"] = savePaths
-
+        results["SFO"] = specFuncOperators
 
         if exitCode > 0
             id = rand()
@@ -298,21 +281,9 @@ end
                     end
                     push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])
                 end
-                if "I2-d-0$(i)" in keys(iterDiagResults)
-                    if "I2-d0i" ∉ keys(results)
-                        results["I2-d0i"] = Float64[]
-                    end
-                    push!(results["I2-d0i"], iterDiagResults["I2-d-0$(i)"])
-                end
             end
             if "Sdz_sq" in keys(iterDiagResults)
                 results["Sdz_sq"] = iterDiagResults["Sdz_sq"]
-            end
-            if "n_tot_sq" in keys(iterDiagResults)
-                results["n_tot_sq"] = iterDiagResults["n_tot_sq"]
-            end
-            if "n_tot" in keys(iterDiagResults)
-                results["n_tot"] = iterDiagResults["n_tot"]
             end
             break
         end
@@ -529,7 +500,9 @@ end
 @everywhere function AuxiliaryRealSpaceEntanglement(
         hamiltDetails::Dict,
         numShells::Int64,
-        maxSize::Int64;
+        maxSize::Int64,
+        standDev::Union{Float64, Vector{Float64}},
+        freqValues::Vector{Float64};
         numChannels::Int64=1,
         savePath::Union{Nothing, String}=nothing,
         addPerStep::Int64=1,
@@ -600,6 +573,8 @@ end
                                 maxSize,
                                 length(sortedIndices)-1,
                                 addPerStep,
+                                standDev,
+                                freqValues,
                                )
     corrResults["Tk"] = kondoTemp
 

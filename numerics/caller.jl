@@ -393,6 +393,7 @@ function AuxiliaryRealSpaceEntanglement(
         size_BZ::Int64, 
         maxSize::Int64;
         loadData::Bool=false,
+        doFit::Bool=true,
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = collect(range(0.94 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=14))=#
@@ -532,13 +533,15 @@ function AuxiliaryRealSpaceEntanglement(
         if abs(W_val) < abs(pseudogapStart(size_BZ))
             push!(specFuncFit, (getlabelInt(W_val, size_BZ), 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0][1]))
             model1(x, p) = p[1] .* x.^p[2]
-            fit_params = [1, 2.] # [2., specFunc[freqValues .≥ 0][1]]
+            fit_params = [1, 2.] 
             xvals = freqValues[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
             yvals = 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- minimum(1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0])
-            fit = curve_fit(model1, xvals, yvals, fit_params)
-            fit_params = coef(fit)
-            println("Fits: ", fit_params)
-            println("Error: ", stderror(fit))
+            if doFit
+                fit = curve_fit(model1, xvals, yvals, fit_params)
+                fit_params = coef(fit)
+                println("Fits: ", fit_params)
+                println("Error: ", stderror(fit))
+            end
             push!(specFuncFit, (L"$n=%$(round(fit_params[2], digits=3))$", model1((freqValues ./ freqScaleFactor)[freqLimit1 * freqScaleFactor .> freqValues .≥ 0], fit_params)))
         else
             push!(specFuncFit, (getlabelInt(W_val, size_BZ), specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- specFunc[freqValues .≥ 0][1]))
@@ -546,10 +549,12 @@ function AuxiliaryRealSpaceEntanglement(
             fit_params = [3.5, 2.]
             xvals = freqValues[freqScaleFactor * 10^(-4.2) .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
             yvals = specFunc[freqScaleFactor * 10^(-4.2) .≤ freqValues .< freqLimit1 * freqScaleFactor] .- specFunc[freqValues .≥ 0.][1]
-            fit = curve_fit(model3, log10.(xvals), log10.(yvals), fit_params)
-            fit_params = coef(fit)
-            println("Fits: ", fit_params)
-            println("Error: ", stderror(fit))
+            if doFit
+                fit = curve_fit(model3, log10.(xvals), log10.(yvals), fit_params)
+                fit_params = coef(fit)
+                println("Fits: ", fit_params)
+                println("Error: ", stderror(fit))
+            end
             push!(specFuncFit, (L"$n=%$(round(fit_params[2], digits=3))$", (10^fit_params[1] .* ((abs.(freqValues) ./ freqScaleFactor) .^ fit_params[2]))[freqLimit1 * freqScaleFactor .> freqValues .≥ 0]))
 
         end
@@ -566,10 +571,12 @@ function AuxiliaryRealSpaceEntanglement(
             println("SE=",imagSelfEnergy[freqValues .>= 0][1])
             push!(selfEnergyHeight, abs(imagSelfEnergy[freqValues .≥ 0][1]))
             fit_params = [1e-2, 2.0]
-            fit = curve_fit(model2, xvals, imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1], fit_params)
-            fit_params = coef(fit)
-            println("Fits: ", fit_params)
-            println("Error: ", stderror(fit))
+            if doFit
+                fit = curve_fit(model2, xvals, imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1], fit_params)
+                fit_params = coef(fit)
+                println("Fits: ", fit_params)
+                println("Error: ", stderror(fit))
+            end
             push!(selfEnergyFit, (getlabelInt(W_val, size_BZ), imagSelfEnergy[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] .- imagSelfEnergy[freqValues .≥ 0][1]))
             push!(selfEnergyFit, (L"$n=%$(round(fit_params[2], digits=3))$", model2(freqValues[freqScaleFactor * freqLimit1 .≥ freqValues .≥ 0] ./ freqScaleFactor, fit_params)))
             push!(selfEnergyIn, (getlabelInt(W_val, size_BZ), abs.(imagSelfEnergy .- minimum(imagSelfEnergy[freqScaleFactor .> freqValues .> 0]))))
@@ -582,10 +589,12 @@ function AuxiliaryRealSpaceEntanglement(
             xvals = freqValues[0. .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
             yvals = 1 ./ imagSelfEnergy[0. .≤ freqValues .< freqLimit1 * freqScaleFactor] .- 1 / imagSelfEnergy[0 .≤ freqValues][1]
             fit_params = [0.5, 1.7]
-            fit = curve_fit(model4, xvals, yvals, fit_params)
-            fit_params = coef(fit)
-            println("Fits: ", fit_params)
-            println("Error: ", stderror(fit))
+            if doFit
+                fit = curve_fit(model4, xvals, yvals, fit_params)
+                fit_params = coef(fit)
+                println("Fits: ", fit_params)
+                println("Error: ", stderror(fit))
+            end
             push!(selfEnergyFit, (getlabelInt(W_val, size_BZ), 1 ./ imagSelfEnergy[0 .≤ freqValues .≤ freqLimit1 * freqScaleFactor] .- 1 / imagSelfEnergy[0 .≤ freqValues][1]))
             push!(selfEnergyFit, (L"$n=%$(round(fit_params[2], digits=3))$", model4(freqValues[freqLimit1 * freqScaleFactor .≥ freqValues .≥ 0] ./ freqScaleFactor, fit_params)))
             push!(selfEnergyIn, (getlabelInt(W_val, size_BZ), abs.(imagSelfEnergy .- minimum(imagSelfEnergy[freqScaleFactor .> freqValues .> 0]))))

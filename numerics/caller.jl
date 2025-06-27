@@ -14,10 +14,10 @@ include("./source/plotting.jl")
 
 global J_val = 0.1
 @everywhere global orbitals = ("p", "p")
-maxSize = 1000
+maxSize = 200
 WmaxSize = 500
 
-colmap = [ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
+colmap = ColorSchemes.balance #[ColorSchemes.thermal, ColorSchemes.cherry[1:end-1]][2]
 phasesColmap = reverse(ColorSchemes.cherry)
 numShells = 1
 bathIntLegs = 3
@@ -115,17 +115,17 @@ function ScattProb(
         for point in [node, antinode, mid]
             matrix = kondoJArrays[W_val][point, :, end]
             matrix[abs.(matrix) .< 1e-10] .= 0
-            matrix[matrix .> 1e-10] .= 1
-            matrix[matrix .< -1e-10] .= -1
+            #=matrix[matrix .> 1e-10] .= 1=#
+            #=matrix[matrix .< -1e-10] .= -1=#
             push!(saveNames[point], 
                   plotHeatmap(matrix, 
                               (x_arr, x_arr),
                               (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                               L"$\Gamma/\Gamma_0$", 
                               getlabelInt(W_val, size_BZ), 
-                              ColorSchemes.viridis;
-                              line=Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1],
-                              marker=map1DTo2D(point, size_BZ) ./ π,
+                              colmap;
+                              line=sort(Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1], by=pair->atan(pair[1],pair[2])),
+                              marker=(map1DTo2D(point, size_BZ) ./ π, :black),
                               legendPos=(:bottom, :left)
                              )
                  )
@@ -392,7 +392,7 @@ function AuxiliaryRealSpaceEntanglement(
         loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = collect(range(0.94 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=14))
+    W_val_arr = collect(range(0.94 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=20))
     #=W_val_arr = NiceValues(size_BZ)[1:end-1]=#
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
@@ -1291,9 +1291,9 @@ function TiledEntanglement(
 end
 
 
-size_BZ = 33
+size_BZ = 77
 #=@time ChannelDecoupling(size_BZ; loadData=true)=#
-#=@time ScattProb(size_BZ; loadData=true)=#
+@time ScattProb(size_BZ; loadData=true)
 #=@time KondoCouplingMap(size_BZ)=#
 #=@time AuxiliaryCorrelations(size_BZ; spinOnly=true, loadData=false)=#
 #=@time AuxiliaryCorrelations(size_BZ; chargeOnly=true, loadData=false)=#
@@ -1304,4 +1304,4 @@ size_BZ = 33
 #=@time TiledSpinCorr(size_BZ; loadData=true)=#
 #=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
 #=@time TiledEntanglement(size_BZ; loadData=true);=#
-@time AuxiliaryRealSpaceEntanglement(size_BZ; loadData=true)
+#=@time AuxiliaryRealSpaceEntanglement(size_BZ; loadData=true)=#

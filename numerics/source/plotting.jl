@@ -66,7 +66,7 @@ function plotHeatmap(
         figSize::NTuple{2, Int64}=(200, 200),
         figPad::Union{NTuple{4, Float64}, Float64}=0.,
         colorScale::Function=identity,
-        marker::Union{Nothing, Vector{Float64}}=nothing,
+        marker::Union{Nothing, Tuple{Vector{Float64}, Symbol}}=nothing,
         line::Vector{NTuple{2, Number}}=NTuple{2, Number}[],
         legendPos::NTuple{2, Symbol}=(:top, :right),
     )
@@ -95,10 +95,10 @@ function plotHeatmap(
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
 
     if !isempty(line)
-        scatter!(ax, line .|> first, line .|> last, color = :maroon, markersize=4)
+        lines!(ax, line .|> first, line .|> last, color = :black, linestyle=:dash)
     end
     if !isnothing(marker)
-        scatter!(ax, marker..., color=:gray, markersize=20)
+        scatter!(ax, marker[1]..., color=marker[2], markersize=20)
     end
 
     Colorbar(figure[1, 2], hm)

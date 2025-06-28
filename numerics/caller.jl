@@ -704,11 +704,12 @@ function AuxiliaryRealSpaceEntanglement(
                   figPad=8,
                   #=figSize=(400,250),=#
                   xlimits=(-90 * freqLimit1, 90 * freqLimit1),
-                  ylimits=(10^(-4.5), 0.4),
+                  ylimits=(10^(-4.4), 10^0.5),
                   #=xscale=log10,=#
                   yscale=log10,
                   needsLegend=true,
                   colormap=discreteColmap,
+                  splitLegends = ((1:3, :lt), (3:5, :rt)),
                  )
     end
     if !isempty(specFuncFit)
@@ -756,6 +757,7 @@ function AuxiliaryRealSpaceEntanglement(
                   legendPos=:cb,
                   needsLegend=true,
                   colormap=discreteColmap,
+                  splitLegends = ((1:3, (0., 0.85)), (4:5, (0.9, 0.85))),
                  )
     end
     if !isempty(selfEnergyFit)
@@ -766,14 +768,14 @@ function AuxiliaryRealSpaceEntanglement(
                   "selfEnergy_d_fit_$(size_BZ)-$(maxSize)";
                   figPad=(5, 30, 5, 15),
                   xlimits=(1e-5, freqLimit1),
-                  ylimits = (1e-14, 1e0),
+                  ylimits = (1e-15, 1e1),
                   xscale=log10,
                   yscale=log10,
                   splitLegends = ((1:2:length(selfEnergyFit), :lt), (2:2:length(selfEnergyFit), :rb)),
                   scatter=1:2:length(selfEnergyFit)|>collect,
                   twin=[3,4,5],
                   twinLabel=L"$-\left(\Sigma^{\prime\prime}_d(\omega)\right)^{-1}~(\text{NFL})$",
-                  #=figSize=(300, 300),=#
+                  figSize=(320, 260),
                   needsLegend=true,
                   colormap=discreteColmap,
                  )
@@ -785,7 +787,7 @@ function AuxiliaryRealSpaceEntanglement(
                   L"$-\Sigma^{\prime\prime}_d(\omega)$",
                   "selfEnergy_d_zoomout_$(size_BZ)-$(maxSize)";
                   figPad=(10, 15, 10, 15),
-                  xlimits=(0., 1.5 * freqLimit2),
+                  xlimits=(0., 1.0 * freqLimit2),
                   ylimits = (-0.1, 10.),
                   needsLegend=true,
                   #=figSize=(320,280),=#
@@ -1321,6 +1323,6 @@ size_BZ = 33
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, maxSize, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ, maxSize; loadData=true, singleThread=true)=#
 #=@time TiledSpinCorr(size_BZ, maxSize; loadData=true)=#
-@time PhaseDiagram(33, (-1.5, -0.5), 0.01, (-0.1, -0.2), 1e-3; loadData=true, fillPG=true)
+#=@time PhaseDiagram(33, (-1.5, -0.5), 0.01, (-0.1, -0.2), 1e-3; loadData=true, fillPG=true)=#
 #=@time TiledEntanglement(size_BZ, maxSize; loadData=true);=#
-#=@time AuxiliaryRealSpaceEntanglement(77, 500; loadData=false)=#
+@time AuxiliaryRealSpaceEntanglement(77, 1000; loadData=false)

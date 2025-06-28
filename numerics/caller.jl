@@ -17,7 +17,7 @@ global J_val = 0.1
 maxSize = 1000
 WmaxSize = 500
 
-colmap = ColorSchemes.balance
+colmap = ColorSchemes.coolwarm # ColorSchemes.balance[20:end-20]
 discreteColmap = vcat(ColorSchemes.Paired_12[2:2:end], ColorSchemes.Paired_12[1:2:end])
 phasesColmap = reverse(ColorSchemes.cherry)
 numShells = 1
@@ -116,17 +116,17 @@ function ScattProb(
         for point in [node, antinode, mid]
             matrix = kondoJArrays[W_val][point, :, end]
             matrix[abs.(matrix) .< 1e-10] .= 0
-            #=matrix[matrix .> 1e-10] .= 1=#
-            #=matrix[matrix .< -1e-10] .= -1=#
+            matrix[matrix .> 1e-10] .= 1
+            matrix[matrix .< -1e-10] .= -1
             push!(saveNames[point], 
                   plotHeatmap(matrix, 
                               (x_arr, x_arr),
                               (L"$ak_x/\pi$", L"$ak_y/\pi$"),
                               L"$\Gamma/\Gamma_0$", 
                               getlabelInt(W_val, size_BZ), 
-                              colmap;
-                              line=sort(Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1], by=pair->atan(pair[1],pair[2])),
-                              marker=(map1DTo2D(point, size_BZ) ./ π, :black),
+                              ColorSchemes.viridis;
+                              line=Tuple{Number, Number}[(kx, ky) for kx in -1:0.01:1 for ky in -1:0.01:1 if abs(kx + ky) == 1 || abs(kx - ky) == 1],
+                              marker=map1DTo2D(point, size_BZ) ./ π,
                               legendPos=(:bottom, :left)
                              )
                  )
@@ -392,8 +392,8 @@ end
 function AuxiliaryRealSpaceEntanglement(
         size_BZ::Int64, 
         maxSize::Int64;
-        loadData::Bool=false,
         doFit::Bool=true,
+        loadData::Bool=false,
     )
     x_arr = get_x_arr(size_BZ)
     #=W_val_arr = collect(range(0.94 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=14))=#
@@ -533,7 +533,7 @@ function AuxiliaryRealSpaceEntanglement(
         if abs(W_val) < abs(pseudogapStart(size_BZ))
             push!(specFuncFit, (getlabelInt(W_val, size_BZ), 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0][1]))
             model1(x, p) = p[1] .* x.^p[2]
-            fit_params = [1, 2.] 
+            fit_params = [1, 2.] # [2., specFunc[freqValues .≥ 0][1]]
             xvals = freqValues[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
             yvals = 1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0] .- minimum(1 ./ specFunc[freqLimit1 * freqScaleFactor .> freqValues .≥ 0])
             if doFit
@@ -1109,16 +1109,20 @@ end
 
 function PhaseDiagram(
         size_BZ::Int64, 
-        tolerance::Float64;
+        kondoJValsLims::NTuple{2, Float64},
+        kondoJValsSpacing::Float64,
+        bathIntLims::NTuple{2, Float64},
+        bathIntSpacing::Float64;
         loadData::Bool=false,
+        fillPG::Bool=false,
     )
-    kondoJVals = 10 .^ (-1.5:0.01:-0.6)
-    bathIntVals = collect(-0.12:-0.0001:-0.2)
+    kondoJVals = 10 .^ (minimum(kondoJValsLims):kondoJValsSpacing:maximum(kondoJValsLims))
+    bathIntVals = collect(minimum(bathIntLims):bathIntSpacing:maximum(bathIntLims))
     phaseLabels = ["L-FL", "L-PG", "LM"]
-    phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, tolerance, Dict(phaseLabels .=> 1:3); loadData=loadData)
+    phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, bathIntSpacing; loadData=loadData, fillPG=fillPG)
     plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (kondoJVals, -1 .* bathIntVals),
-                     (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram.pdf",  
-                     phasesColmap[[2, 5, 8]])
+                     (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram-$(size_BZ)-$(bathIntSpacing).pdf",  
+                     colmap,)
 end
 
 function TiledSpinCorr(
@@ -1317,6 +1321,6 @@ size_BZ = 33
 #=@time AuxiliaryMomentumSpecfunc(size_BZ, maxSize, (-3π/4, -π/4); loadData=false)=#
 #=@time LatticeKspaceDOS(size_BZ, maxSize; loadData=true, singleThread=true)=#
 #=@time TiledSpinCorr(size_BZ, maxSize; loadData=true)=#
-#=@time PhaseDiagram(size_BZ, 1e-4; loadData=true)=#
+@time PhaseDiagram(33, (-1.5, -0.5), 0.01, (-0.1, -0.2), 1e-3; loadData=true, fillPG=true)
 #=@time TiledEntanglement(size_BZ, maxSize; loadData=true);=#
-@time AuxiliaryRealSpaceEntanglement(77, 500; loadData=false)
+#=@time AuxiliaryRealSpaceEntanglement(77, 500; loadData=false)=#

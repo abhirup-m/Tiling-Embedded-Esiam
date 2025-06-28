@@ -118,7 +118,7 @@ end
 
 
 function plotPhaseDiagram(
-        matrixData::Matrix{Int64},
+        matrixData::Matrix{Float64},
         legend::Dict{Int64, String},
         axisVals::NTuple{2, Vector{Float64}},
         axisLabels::NTuple{2, Union{String, LaTeXString}},
@@ -132,20 +132,17 @@ function plotPhaseDiagram(
               ylabel=axisLabels[2], 
               xticklabelsize=22,
               yticklabelsize=22,
-              #=xscale=log10,=#
               width=250,
               height=200,
              )
 
-    for v in unique(matrixData)
-        scatter!(ax, [0.5 * (axisVals[1][1] + axisVals[1][end])], [0.5 * (axisVals[2][1] + axisVals[2][end])], color=colmap[v], marker=:rect, label=legend[v]=>(; markersize=15))
-    end
-    heatmap!(ax, 
+    hm = heatmap!(ax, 
              axisVals..., 
              matrixData; 
              colormap=colmap,
             )
-    figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., -10.), patchcolor=:transparent, patchlabelgap=-10, colgap=0)
+    Colorbar(figure[:, end+1], hm)
+    #=figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., -10.), patchcolor=:transparent, patchlabelgap=-10, colgap=0)=#
     resize_to_layout!(figure)
     save(savename, figure)
 end

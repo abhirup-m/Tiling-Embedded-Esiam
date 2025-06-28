@@ -1,7 +1,7 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-@everywhere using ProgressMeter, Combinatorics, Serialization, Fermions
+@everywhere using ProgressMeter, Combinatorics, Serialization, Fermions, JSON3
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -946,10 +946,10 @@ end
     )
     fracToIndex(f) = ifelse(f == 1, 1, ifelse(f > 0, 2, 3))
 
-    savePathCrit = joinpath(SAVEDIR, "crit-$(size_BZ)-$(kondoJ).jld2")
+    savePathCrit = joinpath(SAVEDIR, "crit-$(size_BZ)-$(kondoJ).json")
     criticalBathIntData = Dict{String,Vector{Float64}}()
     if isfile(savePathCrit) && loadData
-        merge!(criticalBathIntData, FileIO.load(savePathCrit))
+        merge!(criticalBathIntData, JSON3.read(read(savePathCrit, String), typeof(criticalBathIntData)))
         if string(bathIntSpacing) ∈ keys(criticalBathIntData)
             return criticalBathIntData[string(bathIntSpacing)]
         end
@@ -958,10 +958,10 @@ end
     criticalBathInt = Float64[]
     @assert issorted(transitionWindow, rev=true)
 
-    savePath = joinpath(SAVEDIR, "pf-$(size_BZ)-$(kondoJ).jld2")
+    savePath = joinpath(SAVEDIR, "pf-$(size_BZ)-$(kondoJ).json")
     availableData = Dict{String,Float64}()
     if isfile(savePath)
-        merge!(availableData, FileIO.load(savePath))
+        merge!(availableData, JSON3.read(read(savePath, String), typeof(availableData)))
     end
     for phaseBoundType in [(1, 2), (2, 3)]
         currentTransitionWindow = copy(transitionWindow)
@@ -985,8 +985,9 @@ end
     end
     criticalBathIntData[string(bathIntSpacing)] = criticalBathInt
 
-    FileIO.save(savePath, availableData)
-    FileIO.save(savePathCrit, criticalBathIntData)
+    open(savePath, "w") do file JSON3.write(file, availableData) end
+    open(savePathCrit, "w") do file JSON3.write(file, criticalBathIntData) end
+
     return criticalBathInt
 end
 

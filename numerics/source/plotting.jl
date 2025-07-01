@@ -33,7 +33,7 @@ update_theme!(
                         halign = :right,
                         valign = :top,
                         labelsize = 14,
-                        backgroundcolor=(:gray, 0.2),
+                        backgroundcolor=(:gray, 0.1),
                         rowgap=-5,
                         framevisible=true,
                         framewidth=0,

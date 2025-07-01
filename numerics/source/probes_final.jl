@@ -1,7 +1,7 @@
 ##### Functions for calculating various probes          #####
 ##### (correlation functions, Greens functions, etc)    #####
 
-@everywhere using ProgressMeter, Combinatorics, Serialization, Fermions, JSON3
+@everywhere using ProgressMeter, Combinatorics, Serialization, Fermions
 
 """
 Function to calculate the total Kondo scattering probability Γ(k) = ∑_q J(k,q)^2
@@ -208,6 +208,8 @@ end
         maxSize::Int64,
         numBathSites::Int64,
         addPerStep::Int64,
+        standDev::Union{Float64, Vector{Float64}},
+        freqValues::Vector{Float64},
     )
     println((maximum(values(realKondo1D[1])), numBathSites))
     numChannels = length(realKondo1D)
@@ -215,7 +217,7 @@ end
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
-    mutInfoSites = 1:3:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
+    mutInfoSites = 1:1:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
     I2_di = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
     I2_d0i = Dict("I2-d-0$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (mutInfoSites[end]-1), 4 + 2 * numChannels * (mutInfoSites[end]-1)]) for i in mutInfoSites[1:end-1])
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
@@ -224,9 +226,9 @@ end
     QFI = Dict("n_tot_sq" => Tuple{String, Vector{Int64}, Float64}[], "n_tot" => Tuple{String, Vector{Int64}, Float64}[])
     up(k) = 1 + 2 * k
     down(k) = up(k)
-    count = length(0:2:numChannels*(numBathSites-1))
+    count = length(0:numChannels*(numBathSites-1))
     for i in 0:2:numChannels*(numBathSites-1)
-        for j in 0:numChannels:numChannels*(numBathSites-1)
+        for j in 0:2:numChannels*(numBathSites-1)
             append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i), down(i), down(i+1), up(i+1), up(j), down(j), down(j+1), up(j+1)], 0.25 / count)])
             append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i+1), down(i+1), down(i), up(i), up(j), down(j), down(j+1), up(j+1)], 0.25 / count)])
             append!(QFI["n_tot_sq"], [("+-+-+-+-", [up(i+1), down(i+1), down(i), up(i), up(j+1), down(j+1), down(j), up(j)], 0.25 / count)])
@@ -236,7 +238,7 @@ end
         append!(QFI["n_tot"], [("+-+-", [up(i+1), down(i+1), down(i), up(i)], 0.5 / count)])
     end
     #=corrDefDict = Sdz_sq=#
-    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq)=#
+    corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict)
     indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * numChannels * numBathSites
         push!(indexPartitions, minimum((indexPartitions[end] + 2 * addPerStep, 2 + 2 * numChannels * numBathSites)))
@@ -259,7 +261,9 @@ end
                           symmetries=Char['N', 'S'],
                           #=magzReq=(m, N) -> -3 ≤ m ≤ 4,=#
                           #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
+                          #=mutInfoDefDict=deepcopy(I2_di),=#
                           #=mutInfoDefDict=deepcopy(merge(I2_di, I2_d0i)),=#
+                          #=correlationDefDict=deepcopy(corrDefDict),=#
                           #=correlationDefDict=deepcopy(QFI),=#
                           silent=false,
                           maxMaxSize=maxSize,
@@ -529,7 +533,9 @@ end
 @everywhere function AuxiliaryRealSpaceEntanglement(
         hamiltDetails::Dict,
         numShells::Int64,
-        maxSize::Int64;
+        maxSize::Int64,
+        standDev::Union{Float64, Vector{Float64}},
+        freqValues::Vector{Float64};
         numChannels::Int64=1,
         savePath::Union{Nothing, String}=nothing,
         addPerStep::Int64=1,
@@ -600,6 +606,8 @@ end
                                 maxSize,
                                 length(sortedIndices)-1,
                                 addPerStep,
+                                standDev,
+                                freqValues,
                                )
     corrResults["Tk"] = kondoTemp
 
@@ -746,7 +754,7 @@ function LatticeKspaceDOS(
         standDevGuess::Float64=0.1,
         nonIntSpecBzone::Union{Vector{Vector{Float64}}, Nothing}=nothing,
         selfEnergyWindow::Float64=0.,
-        singleThread::Bool=false,
+        numThreads::Int64=0,
     )
     size_BZ = hamiltDetails["size_BZ"]
     cutoffEnergy = hamiltDetails["dispersion"][div(size_BZ - 1, 2) + 2 - numShells]
@@ -833,17 +841,13 @@ function LatticeKspaceDOS(
             return specFunc
         end
 
-        specFuncResults = Any[nothing, nothing]
-        @sync begin
-            if !singleThread
-                @async specFuncResults[1] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in calculatePoints])
-                @async specFuncResults[2] = fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in calculatePoints])
-            else
-                for k in calculatePoints
-                    push!(specFuncResults[1], SpectralCoeffsAtKpoint(k, onlyCoeffs))
-                    push!(specFuncResults[2], SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true))
-                end
-            end
+        specFuncResults = Any[[], []]
+        if numThreads == 0
+            numThreads = length(calculatePoints)
+        end
+        @sync for chunk in Iterators.partition(calculatePoints, numThreads)
+            @async append!(specFuncResults[1], fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs) for k in chunk]))
+            @async append!(specFuncResults[2], fetch.([Threads.@spawn SpectralCoeffsAtKpoint(k, onlyCoeffs; invert=true) for k in chunk]))
         end
         for results in specFuncResults
             for (index, specFuncResultsPoint) in enumerate(results)
@@ -899,8 +903,8 @@ function LatticeKspaceDOS(
                                                                                pinBottom=maximum(abs.(hamiltDetails["kondoJArray"][calculatePoints[index], SWIndicesAll])) > 0
                                                                               ))
         results["selfEnergyKspace"][calculatePoints[index]] = -(sum(imagSelfEnergy[abs.(freqValues) .≤ selfEnergyWindow]) * (maximum(freqValues) - minimum(freqValues)) ./ (length(freqValues) -1))
-        results["selfEnergyKspace"][calculatePoints[index]] = minimum((1e2, results["selfEnergyKspace"][calculatePoints[index]]))
-        results["selfEnergyKspace"][calculatePoints[index]] = maximum((1e-2, results["selfEnergyKspace"][calculatePoints[index]]))
+        results["selfEnergyKspace"][calculatePoints[index]] = minimum((1e3, results["selfEnergyKspace"][calculatePoints[index]]))
+        results["selfEnergyKspace"][calculatePoints[index]] = maximum((1e-4, results["selfEnergyKspace"][calculatePoints[index]]))
     end
 
     results = PropagateIndices(calculatePoints, results, size_BZ, 
@@ -910,28 +914,25 @@ function LatticeKspaceDOS(
 end
 
 
-@everywhere function PoleFraction(
+@everywhere function PhaseIndex(
         size_BZ::Int64,
         omega_by_t::Float64,
         J_val::Float64,
-        W_val::Float64;
-        availableData::Dict{String,Float64}=Dict(),
-        loadData::Bool=false,
+        W_val::Float64,
+        fermiPoints::Vector{Int64},
     )
-    if string(W_val) ∈ keys(availableData) && loadData
-        return availableData[string(W_val)]
-    end
-    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals; saveData=false, loadData=true)
-    fermiPoints = unique(getIsoEngCont(dispersion, 0.0))
-    @assert length(fermiPoints) == 2 * size_BZ - 2
-    @assert all(==(0), dispersion[fermiPoints])
+    kondoJArray, dispersion = momentumSpaceRG(size_BZ, omega_by_t, J_val, W_val, orbitals; saveData=false)
     averageKondoScale = sum(abs.(kondoJArray[:, :, 1])) / length(kondoJArray[:, :, 1])
     @assert averageKondoScale > RG_RELEVANCE_TOL
     kondoJArray[:, :, end] .= ifelse.(abs.(kondoJArray[:, :, end]) ./ averageKondoScale .> RG_RELEVANCE_TOL, kondoJArray[:, :, end], 0)
     scattProbBool = ScattProb(size_BZ, kondoJArray, dispersion)[2]
-    polesFraction = count(>(0), scattProbBool[fermiPoints])/length(fermiPoints)
-    availableData[string(W_val)] = polesFraction
-    return polesFraction
+    if all(>(0), scattProbBool[fermiPoints])
+        return 1
+    elseif !all(==(0), scattProbBool[fermiPoints])
+        return 2
+    else
+        return 3
+    end
 end
 
 
@@ -940,38 +941,23 @@ end
         omega_by_t::Float64,
         kondoJ::Float64,
         transitionWindow::Vector{Float64},
-        bathIntSpacing::Float64;
+        fermiPoints::Vector{Int64},
+        tolerance::Float64;
         maxIter=100,
         loadData::Bool=false,
     )
-    fracToIndex(f) = ifelse(f == 1, 1, ifelse(f > 0, 2, 3))
-
-    savePathCrit = joinpath(SAVEDIR, "crit-$(size_BZ)-$(kondoJ).json")
-    criticalBathIntData = Dict{String,Vector{Float64}}()
-    if isfile(savePathCrit) && loadData
-        merge!(criticalBathIntData, JSON3.read(read(savePathCrit, String), typeof(criticalBathIntData)))
-        if string(bathIntSpacing) ∈ keys(criticalBathIntData)
-            return criticalBathIntData[string(bathIntSpacing)]
-        end
-    end
-    @assert bathIntSpacing > 0
+    @assert tolerance > 0
     criticalBathInt = Float64[]
     @assert issorted(transitionWindow, rev=true)
-
-    savePath = joinpath(SAVEDIR, "pf-$(size_BZ)-$(kondoJ).json")
-    availableData = Dict{String,Float64}()
-    if isfile(savePath)
-        merge!(availableData, JSON3.read(read(savePath, String), typeof(availableData)))
-    end
     for phaseBoundType in [(1, 2), (2, 3)]
         currentTransitionWindow = copy(transitionWindow)
-        currentPoleFractions = [PoleFraction(size_BZ, omega_by_t, kondoJ, W_val; availableData=availableData, loadData=loadData) for W_val in currentTransitionWindow]
-        currentPhaseIndices = map(fracToIndex, currentPoleFractions)
+        currentPhaseIndices = [PhaseIndex(size_BZ, omega_by_t, kondoJ, W_val, fermiPoints) for W_val in currentTransitionWindow]
+        @assert currentPhaseIndices[1] ≤ phaseBoundType[1] && currentPhaseIndices[2] ≥ phaseBoundType[2]
+        @assert 2 ∈ phaseBoundType
         numIter = 1
-        while abs(currentTransitionWindow[1] - currentTransitionWindow[2]) > bathIntSpacing && numIter < maxIter
+        while abs(currentTransitionWindow[1] - currentTransitionWindow[2]) > tolerance && numIter < maxIter
             updatedEdge = 0.5 * sum(currentTransitionWindow)
-            newPoleFraction = PoleFraction(size_BZ, omega_by_t, kondoJ, updatedEdge; availableData=availableData, loadData=loadData)
-            newPhaseIndex = fracToIndex(newPoleFraction)
+            newPhaseIndex = PhaseIndex(size_BZ, omega_by_t, kondoJ, updatedEdge, fermiPoints)
             if newPhaseIndex == currentPhaseIndices[1] || newPhaseIndex == phaseBoundType[1]
                 currentPhaseIndices[1] = newPhaseIndex
                 currentTransitionWindow[1] = updatedEdge
@@ -983,11 +969,6 @@ end
         end
         push!(criticalBathInt, 0.5 * sum(currentTransitionWindow))
     end
-    criticalBathIntData[string(bathIntSpacing)] = criticalBathInt
-
-    open(savePath, "w") do file JSON3.write(file, availableData) end
-    open(savePathCrit, "w") do file JSON3.write(file, criticalBathIntData) end
-
     return criticalBathInt
 end
 
@@ -996,38 +977,41 @@ function PhaseDiagram(
         omega_by_t::Float64,
         kondoJVals::Vector{Float64}, 
         bathIntVals::Vector{Float64}, 
-        bathIntSpacing::Float64;
+        tolerance::Float64,
+        phaseMaps::Dict{String, Int64};
         loadData::Bool=false,
-        fillPG::Bool=false,
     )
     @assert issorted(kondoJVals)
+    densityOfStates, dispersionArray = getDensityOfStates(tightBindDisp, size_BZ)
+    fermiPoints = unique(getIsoEngCont(dispersionArray, 0.0))
+    @assert length(fermiPoints) == 2 * size_BZ - 2
+    @assert all(==(0), dispersionArray[fermiPoints])
+
+    phaseDiagram = fill(0, (length(kondoJVals), length(bathIntVals)))
+    savePath = joinpath(SAVEDIR, "crit-bathint-$(size_BZ).jld2") 
+    if loadData && ispath(savePath)
+        loadedData = load(savePath)
+    else
+        loadedData = Dict()
+    end
+    keyFunc(kondoJ) = "$(tolerance)-$(kondoJ)"
+    #=criticalBathIntResults = [[0., 0.] for _ in kondoJVals]=#
+    #=@showprogress Threads.@threads for index in eachindex(kondoJVals)=#
+    #=    kondoJ = kondoJVals[index]=#
+    #=    criticalBathIntResults[index] .= keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData)=#
+    #=end=#
+    @time criticalBathIntResults = @showprogress pmap(kondoJ -> keyFunc(kondoJ) ∈ keys(loadedData) ? loadedData[keyFunc(kondoJ)] : CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], fermiPoints, tolerance; loadData=loadData), kondoJVals)
+    for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
+        phaseDiagram[i, bathIntVals .≥ PGStart] .= phaseMaps["L-FL"]
+        phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= phaseMaps["L-PG"]
+        phaseDiagram[i, PGStop .≥ bathIntVals] .= phaseMaps["LM"]
+    end
+
     mkpath(SAVEDIR)
-    phaseDiagram = fill(0., (length(kondoJVals), length(bathIntVals)))
-    criticalBathIntResults = @showprogress pmap(kondoJ -> CriticalBathInt(size_BZ, omega_by_t, kondoJ, [maximum(bathIntVals), minimum(bathIntVals)], bathIntSpacing; loadData=loadData), kondoJVals)
-    for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
-        phaseDiagram[i, bathIntVals .≥ PGStart] .= 1.
-        phaseDiagram[i, PGStop .≥ bathIntVals] .= 0.
-    end
-
-    pgFillComplete = @showprogress @distributed (v1, v2) -> vcat(v1, v2) for i in eachindex(criticalBathIntResults)
-        PGStart, PGStop = criticalBathIntResults[i]
-        pgFill = zeros(length(bathIntVals[PGStart .≥ bathIntVals .≥ PGStop]))
-        if fillPG
-            savePath = joinpath(SAVEDIR, "pf-$(size_BZ)-$(kondoJVals[i]).json")
-            availableData = Dict{String,Float64}()
-            if isfile(savePath)
-                merge!(availableData, JSON3.read(read(savePath, String), typeof(availableData)))
-            end
-            pgFill .= [PoleFraction(size_BZ, omega_by_t, kondoJVals[i], W_val; availableData=availableData, loadData=loadData) for W_val in bathIntVals[PGStart .≥ bathIntVals .≥ PGStop]]
-            open(savePath, "w") do file JSON3.write(file, availableData) end
-        else
-            pgFill .= 0.5
+    jldopen(savePath, "w"; compress = true) do f
+        for (kondoJ, r) in zip(kondoJVals, criticalBathIntResults)
+            f[keyFunc(kondoJ)] = (r[1], r[2])
         end
-        [pgFill]
     end
-    for (i, (PGStart, PGStop)) in enumerate(criticalBathIntResults)
-        phaseDiagram[i, PGStart .≥ bathIntVals .≥ PGStop] .= pgFillComplete[i]
-    end
-
     return phaseDiagram
 end

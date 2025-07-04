@@ -1165,9 +1165,11 @@ function PhaseDiagram(
     bathIntVals = collect(minimum(bathIntLims):bathIntSpacing:maximum(bathIntLims))
     phaseLabels = ["L-FL", "L-PG", "LM"]
     phaseDiagram = PhaseDiagram(size_BZ, OMEGA_BY_t, kondoJVals, bathIntVals, bathIntSpacing; loadData=loadData, fillPG=fillPG)
-    plotPhaseDiagram(phaseDiagram, Dict(1:3 .=> phaseLabels), (kondoJVals, -1 .* bathIntVals),
+    plotPhaseDiagram(phaseDiagram, (kondoJVals, -1 .* bathIntVals),
                      (L"J/t", L"-W/t"), L"L=%$(size_BZ)", "phaseDiagram-$(size_BZ)-$(bathIntSpacing).pdf",  
-                     colmap,)
+                     ColorSchemes.balance[40:end-40]; 
+                     figPad=(0., 10., 5., 15.),
+                    )
 end
 
 function TiledSpinCorr(

@@ -119,14 +119,14 @@ end
 
 function plotPhaseDiagram(
         matrixData::Matrix{Float64},
-        legend::Dict{Int64, String},
         axisVals::NTuple{2, Vector{Float64}},
         axisLabels::NTuple{2, Union{String, LaTeXString}},
         title::Union{String, LaTeXString},
         savename::String,
-        colmap,
+        colmap;
+        figPad::Union{Number, NTuple{4, Number}}=0,
     )
-    figure = Figure(figure_padding=(0, 30, 5, 10))
+    f = Figure(figure_padding=figPad)
     ax = Axis(figure[1, 1],
               xlabel = axisLabels[1], 
               ylabel=axisLabels[2], 
@@ -142,7 +142,6 @@ function plotPhaseDiagram(
              colormap=colmap,
             )
     Colorbar(figure[:, end+1], hm)
-    #=figure[0, 1] = axislegend(ax, orientation=:horizontal, margin=(0., 0., -10., -10.), patchcolor=:transparent, patchlabelgap=-10, colgap=0)=#
     resize_to_layout!(figure)
     save(savename, figure)
 end

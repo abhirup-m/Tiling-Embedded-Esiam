@@ -317,8 +317,9 @@ function Fourier(
             end
         end
         kondoTemp = maximum(kondoJRealSpace)
-        if maximum(kondoJRealSpace) > 1
-            kondoJRealSpace .*= 1 / maximum(kondoJRealSpace)
+        if maximum(kondoJRealSpace) > 2
+            kondoJRealSpace .*= 2 / maximum(kondoJRealSpace)
+            #=kondoJRealSpace .*= 0.5 / length(integrateOver)=#
         end
         if maximum(kondoJRealSpace) < 0.3
             kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)

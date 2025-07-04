@@ -402,8 +402,9 @@ function AuxiliaryRealSpaceEntanglement(
         doFit = false
     end
     x_arr = get_x_arr(size_BZ)
-    W_val_arr = collect(range(0.95 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=41))[1:8:end]
-    #=W_val_arr = NiceValues(size_BZ)[1:5]=#
+    #=W_val_arr = [NiceValues(size_BZ)[1:1]; collect(range(0.93 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=41))[1:8:end]]=#
+    #=println(W_val_arr .- pseudogapStart(size_BZ))=#
+    W_val_arr = [NiceValues(size_BZ)[1:1]; collect(range(0.93 * pseudogapStart(size_BZ), pseudogapEnd(size_BZ), length=41))[1:8:end][4:6]]
     @time kondoJArrays, dispersion = RGFlow(W_val_arr, size_BZ; loadData=true)
 
     SF_di = Tuple{LaTeXString, Vector{Float64}}[]
@@ -412,6 +413,7 @@ function AuxiliaryRealSpaceEntanglement(
     I2_d0 = Float64[]
     I3_d0i = Tuple{LaTeXString, Vector{Float64}}[]
     Sdz_sq = Float64[]
+    Sdz = Float64[]
     QFI = Float64[]
     specFuncArr = Tuple{LaTeXString, Vector{Float64}}[]
     specFuncFit = Tuple{LaTeXString, Vector{Float64}}[]
@@ -419,6 +421,8 @@ function AuxiliaryRealSpaceEntanglement(
     selfEnergyFit = Tuple{LaTeXString, Vector{Float64}}[]
     selfEnergyOut = Tuple{LaTeXString, Vector{Float64}}[]
     selfEnergyHeight = Float64[]
+    quasipResidueArr = Float64[]
+    compensationArr = Float64[]
     xvals1 = nothing
     xvals2 = nothing
     freqLimit1 = 0.006
@@ -461,8 +465,10 @@ function AuxiliaryRealSpaceEntanglement(
         [results,]
     end
 
-    for ((corrResults, xvals1, xvals2), W_val) in zip(resultsComplete, W_val_arr)
+    xvals1, xvals2 = resultsComplete[1][2:3]
+    for ((corrResults, _, _), W_val) in zip(resultsComplete, W_val_arr)
         if "SF-di" in keys(corrResults)
+            push!(compensationArr, sum(corrResults["SF-di"] .+ corrResults["ZZ-di"]))
             push!(SF_di, ("", map(x -> maximum((1e-6, abs(x))), corrResults["SF-di"] ./ corrResults["SF-di"][1])))
         end
         if "I2-di"in keys(corrResults)
@@ -475,6 +481,9 @@ function AuxiliaryRealSpaceEntanglement(
         if "ZZ-di" in keys(corrResults)
             push!(ZZ_di, (getlabelInt(W_val, size_BZ), map(x -> maximum((1e-6, abs(x))), corrResults["ZZ-di"] ./ corrResults["ZZ-di"][1])))
         end
+        if "Sdz" in keys(corrResults)
+            push!(Sdz, corrResults["Sdz"])
+        end
         if "Sdz_sq" in keys(corrResults)
             push!(Sdz_sq, corrResults["Sdz_sq"])
         end
@@ -482,8 +491,9 @@ function AuxiliaryRealSpaceEntanglement(
             push!(QFI, 4 * (corrResults["n_tot_sq"] - corrResults["n_tot"]^2))
         end
     end
+    println("S=",Sdz)
 
-    specfuncResultsComplete = @distributed (v1, v2) -> vcat(v1, v2) for ((corrResults, xvals1, xvals2), W_val) in zip(resultsComplete, W_val_arr)|> collect
+    specfuncResultsComplete = @distributed (v1, v2) -> vcat(v1, v2) for ((corrResults, _, _), W_val) in zip(resultsComplete, W_val_arr)|> collect
 
         standDev = 0.8 * ones(length(freqValues))
         if abs(W_val) ≥ abs(pseudogapStart(size_BZ))
@@ -498,6 +508,7 @@ function AuxiliaryRealSpaceEntanglement(
         intCoeffs = NTuple{2, Float64}[]
         innerCoeffs = NTuple{2, Float64}[]
         specFunc = zeros(freqValues |> length)
+        println(typeof(corrResults["SFO"]))
         for (name, operator) in corrResults["SFO"]
             specFunc_name = IterSpecFunc(corrResults["SP"], operator, freqValues, 
                                                     standDev; normEveryStep=true, 
@@ -532,8 +543,10 @@ function AuxiliaryRealSpaceEntanglement(
         [(specFunc, intCoeffs, innerCoeffs),]
     end
     nonIntCoeffs = Vector{NTuple{2, Float64}}(specfuncResultsComplete[1][3])
+    quasipResidueArr = [sum(innerCoeffs[innerCoeffs .|> last .|> abs .< 0.3 * corrResults["Tk"]] .|> first)/sum(intCoeffs .|> first) for ((_, intCoeffs, innerCoeffs), (corrResults, _, _)) in zip(specfuncResultsComplete, resultsComplete)]
+    println(quasipResidueArr)
 
-    for ((specFunc, intCoeffs, _), (corrResults, xvals1, xvals2), W_val) in zip(specfuncResultsComplete, resultsComplete, W_val_arr)
+    for ((specFunc, intCoeffs, _), (corrResults, _, _), W_val) in zip(specfuncResultsComplete, resultsComplete, W_val_arr)
         push!(specFuncArr, (getlabelInt(W_val, size_BZ), specFunc))
         fit_params = nothing
         if abs(W_val) < abs(pseudogapStart(size_BZ))
@@ -568,7 +581,9 @@ function AuxiliaryRealSpaceEntanglement(
 
     @time selfEnergyComplete = fetch.([@spawn SelfEnergy(intCoeffs, nonIntCoeffs, freqValues; standDev=0.3)[3] for (_, intCoeffs, _) in specfuncResultsComplete])
 
-    for (SE, W_val) in zip(selfEnergyComplete,W_val_arr)
+    for (SE, W_val,(corrResults, _, _)) in zip(selfEnergyComplete,W_val_arr,resultsComplete)
+        qpr = 1 / (1 - (real(SE[freqValues .< 100 * corrResults["Tk"]][end]) - real(SE[freqValues .< (100 * corrResults["Tk"] - freqSpacing)][end]))/(freqSpacing))
+        println("Z = ", qpr)
         fit_params = nothing
         if abs(W_val) < abs(pseudogapStart(size_BZ))
             xvals = freqValues[0 .≤ freqValues .< freqLimit1 * freqScaleFactor] ./ freqScaleFactor
@@ -609,6 +624,7 @@ function AuxiliaryRealSpaceEntanglement(
     end
 
     if !isempty(ZZ_di)
+        println("X1 = ", xvals1)
         plotLines(ZZ_di, 
                   xvals1 |> collect,
                   L"$r$", 
@@ -686,6 +702,21 @@ function AuxiliaryRealSpaceEntanglement(
                   colormap=discreteColmap,
                  )
     end
+    if !isempty(Sdz)
+        plotLines([(L"", Sdz)],
+                  -W_val_arr./J_val,
+                  L"$-W/J$", 
+                  L"$\sum_i \langle S_d^i \rangle^2 (h \to 0^+)$",
+                  "Sdz_$(size_BZ)-$(maxSize)";
+                  figPad=(5, 10, 5, 5),
+                  xscale=log10,
+                  scatterLines=collect(1:length(Sdz)),
+                  vlines=Tuple{LaTeXString, Float64}[(L"$W_\text{PG}$",-1*pseudogapStart(size_BZ)/J_val),],
+                  colormap=discreteColmap,
+                  needsLegend=true,
+                  legendPos=:lb,
+                 )
+    end
     if !isempty(Sdz_sq)
         println(Sdz_sq)
         plotLines([("", Sdz_sq .|> abs)], 
@@ -697,7 +728,6 @@ function AuxiliaryRealSpaceEntanglement(
                   scatter=true,
                   vlines=[(L"$W=W^*$", -pseudogapStart(size_BZ) / J_val)],
                   legendPos=:lt,
-                  #=plotRange=collect(1:3:length(W_val_arr)),=#
                   colormap=discreteColmap,
                  )
     end
@@ -708,10 +738,8 @@ function AuxiliaryRealSpaceEntanglement(
                   L"$A_d(\omega)$",
                   "Ad_zoomin_$(size_BZ)-$(maxSize)";
                   figPad=8,
-                  #=figSize=(400,250),=#
                   xlimits=(-90 * freqLimit1, 90 * freqLimit1),
                   ylimits=(10^(-4.4), 10^0.5),
-                  #=xscale=log10,=#
                   yscale=log10,
                   needsLegend=true,
                   colormap=discreteColmap,
@@ -742,8 +770,6 @@ function AuxiliaryRealSpaceEntanglement(
                   "Ad_zoomout_$(size_BZ)-$(maxSize)";
                   figPad=5,
                   xlimits=(-freqLimit2, freqLimit2),
-                  #=ylimits = (-0.1, 0.1),=#
-                  #=hlines=[(L"z", 0.)],=#
                   needsLegend=true,
                   colormap=discreteColmap,
                  )
@@ -757,9 +783,7 @@ function AuxiliaryRealSpaceEntanglement(
                   figPad=(5, 30, 5, 15),
                   xlimits=(0., 0.1),
                   ylimits = (1e-7, 10^3.),
-                  #=xscale=log10,=#
                   yscale=log10,
-                  #=figSize=(350, 300),=#
                   legendPos=:cb,
                   needsLegend=true,
                   colormap=discreteColmap,
@@ -796,7 +820,6 @@ function AuxiliaryRealSpaceEntanglement(
                   xlimits=(0., 1.0 * freqLimit2),
                   ylimits = (-0.1, 10.),
                   needsLegend=true,
-                  #=figSize=(320,280),=#
                   colormap=discreteColmap,
                  )
     end
@@ -809,9 +832,23 @@ function AuxiliaryRealSpaceEntanglement(
                   figPad=(5, 10, 5, 5),
                   yscale=log10,
                   scatterLines=collect(1:length(selfEnergyHeight)),
-                  #=xlimits=(-freqLimit2, freqLimit2),=#
-                  #=ylimits = (-1., 10.),=#
                   colormap=discreteColmap,
+                 )
+    end
+    if !isempty(quasipResidueArr)
+        plotLines([(L"", quasipResidueArr[2:end])],
+                  -W_val_arr[2:end]./J_val,
+                  L"$-W/J$", 
+                  L"$Z_\text{imp}$",
+                  "QPR_$(size_BZ)-$(maxSize)";
+                  figPad=(5, 10, 5, 5),
+                  #=yscale=log10,=#
+                  scatterLines=collect(1:length(quasipResidueArr)),
+                  vlines=Tuple{LaTeXString, Float64}[(L"$W_\text{PG}$",-1*pseudogapStart(size_BZ)/J_val),],
+                  hlines=Tuple{LaTeXString, Float64}[(L"$Z_\text{imp}^{(0)}$",quasipResidueArr[1]),],
+                  colormap=discreteColmap,
+                  needsLegend=true,
+                  legendPos=:lb,
                  )
     end
 end
@@ -1331,5 +1368,5 @@ size_BZ = 33
 #=@time TiledSpinCorr(size_BZ, maxSize; loadData=true)=#
 #=@time PhaseDiagram(13, (-1.5, -0.5), 0.01, (-0.1, -0.2), 1e-3; loadData=true, fillPG=true)=#
 #=@time TiledEntanglement(size_BZ, maxSize; loadData=true);=#
-@time AuxiliaryRealSpaceEntanglement(77, 1500; loadData=false, freqSpacing=1e-4)
-@time AuxiliaryRealSpaceEntanglement(77, 1500; loadData=false, onlyHeight=true)
+#=@time AuxiliaryRealSpaceEntanglement(77, 1500; loadData=false, freqSpacing=1e-4)=#
+@time AuxiliaryRealSpaceEntanglement(77, 1000; loadData=false, doFit=false)

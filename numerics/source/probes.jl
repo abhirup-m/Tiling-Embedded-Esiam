@@ -212,7 +212,8 @@ end
     println((maximum(values(realKondo1D[1])), numBathSites))
     numChannels = length(realKondo1D)
 
-    hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D)
+    hamiltDetails["imp_corr"] -= 2 * maximum(values(realKondo1D[1]))
+    hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D; globalField=hamiltDetails["globalField"])
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
     mutInfoSites = 1:3:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
@@ -220,6 +221,7 @@ end
     I2_d0i = Dict("I2-d-0$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (mutInfoSites[end]-1), 4 + 2 * numChannels * (mutInfoSites[end]-1)]) for i in mutInfoSites[1:end-1])
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
     isingCorrDefDict = Dict("ZZ-d-$(i)" => [("nn", [1, 3 + 2 * numChannels * (i-1)], 0.25), ("nn", [1, 4 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 3 + 2 * numChannels * (i-1)], -0.25), ("nn", [2, 4 + 2 * numChannels * (i-1)], 0.25)] for i in 1:numBathSites)
+    imp_mag = Dict("Sdz" => [("n", [1], 0.5), ("n", [2], -0.5)], "Sdx" => [("+-", [1,2], 0.5), ("+-", [2,1], 0.5)], "Sdy" => [("+-", [1,2], 0.5), ("+-", [2,1], -0.5)])
     Sdz_sq = Dict("Sdz_sq" => [("n", [1], 0.25), ("n", [2], 0.25), ("nn", [1, 2], -0.5)])
     QFI = Dict("n_tot_sq" => Tuple{String, Vector{Int64}, Float64}[], "n_tot" => Tuple{String, Vector{Int64}, Float64}[])
     up(k) = 1 + 2 * k
@@ -235,8 +237,8 @@ end
         append!(QFI["n_tot"], [("+-+-", [up(i), down(i), down(i+1), up(i+1)], 0.5 / count)])
         append!(QFI["n_tot"], [("+-+-", [up(i+1), down(i+1), down(i), up(i)], 0.5 / count)])
     end
-    #=corrDefDict = Sdz_sq=#
-    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq)=#
+    corrDefDict = imp_mag
+    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq, imp_mag)=#
     indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * numChannels * numBathSites
         push!(indexPartitions, minimum((indexPartitions[end] + 2 * addPerStep, 2 + 2 * numChannels * numBathSites)))
@@ -257,10 +259,11 @@ end
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
-                          #=magzReq=(m, N) -> -3 ≤ m ≤ 4,=#
+                          #=magzReq=(m, N) -> -3 ≤ m ≤ 3,=#
                           #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
                           #=mutInfoDefDict=deepcopy(merge(I2_di, I2_d0i)),=#
                           #=correlationDefDict=deepcopy(QFI),=#
+                          correlationDefDict=deepcopy(corrDefDict),
                           silent=false,
                           maxMaxSize=maxSize,
                           specFuncDefDict=specDictSet,
@@ -280,40 +283,58 @@ end
                 println("Passed $(id).")
             end
             for i in 1:numBathSites
-                if "SF-d-$(i)" in keys(iterDiagResults)
-                    if "SF-di" ∉ keys(results)
-                        results["SF-di"] = Float64[]
+                corrKeys = [("SF-di", "SF-d-$(i)"), ("ZZ-di", "ZZ-d-$(i)"), ("I2-di", "I2-d-$(i)"), ("I2-d0i", "I2-d-0$(i)")]
+                for (k1, k2) in corrKeys
+                    if k2 in keys(iterDiagResults)
+                        if k1 ∉ keys(results)
+                            results[k1] = Float64[]
+                        end
+                        push!(results[k1], iterDiagResults[k2])
                     end
-                    push!(results["SF-di"], iterDiagResults["SF-d-$(i)"])
                 end
-                if "ZZ-d-$(i)" in keys(iterDiagResults)
-                    if "ZZ-di" ∉ keys(results)
-                        results["ZZ-di"] = Float64[]
-                    end
-                    push!(results["ZZ-di"], iterDiagResults["ZZ-d-$(i)"])
-                end
-                if "I2-d-$(i)" in keys(iterDiagResults)
-                    if "I2-di" ∉ keys(results)
-                        results["I2-di"] = Float64[]
-                    end
-                    push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])
-                end
-                if "I2-d-0$(i)" in keys(iterDiagResults)
-                    if "I2-d0i" ∉ keys(results)
-                        results["I2-d0i"] = Float64[]
-                    end
-                    push!(results["I2-d0i"], iterDiagResults["I2-d-0$(i)"])
+                #=if "SF-d-$(i)" in keys(iterDiagResults)=#
+                #=    if "SF-di" ∉ keys(results)=#
+                #=        results["SF-di"] = Float64[]=#
+                #=    end=#
+                #=    push!(results["SF-di"], iterDiagResults["SF-d-$(i)"])=#
+                #=end=#
+                #=if "ZZ-d-$(i)" in keys(iterDiagResults)=#
+                #=    if "ZZ-di" ∉ keys(results)=#
+                #=        results["ZZ-di"] = Float64[]=#
+                #=    end=#
+                #=    push!(results["ZZ-di"], iterDiagResults["ZZ-d-$(i)"])=#
+                #=end=#
+                #=if "I2-d-$(i)" in keys(iterDiagResults)=#
+                #=    if "I2-di" ∉ keys(results)=#
+                #=        results["I2-di"] = Float64[]=#
+                #=    end=#
+                #=    push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])=#
+                #=end=#
+                #=if "I2-d-0$(i)" in keys(iterDiagResults)=#
+                #=    if "I2-d0i" ∉ keys(results)=#
+                #=        results["I2-d0i"] = Float64[]=#
+                #=    end=#
+                #=    push!(results["I2-d0i"], iterDiagResults["I2-d-0$(i)"])=#
+                #=end=#
+            end
+            corrKeys = ["Sdx", "Sdy", "Sdz", "Sdz_sq", "n_tot_sq", "n_tot"]
+            for k in corrKeys
+                if k in keys(iterDiagResults)
+                    results[k] = iterDiagResults[k]
                 end
             end
-            if "Sdz_sq" in keys(iterDiagResults)
-                results["Sdz_sq"] = iterDiagResults["Sdz_sq"]
-            end
-            if "n_tot_sq" in keys(iterDiagResults)
-                results["n_tot_sq"] = iterDiagResults["n_tot_sq"]
-            end
-            if "n_tot" in keys(iterDiagResults)
-                results["n_tot"] = iterDiagResults["n_tot"]
-            end
+            #=if "Sdz" in keys(iterDiagResults)=#
+            #=    results["Sdz"] = iterDiagResults["Sdz"]=#
+            #=end=#
+            #=if "Sdz_sq" in keys(iterDiagResults)=#
+            #=    results["Sdz_sq"] = iterDiagResults["Sdz_sq"]=#
+            #=end=#
+            #=if "n_tot_sq" in keys(iterDiagResults)=#
+            #=    results["n_tot_sq"] = iterDiagResults["n_tot_sq"]=#
+            #=end=#
+            #=if "n_tot" in keys(iterDiagResults)=#
+            #=    results["n_tot"] = iterDiagResults["n_tot"]=#
+            #=end=#
             break
         end
     end
@@ -577,6 +598,10 @@ end
     impurity = Int((1 + size_BZ^2) / 2)
 
     filter!(p -> 0 ≤ map1DTo2D(p, size_BZ)[1] ≤ 5.5 && abs(map1DTo2D(p, size_BZ)[2]) < 1e-6, sortedIndices)
+    println("N=",length(sortedIndices))
+    if length(sortedIndices) % 2 != 0
+        sortedIndices = sortedIndices[1:end-1]
+    end
 
     realKondoChannels, kondoTemp = Fourier(fermSurfKondoChannels; shellPointsChannels=shellPointsChannels, calculateFor=sortedIndices)
     #=kondoTemp = maximum(realKondoChannels[1])=#

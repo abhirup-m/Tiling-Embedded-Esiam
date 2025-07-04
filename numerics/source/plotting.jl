@@ -156,8 +156,8 @@ function plotLines(
         saveName::String;
         ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
-        scatterLines::Vector{Int64}=Int64[],
-        scatter::Vector{Int64}=Int64[],
+        scatterLines::Union{Bool, Vector{Int64}}=false,
+        scatter::Union{Bool, Vector{Int64}}=false,
         vlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
         hlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
         figSize::NTuple{2, Int64}=(300, 250),
@@ -201,6 +201,12 @@ function plotLines(
     end
     linestyles = [:solid, (:dot, :dense), (:dash, :dense), (:dashdot, :dense), (:dashdotdot, :dense), (:dot, :loose)]
     markers = [:circle, :rect, :diamond, :hexagon, :xcross]
+    if typeof(scatter) == Bool
+        scatter = scatter ? (1:length(nameValuePairs)) : Int64[]
+    end
+    if typeof(scatterLines) == Bool
+        scatterLines = scatterLines ? (1:length(nameValuePairs)) : Int64[]
+    end
 
     plots = []
     for (i, (name, yvalues)) in enumerate(nameValuePairs)
@@ -209,47 +215,33 @@ function plotLines(
         end
         if i ∈ scatter
             if !isempty(name)
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
             else
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
             end
         end
         if i ∈ scatterLines
             if isempty(name)
-                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
             else
-                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[i])
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
             end
         end
         if i ∉ scatter && i ∉ scatterLines
             if isempty(name)
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[i])
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[(i % 12) + 1])
             else
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[i])
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[(i % 12) + 1])
             end
         end
         push!(plots, pl)
     end
 
-    if length(vlines) + length(hlines) > 0
-        vlines!(ax, [loc for (_, loc) in vlines], linestyle=:dash, label=[lab for (lab, _) in vlines], colormap=:balance, color=[i - 1 for i in eachindex(vlines)])
-        hlines!(ax, [loc for (_, loc) in hlines], linestyle=:dash, label=[lab for (lab, _) in hlines], colormap=:balance, color=[length(vlines) + i - 1 for i in eachindex(hlines)])
-        #=for (i, (label, xloc)) in enumerate(vlines)=#
-        #=    if isempty(label)=#
-        #=        vlines!(ax, xloc, colormap=ColorSchemes.coolwarm, color=i:i, linestyle=:dash)=#
-        #=    else=#
-        #=        vlines!(ax, xloc, label=label, colormap=ColorSchemes.coolwarm, color=i:i, linestyle=:dash)=#
-        #=        needsLegend = true=#
-        #=    end=#
-        #=end=#
-        #=for (i, (label, yloc)) in enumerate(hlines)=#
-        #=    if isempty(label)=#
-        #=        hlines!(ax, yloc, colormap=ColorSchemes.coolwarm, color=length(vlines) + i, linestyle=:dash)=#
-        #=    else=#
-        #=        hlines!(ax, yloc, label=label, colormap=ColorSchemes.coolwarm, color=length(vlines) + i, linestyle=:dash)=#
-        #=        needsLegend = true=#
-        #=    end=#
-        #=end=#
+    if length(vlines) > 0
+        vlines!(ax, [loc for (_, loc) in vlines], linestyle=:dash, label=[lab for (lab, _) in vlines], colormap=colormap)
+    end
+    if length(hlines) > 0
+        hlines!(ax, [loc for (_, loc) in hlines], linestyle=:dash, label=[lab for (lab, _) in hlines], colormap=colormap)
     end
 
     if needsLegend

@@ -198,7 +198,6 @@ end
         end
     end
     return corrResults
-
 end
 
 
@@ -208,6 +207,7 @@ end
         maxSize::Int64,
         numBathSites::Int64,
         addPerStep::Int64,
+        type::String,
     )
     println((maximum(values(realKondo1D[1])), numBathSites))
     numChannels = length(realKondo1D)
@@ -216,7 +216,7 @@ end
     hamiltonian = KondoModel(numBathSites, HOP_T, realKondo1D; globalField=hamiltDetails["globalField"])
     append!(hamiltonian, [("n",  [1], -hamiltDetails["imp_corr"]/2), ("n",  [2], -hamiltDetails["imp_corr"]/2), ("nn",  [1, 2], hamiltDetails["imp_corr"])])
 
-    mutInfoSites = 1:3:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
+    mutInfoSites = 1:2:numBathSites # [1, div(numBathSites, 4), div(numBathSites, 2), numBathSites]
     I2_di = Dict("I2-d-$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)]) for i in mutInfoSites)
     I2_d0i = Dict("I2-d-0$(i)" => ([1, 2], [3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (mutInfoSites[end]-1), 4 + 2 * numChannels * (mutInfoSites[end]-1)]) for i in mutInfoSites[1:end-1])
     spinFlipCorrDefDict = Dict("SF-d-$(i)" => [("+-+-", [1, 2, 4 + 2 * numChannels * (i-1), 3 + 2 * numChannels * (i-1)], 0.5), ("+-+-", [2, 1, 3 + 2 * numChannels * (i-1), 4 + 2 * numChannels * (i-1)], 0.5)] for i in 1:numBathSites)
@@ -237,8 +237,6 @@ end
         append!(QFI["n_tot"], [("+-+-", [up(i), down(i), down(i+1), up(i+1)], 0.5 / count)])
         append!(QFI["n_tot"], [("+-+-", [up(i+1), down(i+1), down(i), up(i)], 0.5 / count)])
     end
-    corrDefDict = imp_mag
-    #=corrDefDict = merge(spinFlipCorrDefDict, isingCorrDefDict, Sdz_sq, imp_mag)=#
     indexPartitions = [4]
     while indexPartitions[end] < 2 + 2 * numChannels * numBathSites
         push!(indexPartitions, minimum((indexPartitions[end] + 2 * addPerStep, 2 + 2 * numChannels * numBathSites)))
@@ -254,90 +252,72 @@ end
     id = nothing
     exitCode = 0
     specDictSet = ImpurityExcitationOperators(1)
-    while true
+    if type == "static"
+        while true
+            @time output = IterDiag(
+                              hamiltonianFamily, 
+                              maxSize;
+                              symmetries=Char['N', 'S'],
+                              mutInfoDefDict=deepcopy(I2_di),
+                              correlationDefDict=merge(spinFlipCorrDefDict, isingCorrDefDict, QFI),
+                              silent=false,
+                              maxMaxSize=maxSize,
+                             )
+            savePaths, iterDiagResults, exitCode = output
+            results["SP"] = savePaths
+            if exitCode > 0
+                id = rand()
+                println("Error code $(exitCode). Retry id=$(id).")
+            else
+                if !isnothing(id)
+                    println("Passed $(id).")
+                end
+                for i in 1:numBathSites
+                    corrKeys = [("SF-di", "SF-d-$(i)"), ("ZZ-di", "ZZ-d-$(i)"), ("I2-di", "I2-d-$(i)"), ("I2-d0i", "I2-d-0$(i)")]
+                    for (k1, k2) in corrKeys
+                        if k2 in keys(iterDiagResults)
+                            if k1 ∉ keys(results)
+                                results[k1] = Float64[]
+                            end
+                            push!(results[k1], iterDiagResults[k2])
+                        end
+                    end
+                end
+                break
+            end
+        end
+    elseif type == "QFI"
         @time output = IterDiag(
                           hamiltonianFamily, 
                           maxSize;
                           symmetries=Char['N', 'S'],
-                          #=magzReq=(m, N) -> -3 ≤ m ≤ 3,=#
-                          #=occReq=(x, N) -> div(N, 2) - 6 ≤ x ≤ div(N, 2) + 6,=#
-                          #=mutInfoDefDict=deepcopy(merge(I2_di, I2_d0i)),=#
-                          #=correlationDefDict=deepcopy(QFI),=#
-                          correlationDefDict=deepcopy(corrDefDict),
+                          correlationDefDict=QFI,
+                          silent=false,
+                          maxMaxSize=maxSize,
+                         )
+        savePaths, iterDiagResults = output
+        results["SP"] = savePaths
+        if "n_tot_sq" in keys(iterDiagResults)
+            results["n_tot_sq"] = iterDiagResults["n_tot_sq"]
+        end
+        if "n_tot" in keys(iterDiagResults)
+            results["n_tot"] = iterDiagResults["n_tot"]
+        end
+    else
+        @time output = IterDiag(
+                          hamiltonianFamily, 
+                          maxSize;
+                          symmetries=Char['N', 'S'],
                           silent=false,
                           maxMaxSize=maxSize,
                           specFuncDefDict=specDictSet,
                          )
         savePaths, iterDiagResults, specFuncOperators = output
         results["SFO"] = specFuncOperators
-        #=savePaths, iterDiagResults, exitCode = output=#
-        #=savePaths, iterDiagResults = output=#
         results["SP"] = savePaths
-
-
-        if exitCode > 0
-            id = rand()
-            println("Error code $(exitCode). Retry id=$(id).")
-        else
-            if !isnothing(id)
-                println("Passed $(id).")
-            end
-            for i in 1:numBathSites
-                corrKeys = [("SF-di", "SF-d-$(i)"), ("ZZ-di", "ZZ-d-$(i)"), ("I2-di", "I2-d-$(i)"), ("I2-d0i", "I2-d-0$(i)")]
-                for (k1, k2) in corrKeys
-                    if k2 in keys(iterDiagResults)
-                        if k1 ∉ keys(results)
-                            results[k1] = Float64[]
-                        end
-                        push!(results[k1], iterDiagResults[k2])
-                    end
-                end
-                #=if "SF-d-$(i)" in keys(iterDiagResults)=#
-                #=    if "SF-di" ∉ keys(results)=#
-                #=        results["SF-di"] = Float64[]=#
-                #=    end=#
-                #=    push!(results["SF-di"], iterDiagResults["SF-d-$(i)"])=#
-                #=end=#
-                #=if "ZZ-d-$(i)" in keys(iterDiagResults)=#
-                #=    if "ZZ-di" ∉ keys(results)=#
-                #=        results["ZZ-di"] = Float64[]=#
-                #=    end=#
-                #=    push!(results["ZZ-di"], iterDiagResults["ZZ-d-$(i)"])=#
-                #=end=#
-                #=if "I2-d-$(i)" in keys(iterDiagResults)=#
-                #=    if "I2-di" ∉ keys(results)=#
-                #=        results["I2-di"] = Float64[]=#
-                #=    end=#
-                #=    push!(results["I2-di"], iterDiagResults["I2-d-$(i)"])=#
-                #=end=#
-                #=if "I2-d-0$(i)" in keys(iterDiagResults)=#
-                #=    if "I2-d0i" ∉ keys(results)=#
-                #=        results["I2-d0i"] = Float64[]=#
-                #=    end=#
-                #=    push!(results["I2-d0i"], iterDiagResults["I2-d-0$(i)"])=#
-                #=end=#
-            end
-            corrKeys = ["Sdx", "Sdy", "Sdz", "Sdz_sq", "n_tot_sq", "n_tot"]
-            for k in corrKeys
-                if k in keys(iterDiagResults)
-                    results[k] = iterDiagResults[k]
-                end
-            end
-            #=if "Sdz" in keys(iterDiagResults)=#
-            #=    results["Sdz"] = iterDiagResults["Sdz"]=#
-            #=end=#
-            #=if "Sdz_sq" in keys(iterDiagResults)=#
-            #=    results["Sdz_sq"] = iterDiagResults["Sdz_sq"]=#
-            #=end=#
-            #=if "n_tot_sq" in keys(iterDiagResults)=#
-            #=    results["n_tot_sq"] = iterDiagResults["n_tot_sq"]=#
-            #=end=#
-            #=if "n_tot" in keys(iterDiagResults)=#
-            #=    results["n_tot"] = iterDiagResults["n_tot"]=#
-            #=end=#
-            break
-        end
     end
+
+
     return results, 1:numBathSites, mutInfoSites
 end
 
@@ -436,6 +416,7 @@ end
         numProcs::Int64=nprocs(),
         loadData::Bool=false,
         sortByDistance::Bool=false,
+        calculateFor::Vector{Int64}=Int64[],
     )
 
     size_BZ = hamiltDetails["size_BZ"]
@@ -452,6 +433,9 @@ end
                 ]
 
     calculatePoints = filter(p -> map1DTo2D(p, size_BZ)[1] ≤ map1DTo2D(p, size_BZ)[2], SWIndices)
+    if !isempty(calculateFor)
+        filter!(∈(calculateFor), calculatePoints)
+    end
 
     oppositePoints = Dict{Int64, Vector{Int64}}()
     for point in calculatePoints
@@ -491,7 +475,7 @@ end
     for pivot in calculatePoints
         for (dict, refpoint) in zip([symmetricPairsNode, symmetricPairsAntiNode, symmetricPairsSelf], [node, antinode, pivot])
             if sortByDistance
-                distancesFromRef = [MinimalDistance(p, pivot) for p in SWIndices if p ≠ pivot]
+                distancesFromRef = [MinimalDistance(p, pivot, size_BZ) for p in SWIndices if p ≠ pivot]
             else
                 distancesFromRef = [hamiltDetails["kondoJArray"][p, refpoint] |> abs for p in SWIndices if p ≠ pivot]
             end
@@ -508,7 +492,6 @@ end
     desc = "W=$(round(hamiltDetails["W_val"], digits=3))"
     corrResults = Dict{String, Vector{Float64}}()
     for dict in [symmetricPairsNode, symmetricPairsAntiNode, symmetricPairsSelf]
-
         corr = @showprogress pmap(pivot -> IterDiagResults(hamiltDetails, maxSize, [pivot], dict[pivot], 
                                                                     correlationFuncDict, vneFuncDict, mutInfoFuncDict, 
                                                                     bathIntLegs, noSelfCorr, addPerStep),
@@ -556,6 +539,7 @@ end
         addPerStep::Int64=1,
         numProcs::Int64=nprocs(),
         loadData::Bool=false,
+        type::String="static",
     )
 
     size_BZ = hamiltDetails["size_BZ"]
@@ -603,8 +587,7 @@ end
         sortedIndices = sortedIndices[1:end-1]
     end
 
-    realKondoChannels, kondoTemp = Fourier(fermSurfKondoChannels; shellPointsChannels=shellPointsChannels, calculateFor=sortedIndices)
-    #=kondoTemp = maximum(realKondoChannels[1])=#
+    realKondoChannels, kondoTemp = Fourier(fermSurfKondoChannels; shellPointsChannels=shellPointsChannels, calculateFor=sortedIndices, type=type)
 
     kondoReal1D = [Dict{NTuple{2, Int64}, Float64}() for _ in 1:numChannels]
 
@@ -625,6 +608,7 @@ end
                                 maxSize,
                                 length(sortedIndices)-1,
                                 addPerStep,
+                                type,
                                )
     corrResults["Tk"] = kondoTemp
 
@@ -632,10 +616,12 @@ end
     if !isnothing(savePath)
         mkpath(SAVEDIR)
         jldopen(savePath, "w"; compress = true) do file
-            for (i, path) in enumerate(corrResults["SP"])
-                newPath = joinpath(SAVEDIR, basename(path))
-                cp(path, newPath, force=true)
-                corrResults["SP"][i] = newPath
+            if "SFO" in keys(corrResults)
+                for (i, path) in enumerate(corrResults["SP"])
+                    newPath = joinpath(SAVEDIR, basename(path))
+                    cp(path, newPath, force=true)
+                    corrResults["SP"][i] = newPath
+                end
             end
             for (name, val) in corrResults
                 file[name] = val
@@ -910,6 +896,7 @@ function LatticeKspaceDOS(
         specFuncKSpace[index] = Normalise(centerSpecFunc .+ fixedContrib[index], freqValues, true)
         results["kspaceDOS"][calculatePoints[index]] = specFuncKSpace[index][freqValues .≥ 0][1]
     end
+    println(count(!isnan, results["kspaceDOS"]))
 
     if isnothing(nonIntSpecBzone)
         nonIntSpecBzone = [zeros(length(freqValues)) for _ in calculatePoints]
@@ -924,9 +911,14 @@ function LatticeKspaceDOS(
                                                                                pinBottom=maximum(abs.(hamiltDetails["kondoJArray"][calculatePoints[index], SWIndicesAll])) > 0
                                                                               ))
         results["selfEnergyKspace"][calculatePoints[index]] = -(sum(imagSelfEnergy[abs.(freqValues) .≤ selfEnergyWindow]) * (maximum(freqValues) - minimum(freqValues)) ./ (length(freqValues) -1))
-        results["selfEnergyKspace"][calculatePoints[index]] = minimum((1e2, results["selfEnergyKspace"][calculatePoints[index]]))
-        results["selfEnergyKspace"][calculatePoints[index]] = maximum((1e-2, results["selfEnergyKspace"][calculatePoints[index]]))
+        if isnan(results["selfEnergyKspace"][calculatePoints[index]])
+            results["selfEnergyKspace"][calculatePoints[index]] = 1e3
+        end
+        #=results["selfEnergyKspace"][calculatePoints[index]] = minimum((1e2, results["selfEnergyKspace"][calculatePoints[index]]))=#
+        #=results["selfEnergyKspace"][calculatePoints[index]] = maximum((1e-2, results["selfEnergyKspace"][calculatePoints[index]]))=#
     end
+
+    println(count(!isnan, results["selfEnergyKspace"]))
 
     results = PropagateIndices(calculatePoints, results, size_BZ, 
                                  oppositePoints)

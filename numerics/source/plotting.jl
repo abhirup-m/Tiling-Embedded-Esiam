@@ -1,4 +1,6 @@
-using CairoMakie, Random, Measures, LaTeXStrings, ColorSchemes
+using CairoMakie, Makie, Random, Measures, LaTeXStrings, ColorSchemes
+
+COLORS = vcat(ColorSchemes.Paired_12.colors[2:2:end], ColorSchemes.Paired_12.colors[1:2:end])
 
 const FONTSIZE = 28
 set_theme!(merge(theme_minimal(), theme_latexfonts()))
@@ -76,11 +78,15 @@ function plotHeatmap(
         colorScale::Function=identity,
         marker::Union{Nothing, Tuple{Vector{Float64}, Symbol}}=nothing,
         line::Vector{NTuple{2, Number}}=NTuple{2, Number}[],
-        legendPos::NTuple{2, Symbol}=(:top, :right),
+        legendPos=(:top, :right),
     )
 
+    if colorScale == log10
+        matrixData[matrixData .== 0] .= minimum(matrixData[matrixData .> 0]) / 10
+        matrixData[matrixData .< 0] .= NaN
+    end
     if isnothing(colorbarLimits)
-        colorbarLimits = ColorbarLimits(matrixData)
+        colorbarLimits = ColorbarLimits(filter(!isnan, matrixData))
     end
     matrixData = reshape(matrixData, length.(axisVals))
     figure = Figure(figure_padding=figPad)
@@ -98,6 +104,7 @@ function plotHeatmap(
              colorscale=colorScale,
              colorrange=colorbarLimits,
             )
+
     gl = GridLayout(figure[1, 1], tellwidth = false, tellheight = false, valign=legendPos[1], halign=legendPos[2])
     Box(gl[1, 1], color = RGBAf(0, 0, 0, 0.4), strokewidth=0, strokecolor=RGBAf(0, 0, 0, 0.8))
     Label(gl[1, 1], annotation, padding = (5, 5, 5, 5), fontsize=div(FONTSIZE, 1.3), color=:white)
@@ -157,12 +164,12 @@ function plotLines(
         xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
         scatterLines::Union{Bool, Vector{Int64}}=false,
         scatter::Union{Bool, Vector{Int64}}=false,
-        vlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
-        hlines::Vector{Tuple{LaTeXString, Float64}}=Tuple{LaTeXString, Float64}[],
+        vlines::Any=[],
+        hlines::Any=[],
         figSize::NTuple{2, Int64}=(300, 250),
         figPad::Union{Number, NTuple{4, Number}}=0,
-        legendPos::Union{Symbol, NTuple{2, Float64}}=:rt,
-        linewidth::Number=4,
+        legendPos=:rt,
+        linewidth::Number=3,
         xscale::Function=identity,
         yscale::Function=identity,
         plotRange::Vector{Int64}=Int64[],
@@ -171,7 +178,7 @@ function plotLines(
         twin::Vector{Int64}=Int64[],
         twinLabel::LaTeXString=L"",
         needsLegend::Bool=false,
-        colormap::Any=ColorSchemes.Paired_12,
+        colormap::Any=:Paired_12,
     )
 
     f = Figure(figure_padding=figPad)
@@ -214,33 +221,37 @@ function plotLines(
         end
         if i ∈ scatter
             if !isempty(name)
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
+                pl = CairoMakie.scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=COLORS[mod1(i, length(COLORS))])
             else
-                pl = scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
+                pl = CairoMakie.scatter!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=COLORS[mod1(i, length(COLORS))])
             end
         end
         if i ∈ scatterLines
-            if isempty(name)
-                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
+            if !isempty(name)
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, marker=markers[((i - 1) % 5) + 1], color=COLORS[mod1(i, length(COLORS))])
             else
-                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=colormap[(i % 12) + 1])
+                pl = scatterlines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; marker=markers[((i - 1) % 5) + 1], color=COLORS[mod1(i, length(COLORS))])
             end
         end
         if i ∉ scatter && i ∉ scatterLines
             if isempty(name)
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[(i % 12) + 1])
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; linewidth=linewidth, color=COLORS[mod1(i, length(COLORS))], linestyle=linestyles[i % 2 == 0 ? 2 : 1])
             else
-                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linestyle=linestyles[((i - 1) % 6) + 1], linewidth=linewidth, color=colormap[(i % 12) + 1])
+                pl = lines!(i ∉ twin ? ax : ax_twin, xvalues[plotRange], yvalues[plotRange]; label=name, linewidth=linewidth, color=COLORS[mod1(i, length(COLORS))], linestyle=linestyles[i % 2 == 0 ? 2 : 1])
             end
         end
         push!(plots, pl)
     end
 
     if length(vlines) > 0
-        vlines!(ax, [loc for (_, loc) in vlines], linestyle=:dash, label=[lab for (lab, _) in vlines], colormap=colormap)
+        for (i, (lab, loc)) in enumerate(vlines)
+            push!(plots, vlines!(ax, loc, linestyle=:dash, linewidth=linewidth, label=lab, color=COLORS[mod1(length(nameValuePairs) + i, length(COLORS))]))
+        end
     end
     if length(hlines) > 0
-        hlines!(ax, [loc for (_, loc) in hlines], linestyle=:dash, label=[lab for (lab, _) in hlines], colormap=colormap)
+        for (i, (lab, loc)) in enumerate(hlines)
+            push!(plots, hlines!(ax, loc, linestyle=:dash, linewidth=linewidth, label=lab, color=COLORS[mod1(length(nameValuePairs) + length(vlines) + i, length(COLORS))]))
+        end
     end
 
     if needsLegend
@@ -248,7 +259,7 @@ function plotLines(
             axislegend(position=legendPos)
         else
             for (inds, pos) in splitLegends
-                axislegend(ax, plots[inds], nameValuePairs[inds] .|> first, position=pos)
+                axislegend(ax, plots[inds], vcat(nameValuePairs, vlines, hlines)[inds] .|> first, position=pos)
             end
         end
     end
@@ -258,4 +269,59 @@ function plotLines(
     saveName = saveName * "." * saveForm
     save(saveName, current_figure())
     return saveName
+end
+
+
+function plotLine(
+        nameValuePairs::Union{Vector{Tuple{LaTeXString, Vector{Float64}}}, Vector{Tuple{String, Vector{Float64}}}},
+        xvalues::Union{Vector{Int64}, Vector{Float64}},
+        xlabel::Union{String, LaTeXString},
+        ylabel::Union{String, LaTeXString},
+        saveName::String;
+        ylimits::Union{Nothing, NTuple{2, Float64}}=nothing,
+        xlimits::Union{Nothing, NTuple{2, Float64}}=nothing,
+        scatter::Bool=true,
+        vlines::Any=[],
+        hlines::Any=[],
+        figSize::NTuple{2, Int64}=(150, 125),
+        figPad::Union{AbsoluteLength, NTuple{4, AbsoluteLength}}=(-3.5mm, -1mm, -3.5mm, -1mm),
+        legendPos=:best,
+        xscale::Symbol=:identity,
+        yscale::Symbol=:identity,
+        needsLegend::Bool=true,
+    )
+    if typeof(figPad) == AbsoluteLength
+        figPad = Tuple([figPad for _ in 1:4])
+    end
+    p = Plots.plot(size=figSize, left_margin=figPad[1], right_margin=figPad[2], bottom_margin=figPad[3], top_margin=figPad[4], xscale=xscale, yscale=yscale, legend=needsLegend, majorgrid=false, minorgrid=false, framestyle = :box, fontfamily="Computer Modern", thickness_scaling=1.2, palette=:Paired_12)
+    Plots.xlabel!(p, xlabel)
+    Plots.ylabel!(p, ylabel)
+    if !isnothing(xlimits)
+        Plots.xlims!(p, xlimits)
+    end
+    if !isnothing(ylimits)
+        Plots.ylims!(p, ylimits)
+    end
+
+    for (i, (name, yvalues)) in enumerate(nameValuePairs)
+        if scatter
+            Plots.plot!(p, xvalues, yvalues, markersize=2.5, markershape=:circle, label=name, grid=false, legend_position=legendPos, dpi=10)
+        else
+            Plots.plot!(p, xvalues, yvalues, markersize=0, markershape=:circle, label=name, grid=false, legend_position=legendPos, dpi=10)
+        end
+    end
+
+    if length(vlines) > 0
+        for (lab, loc) in vlines
+            Plots.vline!(p, [loc], label=lab, linestyle=:dash, legend_position=legendPos, dpi=10)
+        end
+    end
+    if length(hlines) > 0
+        for (lab, loc) in hlines
+            Plots.hline!(p, [loc], label=lab, linestyle=:dash, legend_position=legendPos, dpi=10)
+        end
+    end
+
+    Plots.savefig(p, saveName * ".pdf")
+    return saveName * ".pdf"
 end

@@ -1,5 +1,8 @@
 (@isdefined SAVEDIR) || const SAVEDIR = "saveData"
 
+(@isdefined PLANCK) || const PLANCK = 6.626e-34
+(@isdefined MASS_ELE) || const MASS_ELE = 9.109e-31
+
 # define the edges of the Brillouin zone
 (@isdefined K_MIN) || const K_MIN = -pi
 (@isdefined K_MAX) || const K_MAX = pi

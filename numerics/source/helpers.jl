@@ -1,6 +1,9 @@
 # helper functions for switching back and forth between the 1D flattened representation (1 → N^2) 
 # and the 2D representation ((1 → N)×(1 → N))
-@everywhere function map1DTo2D(point::Int64, size_BZ::Int64)
+@everywhere function map1DTo2D(
+        point::Int64,
+        size_BZ::Int64
+    )
     # Convert overall point to row and column values.
     # These serve as indices of kx and ky
     kx_index = (point - 1) % size_BZ + 1
@@ -11,7 +14,10 @@
     k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     return [k_values[kx_index], k_values[ky_index]]
 end
-@everywhere function map1DTo2D(point::Vector{Int64}, size_BZ::Int64)
+@everywhere function map1DTo2D(
+        point::Vector{Int64},
+        size_BZ::Int64
+    )
     # same as above, but for multiple points. In this case,
     # two tuples are returned, for kx values and ky values.
     kx_index = (point .- 1) .% size_BZ .+ 1
@@ -20,7 +26,11 @@ end
     return [k_values[kx_index], k_values[ky_index]]
 end
 
-function map2DTo1D(kx_val::Float64, ky_val::Float64, size_BZ::Int64)
+function map2DTo1D(
+        kx_val::Float64,
+        ky_val::Float64,
+        size_BZ::Int64
+    )
     # obtain the indices, given the values of kx and ky
     k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     kx_index, ky_index = argmin(abs.(k_values .- kx_val)), argmin(abs.(k_values .- ky_val))
@@ -28,7 +38,11 @@ function map2DTo1D(kx_val::Float64, ky_val::Float64, size_BZ::Int64)
     # covert the row and column indices into an overall flattened index
     return kx_index + (ky_index - 1) * size_BZ
 end
-function map2DTo1D(kx_val::Vector{Float64}, ky_val::Vector{Float64}, size_BZ::Int64)
+function map2DTo1D(
+        kx_val::Vector{Float64},
+        ky_val::Vector{Float64},
+        size_BZ::Int64
+    )
     # same but for multiple (kx,ky) pairs.
     k_values = range(K_MIN, stop=K_MAX, length=size_BZ)
     points = Int64[]
@@ -53,7 +67,10 @@ function tightBindDisp(kx_val::Float64, ky_val::Float64)
 end
 
 
-function getDensityOfStates(dispersionFunc, size_BZ)
+function getDensityOfStates(
+        dispersionFunc, 
+        size_BZ::Int64,
+    )
     kx_vals = repeat(range(K_MIN, stop=K_MAX, length=size_BZ), outer=size_BZ)
     ky_vals = repeat(range(K_MIN, stop=K_MAX, length=size_BZ), inner=size_BZ)
 
@@ -110,7 +127,10 @@ function getIsoEngCont(dispersion::Vector{Float64}, probeEnergies::Vector{Float6
 end
 
 
-function particleHoleTransf(point::Int64, size_BZ::Int64)
+function particleHoleTransf(
+        point::Int64,
+        size_BZ::Int64
+    )
     # obtain the particle-hole transformed point k --> (k + π) % π.
     kx_val, ky_val = map1DTo2D(point, size_BZ)
     kx_new = kx_val <= 0.5 * (K_MAX + K_MIN) ? kx_val + 0.5 * (K_MAX - K_MIN) : kx_val - 0.5 * (K_MAX - K_MIN)
@@ -118,7 +138,10 @@ function particleHoleTransf(point::Int64, size_BZ::Int64)
     return map2DTo1D(kx_new, ky_new, size_BZ)
 end
 
-function particleHoleTransf(points::Vector{Int64}, size_BZ::Int64)
+function particleHoleTransf(
+        points::Vector{Int64},
+        size_BZ::Int64
+    )
     # obtain the particle-hole transformed point k --> (k + π) % π.
     kx_vals, ky_vals = map1DTo2D(points, size_BZ)
     kx_new = [kx <= 0.5 * (K_MAX + K_MIN) ? kx + 0.5 * (K_MAX - K_MIN) : kx - 0.5 * (K_MAX - K_MIN) for kx in kx_vals]
@@ -127,7 +150,10 @@ function particleHoleTransf(points::Vector{Int64}, size_BZ::Int64)
 end
 
 
-function tolerantSign(quant, boundary)
+function tolerantSign(
+        quant,
+        boundary
+    )
     if boundary - abs(TOLERANCE) <= quant <= boundary + abs(TOLERANCE)
         return 0
     elseif quant > boundary + abs(TOLERANCE)
@@ -138,7 +164,9 @@ function tolerantSign(quant, boundary)
 end
 
 
-function getUpperQuadrantLowerIndices(size_BZ)
+function getUpperQuadrantLowerIndices(
+        size_BZ::Int64
+    )
 
     k_indices = collect(1:size_BZ^2)
 
@@ -277,6 +305,7 @@ end
 function MinimalDistance(
         point1::Int64,
         point2::Int64,
+        size_BZ::Int64,
     )
     rotationMatrix(rotateAngle) = [cos(rotateAngle) -sin(rotateAngle); sin(rotateAngle) cos(rotateAngle)]
     equivalentPoints1 = [rotationMatrix(rotateAngle) * map1DTo2D(point1, size_BZ) for rotateAngle in (0, π/2, π, 3π/2)]
@@ -289,6 +318,7 @@ function Fourier(
         fermSurfKondoChannels::Vector{Array{Float64, 2}};
         shellPointsChannels::Union{Nothing, Vector{Vector{Int64}}}=nothing,
         calculateFor::Union{Nothing, Vector{Int64}}=nothing,
+        type="static",
     )
     numPoints = size(fermSurfKondoChannels[1])[1] |> sqrt |> Int
     if isnothing(calculateFor)
@@ -317,14 +347,17 @@ function Fourier(
             end
         end
         kondoTemp = maximum(kondoJRealSpace)
-        if maximum(kondoJRealSpace) > 2
-            kondoJRealSpace .*= 2 / maximum(kondoJRealSpace)
-            #=kondoJRealSpace .*= 0.5 / length(integrateOver)=#
+        if type == "static" || type == "QFI"
+            push!(realKondoChannels, kondoJRealSpace ./ length(integrateOver))
+        else
+            if maximum(kondoJRealSpace) > 1
+                kondoJRealSpace .*= 1.0 / maximum(kondoJRealSpace)
+            end
+            if maximum(kondoJRealSpace) < 0.3
+                kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)
+            end
+            push!(realKondoChannels, kondoJRealSpace)
         end
-        if maximum(kondoJRealSpace) < 0.3
-            kondoJRealSpace .*= 0.3 / maximum(kondoJRealSpace)
-        end
-        push!(realKondoChannels, kondoJRealSpace)
     end
     return realKondoChannels, kondoTemp
 end

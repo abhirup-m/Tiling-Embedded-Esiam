@@ -1,0 +1,308 @@
+% \documentclass[%
+%  reprint,
+% superscriptaddress,
+% groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+% amsmath,amssymb,
+% aps,
+% prl,superscriptaddress
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+% pdflatex,
+% sn-nature,
+% ]{sn-jnl}
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{braket}
+\usepackage{color}
+
+\graphicspath{{./figures/}}
+
+\begin{document}
+
+%\title{Pseudogapped non-Fermi liquid phase arising from Kondo breakdown at the Mott transition}
+
+\title{Pseudogap Mott criticality via a long-range multipartite entangled strongly coupled non-Fermi liquid}
+
+%\title{Pseudogap and Mott criticality: Stretching Kondo Screening to Breaking Point}
+
+%\title{What lies between a Fermi liquid and a Mott insulator in two dimensions? Insights from an impurity model}% Force line breaks with \\
+
+\author[1]{Abhirup Mukherjee}
+\affil[1]{
+ Department of Physical Sciences, Indian Institute of Science Education and Research Kolkata, Nadia - 741246, India
+}
+\author[2]{S. R. Hassan}
+\affil[2]{The Institute of Mathematical Sciences, C.I.T. Campus, Chennai 600 113, India}
+\author[3]{Anamitra Mukherjee}
+\affil[3]{School of Physical Sciences, National Institute of Science, Education and Research, HBNI, Jatni 752050, India}
+\author[4]{N. S. Vidhyadhiraja}
+\affil[4]{Theoretical Sciences Unit, Jawaharlal Nehru Center for Advanced Scientific Research, Jakkur, Bengaluru 560064, India}
+\author[5]{A. Taraphder}
+\affil[5]{Department of Physics, Indian Institute of Technology Kharagpur, Kharagpur 721302, India}
+%
+\author*[1]{Siddhartha Lal}
+
+
+\date{\today}
+\abstract{
+We propose a new theoretical framework for strongly correlated electron systems 
+%We present an auxiliary model approach 
+that illustrates the centrality of the pseudogap phenomenon in the Mott transition of the extended Hubbard model on a half-filled square lattice. Our approach is based on %Vacancy--Kondo--Heisenberg (VKH) model and a Quantum Tiling Reconstruction (QTR) scheme. 
+%a real-space Kondo-defect unit ---comprising a localized 
+a spin-1/2 defect at a lattice vacancy that is Kondo exchange-coupled to neighbouring lattice sites, and which is tiled across a square lattice to yield a translationally invariant model. The pseudogap is emergent from a Fermi liquid via the systematic unravelling of Kondo screening frustrated by charge fluctuations in the conduction bath of the underlying lattice-embedded Kondo model. We demonstrate that the pseudogap is a strongly interacting phase of quantum matter intimately tied to the existence of a critical Fermi surface, with non-Fermi excitations that have long-ranged and multipartite entanglement. The Mott criticality of the non-Fermi liquid is signalled by the emergence of a singular self-energy at the Fermi energy. Our analysis points to this novel phase of gapless quantum matter being stabilised by changes in the topological properties of the Fermi surface that arise from encroaching surfaces of zeros of the single-particle Greens function.
+%passage from a Fermi liquid to a Mott insulator involves two stages: the first involves a systematic unravelling of Kondo screening, frustrated by charge fluctuations in the conduction bath of the underlying lattice-embedded quantum impurity model. 
+%This destabilises the Fermi liquid, culminating in the disconnection of the Fermi surface with the appearance of gaps at the antinodes. In the second stage, an emergent pseudogap phase arises from an effective two-channel Kondo problem in the underlying impurity model. The resulting Fermi arcs possess non-Fermi liquid excitations proximate to a critical Fermi surface. Upon approaching the Mott transition, the nature of this exotic metal evolves with shrinking of the Fermi arcs towards a singular nodal non-Fermi liquid. This accompanies the onset of long-range multipartite entanglement and spin-flip correlations in real-space, revealing the Mott transition on the square lattice to be beyond the paradigm of local quantum criticality.
+}
+
+\maketitle
+
+\section{Introduction.}
+The origin of the pseudogap and strange metal phases of the cuprates continues to be hotly debated in the context of high-temperature superconductivity~\cite{keimer2015quantum}. The anomalous pseudogap (PG) phase, observed in the cuprates, exhibits nodal-antinodal dichotomy with spectral weight concentrated on Fermi arcs around the nodal regions~\cite{loeserKapitulnik1996,Norman1998,Hashimoto2014}. While several calculations have observed a PG in the two dimensional Hubbard model ~\cite{KyungKotliar2006,MacridinAzevedo2006,WuFerrero2018,anirbanmott2,HilleAndergassen2020}, there is no general consensus regarding various aspects of the PG phase, including its relation to the proximate Mott insulating and superconducting phases~\cite{FradkinRevModPhys2015,anirbanmott2,Kitatani2023,Sorella2023}, its evolution from weak- to strong-coupling ~\cite{HuangDevereaux2018,Fedor2022,SimkovicFerrero2024}, and whether the nodal-antinodal dichotomy is intrinsic to the model~\cite{Hashimoto2014,Schafer2021}. Importantly, the connection between finite-temperature crossovers and zero-temperature ground states observed in various analyses remains unclear~\cite{White1998,Ido2018,ProustTaillefer2019,Ponsioen2019,Shengtao2021,XuZhang2022}. 
+
+Viewed as a quantum mechanical phenomenon, the PG involves the emergence of disconnected gapped regions of the Fermi surface (known as Luttinger surfaces of zeros of the single-particle Greens function ~\cite{dzyaloshinskii2003some,phillips2006mottness}) from a Fermi liquid with a connected Fermi surface. The growth and eventual connection of these Luttinger surfaces then leads to the transition into the Mott insulator. Which physical principles guide these events and what do they teach us about the criticality that obtains Mott insulation? Further, can the excitations of the gapless Fermi arcs be adiabatically connected to those of a non-interacting electron gas in the presence of the Luttinger surfaces? If not, what kind of scale-invariant quantum matter do they characterise? Which features of the PG elucidate the breakdown of screening in the Fermi liquid and lead instead to a singular self-energy in the Mott insulator?
+
+We present a new auxiliary model approach 
+to the strong coupling physics of particle-hole symmetric 2D Hubbard-Heisenberg model at zero temperature, revealing the origin and nature of its PG phase and the subsequent Mott transition. The first step 
+requires identifying an appropriate lattice-embedded quantum impurity model, and a scaling analysis of its low-energy phases. Subsequently, a lattice model is  constructed by applying many-body lattice translation operators~\cite{stoyanova} on the impurity model (henceforth referred as \textit{tiling}), obtaining thereby various quantities of the former from the latter. Translation invariance is thus restored differently within our approach from the dynamical mean-field approximation~\cite{georges1996} and its cluster variants~\cite{Hettler2000DCA, Kotliar2001Cellular, Maier2005, Sakai2023}.
+
+Combining the scaling analysis of the impurity model with tiling procedure provides momentum-space resolution crucial to unveiling the PG phenomenon, and clarifies the role of the Kondo breakdown process at the heart of Mott transition~\cite{fabrizio2017kondophysicsmotttransition,RADEMAKER2025}. 
+Emerging from a systematic unraveling of Kondo screening, the PG phase is separated from the Fermi liquid (FL) and Mott insulating phases by correlation-driven Lifshitz transitions of the Fermi surface (FS)~\cite{sakai2009evolution}. Passage through the PG involves dynamical transfer of spectral weight between gapped anti-nodal Luttinger surfaces (zeros of the single-particle Green's function) and gapless nodal arcs with non-FL excitations. We also observe the concomitant onset of long-range real-space entanglement and spin-flip correlations close to the Mott transition, rendering it beyond local quantum criticality~\cite{Si2001}. Our findings serve as a demonstration of the PG as a strongly interacting long-range multipartite entangled phase of quantum matter linked to the Mott criticality of the 2D extended Hubbard model~\cite{Phillips2013Unparticles}. This follows a recent proposal~\cite{lanave2025} that the emergence of Luttinger surfaces lead to the spontaneous violation of a $\mathbb{Z}_{2}$ symmetry associated with the Fermi surface~\cite{Anderson2001,Huang2022}, and thence to the existence of non-local propagating degrees of freedom.
+
+\textcolor{red}{ AM: Some comments expanding on for identifying a underlying principle: The encroaching of the Fermi surface by the creeping Luttinger surface increases with electronic interaction between the bath electrons (W), which frustrates the Kondo screening and is controlled by (W/J). This phenomenon leads to a transition to a non-Fermi liquid state, where the quasiparticle excitations lose coherence and are characterized by disconnected Fermi surfaces and a pseudo-gapped density of states. The eventual demise of the Fermi surface and its replacement by a connected Luttinger surface finally leads to the Mott phase. }
+
+\textcolor{red}{We demonstrate that a nodal non-Fermi liquid (at the verge of the Mott transition, when the Fermi surface has shrunk to a point) is described by the exactly solvable Hatsugai-Kohmoto (HK) model. The (HK) model exhibits a specific type of symmetry breaking, which is crucial for stabilizing non-Fermi liquids and Mott physics. This involves breaking a local-in-momentum space $Z_2$ symmetry, which serves as an organizing principle for the Mott transition. This $Z_2$ symmetry [Ansderon, Haldane,  Phillips] is local-in-momentum space and non-local in real space (exhibiting long-range multi-partite entanglement (it would be nice if we could demonstrate this) ). When this symmetry is disrupted, the symmetry between particle addition and removal around the chemical potential is also lost. The resulting non-Fermi liquid is characterized by a self-energy scaling as $\omega^{-2}$ with energy in the HK model. We show that the same self-energy characterizes the entire pseudo-gapped regime of the extended Hubbard-Heisenberg model. We also demonstrate the $Z_2$ breaking for the URG-derived Hamiltonian in the pseudo-gapped phase, concretely linking the origin of the non-Fermi liquid behavior to the loss of particle-hole symmetry.  Our result reveals a new adiabatic continuity connecting the Mott insulator phase (described by the HK model by the emergence of a fully connected Luttinger surface) to a family of pseudo-gapped non-Fermi liquid states, in analogy to adiabatic continuity of the noninteracting fermions to the Fermi liquid phase.}
+
+\section{A lattice-embedded impurity model.}
+Building on the insight, that the Kondo breakdown in a simple extension of the Anderson impurity model~\cite{Mukherjee_2023} captures the physics of Mott transition in infinite dimensions~\cite{georges1996}), we study a similar Anderson impurity model embedded within a square lattice 
+\begin{equation}\begin{aligned}\label{impurityModel}
+	\mathcal{H}_\text{aux} = H_\text{imp} + H_\text{imp-cbath} + H_\text{cbath}~, 
+\end{aligned}\end{equation}
+where $H_{imp} = - \frac{U}{2}\left(\hat n_{d \uparrow} - \hat n_{d \downarrow} \right) ^2$ is the Hamiltonian for the localised impurity site, and the impurity (with creation operator $c^\dagger_{d\sigma}$, and spin-1/2 moment ${\bf S}_d$) interacts with four nearest neighbour sites ($c_{Z\sigma}$, labelled by index $Z$) 
+through local Kondo terms of uniform strength $J$ as well as single-particle hybridisation $V$, \(H_\text{imp-cbath} =\frac{1}{2} J\sum_{\sigma_1,\sigma_2}\sum_{Z} {\bf S}_d\cdot c^\dagger_{Z\sigma_1}{\boldsymbol \tau}_{\sigma_1,\sigma_2} c_{Z\sigma_2} - V \sum_{\sigma, Z} \left(c^\dagger_{Z\sigma} c_{d\sigma} + h.c.\right)\). Finally, the term
+$H_\text{cbath} = \sum_{{\bf k}}\epsilon_{\textbf{k}}
+c^\dagger_{{\bf k},\sigma}c_{{\bf k},\sigma} -\frac{W}{2}\sum_{Z} \left(n_{Z\uparrow} - n_{Z\downarrow}\right)^2$ includes the kinetic energy ($\epsilon_{\textbf{k}}=-2t\left(\cos k_x + \cos k_y\right)$) for tight-binding conduction bath electrons ($c^\dagger_{{\bf k},\sigma}$) on a half-filled square lattice, together with local correlations ($W$) that frustrate Kondo screening. The 2D structure of the impurity model and its distinction from the infinite-dimensional counterpart becomes apparent on Fourier transforming the Kondo coupling to ${\bf k}$-space:
+$J_{{\bf k}, {\bf k}^\prime} = \frac{J}{2}\left[\cos\left({\bf k}_x - {\bf k}^\prime_x\right) + \cos\left({\bf k}_y - {\bf k}^\prime_y\right)\right]$, with $J>0$. Clearly, $J_{{\bf k}, {\bf k}^\prime}$ possesses $C_{4}$ lattice symmetry. 
+\section{Reconstructing the lattice model.}
+We now define the {\it tiling} procedure, which recreates the lattice model from the impurity Hamiltonian. For a {\it unit cell} of the tiling,  
+we consider \(\mathcal{H}_\text{aux}({\bf r}_d)\) to have the impurity at a reference site \({\bf r}_d\) of our lattice. To create the lattice model, we translate the unit cell across all sites of the lattice:
+\begin{equation}\begin{aligned}
+	\label{tilingPrescription}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}T^\dagger({\bf r})\mathcal{H}_\text{aux}({\bf r}_d)T({\bf r}) - N\mathcal{H}_\text{cbath},
+\end{aligned}\end{equation}
+where \({\bf r}\) sums over all lattice sites, and $T({\bf r})$ is a many-body translation operator that translates all coordinates by a vector \({\bf r}\). Details of tiling procedure are provided in the Supplemental Information (SI)~\cite{suppmat}. Implementing this for the extended Anderson impurity model (eq.~\ref{impurityModel}) generates a {\it Hubbard-Heisenberg} lattice model in two spatial dimensions:
+    \begin{eqnarray}
+        &&\mathcal{H}_\text{tiled} = -\frac{\tilde t}{\sqrt\mathcal{Z}}\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\nonumber \\
+        &&+ \frac{\tilde J}{\mathcal{Z}}\sum_{\left< {\bf r}_i, {\bf r}_j\right>}{\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2~,
+        \end{eqnarray}
+with parameters $(\tilde{t},\tilde{\mu},\tilde{J},\tilde{U})$ that are related simply to those in $\mathcal{H}_\text{aux}$~\cite{suppmat}. The eigenstates of $H_{\text{tiled}}$ are dictated by a many-body version of Bloch's theorem~\cite{stoyanova}. Relations between Hamiltonians and eigenstates of the impurity and lattice models are exploited to obtain equal-time correlation functions and entanglement measures of the latter from the former~\cite{suppmat}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.325\linewidth]{phaseDiagram-77-0.001.pdf}
+    \includegraphics[width=0.325\linewidth]{SF.pdf}
+    \includegraphics[width=0.325\linewidth]{kspaceDOS-77.pdf}
+    \caption{Left: Phase diagram of impurity model at strong coupling in $U$ in terms of competing dimensionless Kondo ($J/t$) and bath correlation ($W/t$) couplings. A pseudogap phase (red, PG) is observed between the local Fermi liquid (pink, LFL) and local moment (black, LM) phases. Center: $k$-space-resolved spin-spin correlation $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$ in the pseudogap phase of the impurity model. Antinodal regions are observed to decouple from Kondo screening of the impurity. Right: Upon tiling, this leads to a 
+    $k$-space-resolved antinodal gap in the electronic density of states of the lattice model, corresponding to Luttinger surfaces of zeros.}
+    \label{spinCorr}
+\end{figure}
+%\par\noindent\textit{Pseudogapping{\textcolor{red}``pseudogapping"  DOESN'T SOUND GOOD}} transition from Kondo breakdown.} 
+\section{Pseudogap Formation via Kondo Breakdown.}
+A detailed picture of Kondo breakdown in the large $U$ phase of $H_\text{aux}$ is obtained from a scaling analysis of the ${\bf k}$-resolved Kondo coupling \(J^{(j)}_{{\bf k}_1, {\bf k}_2}\) using the 
+unitary renormalisation group (URG) method \cite{anirbanurg1} (see \cite{suppmat} for details)
+\begin{equation}\begin{aligned}\label{KondoRGequation}
+	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2}~,
+\end{aligned}\end{equation}
+where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\text{th}\) step, the sum is over all occupied momentum states \({\bf q}\) 
+%in the particle sector (PS {\textcolor{green}{are we using the abbreviation PS anywhere else?}}) 
+of the energy shell \(\varepsilon_j\), 
+%(i.e., all states occupied at \(T=0\) and in the absence of any quantum fluctuations), 
+and  \({\bf \bar q} = {\bf q} + {\boldsymbol \pi}\) is the particle-hole transformed state associated with ${\bf q}$. The bath interaction coupling $W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}$ is found to be marginal under these transformations. While the complexity of the RG equation for $J_{{\bf k}_1, {\bf k}_2}$ (eq.\eqref{KondoRGequation}) is clarified through a detailed numerical evaluation whose results are discussed below, its structure permits the broad conclusion that the frustration of Kondo screening due to charge fluctuations (for attractive bath interactions $W<0$) lead to the Mott metal-insulator transition~\cite{Mukherjee_2023}.
+
+Upon tuning the ratio of the bath and Kondo interactions ($W/J$) from zero to negative values (see phase diagram in Fig.~\ref{spinCorr}(left)), the following phases emerge in the impurity model from the competition between $J$ and $W$ in eq.~\eqref{KondoRGequation}: (i) for $W/J<(W/J)_{\text{PG}}$, an LFL phase (where the entire FS participates in Kondo screening), (ii) for $\frac{W}{J} \in [(\frac{W}{J})_{\text{PG}}, (\frac{W}{J})_c]$, a local PG phase where disconnected parts of the FS around the node participate in Kondo screening, and (iii) a local moment phase for $\frac{W}{J} > (\frac{W}{J})_c$, where the impurity remains unscreened at low-energies. These can be visualised from spin correlations $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$; see Fig.~\ref{spinCorr}(center) for $\chi_s(d,{\bf k})$ in the PG. The values $(W/J)_{\text{PG}}$ and $(W/J)_c$ are therefore the entry into and exit from the PG phase. Mapping on to the lattice model via tiling, we observe that the $T=0$ Mott transition of the 2D Hubbard-Heisenberg model proceeds from FL to Mott insulator through an intervening PG phase having a partially gapped FS (i.e., a vanishing electronic density of states around the antinodal regions, Fig.~\ref{spinCorr}(right)). We now outline the mechanism for the formation of the PG.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{kondoUnravelling.pdf}
+    \caption{Left, Right and Center: Initiation of the decoupling of $J_{{\bf k}, {\bf k'}}$ (positive, negative and zeros shown in red, blue and white respectively), with ${\bf k}$ (black circle) at low-energies for ${\bf k}$ corresponding to the node, antinode and a point mid-way between them on the top right arm of the FS respectively with tuning $W/J$. As dictated by the symmetry of $J_{{\bf k}, {\bf k'}}$, the decoupling for a given ${\bf k}$ proceeds} via the appearance of zeros (white patches) of $J_{{\bf k}, {\bf k'}}$ for ${\bf k'}$ initially on the nodal regions of adjacent arms, and progresses gradually towards the antinodes. The decoupling ends with the onset of the pseudogap.
+    \label{rgProgression}
+\end{figure}
+%\newline 
+\section{Unraveling of Kondo screening.} 
+As shown in Fig.~\ref{rgProgression}, the anisotropy in the ${\bf k}$-space of Kondo breakdown can be visualized in terms of zeros of $J_{{\bf k}_N, {\bf k}}$, involving spin-flip scattering between the node ${\bf k}_N = (\pi/2, \pi/2)$  and a general wavevector ${\bf k}$. 
+For any $W/J$, the $\mathcal{C}_{4}$ lattice symmetry dictates that $J_{{\bf k}_N, {\bf k}}$ vanishes if ${\bf k}$ belongs to any of the antinodes or adjacent nodes. Tuning $W/J$ towards $(W/J)_{\text{PG}}$ leads to an unraveling of the Kondo screening: $J_{{\bf k}_N, {\bf k}}$ for ${\bf k}$ close to the adjacent nodes turns RG-irrelevant first, and a patch of zeros subsequently appears in $J_{{\bf k}_N, {\bf k}}$ around this point (Fig.~\ref{rgProgression} left). Tuning $W/J$ further extends the patch of zeros towards the antinodes (Fig.~\ref{rgProgression} center and right). Kondo screening thus unravels by a systematic decoupling of all $J_{{\bf k}_1, {\bf k}_2}$ that connect adjacent quadrants of the Brillouin zone.   
+Precisely at $W/J=(W/J)_{\text{PG}}$, the antinode joins this connected region of zeros in $J_{{\bf k}_1, {\bf k}_2}$, marking the decoupling of the antinodes from all other points in the neighbourhood of the FS. This is an interaction-driven Lifshitz transition of the FS, and marks the entry into a PG phase possessing Fermi arcs~\cite{WuFerrero2018}. Importantly, it coincides with an emergent two-channel Kondo (2CK) impurity model, where each channel corresponds to a pair of Fermi arcs on opposite faces of the conduction bath FS. The 2CK nature of the PG is guaranteed by the symmetry of $J_{{\bf k},{\bf k'}}$ (see Fig.\ref{rgProgression}): 
+$J_{{\bf k},{\bf k'}}= -J_{{\bf k}+{\bf Q},{\bf k'}}=-J_{{\bf k},{\bf k'}+{\bf Q}}$, where ${\bf Q} = (\pi,\pi)$. The PG expands by shrinking these disconnected Fermi arcs towards the respective nodes, leading to nodal metals whose disappearance heralds the Mott transition. 
+
+\section{{\bf k}-resolved dynamical spectral weight transfer.}
+Strong charge fluctuations develop between the nodal and antinodal regions of the FS in the PG regime (Fig.~\ref{chargeCorr} (left)), removing low-energy spectral weight from the antinodes to higher energies and leading to selective gap formation. Accordingly, the PG coincides with the appearance of poles of the lattice model self-energy $\Sigma ({\bf k},\omega=0)$ near the antinodes; these poles approach the nodes on tuning towards the Mott transition (Fig.~\ref{chargeCorr} (right)). This mirrors the coalescing of self-energy poles at zero frequency in the underlying impurity model~\cite{suppmat}. This process corresponds to the formation of Luttinger surfaces of zeros of the single-particle Greens function~\cite{dzyaloshinskii2003some} whose growth characterises the PG, and connection to the Mott insulator.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{cfnode.pdf}
+    \includegraphics[width=0.49\linewidth]{selfEnergyKspace.pdf}
+    \caption{Left: Enhanced charge correlations $\chi_c({\bf k}_1, {\bf k}_2) = \braket{c^\dagger_{{\bf k}_1\uparrow}c^\dagger_{{\bf k}_1\downarrow}c_{{\bf k}_2\downarrow}c_{{\bf k}_2\uparrow} + \text{h.c.}}$ between the nodal and antinodal regions, signalling Kondo breakdown in the pseudogap phase of the impurity model. Right: In turn, the breakdown leads to the gapping of the antinodal regions in the lattice model, seen from the appearance of poles in the imaginary part of the self-energy.}
+    \label{chargeCorr}
+\end{figure}
+
+\section{Non-FL excitations within the pseudogap.}
+In the PG regime, the nature of gapless Fermi arcs changes dramatically. We have already argued that the low-energy dynamics of these gapless Fermi arcs are governed by an underlying two-channel Kondo (2CK) impurity model~\cite{Tsvelick_weigmann_mchannel_1985,emery_kivelson}. This is consistent with the rapid fall of the impurity quasiparticle residue $Z_\text{imp}$ (Fig.~\ref{channelDecoupling} (left)) from finite values in the FL phase to vanishingly small values just before the onset of the PG. Fig.~\ref{channelDecoupling} (left) shows the emergence of increasingly uncompensated local magnetic moments upon traversing the PG phase. The underlying impurity spectral function of the gapless arcs show a pseudogapped behaviour for $\omega\simeq 0$, with a rapid fall in the spectral weight at $\omega=0$ upon traversing the PG. The collapse of the Kondo resonance into a pseudogapped spectral function is another display of the dynamical spectral weight transfer ~\cite{dzyaloshinskii2003some}. Concomitant with this is the emergence of a zero-frequency peak in the imaginary part of the self-energy of the NFL in the PG phase, with $\Sigma''(\omega)\sim \omega^{\alpha}$. Remarkably, we find that the exponent $\alpha=-2$ characterises the NFL for the entire PG phase (see Fig.~\ref{selfEnergy}(Left)), including the critical end-point. This is in stark contrast with the vanishing $\Sigma''(\omega)\sim \omega^{2}$ for the Fermi liquid. The height of the zero-frequency peak rises by almost 4 orders of magnitude from the start of the PG till its end at the Mott transition point (Fig.\ref{selfEnergy}(Right)); the dramatic growth of the peak height very near the Mott critical point coincides with the coalescing of the finite-frequency poles of the self-energy into a single pole at zero-frequency, signalling the singular nodal non-Fermi liquid present at the Mott quantum critical point. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\linewidth]{figures/Ad_zoomout_77-1500.pdf}
+    \includegraphics[width=0.45\linewidth]{figures/Ad_zoomin_77-1500.pdf}
+    \includegraphics[width=0.45\linewidth]{figures/selfEnergy_d_zoomout_77-1500.pdf}
+    \includegraphics[width=0.45\linewidth]{figures/selfEnergy_d_zoomin_77-1500.pdf}
+    \caption{Top Left: , Top Right: , Bottom Left: , Bottom Right:}
+    \label{specfunc}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.52\linewidth]{figures/selfEnergy_d_fit_77-1500.pdf}
+    \includegraphics[width=0.4\linewidth]{figures/selfEnergy_d_height_77-1500.pdf}
+    \caption{Left: Imaginary part of impurity self-energy for Fermi liquid (FL, $|W/J| < 1.79$) and pseudogapped phases (NFL, $|W/J| \geq 1.79$). The FL self-energy fits to $\Sigma^{\prime\prime} \sim \omega^{\alpha}$ with $\alpha\approx 2$, vanishing as $\omega\to 0$, while the NFL self-energy grows as $\Sigma^{\prime\prime} \approx a - b\omega^{\beta}$ for small $\omega$, with $\beta\approx -2$. Remarkably, the NFL exponent remains mostly unchanged through the entirety of the PG phase. Right:}
+    \label{selfEnergy}
+\end{figure}
+    
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{QPR_77-1500.pdf}
+    \includegraphics[width=0.49\linewidth]{Sdz_49-2000-fixed.pdf}
+    \caption{Suppression of quasiparticle residue ($Z_{imp}$) as the impurity model is tuned towards the Mott transition. An initial drastic fall in $Z_{imp}$ is observed for $W/J \lesssim (W/J)_\text{PG}$ from $0.3$ to around $0.05$, signalling the destruction of the FL with unraveling of Kondo screening. A steady decrease in $Z_{imp}$ is observed in passage through the PG, and is vanishingly small close to the Mott transition due to a divergent self-energy. Inset shows the growth of unscreened impurity magnetic moment in the pseudogap phase.
+    }
+    \label{channelDecoupling}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{SF-di_77-700.pdf}
+    \includegraphics[width=0.49\linewidth]{I2-di_77-700.pdf}
+    \caption{Spin-flip correlation $\braket{S_d^+ S_{r}^- + \text{h.c.}}$ and mutual information $I_{2}(d,r)$ between the impurity spin and conduction bath local spins as a function of the distance {\bf r} between them, normalised against the value for the nearest-neighbour sites. Both decay very quickly in the FL phase (blue), but show long-ranged behaviour in the non-FL phase (yellow, green), extending to the edges of the system at the critical point (green).}
+    \label{longranged}
+\end{figure}
+
+\section{Non-local nature of the pseudogap non-FL.}
+In Fig.~\ref{longranged}, both the mutual information and spin-flip correlations between the impurity spin and conduction bath sites are observed to undergo a crossover within the PG, from a short-ranged behaviour at its onset, to a long-ranged behaviour as the Mott transition approaches~\cite{suppmat}. The entanglement is also observed to be multipartite in nature: in Fig.\ref{qfiplot}, the quantum Fisher information (QFI)~\cite{Hauke2016} computed for the ground state wavefunction using an operator corresponding to the sum of local spin-flip exchange processes shows a jump at the onset of the PG. Further, the Fermi liquid is observed to possess bi-partite entanglement while the NFL of the PG phase displays pentapartite entanglement.
+%Similar long-ranged behaviour of spin-flip correlations is also observed \textcolor{blue}{in Fig.~\ref{channelDecoupling}(right)} between the impurity and bath sites~\cite{suppmat}. 
+% \textcolor{blue}{
+%This is further evidence of the breakdown of local Kondo screening, and the resulting Landau quasiparticle excitations. 
+These striking results imply that the Mott transition observed by us lies beyond the local quantum criticality scenario~\cite{Si2001}. Instead,  we observe the PG phase to be a novel state of strongly interacting quantum matter emergent from the breakdown of local Kondo screening. This state is described by a quantum critical Fermi surface with non-FL Fermi arcs that display increasingly critical behaviour, i.e., dynamics described by non-local quantum fluctuations, and excitations that become truly long-ranged close to the transition.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{qfi_77-2000.pdf}
+    \caption{Evolution of the Quantum Fisher Information $F_Q$ for a nearest-neighbour spin-flip operator $\mathcal{O} = \sum_{i \in \text{odd}}(S_i^+S_{i+1}^- + \text{h.c.})$ through the first Lifshitz transition and the pseudogap. The vertical dashed line marks the onset of the PG. To the left of it, the QFI in the Fermi liquid phase shows at most bipartite entanglement ($F_Q < 2$), while the PG shows the presence of multipartite entanglement upto 5 parties ($F_Q > 4$).}
+    \label{qfiplot}
+\end{figure}
+\section{An exactly solvable singular nodal non-Fermi liquid at Mott criticality.}
+%\section{Evolution of the pseudogapped non-FL.} 
+Very close to the transition, the excitations of the nodal non-FL correspond to those of a Hatsugai-Kohmoto model~\cite{Baskaran1991,Hatsugai1992}. This insight is obtained from a perturbation-theoretic treatment of the RG fixed point Hamiltonian of the impurity model for $W/J\lesssim (W/J)_{\text{PG}}$, by considering the effects of a small fixed point Kondo scattering probability \(J^*\) in the backdrop of a larger bath interaction parameter \(|W|\). This yields the HK model~\cite{Baskaran1991,Hatsugai1992} as the singular part of the effective Hamiltonian arising from forward scattering processes (details in Appendix~\ref{hkmDerivation}):
+\begin{equation}\begin{aligned}\label{HKModel}
+	\Delta \tilde H_{{\bf q}_1 = {\bf q}_2} = \sum_{{\bf q},\sigma}\epsilon_{{\bf q}}{n}_{{\bf q},\sigma} + u\sum_{{\bf q}, \sigma}n_{{\bf q} \sigma} n_{{\bf q} \bar\sigma}~,
+\end{aligned}\end{equation}
+where the number operator \(n_{{\bf q} \sigma} = \phi^\dagger_{{\bf q}, \sigma} \phi_{{\bf q}, \sigma}\) pertains to emergent fermionic relative modes $\phi_{{\bf q}, \sigma}$ that are shifted by an excitation momentum \({\bf q}\) away from the nodal point \({\bf N}_1 = \left(\pi/2, \pi/2\right)\) and its 
+partner \({\bf N}_1 + {\bf Q}_1 = \left(-\pi/2, -\pi/2\right)\). The kinetic energy \(\epsilon_{\bf q}\) and interaction energy \(u\sim J^{2}/W\) are dispersion and Kondo scales renormalised by conduction bath correlations~\cite{suppmat}.
+
+Consequently, the resulting non-FL metal of the lattice model involves long-lived excitations of multiple \({\bf k}\)-states, and manifest in the form of a divergent one-particle self-energy at the non-interacting Fermi surface~\cite{Phillips2020}:
+	$\Sigma_{{\bf q}}(\omega) = -\frac{u^2/4}{\omega - \epsilon_{\bf q}}$, such that $\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0)  \to \infty$. This zero-frequency self-energy pole 
+presages the transition into a Mott insulating phase, where it marks a hard gap in the spectral function for charge excitations. This is consistent with our findings for the lattice (Fig.~\ref{chargeCorr}(Right)) and impurity self-energies~(Fig.\ref{selfEnergy} (Right)). 
+For small but non-zero values of \(\omega - \epsilon_{\bf k}\), we obtain a quasiparticle residue that vanishes with $\omega$, \(Z_\text{imp} \sim \omega^2/U^2 \). The scattering rate of this singular NFL possesses a sharp peak at the Fermi surface (\(\omega=\epsilon_{\bf k_{\mathrm{F}}}\)): \(\Gamma \sim U^2\delta(\omega - \epsilon_{\bf k})\), consistent with the sharply peaked Lorentzian $\Sigma''_{{\bf k}}(\omega)\sim \omega^{-2}$ captured in Fig.\ref{selfEnergy}(Left). This quantum critical non-Fermi liquid metal is an example of a strongly coupled scale-invariant form of quantum matter. The exact solution for eq.\eqref{HKModel} reveals the presence of low-energy excitations comprised of holons and doublons~\cite{Hatsugai1992}. These features point to the nodal NFL as a long-ranged and multipartite entangled, strongly interacting scale-invariant state of quantum matter with unparticle-like excitations~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} that are completely disconnected from the quasiparticles of the Fermi liquid. Additionally, we observe that the nodal metal possesses pairing fluctuations~\cite{suppmat} that can become dominant upon doping~\cite{Phillips2020}.
+
+\section{Pseudogap as a strongly coupled phase of quantum matter.}
+We now unveil an organising principle that leads to the remarkable properties observed above for the strongly interacting NFL of the PG phase. The existence of a sharp connected FS at $T=0$ can be understood as the existence of a topologically protected manifold of gapless chiral excitations in ${\bf k}$-space at the Fermi surface~\cite{Heath_2020}. The FS is characterised by a topological index corresponding to an anomaly in the quantum many-body theory for electrons, and can be understood as a generalised symmetry of such a system~\cite{lanave2025,McGreevy2023}. A theorem by Luttinger and Ward~\cite{luttinger1960ground} shows that a count of the physical charge (known as Luttinger's volume) is identical to the topological index (a so-called homotopy charge known as Luttinger's count) even in the presence of electronic interactions that do not disturb the FS. We will now argue that the emergence of antinodal Luttinger surfaces involve a disconnection of the Fermi surface (into Fermi arcs) and that, by following La Nave et al.~\cite{lanave2025}, the accompanying change in its topological properties leads to the existence of gapless NFL excitations that are non-local in nature.
+
+The antinodal Luttinger surfaces arise from the splitting of double poles of the single-particle Greens function on the FS into poles lying on opposite complex half-planes, together with zeros that are pinned at the FS. These changes in the analytic structure of the single-particle Greens function have several important consequences. First, the emergent zeros break a $\mathbb{Z}_{2}$ symmetry of the FS~\cite{Anderson2001,Huang2022,lanave2025}. Second, they signal a divergent electronic self-energy as a function of the wavevector ${\bf k}$, render ill-behaved the Luttinger-Ward functional of the interacting electronic problem, and violate the generalised symmetry encoded within it. The changes in the pole structure change the Luttinger count topological invariant, while the zeros give rise to an additional topological contribution (linked to the triangle Adler-Bell-Jackiw anomaly~\cite{adler1969axial,bell1969pcac,Altshuler_1998}). As a consequence of the half-filled particle-hole symmetric nature of the system at hand, Luttinger's volume is preserved upon taking into account topological contributions from both the Luttinger count {\it and} the zeros~\cite{seki2017topological}.
+
+Importantly, 
+% the additional anomaly arising from the Luttinger surfaces serves as a disconnection of the Luttinger's count from the physical charge. 
+La Nave et al.~\cite{lanave2025} argue, following recent developments in understanding generalised symmetries~\cite{Casini2021Symmetries}, that the additional anomaly arising from the Luttinger surfaces 
+% such a disconnection of the physical and topological (Luttinger's count) charges 
+guarantees the existence of gapless NFL excitations that are non-local in nature.  
+%and disconnection of the homotopy charge associated with the Luttinger count with the physical charge, i.e., the backflow contribution from the zeros at the FS must be taken into account (for the half-filled p-h symmetric system being studied here) to account for how Luttinger's volume is maintained. 
+%Further, it has recently been shown (Cite Heath & Bedell, NJP 2020; La Nave et al., arXiv:2506.04342) that the existence of Luttinger surfaces indicates the existence of an anomaly; that the existence of this Adler-Bell-Jackiw triangle anomaly related to the PG FS leads naturally (via recent works of Casini et al., La Nave et al., Altshuler et al., von Neumann, Haag etc.) to the existence of non-local propagating degrees of freedom in the gapless NFL arcs. The appearance of zeros at the FS affects the Atiyah-Singer index associated with the FS (cite Heath and Bedell) that leads to the Luttinger volume. As the ABJ triangle anomaly is captured by Atiyah-Singer index theorem (cite Jackiw et al lectures), the appearance of this anomaly at the FS topology changing Lifshitz transition is linked to changes in topological properties of the FS, and hence invariant under renormalization. 
+Thus, the drastic change in nature of the real-space excitations observed by us - from local Landau quasiparticles of the Fermi liquid to the increasingly nonlocal excitations of the NFL Fermi arcs in the PG phase - appears to be dictated by a topological principle and, therefore, robust under renormalisation. This signals the NFL Fermi arcs of the PG as an emergent phase of strongly interacting quantum matter that is the parent metal of the Mott insulator. The same topological principle connects the nonlocal unparticle-like gapless excitations~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} of the scale-invariant nodal NFL observed precisely at the Mott critical point to those of the rest of PG phase, e.g., a universal power-law scaling of $\Sigma''_{{\bf k}}(\omega)\sim \omega^{-2}$ of the NFL throughout the PG phase (Fig.~\ref{selfEnergy} (Left)).
+ 
+\section{Conclusions.} We find compelling evidence that the Mott transition in the 2D extended Hubbard model involves continuous passage through a PG phase whose gapless Fermi arcs host a long-ranged multipartite entangled non-FL metal. This non-FL turns increasingly singular with the onset of criticality into a Mott insulator. The evolution of this PG phase with doping 
+deserves further attention.
+
+\section{Acknowledgments.}
+AM thanks IISER Kolkata for funding through a JRF and SRF. S Lal thanks the SERB, Govt. of India for funding through MATRICS Grant MTR/2021/000141 and Core Research Grant CRG/2021/000852.
+\bibliography{tilingProject}% Produces the bibliography via BibTeX.
+
+\appendix
+
+\section{Appendixes}
+\paragraph*{Luttinger's theorem in the presence of Luttinger surfaces.} One can also ask whether Luttinger's theorem is satisfied in our model in the presence of Luttinger surfaces. It has been shown that particle-hole symmetric systems always satisfy a generalised Luttinger's theorem~\cite{seki2017topological}, where the Fermi volume $V_L$ is represented as the difference in the number of poles and zeros, of the single-particle Greens function, that are enclosed by the FSface~\cite{seki2017topological}. This holds true even in the presence of a divergent self-energy~\cite{Phillips2013}. Since our model is always at half-filling, Luttinger's theorem is always satisfied. 
+
+The way it works out (despite the presence of Luttinger surfaces) is as follows. We need only show that the number of occupied states below the chemical potential remains unchanged across the first Lifshitz transition. Before the transition, the presence of gapless excitations ensures that the FSface is singly-occupied on average. Inside the pseudogap, the gapless $k-$states continue to contribute one pole on average to the Luttinger count, while the gapping out of certain $k-$states leads to a rearrangement of their spectrum: doubly-occupied states on the Luttinger surfaces become more favourable compared to the singly-occupied states (due to the attractive $W$-interaction). Owing to particle-hole symmetry, these states are degenerate with the zero occupancy states, so that on average, a single state is again occupied. This ensures that the number of occupied states (and hence the number of occupied poles) remains unchanged across the transition. The same argument works for the Mott insulator, where the entire FSface gets replaced by a Luttinger surface.
+
+\paragraph*{Tiling towards a Hubbard-Heisenberg model with an embedded extended SIAM}
+We give more details here regarding the construction of the lattice model from the impurity model. As mentioned in the manuscript, the lattice-embedded impurity model is of the form $H({\bf r}_d) = H_\text{imp} + H_\text{cbath} + H_\text{imp-cbath}$, where $H_\text{imp}$ is the impurity part:
+\begin{equation}\begin{aligned}\label{onsiteHamiltonian}
+	H_\text{imp} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta\sum_\sigma \hat n_{{\bf r}_d\sigma}~,
+\end{aligned}\end{equation}
+\(\mathcal{H}_\text{cbath}\) is the conduction bath part:
+\begin{equation}\begin{aligned}\label{bathHamiltonian}
+	{H}_\text{cbath} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>\neq{\bf r}_d;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \\
+    \frac{1}{2 \mathcal{Z}}W\sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(\hat n_{{\bf z}, \uparrow} - \hat n_{{\bf z}, \downarrow}\right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d}\hat n_{{\bf r}_i,\sigma}~,
+\end{aligned}\end{equation}
+and ${H}_\text{imp-cbath}$ is the impurity-bath hybridisation:
+\begin{equation}\begin{aligned}\label{interactionHamiltonian}
+	{H}_\text{imp-cbath} = \frac{J}{\mathcal{Z}}\sum_{\sigma,\sigma^\prime}\sum_{{\bf z}\in\text{NN}({\bf r}_d)} {\bf S}_{{\bf r}_d}\cdot{\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime} \\
+    - \frac{V}{\sqrt{\mathcal{Z}}}\sum_{\sigma} \sum_{{\bf z}\in\text{NN}({\bf r}_d)}\left(c^\dagger_{{\bf r}_d,\sigma} c_{{{\bf z}},\sigma} + h.c.\right)~.
+\end{aligned}\end{equation}
+In this model, ${\bf r}_d$ is the position of the impurity site, and \(\left<{\bf r}_i, {\bf r}_j\right>\neq {\bf r}_d\) indicates that the sum is over all nearest-neighbour pairs of sites avoiding the impurity site \({\bf r}_d\). \(\boldsymbol \tau = \left( \tau_x, \tau_y, \tau_z \right) \) is the vector of Pauli matrices. \(\sigma\) and \(\sigma^\prime\) can be \(\pm 1\) and represent up and down configurations.
+
+The tiled Hamiltonian can be obtained as 
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{tiled} = \mathcal{T}[H({\bf r}_d)]
+    % \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)H({\bf r}_d)T({\bf r} - {\bf r}_d)~,
+\end{aligned}\end{equation}
+where the $\mathcal{T}[H] = \sum_{{\bf r}}T^\dagger({\bf r} - {\bf r}_d)HT({\bf r} - {\bf r}_d)$ represents the symmetrisation/tiling procedure, and the action of the many-body translation operators $T^\dagger({\bf a})$ on a general operator are defined as
+\begin{equation}\begin{aligned}
+T^\dagger({\bf a}) \mathcal{O}\left({\bf r}_1, {\bf r}_2,\ldots\right)T({\bf a}) = \mathcal{O}\left({\bf r}_1 + {\bf a}, {\bf r}_2 + {\bf a},\ldots\right)~.
+\end{aligned}\end{equation}
+
+We consider the effect of the translation operations on each part of the Hamiltonian:
+\begin{equation}\begin{aligned}
+	&\mathcal{T}\left[{H}_\text{cbath}({\bf r}_d, {\bf z})\right] = -\frac{(N-2)t}{\sqrt\mathcal{Z}}\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) \\
+    &- \frac{1}{2}W\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2 - \mu (N-1) \sum_{{\bf r}}\hat n_{{\bf r},\sigma}~,\\
+	&\mathcal{T}\left[{H}_\text{imp}\right] = -\frac{U}{2}\sum_{{\bf r}}\left(\hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta\sum_{{\bf r},\sigma} \hat n_{{\bf r}\sigma}~,\\
+    &\mathcal{T}\left[{H}_\text{imp-cbath}\right]\\
+     &=\sum_{\left< {\bf r}_i, {\bf r}_j\right>}\left[\frac{2}{\mathcal{Z}}J {\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{2}{\sqrt\mathcal{Z}}V \sum_{\sigma}\left(c^\dagger_{{\bf r}_i,\sigma} c_{{{\bf r}_j},\sigma} + h.c.\right)\right]~.
+\end{aligned}\end{equation}
+We have defined \({\bf S}_{{\bf r}_j} =\sum_{\sigma,\sigma^\prime} {\boldsymbol \tau}_{\sigma,\sigma^\prime}c^\dagger_{{\bf z},\sigma}c_{{\bf z},\sigma^\prime}\) as the local spin operator. While constructing the tiled Hamiltonian, we have added extra copies of the non-interacting Hamiltonian \(\mathcal{H}_\text{cbath-nint} = -\frac{1}{\sqrt\mathcal{Z}}t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma}\) for the conduction bath (this results in the factors of \(N-2\) and \(N-1\) in front of the first and third terms).
+
+Upon removing these repeated terms, the result of the tiling operations is a Hubbard-Heisenberg model, of the form
+\begin{equation}\begin{aligned}
+	\mathcal{H}_\text{HH} &= -\frac{1}{\sqrt\mathcal{Z}}\tilde t\sum_{\left<{\bf r}_i, {\bf r}_j\right>;\sigma}\left(c^\dagger_{{\bf r}_i,\sigma}c_{{\bf r}_j,\sigma} + \text{h.c.}\right) - \tilde \mu \sum_{{\bf r}}\hat n_{{\bf r},\sigma} \\
+    &+ \frac{1}{\mathcal{Z}}\tilde J\sum_{\left< {\bf r}_i, {\bf r}_j\right>}{\bf S}_{{\bf r}_i}\cdot{\bf S}_{{\bf r}_j} - \frac{1}{2}\tilde U\sum_{\bf r}\left(\hat n_{{\bf r} , \uparrow} - \hat n_{{\bf r} , \downarrow}\right)^2  ~,
+\end{aligned}\end{equation}
+where the tilde symbol indicates that the parameters are for the lattice model (and not the auxiliary model). By comparing the tiled model and the general lattice model, the lattice model parameters and the auxiliary model parameters can be mapped to each other:
+\begin{equation}\begin{aligned}\label{couplingsMappings}
+	\tilde t = t+2V,~~ \tilde U = U + W, ~ ~ \tilde \mu = 2\mu + \eta,~ ~ \tilde J = 2J~.
+\end{aligned}\end{equation}
+In summary, the appropriate method for reconstructing the lattice model Hamiltonian is therefore
+\begin{equation}\begin{aligned}\label{tilingPrescriptionFinal}
+	\mathcal{H}_\text{tiled} &= \sum_{{\bf r}}\mathcal{H}_\text{aux}({\bf r}) - N\mathcal{H}_\text{cbath-nint}~,
+\end{aligned}\end{equation}
+where we replaced \(N-3\) with \(N\) assuming a large number of sites. Using this, the extended-SIAM gets ``expanded" into a Hubbard-Heisenberg model.
+
+\section{Emergence of a Hatsugai-Kohmoto model at the quantum critical point}\label{hkmDerivation}
+
+
+\end{document}
+

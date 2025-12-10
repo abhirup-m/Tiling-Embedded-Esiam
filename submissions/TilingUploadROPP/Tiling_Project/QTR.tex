@@ -1,0 +1,347 @@
+
+\documentclass[%
+ reprint,
+superscriptaddress,
+groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+prl,superscriptaddress
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-2}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{braket}
+\usepackage{color}
+\graphicspath{{./figures/}}
+\bibliographystyle{apsrev4-2}
+
+\begin{document}
+
+%\title{Pseudogapped non-Fermi liquid phase arising from Kondo breakdown at the Mott transition}
+
+%\title{Long range entangled Fermi arcs at a Pseudogapped Mott transition}
+
+%\title{Long-range entangled Pseudogapped Mott Criticality: tracking Kondo breakdown via Quantum Tilling Reconstruction from cavity-Kondo defects}
+
+\title{Quantum Tiling Reconstruction of long-range entangled Pseudogapped Mott Criticality from Cavity-Kondo defects}
+
+%\title{What lies between a Fermi liquid and a Mott insulator in two dimensions? Insights from an impurity model}% Force line breaks with \\
+
+\author{Abhirup Mukherjee}
+\affiliation{%
+ Department of Physical Sciences, Indian Institute of Science Education and Research Kolkata, Nadia - 741246, India
+}
+\author{S. R. Hassan}
+\affiliation{The Institute of Mathematical Sciences, C.I.T. Campus, Chennai 600 113, India}
+\author{Anamitra Mukherjee}
+\affiliation{School of Physical Sciences, National Institute of Science, Education and Research, HBNI, Jatni 752050, India}
+\author{N. S. Vidhyadhiraja}
+\affiliation{Theoretical Sciences Unit, Jawaharlal Nehru Center for Advanced Scientific Research, Jakkur, Bengaluru 560064, India}
+\author{A. Taraphder}
+\affiliation{Department of Physics, Indian Institute of Technology Kharagpur, Kharagpur 721302, India}
+%
+\author{Siddhartha Lal}
+\affiliation{%
+ Department of Physical Sciences, Indian Institute of Science Education and Research Kolkata, Nadia - 741246, India
+}
+
+\date{\today}
+
+
+
+\begin{abstract}
+%We propose a new theoretical framework—centered on the Vacancy–Kondo (VK) model and implemented via a Quantum Tiling Reconstruction (QTR) protocol—to systematically investigate the Mott transition and pseudogap phenomena in strongly correlated lattice systems. This framework is built upon a lattice-compatible, defect-based formulation in which the fundamental unit is a local Kondo-defect: a vacancy-centered site hosting a spin-$\frac{1}{2}$ moment coupled to its neighboring conduction electrons via exchange and hybridization processes.The QTR procedure restores lattice translation symmetry by tiling these Kondo-defect units across the lattice, yielding a translationally invariant many-body Hamiltonian—termed the \textit{VK-Reconstructed Hubbard–Heisenberg Model}. This construction enables momentum-resolved access to spectral and transport observables, all derived from real-space correlation structures.Within this framework, the Mott transition at half-filling is reinterpreted as a two-stage breakdown of lattice coherence. In the first stage, Kondo screening is frustrated by local charge fluctuations, leading to decoherence and the formation of antinodal gaps that disrupt the connectivity of the Fermi surface. In the second stage, a pseudogap metal emerges, effectively described by an emergent two-channel Kondo (2CK) fixed point in the tiled lattice. The resulting Fermi arcs host non-Fermi liquid excitations and terminate on a critical Fermi surface.As the system nears the transition, these arcs shrink toward nodal points, signaling the onset of a singular nodal metallic state accompanied by enhanced spin-flip correlations and long-range entanglement in real space. This identifies the Mott transition as a fundamentally nonlocal and collective quantum phenomenon—well beyond the reach of traditional impurity-based approaches—and positions the VK+QTR framework as a powerful paradigm for capturing strong correlations, emergent momentum-space geometry, and unconventional quantum criticality in lattice systems.
+We present a theoretical framework based on the Vacancy–Kondo (VK) model and a symmetry-restoring method called Quantum Tiling Reconstruction (QTR) to study the Mott transition and pseudogap behavior in correlated lattice systems. The starting point is a local Kondo-defect unit—a vacancy-centered spin-$\frac{1}{2}$ coupled to neighbouring sites through hybridization and exchange. By tiling such a unit across the lattice, QTR produces a translationally invariant many-body Hamiltonian, referred to as the VK-Reconstructed Hubbard–Heisenberg Model. This construction keeps the underlying lattice structure intact and allows momentum-resolved analysis using a real-space formulation. The QTR method is general: by changing the choice of defect unit, different lattice models with specific local interactions can be built. In the VK example, the Mott transition proceeds in two steps. First, Kondo screening is weakened by charge fluctuations, leading to antinodal gaps and partial loss of Fermi surface connectivity. Second, a pseudogap metal appears, described by an effective two-channel Kondo process, with low-energy excitations along Fermi arcs. As the system approaches the transition, these arcs narrow toward the nodal points, resulting in a nodal metal with enhanced long-range spin-slip correlations and entanglement. This framework offers a structured way to connect local interaction effects with the behavior of electrons in the full lattice.
+\end{abstract}
+
+\maketitle
+\par\noindent\textit{Introduction.}
+The pseudogap (PG) and strange metal phases observed in the cuprate high-$T_c$ superconductors remain among the most profound challenges in the physics of strongly correlated electrons~\cite{keimer2015quantum}. The PG phase, which displays a characteristic nodal–antinodal dichotomy and the emergence of Fermi arcs~\cite{loeserKapitulnik1996,Norman1998,Hashimoto2014}\textbf{(CITE LAUCHLI PRL, RAJA PRL)}, has been robustly observed in simulations of the two-dimensional Hubbard model~\cite{KyungKotliar2006,MacridinAzevedo2006,WuFerrero2018,anirbanmott2,HilleAndergassen2020}. Nevertheless, key questions remain unresolved: How is the pseudogap connected to the proximate Mott insulating and superconducting phases~\cite{FradkinRevModPhys2015,Kitatani2023,Sorella2023}? How does it evolve across coupling regimes~\cite{HuangDevereaux2018,Fedor2022,SimkovicFerrero2024}? And is the nodal–antinodal dichotomy intrinsic to the Hubbard model~\cite{Hashimoto2014,Schafer2021}? Most fundamentally, the relation between zero-temperature criticality and finite-temperature crossovers remains ambiguous~\cite{White1998,Ido2018,ProustTaillefer2019,Ponsioen2019,Shengtao2021,XuZhang2022}.
+
+In this work, we introduce a new conceptual and computational framework to address these questions based on the \textbf{Vacancy–Kondo (VK)} model and a symmetry-restoring procedure we term \textbf{Quantum Tiling Reconstruction (QTR)}. At the heart of our construction is a localized \textit{Kondo-defect unit}—a spin-$\frac{1}{2}$ degree of freedom placed at a vacancy in the conduction lattice, coupled to neighbouring sites via hybridization and spin exchange. This defect unit serves as the fundamental building block for constructing the full lattice model. Unlike traditional impurity-based approaches, our formulation retains lattice geometry at every step, enabling a direct route from local many-body physics to global momentum-resolved observables.\\
+To construct a translationally invariant correlated lattice system, we apply the Quantum Tiling Reconstruction (QTR) protocol to the local Kondo-defect unit, symmetrically placing it at every site of the lattice using a many-body translation operator. This procedure restores lattice symmetry in a controlled and non-perturbative manner, producing the \textit{VK-Reconstructed Hubbard–Heisenberg Model} (VK-RHH): a momentum-compatible, strongly correlated lattice Hamiltonian that encodes both spin and charge dynamics arising from real-space defect physics. 
+
+Importantly, this is a general scheme: the framework itself is adaptable to other vacancy-defect units, enabling systematic exploration of correlated phases in a diverse class of translationally invariant lattice Hamiltonians. In contrast to dynamical mean-field theory (DMFT) and its cluster extensions~\cite{georges1996,Hettler2000DCA,Kotliar2001Cellular,Maier2005,Sakai2023}—which approximate lattice self-energies via local or cluster embeddings—our approach derives the full lattice theory constructively from the local Kondo-defect unit. This preserves the geometric and correlation structure of the square lattice without resorting to self-consistent approximations or coarse graining.
+
+The VK+QTR framework directly reveals the microscopic mechanism underlying pseudogap formation and its evolution into a Mott insulating phase in the half-filled VK-RHH model. As we increase the effective interaction strength and enhance local charge fluctuations, Kondo screening becomes increasingly frustrated and the system undergoes a two-stage coherence breakdown: (1) antinodal regions of the Fermi surface become gapped through a correlation-induced Lifshitz transition~\cite{sakai2009evolution}; and (2) a non-Fermi liquid pseudogap phase emerges, characterized by nodal Fermi arcs and critical spectral weight.
+
+This pseudogap phase is not a mere thermal or numerical crossover, but rather arises from a bona fide quantum phase structure intrinsic to the Kondo-defect unit. Through QTR, these local features propagate coherently into the lattice, giving rise to long-range spin-flip correlations and entanglement patterns. The resulting criticality is inherently nonlocal—marking a sharp departure from the local quantum critical paradigm~\cite{Si2001}—and demonstrates the power of the VK+QTR framework in capturing the effects of lattice geometry and coherence loss in strongly correlated systems.
+
+\par\noindent\textit{The Vacancy–Kondo (VK) Defect Unit.}
+To explore pseudogap and Mott physics within a real-space framework that retains lattice geometry, we introduce a localized building block we call the \textbf{cavity-Kondo defect unit}, a composite object formed when a lattice site is removed and replaced by a localized orbital with internal interactions and dynamic coupling to surrounding conduction electrons. The defect orbital at the vacancy carries a local Hubbard interaction $U$, prohibiting double occupancy. It hybridizes with neighboring conduction electrons, 
+as well as couples directly to the spins of nearby conduction electrons through an explicit exchange term. The VK defect thus serves as a natural building block for modeling both correlated charge dynamics of itinerant electrons and the dynamical screening of emergent local moments. The Hamiltonian describing the Kondo-defect unit is:
+\begin{equation}
+\label{eq:VK_defect}
+\mathcal{H}_\text{VK} = H_{\text{defect}} + H_{\text{defect-coupling}} + H_{\text{bath}},
+\end{equation}
+where
+\begin{equation}
+H_{\text{defect}} = -\frac{U}{2} \left( \hat{n}_{d\uparrow} - \hat{n}_{d\downarrow} \right)^2
+\end{equation}
+describes the interaction at the vacancy-hosted spin center. This localized spin $\vec{S}_d$ couples to its four nearest neighbor conduction sites $c_{Z\sigma}$ through spin-exchange and one-particle hybridization:
+\begin{equation}
+H_{\text{defect-coupling}} = \frac{J}{2} \sum_{Z} \vec{S}_d \cdot c^\dagger_{Z\alpha} \boldsymbol{\tau}_{\alpha\beta} c_{Z\beta}
+- V \sum_{Z,\sigma} \left( c^\dagger_{Z\sigma} c_{d\sigma} + \text{h.c.} \right).
+\end{equation}
+Here, $\vec{S}_d$ is the spin-$\frac{1}{2}$ operator at the vacancy, and $Z$ runs over the defect’s neighbors.
+
+The surrounding conduction bath is described by:
+\begin{equation}
+H_{\text{bath}} = \sum_{\mathbf{k},\sigma} \epsilon_\mathbf{k} c^\dagger_{\mathbf{k}\sigma} c_{\mathbf{k}\sigma}
+- \frac{W}{2} \sum_{Z} \left( n_{Z\uparrow} - n_{Z\downarrow} \right)^2,
+\end{equation}
+where $\epsilon_{\mathbf{k}} = -2t(\cos k_x + \cos k_y)$ defines the tight-binding dispersion at half-filling, and the $W$-term captures local spin-charge interactions that can frustrate the screening of the Kondo defect. A key feature of this VK unit is its spatially discrete embedding. Although the defect breaks translation symmetry locally, the Fourier-transformed Kondo coupling, 
+\[
+J_{\mathbf{k},\mathbf{k}'} = \frac{J}{2} \left[ \cos(k_x - k'_x) + \cos(k_y - k'_y) \right],
+\]
+captures how the defect scatters Bloch states of the surrounding lattice, encoding spatial anisotropy and enabling analysis of coherence loss and pseudogap formation. The $C_4$ symmetry of $J_{\mathbf{k},\mathbf{k}'}$ renders it suitable for momentum-resolved tiling. 
+
+\par\noindent\textit{Quantum Tiling Reconstruction (QTR).}
+To extend the localized VK unit into a translationally invariant many-body system, we introduce the \textbf{Quantum Tiling Reconstruction (QTR)} scheme. In this approach, the local couplings—such as hybridization and spin exchange with neighboring sites—are repeated across the lattice following the symmetry and geometry of the underlying structure. This process builds a global lattice Hamiltonian that inherits its dynamics and geometry from the quantum behavior of the single defect unit. In this way, QTR reconstructs momentum-space features and coherence properties of the system from its local building blocks, providing a consistent framework for studying pseudogap formation, spectral weight redistribution, and other emergent many-body phenomena.
+
+
+Let \( \mathcal{H}_\text{d}(\mathbf{r}_d) \) denote the local defect-unit Hamiltonian with a vacancy centered at position \( \mathbf{r}_d \). The full lattice Hamiltonian generated via Quantum Tiling Reconstruction (QTR) is defined as:
+\begin{equation}
+\label{eq:QTR_consistent}
+\mathcal{H}_\text{QTR} = \sum_{\mathbf{r}} T^\dagger(\mathbf{r}) \mathcal{H}_\text{d}(\mathbf{r}_d) T(\mathbf{r}) - N H_\text{bath},
+\end{equation}
+where \( T(\mathbf{r}) \) is a many-body translation operator acting on both conduction electrons and localized defect degrees of freedom with $\mathcal{H}_\text{d}$, and \( N \) is the number of tiling units (introduced to avoid double-counting of the conduction bath).\\ When the cavity-Kondo Hamiltonian is used as the seed unit, $\mathcal{H}_\text{d}\equiv \mathcal{H}_\text{VK}$ the QTR construction yields a specific translationally invariant lattice model $\mathcal{H}_\text{QTR}$, the \textit{VK-Reconstructed Hubbard–Heisenberg Model} ($\mathcal{H}_\text{VK-RHH}$):
+\begin{equation}
+\begin{aligned}
+\mathcal{H}_\text{VK-RHH} =\,
+&- \frac{\tilde{t}}{\sqrt{\mathcal{Z}}} \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle, \sigma} \left( c^\dagger_{\mathbf{r}_i \sigma} c_{\mathbf{r}_j \sigma} + \text{h.c.} \right)
+- \tilde{\mu} \sum_{\mathbf{r}, \sigma} n_{\mathbf{r} \sigma} \\
+&+ \frac{\tilde{J}}{\mathcal{Z}} \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle} \vec{S}_{\mathbf{r}_i} \cdot \vec{S}_{\mathbf{r}_j}
+- \frac{1}{2} \tilde{U} \sum_{\mathbf{r}} \left( n_{\mathbf{r} \uparrow} - n_{\mathbf{r} \downarrow} \right)^2.
+\end{aligned}
+\end{equation}
+
+The renormalized lattice parameters $(\tilde{t}, \tilde{\mu}, \tilde{J}, \tilde{U})$ emerge directly from the local coupling constants of the Kondo-defect unit—such as the Kondo exchange $J$, hybridization $V$, charge fluctuation scale $W$, and onsite interaction $U$—as well as the tiling geometry. This construction encodes the interplay of spin and charge correlations within a fully symmetry-restored lattice framework.
+
+Eigenstates of the QTR Hamiltonian obey a generalized many-body Bloch theorem~\cite{stoyanova}, and the construction enables momentum-resolved access to quantities like spectral functions and self-energies. Crucially, correlation functions and entanglement diagnostics computed within the Kondo-defect unit can be consistently mapped to the full lattice through the symmetry-preserving nature of QTR.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.31\linewidth, height=2.45cm]{phaseDiagram.pdf}
+    \includegraphics[width=0.67\linewidth]{SF-DOS.pdf}
+    \caption{Left: Phase diagram of impurity model at strong coupling in $U$ in terms of competing dimensionless Kondo ($J/t$) and bath correlation ($W/t$) couplings. A pseudogap phase (red, PG) is observed between the local Fermi liquid (pink, LFL) and local moment (black, LM) phases. Center: $k-$space resolved spin-spin correlation $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$ in the pseudogap phase of the impurity model. Antinodal regions are observed to decouple from Kondo screening of the impurity. Right: Upon tiling, this leads to a $k-$space resolved antinodal gap in the electronic density of states of the lattice model, corresponding to Luttinger surfaces of zeros.}
+    \label{spinCorr}
+\end{figure}
+
+\par\noindent\textit{Pseudogap Formation via Kondo-Defect Breakdown.}
+To understand how the pseudogap (PG) phase emerges within the Vacancy–Kondo (VK) model, we analyze the breakdown of Kondo screening in the large-$U$ regime of the Kondo-defect Hamiltonian. This analysis is carried out through a momentum-resolved scaling flow of the Kondo coupling \(J^{(j)}_{{\bf k}_1, {\bf k}_2}\), using the unitary renormalization group (URG) technique~\cite{anirbanurg1} (details in~\cite{suppmat}).
+
+The RG flow equation takes the form:
+\begin{equation}
+\label{KondoRGequation}
+\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2},
+\end{equation}
+where $\varepsilon_j$ denotes the energy of the shell being decoupled at the $j^\text{th}$ RG step, and the sum is over all momentum states ${\bf q}$ in the particle sector (PS) of the shell—i.e., all filled states at $T = 0$ in the absence of fluctuations. The notation ${\bf \bar q} = {\bf q} + {\boldsymbol \pi}$ refers to the particle-hole conjugate of ${\bf q}$. The interaction term $W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}$ is marginal under RG flow and encodes spin-charge interactions in the conduction background. While the full behavior of the flow equation is understood via numerical evaluation (discussed below), its analytic structure already shows that an \textit{attractive bath interaction} ($W < 0$) frustrates Kondo screening, ultimately driving a transition to a Mott insulating phase~\cite{Mukherjee_2023}.
+
+By tuning the ratio $W/J$ from zero toward negative values (see Fig.~\ref{spinCorr}, left panel), we uncover a sequence of emergent phases arising from the competition between Kondo screening ($J$) and charge fluctuation suppression ($W$):
+\begin{enumerate}
+    \item For $|W|/J < (|W|/J)_{\text{PG}}$, the Kondo-defect unit exhibits a \textbf{local Fermi liquid} phase in which the entire Fermi surface participates in coherent Kondo screening.
+    \item For $(|W|/J)_{\text{PG}} < |W|/J < (|W|/J)_c$, we observe a \textbf{local pseudogap} phase where only the nodal regions remain actively screened, and the antinodal regions become incoherent.
+    \item For $|W|/J > (|W|/J)_c$, the system enters a \textbf{local moment phase} with complete breakdown of Kondo screening at the defect site.
+\end{enumerate}
+
+This progression is clearly reflected in the ${\bf k}$-resolved spin correlations between the defect and bath, defined as $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$. In the PG regime (Fig.~\ref{spinCorr}, center), $\chi_s(d,{\bf k})$ shows suppressed correlations in the antinodal regions, indicating momentum-selective screening failure.
+
+We interpret $(W/J)_{\text{PG}}$ as the entry point into the pseudogap phase, and $(W/J)_c$ as its termination into the unscreened regime. Upon performing the Quantum Tiling Reconstruction (QTR), these local transitions propagate into the global lattice model. In particular, the $T=0$ Mott transition of the 2D Hubbard–Heisenberg model reconstructed from VK units now proceeds via a well-defined PG phase, characterized by partial gapping of the Fermi surface. The resulting momentum-resolved density of states exhibits spectral suppression in the antinodal zones, while nodal quasiparticles remain gapless (Fig.~\ref{spinCorr}, right panel).
+
+We now present the microscopic mechanism for this pseudogap formation, as it emerges through the scaling flow of Kondo screening in the defect-centered VK unit.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{zerosFlow.pdf}
+    \caption{Left, Right and Center: Decoupling of $J_{{\bf k}, {\bf k'}}$ (positive, negative and zeros shown in yellow, purple and green respectively), with ${\bf k}$ (grey circle) corresponding to the node, antinode and a point mid-way between them on the top right arm of the Fermi surface respectively. This is seen via the appearance of zeros (green patches) of $J_{{\bf k}, {\bf k'}}$ for ${\bf k'}$ initially on the nodal regions of adjacent arms, and their subsequent progression towards the antinodes. The decoupling 
+    ends with the onset of the pseudogap.
+    }
+    \label{rgProgression}
+\end{figure}
+\par\noindent\textit{Unraveling of Kondo Screening in the Kondo-Defect Unit.}
+As shown in Fig.~\ref{rgProgression}, the anisotropic breakdown of Kondo screening within the Kondo-defect unit can be tracked by analyzing the vanishing of the spin-flip scattering amplitude $J_{{\bf k}_N, {\bf k}}$, where ${\bf k}_N = (\pi/2, \pi/2)$ is a nodal point and ${\bf k}$ is a general wavevector on the Fermi surface.
+
+At $W/J = 0$, the scattering amplitude $J_{{\bf k}_N, {\bf k}}$ vanishes for ${\bf k}$ located at antinodal points or nearby nodes. As $W/J$ is decreased towards the pseudogap onset value $(W/J)_{\text{PG}}$, the flow of the renormalized coupling under URG reveals an \textit{unraveling} of Kondo coherence: $J_{{\bf k}_N, {\bf k}}$ becomes RG-irrelevant for ${\bf k}$ near adjacent nodal directions, forming a patch of vanishing amplitude (Fig.~\ref{rgProgression}, left). With further decrease of $W/J$, this patch of zeros expands progressively toward the antinodal region, signaling a systematic decoupling of $J_{{\bf k}_1, {\bf k}_2}$ along connections between different Brillouin zone quadrants (Fig.~\ref{rgProgression}, center and right).
+
+At the critical ratio $W/J = (W/J)_{\text{PG}}$, the antinodal wavevectors become fully disconnected from the rest of the Fermi surface in terms of spin-flip interactions, within numerical precision. This behavior constitutes an interaction-driven \textit{Lifshitz transition} in the effective scattering topology, demarcating the onset of the pseudogap (PG) phase characterized by Fermi arcs~\cite{WuFerrero2018}.
+
+Notably, this phase coincides with the emergence of an effective two-channel Kondo (2CK) structure within the Kondo-defect unit. Each channel corresponds to a pair of symmetry-related Fermi arcs on opposite faces of the Fermi surface. This 2CK character is enforced by the symmetry of the Kondo coupling:
+\[
+J_{{\bf k},{\bf k'}}= -J_{{\bf k}+{\bf Q},{\bf k'}}=-J_{{\bf k},{\bf k'}+{\bf Q}},
+\]
+with ${\bf Q} = (\pi, \pi)$. As the PG phase develops further, the disconnected arcs shrink toward the nodal points. Their eventual collapse marks the transition to a fully gapped Mott insulating state, as reconstructed in the lattice model through QTR.
+
+\par\noindent\textit{Momentum-Resolved Spectral Weight Redistribution.}
+The dynamical process of spectral weight transfer associated with PG formation is illustrated in Fig.~\ref{chargeCorr}(left). In the PG regime, strong charge fluctuations emerge between nodal and antinodal sectors \textbf{(CITE LAUCHLI PRL)}, which selectively remove low-energy spectral weight from the antinodal regions, pushing it to higher energies and effectively gapping out these regions.
+
+Correspondingly, the self-energy $\Sigma({\bf k}, \omega=0)$ of the QTR-reconstructed lattice model exhibits poles near the antinodal momenta, which migrate toward the nodes as the system is tuned further into the Mott insulating regime (Fig.~\ref{chargeCorr}, right). This behavior mirrors the coalescence of zero-frequency poles in the self-energy structure of the underlying Kondo-defect unit~\cite{suppmat}, indicating a consistent local-to-global mapping of spectral anomalies via Quantum Tiling Reconstruction.
+
+Thus, the PG phase is not merely a phenomenological crossover but a well-defined emergent regime rooted in the breakdown of Kondo coherence within the defect-centered VK framework, and extended into the lattice via symmetry-preserving quantum reconstruction.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{cfnode-2.pdf}
+    \includegraphics[width=0.49\linewidth]{selfEnergyKspace-3.pdf}
+    \caption{Left: Enhanced charge correlations $\chi_c({\bf k}_1, {\bf k}_2) = \braket{c^\dagger_{{\bf k}_1\uparrow}c^\dagger_{{\bf k}_1\downarrow}c_{{\bf k}_2\downarrow}c_{{\bf k}_2\uparrow} + \text{h.c.}}$ are observed between the nodal and antinodal regions, signalling Kondo breakdown in the pseudogap phase of the impurity model. Right: In turn, the breakdown leads to the gapping of the antinodal regions in the lattice model, seen from the appearance of poles in the imaginary part of the self-energy.}
+    \label{chargeCorr}
+\end{figure}
+
+\par\noindent\textit{Non-Fermi Liquid Behavior of the Pseudogap Phase.}
+Within the pseudogap (PG) regime defined by $(|W|/J)_{\text{PG}} < |W|/J < (|W|/J)_c$, the nature of the residual gapless excitations on the Fermi arcs undergoes a qualitative transformation. As previously discussed, these Fermi arcs emerge from momentum-selective Kondo breakdown and are governed, at the level of the Kondo-defect unit, by an effective \textbf{two-channel Kondo (2CK)} model~\cite{Tsvelick_weigmann_mchannel_1985,emery_kivelson}.
+
+The 2CK model exhibits non-Fermi liquid excitations characterized by the separation of spin, charge, and channel degrees of freedom~\cite{affleck1992}. Only the spin sector remains gapless, and its excitations dominate the low-energy physics. The self-energy associated with the Kondo-defect in this regime shows characteristic \textbf{marginal Fermi liquid} (MFL) behavior~\cite{Coleman_tsvelik,Schofield1997,Patra2023MCK}: the real and imaginary parts scale as
+\[
+\Sigma^{\prime}(\omega) \sim \omega \ln \omega, \qquad \Sigma^{\prime\prime}(\omega) \sim -\omega,
+\]
+yielding a linear scattering rate $\Gamma(\omega) \sim \omega$ and a logarithmically vanishing quasiparticle residue:
+\[
+Z_{\text{defect}}(\omega) \sim (c - \ln \omega)^{-1},
+\]
+where $c$ is a non-universal constant~\cite{varma2002singular}.
+
+This behavior is evident in the numerical evolution of the Kondo-defect quasiparticle residue $Z_{\text{defect}}$, which drops sharply as the system moves from the Fermi liquid regime into the PG phase (Fig.~\ref{channelDecoupling}, left). The inset of the same figure illustrates the gradual emergence of uncompensated local moments—hallmarks of incomplete Kondo screening—across the PG region.
+
+Upon applying Quantum Tiling Reconstruction (QTR), these local non-Fermi liquid features propagate into the reconstructed lattice model, imparting marginal Fermi liquid behavior to the nodal Fermi arcs and establishing a critical metallic state with suppressed quasiparticle coherence. Thus, the PG phase is not a crossover between metal and insulator, but rather a non-Fermi liquid metal born out of channel-symmetric Kondo-defect physics and extended into the lattice through symmetry-restoring reconstruction.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.49\linewidth]{localQPResidue.pdf}
+    \includegraphics[width=0.49\linewidth]{I2-di_69-2000.pdf}
+    \caption{Left: Suppression of quasiparticle residue as the impurity model is tuned towards the Mott transition. An initial drastic fall observed for $W/J \lesssim (W/J)_\text{PG}$, signalling the destruction of the Fermi liquid with unraveling of Kondo screening. A second drastic fall is observed close to the Mott transition due to a divergent self-energy. Inset shows the growth of unscreened impurity magnetic moment in the pseudogap phase. 
+    Right: Mutual information $I_{2}(d,r)$ between the impurity spin and conduction bath local spins as a function of the distance {\bf r} between them. $I_{2}(d,r)$ decays exponentially in the Fermi liquid phase (blue), but show long-ranged behaviour in the non-Fermi liquid phase (green, yellow). The range of the entanglement is seen to grow yet larger particularly close to the transition (green).
+    }
+    \label{channelDecoupling}
+\end{figure}
+
+\par\noindent\textit{Evolution of the Pseudogapped Non-Fermi Liquid.}
+As the system approaches the Mott transition from within the pseudogap (PG) regime, the marginal Fermi liquid (MFL) excitations characteristic of the two-channel Kondo (2CK) behavior give way to a distinct non-Fermi liquid phase described by the Hatsugai–Kohmoto (HK) model~\cite{Baskaran1991,Hatsugai1992}. This insight emerges from a perturbative analysis of the RG fixed-point Hamiltonian of the Kondo-defect unit in the regime $W/J \lesssim (W/J)_{\text{PG}}$, where the fixed-point Kondo scattering amplitude $J^*$ is small, but the background bath interaction $|W|$ is large.
+
+Under these conditions, the dominant low-energy contribution to the effective Hamiltonian arises from forward scattering processes and assumes the form of an HK-like model (derived in Appendix~\ref{hkmDerivation}):
+\begin{equation}
+\label{HKModel}
+\Delta \tilde H_{{\bf q}_1 = {\bf q}_2} = \sum_{{\bf q},\sigma} \epsilon_{{\bf q}}\, n_{{\bf q},\sigma} + u \sum_{{\bf q}, \sigma} n_{{\bf q} \sigma} n_{{\bf q} \bar\sigma},
+\end{equation}
+where $n_{{\bf q} \sigma} = \phi^\dagger_{{\bf q}, \sigma} \phi_{{\bf q}, \sigma}$ counts emergent fermionic relative modes $\phi_{{\bf q},\sigma}$ shifted by momentum ${\bf q}$ from the nodal points ${\bf N}_1 = (\pi/2, \pi/2)$ and its partner ${\bf N}_1 + {\bf Q}_1 = (-\pi/2, -\pi/2)$. The effective kinetic term $\epsilon_{\bf q}$ and interaction $u \sim J^2/W$ are renormalized by spin-charge correlations in the conduction background~\cite{suppmat}.
+
+Within this effective theory, the low-energy metallic state is a singular non-Fermi liquid, characterized by excitations in the neighbourhood of the four nodal points in $k$-space, and a divergent one-particle self-energy at the Fermi surface~\cite{Phillips2020}:
+\[
+\Sigma_{{\bf q}}(\omega) = -\frac{u^2}{4(\omega - \epsilon_{\bf q})},
+\]
+such that $\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0) \to \infty$. This divergence signals the collapse of quasiparticle coherence precisely at the non-interacting Fermi surface and anticipates the opening of a hard Mott gap in the charge excitation spectrum.
+
+This behavior is consistently reflected in the QTR-reconstructed lattice model, where zero-frequency self-energy poles at the antinodes (Fig.~\ref{chargeCorr}, right) signal the breakdown of metallicity and the approach to Mott localization. Furthermore, near the critical point, the quasiparticle residue associated with the Kondo-defect unit scales as $Z_{\text{defect}} \sim \omega^2/U^2$, vanishing more rapidly than the logarithmic suppression found in the MFL regime. This explains the sharp drop in $Z_{\text{defect}}$ observed at the transition (Fig.~\ref{channelDecoupling}, left).
+
+The scattering rate exhibits a corresponding change: while the MFL phase displays $\Gamma \sim \omega$, the HK criticality leads to a divergent rate at the Fermi surface,
+\[
+\Gamma(\omega = \epsilon_{\bf k}) \sim U^2 \delta(\omega - \epsilon_{\bf k}),
+\]
+signaling a complete loss of quasiparticle definition at the transition. This HK-driven mechanism thus provides a microscopic origin for the breakdown of metallicity and the emergence of Mott insulating behavior, arising naturally from the defect-centered VK model and extended to the lattice through the QTR framework.
+
+
+\par\noindent\textit{Non-Local Nature of the Pseudogap Phase.}
+As shown in Fig.~\ref{channelDecoupling}(right), the mutual information between the spin of the Kondo-defect unit and the surrounding conduction lattice sites exhibits a marked crossover within the pseudogap (PG) regime. Prior to the onset of the PG phase, this mutual information is short-ranged and localized near the defect site. However, as the Mott transition is approached, it becomes increasingly long-ranged—extending across distant parts of the conduction environment. A similar trend is observed in the spin-flip correlation functions between the Kondo-defect and conduction electrons~\cite{suppmat}, providing further evidence of the progressive breakdown of localized Kondo screening and the accompanying collapse of Landau quasiparticles.
+
+This growing spatial range of correlations implies that the Mott transition lies well beyond the scope of \textit{local quantum criticality}~\cite{Si2001}. The non-Fermi liquid excitations residing on the Fermi arcs of the PG regime exhibit increasingly singular and non-local behavior as the transition is approached. Their dynamics cannot be attributed to purely local quantum fluctuations but instead reflect the emergence of collective, long-range entangled excitations.
+
+Moreover, we observe the presence of pairing fluctuations centered around the nodal regions of the Fermi surface~\cite{suppmat} \textbf{(CITE LAUCHLI PRL, ANIRBAN NJP-II)}. These nodal metallic modes—partially protected from incoherence—serve as seeds for superconducting correlations that can become dominant upon doping~\cite{Phillips2020}.
+
+\par\noindent\textit{Conclusions.}
+This work introduces a general and flexible framework based on \textbf{Quantum Tiling Reconstruction (QTR)} for constructing momentum-resolved, symmetry-compatible lattice Hamiltonians from localized many-body building blocks. Using the Vacancy–Kondo (VK) unit as a prototype, we demonstrate how QTR reorganizes real-space impurity physics into an extended, translationally invariant correlated lattice model. The resulting VK-Reconstructed Hubbard–Heisenberg (VK-RHH) model preserves lattice geometry and enables direct access to global observables such as momentum-dependent spectral weight, pseudogap formation, and coherence suppression. Crucially, QTR is not limited to the VK unit; it provides a modular platform for systematically generating new classes of strongly correlated lattice models driven by local quantum structure.
+
+For the VK defect unit, our findings reveal that the Mott transition proceeds through a pseudogap phase that is neither a simple crossover nor a local critical point, but a genuinely singular, non-Fermi liquid metal arising from a breakdown of Kondo coherence in the VK framework. This intermediate phase is characterized by non-locality and long-range entanglement, culminating with nodal criticality as the transition is approached. The Quantum Tiling Reconstruction (QTR) methodology allows us to faithfully extend these real-space features of the Kondo-defect unit to the full lattice, thereby capturing the true nonlocal structure of the transition. The doping evolution of this critical pseudogap phase—particularly its relation to nodal pairing—is an important direction for future exploration.
+
+\par\noindent\textit{Acknowledgments.}
+AM thanks IISER Kolkata for funding through a JRF and SRF. S Lal thanks the SERB, Govt. of India for funding through MATRICS Grant MTR/2021/000141 and Core Research Grant CRG/2021/000852.
+\bibliography{tilingProject}% Produces the bibliography via BibTeX.
+
+\appendix
+
+\section{Appendixes}
+\paragraph*{Luttinger's theorem in the presence of Luttinger surfaces.} One can also ask whether Luttinger's theorem is satisfied in our model in the presence of Luttinger surfaces. It has been shown that particle-hole symmetric systems always satisfy a generalised Luttinger's theorem~\cite{seki2017topological}, where the Fermi volume $V_L$ is represented as the difference in the number of poles and zeros, of the single-particle Green's function, that are enclosed by the Fermi surface~\cite{seki2017topological}. This holds true even in the presence of a divergent self-energy~\cite{Phillips2013}. Since our model is always at half-filling, Luttinger's theorem is always satisfied. 
+
+The way it works out (despite the presence of Luttinger surfaces) is as follows. We need only show that the number of occupied states below the chemical potential remains unchanged across the first Lifshitz transition. Before the transition, the presence of gapless excitations ensures that the Fermi surface is singly-occupied on average. Inside the pseudogap, the gapless $k-$states continue to contribute one pole on average to the Luttinger count, while the gapping out of certain $k-$states leads to a rearrangement of their spectrum: doubly-occupied states on the Luttinger surfaces become more favourable compared to the singly-occupied states (due to the attractive $W$-interaction). Owing to particle-hole symmetry, these states are degenerate with the zero occupancy states, so that on average, a single state is again occupied. This ensures that the number of occupied states (and hence the number of occupied poles) remains unchanged across the transition. The same argument works for the Mott insulator, where the entire Fermi surface gets replaced by a Luttinger surface.
+
+
+\paragraph*{Quantum Tiling of a Kondo-Defect Unit into the VK-Reconstructed Hubbard–Heisenberg Model}
+
+We now provide technical details on how the many-body lattice Hamiltonian arises from Quantum Tiling Reconstruction (QTR) of the Kondo-defect unit defined within the Vacancy–Kondo (VK) framework. As discussed in the main text, the local unit centered at position ${\bf r}_d$ is composed of three parts:
+\[
+H({\bf r}_d) = H_\text{defect} + H_\text{bath} + H_\text{defect-bath},
+\]
+where the local Kondo-defect Hamiltonian is
+\begin{equation}
+\label{onsiteHamiltonian}
+H_\text{defect} = -\frac{U}{2}\left(\hat n_{{\bf r}_d \uparrow} - \hat n_{{\bf r}_d \downarrow} \right)^2 - \eta \sum_\sigma \hat n_{{\bf r}_d \sigma},
+\end{equation}
+and the surrounding conduction environment is described by:
+\begin{equation}
+\label{bathHamiltonian}
+\begin{aligned}
+H_\text{bath} &= -\frac{1}{\sqrt{\mathcal{Z}}} t \sum_{\langle {\bf r}_i, {\bf r}_j \rangle \neq {\bf r}_d;\, \sigma} \left( c^\dagger_{{\bf r}_i \sigma} c_{{\bf r}_j \sigma} + \text{h.c.} \right) \\
+&\quad - \frac{1}{2\mathcal{Z}} W \sum_{{\bf z} \in \text{NN}({\bf r}_d)} \left( \hat n_{{\bf z} \uparrow} - \hat n_{{\bf z} \downarrow} \right)^2 - \mu \sum_{{\bf r}_i \neq {\bf r}_d} \hat n_{{\bf r}_i \sigma},
+\end{aligned}
+\end{equation}
+with $\mathcal{Z}$ the coordination number, and $\text{NN}({\bf r}_d)$ the nearest neighbors of the defect. The defect–bath coupling includes both Kondo exchange and single-particle hybridization:
+\begin{equation}
+\label{interactionHamiltonian}
+\begin{aligned}
+H_\text{defect-bath} &= \frac{J}{\mathcal{Z}} \sum_{\sigma, \sigma'} \sum_{{\bf z} \in \text{NN}({\bf r}_d)} \vec{S}_{{\bf r}_d} \cdot \boldsymbol{\tau}_{\sigma \sigma'} c^\dagger_{{\bf z} \sigma} c_{{\bf z} \sigma'} \\
+&\quad - \frac{V}{\sqrt{\mathcal{Z}}} \sum_\sigma \sum_{{\bf z} \in \text{NN}({\bf r}_d)} \left( c^\dagger_{{\bf r}_d \sigma} c_{{\bf z} \sigma} + \text{h.c.} \right).
+\end{aligned}
+\end{equation}
+
+The QTR procedure symmetrizes this Kondo-defect unit over all lattice sites:
+\begin{equation}
+\mathcal{H}_\text{tiled} = \mathcal{T}[H({\bf r}_d)] = \sum_{{\bf r}} T^\dagger({\bf r} - {\bf r}_d)\, H({\bf r}_d)\, T({\bf r} - {\bf r}_d),
+\end{equation}
+where $T({\bf a})$ is the many-body translation operator acting on operator coordinates:
+\[
+T^\dagger({\bf a})\, \mathcal{O}({\bf r}_1, {\bf r}_2, \ldots)\, T({\bf a}) = \mathcal{O}({\bf r}_1 + {\bf a}, {\bf r}_2 + {\bf a}, \ldots).
+\]
+
+The components transform under QTR as:
+\begin{equation}
+\begin{aligned}
+\mathcal{T}[H_\text{bath}] &= -\frac{(N-2)t}{\sqrt{\mathcal{Z}}} \sum_{\langle {\bf r}_i, {\bf r}_j \rangle;\, \sigma} \left( c^\dagger_{{\bf r}_i \sigma} c_{{\bf r}_j \sigma} + \text{h.c.} \right) \\
+&\quad - \frac{1}{2} W \sum_{\bf r} \left( \hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - (N - 1) \mu \sum_{\bf r} \hat n_{{\bf r} \sigma}, \\
+\mathcal{T}[H_\text{defect}] &= -\frac{U}{2} \sum_{\bf r} \left( \hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2 - \eta \sum_{\bf r, \sigma} \hat n_{{\bf r} \sigma}, \\
+\mathcal{T}[H_\text{defect-bath}] &= \sum_{\langle {\bf r}_i, {\bf r}_j \rangle} \left[ \frac{2J}{\mathcal{Z}} \vec{S}_{{\bf r}_i} \cdot \vec{S}_{{\bf r}_j} - \frac{2V}{\sqrt{\mathcal{Z}}} \sum_\sigma \left( c^\dagger_{{\bf r}_i \sigma} c_{{\bf r}_j \sigma} + \text{h.c.} \right) \right].
+\end{aligned}
+\end{equation}
+
+To avoid overcounting, we subtract repeated copies of the noninteracting bath:
+\[
+\mathcal{H}_\text{bath-nint} = -\frac{1}{\sqrt{\mathcal{Z}}} t \sum_{\langle {\bf r}_i, {\bf r}_j \rangle;\, \sigma} \left( c^\dagger_{{\bf r}_i \sigma} c_{{\bf r}_j \sigma} + \text{h.c.} \right) - \mu \sum_{\bf r} \hat n_{{\bf r} \sigma}.
+\]
+
+The final outcome of QTR is the VK-Reconstructed Hubbard–Heisenberg Model:
+\begin{equation}
+\begin{aligned}
+\mathcal{H}_\text{VK-RHH} &= -\frac{1}{\sqrt{\mathcal{Z}}} \tilde{t} \sum_{\langle {\bf r}_i, {\bf r}_j \rangle;\, \sigma} \left( c^\dagger_{{\bf r}_i \sigma} c_{{\bf r}_j \sigma} + \text{h.c.} \right) - \tilde{\mu} \sum_{\bf r} \hat n_{{\bf r} \sigma} \\
+&\quad + \frac{1}{\mathcal{Z}} \tilde{J} \sum_{\langle {\bf r}_i, {\bf r}_j \rangle} \vec{S}_{{\bf r}_i} \cdot \vec{S}_{{\bf r}_j} - \frac{1}{2} \tilde{U} \sum_{\bf r} \left( \hat n_{{\bf r} \uparrow} - \hat n_{{\bf r} \downarrow} \right)^2.
+\end{aligned}
+\end{equation}
+
+With effective parameters:
+\[
+\tilde{t} = t + 2V, \quad \tilde{U} = U + W, \quad \tilde{\mu} = 2\mu + \eta, \quad \tilde{J} = 2J.
+\]
+
+Thus, QTR reconstructs a translationally invariant, spin–charge entangled lattice model—the VK-Reconstructed Hubbard–Heisenberg Model—from local Kondo-defect dynamics.
+
+
+\end{document}

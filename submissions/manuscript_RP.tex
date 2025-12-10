@@ -1,0 +1,139 @@
+Precisely at $W/J=(W/J)_{\text{PG}}$, the antinode joins this connected region of zeros in $J_{{\bf k}_1, {\bf k}_2}$, marking the decoupling of the antinodes from all other points in the neighbourhood of the FS. This is an interaction-driven Lifshitz transition of the FS, and marks the entry into a PG phase possessing Fermi arcs~\cite{WuFerrero2018}. Importantly, it coincides with an emergent two-channel Kondo (2CK) impurity model, where each channel corresponds to a pair of Fermi arcs on opposite faces of the conduction bath FS. The 2CK nature of the PG is guaranteed by the symmetry of $J_{{\bf k},{\bf k'}}$: 
+
+\subsection{Momentum-resolved Dynamical Spectral Weight Transfer}
+Passage through the PG phase is accompanied by a highly structured transfer of spectral weight across the FS. Strong charge fluctuations develop between the nodal and antinodal regions of the FS in the PG regime of the impurity model (Fig.~\hyperref[chargeCorr]{\ref*{chargeCorr}(a)}), as captured by the correlator:
+\begin{equation}
+\chi_c({\bf k}_1, {\bf k}2) = \left\langle
+c^{\dagger}_{{\bf k}1 \uparrow} c^{\dagger}_{{\bf k}1 \downarrow} c_{{\bf k}2 \downarrow} c_{{\bf k}_2 \uparrow} + \text{h.c.}\right\rangle~.
+\end{equation}
+These fluctuations dynamically redistribute low-energy spectral weight from the antinodes to higher energies, leading to selective gap formation. Accordingly, the Luttinger surfaces of the PG~\cite{dzyaloshinskii2003some} coincides with the appearance of poles of the lattice model self-energy $\Sigma ({\bf k},\omega=0)$ near the antinodes; these poles approach the nodes on tuning towards the Mott transition (Fig.~\hyperref[chargeCorr]{\ref*{chargeCorr}(b)}). This mirrors the coalescing of finite-frequency poles of the self-energy poles towards zero frequency in the underlying impurity model~(Fig.~\hyperref[chargeCorr]{\ref*{chargeCorr}(c)}). 
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig3.pdf}
+    \caption{(a) Enhanced charge correlations $\chi_c({\bf k}_1, {\bf k}_2) = \braket{c^\dagger_{{\bf k}_1\uparrow}c^\dagger_{{\bf k}_1\downarrow}c_{{\bf k}_2\downarrow}c_{{\bf k}_2\uparrow} + \text{h.c.}}$ between the nodal and antinodal regions, signalling Kondo breakdown in the pseudogap phase of the impurity model. (b) In turn, the breakdown leads to the gapping of the antinodal regions in the lattice model, seen from the appearance of poles in the imaginary part of the self-energy. (c) The imaginary part of the impurity self-energy $\Sigma^{\prime\prime}(\omega >0)$ possesses a pole at non-zero $\omega$ in the PG that moves towards $\omega=0$ as the Mott transition is approached.}
+    \label{chargeCorr}
+\end{figure*}
+
+
+
+
+\section{Non-Fermi liquid excitations within the Pseudogap}
+\subsection{Pseudogapped spectral function and singular self-energy}
+In the PG regime, the nature of gapless Fermi arcs changes dramatically. We have already argued that the low-energy dynamics of these gapless Fermi arcs are governed by an underlying two-channel Kondo (2CK) impurity model~\cite{Tsvelick_weigmann_mchannel_1985, emery_kivelson}. This is consistent with the rapid fall of the impurity quasiparticle residue $Z_\text{imp}$ (Fig.~\hyperref[channelDecoupling]{\ref*{channelDecoupling}(a)}) from finite values in the FL phase to vanishingly small values just before the onset of the PG. Inset  shows the simultaneous emergence of increasingly uncompensated local magnetic moments upon traversing the PG phase. The accompanying impurity spectral function of the gapless arcs show a pseudogapped behaviour for $\omega\simeq 0$, with a rapid fall in the spectral weight at $\omega=0$ upon traversing the PG~(Fig.~\hyperref[channelDecoupling]{\ref*{channelDecoupling}(c)}). The collapse of the Kondo resonance into a pseudogapped spectral function is accompanied by the redistribution of spectral weight~\cite{dzyaloshinskii2003some} in the impurity spectral function (Fig.~\hyperref[channelDecoupling]{\ref*{channelDecoupling}(b)}) from $\omega\sim 0$ to the Hubbard sidebands at finite frequencies $\omega\simeq \pm 3$ (in units of the bandwidth). 
+
+Concomitant with this is the emergence of a zero-frequency peak in the imaginary part of the self-energy of the NFL in the PG phase(Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(a)}),
+\begin{equation}
+\begin{aligned}
+-1/\Sigma^{\prime\prime}(\omega)\sim 1/\Sigma^{\prime\prime}(0) + \omega^{\beta}~.
+\end{aligned}
+\end{equation}
+Remarkably, we find that the exponent $\beta=2$ characterises the NFL for the entire PG phase (see Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(b)}), including the critical end-point. This is in stark contrast with the $\Sigma''(\omega)\sim \omega^{2}$ for the FL (Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(b)}). A similar analysis reveals the power-law scaling for the low-frequency behaviour of the impurity spectral function in Fig.\ref{ImpSpecFuncFits}. We observe that $A_{d}(\omega)\sim A_d(0) + \omega^{2}$ for the pseudogap phase, while $1/A_{d}(\omega)\sim 1/A_{d}(0) + \omega^{2}$
+for the Fermi liquid (inset of Fig.~\ref{ImpSpecFuncFits}).
+\subsection{Finite-Frequency Scattering Rate and Optical Response Through the Pseudogap}
+All $\Sigma''(\omega)$ for the NFL are observed to lie above the Mott-Ioffe-Regel (MIR) bound~\cite{GunnarssonRMP2003,Hussey2004} (dashed blue line in Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(a)}), while those for the FL lie below. The MIR bound is the maximum expected scattering rate in metals when the mean free path approaches the lattice spacing: 
+\begin{equation}
+\begin{aligned}
+-2\Sigma^{\prime\prime}_\text{MIR} = 1/\tau_\text{MIR}~, ~\tau_\text{MIR} = l_\text{min}/v_{F}~,
+\end{aligned}
+\end{equation}
+where $l_\text{min}$ is the minimum mean free path in metals (equal to one lattice spacing) and $\tau_\text{MIR}$ is the associated lifetime of quasiparticles close to the FS (with Fermi velocity $v_F$). 
+% The optical conductivity $\sigma (\omega)$ of the NFL thus undergoes a suppression as $\omega \to 0$, together with a shift of the Drude peak to finite $\omega$~\cite{Hussey2004,pustogow2021}. 
+The height of the zero-frequency peak rises by almost 4 orders of magnitude from the start of the PG till its end at the Mott transition point (Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(c)}); the dramatic growth of the peak height very near the Mott critical point coincides with the coalescing of the finite-frequency poles of the self-energy into a single pole at zero-frequency, signalling the singular nodal NFL present at the Mott quantum critical point.
+
+To further probe the breakdown of coherent transport in the pseudogap (PG) regime, we examine the product of the impurity spectral function $A(\omega)$ and the scattering lifetime $\tau(\omega)$, which approximates the optical conductivity $\sigma(\omega)$ via a Drude-type relation. As shown in the main panel of Fig.~\ref{optical}, this quantity exhibits a sharp Drude peak at $\omega = 0$ in the Fermi liquid (FL) regime (blue), consistent with long-lived quasiparticles. In stark contrast, the PG regime (green, red, orange) shows a pronounced suppression of low-frequency conductivity and the emergence of a finite-frequency peak centered near $\omega/D \sim 0.3{-}0.4$ (where $D$ is the kinetic energy bandwidth).
+
+
+
+\begin{figure*}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{fig4.pdf}
+    \caption{(a) Suppression of quasiparticle residue ($Z_\text{imp}$) as the impurity model is tuned towards the Mott transition. An initial drastic fall in $Z_\text{imp}$ is observed for $W/J \lesssim (W/J)_\text{PG}$ from $0.3$ to around $0.05$, signalling the destruction of the FL with unravelling of Kondo screening. A steady decrease in $Z_{imp}$ is observed in passage through the PG, and is vanishingly small close to the Mott transition due to a divergent self-energy. Inset shows the growth of unscreened impurity magnetic moment in the pseudogap phase, signalling the breakdown of Kondo screening. (b) Impurity Spectral function in the FL and PG phases. The evolution of the central peak from Kondo resonance to pseudogap is accompanied by dynamical spectral weight transfer to the Hubbard side bands at finite frequencies $\omega\simeq \pm 3$ (in units of the bandwidth). (c) Zoom-in of the central (Kondo) resonance of the impurity spectral function. While undisturbed in the Fermi liquid phase, it splits into a pseudogap in the PG phase, with its height diminishing rapidly as the Mott transition is approached.
+    }
+    \label{channelDecoupling}
+\end{figure*}
+Strikingly, this peak shifts very little across the PG regime (see inset), despite a deepening spectral gap and diverging self-energy. Its position lies well below the Mott gap ($\sim 2.5D$), suggesting that it represents an emergent mid-infrared (MIR) excitation intrinsic to the Mott metal characterising the PG. This feature closely mirrors the experimentally observed MIR peak in high-T$_\text{c}$ cuprates~\cite{Herr1987,Orenstein1987,Uchida1991}, which has been variously attributed to excitations of electrons bound to vacancies~\cite{Thomas1992Optical}, or the dressing of holes by spin excitations~\cite{Dagotto1994RMP}. Here, its robust energy scale and insensitivity to increasing incoherence imply a universality persisting through the PG, likely rooted in short-range entanglement between deconfined doublons and holons excitations of the Mott metal. This is further evidence that the PG metal is not simply a degraded Fermi liquid, but a distinct phase whose optical response is driven by emergent degrees of freedom.
+
+
+
+\subsection{Non-local correlations in the pseudogap}
+In Fig.~\hyperref[longranged]{\ref*{longranged}(a)} and \hyperref[longranged]{\ref*{longranged}(b)}, the spin-flip correlations and mutual information between the impurity spin and conduction bath sites respectively are observed to undergo a crossover within the PG, from a short-ranged behaviour at its onset, to a long-ranged behaviour as the Mott transition approaches. The entanglement is also observed to be multipartite in nature: in Fig.~\hyperref[longranged]{\ref*{longranged}(c)}, the quantum Fisher information (QFI)~\cite{Hauke2016} computed for the ground state wavefunction using an operator corresponding to the sum of local spin-flip exchange processes shows a jump at the onset of the PG. Further, the FL is observed to possess bi-partite entanglement while the NFL of the PG phase displays pentapartite entanglement~\cite{balut2025,mazza2024}.
+
+These striking results imply that the Mott transition observed by us lies beyond the local quantum criticality scenario~\cite{Si2001}. Instead,  we observe the PG phase to be a novel state of strongly interacting quantum matter emergent from the breakdown of local Kondo screening. This state is described by a quantum critical Fermi surface~\cite{senthil2008CriticalFermiSurface} with NFL Fermi arcs that display increasingly critical behaviour, i.e., dynamics described by non-local quantum fluctuations, and excitations that become truly long-ranged close to the transition. It is tempting to conjecture that the long-range entangled critical state captured in Fig.~\hyperref[longranged]{\ref*{longranged}(b)} reflects the existence of a highly efficient scrambler~\cite{sekino2008,hayden2007,bentsen2019}, i.e., a state in which entanglement spreads among its constituents at the fastest rate permissible by quantum mechanics.  
+
+\section{Exactly solvable nodal Non-Fermi liquid at Mott Criticality}
+Very close to the transition, the excitations of the nodal NFL correspond to those of a Hatsugai-Kohmoto model~\cite{Baskaran1991,Hatsugai1992}. This insight is obtained from a perturbation-theoretic treatment of the RG fixed point Hamiltonian of the impurity model for $W/J\lesssim (W/J)_{\text{PG}}$, by considering the effects of a small fixed point Kondo scattering probability \(J^*\) in the backdrop of a larger bath interaction parameter \(|W|\). This yields the HK model~\cite{Baskaran1991,Hatsugai1992} as the singular part of the effective Hamiltonian arising from forward scattering processes (see Appendix B for details of the derivation).
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig5.pdf}
+    \caption{(a) Imaginary part of impurity self-energy $\Sigma^{\prime\prime}(\omega)$ as a function of frequency $\omega$ for Fermi liquid (FL, $|W/J| < 1.79$) and pseudogapped phases (NFL, $|W/J| \geq 1.79$). $\Sigma''(\omega)$ falls to zero as $\omega\to 0$ for the FL, while it attains a peak in the pseudogap. All $\Sigma''(\omega)$ for the NFL are observed to lie above the Mott-Ioffe-Regel (MIR) bound (dashed blue line), while those for the FL lie below. (b) Scaling of $\Sigma^{\prime\prime}(\omega)$ with frequency for Fermi liquid and pseudogapped phases. The FL self-energy fits to $\Sigma^{\prime\prime} \sim \omega^{\alpha}$ with $\alpha\approx 2$, vanishing as $\omega\to 0$, while the NFL self-energy grows as $\Sigma^{\prime\prime} \approx a - \omega^{\beta}$ for small $\omega$, with $\beta\approx 2$. Remarkably, the NFL exponent remains mostly unchanged through the entirety of the PG phase. (c) Variation of the zero-frequency imaginary self-energy $-\Sigma''(\omega=0)$ with $\omega$ in the FL and pseudogap phases (entry into the PG is marked by the vertical dashed line). The inset shows the same but in linear scale, in order to display the dramatic rise (by almost 30 times) on entering the PG.}
+    \label{selfEnergy}
+\end{figure*}
+
+\begin{figure}[!hbtp]
+    \centering
+    \hspace*{-1cm}
+    \includegraphics[width=0.9\linewidth]{Ad_fit.pdf}
+    \caption{Impurity spectral function $A_d(\omega)$ in the local Fermi liquid (inset) and pseudogap (main). The PG spectral function is fit to a power law (with the $\omega=0$ contribution subtracted, see Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(c)} for the full spectral function). The exponent of the power law comes out to be $n\approx 2$ throughout the PG. The local FL spectral function (inset) is fit to a lorentzian (by fitting the inverse to a power law).
+    }
+    \label{ImpSpecFuncFits}
+\end{figure}
+
+\begin{figure}[!ht]
+	\includegraphics[width=0.48\textwidth]{sigma_in.pdf}
+	\caption{Optical conductivity $\sigma(\omega)$ for excitations of the impurity model, approximated through the product of the carrier density (taken from the density of states $A(\omega)$) and the lifetime $\tau(\omega)$ (obtained from the inverse scattering rate $-1/\Sigma^{\prime\prime}(\omega)$, where $\Sigma^{\prime\prime}$ is the imaginary part of the self-energy). The Fermi liquid (blue) shows a sharp Drude peak at $\omega=0$ due to the presence of long-lived quasiparticles. The PG (green, red, orange) shows a shifted Drude peak at a non-zero frequency which is reminiscent of the mid-infrared (MIR) peak seen experimentally in the cuprates~\cite{Herr1987,Orenstein1987,Uchida1991}. Inset shows the robustness of the position of the MIR peak through the PG, indicating it as a universal feature of the Mott metal.}
+	\label{optical}
+\end{figure}
+The second-order renormalised Hamiltonian is
+\begin{equation}\begin{aligned}\label{HKModel}
+    H_\text{eff} =& \sum_{{\bf q}, \sigma}\epsilon_{\bf q} r_{{\bf q},\sigma} + \mathcal{U}\sum_{{\bf q}, \sigma}r_{{\bf q} \sigma}r_{{\bf q} \bar\sigma} + \mathcal{U}\sum_{{\bf q}_1 \neq {\bf q}_2, \sigma}\left[r_{{\bf q}_1 \sigma}r_{{\bf q}_2 \bar\sigma} \right.\\
+    &\left.+ \phi^\dagger_{{\bf q}_1,\bar\sigma}\phi^\dagger_{{\bf q}_1,\sigma}\phi_{{\bf q}_2, \sigma}\phi_{{\bf q}_2, \bar\sigma}\right]~.
+\end{aligned}\end{equation}
+where $\epsilon_{\bf q} = \text{sign}\left(\varepsilon_{{\bf N}_1 + {\bf q}}\right)\frac{\varepsilon_{{\bf N}_1 + {\bf q}}^2}{-W}$ and $\mathcal{U} = \frac{{J^*}^2}{4W}$. The number operator \(n_{{\bf q} \sigma} = \phi^\dagger_{{\bf q}, \sigma} \phi_{{\bf q}, \sigma}\) pertains to emergent fermionic relative modes $\phi_{{\bf q}, \sigma} = \frac{1}{\sqrt 2}\left(c_{{\bf N}_1 + {\bf q},\sigma} - c_{{\bf N}_1 + {\bf Q}_1 - {\bf q}, \sigma}\right)$ that are shifted by an excitation momentum \({\bf q}\) away from the nodal point \({\bf N}_1 = \left(\pi/2, \pi/2\right)\) and its 
+partner \({\bf N}_1 + {\bf Q}_1 = \left(-\pi/2, -\pi/2\right)\). 
+The ${\bf q}_1={\bf q}_2$ component of the Hamiltonian shows the emergence of the exactly solvable Hatsugai-Kohmoto model~\cite{Baskaran1991,Hatsugai1992} 
+at the critical point. The correlation term $\mathcal{U}\sum_{{\bf q}, \sigma}r_{{\bf q} \sigma}r_{{\bf q} \bar\sigma}$ leads to a transfer of spectral weight across the Fermi surface and separates the available states into three classes:
+\begin{equation}\begin{aligned}
+\braket{n_{\bf q}} = \begin{cases}
+    2, \quad \epsilon_{\bf q} < -|\mathcal{U}/2|~,\\
+    1, \quad |\mathcal{U}/2| > \epsilon_{\bf q} > -|\mathcal{U}/2|~,\\
+    0, \quad |\mathcal{U}/2| < \epsilon_{\bf q}~.
+\end{cases}
+\end{aligned}\end{equation}
+In constrast to a Fermi liquid, there is a highly degenerate single-occupied region in the middle, and this gives rise to non-Fermi liquid excitations.
+
+We now discuss the effects of the ${\bf q}_1 \neq {\bf q}_2$ component. The first term partially lifts the degeneracy of the central singly-occupied region and allows only zero magnetisation configurations. The second term creates gapped excitations involving the regions of zero and double occupancy; these represent subdominant pairing fluctuations of the nodal non-Fermi liquid.
+
+Consequently, the resulting NFL metal of the lattice model involves long-lived excitations of multiple \({\bf k}\)-states, and manifest in the form of a divergent one-particle self-energy at the non-interacting FS~\cite{Phillips2020}:
+$\Sigma_{{\bf q}}(\omega) = -\mathcal{U}^2/4(\omega - \epsilon_{\bf q})$~, such that $\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0)  \to \infty$. This zero-frequency self-energy pole presages the transition into a Mott insulating phase, where it marks a hard gap in the spectral function for charge excitations. This is consistent with our findings for the lattice (Fig.~\hyperref[chargeCorr]{\ref*{chargeCorr}(c)}) and impurity self-energies~(Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(c)}). The nodal Mott metal thus comprises of a Greens function zero at the Fermi energy together with an anistropic massless Dirac dispersion, leading to a non-zero Chern number~\cite{vafekvishwanath2014,morimoto2016,calderon2025}. This topological index survives into the Mott insulator.
+
+For small but non-zero values of \(\omega - \epsilon_{\bf k}\), we obtain a quasiparticle residue that vanishes with $\omega$, \(Z_\text{imp} \sim \omega^2/\mathcal{U}^2 \). The scattering rate of this singular NFL possesses a sharp peak at the FS (\(\omega=\epsilon_{\bf k_{\mathrm{F}}}\)): 
+\begin{equation}\begin{aligned}
+\Gamma \sim \mathcal{U}^2\delta(\omega - \epsilon_{\bf k})~,
+\end{aligned}\end{equation}
+consistent with the sharply peaked Lorentzian $\Sigma''_{{\bf k}}(\omega)\sim \omega^{-2}$ captured in Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(a)}. This quantum critical NFL metal is an example of a strongly coupled scale-invariant form of quantum matter. The exact solution for eq.\eqref{HKModel} reveals the presence of low-energy excitations comprised of holons and doublons~\cite{Hatsugai1992}. These features point to the nodal NFL as a long-ranged and multipartite entangled, strongly interacting scale-invariant state of quantum matter 
+~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} that are completely disconnected from the quasiparticles of the FL. Following the arguments laid out in~\cite{phillips2022}, at finite temperatures, such a scale-invariant highly entangled non-Fermi liquid is likely associated with Planckian dissipation (i.e., $\Sigma'' (T)\sim k_{B}T$) and a resistivity that varies linearly with temperature ($\rho\sim T$)~\cite{zaanen2019,legros2019,hartnoll2022}. This sits well with the possibility that this state is also a highly efficient scrambler~\cite{sekino2008,hayden2007,bentsen2019}. Additionally, as mentioned above, we observe that the nodal metal possesses pairing fluctuations that can become dominant upon doping~\cite{Phillips2020}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig6.pdf}
+    \caption{(a) Spin correlation $\braket{{\bf S}_d \cdot {\bf S}_r}$  and (b) mutual information $I_{2}(d,r)$  between the impurity spin and conduction bath local spin density as a function of the distance {\bf r} between them, normalised against the value at $r=1$. Both decay very quickly in the FL phase (blue), but show long-ranged behaviour in the NFL phase (green and red), extending to the edges of the system at the critical point (red). (c) Evolution of the Quantum Fisher Information $F_Q$ for a nearest-neighbour spin-flip operator $\mathcal{O} = \sum_{i \in \text{odd}}(S_i^+S_{i+1}^- + \text{h.c.})$ through the first Lifshitz transition and the pseudogap. The vertical dashed line marks the onset of the PG. To the left of it, the QFI in the Fermi liquid phase shows at most bipartite entanglement ($F_Q < 2$ (below blue dashed line)), while the PG shows the presence of multipartite entanglement upto 5 parties ($F_Q > 4$ (red dashed line)).}
+    \label{longranged}
+\end{figure*}
+
+\section{Pseudogap as a strongly coupled phase of quantum matter}
+We now unveil an organising principle that leads to the remarkable properties observed above for the strongly interacting NFL of the PG phase. The existence of a sharp connected FS at $T=0$ can be understood as the existence of a topologically protected manifold of gapless chiral excitations in ${\bf k}$-space at the FS~\cite{Heath_2020}. The FS is characterised by a topological index corresponding to an anomaly in the quantum many-body theory for electrons, and can be understood as a generalised symmetry of such a system~\cite{lanave2025,McGreevy2023}. A theorem by Luttinger and Ward~\cite{luttinger1960ground} shows that a count of the physical charge (known as Luttinger's volume) is identical to the topological index (a so-called homotopy charge known as Luttinger's count) even in the presence of electronic interactions that do not disturb the FS. We will now argue that the emergence of antinodal Luttinger surfaces involve a disconnection of the FS (into Fermi arcs) and that, by following La Nave et al.~\cite{lanave2025}, the accompanying change in its topological properties leads to the existence of gapless NFL excitations that are non-local in nature.
+
+The antinodal Luttinger surfaces arise from the splitting of double poles of the single-particle Greens function on the FS into poles lying on opposite complex half-planes, together with zeros that are pinned at the FS. These changes in the analytic structure of the single-particle Greens function have important consequences. First, the emergent zeros break a $\mathbb{Z}_{2}$ symmetry of the FS~\cite{Anderson2001,Huang2022,lanave2025}. This symmetry is guaranteed within FL theory because the presence of quasiparticles vanishingly close to the FS allows the interchange of spin and charge degrees of freedom, promoting the separate $SU(2)$ symmetries of spin and charge to the larger symmetry of $O(4) = SU(2) \times SU(2) \times \mathbb{Z}_2$~\cite{Anderson2001}. The insertion of zeros of the Greens function at the Fermi surface in the PG, and the associated splitting of the Greens function, breaks this $\mathbb{Z}_{2}$ symmetry by placing the pole for the spin excitation in one half of the complex plane while placing that for the charge excitation in the other half~\cite{su2025anomalies,Huang2022}.
+
+Second, they signal a divergent electronic self-energy as a function of the wavevector ${\bf k}$, render ill-behaved the Luttinger-Ward functional of the interacting electronic problem, and violate the generalised symmetry encoded within it. The changes in the pole structure change the Luttinger count topological invariant, while the zeros give rise to an additional topological contribution (linked to the Adler-Bell-Jackiw-type chiral anomaly)~\cite{adler1969axial,bell1969pcac,Altshuler_1998,calderon2025}. As a consequence of the half-filled particle-hole symmetric nature of the system at hand, Luttinger's volume is preserved upon taking into account topological contributions from both the Luttinger count {\it and} the zeros~\cite{seki2017topological}. Importantly, La Nave et al.~\cite{lanave2025} argue, following recent developments in understanding generalised symmetries~\cite{Casini2021Symmetries}, that the additional anomaly arising from the Luttinger surfaces guarantees the existence of gapless NFL excitations that are non-local in nature.  
+
+
+Thus, the drastic change in nature of the real-space excitations - from locally well-defined Landau quasiparticles of the FL to the increasingly nonlocal excitations of the NFL Fermi arcs in the PG phase - appears to be dictated by a topological principle and, therefore, robust under renormalisation. This signals the NFL Fermi arcs of the PG as an emergent phase of strongly interacting quantum matter - which we dub the {\it Mott metal} - that is the parent metal of the MI. The same topological principle connects the nonlocal unparticle-like gapless excitations~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} of the scale-invariant nodal NFL of the HK model observed precisely at the Mott critical point to those of the rest of 
+the PG phase, e.g., a universal scaling of $\Sigma''_{{\bf k}}(\omega)\sim (a + \omega^{2})^{-1}$ (Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(b)}) and local density of states $A_{d}(\omega) \sim \omega^{2}$ (Fig.~\hyperref[ImpSpecFuncFits]{\ref*{ImpSpecFuncFits}}) of the NFL throughout the PG phase, such that the value of $\Sigma''_{{\bf k}}(\omega=0)$ value continues to grow upon violating the MIR bound (Fig.~\hyperref[selfEnergy]{\ref*{selfEnergy}(c)}). 
+
+\section{Conclusions}
+Our analysis reveals that the Mott transition proceeds via a continuous evolution through a PG regime characterized by a singular NFL metal - the Mott metal - with deconfined holon–doublon excitations confined to nodal Fermi arcs.
+, and a scaling of it's spectral features with universal power-law exponents. 
+As the system approaches criticality, this metallic phase exhibits increasingly non-local correlations and a divergent self-energy, signaling the breakdown of Landau quasiparticles, formation of local moments and the onset of long-range quantum entanglement.
+Anchored in two-channel Kondo dynamics at intermediate scales and governed by Hatsugai–Kohmoto physics near the critical endpoint, the Mott metal provides a unified framework for understanding anomalous metallicity in strongly correlated systems. It's fate under finite doping presents a compelling direction for future investigation.

@@ -1,0 +1,2546 @@
+\documentclass[%
+ reprint,
+superscriptaddress,
+groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+aps,superscriptaddress,
+pra,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-2}
+% ,bm,color,hyperref
+\usepackage{graphicx,braket,color,bm,amsmath,amssymb,natbib}
+% \graphicspath{{./figures/}}
+%\bibliographystyle{apsrev4-2}
+
+\begin{document}
+
+\title{Mott Criticality as the Confinement Transition of a Pseudogap-Mott Metal}
+
+\author{Abhirup Mukherjee}
+\email{am18ip014@iiserkol.ac.in}
+\affiliation{Department of Physical Sciences, Indian Institute of Science Education and Research Kolkata, Nadia - 741246, India
+}
+\author{S. R. Hassan}
+\email{shassan@imsc.res.in}
+\affiliation{The Institute of Mathematical Sciences, HBNI, C.I.T. Campus, Chennai 600 113, India}
+\author{Anamitra Mukherjee}
+\email{anamitra@niser.ac.in}
+\affiliation{School of Physical Sciences, National Institute of Science, Education and Research, HBNI, Jatni 752050, India}
+\author{N. S. Vidhyadhiraja}
+\email{raja@jncasr.ac.in}
+\affiliation{Theoretical Sciences Unit, Jawaharlal Nehru Center for Advanced Scientific Research, Jakkur, Bengaluru 560064, India}
+\author{A. Taraphder}
+\email{arghya@phy.iitkgp.ac.in}
+\affiliation{Department of Physics, Indian Institute of Technology Kharagpur, Kharagpur 721302, India}
+\author{Siddhartha Lal}
+\email{Corresponding author: slal@iiserkol.ac.in}
+\affiliation{Department of Physical Sciences, Indian Institute of Science Education and Research Kolkata, Nadia - 741246, India
+}
+
+\date{\today}
+
+\begin{abstract}
+\noindent
+A key challenge in quantum matter involves understanding how strong electronic repulsion obtains the breakdown of quasiparticle excitations in a Fermi liquid and the transition into Mott insulation. The difficulty lies in assessing the role of Luttinger surfaces, zeros of the single-particle Greens function that replace the poles lying on the Fermi surface. Luttinger surfaces are observed to proliferate in the pseudogap regime of Mott systems, resulting in Fermi arcs whose gapless excitations remain unknown. Here, we develop a renormalization-based construction of strongly correlated lattice models that captures the emergence of the pseudogap phase and its transition to a Mott insulator. Applying a many-body tiling scheme to the fixed-point impurity model uncovers a lattice model with electron interactions and Kondo physics. At half-filling, the interplay between Kondo screening and bath charge fluctuations in the impurity model leads to Fermi liquid breakdown. 
+This reveals a pseudogap phase characterized by a non-Fermi liquid (the Mott metal) residing on nodal arcs, gapped antinodal regions of the Fermi surface, and an anomalous scaling of the electronic scattering rate with frequency. The eventual confinement of holon–doublon excitations of this exotic metal obtains a continuous transition into the Mott insulator. Our results identify the pseudogap as a distinct long-range entangled quantum phase, and offer a new route to Mott criticality beyond the paradigm of local quantum criticality. 
+
+\end{abstract}
+
+\maketitle
+\par\noindent\textbf{\large Introduction}\\
+\noindent
+The Landau quasiparticle paradigm~\cite{landau1959theory} underpins our understanding of metallic behaviour, where the screening of long-ranged repulsive interactions between delocalised electrons leads to well-defined excitations that carry the same quantum numbers as free electrons. This remarkable phenomenon - known as adiabatic continuity -  is captured by excitations described by poles of the single-particle Greens function of the interacting system. But what defines metallicity when quasiparticles are no longer well-defined~\cite{Phillips2013Unparticles}? Can a surface of zeros of the Greens function~\cite{dzyaloshinskii2003some}, rather than poles forming a Fermi surface, define an entirely new kind of metal? Could such an exotic state serve as the precursor to Mott localisation driven purely by repulsion, and without invoking magnetic order~\cite{Mott_1949}? These questions necessitate a radical departure in understanding conduction in correlated electron systems beyond the quasiparticle paradigm~\cite{phillips2022}. \\
+
+\noindent
+The anomalous pseudogap (PG) phase, observed in the cuprates, exhibits nodal-antinodal dichotomy with spectral weight concentrated on Fermi arcs around the nodal regions~\cite{loeserKapitulnik1996, Norman1998, Hashimoto2014}. In the PG phase of such Mott systems
+~\cite{taillefer2010,FradkinRevModPhys2015,Sato2017,DoironLeyraud2017,Mukhopadhyay2019,Naman2021,Masafumi2025,KyungKotliar2006,MacridinAzevedo2006,sakai2009evolution,werner2009momentum,sakai2010doped,lin2010,gull2010momentum,gull2012,Mirzaei2013,gull2013,anirbanmott2,HilleAndergassen2020,Jiang2022,Scheurer2018,Krien2022,Kitatani2023,Sorella2023,Schafer2021,White1998,Ido2018,ProustTaillefer2019,Ponsioen2019,XuZhang2022}, the single-particle Green’s function develops surfaces of zeros, also known as Luttinger surfaces~\cite{Phillips2013,dzyaloshinskii2003some}, that signals a fundamental obstruction to quasiparticle formation. As interaction strength increases, these zero surfaces proliferate, fragmenting the Fermi surface into nodal arcs~\cite{sakai2009evolution,Phillips2013}, violating the Luttinger sum rule by reconfiguring Fermi volume~\cite{seki2017topological}, and breaking an emergent $\mathbb{Z}_2$ symmetry associated with the conservation of spin currents in Fermi liquids~\cite{Anderson2001,Huang2022}. Unlike conventional instabilities driven by poles, this phenomenon marks a topological breakdown of Fermi liquid theory~\cite{Coleman_2001,Phillips2013Unparticles}. We show that this breakdown arises from a strongly entangled, scale-invariant state of quantum matter, one that serves as the parent metal to the Mott insulator in a half-filled lattice model of strongly correlated electrons. This offers a concrete, controlled framework to understand both the non-quasiparticle character of the pseudogap phase and its continuous evolution into a repulsion-driven insulator, in full alignment with Mott's original vision~\cite{Mott_1949}.\\
+
+\begin{figure*}[tbh]
+    \centering
+    \includegraphics[width=\linewidth]{Figure1_Nature.pdf}
+    \caption{Schematic representation of (a): flowchart of theoretical framework adopted by us (see main text for explanation of symbols), (b): phases obtained for the extended Hubbard model in two dimensions at $T=0$, and passage between them.}
+    \label{schematic}
+\end{figure*}
+
+\noindent
+Our approach involves developing a renormalization group (RG)-based impurity-to-lattice framework that reconstructs the low-energy physics of a strongly correlated system from the fixed-point structure of a quantum impurity model (Fig.~\ref{schematic}, left). Starting from a dynamical Anderson impurity embedded in a correlated bath, we solve the system using a unitary RG (URG) approach~\cite{anirbanurg1,anirbanurg2}. We then construct a translation-invariant lattice Hamiltonian through a many-body tiling procedure that preserves non-local correlations and inherits momentum-resolved self-energies and renormalized couplings from the impurity solution. The resulting model is an \textit{extended}-Hubbard Hamiltonian on a two-dimensional square lattice at half-filling, with both on-site repulsion and nearest-neighbour spin exchange interactions. These correlations, derived directly from the impurity dynamics, enable tracking the evolution from the FL to the Mott insulator (MI) via an intermediate PG phase.\\
+
+\noindent
+A central insight of our work is that the PG phase hosts a NFL state governed by Kondo frustration and doublon–holon deconfinement~\cite{keimer2015quantum} (Fig.~\ref{schematic}, right). A correlation scale ($W$) in the conduction bath suppresses Kondo screening (with coupling $J$) beyond a critical ratio of $W/J$, triggering the emergence of Luttinger surfaces in the lattice model. This breakdown of quasiparticles begins at the antinodes and progressively engulfs the nodal regions, driving a continuous transformation into the MI. The resulting NFL exhibits a pseudogapped density of states, multipartite long-range entanglement, and a universal scattering rate of the form $\sim (a + b\,\omega^2)^{-1}$ that grows as $\omega \to 0$. At the critical endpoint of this phase, the URG flow identifies a singular NFL described by the Hatsugai–Kohmoto (HK) model~\cite{Hatsugai1992,Baskaran1991,Huang2022}, with fully deconfined holon–doublon excitations.
+
+
+\noindent
+The emergence of Luttinger surfaces alters the anomaly structure associated with the generalized symmetry of the FS~\cite{Altshuler_1998,Heath_2020,lanave2025}. The corresponding topological charge is defined via the Luttinger–Ward functional. This charge is modified by Green’s function zeros, signalling a shift in the underlying anomaly. Within our framework, this reorganization grants topological protection to the RG flows terminating in the PG regime, ensuring the stability of its NFL excitations. These are adiabatically connected to the Hatsugai–Kohmoto model~\cite{Hatsugai1992,Baskaran1991}, reinforcing the interpretation of the PG as a distinct quantum phase. We thus identify the NFL state as a new gapless, long-range entangled phase of correlated matter - the \textit{Mott metal} - whose deconfined holon-doublon excitations are eventually confined across the Mott transition~\cite{Mott_1949}.
+
+
+\noindent
+While we demonstrate our approach for an extended Hubbard model, it applies broadly to correlated quantum systems. The impurity-plus-tiling construction accommodates multi-orbital degrees of freedom, frustrated geometries, and nontrivial band topology. By deriving lattice Hamiltonians directly from renormalized local dynamics - without relying on mean-field approximations - this method preserves nonlocal correlations and enhances momentum-space resolution. It thus provides a versatile and controlled route for engineering strongly correlated models, particularly in regimes where PG formation, NFL scaling, and Mott physics intersect.
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth, height=10cm]{fig2.png}
+    \caption{(a): Phase diagram of impurity model at strong coupling in $U$ in terms of competing dimensionless Kondo ($J/t$) and bath correlation ($W/t$) couplings. Colourbar represents the fraction of states on the Fermi surface replaced by zeros of the Greens function (Luttinger surface). A pseudogap phase (shaded region) is observed between the local Fermi liquid (red region) and local moment (blue region) phases (b): $k$-space-resolved spin correlation $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$ in the pseudogap phase of the impurity model. Antinodal regions are observed to decouple from Kondo screening of the impurity. (c): Upon tiling, this leads to a 
+    $k$-space-resolved antinodal gap in the electronic density of states of the lattice model, corresponding to Luttinger surfaces of zeros. (d)-(f): Initiation of the decoupling of $J_{{\bf k}, {\bf k'}}$ (positive, negative and zeros shown in red, blue and white respectively), with ${\bf k}$ (black circle) at low-energies for ${\bf k}$ corresponding to the node, antinode and a point mid-way between them on the top right arm of the FS respectively with tuning $W/J$. As dictated by the symmetry of $J_{{\bf k}, {\bf k'}}$, the decoupling for a given ${\bf k}$ proceeds via the appearance of zeros (white patches) of $J_{{\bf k}, {\bf k'}}$ for ${\bf k'}$ initially on the nodal regions of adjacent arms, and progresses gradually towards the antinodes. The decoupling ends with the onset of the pseudogap.}
+    \label{spinCorr}
+\end{figure*}
+
+\vspace{0.25cm}
+
+
+\begin{figure*}[tbh]
+    \centering
+    \includegraphics[width=\textwidth]{fig3.pdf}
+    \caption{(a): Enhanced charge correlations $\chi_c({\bf k}_1, {\bf k}_2) = \braket{c^\dagger_{{\bf k}_1\uparrow}c^\dagger_{{\bf k}_1\downarrow}c_{{\bf k}_2\downarrow}c_{{\bf k}_2\uparrow} + \text{h.c.}}$ between the nodal and antinodal regions, signalling Kondo breakdown in the pseudogap phase of the impurity model. (b): In turn, the breakdown leads to the gapping of the antinodal regions in the lattice model, seen from the appearance of poles in the imaginary part of the self-energy. (c): The imaginary part of the impurity self-energy $\Sigma^{\prime\prime}(\omega >0)$ possesses a pole at non-zero $\omega$ in the PG that moves towards $\omega=0$ as the Mott transition is approached.}
+    \label{chargeCorr}
+\end{figure*}
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large Tiling Reconstruction of Lattice Model}\\ 
+To capture the interplay between Kondo physics and Mott localization, our approach relies on a two-dimensional auxiliary model inspired by insights on the impurity model~\cite{Mukherjee_2023} at the heart of dynamical mean-field theory (DMFT) ~\cite{georges1996} and its extensions ~ \cite{hettler1998,kotliar2001,maier2005}. The model (see Methods for details) consists of a correlated impurity site (with a double occupancy cost $U$) embedded within a correlated conduction bath defined on a square lattice (see Fig.~\ref{schematic}(a)). The impurity site hybridises with the conduction bath sites adjacent to it through one-particle hybridisation $V$ as well as a spin-exchange interaction $J$ arising from fluctuations in local spin densities of the electrons. The conduction bath has minimal correlations in the form of a local correlation term $W$ on the sites that are adjacent to the impurity. Crucially, the Kondo coupling acquires a momentum structure upon Fourier transforming:
+\begin{equation}
+J_{{\bf k}, {\bf k}^\prime} = \frac{J}{2} \left[ \cos(k_x - k^\prime_x) + \cos(k_y - k^\prime_y) \right],
+\end{equation}
+which respects the $C_4$ symmetry of the square lattice.
+
+\noindent
+To reconstruct a translationally invariant lattice Hamiltonian from the impurity model (with Hamiltonian $\mathcal{H}_\text{aux}$), we define a many-body tiling prescription that embeds the auxiliary impurity system uniformly across the two-dimensional square lattice. Thus,  the tiling process systematically derives the full lattice dynamics from the renormalized fixed-point structure of the impurity. Let ${\bf r}_d$ denote the location of the impurity within a single unit cell. We define the full Hamiltonian by translating this unit cell across all sites of the lattice:
+\begin{equation}
+\mathcal{H}_\text{tiled} = \sum_{{\bf r}} T^\dagger({\bf r}) \, \mathcal{H}_\text{aux}({\bf r}_d) \, T({\bf r}) - N \mathcal{H}_\text{cbath},
+\end{equation}
+where $T({\bf r})$ denotes the operator that translates all degrees of freedom by vector ${\bf r}$, and $N$ is the number of lattice sites. Subtracting $N \mathcal{H}_\text{cbath}$ ensures proper normalization and avoids double-counting of bath terms.
+
+\noindent
+This procedure yields an effective \textit{extended}-Hubbard model that retains local and nonlocal correlation effects from the original impurity. The resulting Hamiltonian reads:
+\begin{equation}
+\label{eq:effectiveH}
+\begin{aligned}
+\hspace*{-0.3cm}\mathcal{H}_\text{tiled} =
+&- \frac{\tilde{t}}{\sqrt{\mathcal{Z}}} \sum_{\langle {\bf r}_i, {\bf r}_j \rangle, \sigma} \left( c^\dagger_{{\bf r}_i,\sigma} c_{{\bf r}_j,\sigma} + \text{h.c.} \right) \\
+%- \tilde{\mu} \sum_{{\bf r},\sigma} \hat{n}_{{\bf r},\sigma} \\
+&+ \frac{\tilde{J}}{\mathcal{Z}} \sum_{\langle {\bf r}_i, {\bf r}_j \rangle} {\bf S}_{{\bf r}_i} \cdot {\bf S}_{{\bf r}_j}
+- \frac{\tilde{U}}{2} \sum_{{\bf r}} \left( \hat{n}_{{\bf r}, \uparrow} - \hat{n}_{{\bf r}, \downarrow} \right)^2,
+\end{aligned}
+\end{equation}
+where $\mathcal{Z} = 4$ is the coordination number of the square lattice. The parameters $(\tilde{t}, %\tilde{\mu}, 
+\tilde{J}, \tilde{U})$ are renormalized couplings inherited from the impurity solution: $\tilde{t} = t + 2V,\quad \tilde{U} = U + W,
+%\quad \tilde{\mu} = 2\mu + \eta,
+\quad \tilde{J} = 2J$. A non-zero chemical potential in the bath and/or the impurity can be included to study the effects of doping. Crucially, the eigenstates of $\mathcal{H}_\text{tiled}$ obey a many-body generalization of Bloch’s theorem~\cite{stoyanova} (see Sec.1 of Supplementary Information~\cite{suppmat}), which allows for the exact computation of momentum-resolved observables (presented here for a $77\times 77$ {\bf k}-space Brillouin zone grid). This lattice embedding provides a controlled route to capture low-energy NFL behavior and Mott criticality directly from a quantum impurity model.
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large  Pseudogap Formation via Kondo Breakdown}\\
+A detailed picture of the PG in the impurity model is obtained from a momentum-resolved breakdown of Kondo screening in the strong-coupling regime $U \gg t$ phase of $H_\text{aux}$. A unitary renormalisation group (URG) scaling analysis~\cite{anirbanurg1} obtains a flow equation of the Kondo coupling \(J^{(j)}_{{\bf k}_1, {\bf k}_2}\) (see Sec.2 of~\cite{suppmat})
+\begin{equation}\begin{aligned}\label{KondoRGequation}
+	\Delta J^{(j)}_{{\bf k}_1, {\bf k}_2} = -\sum_{{\bf q} \in \text{PS}} \frac{J^{(j)}_{{\bf k}_2,{\bf q}} J^{(j)}_{{\bf q},{\bf k}_1} + 4J^{(j)}_{{\bf q}, {\bf \bar q}} W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}}{\omega - \frac{1}{2}|\varepsilon_j| + J^{(j)}_{{\bf q}}/4 + W_{{\bf q}}/2}~,
+\end{aligned}\end{equation}
+where \(\varepsilon_j\) is the energy of the shell being decoupled at the \(j^\text{th}\) step, the sum is over all occupied momentum states \({\bf q}\) of the energy shell \(\varepsilon_j\), and  \({\bf \bar q} = {\bf q} + {\boldsymbol \pi}\) is the particle-hole transformed partner. The bath interaction coupling $W_{{\bf \bar q}, {\bf k}_2, {\bf k}_1, {\bf q}}$ is found to be marginal under these transformations. While we present a detailed numerical evaluation of the RG equation for $J_{{\bf k}_1, {\bf k}_2}$ (eq.\eqref{KondoRGequation}) below, it is clear that the frustration of Kondo screening due to charge fluctuations (for attractive bath interactions $W<0$) leads to the Mott transition~\cite{Mukherjee_2023}.\\
+
+\noindent
+Upon tuning the ratio of the bath and Kondo interactions ($W/J$) from zero to negative values (see phase diagram in Fig.~\ref{spinCorr}(a)), the following phases emerge in the impurity model from the competition between $J$ and $W$ in eq.~\eqref{KondoRGequation}: (i) for $W/J<(W/J)_{\text{PG}}$, an LFL phase (red region), where the entire FS participates in Kondo screening, (ii) for $\frac{W}{J} \in [(\frac{W}{J})_{\text{PG}}, (\frac{W}{J})_c]$ (shaded region), a local PG phase where disconnected parts of the FS around the node participate in Kondo screening, and (iii) a local moment phase for $\frac{W}{J} > (\frac{W}{J})_c$ (blue region), where the impurity remains unscreened at low-energies. These can be visualised from spin correlations, $\chi_s(d,{\bf k}) = \braket{{\bf S}_d\cdot{\bf S}_{\bf k}}$~, as shown in Fig.~\ref{spinCorr}(b) for the PG. The values $(W/J)_{\text{PG}}$ and $(W/J)_c$ are therefore the entry into and exit from the PG phase. Mapping onto the lattice model via tiling (see Sec.~3 of \cite{suppmat}), we observe that RG-induced nodal–antinodal dichotomy in $J_{{\bf k}, {\bf k}^\prime}$ in the impurity model is the microscopic origin of the PG in the lattice model: the extinction of Kondo coherence translates into spectral zeros in the lattice Green’s function (i.e., Luttinger surfaces) at antinodal momenta (Fig.~\ref{spinCorr}(c)). This establishes that the $T=0$ Mott transition of the 2D \textit{extended}-Hubbard model proceeds from FL to MI through an intervening PG phase. A schematic RG flow diagram can be found in the supplementary materials (Fig.~S1).
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig4.pdf}
+    \caption{(a): Suppression of quasiparticle residue ($Z_\text{imp}$) as the impurity model is tuned towards the Mott transition. An initial drastic fall in $Z_\text{imp}$ is observed for $W/J \lesssim (W/J)_\text{PG}$ from $0.3$ to around $0.05$, signalling the destruction of the FL with unravelling of Kondo screening. A steady decrease in $Z_{imp}$ is observed in passage through the PG, and is vanishingly small close to the Mott transition due to a divergent self-energy. (b): Growth of unscreened impurity magnetic moment in the pseudogap phase, signalling the breakdown of Kondo screening. (c): The central (Kondo) resonance of the impurity spectral function in the Fermi liquid phase splits into a pseudogap in the PG phase, with its height diminishing rapidly as the Mott transition is approached.
+    }
+    \label{channelDecoupling}
+\end{figure*}
+\vspace{0.25cm}
+\par\noindent\textbf{\large Unravelling of Kondo Screening}\\
+The ${\bf k}$-space anisotropy of Kondo breakdown can be visualized in terms of zeros of $J_{{\bf k}_N, {\bf k}}$, involving spin-flip scattering between the node ${\bf k}_N = (\pi/2, \pi/2)$  and a general wavevector ${\bf k}$.
+For any $W/J$, the $\mathcal{C}_{4}$ lattice symmetry dictates that $J_{{\bf k}_N, {\bf k}}$ vanishes if ${\bf k}$ belongs to any of the antinodes or adjacent nodes. Tuning $W/J$ towards $(W/J)_{\text{PG}}$ leads to an unravelling of the Kondo screening: $J_{{\bf k}_N, {\bf k}}$ for ${\bf k}$ close to the adjacent nodes turns RG-irrelevant first, and a patch of zeros subsequently appears in $J_{{\bf k}_N, {\bf k}}$ around this point (Fig.~\ref{spinCorr} (d)). Tuning $W/J$ further extends the patch of zeros towards the antinodes (Fig.~\ref{spinCorr} (e) and (f)). Kondo screening thus unravels by a systematic decoupling of all $J_{{\bf k}_1, {\bf k}_2}$ that connect adjacent quadrants of the Brillouin zone.   
+Precisely at $W/J=(W/J)_{\text{PG}}$, the antinode joins this connected region of zeros in $J_{{\bf k}_1, {\bf k}_2}$, marking the decoupling of the antinodes from all other points in the neighbourhood of the FS. This is an interaction-driven Lifshitz transition of the FS, and marks the entry into a PG phase possessing Fermi arcs~\cite{WuFerrero2018}. Importantly, it coincides with an emergent two-channel Kondo (2CK) impurity model, where each channel corresponds to a pair of Fermi arcs on opposite faces of the conduction bath FS. The 2CK nature of the PG is guaranteed by the symmetry of $J_{{\bf k},{\bf k'}}$: $J_{{\bf k},{\bf k'}}= -J_{{\bf k}+{\bf Q},{\bf k'}}=-J_{{\bf k},{\bf k'}+{\bf Q}}$, where ${\bf Q} = (\pi,\pi)$. The PG expands by shrinking these disconnected Fermi arcs towards the respective nodes, leading to nodal metals whose disappearance heralds the Mott transition. 
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large Momentum-resolved Dynamical Spectral Weight Transfer}\\
+Passage through the PG phase is accompanied by a highly structured transfer of spectral weight across the FS. Strong charge fluctuations develop between the nodal and antinodal regions of the FS in the PG regime of the impurity model (Fig.~\ref{chargeCorr} (a)), as captured by the correlator:
+\begin{equation}
+\chi_c({\bf k}_1, {\bf k}2) = \left\langle
+c^{\dagger}_{{\bf k}1 \uparrow} c^{\dagger}_{{\bf k}1 \downarrow} c_{{\bf k}2 \downarrow} c_{{\bf k}_2 \uparrow} + \text{h.c.}\right\rangle~.
+\end{equation}
+These fluctuations dynamically redistribute low-energy spectral weight from the antinodes to higher energies, leading to selective gap formation. Accordingly, the Luttinger surfaces of the PG~\cite{dzyaloshinskii2003some} coincides with the appearance of poles of the lattice model self-energy $\Sigma ({\bf k},\omega=0)$ near the antinodes; these poles approach the nodes on tuning towards the Mott transition (Fig.~\ref{chargeCorr} (b)). This mirrors the coalescing of finite-frequency poles of the self-energy poles towards zero frequency in the underlying impurity model~(Fig.~\ref{chargeCorr} (c)). See ~\cite{suppmat} (Figs.~S3 and S4) for additional spin and charge correlation results.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig5.pdf}
+    \caption{(a): Imaginary part of impurity self-energy $\Sigma^{\prime\prime}(\omega)$ as a function of frequency $\omega$ for Fermi liquid (FL, $|W/J| < 1.79$) and pseudogapped phases (NFL, $|W/J| \geq 1.79$). $\Sigma''(\omega)$ falls to zero as $\omega\to 0$ for the FL, while it attains a peak in the pseudogap. All $\Sigma''(\omega)$ for the NFL are observed to lie above the Mott-Ioffe-Regel (MIR) bound (dashed blue line), while those for the FL lie below. (b): Scaling of $\Sigma^{\prime\prime}(\omega)$ with frequency for Fermi liquid and pseudogapped phases. The FL self-energy fits to $\Sigma^{\prime\prime} \sim \omega^{\alpha}$ with $\alpha\approx 2$, vanishing as $\omega\to 0$, while the NFL self-energy grows as 
+$-1/\Sigma^{\prime\prime}(\omega)\sim -1/\Sigma^{\prime\prime}(0) + \omega^{\beta}$,    
+%$\Sigma^{\prime\prime} \approx a + b\omega^{\beta}$ for small $\omega$, 
+with $\beta\approx 2$. Remarkably, the NFL exponent remains mostly unchanged through the entirety of the PG phase. (c): Variation of the zero-frequency imaginary self-energy $-\Sigma''(\omega=0)$ with $\omega$ in the FL and pseudogap phases (entry into the PG is marked by the vertical dashed line). The inset shows the same but in linear scale, in order to display the dramatic rise (by almost 30 times) on entering the PG.}
+    \label{selfEnergy}
+\end{figure*}
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large Non-Fermi liquid excitations within the Pseudogap}\\
+In the PG regime, the nature of gapless Fermi arcs changes dramatically. We have already argued that the low-energy dynamics of these gapless Fermi arcs are governed by an underlying two-channel Kondo (2CK) impurity model~\cite{Tsvelick_weigmann_mchannel_1985, emery_kivelson}. This is consistent with the rapid fall of the impurity quasiparticle residue $Z_\text{imp}$ (Fig.~\ref{channelDecoupling} (a)) from finite values in the FL phase to vanishingly small values just before the onset of the PG. Fig.~\ref{channelDecoupling} (b) shows the simultaneous emergence of increasingly uncompensated local magnetic moments upon traversing the PG phase. The accompanying impurity spectral function of the gapless arcs show a pseudogapped behaviour for $\omega\simeq 0$, with a rapid fall in the spectral weight at $\omega=0$ upon traversing the PG~(Fig.~\ref{channelDecoupling} (c)). The collapse of the Kondo resonance into a pseudogapped spectral function is accompanied by the redistribution of spectral weight~\cite{dzyaloshinskii2003some} in the impurity spectral function from $\omega\sim 0$ to the Hubbard sidebands at finite frequencies $\omega\simeq \pm 3$ (in units of the bandwidth) (Fig.~S5 of \cite{suppmat}). Concomitant with this is the emergence of a zero-frequency peak in the imaginary part of the self-energy of the NFL in the PG phase, $-1/\Sigma^{\prime\prime}(\omega)\sim -1/\Sigma^{\prime\prime}(0) + \omega^{\beta}$
+%$-\Sigma''(\omega)\sim (a + \omega^{\beta})^{-1}$~, with $a$ being a constant
+~(Fig.\ref{selfEnergy} (a)). Remarkably, we find that the exponent $\beta=2$ characterises the NFL for the entire PG phase (see Fig.~\ref{selfEnergy}(b)), including the critical end-point. This is in stark contrast with the $\Sigma''(\omega)\sim \omega^{2}$ for the FL (Fig.~\ref{selfEnergy}(b)). A similar analysis reveals the power-law scaling for the low-frequency behaviour of the impurity spectral function (see Fig.~S2 (left) and Sec.V of \cite{suppmat}): $A_{d}(\omega)\sim A_d(0) + \omega^{2}$ for the pseudogap phase, while $1/A_{d}(\omega)\sim 1/A_{d}(0) + \omega^{2}$ for the Fermi liquid.
+
+\noindent
+All $\Sigma''(\omega)$ for the NFL are observed to lie above the Mott-Ioffe-Regel (MIR) bound~\cite{GunnarssonRMP2003,Hussey2004} (dashed blue line in Fig.\ref{selfEnergy} (a)), while those for the FL lie below. The MIR bound is the maximum expected scattering rate in metals when the mean free path approaches the lattice spacing: 
+$-2\Sigma^{\prime\prime}_\text{MIR} = 1/\tau_\text{MIR}~, ~\tau_\text{MIR} = l_\text{min}/v_{F}$~,where $l_\text{min}$ is the minimum mean free path in metals (equal to one lattice spacing) and $\tau_\text{MIR}$ is the associated lifetime of quasiparticles close to the FS (with Fermi velocity $v_F$). The transport lifetime $\tau (\omega)$ of the NFL thus undergoes a suppression as $\omega \to 0$, together with a shift of the Drude peak to finite $\omega$~\cite{Hussey2004,pustogow2021,qazilbash2008} (see Fig.~S2 (right) and Sec.VI in \cite{suppmat}). The height of the zero-frequency peak rises by almost 4 orders of magnitude from the start of the PG till its end at the Mott transition point (Fig.\ref{selfEnergy}(c)); the dramatic growth of the peak height very near the Mott critical point coincides with the coalescing of the finite-frequency poles of the self-energy into a single pole at zero-frequency, signalling the singular nodal NFL present at the Mott quantum critical point.
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large Non-local nature of the Pseudogap}\\
+In Fig.~\ref{longranged}(a) and (b), the spin-flip correlations and mutual information between the impurity spin and conduction bath sites respectively are observed to undergo a crossover within the PG, from a short-ranged behaviour at its onset, to a long-ranged behaviour near the Mott transition. The entanglement is observed to be multipartite in nature: in Fig.~\ref{longranged}(c), the quantum Fisher information (QFI)~\cite{Hauke2016} computed for the ground state wavefunction using an operator corresponding to the sum of local spin-flip exchange processes shows a jump at the onset of the PG. Further, the FL is observed to possess bi-partite entanglement while the NFL of the PG phase displays 5-partite entanglement~\cite{balut2025,mazza2024}. See ~\cite{suppmat} (Figs.~S6 and S7) for additional spin correlations and entanglement measures in momentum space for the tiled model.\\
+
+\noindent
+These striking results imply that the Mott transition observed by us lies beyond the local quantum criticality scenario~\cite{Si2001}. Instead,  we observe the PG phase to be a novel state of strongly interacting quantum matter emergent from the breakdown of local Kondo screening. This state is described by a quantum critical Fermi surface~\cite{senthil2008CriticalFermiSurface} with NFL Fermi arcs that display increasingly critical behaviour, i.e., dynamics described by non-local quantum fluctuations, and excitations that become truly long-ranged close to the transition. It is tempting to conjecture that the long-range entangled critical state captured in Fig.~\ref{longranged}(b) reflects the existence of a highly efficient fast scrambler~\cite{sekino2008,hayden2007,bentsen2019}, i.e., a state in which entanglement spreads among its constituents at the fastest rate permissible by quantum mechanics.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{fig6.pdf}
+    \caption{Spin correlation $\braket{{\bf S}_d \cdot {\bf S}_r}$ (a) and mutual information $I_{2}(d,r)$ (b) between the impurity spin and conduction bath local spin density as a function of the distance {\bf r} between them, normalised against the value at $r=1$. Both decay very quickly in the FL phase (blue), but show long-ranged behaviour in the NFL phase (green and red), extending to the edges of the system at the critical point (red). (c): Evolution of the Quantum Fisher Information $F_Q$ for a nearest-neighbour spin-flip operator $\mathcal{O} = \sum_{i \in \text{odd}}(S_i^+S_{i+1}^- + \text{h.c.})$ through the first Lifshitz transition and the pseudogap. The vertical dashed line marks the onset of the PG. To the left of it, the QFI in the Fermi liquid phase shows at most bipartite entanglement ($F_Q < 2$ (below blue dashed line)), while the PG shows the presence of multipartite entanglement upto 5 parties ($F_Q > 4$ (above red dashed line)).}
+    \label{longranged}
+\end{figure*}
+
+\vspace{0.25cm}
+\par\noindent\textbf{\large Exactly solvable nodal Non-Fermi liquid at Mott Criticality}\\
+Very close to the transition, the excitations of the nodal NFL correspond to those of a Hatsugai-Kohmoto model~\cite{Baskaran1991,Hatsugai1992}. This insight is obtained from a perturbation-theoretic treatment of the RG fixed point Hamiltonian of the impurity model for $W/J\lesssim (W/J)_{\text{PG}}$, by considering the effects of a small fixed point Kondo scattering probability \(J^*\) in the backdrop of a larger bath interaction parameter \(|W|\). This yields the HK model~\cite{Baskaran1991,Hatsugai1992} as the singular part of the effective Hamiltonian arising from forward scattering processes (see Sec.4 of \cite{suppmat}):
+\begin{equation}\begin{aligned}\label{HKModel}
+	\Delta \tilde H_{{\bf q}_1 = {\bf q}_2} = \sum_{{\bf q},\sigma}\epsilon_{{\bf q}}{n}_{{\bf q},\sigma} + \mathcal{U}\sum_{{\bf q}, \sigma}n_{{\bf q} \sigma} n_{{\bf q} \bar\sigma}~,
+\end{aligned}\end{equation}
+where the number operator \(n_{{\bf q} \sigma} = \phi^\dagger_{{\bf q}, \sigma} \phi_{{\bf q}, \sigma}\) pertains to emergent fermionic relative modes $\phi_{{\bf q}, \sigma} = \frac{1}{\sqrt 2}\left(c_{{\bf N}_1 + {\bf q},\sigma} - c_{{\bf N}_1 + {\bf Q}_1 - {\bf q}, \sigma}\right)$ that are shifted by an excitation momentum \({\bf q}\) away from the nodal point \({\bf N}_1 = \left(\pi/2, \pi/2\right)\) and its 
+partner \({\bf N}_1 + {\bf Q}_1 = \left(-\pi/2, -\pi/2\right)\). The kinetic energy \(\epsilon_{\bf q}\) and interaction energy \(\mathcal{U}\sim J^{2}/W\) are dispersion and Kondo scales renormalised by conduction bath correlations (see Sec.4 of \cite{suppmat}).\\
+
+\noindent
+Consequently, the resulting NFL metal of the lattice model involves long-lived excitations of multiple \({\bf k}\)-states, and manifest in the form of a divergent one-particle self-energy at the non-interacting FS~\cite{Phillips2020}:
+$\Sigma_{{\bf q}}(\omega) = -\mathcal{U}^2/4(\omega - \epsilon_{\bf q})$~, such that $\Sigma_{\epsilon_{\bf q}=0}(\omega \to 0)  \to \infty$. This zero-frequency self-energy pole presages the transition into a Mott insulating phase, where it marks a hard gap in the spectral function for charge excitations. This is consistent with our findings for the lattice (Fig.~\ref{chargeCorr}(c)) and impurity self-energies~(Fig.\ref{selfEnergy} (c)). The nodal Mott metal thus comprises of a Greens function zero at the Fermi energy together with an anistropic massless Dirac dispersion, leading to a non-zero Chern number~\cite{vafekvishwanath2014,morimoto2016,calderon2025}. This topological index survives into the Mott insulator.\\
+
+\noindent For small but non-zero values of \(\omega - \epsilon_{\bf k}\), we obtain a quasiparticle residue that vanishes with $\omega$, \(Z_\text{imp} \sim \omega^2/\mathcal{U}^2 \). The scattering rate of this singular NFL possesses a sharp peak at the FS (\(\omega=\epsilon_{\bf k_{\mathrm{F}}}\)): \(\Gamma \sim \mathcal{U}^2\delta(\omega - \epsilon_{\bf k})\), consistent with the sharply peaked Lorentzian $\Sigma''_{{\bf k}}(\omega)\sim \omega^{-2}$ captured in Fig.\ref{selfEnergy}(a). This quantum critical NFL metal is an example of a strongly coupled scale-invariant form of quantum matter. The exact solution for eq.\eqref{HKModel} reveals the presence of low-energy excitations comprised of holons and doublons~\cite{Hatsugai1992}. These features point to the nodal NFL as a long-ranged and multipartite entangled, strongly interacting scale-invariant state of quantum matter 
+~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} that are completely disconnected from the quasiparticles of the FL. Following the arguments laid out in~\cite{phillips2022}, at finite temperatures, such a scale-invariant highly entangled non-Fermi liquid is likely associated with Planckian dissipation (i.e., $\Sigma'' (T)\sim k_{B}T$) and a resistivity that varies linearly with temperature ($\rho\sim T$)~\cite{zaanen2019,legros2019,hartnoll2022}. This sits well with the possibility that this state is also a highly efficient scrambler~\cite{sekino2008,hayden2007,bentsen2019}. Additionally, we observe that the nodal metal possesses pairing fluctuations (see Sec.4 of \cite{suppmat}) that can become dominant upon doping~\cite{Phillips2020}.
+\vspace{0.25cm}
+\par\noindent\textbf{\large Pseudogap as a strongly coupled phase of quantum matter}\\
+We now unveil an organising principle that leads to the remarkable properties observed above for the strongly interacting NFL of the PG phase. The existence of a sharp connected FS at $T=0$ can be understood as the existence of a topologically protected manifold of gapless chiral excitations in ${\bf k}$-space at the FS~\cite{Heath_2020}. The FS is characterised by a topological index corresponding to an anomaly in the quantum many-body theory for electrons, and can be understood as a generalised symmetry of such a system~\cite{lanave2025,McGreevy2023}. A theorem by Luttinger and Ward~\cite{luttinger1960ground} shows that a count of the physical charge (known as Luttinger's volume) is identical to the topological index (a so-called homotopy charge known as Luttinger's count) even in the presence of electronic interactions that do not disturb the FS. We will now argue that the emergence of antinodal Luttinger surfaces involve a disconnection of the FS (into Fermi arcs) and that, by following La Nave et al.~\cite{lanave2025}, the accompanying change in its topological properties leads to the existence of gapless NFL excitations that are non-local in nature.\\
+
+\noindent
+The antinodal Luttinger surfaces arise from the splitting of double poles of the single-particle Greens function on the FS into poles lying on opposite complex half-planes, together with zeros that are pinned at the FS. These changes in the analytic structure of the single-particle Greens function have important consequences. First, the emergent zeros break a $\mathbb{Z}_{2}$ symmetry of the FS~\cite{Anderson2001,Huang2022,lanave2025}. This symmetry is guaranteed within FL theory because the presence of quasiparticles vanishingly close to the FS allows the interchange of spin and charge degrees of freedom, promoting the separate $SU(2)$ symmetries of spin and charge to the larger symmetry of $O(4) = SU(2) \times SU(2) \times \mathbb{Z}_2$~\cite{Anderson2001}. The insertion of zeros of the Greens function at the Fermi surface in the PG, and the associated splitting of the Greens function, breaks this $\mathbb{Z}_{2}$ symmetry by placing the pole for the spin excitation in one half of the complex plane while placing that for the charge excitation in the other half~\cite{su2025anomalies,Huang2022}.
+
+\noindent
+Second, they signal a divergent electronic self-energy as a function of the wavevector ${\bf k}$, render ill-behaved the Luttinger-Ward functional of the interacting electronic problem, and violate the generalised symmetry encoded within it. The changes in the pole structure change the Luttinger count topological invariant, while the zeros give rise to an additional topological contribution (linked to the Adler-Bell-Jackiw-type chiral anomaly)~\cite{adler1969axial,bell1969pcac,Altshuler_1998,calderon2025}. As a consequence of the half-filled particle-hole symmetric nature of the system at hand, Luttinger's volume is preserved upon taking into account topological contributions from both the Luttinger count {\it and} the zeros~\cite{seki2017topological}. Importantly, La Nave et al.~\cite{lanave2025} argue, following recent developments in understanding generalised symmetries~\cite{Casini2021Symmetries}, that the additional anomaly arising from the Luttinger surfaces guarantees the existence of gapless NFL excitations that are non-local in nature.  
+
+\noindent
+Thus, the drastic change in nature of the real-space excitations - from locally well-defined Landau quasiparticles of the FL to the increasingly nonlocal excitations of the NFL Fermi arcs in the PG phase - appears to be dictated by a topological principle and, therefore, robust under renormalisation. This signals the NFL Fermi arcs of the PG as an emergent phase of strongly interacting quantum matter - which we dub the {\it Mott metal} - that is the parent metal of the MI. The same topological principle connects the nonlocal unparticle-like gapless excitations~\cite{Georgi2007PRL,Georgi2007,Phillips2013Unparticles,PhillipsLectures2014} of the scale-invariant nodal NFL of the HK model observed precisely at the Mott critical point to those of the rest of the PG phase, e.g., a universal scaling of $-1/\Sigma^{\prime\prime}(\omega)\sim -1/\Sigma^{\prime\prime}(0) + \omega^{2}$ of the NFL throughout the PG phase (Fig.~\ref{selfEnergy} (a)) such that $\Sigma''(\omega=0)$ continues to grow upon violating the MIR bound, and a local density of states $A_{d}(\omega) \sim \omega^{2}$ (see Fig.~S2 (left) of \cite{suppmat}). 
+\vspace{0.25cm}
+\par\noindent\textbf{\large Conclusions}\\
+Our analysis reveals that the Mott transition proceeds via a continuous evolution through a PG regime characterized by a singular NFL metal - the Mott metal - with deconfined holon–doublon excitations confined to nodal Fermi arcs, and a scaling of it's spectral features with universal power-law exponents. As the system approaches criticality, this metallic phase exhibits increasingly non-local correlations and a divergent self-energy, signalling the breakdown of Landau quasiparticles, formation of local moments and the onset of long-range quantum entanglement. Anchored in two-channel Kondo dynamics at intermediate scales and governed by Hatsugai–Kohmoto physics near the critical endpoint, the Mott metal provides a unified framework for understanding anomalous metallicity in strongly correlated systems. It's fate under finite doping presents a compelling direction for future investigation.
+
+%\begin{thebibliography}{99}
+%\makeatletter
+%\providecommand \@ifxundefined [1]{%
+% \@ifx{#1\undefined}
+%}%
+%\providecommand \@ifnum [1]{%
+% \ifnum #1\expandafter \@firstoftwo
+% \else \expandafter \@secondoftwo
+% \fi
+%}%
+%\providecommand \@ifx [1]{%
+% \ifx #1\expandafter \@firstoftwo
+% \else \expandafter \@secondoftwo
+% \fi
+%}%
+%\providecommand \natexlab [1]{#1}%
+%\providecommand \enquote  [1]{``#1''}%
+%\providecommand \bibnamefont  [1]{#1}%
+%\providecommand \bibfnamefont [1]{#1}%
+%\providecommand \citenamefont [1]{#1}%
+%\providecommand \href@noop [0]{\@secondoftwo}%
+%\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+%\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+%\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+%\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+%  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+%\providecommand \@@startlink[1]{}%
+%\providecommand \@@endlink[0]{}%
+%\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+%\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+%\providecommand \urlprefix  [0]{URL }%
+%\providecommand \Eprint [0]{\href }%
+%\providecommand \doibase [0]{https://doi.org/}%
+%\providecommand \selectlanguage [0]{\@gobble}%
+%\providecommand \bibinfo  [0]{\@secondoftwo}%
+%\providecommand \bibfield  [0]{\@secondoftwo}%
+%\providecommand \translation [1]{[#1]}%
+%\providecommand \BibitemOpen [0]{}%
+%\providecommand \bibitemStop [0]{}%
+%\providecommand \bibitemNoStop [0]{.\EOS\space}%
+%\providecommand \EOS [0]{\spacefactor3000\relax}%
+%\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+%\let\auto@bib@innerbib\@empty
+%%</preamble>
+%
+%\bibitem [{\citenamefont {Landau}(1957)}]{landau1959theory}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+%  {Landau}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Soviet
+%  Physics Jetp-Ussr}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages} {920}
+%  (\bibinfo {year} {1957})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2013)\citenamefont
+%  {Phillips}, \citenamefont {Langley},\ and\ \citenamefont
+%  {Hutasoit}}]{Phillips2013Unparticles}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+%  {Phillips}}, \bibinfo {author} {\bibfnamefont {B.~W.}\ \bibnamefont
+%  {Langley}},\ and\ \bibinfo {author} {\bibfnamefont {J.~A.}\ \bibnamefont
+%  {Hutasoit}},\ }\href {https://doi.org/10.1103/PhysRevB.88.115129} {\bibfield
+%  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+%  {88}},\ \bibinfo {pages} {115129} (\bibinfo {year} {2013})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Dzyaloshinskii}(2003)}]{dzyaloshinskii2003some}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {I.}~\bibnamefont
+%  {Dzyaloshinskii}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+%  {Physical Review B}\ }\textbf {\bibinfo {volume} {68}},\ \bibinfo {pages}
+%  {085113} (\bibinfo {year} {2003})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mott}(1949)}]{Mott_1949}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~F.}\ \bibnamefont
+%  {Mott}},\ }\href {https://doi.org/10.1088/0370-1298/62/7/303} {\bibfield
+%  {journal} {\bibinfo  {journal} {Proceedings of the Physical Society. Section
+%  A}\ }\textbf {\bibinfo {volume} {62}},\ \bibinfo {pages} {416} (\bibinfo
+%  {year} {1949})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2022)\citenamefont
+%  {Phillips}, \citenamefont {Hussey},\ and\ \citenamefont
+%  {Abbamonte}}]{phillips2022}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+%  {Phillips}}, \bibinfo {author} {\bibfnamefont {N.~E.}\ \bibnamefont
+%  {Hussey}},\ and\ \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+%  {Abbamonte}},\ }\href {https://doi.org/10.1126/science.abh4273} {\bibfield
+%  {journal} {\bibinfo  {journal} {Science}\ }\textbf {\bibinfo {volume}
+%  {377}},\ \bibinfo {pages} {eabh4273} (\bibinfo {year} {2022})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Loeser}\ \emph {et~al.}(1996)\citenamefont {Loeser},
+%  \citenamefont {Shen}, \citenamefont {Dessau}, \citenamefont {Marshall},
+%  \citenamefont {Park}, \citenamefont {Fournier},\ and\ \citenamefont
+%  {Kapitulnik}}]{loeserKapitulnik1996}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~G.}\ \bibnamefont
+%  {Loeser}}, \bibinfo {author} {\bibfnamefont {Z.-X.}\ \bibnamefont {Shen}},
+%  \bibinfo {author} {\bibfnamefont {D.~S.}\ \bibnamefont {Dessau}}, \bibinfo
+%  {author} {\bibfnamefont {D.~S.}\ \bibnamefont {Marshall}}, \bibinfo {author}
+%  {\bibfnamefont {C.~H.}\ \bibnamefont {Park}}, \bibinfo {author}
+%  {\bibfnamefont {P.}~\bibnamefont {Fournier}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Kapitulnik}},\ }\href
+%  {https://doi.org/10.1126/science.273.5273.325} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Science}\ }\textbf {\bibinfo {volume} {273}},\ \bibinfo
+%  {pages} {325} (\bibinfo {year} {1996})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Norman}\ \emph {et~al.}(1998)\citenamefont {Norman},
+%  \citenamefont {Ding}, \citenamefont {Randeria}, \citenamefont {Campuzano},
+%  \citenamefont {Yokoya}, \citenamefont {Takeuchi}, \citenamefont {Takahashi},
+%  \citenamefont {Mochiku}, \citenamefont {Kadowaki}, \citenamefont
+%  {Guptasarma},\ and\ \citenamefont {Hinks}}]{Norman1998}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~R.}\ \bibnamefont
+%  {Norman}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Ding}},
+%  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Randeria}}, \bibinfo
+%  {author} {\bibfnamefont {J.~C.}\ \bibnamefont {Campuzano}}, \bibinfo {author}
+%  {\bibfnamefont {T.}~\bibnamefont {Yokoya}}, \bibinfo {author} {\bibfnamefont
+%  {T.}~\bibnamefont {Takeuchi}}, \bibinfo {author} {\bibfnamefont
+%  {T.}~\bibnamefont {Takahashi}}, \bibinfo {author} {\bibfnamefont
+%  {T.}~\bibnamefont {Mochiku}}, \bibinfo {author} {\bibfnamefont
+%  {K.}~\bibnamefont {Kadowaki}}, \bibinfo {author} {\bibfnamefont
+%  {P.}~\bibnamefont {Guptasarma}},\ and\ \bibinfo {author} {\bibfnamefont
+%  {D.~G.}\ \bibnamefont {Hinks}},\ }\href {https://doi.org/10.1038/32366}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo
+%  {volume} {392}},\ \bibinfo {pages} {157} (\bibinfo {year}
+%  {1998})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Hashimoto}\ \emph {et~al.}(2014)\citenamefont
+%  {Hashimoto}, \citenamefont {Vishik}, \citenamefont {He}, \citenamefont
+%  {Devereaux},\ and\ \citenamefont {Shen}}]{Hashimoto2014}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Hashimoto}}, \bibinfo {author} {\bibfnamefont {I.~M.}\ \bibnamefont
+%  {Vishik}}, \bibinfo {author} {\bibfnamefont {R.-H.}\ \bibnamefont {He}},
+%  \bibinfo {author} {\bibfnamefont {T.~P.}\ \bibnamefont {Devereaux}},\ and\
+%  \bibinfo {author} {\bibfnamefont {Z.-X.}\ \bibnamefont {Shen}},\ }\href
+%  {https://doi.org/10.1038/nphys3009} {\bibfield  {journal} {\bibinfo
+%  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {10}},\ \bibinfo
+%  {pages} {483} (\bibinfo {year} {2014})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Taillefer}(2010)}]{taillefer2010}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+%  {Taillefer}},\ }\href
+%  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-070909-104117}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+%  Physics}\ }\textbf {\bibinfo {volume} {1}},\ \bibinfo {pages} {51} (\bibinfo
+%  {year} {2010})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Fradkin}\ \emph {et~al.}(2015)\citenamefont
+%  {Fradkin}, \citenamefont {Kivelson},\ and\ \citenamefont
+%  {Tranquada}}]{FradkinRevModPhys2015}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+%  {Fradkin}}, \bibinfo {author} {\bibfnamefont {S.~A.}\ \bibnamefont
+%  {Kivelson}},\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+%  {Tranquada}},\ }\href {https://doi.org/10.1103/RevModPhys.87.457} {\bibfield
+%  {journal} {\bibinfo  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume}
+%  {87}},\ \bibinfo {pages} {457} (\bibinfo {year} {2015})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Sato}\ \emph {et~al.}(2017)\citenamefont {Sato},
+%  \citenamefont {Kasahara}, \citenamefont {Murayama}, \citenamefont {Kasahara},
+%  \citenamefont {Moon}, \citenamefont {Nishizaki}, \citenamefont {Loew},
+%  \citenamefont {Porras}, \citenamefont {Keimer}, \citenamefont {Shibauchi},\
+%  and\ \citenamefont {Matsuda}}]{Sato2017}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+%  {Sato}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Kasahara}},
+%  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Murayama}}, \bibinfo
+%  {author} {\bibfnamefont {Y.}~\bibnamefont {Kasahara}}, \bibinfo {author}
+%  {\bibfnamefont {E.-G.}\ \bibnamefont {Moon}}, \bibinfo {author}
+%  {\bibfnamefont {T.}~\bibnamefont {Nishizaki}}, \bibinfo {author}
+%  {\bibfnamefont {T.}~\bibnamefont {Loew}}, \bibinfo {author} {\bibfnamefont
+%  {J.}~\bibnamefont {Porras}}, \bibinfo {author} {\bibfnamefont
+%  {B.}~\bibnamefont {Keimer}}, \bibinfo {author} {\bibfnamefont
+%  {T.}~\bibnamefont {Shibauchi}},\ and\ \bibinfo {author} {\bibfnamefont
+%  {Y.}~\bibnamefont {Matsuda}},\ }\href {https://doi.org/10.1038/nphys4205}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf
+%  {\bibinfo {volume} {13}},\ \bibinfo {pages} {1074} (\bibinfo {year}
+%  {2017})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Doiron-Leyraud}\ \emph {et~al.}(2017)\citenamefont
+%  {Doiron-Leyraud}, \citenamefont {Cyr-Choini{\`e}re}, \citenamefont {Badoux},
+%  \citenamefont {Ataei}, \citenamefont {Collignon}, \citenamefont {Gourgout},
+%  \citenamefont {Dufour-Beaus{\'e}jour}, \citenamefont {Tafti}, \citenamefont
+%  {Lalibert{\'e}}, \citenamefont {Boulanger}, \citenamefont {Matusiak},
+%  \citenamefont {Graf}, \citenamefont {Kim}, \citenamefont {Zhou},
+%  \citenamefont {Momono}, \citenamefont {Kurosawa}, \citenamefont {Takagi},\
+%  and\ \citenamefont {Taillefer}}]{DoironLeyraud2017}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+%  {Doiron-Leyraud}}, \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+%  {Cyr-Choini{\`e}re}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Badoux}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Ataei}},
+%  \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Collignon}}, \bibinfo
+%  {author} {\bibfnamefont {A.}~\bibnamefont {Gourgout}}, \bibinfo {author}
+%  {\bibfnamefont {S.}~\bibnamefont {Dufour-Beaus{\'e}jour}}, \bibinfo {author}
+%  {\bibfnamefont {F.~F.}\ \bibnamefont {Tafti}}, \bibinfo {author}
+%  {\bibfnamefont {F.}~\bibnamefont {Lalibert{\'e}}}, \bibinfo {author}
+%  {\bibfnamefont {M.-E.}\ \bibnamefont {Boulanger}}, \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Matusiak}}, \bibinfo {author}
+%  {\bibfnamefont {D.}~\bibnamefont {Graf}}, \bibinfo {author} {\bibfnamefont
+%  {M.}~\bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont {J.-S.}\
+%  \bibnamefont {Zhou}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+%  {Momono}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Kurosawa}},
+%  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Takagi}},\ and\ \bibinfo
+%  {author} {\bibfnamefont {L.}~\bibnamefont {Taillefer}},\ }\href
+%  {https://doi.org/10.1038/s41467-017-02122-x} {\bibfield  {journal} {\bibinfo
+%  {journal} {Nature Communications}\ }\textbf {\bibinfo {volume} {8}},\
+%  \bibinfo {pages} {2044} (\bibinfo {year} {2017})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mukhopadhyay}\ \emph {et~al.}(2019)\citenamefont
+%  {Mukhopadhyay}, \citenamefont {Sharma}, \citenamefont {Kim}, \citenamefont
+%  {Edkins}, \citenamefont {Hamidian}, \citenamefont {Eisaki}, \citenamefont
+%  {ichi Uchida}, \citenamefont {Kim}, \citenamefont {Lawler}, \citenamefont
+%  {Mackenzie}, \citenamefont {Davis},\ and\ \citenamefont
+%  {Fujita}}]{Mukhopadhyay2019}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Mukhopadhyay}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+%  {Sharma}}, \bibinfo {author} {\bibfnamefont {C.~K.}\ \bibnamefont {Kim}},
+%  \bibinfo {author} {\bibfnamefont {S.~D.}\ \bibnamefont {Edkins}}, \bibinfo
+%  {author} {\bibfnamefont {M.~H.}\ \bibnamefont {Hamidian}}, \bibinfo {author}
+%  {\bibfnamefont {H.}~\bibnamefont {Eisaki}}, \bibinfo {author} {\bibfnamefont
+%  {S.}~\bibnamefont {ichi Uchida}}, \bibinfo {author} {\bibfnamefont {E.-A.}\
+%  \bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont {M.~J.}\ \bibnamefont
+%  {Lawler}}, \bibinfo {author} {\bibfnamefont {A.~P.}\ \bibnamefont
+%  {Mackenzie}}, \bibinfo {author} {\bibfnamefont {J.~C.~S.}\ \bibnamefont
+%  {Davis}},\ and\ \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+%  {Fujita}},\ }\href {https://doi.org/10.1073/pnas.1821454116} {\bibfield
+%  {journal} {\bibinfo  {journal} {Proceedings of the National Academy of
+%  Sciences}\ }\textbf {\bibinfo {volume} {116}},\ \bibinfo {pages} {13249}
+%  (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Gupta}\ \emph {et~al.}(2021)\citenamefont {Gupta},
+%  \citenamefont {McMahon}, \citenamefont {Sutarto}, \citenamefont {Shi},
+%  \citenamefont {Gong}, \citenamefont {Wei}, \citenamefont {Shen},
+%  \citenamefont {He}, \citenamefont {Ma}, \citenamefont {Dragomir},
+%  \citenamefont {Gaulin},\ and\ \citenamefont {Hawthorn}}]{Naman2021}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~K.}\ \bibnamefont
+%  {Gupta}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {McMahon}},
+%  \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Sutarto}}, \bibinfo
+%  {author} {\bibfnamefont {T.}~\bibnamefont {Shi}}, \bibinfo {author}
+%  {\bibfnamefont {R.}~\bibnamefont {Gong}}, \bibinfo {author} {\bibfnamefont
+%  {H.~I.}\ \bibnamefont {Wei}}, \bibinfo {author} {\bibfnamefont {K.~M.}\
+%  \bibnamefont {Shen}}, \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+%  {He}}, \bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont {Ma}}, \bibinfo
+%  {author} {\bibfnamefont {M.}~\bibnamefont {Dragomir}}, \bibinfo {author}
+%  {\bibfnamefont {B.~D.}\ \bibnamefont {Gaulin}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {D.~G.}\ \bibnamefont {Hawthorn}},\ }\href
+%  {https://doi.org/10.1073/pnas.2106881118} {\bibfield  {journal} {\bibinfo
+%  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+%  {\bibinfo {volume} {118}},\ \bibinfo {pages} {e2106881118} (\bibinfo {year}
+%  {2021})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Horio}\ \emph {et~al.}(2025)\citenamefont {Horio},
+%  \citenamefont {Sakai}, \citenamefont {Suzuki}, \citenamefont {Nonaka},
+%  \citenamefont {Hashimoto}, \citenamefont {Lu}, \citenamefont {Shen},
+%  \citenamefont {Ohgi}, \citenamefont {Konno}, \citenamefont {Adachi},
+%  \citenamefont {Koike}, \citenamefont {Imada},\ and\ \citenamefont
+%  {Fujimori}}]{Masafumi2025}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Horio}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Sakai}},
+%  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Suzuki}}, \bibinfo
+%  {author} {\bibfnamefont {Y.}~\bibnamefont {Nonaka}}, \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Hashimoto}}, \bibinfo {author}
+%  {\bibfnamefont {D.}~\bibnamefont {Lu}}, \bibinfo {author} {\bibfnamefont
+%  {Z.-X.}\ \bibnamefont {Shen}}, \bibinfo {author} {\bibfnamefont
+%  {T.}~\bibnamefont {Ohgi}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+%  {Konno}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Adachi}},
+%  \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Koike}}, \bibinfo
+%  {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Fujimori}},\ }\href
+%  {https://doi.org/10.1073/pnas.2406624122} {\bibfield  {journal} {\bibinfo
+%  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+%  {\bibinfo {volume} {122}},\ \bibinfo {pages} {e2406624122} (\bibinfo {year}
+%  {2025})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Kyung}\ \emph {et~al.}(2006)\citenamefont {Kyung},
+%  \citenamefont {Kancharla}, \citenamefont {S\'en\'echal}, \citenamefont
+%  {Tremblay}, \citenamefont {Civelli},\ and\ \citenamefont
+%  {Kotliar}}]{KyungKotliar2006}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+%  {Kyung}}, \bibinfo {author} {\bibfnamefont {S.~S.}\ \bibnamefont
+%  {Kancharla}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+%  {S\'en\'echal}}, \bibinfo {author} {\bibfnamefont {A.-M.~S.}\ \bibnamefont
+%  {Tremblay}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Civelli}},\
+%  and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Kotliar}},\ }\href
+%  {https://doi.org/10.1103/PhysRevB.73.165114} {\bibfield  {journal} {\bibinfo
+%  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {73}},\ \bibinfo
+%  {pages} {165114} (\bibinfo {year} {2006})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Macridin}\ \emph {et~al.}(2006)\citenamefont
+%  {Macridin}, \citenamefont {Jarrell}, \citenamefont {Maier}, \citenamefont
+%  {Kent},\ and\ \citenamefont {D'Azevedo}}]{MacridinAzevedo2006}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Macridin}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Jarrell}},
+%  \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Maier}}, \bibinfo
+%  {author} {\bibfnamefont {P.~R.~C.}\ \bibnamefont {Kent}},\ and\ \bibinfo
+%  {author} {\bibfnamefont {E.}~\bibnamefont {D'Azevedo}},\ }\href
+%  {https://doi.org/10.1103/PhysRevLett.97.036401} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {97}},\
+%  \bibinfo {pages} {036401} (\bibinfo {year} {2006})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Sakai}\ \emph {et~al.}(2009)\citenamefont {Sakai},
+%  \citenamefont {Motome},\ and\ \citenamefont {Imada}}]{sakai2009evolution}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Sakai}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Motome}},\ and\
+%  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\href@noop {}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Physical review letters}\
+%  }\textbf {\bibinfo {volume} {102}},\ \bibinfo {pages} {056404} (\bibinfo
+%  {year} {2009})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Werner}\ \emph {et~al.}(2009)\citenamefont {Werner},
+%  \citenamefont {Gull}, \citenamefont {Parcollet},\ and\ \citenamefont
+%  {Millis}}]{werner2009momentum}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+%  {Werner}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Gull}},
+%  \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}},\ and\
+%  \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical Review
+%  B}\ }\textbf {\bibinfo {volume} {80}},\ \bibinfo {pages} {045120} (\bibinfo
+%  {year} {2009})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Sakai}\ \emph {et~al.}(2010)\citenamefont {Sakai},
+%  \citenamefont {Motome},\ and\ \citenamefont {Imada}}]{sakai2010doped}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Sakai}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Motome}},\ and\
+%  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\href@noop {}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review B}\ }\textbf
+%  {\bibinfo {volume} {82}},\ \bibinfo {pages} {134505} (\bibinfo {year}
+%  {2010})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Lin}\ \emph {et~al.}(2010)\citenamefont {Lin},
+%  \citenamefont {Gull},\ and\ \citenamefont {Millis}}]{lin2010}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+%  {Lin}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Gull}},\ and\
+%  \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. B}\
+%  }\textbf {\bibinfo {volume} {82}},\ \bibinfo {pages} {045104} (\bibinfo
+%  {year} {2010})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Gull}\ \emph {et~al.}(2010)\citenamefont {Gull},
+%  \citenamefont {Ferrero}, \citenamefont {Parcollet}, \citenamefont {Georges},\
+%  and\ \citenamefont {Millis}}]{gull2010momentum}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+%  {Gull}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Ferrero}},
+%  \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}}, \bibinfo
+%  {author} {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\ }\href@noop {} {\bibfield
+%  {journal} {\bibinfo  {journal} {Physical Review B}\ }\textbf {\bibinfo
+%  {volume} {82}},\ \bibinfo {pages} {155101} (\bibinfo {year}
+%  {2010})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Gull}\ and\ \citenamefont {Millis}(2012)}]{gull2012}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+%  {Gull}}\ and\ \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont
+%  {Millis}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Phys.
+%  Rev. B}\ }\textbf {\bibinfo {volume} {86}},\ \bibinfo {pages} {241106}
+%  (\bibinfo {year} {2012})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mirzaei}\ \emph {et~al.}(2013)\citenamefont
+%  {Mirzaei}, \citenamefont {Stricker}, \citenamefont {Hancock}, \citenamefont
+%  {Berthod}, \citenamefont {Georges}, \citenamefont {van Heumen}, \citenamefont
+%  {Chan}, \citenamefont {Zhao}, \citenamefont {Li}, \citenamefont {Greven},
+%  \citenamefont {Barišić},\ and\ \citenamefont {van~der
+%  Marel}}]{Mirzaei2013}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~I.}\ \bibnamefont
+%  {Mirzaei}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Stricker}},
+%  \bibinfo {author} {\bibfnamefont {J.~N.}\ \bibnamefont {Hancock}}, \bibinfo
+%  {author} {\bibfnamefont {C.}~\bibnamefont {Berthod}}, \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Georges}}, \bibinfo {author} {\bibfnamefont
+%  {E.}~\bibnamefont {van Heumen}}, \bibinfo {author} {\bibfnamefont {M.~K.}\
+%  \bibnamefont {Chan}}, \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont
+%  {Zhao}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Li}}, \bibinfo
+%  {author} {\bibfnamefont {M.}~\bibnamefont {Greven}}, \bibinfo {author}
+%  {\bibfnamefont {N.}~\bibnamefont {Barišić}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {D.}~\bibnamefont {van~der Marel}},\ }\href
+%  {https://doi.org/10.1073/pnas.1218846110} {\bibfield  {journal} {\bibinfo
+%  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+%  {\bibinfo {volume} {110}},\ \bibinfo {pages} {5774} (\bibinfo {year}
+%  {2013})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Gull}\ \emph {et~al.}(2013)\citenamefont {Gull},
+%  \citenamefont {Parcollet},\ and\ \citenamefont {Millis}}]{gull2013}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+%  {Gull}}, \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}},\
+%  and\ \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical review
+%  letters}\ }\textbf {\bibinfo {volume} {110}},\ \bibinfo {pages} {216405}
+%  (\bibinfo {year} {2013})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+%  {Lal}(2020{\natexlab{a}})}]{anirbanmott2}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Lal}},\ }\href {https://doi.org/10.1088/1367-2630/ab890c} {\bibfield
+%  {journal} {\bibinfo  {journal} {New Journal of Physics}\ }\textbf {\bibinfo
+%  {volume} {22}},\ \bibinfo {pages} {063008} (\bibinfo {year}
+%  {2020}{\natexlab{a}})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Hille}\ \emph {et~al.}(2020)\citenamefont {Hille},
+%  \citenamefont {Rohe}, \citenamefont {Honerkamp},\ and\ \citenamefont
+%  {Andergassen}}]{HilleAndergassen2020}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+%  {Hille}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Rohe}},
+%  \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Honerkamp}},\ and\
+%  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Andergassen}},\ }\href
+%  {https://doi.org/10.1103/PhysRevResearch.2.033068} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. Res.}\ }\textbf {\bibinfo {volume} {2}},\
+%  \bibinfo {pages} {033068} (\bibinfo {year} {2020})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Jiang}\ \emph {et~al.}(2022)\citenamefont {Jiang},
+%  \citenamefont {Liu}, \citenamefont {Klein}, \citenamefont {Wang},
+%  \citenamefont {Sun}, \citenamefont {Chubukov},\ and\ \citenamefont
+%  {Meng}}]{Jiang2022}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+%  {Jiang}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Liu}}, \bibinfo
+%  {author} {\bibfnamefont {A.}~\bibnamefont {Klein}}, \bibinfo {author}
+%  {\bibfnamefont {Y.}~\bibnamefont {Wang}}, \bibinfo {author} {\bibfnamefont
+%  {K.}~\bibnamefont {Sun}}, \bibinfo {author} {\bibfnamefont {A.~V.}\
+%  \bibnamefont {Chubukov}},\ and\ \bibinfo {author} {\bibfnamefont {Z.~Y.}\
+%  \bibnamefont {Meng}},\ }\href {https://doi.org/10.1038/s41467-022-30302-x}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Nature Communications}\ }\textbf
+%  {\bibinfo {volume} {13}},\ \bibinfo {pages} {2655} (\bibinfo {year}
+%  {2022})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Scheurer}\ \emph {et~al.}(2018)\citenamefont
+%  {Scheurer}, \citenamefont {Chatterjee}, \citenamefont {Wu}, \citenamefont
+%  {Ferrero}, \citenamefont {Georges},\ and\ \citenamefont
+%  {Sachdev}}]{Scheurer2018}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont
+%  {Scheurer}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Chatterjee}}, \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Wu}},
+%  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Ferrero}}, \bibinfo
+%  {author} {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {S.}~\bibnamefont {Sachdev}},\ }\href
+%  {https://doi.org/10.1073/pnas.1720580115} {\bibfield  {journal} {\bibinfo
+%  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+%  {\bibinfo {volume} {115}},\ \bibinfo {pages} {E3665} (\bibinfo {year}
+%  {2018})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Krien}\ \emph {et~al.}(2022)\citenamefont {Krien},
+%  \citenamefont {Worm}, \citenamefont {Chalupa-Gantner}, \citenamefont
+%  {Toschi},\ and\ \citenamefont {Held}}]{Krien2022}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+%  {Krien}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Worm}},
+%  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Chalupa-Gantner}},
+%  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Toschi}},\ and\ \bibinfo
+%  {author} {\bibfnamefont {K.}~\bibnamefont {Held}},\ }\href
+%  {https://doi.org/10.1038/s42005-022-01117-5} {\bibfield  {journal} {\bibinfo
+%  {journal} {Communications Physics}\ }\textbf {\bibinfo {volume} {5}},\
+%  \bibinfo {pages} {336} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Kitatani}\ \emph {et~al.}(2023)\citenamefont
+%  {Kitatani}, \citenamefont {Si}, \citenamefont {Worm}, \citenamefont
+%  {Tomczak}, \citenamefont {Arita},\ and\ \citenamefont {Held}}]{Kitatani2023}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Kitatani}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Si}},
+%  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Worm}}, \bibinfo {author}
+%  {\bibfnamefont {J.~M.}\ \bibnamefont {Tomczak}}, \bibinfo {author}
+%  {\bibfnamefont {R.}~\bibnamefont {Arita}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {K.}~\bibnamefont {Held}},\ }\href
+%  {https://doi.org/10.1103/PhysRevLett.130.166002} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {130}},\
+%  \bibinfo {pages} {166002} (\bibinfo {year} {2023})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Sorella}(2023)}]{Sorella2023}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Sorella}},\ }\href {https://doi.org/10.1103/PhysRevB.107.115133} {\bibfield
+%  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+%  {107}},\ \bibinfo {pages} {115133} (\bibinfo {year} {2023})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Schäfer}\ \emph {et~al.}(2021)\citenamefont
+%  {Schäfer}, \citenamefont {Wentzell}, \citenamefont {Šimkovic},
+%  \citenamefont {He}, \citenamefont {Hille}, \citenamefont {Klett},
+%  \citenamefont {Eckhardt}, \citenamefont {Arzhang}, \citenamefont {Harkov},
+%  \citenamefont {Le~R\'egent}, \citenamefont {Kirsch}, \citenamefont {Wang},
+%  \citenamefont {Kim}, \citenamefont {Kozik}, \citenamefont {Stepanov},
+%  \citenamefont {Kauch}, \citenamefont {Andergassen}, \citenamefont {Hansmann},
+%  \citenamefont {Rohe}, \citenamefont {Vilk}, \citenamefont {LeBlanc},
+%  \citenamefont {Zhang}, \citenamefont {Tremblay}, \citenamefont {Ferrero},
+%  \citenamefont {Parcollet},\ and\ \citenamefont {Georges}}]{Schafer2021}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+%  {Schäfer}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont {Wentzell}},
+%  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Šimkovic}}, \bibinfo
+%  {author} {\bibfnamefont {Y.-Y.}\ \bibnamefont {He}}, \bibinfo {author}
+%  {\bibfnamefont {C.}~\bibnamefont {Hille}}, \bibinfo {author} {\bibfnamefont
+%  {M.}~\bibnamefont {Klett}}, \bibinfo {author} {\bibfnamefont {C.~J.}\
+%  \bibnamefont {Eckhardt}}, \bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+%  {Arzhang}}, \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Harkov}},
+%  \bibinfo {author} {\bibfnamefont {F.~m. c.-M.}\ \bibnamefont {Le~R\'egent}},
+%  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Kirsch}}, \bibinfo
+%  {author} {\bibfnamefont {Y.}~\bibnamefont {Wang}}, \bibinfo {author}
+%  {\bibfnamefont {A.~J.}\ \bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont
+%  {E.}~\bibnamefont {Kozik}}, \bibinfo {author} {\bibfnamefont {E.~A.}\
+%  \bibnamefont {Stepanov}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Kauch}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Andergassen}},
+%  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Hansmann}}, \bibinfo
+%  {author} {\bibfnamefont {D.}~\bibnamefont {Rohe}}, \bibinfo {author}
+%  {\bibfnamefont {Y.~M.}\ \bibnamefont {Vilk}}, \bibinfo {author}
+%  {\bibfnamefont {J.~P.~F.}\ \bibnamefont {LeBlanc}}, \bibinfo {author}
+%  {\bibfnamefont {S.}~\bibnamefont {Zhang}}, \bibinfo {author} {\bibfnamefont
+%  {A.-M.~S.}\ \bibnamefont {Tremblay}}, \bibinfo {author} {\bibfnamefont
+%  {M.}~\bibnamefont {Ferrero}}, \bibinfo {author} {\bibfnamefont
+%  {O.}~\bibnamefont {Parcollet}},\ and\ \bibinfo {author} {\bibfnamefont
+%  {A.}~\bibnamefont {Georges}},\ }\href
+%  {https://doi.org/10.1103/PhysRevX.11.011058} {\bibfield  {journal} {\bibinfo
+%  {journal} {Phys. Rev. X}\ }\textbf {\bibinfo {volume} {11}},\ \bibinfo
+%  {pages} {011058} (\bibinfo {year} {2021})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {White}\ and\ \citenamefont
+%  {Scalapino}(1998)}]{White1998}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~R.}\ \bibnamefont
+%  {White}}\ and\ \bibinfo {author} {\bibfnamefont {D.~J.}\ \bibnamefont
+%  {Scalapino}},\ }\href {https://doi.org/10.1103/PhysRevLett.80.1272}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf
+%  {\bibinfo {volume} {80}},\ \bibinfo {pages} {1272} (\bibinfo {year}
+%  {1998})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Ido}\ \emph {et~al.}(2018)\citenamefont {Ido},
+%  \citenamefont {Ohgoe},\ and\ \citenamefont {Imada}}]{Ido2018}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+%  {Ido}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Ohgoe}},\ and\
+%  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\href
+%  {https://doi.org/10.1103/PhysRevB.97.045138} {\bibfield  {journal} {\bibinfo
+%  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {97}},\ \bibinfo
+%  {pages} {045138} (\bibinfo {year} {2018})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Proust}\ and\ \citenamefont
+%  {Taillefer}(2019)}]{ProustTaillefer2019}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+%  {Proust}}\ and\ \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+%  {Taillefer}},\ }\href
+%  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-031218-013210}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+%  Physics}\ }\textbf {\bibinfo {volume} {10}},\ \bibinfo {pages} {409}
+%  (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Ponsioen}\ \emph {et~al.}(2019)\citenamefont
+%  {Ponsioen}, \citenamefont {Chung},\ and\ \citenamefont
+%  {Corboz}}]{Ponsioen2019}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+%  {Ponsioen}}, \bibinfo {author} {\bibfnamefont {S.~S.}\ \bibnamefont
+%  {Chung}},\ and\ \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+%  {Corboz}},\ }\href {https://doi.org/10.1103/PhysRevB.100.195141} {\bibfield
+%  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+%  {100}},\ \bibinfo {pages} {195141} (\bibinfo {year} {2019})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Xu}\ \emph {et~al.}(2022)\citenamefont {Xu},
+%  \citenamefont {Shi}, \citenamefont {Vitali}, \citenamefont {Qin},\ and\
+%  \citenamefont {Zhang}}]{XuZhang2022}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+%  {Xu}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Shi}}, \bibinfo
+%  {author} {\bibfnamefont {E.}~\bibnamefont {Vitali}}, \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Qin}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {S.}~\bibnamefont {Zhang}},\ }\href
+%  {https://doi.org/10.1103/PhysRevResearch.4.013239} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. Res.}\ }\textbf {\bibinfo {volume} {4}},\
+%  \bibinfo {pages} {013239} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Dave}\ \emph {et~al.}(2013)\citenamefont {Dave},
+%  \citenamefont {Phillips},\ and\ \citenamefont {Kane}}]{Phillips2013}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.~B.}\ \bibnamefont
+%  {Dave}}, \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\
+%  and\ \bibinfo {author} {\bibfnamefont {C.~L.}\ \bibnamefont {Kane}},\ }\href
+%  {https://doi.org/10.1103/PhysRevLett.110.090403} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {110}},\
+%  \bibinfo {pages} {090403} (\bibinfo {year} {2013})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Seki}\ and\ \citenamefont
+%  {Yunoki}(2017)}]{seki2017topological}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+%  {Seki}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Yunoki}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical Review
+%  B}\ }\textbf {\bibinfo {volume} {96}},\ \bibinfo {pages} {085124} (\bibinfo
+%  {year} {2017})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Anderson}\ and\ \citenamefont
+%  {Haldane}(2001)}]{Anderson2001}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+%  {Anderson}}\ and\ \bibinfo {author} {\bibfnamefont {F.~D.~M.}\ \bibnamefont
+%  {Haldane}},\ }\href {https://doi.org/10.1023/A:1010324912515} {\bibfield
+%  {journal} {\bibinfo  {journal} {Journal of Statistical Physics}\ }\textbf
+%  {\bibinfo {volume} {103}},\ \bibinfo {pages} {425} (\bibinfo {year}
+%  {2001})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Huang}\ \emph {et~al.}(2022)\citenamefont {Huang},
+%  \citenamefont {Nave},\ and\ \citenamefont {Phillips}}]{Huang2022}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.~W.}\ \bibnamefont
+%  {Huang}}, \bibinfo {author} {\bibfnamefont {G.~L.}\ \bibnamefont {Nave}},\
+%  and\ \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\
+%  }\href {https://doi.org/10.1038/s41567-022-01529-8} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {18}},\
+%  \bibinfo {pages} {511} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Coleman}\ \emph {et~al.}(2001)\citenamefont
+%  {Coleman}, \citenamefont {Pépin}, \citenamefont {Si},\ and\ \citenamefont
+%  {Ramazashvili}}]{Coleman_2001}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+%  {Coleman}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Pépin}},
+%  \bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont {Si}},\ and\ \bibinfo
+%  {author} {\bibfnamefont {R.}~\bibnamefont {Ramazashvili}},\ }\href
+%  {https://doi.org/10.1088/0953-8984/13/35/202} {\bibfield  {journal} {\bibinfo
+%   {journal} {Journal of Physics: Condensed Matter}\ }\textbf {\bibinfo
+%  {volume} {13}},\ \bibinfo {pages} {R723} (\bibinfo {year}
+%  {2001})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+%  {Lal}(2020{\natexlab{b}})}]{anirbanurg1}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Lal}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Nuclear
+%  Physics B}\ }\textbf {\bibinfo {volume} {960}},\ \bibinfo {pages} {115170}
+%  (\bibinfo {year} {2020}{\natexlab{b}})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+%  {Lal}(2020{\natexlab{c}})}]{anirbanurg2}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Lal}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Nuclear
+%  Physics B}\ }\textbf {\bibinfo {volume} {960}},\ \bibinfo {pages} {115163}
+%  (\bibinfo {year} {2020}{\natexlab{c}})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Keimer}\ \emph {et~al.}(2015)\citenamefont {Keimer},
+%  \citenamefont {Kivelson}, \citenamefont {Norman}, \citenamefont {Uchida},\
+%  and\ \citenamefont {Zaanen}}]{keimer2015quantum}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+%  {Keimer}}, \bibinfo {author} {\bibfnamefont {S.~A.}\ \bibnamefont
+%  {Kivelson}}, \bibinfo {author} {\bibfnamefont {M.~R.}\ \bibnamefont
+%  {Norman}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Uchida}},\
+%  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Zaanen}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Nature}\ }\textbf
+%  {\bibinfo {volume} {518}},\ \bibinfo {pages} {179} (\bibinfo {year}
+%  {2015})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Hatsugai}\ and\ \citenamefont
+%  {Kohmoto}(1992)}]{Hatsugai1992}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+%  {Hatsugai}}\ and\ \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Kohmoto}},\ }\href {https://doi.org/10.1143/JPSJ.61.2056} {\bibfield
+%  {journal} {\bibinfo  {journal} {Journal of the Physical Society of Japan}\
+%  }\textbf {\bibinfo {volume} {61}},\ \bibinfo {pages} {2056} (\bibinfo {year}
+%  {1992})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Baskaran}(1991)}]{Baskaran1991}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+%  {Baskaran}},\ }\href {https://doi.org/10.1142/S0217984991000782} {\bibfield
+%  {journal} {\bibinfo  {journal} {Modern Physics Letters B}\ }\textbf {\bibinfo
+%  {volume} {05}},\ \bibinfo {pages} {643} (\bibinfo {year} {1991})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Altshuler}\ \emph {et~al.}(1998)\citenamefont
+%  {Altshuler}, \citenamefont {Chubukov}, \citenamefont {Dashevskii},
+%  \citenamefont {Finkel'stein},\ and\ \citenamefont {Morr}}]{Altshuler_1998}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.~L.}\ \bibnamefont
+%  {Altshuler}}, \bibinfo {author} {\bibfnamefont {A.~V.}\ \bibnamefont
+%  {Chubukov}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Dashevskii}}, \bibinfo {author} {\bibfnamefont {A.~M.}\ \bibnamefont
+%  {Finkel'stein}},\ and\ \bibinfo {author} {\bibfnamefont {D.~K.}\ \bibnamefont
+%  {Morr}},\ }\href {https://doi.org/10.1209/epl/i1998-00164-y} {\bibfield
+%  {journal} {\bibinfo  {journal} {Europhysics Letters}\ }\textbf {\bibinfo
+%  {volume} {41}},\ \bibinfo {pages} {401} (\bibinfo {year} {1998})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Heath}\ and\ \citenamefont
+%  {Bedell}(2020)}]{Heath_2020}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~T.}\ \bibnamefont
+%  {Heath}}\ and\ \bibinfo {author} {\bibfnamefont {K.~S.}\ \bibnamefont
+%  {Bedell}},\ }\href {https://doi.org/10.1088/1367-2630/ab890e} {\bibfield
+%  {journal} {\bibinfo  {journal} {New Journal of Physics}\ }\textbf {\bibinfo
+%  {volume} {22}},\ \bibinfo {pages} {063011} (\bibinfo {year}
+%  {2020})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Nave}\ \emph {et~al.}(2025)\citenamefont {Nave},
+%  \citenamefont {Zhao},\ and\ \citenamefont {Phillips}}]{lanave2025}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.~L.}\ \bibnamefont
+%  {Nave}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Zhao}},\ and\
+%  \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\ }\href
+%  {https://arxiv.org/abs/2506.04342} {} (\bibinfo {year} {2025}),\ \Eprint
+%  {https://arxiv.org/abs/2506.04342} {arXiv:2506.04342 [cond-mat.str-el]}
+%  \BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mukherjee}\ \emph {et~al.}(2023)\citenamefont
+%  {Mukherjee}, \citenamefont {Vidhyadhiraja}, \citenamefont {Taraphder},\ and\
+%  \citenamefont {Lal}}]{Mukherjee_2023}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Mukherjee}}, \bibinfo {author} {\bibfnamefont {N.~S.}\ \bibnamefont
+%  {Vidhyadhiraja}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Taraphder}},\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Lal}},\ }\href {https://doi.org/10.1088/1367-2630/ad08f3} {\bibfield
+%  {journal} {\bibinfo  {journal} {New Journal of Physics}\ }\textbf {\bibinfo
+%  {volume} {25}},\ \bibinfo {pages} {113011} (\bibinfo {year}
+%  {2023})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Georges}\ \emph {et~al.}(1996)\citenamefont
+%  {Georges}, \citenamefont {Kotliar}, \citenamefont {Krauth},\ and\
+%  \citenamefont {Rozenberg}}]{georges1996}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Georges}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Kotliar}},
+%  \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Krauth}},\ and\ \bibinfo
+%  {author} {\bibfnamefont {M.~J.}\ \bibnamefont {Rozenberg}},\ }\href@noop {}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Reviews of Modern Physics}\
+%  }\textbf {\bibinfo {volume} {68}},\ \bibinfo {pages} {13} (\bibinfo {year}
+%  {1996})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Hettler}\ \emph {et~al.}(1998)\citenamefont
+%  {Hettler}, \citenamefont {Tahvildar-Zadeh}, \citenamefont {Jarrell},
+%  \citenamefont {Pruschke},\ and\ \citenamefont {Krishnamurthy}}]{hettler1998}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Hettler}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Tahvildar-Zadeh}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Jarrell}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Pruschke}},\
+%  and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Krishnamurthy}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical Review
+%  B}\ }\textbf {\bibinfo {volume} {58}},\ \bibinfo {pages} {R7475} (\bibinfo
+%  {year} {1998})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Kotliar}\ \emph {et~al.}(2001)\citenamefont
+%  {Kotliar}, \citenamefont {Savrasov}, \citenamefont {P{\'a}lsson},\ and\
+%  \citenamefont {Biroli}}]{kotliar2001}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+%  {Kotliar}}, \bibinfo {author} {\bibfnamefont {S.~Y.}\ \bibnamefont
+%  {Savrasov}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+%  {P{\'a}lsson}},\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+%  {Biroli}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+%  {Physical review letters}\ }\textbf {\bibinfo {volume} {87}},\ \bibinfo
+%  {pages} {186401} (\bibinfo {year} {2001})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Maier}\ \emph {et~al.}(2005)\citenamefont {Maier},
+%  \citenamefont {Jarrell}, \citenamefont {Schulthess}, \citenamefont {Kent},\
+%  and\ \citenamefont {White}}]{maier2005}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.~A.}\ \bibnamefont
+%  {Maier}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Jarrell}},
+%  \bibinfo {author} {\bibfnamefont {T.~C.}\ \bibnamefont {Schulthess}},
+%  \bibinfo {author} {\bibfnamefont {P.~R.~C.}\ \bibnamefont {Kent}},\ and\
+%  \bibinfo {author} {\bibfnamefont {J.~B.}\ \bibnamefont {White}},\ }\href@noop
+%  {} {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf
+%  {\bibinfo {volume} {95}},\ \bibinfo {pages} {237001} (\bibinfo {year}
+%  {2005})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Stoyanova}(2006)}]{stoyanova}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Stoyanova}},\ }\emph {\bibinfo {title} {Delocalized and correlated wave
+%  functions for excited states in extended systems}},\ \href@noop {} {Ph.D.
+%  thesis},\ \bibinfo  {school} {University of Groningen} (\bibinfo {year}
+%  {2006})\BibitemShut {NoStop}%
+%\bibitem [{sup()}]{suppmat}%
+%  \BibitemOpen
+%  \href@noop {} {\bibinfo {title} {See supplemental material for additional
+%  information.}}\BibitemShut {Stop}%
+%\bibitem [{\citenamefont {Wu}\ \emph {et~al.}(2018)\citenamefont {Wu},
+%  \citenamefont {Scheurer}, \citenamefont {Chatterjee}, \citenamefont
+%  {Sachdev}, \citenamefont {Georges},\ and\ \citenamefont
+%  {Ferrero}}]{WuFerrero2018}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+%  {Wu}}, \bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont {Scheurer}},
+%  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Chatterjee}}, \bibinfo
+%  {author} {\bibfnamefont {S.}~\bibnamefont {Sachdev}}, \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Ferrero}},\ }\href
+%  {https://doi.org/10.1103/PhysRevX.8.021048} {\bibfield  {journal} {\bibinfo
+%  {journal} {Phys. Rev. X}\ }\textbf {\bibinfo {volume} {8}},\ \bibinfo {pages}
+%  {021048} (\bibinfo {year} {2018})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Tsvelick}\ and\ \citenamefont
+%  {Wiegmann}(1985)}]{Tsvelick_weigmann_mchannel_1985}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~M.}\ \bibnamefont
+%  {Tsvelick}}\ and\ \bibinfo {author} {\bibfnamefont {P.~B.}\ \bibnamefont
+%  {Wiegmann}},\ }\href {https://doi.org/10.1007/BF01017853} {\bibfield
+%  {journal} {\bibinfo  {journal} {Journal of Statistical Physics}\ }\textbf
+%  {\bibinfo {volume} {38}},\ \bibinfo {pages} {125} (\bibinfo {year}
+%  {1985})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Emery}\ and\ \citenamefont
+%  {Kivelson}(1992)}]{emery_kivelson}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.~J.}\ \bibnamefont
+%  {Emery}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+%  {Kivelson}},\ }\href {https://doi.org/10.1103/PhysRevB.46.10812} {\bibfield
+%  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+%  {46}},\ \bibinfo {pages} {10812} (\bibinfo {year} {1992})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Gunnarsson}\ \emph {et~al.}(2003)\citenamefont
+%  {Gunnarsson}, \citenamefont {Calandra},\ and\ \citenamefont
+%  {Han}}]{GunnarssonRMP2003}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+%  {Gunnarsson}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+%  {Calandra}},\ and\ \bibinfo {author} {\bibfnamefont {J.~E.}\ \bibnamefont
+%  {Han}},\ }\href {https://doi.org/10.1103/RevModPhys.75.1085} {\bibfield
+%  {journal} {\bibinfo  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume}
+%  {75}},\ \bibinfo {pages} {1085} (\bibinfo {year} {2003})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Hussey}\ \emph {et~al.}(2004)\citenamefont {Hussey},
+%  \citenamefont {Takenaka},\ and\ \citenamefont {Takagi}}]{Hussey2004}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~E.}\ \bibnamefont
+%  {Hussey}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Takenaka}},\
+%  and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Takagi}},\ }\href
+%  {https://doi.org/10.1080/14786430410001716944} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Philosophical Magazine}\ }\textbf {\bibinfo {volume}
+%  {84}},\ \bibinfo {pages} {2847} (\bibinfo {year} {2004})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Pustogow}\ \emph {et~al.}(2021)\citenamefont
+%  {Pustogow}, \citenamefont {Saito}, \citenamefont {Anja~Löhle}, \citenamefont
+%  {Alonso}, \citenamefont {Kawamoto}, \citenamefont {Dobrosavljevic},
+%  \citenamefont {Dressel},\ and\ \citenamefont {Fratini}}]{pustogow2021}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Pustogow}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Saito}},
+%  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Anja~Löhle}}, \bibinfo
+%  {author} {\bibfnamefont {M.~S.}\ \bibnamefont {Alonso}}, \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Kawamoto}}, \bibinfo {author}
+%  {\bibfnamefont {V.}~\bibnamefont {Dobrosavljevic}}, \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Dressel}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {S.}~\bibnamefont {Fratini}},\ }\href@noop {} {\bibfield
+%  {journal} {\bibinfo  {journal} {Nat. Comm.}\ }\textbf {\bibinfo {volume}
+%  {12}},\ \bibinfo {pages} {1571} (\bibinfo {year} {2021})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {Qazilbash}\ \emph {et~al.}(2008)\citenamefont
+%  {Qazilbash}, \citenamefont {Schafgans}, \citenamefont {Burch}, \citenamefont
+%  {Yun}, \citenamefont {Chae}, \citenamefont {Kim}, \citenamefont {Kim},\ and\
+%  \citenamefont {Basov}}]{qazilbash2008}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~M.}\ \bibnamefont
+%  {Qazilbash}}, \bibinfo {author} {\bibfnamefont {A.~A.}\ \bibnamefont
+%  {Schafgans}}, \bibinfo {author} {\bibfnamefont {K.~S.}\ \bibnamefont
+%  {Burch}}, \bibinfo {author} {\bibfnamefont {S.~J.}\ \bibnamefont {Yun}},
+%  \bibinfo {author} {\bibfnamefont {B.~G.}\ \bibnamefont {Chae}}, \bibinfo
+%  {author} {\bibfnamefont {B.~J.}\ \bibnamefont {Kim}}, \bibinfo {author}
+%  {\bibfnamefont {H.~T.}\ \bibnamefont {Kim}},\ and\ \bibinfo {author}
+%  {\bibfnamefont {D.~N.}\ \bibnamefont {Basov}},\ }\href
+%  {https://doi.org/10.1103/PhysRevB.77.115121} {\bibfield  {journal} {\bibinfo
+%  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {77}},\ \bibinfo
+%  {pages} {115121} (\bibinfo {year} {2008})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Hauke}\ \emph {et~al.}(2016)\citenamefont {Hauke},
+%  \citenamefont {Heyl}, \citenamefont {Tagliacozzo},\ and\ \citenamefont
+%  {Zoller}}]{Hauke2016}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+%  {Hauke}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Heyl}},
+%  \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Tagliacozzo}},\ and\
+%  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Zoller}},\ }\href
+%  {https://doi.org/10.1038/nphys3700} {\bibfield  {journal} {\bibinfo
+%  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {12}},\ \bibinfo
+%  {pages} {778} (\bibinfo {year} {2016})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Balut}\ \emph {et~al.}(2025)\citenamefont {Balut},
+%  \citenamefont {Guo}, \citenamefont {de~Vriesa}, \citenamefont {Chaudhuri},
+%  \citenamefont {Bradlyn}, \citenamefont {Abbamonte},\ and\ \citenamefont
+%  {W.}}]{balut2025}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+%  {Balut}}, \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont {Guo}}, \bibinfo
+%  {author} {\bibfnamefont {N.}~\bibnamefont {de~Vriesa}}, \bibinfo {author}
+%  {\bibfnamefont {D.}~\bibnamefont {Chaudhuri}}, \bibinfo {author}
+%  {\bibfnamefont {B.}~\bibnamefont {Bradlyn}}, \bibinfo {author} {\bibfnamefont
+%  {P.}~\bibnamefont {Abbamonte}},\ and\ \bibinfo {author} {\bibfnamefont
+%  {P.~P.}\ \bibnamefont {W.}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+%  {journal} {Physica C}\ }\textbf {\bibinfo {volume} {635}},\ \bibinfo {pages}
+%  {1354750} (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Mazza}\ \emph {et~al.}(2024)\citenamefont {Mazza},
+%  \citenamefont {Biswas}, \citenamefont {Yan}, \citenamefont {Prokofiev},
+%  \citenamefont {Steffens}, \citenamefont {Si}, \citenamefont {Assaad},\ and\
+%  \citenamefont {Paschen}}]{mazza2024}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+%  {Mazza}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Biswas}},
+%  \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont {Yan}}, \bibinfo {author}
+%  {\bibfnamefont {A.}~\bibnamefont {Prokofiev}}, \bibinfo {author}
+%  {\bibfnamefont {P.}~\bibnamefont {Steffens}}, \bibinfo {author}
+%  {\bibfnamefont {Q.}~\bibnamefont {Si}}, \bibinfo {author} {\bibfnamefont
+%  {F.~F.}\ \bibnamefont {Assaad}},\ and\ \bibinfo {author} {\bibfnamefont
+%  {S.}~\bibnamefont {Paschen}},\ }\href {https://arxiv.org/abs/2403.12779} {}
+%  (\bibinfo {year} {2024}),\ \Eprint {https://arxiv.org/abs/2403.12779}
+%  {arXiv:2403.12779 [cond-mat.str-el]} \BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Si}\ \emph {et~al.}(2001)\citenamefont {Si},
+%  \citenamefont {Rabello}, \citenamefont {Ingersent},\ and\ \citenamefont
+%  {Smith}}]{Si2001}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont
+%  {Si}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Rabello}},
+%  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Ingersent}},\ and\
+%  \bibinfo {author} {\bibfnamefont {J.~L.}\ \bibnamefont {Smith}},\ }\href
+%  {https://doi.org/10.1038/35101507} {\bibfield  {journal} {\bibinfo  {journal}
+%  {Nature}\ }\textbf {\bibinfo {volume} {413}},\ \bibinfo {pages} {804}
+%  (\bibinfo {year} {2001})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2020)\citenamefont
+%  {Phillips}, \citenamefont {Yeo},\ and\ \citenamefont {Huang}}]{Phillips2020}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+%  {Phillips}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Yeo}},\ and\
+%  \bibinfo {author} {\bibfnamefont {E.~W.}\ \bibnamefont {Huang}},\ }\href
+%  {https://doi.org/10.1038/s41567-020-0988-4} {\bibfield  {journal} {\bibinfo
+%  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {16}},\ \bibinfo
+%  {pages} {1175} (\bibinfo {year} {2020})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Vafek}\ and\ \citenamefont
+%  {Vishwanath}(2014)}]{vafekvishwanath2014}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+%  {Vafek}}\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Vishwanath}},\ }\href
+%  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-031113-133841}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+%  Physics}\ }\textbf {\bibinfo {volume} {5}},\ \bibinfo {pages} {83} (\bibinfo
+%  {year} {2014})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Morimoto}\ and\ \citenamefont
+%  {Nagaosa}(2016)}]{morimoto2016}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+%  {Morimoto}}\ and\ \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+%  {Nagaosa}},\ }\href {https://doi.org/10.1038/srep19853} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Sci. Rep.}\ }\textbf {\bibinfo {volume} {6}},\ \bibinfo
+%  {pages} {19853} (\bibinfo {year} {2016})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Flores-Calder\'on}\ and\ \citenamefont
+%  {Hooley}(2025)}]{calderon2025}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+%  {Flores-Calder\'on}}\ and\ \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+%  {Hooley}},\ }\href {https://doi.org/10.1103/k4st-77ph} {\bibfield  {journal}
+%  {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {111}},\
+%  \bibinfo {pages} {235139} (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Georgi}(2007{\natexlab{a}})}]{Georgi2007PRL}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+%  {Georgi}},\ }\href {https://doi.org/10.1103/PhysRevLett.98.221601} {\bibfield
+%   {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo
+%  {volume} {98}},\ \bibinfo {pages} {221601} (\bibinfo {year}
+%  {2007}{\natexlab{a}})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Georgi}(2007{\natexlab{b}})}]{Georgi2007}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+%  {Georgi}},\ }\href
+%  {https://doi.org/https://doi.org/10.1016/j.physletb.2007.05.037} {\bibfield
+%  {journal} {\bibinfo  {journal} {Physics Letters B}\ }\textbf {\bibinfo
+%  {volume} {650}},\ \bibinfo {pages} {275} (\bibinfo {year}
+%  {2007}{\natexlab{b}})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Phillips}(2014)}]{PhillipsLectures2014}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+%  {Phillips}},\ }in\ \href@noop {} {\emph {\bibinfo {booktitle} {Quantum
+%  Criticality in Condensed Matter}}},\ \bibinfo {editor} {edited by\ \bibinfo
+%  {editor} {\bibfnamefont {J.}~\bibnamefont {Jedrzejewski}}}\ (\bibinfo
+%  {publisher} {World Scientific, Singapore},\ \bibinfo {year} {2014})\ pp.\
+%  \bibinfo {pages} {133--158}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Zaanen}(2019)}]{zaanen2019}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+%  {Zaanen}},\ }\href {https://doi.org/10.21468/SciPostPhys.6.5.061} {\bibfield
+%  {journal} {\bibinfo  {journal} {SciPost Phys.}\ }\textbf {\bibinfo {volume}
+%  {6}},\ \bibinfo {pages} {061} (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Legros}\ \emph {et~al.}(2019)\citenamefont {Legros},
+%  \citenamefont {Benhabib}, \citenamefont {Tabis}, \citenamefont
+%  {Lalibert{\'e}}, \citenamefont {Dion}, \citenamefont {Lizaire}, \citenamefont
+%  {Vignolle}, \citenamefont {Vignolles}, \citenamefont {Raffy}, \citenamefont
+%  {Li} \emph {et~al.}}]{legros2019}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+%  {Legros}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Benhabib}},
+%  \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Tabis}}, \bibinfo
+%  {author} {\bibfnamefont {F.}~\bibnamefont {Lalibert{\'e}}}, \bibinfo {author}
+%  {\bibfnamefont {M.}~\bibnamefont {Dion}}, \bibinfo {author} {\bibfnamefont
+%  {M.}~\bibnamefont {Lizaire}}, \bibinfo {author} {\bibfnamefont
+%  {B.}~\bibnamefont {Vignolle}}, \bibinfo {author} {\bibfnamefont
+%  {D.}~\bibnamefont {Vignolles}}, \bibinfo {author} {\bibfnamefont
+%  {H.}~\bibnamefont {Raffy}}, \bibinfo {author} {\bibfnamefont
+%  {Z.}~\bibnamefont {Li}}, \emph {et~al.},\ }\href@noop {} {\bibfield
+%  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume}
+%  {15}},\ \bibinfo {pages} {142} (\bibinfo {year} {2019})}\BibitemShut
+%  {NoStop}%
+%\bibitem [{\citenamefont {McGreevy}(2023)}]{McGreevy2023}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+%  {McGreevy}},\ }\href
+%  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-040721-021029}
+%  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+%  Physics}\ }\textbf {\bibinfo {volume} {14}},\ \bibinfo {pages} {57} (\bibinfo
+%  {year} {2023})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Luttinger}\ and\ \citenamefont
+%  {Ward}(1960)}]{luttinger1960ground}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+%  {Luttinger}}\ and\ \bibinfo {author} {\bibfnamefont {J.~C.}\ \bibnamefont
+%  {Ward}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical
+%  Review}\ }\textbf {\bibinfo {volume} {118}},\ \bibinfo {pages} {1417}
+%  (\bibinfo {year} {1960})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Su}\ and\ \citenamefont
+%  {Martin}(2025)}]{su2025anomalies}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+%  {Su}}\ and\ \bibinfo {author} {\bibfnamefont {I.}~\bibnamefont {Martin}},\
+%  }\href {https://arxiv.org/abs/2405.08093} {} (\bibinfo {year} {2025}),\
+%  \Eprint {https://arxiv.org/abs/2405.08093} {arXiv:2405.08093
+%  [cond-mat.str-el]} \BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Adler}(1969)}]{adler1969axial}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~L.}\ \bibnamefont
+%  {Adler}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+%  {Physical Review}\ }\textbf {\bibinfo {volume} {177}},\ \bibinfo {pages}
+%  {2426} (\bibinfo {year} {1969})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Bell}\ and\ \citenamefont
+%  {Jackiw}(1969)}]{bell1969pcac}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~S.}\ \bibnamefont
+%  {Bell}}\ and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Jackiw}},\
+%  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Il Nuovo Cimento
+%  A}\ }\textbf {\bibinfo {volume} {60}},\ \bibinfo {pages} {47} (\bibinfo
+%  {year} {1969})}\BibitemShut {NoStop}%
+%\bibitem [{\citenamefont {Casini}\ and\ \citenamefont
+%  {Mag\'{a}n}(2021)}]{Casini2021Symmetries}%
+%  \BibitemOpen
+%  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+%  {Casini}}\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+%  {Mag\'{a}n}},\ }\href {https://doi.org/10.1142/S0217732321300251} {\bibfield
+%  {journal} {\bibinfo  {journal} {Modern Physics Letters A}\ }\textbf {\bibinfo
+%  {volume} {36}},\ \bibinfo {pages} {2130025} (\bibinfo {year}
+%  {2021})}\BibitemShut {NoStop}%
+%\end{thebibliography}
+
+%\bibliography{tilingProject}
+
+\begin{thebibliography}{89}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \enquote  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{https://doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {Landau}(1957)}]{landau1959theory}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Landau}},\ }\bibfield  {title} {\bibinfo {title} {The theory of a fermi
+  liquid},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Soviet
+  Physics Jetp-Ussr}\ }\textbf {\bibinfo {volume} {3}},\ \bibinfo {pages} {920}
+  (\bibinfo {year} {1957})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2013)\citenamefont
+  {Phillips}, \citenamefont {Langley},\ and\ \citenamefont
+  {Hutasoit}}]{Phillips2013Unparticles}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Phillips}}, \bibinfo {author} {\bibfnamefont {B.~W.}\ \bibnamefont
+  {Langley}},\ and\ \bibinfo {author} {\bibfnamefont {J.~A.}\ \bibnamefont
+  {Hutasoit}},\ }\bibfield  {title} {\bibinfo {title} {Un-fermi liquids:
+  Unparticles in strongly correlated electron matter},\ }\href
+  {https://doi.org/10.1103/PhysRevB.88.115129} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {88}},\ \bibinfo
+  {pages} {115129} (\bibinfo {year} {2013})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Dzyaloshinskii}(2003)}]{dzyaloshinskii2003some}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {I.}~\bibnamefont
+  {Dzyaloshinskii}},\ }\bibfield  {title} {\bibinfo {title} {Some consequences
+  of the luttinger theorem: The luttinger surfaces in non-fermi liquids and
+  mott insulators},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Physical Review B}\ }\textbf {\bibinfo {volume} {68}},\ \bibinfo {pages}
+  {085113} (\bibinfo {year} {2003})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mott}(1949)}]{Mott_1949}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~F.}\ \bibnamefont
+  {Mott}},\ }\bibfield  {title} {\bibinfo {title} {The basis of the electron
+  theory of metals, with special reference to the transition metals},\ }\href
+  {https://doi.org/10.1088/0370-1298/62/7/303} {\bibfield  {journal} {\bibinfo
+  {journal} {Proceedings of the Physical Society. Section A}\ }\textbf
+  {\bibinfo {volume} {62}},\ \bibinfo {pages} {416} (\bibinfo {year}
+  {1949})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2022)\citenamefont
+  {Phillips}, \citenamefont {Hussey},\ and\ \citenamefont
+  {Abbamonte}}]{phillips2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Phillips}}, \bibinfo {author} {\bibfnamefont {N.~E.}\ \bibnamefont
+  {Hussey}},\ and\ \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Abbamonte}},\ }\bibfield  {title} {\bibinfo {title} {Stranger than metals},\
+  }\href {https://doi.org/10.1126/science.abh4273} {\bibfield  {journal}
+  {\bibinfo  {journal} {Science}\ }\textbf {\bibinfo {volume} {377}},\ \bibinfo
+  {pages} {eabh4273} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Loeser}\ \emph {et~al.}(1996)\citenamefont {Loeser},
+  \citenamefont {Shen}, \citenamefont {Dessau}, \citenamefont {Marshall},
+  \citenamefont {Park}, \citenamefont {Fournier},\ and\ \citenamefont
+  {Kapitulnik}}]{loeserKapitulnik1996}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~G.}\ \bibnamefont
+  {Loeser}}, \bibinfo {author} {\bibfnamefont {Z.-X.}\ \bibnamefont {Shen}},
+  \bibinfo {author} {\bibfnamefont {D.~S.}\ \bibnamefont {Dessau}}, \bibinfo
+  {author} {\bibfnamefont {D.~S.}\ \bibnamefont {Marshall}}, \bibinfo {author}
+  {\bibfnamefont {C.~H.}\ \bibnamefont {Park}}, \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {Fournier}},\ and\ \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Kapitulnik}},\ }\bibfield  {title}
+  {\bibinfo {title} {Excitation gap in the normal state of underdoped
+  bi2sr2cacu2o8},\ }\href {https://doi.org/10.1126/science.273.5273.325}
+  {\bibfield  {journal} {\bibinfo  {journal} {Science}\ }\textbf {\bibinfo
+  {volume} {273}},\ \bibinfo {pages} {325} (\bibinfo {year}
+  {1996})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Norman}\ \emph {et~al.}(1998)\citenamefont {Norman},
+  \citenamefont {Ding}, \citenamefont {Randeria}, \citenamefont {Campuzano},
+  \citenamefont {Yokoya}, \citenamefont {Takeuchi}, \citenamefont {Takahashi},
+  \citenamefont {Mochiku}, \citenamefont {Kadowaki}, \citenamefont
+  {Guptasarma},\ and\ \citenamefont {Hinks}}]{Norman1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~R.}\ \bibnamefont
+  {Norman}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Ding}},
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Randeria}}, \bibinfo
+  {author} {\bibfnamefont {J.~C.}\ \bibnamefont {Campuzano}}, \bibinfo {author}
+  {\bibfnamefont {T.}~\bibnamefont {Yokoya}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Takeuchi}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Takahashi}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Mochiku}}, \bibinfo {author} {\bibfnamefont
+  {K.}~\bibnamefont {Kadowaki}}, \bibinfo {author} {\bibfnamefont
+  {P.}~\bibnamefont {Guptasarma}},\ and\ \bibinfo {author} {\bibfnamefont
+  {D.~G.}\ \bibnamefont {Hinks}},\ }\bibfield  {title} {\bibinfo {title}
+  {Destruction of the fermi surface in underdoped high-tc superconductors},\
+  }\href {https://doi.org/10.1038/32366} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature}\ }\textbf {\bibinfo {volume} {392}},\ \bibinfo {pages}
+  {157} (\bibinfo {year} {1998})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hashimoto}\ \emph {et~al.}(2014)\citenamefont
+  {Hashimoto}, \citenamefont {Vishik}, \citenamefont {He}, \citenamefont
+  {Devereaux},\ and\ \citenamefont {Shen}}]{Hashimoto2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Hashimoto}}, \bibinfo {author} {\bibfnamefont {I.~M.}\ \bibnamefont
+  {Vishik}}, \bibinfo {author} {\bibfnamefont {R.-H.}\ \bibnamefont {He}},
+  \bibinfo {author} {\bibfnamefont {T.~P.}\ \bibnamefont {Devereaux}},\ and\
+  \bibinfo {author} {\bibfnamefont {Z.-X.}\ \bibnamefont {Shen}},\ }\bibfield
+  {title} {\bibinfo {title} {Energy gaps in high-transition-temperature cuprate
+  superconductors},\ }\href {https://doi.org/10.1038/nphys3009} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume}
+  {10}},\ \bibinfo {pages} {483} (\bibinfo {year} {2014})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Taillefer}(2010)}]{taillefer2010}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Taillefer}},\ }\bibfield  {title} {\bibinfo {title} {Scattering and pairing
+  in cuprate superconductors},\ }\href
+  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-070909-104117}
+  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+  Physics}\ }\textbf {\bibinfo {volume} {1}},\ \bibinfo {pages} {51} (\bibinfo
+  {year} {2010})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Fradkin}\ \emph {et~al.}(2015)\citenamefont
+  {Fradkin}, \citenamefont {Kivelson},\ and\ \citenamefont
+  {Tranquada}}]{FradkinRevModPhys2015}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Fradkin}}, \bibinfo {author} {\bibfnamefont {S.~A.}\ \bibnamefont
+  {Kivelson}},\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Tranquada}},\ }\bibfield  {title} {\bibinfo {title} {Colloquium: Theory of
+  intertwined orders in high temperature superconductors},\ }\href
+  {https://doi.org/10.1103/RevModPhys.87.457} {\bibfield  {journal} {\bibinfo
+  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume} {87}},\ \bibinfo
+  {pages} {457} (\bibinfo {year} {2015})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sato}\ \emph {et~al.}(2017)\citenamefont {Sato},
+  \citenamefont {Kasahara}, \citenamefont {Murayama}, \citenamefont {Kasahara},
+  \citenamefont {Moon}, \citenamefont {Nishizaki}, \citenamefont {Loew},
+  \citenamefont {Porras}, \citenamefont {Keimer}, \citenamefont {Shibauchi},\
+  and\ \citenamefont {Matsuda}}]{Sato2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Sato}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Kasahara}},
+  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Murayama}}, \bibinfo
+  {author} {\bibfnamefont {Y.}~\bibnamefont {Kasahara}}, \bibinfo {author}
+  {\bibfnamefont {E.-G.}\ \bibnamefont {Moon}}, \bibinfo {author}
+  {\bibfnamefont {T.}~\bibnamefont {Nishizaki}}, \bibinfo {author}
+  {\bibfnamefont {T.}~\bibnamefont {Loew}}, \bibinfo {author} {\bibfnamefont
+  {J.}~\bibnamefont {Porras}}, \bibinfo {author} {\bibfnamefont
+  {B.}~\bibnamefont {Keimer}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Shibauchi}},\ and\ \bibinfo {author} {\bibfnamefont
+  {Y.}~\bibnamefont {Matsuda}},\ }\bibfield  {title} {\bibinfo {title}
+  {Thermodynamic evidence for a nematic phase transition at the onset of the
+  pseudogap in yba2cu3oy},\ }\href {https://doi.org/10.1038/nphys4205}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf
+  {\bibinfo {volume} {13}},\ \bibinfo {pages} {1074} (\bibinfo {year}
+  {2017})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Doiron-Leyraud}\ \emph {et~al.}(2017)\citenamefont
+  {Doiron-Leyraud}, \citenamefont {Cyr-Choini{\`e}re}, \citenamefont {Badoux},
+  \citenamefont {Ataei}, \citenamefont {Collignon}, \citenamefont {Gourgout},
+  \citenamefont {Dufour-Beaus{\'e}jour}, \citenamefont {Tafti}, \citenamefont
+  {Lalibert{\'e}}, \citenamefont {Boulanger}, \citenamefont {Matusiak},
+  \citenamefont {Graf}, \citenamefont {Kim}, \citenamefont {Zhou},
+  \citenamefont {Momono}, \citenamefont {Kurosawa}, \citenamefont {Takagi},\
+  and\ \citenamefont {Taillefer}}]{DoironLeyraud2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Doiron-Leyraud}}, \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+  {Cyr-Choini{\`e}re}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Badoux}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Ataei}},
+  \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Collignon}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Gourgout}}, \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Dufour-Beaus{\'e}jour}}, \bibinfo {author}
+  {\bibfnamefont {F.~F.}\ \bibnamefont {Tafti}}, \bibinfo {author}
+  {\bibfnamefont {F.}~\bibnamefont {Lalibert{\'e}}}, \bibinfo {author}
+  {\bibfnamefont {M.-E.}\ \bibnamefont {Boulanger}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Matusiak}}, \bibinfo {author}
+  {\bibfnamefont {D.}~\bibnamefont {Graf}}, \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont {J.-S.}\
+  \bibnamefont {Zhou}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Momono}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Kurosawa}},
+  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Takagi}},\ and\ \bibinfo
+  {author} {\bibfnamefont {L.}~\bibnamefont {Taillefer}},\ }\bibfield  {title}
+  {\bibinfo {title} {Pseudogap phase of cuprate superconductors confined by
+  fermi surface topology},\ }\href {https://doi.org/10.1038/s41467-017-02122-x}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature Communications}\ }\textbf
+  {\bibinfo {volume} {8}},\ \bibinfo {pages} {2044} (\bibinfo {year}
+  {2017})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mukhopadhyay}\ \emph {et~al.}(2019)\citenamefont
+  {Mukhopadhyay}, \citenamefont {Sharma}, \citenamefont {Kim}, \citenamefont
+  {Edkins}, \citenamefont {Hamidian}, \citenamefont {Eisaki}, \citenamefont
+  {ichi Uchida}, \citenamefont {Kim}, \citenamefont {Lawler}, \citenamefont
+  {Mackenzie}, \citenamefont {Davis},\ and\ \citenamefont
+  {Fujita}}]{Mukhopadhyay2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Mukhopadhyay}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Sharma}}, \bibinfo {author} {\bibfnamefont {C.~K.}\ \bibnamefont {Kim}},
+  \bibinfo {author} {\bibfnamefont {S.~D.}\ \bibnamefont {Edkins}}, \bibinfo
+  {author} {\bibfnamefont {M.~H.}\ \bibnamefont {Hamidian}}, \bibinfo {author}
+  {\bibfnamefont {H.}~\bibnamefont {Eisaki}}, \bibinfo {author} {\bibfnamefont
+  {S.}~\bibnamefont {ichi Uchida}}, \bibinfo {author} {\bibfnamefont {E.-A.}\
+  \bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont {M.~J.}\ \bibnamefont
+  {Lawler}}, \bibinfo {author} {\bibfnamefont {A.~P.}\ \bibnamefont
+  {Mackenzie}}, \bibinfo {author} {\bibfnamefont {J.~C.~S.}\ \bibnamefont
+  {Davis}},\ and\ \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Fujita}},\ }\bibfield  {title} {\bibinfo {title} {Evidence for a vestigial
+  nematic state in the cuprate pseudogap phase},\ }\href
+  {https://doi.org/10.1073/pnas.1821454116} {\bibfield  {journal} {\bibinfo
+  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+  {\bibinfo {volume} {116}},\ \bibinfo {pages} {13249} (\bibinfo {year}
+  {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gupta}\ \emph {et~al.}(2021)\citenamefont {Gupta},
+  \citenamefont {McMahon}, \citenamefont {Sutarto}, \citenamefont {Shi},
+  \citenamefont {Gong}, \citenamefont {Wei}, \citenamefont {Shen},
+  \citenamefont {He}, \citenamefont {Ma}, \citenamefont {Dragomir},
+  \citenamefont {Gaulin},\ and\ \citenamefont {Hawthorn}}]{Naman2021}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~K.}\ \bibnamefont
+  {Gupta}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {McMahon}},
+  \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Sutarto}}, \bibinfo
+  {author} {\bibfnamefont {T.}~\bibnamefont {Shi}}, \bibinfo {author}
+  {\bibfnamefont {R.}~\bibnamefont {Gong}}, \bibinfo {author} {\bibfnamefont
+  {H.~I.}\ \bibnamefont {Wei}}, \bibinfo {author} {\bibfnamefont {K.~M.}\
+  \bibnamefont {Shen}}, \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+  {He}}, \bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont {Ma}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Dragomir}}, \bibinfo {author}
+  {\bibfnamefont {B.~D.}\ \bibnamefont {Gaulin}},\ and\ \bibinfo {author}
+  {\bibfnamefont {D.~G.}\ \bibnamefont {Hawthorn}},\ }\bibfield  {title}
+  {\bibinfo {title} {Vanishing nematic order beyond the pseudogap phase in
+  overdoped cuprate superconductors},\ }\href
+  {https://doi.org/10.1073/pnas.2106881118} {\bibfield  {journal} {\bibinfo
+  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+  {\bibinfo {volume} {118}},\ \bibinfo {pages} {e2106881118} (\bibinfo {year}
+  {2021})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Horio}\ \emph {et~al.}(2025)\citenamefont {Horio},
+  \citenamefont {Sakai}, \citenamefont {Suzuki}, \citenamefont {Nonaka},
+  \citenamefont {Hashimoto}, \citenamefont {Lu}, \citenamefont {Shen},
+  \citenamefont {Ohgi}, \citenamefont {Konno}, \citenamefont {Adachi},
+  \citenamefont {Koike}, \citenamefont {Imada},\ and\ \citenamefont
+  {Fujimori}}]{Masafumi2025}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Horio}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Sakai}},
+  \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Suzuki}}, \bibinfo
+  {author} {\bibfnamefont {Y.}~\bibnamefont {Nonaka}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Hashimoto}}, \bibinfo {author}
+  {\bibfnamefont {D.}~\bibnamefont {Lu}}, \bibinfo {author} {\bibfnamefont
+  {Z.-X.}\ \bibnamefont {Shen}}, \bibinfo {author} {\bibfnamefont
+  {T.}~\bibnamefont {Ohgi}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+  {Konno}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Adachi}},
+  \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Koike}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ and\ \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Fujimori}},\ }\bibfield  {title} {\bibinfo
+  {title} {Pseudogap in electron-doped cuprates: Strong correlation leading to
+  band splitting},\ }\href {https://doi.org/10.1073/pnas.2406624122} {\bibfield
+   {journal} {\bibinfo  {journal} {Proceedings of the National Academy of
+  Sciences}\ }\textbf {\bibinfo {volume} {122}},\ \bibinfo {pages}
+  {e2406624122} (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kyung}\ \emph {et~al.}(2006)\citenamefont {Kyung},
+  \citenamefont {Kancharla}, \citenamefont {S\'en\'echal}, \citenamefont
+  {Tremblay}, \citenamefont {Civelli},\ and\ \citenamefont
+  {Kotliar}}]{KyungKotliar2006}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Kyung}}, \bibinfo {author} {\bibfnamefont {S.~S.}\ \bibnamefont
+  {Kancharla}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {S\'en\'echal}}, \bibinfo {author} {\bibfnamefont {A.-M.~S.}\ \bibnamefont
+  {Tremblay}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Civelli}},\
+  and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Kotliar}},\
+  }\bibfield  {title} {\bibinfo {title} {Pseudogap induced by short-range spin
+  correlations in a doped mott insulator},\ }\href
+  {https://doi.org/10.1103/PhysRevB.73.165114} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {73}},\ \bibinfo
+  {pages} {165114} (\bibinfo {year} {2006})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Macridin}\ \emph {et~al.}(2006)\citenamefont
+  {Macridin}, \citenamefont {Jarrell}, \citenamefont {Maier}, \citenamefont
+  {Kent},\ and\ \citenamefont {D'Azevedo}}]{MacridinAzevedo2006}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Macridin}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Jarrell}},
+  \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Maier}}, \bibinfo
+  {author} {\bibfnamefont {P.~R.~C.}\ \bibnamefont {Kent}},\ and\ \bibinfo
+  {author} {\bibfnamefont {E.}~\bibnamefont {D'Azevedo}},\ }\bibfield  {title}
+  {\bibinfo {title} {Pseudogap and antiferromagnetic correlations in the
+  hubbard model},\ }\href {https://doi.org/10.1103/PhysRevLett.97.036401}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf
+  {\bibinfo {volume} {97}},\ \bibinfo {pages} {036401} (\bibinfo {year}
+  {2006})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sakai}\ \emph {et~al.}(2009)\citenamefont {Sakai},
+  \citenamefont {Motome},\ and\ \citenamefont {Imada}}]{sakai2009evolution}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Sakai}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Motome}},\ and\
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\bibfield
+  {title} {\bibinfo {title} {Evolution of electronic structure of doped mott
+  insulators: Reconstruction of poles and zeros of green’s function},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical review
+  letters}\ }\textbf {\bibinfo {volume} {102}},\ \bibinfo {pages} {056404}
+  (\bibinfo {year} {2009})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Werner}\ \emph {et~al.}(2009)\citenamefont {Werner},
+  \citenamefont {Gull}, \citenamefont {Parcollet},\ and\ \citenamefont
+  {Millis}}]{werner2009momentum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Werner}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Gull}},
+  \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}},\ and\
+  \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\ }\bibfield
+   {title} {\bibinfo {title} {Momentum-selective metal-insulator transition in
+  the two-dimensional hubbard model: An 8-site dynamical cluster approximation
+  study},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical
+  Review B}\ }\textbf {\bibinfo {volume} {80}},\ \bibinfo {pages} {045120}
+  (\bibinfo {year} {2009})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sakai}\ \emph {et~al.}(2010)\citenamefont {Sakai},
+  \citenamefont {Motome},\ and\ \citenamefont {Imada}}]{sakai2010doped}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Sakai}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Motome}},\ and\
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\bibfield
+  {title} {\bibinfo {title} {Doped high-t c cuprate superconductors elucidated
+  in the light of zeros and poles of the electronic green’s function},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Physical Review
+  B}\ }\textbf {\bibinfo {volume} {82}},\ \bibinfo {pages} {134505} (\bibinfo
+  {year} {2010})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Lin}\ \emph {et~al.}(2010)\citenamefont {Lin},
+  \citenamefont {Gull},\ and\ \citenamefont {Millis}}]{lin2010}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Lin}}, \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Gull}},\ and\
+  \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\ }\bibfield
+   {title} {\bibinfo {title} {Physics of the pseudogap in eight-site cluster
+  dynamical mean-field theory: Photoemission, raman scattering, and in-plane
+  and c-axs=is conductivity},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {82}},\ \bibinfo
+  {pages} {045104} (\bibinfo {year} {2010})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gull}\ \emph {et~al.}(2010)\citenamefont {Gull},
+  \citenamefont {Ferrero}, \citenamefont {Parcollet}, \citenamefont {Georges},\
+  and\ \citenamefont {Millis}}]{gull2010momentum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Gull}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Ferrero}},
+  \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+  {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\ }\bibfield  {title}
+  {\bibinfo {title} {Momentum-space anisotropy and pseudogaps: A comparative
+  cluster dynamical mean-field analysis of the doping-driven metal-insulator
+  transition in the two-dimensional hubbard model},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Physical Review B}\ }\textbf {\bibinfo
+  {volume} {82}},\ \bibinfo {pages} {155101} (\bibinfo {year}
+  {2010})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gull}\ and\ \citenamefont {Millis}(2012)}]{gull2012}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Gull}}\ and\ \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont
+  {Millis}},\ }\bibfield  {title} {\bibinfo {title} {Energetics of
+  superconductivity in the two-dimensional hubbard model},\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo
+  {volume} {86}},\ \bibinfo {pages} {241106} (\bibinfo {year}
+  {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mirzaei}\ \emph {et~al.}(2013)\citenamefont
+  {Mirzaei}, \citenamefont {Stricker}, \citenamefont {Hancock}, \citenamefont
+  {Berthod}, \citenamefont {Georges}, \citenamefont {van Heumen}, \citenamefont
+  {Chan}, \citenamefont {Zhao}, \citenamefont {Li}, \citenamefont {Greven},
+  \citenamefont {Barišić},\ and\ \citenamefont {van~der
+  Marel}}]{Mirzaei2013}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~I.}\ \bibnamefont
+  {Mirzaei}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Stricker}},
+  \bibinfo {author} {\bibfnamefont {J.~N.}\ \bibnamefont {Hancock}}, \bibinfo
+  {author} {\bibfnamefont {C.}~\bibnamefont {Berthod}}, \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Georges}}, \bibinfo {author} {\bibfnamefont
+  {E.}~\bibnamefont {van Heumen}}, \bibinfo {author} {\bibfnamefont {M.~K.}\
+  \bibnamefont {Chan}}, \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont
+  {Zhao}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Li}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Greven}}, \bibinfo {author}
+  {\bibfnamefont {N.}~\bibnamefont {Barišić}},\ and\ \bibinfo {author}
+  {\bibfnamefont {D.}~\bibnamefont {van~der Marel}},\ }\bibfield  {title}
+  {\bibinfo {title} {Spectroscopic evidence for fermi liquid-like energy and
+  temperature dependence of the relaxation rate in the pseudogap phase of the
+  cuprates},\ }\href {https://doi.org/10.1073/pnas.1218846110} {\bibfield
+  {journal} {\bibinfo  {journal} {Proceedings of the National Academy of
+  Sciences}\ }\textbf {\bibinfo {volume} {110}},\ \bibinfo {pages} {5774}
+  (\bibinfo {year} {2013})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gull}\ \emph {et~al.}(2013)\citenamefont {Gull},
+  \citenamefont {Parcollet},\ and\ \citenamefont {Millis}}]{gull2013}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Gull}}, \bibinfo {author} {\bibfnamefont {O.}~\bibnamefont {Parcollet}},\
+  and\ \bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont {Millis}},\
+  }\bibfield  {title} {\bibinfo {title} {Superconductivity and the pseudogap in
+  the two-dimensional hubbard model},\ }\href@noop {} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physical review letters}\ }\textbf {\bibinfo {volume}
+  {110}},\ \bibinfo {pages} {216405} (\bibinfo {year} {2013})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+  {Lal}(2020{\natexlab{a}})}]{anirbanmott2}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Lal}},\ }\bibfield  {title} {\bibinfo {title} {Scaling theory for
+  mott{\textendash}hubbard transitions-{II}: quantum criticality of the doped
+  mott insulator},\ }\href {https://doi.org/10.1088/1367-2630/ab890c}
+  {\bibfield  {journal} {\bibinfo  {journal} {New Journal of Physics}\ }\textbf
+  {\bibinfo {volume} {22}},\ \bibinfo {pages} {063008} (\bibinfo {year}
+  {2020}{\natexlab{a}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hille}\ \emph {et~al.}(2020)\citenamefont {Hille},
+  \citenamefont {Rohe}, \citenamefont {Honerkamp},\ and\ \citenamefont
+  {Andergassen}}]{HilleAndergassen2020}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Hille}}, \bibinfo {author} {\bibfnamefont {D.}~\bibnamefont {Rohe}},
+  \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Honerkamp}},\ and\
+  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Andergassen}},\
+  }\bibfield  {title} {\bibinfo {title} {Pseudogap opening in the
+  two-dimensional hubbard model: A functional renormalization group analysis},\
+  }\href {https://doi.org/10.1103/PhysRevResearch.2.033068} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. Res.}\ }\textbf {\bibinfo {volume}
+  {2}},\ \bibinfo {pages} {033068} (\bibinfo {year} {2020})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Jiang}\ \emph {et~al.}(2022)\citenamefont {Jiang},
+  \citenamefont {Liu}, \citenamefont {Klein}, \citenamefont {Wang},
+  \citenamefont {Sun}, \citenamefont {Chubukov},\ and\ \citenamefont
+  {Meng}}]{Jiang2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+  {Jiang}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Liu}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Klein}}, \bibinfo {author}
+  {\bibfnamefont {Y.}~\bibnamefont {Wang}}, \bibinfo {author} {\bibfnamefont
+  {K.}~\bibnamefont {Sun}}, \bibinfo {author} {\bibfnamefont {A.~V.}\
+  \bibnamefont {Chubukov}},\ and\ \bibinfo {author} {\bibfnamefont {Z.~Y.}\
+  \bibnamefont {Meng}},\ }\bibfield  {title} {\bibinfo {title} {Monte carlo
+  study of the pseudogap and superconductivity emerging from quantum magnetic
+  fluctuations},\ }\href {https://doi.org/10.1038/s41467-022-30302-x}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature Communications}\ }\textbf
+  {\bibinfo {volume} {13}},\ \bibinfo {pages} {2655} (\bibinfo {year}
+  {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Scheurer}\ \emph {et~al.}(2018)\citenamefont
+  {Scheurer}, \citenamefont {Chatterjee}, \citenamefont {Wu}, \citenamefont
+  {Ferrero}, \citenamefont {Georges},\ and\ \citenamefont
+  {Sachdev}}]{Scheurer2018}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont
+  {Scheurer}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Chatterjee}}, \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Wu}},
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Ferrero}}, \bibinfo
+  {author} {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Sachdev}},\ }\bibfield  {title} {\bibinfo
+  {title} {Topological order in the pseudogap metal},\ }\href
+  {https://doi.org/10.1073/pnas.1720580115} {\bibfield  {journal} {\bibinfo
+  {journal} {Proceedings of the National Academy of Sciences}\ }\textbf
+  {\bibinfo {volume} {115}},\ \bibinfo {pages} {E3665} (\bibinfo {year}
+  {2018})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Krien}\ \emph {et~al.}(2022)\citenamefont {Krien},
+  \citenamefont {Worm}, \citenamefont {Chalupa-Gantner}, \citenamefont
+  {Toschi},\ and\ \citenamefont {Held}}]{Krien2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+  {Krien}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Worm}},
+  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Chalupa-Gantner}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Toschi}},\ and\ \bibinfo
+  {author} {\bibfnamefont {K.}~\bibnamefont {Held}},\ }\bibfield  {title}
+  {\bibinfo {title} {Explaining the pseudogap through damping and antidamping
+  on the fermi surface by imaginary spin scattering},\ }\href
+  {https://doi.org/10.1038/s42005-022-01117-5} {\bibfield  {journal} {\bibinfo
+  {journal} {Communications Physics}\ }\textbf {\bibinfo {volume} {5}},\
+  \bibinfo {pages} {336} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kitatani}\ \emph {et~al.}(2023)\citenamefont
+  {Kitatani}, \citenamefont {Si}, \citenamefont {Worm}, \citenamefont
+  {Tomczak}, \citenamefont {Arita},\ and\ \citenamefont {Held}}]{Kitatani2023}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Kitatani}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Si}},
+  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Worm}}, \bibinfo {author}
+  {\bibfnamefont {J.~M.}\ \bibnamefont {Tomczak}}, \bibinfo {author}
+  {\bibfnamefont {R.}~\bibnamefont {Arita}},\ and\ \bibinfo {author}
+  {\bibfnamefont {K.}~\bibnamefont {Held}},\ }\bibfield  {title} {\bibinfo
+  {title} {Optimizing superconductivity: From cuprates via nickelates to
+  palladates},\ }\href {https://doi.org/10.1103/PhysRevLett.130.166002}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf
+  {\bibinfo {volume} {130}},\ \bibinfo {pages} {166002} (\bibinfo {year}
+  {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sorella}(2023)}]{Sorella2023}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Sorella}},\ }\bibfield  {title} {\bibinfo {title} {Systematically improvable
+  mean-field variational ansatz for strongly correlated systems: Application to
+  the hubbard model},\ }\href {https://doi.org/10.1103/PhysRevB.107.115133}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo
+  {volume} {107}},\ \bibinfo {pages} {115133} (\bibinfo {year}
+  {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Schäfer}\ \emph {et~al.}(2021)\citenamefont
+  {Schäfer}, \citenamefont {Wentzell}, \citenamefont {Šimkovic},
+  \citenamefont {He}, \citenamefont {Hille}, \citenamefont {Klett},
+  \citenamefont {Eckhardt}, \citenamefont {Arzhang}, \citenamefont {Harkov},
+  \citenamefont {Le~R\'egent}, \citenamefont {Kirsch}, \citenamefont {Wang},
+  \citenamefont {Kim}, \citenamefont {Kozik}, \citenamefont {Stepanov},
+  \citenamefont {Kauch}, \citenamefont {Andergassen}, \citenamefont {Hansmann},
+  \citenamefont {Rohe}, \citenamefont {Vilk}, \citenamefont {LeBlanc},
+  \citenamefont {Zhang}, \citenamefont {Tremblay}, \citenamefont {Ferrero},
+  \citenamefont {Parcollet},\ and\ \citenamefont {Georges}}]{Schafer2021}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+  {Schäfer}}, \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont {Wentzell}},
+  \bibinfo {author} {\bibfnamefont {F.}~\bibnamefont {Šimkovic}}, \bibinfo
+  {author} {\bibfnamefont {Y.-Y.}\ \bibnamefont {He}}, \bibinfo {author}
+  {\bibfnamefont {C.}~\bibnamefont {Hille}}, \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Klett}}, \bibinfo {author} {\bibfnamefont {C.~J.}\
+  \bibnamefont {Eckhardt}}, \bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Arzhang}}, \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Harkov}},
+  \bibinfo {author} {\bibfnamefont {F.~m. c.-M.}\ \bibnamefont {Le~R\'egent}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Kirsch}}, \bibinfo
+  {author} {\bibfnamefont {Y.}~\bibnamefont {Wang}}, \bibinfo {author}
+  {\bibfnamefont {A.~J.}\ \bibnamefont {Kim}}, \bibinfo {author} {\bibfnamefont
+  {E.}~\bibnamefont {Kozik}}, \bibinfo {author} {\bibfnamefont {E.~A.}\
+  \bibnamefont {Stepanov}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Kauch}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Andergassen}},
+  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Hansmann}}, \bibinfo
+  {author} {\bibfnamefont {D.}~\bibnamefont {Rohe}}, \bibinfo {author}
+  {\bibfnamefont {Y.~M.}\ \bibnamefont {Vilk}}, \bibinfo {author}
+  {\bibfnamefont {J.~P.~F.}\ \bibnamefont {LeBlanc}}, \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Zhang}}, \bibinfo {author} {\bibfnamefont
+  {A.-M.~S.}\ \bibnamefont {Tremblay}}, \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Ferrero}}, \bibinfo {author} {\bibfnamefont
+  {O.}~\bibnamefont {Parcollet}},\ and\ \bibinfo {author} {\bibfnamefont
+  {A.}~\bibnamefont {Georges}},\ }\bibfield  {title} {\bibinfo {title}
+  {Tracking the footprints of spin fluctuations: A multimethod, multimessenger
+  study of the two-dimensional hubbard model},\ }\href
+  {https://doi.org/10.1103/PhysRevX.11.011058} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. X}\ }\textbf {\bibinfo {volume} {11}},\ \bibinfo
+  {pages} {011058} (\bibinfo {year} {2021})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {White}\ and\ \citenamefont
+  {Scalapino}(1998)}]{White1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~R.}\ \bibnamefont
+  {White}}\ and\ \bibinfo {author} {\bibfnamefont {D.~J.}\ \bibnamefont
+  {Scalapino}},\ }\bibfield  {title} {\bibinfo {title} {Density matrix
+  renormalization group study of the striped phase in the 2d
+  $\mathit{t}\ensuremath{-}\mathit{J}$ model},\ }\href
+  {https://doi.org/10.1103/PhysRevLett.80.1272} {\bibfield  {journal} {\bibinfo
+   {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {80}},\ \bibinfo
+  {pages} {1272} (\bibinfo {year} {1998})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ido}\ \emph {et~al.}(2018)\citenamefont {Ido},
+  \citenamefont {Ohgoe},\ and\ \citenamefont {Imada}}]{Ido2018}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Ido}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Ohgoe}},\ and\
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Imada}},\ }\bibfield
+  {title} {\bibinfo {title} {Competition among various charge-inhomogeneous
+  states and $d$-wave superconducting state in hubbard models on square
+  lattices},\ }\href {https://doi.org/10.1103/PhysRevB.97.045138} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+  {97}},\ \bibinfo {pages} {045138} (\bibinfo {year} {2018})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Proust}\ and\ \citenamefont
+  {Taillefer}(2019)}]{ProustTaillefer2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Proust}}\ and\ \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Taillefer}},\ }\bibfield  {title} {\bibinfo {title} {The remarkable
+  underlying ground states of cuprate superconductors},\ }\href
+  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-031218-013210}
+  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+  Physics}\ }\textbf {\bibinfo {volume} {10}},\ \bibinfo {pages} {409}
+  (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ponsioen}\ \emph {et~al.}(2019)\citenamefont
+  {Ponsioen}, \citenamefont {Chung},\ and\ \citenamefont
+  {Corboz}}]{Ponsioen2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Ponsioen}}, \bibinfo {author} {\bibfnamefont {S.~S.}\ \bibnamefont
+  {Chung}},\ and\ \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Corboz}},\ }\bibfield  {title} {\bibinfo {title} {Period 4 stripe in the
+  extended two-dimensional hubbard model},\ }\href
+  {https://doi.org/10.1103/PhysRevB.100.195141} {\bibfield  {journal} {\bibinfo
+   {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {100}},\ \bibinfo
+  {pages} {195141} (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Xu}\ \emph {et~al.}(2022)\citenamefont {Xu},
+  \citenamefont {Shi}, \citenamefont {Vitali}, \citenamefont {Qin},\ and\
+  \citenamefont {Zhang}}]{XuZhang2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Xu}}, \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Shi}}, \bibinfo
+  {author} {\bibfnamefont {E.}~\bibnamefont {Vitali}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Qin}},\ and\ \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Zhang}},\ }\bibfield  {title} {\bibinfo
+  {title} {Stripes and spin-density waves in the doped two-dimensional hubbard
+  model: Ground state phase diagram},\ }\href
+  {https://doi.org/10.1103/PhysRevResearch.4.013239} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. Res.}\ }\textbf {\bibinfo {volume} {4}},\
+  \bibinfo {pages} {013239} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Dave}\ \emph {et~al.}(2013)\citenamefont {Dave},
+  \citenamefont {Phillips},\ and\ \citenamefont {Kane}}]{Phillips2013}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.~B.}\ \bibnamefont
+  {Dave}}, \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\
+  and\ \bibinfo {author} {\bibfnamefont {C.~L.}\ \bibnamefont {Kane}},\
+  }\bibfield  {title} {\bibinfo {title} {Absence of luttinger's theorem due to
+  zeros in the single-particle green function},\ }\href
+  {https://doi.org/10.1103/PhysRevLett.110.090403} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {110}},\
+  \bibinfo {pages} {090403} (\bibinfo {year} {2013})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Seki}\ and\ \citenamefont
+  {Yunoki}(2017)}]{seki2017topological}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Seki}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Yunoki}},\
+  }\bibfield  {title} {\bibinfo {title} {Topological interpretation of the
+  luttinger theorem},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review B}\ }\textbf {\bibinfo {volume} {96}},\ \bibinfo
+  {pages} {085124} (\bibinfo {year} {2017})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Anderson}\ and\ \citenamefont
+  {Haldane}(2001)}]{Anderson2001}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Anderson}}\ and\ \bibinfo {author} {\bibfnamefont {F.~D.~M.}\ \bibnamefont
+  {Haldane}},\ }\bibfield  {title} {\bibinfo {title} {The symmetries of fermion
+  fluids at low dimensions},\ }\href {https://doi.org/10.1023/A:1010324912515}
+  {\bibfield  {journal} {\bibinfo  {journal} {Journal of Statistical Physics}\
+  }\textbf {\bibinfo {volume} {103}},\ \bibinfo {pages} {425} (\bibinfo {year}
+  {2001})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Huang}\ \emph {et~al.}(2022)\citenamefont {Huang},
+  \citenamefont {Nave},\ and\ \citenamefont {Phillips}}]{Huang2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.~W.}\ \bibnamefont
+  {Huang}}, \bibinfo {author} {\bibfnamefont {G.~L.}\ \bibnamefont {Nave}},\
+  and\ \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\
+  }\bibfield  {title} {\bibinfo {title} {Discrete symmetry breaking defines the
+  mott quartic fixed point},\ }\href
+  {https://doi.org/10.1038/s41567-022-01529-8} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {18}},\ \bibinfo
+  {pages} {511} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Coleman}\ \emph {et~al.}(2001)\citenamefont
+  {Coleman}, \citenamefont {Pépin}, \citenamefont {Si},\ and\ \citenamefont
+  {Ramazashvili}}]{Coleman_2001}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Coleman}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Pépin}},
+  \bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont {Si}},\ and\ \bibinfo
+  {author} {\bibfnamefont {R.}~\bibnamefont {Ramazashvili}},\ }\bibfield
+  {title} {\bibinfo {title} {How do fermi liquids get heavy and die?},\ }\href
+  {https://doi.org/10.1088/0953-8984/13/35/202} {\bibfield  {journal} {\bibinfo
+   {journal} {Journal of Physics: Condensed Matter}\ }\textbf {\bibinfo
+  {volume} {13}},\ \bibinfo {pages} {R723} (\bibinfo {year}
+  {2001})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+  {Lal}(2020{\natexlab{b}})}]{anirbanurg1}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Lal}},\ }\bibfield  {title} {\bibinfo {title} {Unitary renormalisation group
+  for correlated electrons-i: a tensor network approach},\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nuclear Physics B}\ }\textbf
+  {\bibinfo {volume} {960}},\ \bibinfo {pages} {115170} (\bibinfo {year}
+  {2020}{\natexlab{b}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mukherjee}\ and\ \citenamefont
+  {Lal}(2020{\natexlab{c}})}]{anirbanurg2}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Mukherjee}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Lal}},\ }\bibfield  {title} {\bibinfo {title} {Unitary renormalisation group
+  for correlated electrons-ii: insights on fermionic criticality},\ }\href@noop
+  {} {\bibfield  {journal} {\bibinfo  {journal} {Nuclear Physics B}\ }\textbf
+  {\bibinfo {volume} {960}},\ \bibinfo {pages} {115163} (\bibinfo {year}
+  {2020}{\natexlab{c}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Keimer}\ \emph {et~al.}(2015)\citenamefont {Keimer},
+  \citenamefont {Kivelson}, \citenamefont {Norman}, \citenamefont {Uchida},\
+  and\ \citenamefont {Zaanen}}]{keimer2015quantum}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.}~\bibnamefont
+  {Keimer}}, \bibinfo {author} {\bibfnamefont {S.~A.}\ \bibnamefont
+  {Kivelson}}, \bibinfo {author} {\bibfnamefont {M.~R.}\ \bibnamefont
+  {Norman}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Uchida}},\
+  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Zaanen}},\
+  }\bibfield  {title} {\bibinfo {title} {From quantum matter to
+  high-temperature superconductivity in copper oxides},\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo
+  {volume} {518}},\ \bibinfo {pages} {179} (\bibinfo {year}
+  {2015})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hatsugai}\ and\ \citenamefont
+  {Kohmoto}(1992)}]{Hatsugai1992}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Hatsugai}}\ and\ \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Kohmoto}},\ }\bibfield  {title} {\bibinfo {title} {Exactly solvable model of
+  correlated lattice electrons in any dimensions},\ }\href
+  {https://doi.org/10.1143/JPSJ.61.2056} {\bibfield  {journal} {\bibinfo
+  {journal} {Journal of the Physical Society of Japan}\ }\textbf {\bibinfo
+  {volume} {61}},\ \bibinfo {pages} {2056} (\bibinfo {year}
+  {1992})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Baskaran}(1991)}]{Baskaran1991}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Baskaran}},\ }\bibfield  {title} {\bibinfo {title} {An exactly solvable
+  fermion model: spinons, holons and a non-fermi liquid phase},\ }\href
+  {https://doi.org/10.1142/S0217984991000782} {\bibfield  {journal} {\bibinfo
+  {journal} {Modern Physics Letters B}\ }\textbf {\bibinfo {volume} {05}},\
+  \bibinfo {pages} {643} (\bibinfo {year} {1991})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Altshuler}\ \emph {et~al.}(1998)\citenamefont
+  {Altshuler}, \citenamefont {Chubukov}, \citenamefont {Dashevskii},
+  \citenamefont {Finkel'stein},\ and\ \citenamefont {Morr}}]{Altshuler_1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.~L.}\ \bibnamefont
+  {Altshuler}}, \bibinfo {author} {\bibfnamefont {A.~V.}\ \bibnamefont
+  {Chubukov}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Dashevskii}}, \bibinfo {author} {\bibfnamefont {A.~M.}\ \bibnamefont
+  {Finkel'stein}},\ and\ \bibinfo {author} {\bibfnamefont {D.~K.}\ \bibnamefont
+  {Morr}},\ }\bibfield  {title} {\bibinfo {title} {Luttinger theorem for a
+  spin-density-wave state},\ }\href {https://doi.org/10.1209/epl/i1998-00164-y}
+  {\bibfield  {journal} {\bibinfo  {journal} {Europhysics Letters}\ }\textbf
+  {\bibinfo {volume} {41}},\ \bibinfo {pages} {401} (\bibinfo {year}
+  {1998})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Heath}\ and\ \citenamefont
+  {Bedell}(2020)}]{Heath_2020}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~T.}\ \bibnamefont
+  {Heath}}\ and\ \bibinfo {author} {\bibfnamefont {K.~S.}\ \bibnamefont
+  {Bedell}},\ }\bibfield  {title} {\bibinfo {title} {Necessary and sufficient
+  conditions for the validity of luttinger’s theorem},\ }\href
+  {https://doi.org/10.1088/1367-2630/ab890e} {\bibfield  {journal} {\bibinfo
+  {journal} {New Journal of Physics}\ }\textbf {\bibinfo {volume} {22}},\
+  \bibinfo {pages} {063011} (\bibinfo {year} {2020})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nave}\ \emph {et~al.}(2025)\citenamefont {Nave},
+  \citenamefont {Zhao},\ and\ \citenamefont {Phillips}}]{lanave2025}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.~L.}\ \bibnamefont
+  {Nave}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Zhao}},\ and\
+  \bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont {Phillips}},\ }\href
+  {https://arxiv.org/abs/2506.04342} {} (\bibinfo {year} {2025}),\ \Eprint
+  {https://arxiv.org/abs/2506.04342} {arXiv:2506.04342 [cond-mat.str-el]}
+  \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mukherjee}\ \emph {et~al.}(2023)\citenamefont
+  {Mukherjee}, \citenamefont {Vidhyadhiraja}, \citenamefont {Taraphder},\ and\
+  \citenamefont {Lal}}]{Mukherjee_2023}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Mukherjee}}, \bibinfo {author} {\bibfnamefont {N.~S.}\ \bibnamefont
+  {Vidhyadhiraja}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Taraphder}},\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Lal}},\ }\bibfield  {title} {\bibinfo {title} {Kondo frustration via charge
+  fluctuations: a route to mott localisation},\ }\href
+  {https://doi.org/10.1088/1367-2630/ad08f3} {\bibfield  {journal} {\bibinfo
+  {journal} {New Journal of Physics}\ }\textbf {\bibinfo {volume} {25}},\
+  \bibinfo {pages} {113011} (\bibinfo {year} {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Georges}\ \emph {et~al.}(1996)\citenamefont
+  {Georges}, \citenamefont {Kotliar}, \citenamefont {Krauth},\ and\
+  \citenamefont {Rozenberg}}]{georges1996}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Georges}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont {Kotliar}},
+  \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Krauth}},\ and\ \bibinfo
+  {author} {\bibfnamefont {M.~J.}\ \bibnamefont {Rozenberg}},\ }\bibfield
+  {title} {\bibinfo {title} {Dynamical mean-field theory of strongly correlated
+  fermion systems and the limit of infinite dimensions},\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Reviews of Modern Physics}\
+  }\textbf {\bibinfo {volume} {68}},\ \bibinfo {pages} {13} (\bibinfo {year}
+  {1996})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hettler}\ \emph {et~al.}(1998)\citenamefont
+  {Hettler}, \citenamefont {Tahvildar-Zadeh}, \citenamefont {Jarrell},
+  \citenamefont {Pruschke},\ and\ \citenamefont {Krishnamurthy}}]{hettler1998}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Hettler}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Tahvildar-Zadeh}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Jarrell}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Pruschke}},\
+  and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Krishnamurthy}},\
+  }\bibfield  {title} {\bibinfo {title} {Nonlocal dynamical correlations of
+  strongly interacting electron systems},\ }\href@noop {} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physical Review B}\ }\textbf {\bibinfo {volume} {58}},\
+  \bibinfo {pages} {R7475} (\bibinfo {year} {1998})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kotliar}\ \emph {et~al.}(2001)\citenamefont
+  {Kotliar}, \citenamefont {Savrasov}, \citenamefont {P{\'a}lsson},\ and\
+  \citenamefont {Biroli}}]{kotliar2001}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Kotliar}}, \bibinfo {author} {\bibfnamefont {S.~Y.}\ \bibnamefont
+  {Savrasov}}, \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {P{\'a}lsson}},\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Biroli}},\ }\bibfield  {title} {\bibinfo {title} {Cellular dynamical mean
+  field approach to strongly correlated systems},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Physical review letters}\ }\textbf {\bibinfo
+  {volume} {87}},\ \bibinfo {pages} {186401} (\bibinfo {year}
+  {2001})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Maier}\ \emph {et~al.}(2005)\citenamefont {Maier},
+  \citenamefont {Jarrell}, \citenamefont {Schulthess}, \citenamefont {Kent},\
+  and\ \citenamefont {White}}]{maier2005}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.~A.}\ \bibnamefont
+  {Maier}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Jarrell}},
+  \bibinfo {author} {\bibfnamefont {T.~C.}\ \bibnamefont {Schulthess}},
+  \bibinfo {author} {\bibfnamefont {P.~R.~C.}\ \bibnamefont {Kent}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~B.}\ \bibnamefont {White}},\ }\bibfield
+  {title} {\bibinfo {title} {Systematic study of d-wave superconductivity in
+  the 2d repulsive hubbard model},\ }\href@noop {} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {95}},\
+  \bibinfo {pages} {237001} (\bibinfo {year} {2005})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Stoyanova}(2006)}]{stoyanova}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Stoyanova}},\ }\emph {\bibinfo {title} {Delocalized and correlated wave
+  functions for excited states in extended systems}},\ \href@noop {} {Ph.D.
+  thesis},\ \bibinfo  {school} {University of Groningen} (\bibinfo {year}
+  {2006})\BibitemShut {NoStop}%
+\bibitem [{sup()}]{suppmat}%
+  \BibitemOpen
+  \href@noop {} {\bibinfo {title} {See supplemental material for additional
+  information.}}\BibitemShut {Stop}%
+\bibitem [{\citenamefont {Wu}\ \emph {et~al.}(2018)\citenamefont {Wu},
+  \citenamefont {Scheurer}, \citenamefont {Chatterjee}, \citenamefont
+  {Sachdev}, \citenamefont {Georges},\ and\ \citenamefont
+  {Ferrero}}]{WuFerrero2018}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+  {Wu}}, \bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont {Scheurer}},
+  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Chatterjee}}, \bibinfo
+  {author} {\bibfnamefont {S.}~\bibnamefont {Sachdev}}, \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Georges}},\ and\ \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Ferrero}},\ }\bibfield  {title} {\bibinfo
+  {title} {Pseudogap and fermi-surface topology in the two-dimensional hubbard
+  model},\ }\href {https://doi.org/10.1103/PhysRevX.8.021048} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. X}\ }\textbf {\bibinfo {volume}
+  {8}},\ \bibinfo {pages} {021048} (\bibinfo {year} {2018})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Tsvelick}\ and\ \citenamefont
+  {Wiegmann}(1985)}]{Tsvelick_weigmann_mchannel_1985}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~M.}\ \bibnamefont
+  {Tsvelick}}\ and\ \bibinfo {author} {\bibfnamefont {P.~B.}\ \bibnamefont
+  {Wiegmann}},\ }\bibfield  {title} {\bibinfo {title} {Exact solution of the
+  multichannel kondo problem, scaling, and integrability},\ }\href
+  {https://doi.org/10.1007/BF01017853} {\bibfield  {journal} {\bibinfo
+  {journal} {Journal of Statistical Physics}\ }\textbf {\bibinfo {volume}
+  {38}},\ \bibinfo {pages} {125} (\bibinfo {year} {1985})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Emery}\ and\ \citenamefont
+  {Kivelson}(1992)}]{emery_kivelson}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.~J.}\ \bibnamefont
+  {Emery}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Kivelson}},\ }\bibfield  {title} {\bibinfo {title} {Mapping of the
+  two-channel kondo problem to a resonant-level model},\ }\href
+  {https://doi.org/10.1103/PhysRevB.46.10812} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {46}},\ \bibinfo
+  {pages} {10812} (\bibinfo {year} {1992})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gunnarsson}\ \emph {et~al.}(2003)\citenamefont
+  {Gunnarsson}, \citenamefont {Calandra},\ and\ \citenamefont
+  {Han}}]{GunnarssonRMP2003}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+  {Gunnarsson}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Calandra}},\ and\ \bibinfo {author} {\bibfnamefont {J.~E.}\ \bibnamefont
+  {Han}},\ }\bibfield  {title} {\bibinfo {title} {Colloquium: Saturation of
+  electrical resistivity},\ }\href {https://doi.org/10.1103/RevModPhys.75.1085}
+  {\bibfield  {journal} {\bibinfo  {journal} {Rev. Mod. Phys.}\ }\textbf
+  {\bibinfo {volume} {75}},\ \bibinfo {pages} {1085} (\bibinfo {year}
+  {2003})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hussey}\ \emph {et~al.}(2004)\citenamefont {Hussey},
+  \citenamefont {Takenaka},\ and\ \citenamefont {Takagi}}]{Hussey2004}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~E.}\ \bibnamefont
+  {Hussey}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Takenaka}},\
+  and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont {Takagi}},\
+  }\bibfield  {title} {\bibinfo {title} {Universality of the
+  mott–ioffe–regel limit in metals},\ }\href
+  {https://doi.org/10.1080/14786430410001716944} {\bibfield  {journal}
+  {\bibinfo  {journal} {Philosophical Magazine}\ }\textbf {\bibinfo {volume}
+  {84}},\ \bibinfo {pages} {2847} (\bibinfo {year} {2004})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Pustogow}\ \emph {et~al.}(2021)\citenamefont
+  {Pustogow}, \citenamefont {Saito}, \citenamefont {Anja~Löhle}, \citenamefont
+  {Alonso}, \citenamefont {Kawamoto}, \citenamefont {Dobrosavljevic},
+  \citenamefont {Dressel},\ and\ \citenamefont {Fratini}}]{pustogow2021}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Pustogow}}, \bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont {Saito}},
+  \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Anja~Löhle}}, \bibinfo
+  {author} {\bibfnamefont {M.~S.}\ \bibnamefont {Alonso}}, \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Kawamoto}}, \bibinfo {author}
+  {\bibfnamefont {V.}~\bibnamefont {Dobrosavljevic}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Dressel}},\ and\ \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Fratini}},\ }\bibfield  {title} {\bibinfo
+  {title} {Rise and fall of landau’s quasiparticles while approaching the
+  mott transition},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Nat. Comm.}\ }\textbf {\bibinfo {volume} {12}},\ \bibinfo {pages} {1571}
+  (\bibinfo {year} {2021})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Qazilbash}\ \emph {et~al.}(2008)\citenamefont
+  {Qazilbash}, \citenamefont {Schafgans}, \citenamefont {Burch}, \citenamefont
+  {Yun}, \citenamefont {Chae}, \citenamefont {Kim}, \citenamefont {Kim},\ and\
+  \citenamefont {Basov}}]{qazilbash2008}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~M.}\ \bibnamefont
+  {Qazilbash}}, \bibinfo {author} {\bibfnamefont {A.~A.}\ \bibnamefont
+  {Schafgans}}, \bibinfo {author} {\bibfnamefont {K.~S.}\ \bibnamefont
+  {Burch}}, \bibinfo {author} {\bibfnamefont {S.~J.}\ \bibnamefont {Yun}},
+  \bibinfo {author} {\bibfnamefont {B.~G.}\ \bibnamefont {Chae}}, \bibinfo
+  {author} {\bibfnamefont {B.~J.}\ \bibnamefont {Kim}}, \bibinfo {author}
+  {\bibfnamefont {H.~T.}\ \bibnamefont {Kim}},\ and\ \bibinfo {author}
+  {\bibfnamefont {D.~N.}\ \bibnamefont {Basov}},\ }\bibfield  {title} {\bibinfo
+  {title} {Electrodynamics of the vanadium oxides $\mathrm{V}{\mathrm{o}}_{2}$
+  and ${\mathrm{v}}_{2}{\mathrm{o}}_{3}$},\ }\href
+  {https://doi.org/10.1103/PhysRevB.77.115121} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {77}},\ \bibinfo
+  {pages} {115121} (\bibinfo {year} {2008})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hauke}\ \emph {et~al.}(2016)\citenamefont {Hauke},
+  \citenamefont {Heyl}, \citenamefont {Tagliacozzo},\ and\ \citenamefont
+  {Zoller}}]{Hauke2016}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Hauke}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Heyl}},
+  \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Tagliacozzo}},\ and\
+  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Zoller}},\ }\bibfield
+  {title} {\bibinfo {title} {Measuring multipartite entanglement through
+  dynamic susceptibilities},\ }\href {https://doi.org/10.1038/nphys3700}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf
+  {\bibinfo {volume} {12}},\ \bibinfo {pages} {778} (\bibinfo {year}
+  {2016})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Balut}\ \emph {et~al.}(2025)\citenamefont {Balut},
+  \citenamefont {Guo}, \citenamefont {de~Vriesa}, \citenamefont {Chaudhuri},
+  \citenamefont {Bradlyn}, \citenamefont {Abbamonte},\ and\ \citenamefont
+  {W.}}]{balut2025}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.}~\bibnamefont
+  {Balut}}, \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont {Guo}}, \bibinfo
+  {author} {\bibfnamefont {N.}~\bibnamefont {de~Vriesa}}, \bibinfo {author}
+  {\bibfnamefont {D.}~\bibnamefont {Chaudhuri}}, \bibinfo {author}
+  {\bibfnamefont {B.}~\bibnamefont {Bradlyn}}, \bibinfo {author} {\bibfnamefont
+  {P.}~\bibnamefont {Abbamonte}},\ and\ \bibinfo {author} {\bibfnamefont
+  {P.~P.}\ \bibnamefont {W.}},\ }\bibfield  {title} {\bibinfo {title} {Quantum
+  fisher information reveals uv-ir mixing in the strange metal},\ }\href@noop
+  {} {\bibfield  {journal} {\bibinfo  {journal} {Physica C}\ }\textbf {\bibinfo
+  {volume} {635}},\ \bibinfo {pages} {1354750} (\bibinfo {year}
+  {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mazza}\ \emph {et~al.}(2024)\citenamefont {Mazza},
+  \citenamefont {Biswas}, \citenamefont {Yan}, \citenamefont {Prokofiev},
+  \citenamefont {Steffens}, \citenamefont {Si}, \citenamefont {Assaad},\ and\
+  \citenamefont {Paschen}}]{mazza2024}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.}~\bibnamefont
+  {Mazza}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Biswas}},
+  \bibinfo {author} {\bibfnamefont {X.}~\bibnamefont {Yan}}, \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Prokofiev}}, \bibinfo {author}
+  {\bibfnamefont {P.}~\bibnamefont {Steffens}}, \bibinfo {author}
+  {\bibfnamefont {Q.}~\bibnamefont {Si}}, \bibinfo {author} {\bibfnamefont
+  {F.~F.}\ \bibnamefont {Assaad}},\ and\ \bibinfo {author} {\bibfnamefont
+  {S.}~\bibnamefont {Paschen}},\ }\href {https://arxiv.org/abs/2403.12779} {}
+  (\bibinfo {year} {2024}),\ \Eprint {https://arxiv.org/abs/2403.12779}
+  {arXiv:2403.12779 [cond-mat.str-el]} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Si}\ \emph {et~al.}(2001)\citenamefont {Si},
+  \citenamefont {Rabello}, \citenamefont {Ingersent},\ and\ \citenamefont
+  {Smith}}]{Si2001}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Q.}~\bibnamefont
+  {Si}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Rabello}},
+  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Ingersent}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~L.}\ \bibnamefont {Smith}},\ }\bibfield
+  {title} {\bibinfo {title} {Locally critical quantum phase transitions in
+  strongly correlated metals},\ }\href {https://doi.org/10.1038/35101507}
+  {\bibfield  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo
+  {volume} {413}},\ \bibinfo {pages} {804} (\bibinfo {year}
+  {2001})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Senthil}(2008)}]{senthil2008CriticalFermiSurface}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+  {Senthil}},\ }\bibfield  {title} {\bibinfo {title} {Critical fermi surfaces
+  and non-fermi liquid metals},\ }\href
+  {https://doi.org/10.1103/PhysRevB.78.035103} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {78}},\ \bibinfo
+  {pages} {035103} (\bibinfo {year} {2008})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sekino}\ and\ \citenamefont
+  {Susskind}(2008)}]{sekino2008}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Sekino}}\ and\ \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Susskind}},\ }\bibfield  {title} {\bibinfo {title} {Fast scramblers},\
+  }\href {https://doi.org/10.1088/1126-6708/2008/10/065} {\bibfield  {journal}
+  {\bibinfo  {journal} {Journal of High Energy Physics}\ }\textbf {\bibinfo
+  {volume} {2008}},\ \bibinfo {pages} {065} (\bibinfo {year}
+  {2008})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hayden}\ and\ \citenamefont
+  {Preskill}(2007)}]{hayden2007}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Hayden}}\ and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Preskill}},\ }\bibfield  {title} {\bibinfo {title} {Black holes as mirrors:
+  quantum information in random subsystems},\ }\href
+  {https://doi.org/10.1088/1126-6708/2007/09/120} {\bibfield  {journal}
+  {\bibinfo  {journal} {Journal of High Energy Physics}\ }\textbf {\bibinfo
+  {volume} {2007}},\ \bibinfo {pages} {120} (\bibinfo {year}
+  {2007})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bentsen}\ \emph {et~al.}(2019)\citenamefont
+  {Bentsen}, \citenamefont {Hashizume}, \citenamefont {Buyskikh}, \citenamefont
+  {Davis}, \citenamefont {Daley}, \citenamefont {Gubser},\ and\ \citenamefont
+  {Schleier-Smith}}]{bentsen2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Bentsen}}, \bibinfo {author} {\bibfnamefont {T.}~\bibnamefont {Hashizume}},
+  \bibinfo {author} {\bibfnamefont {A.~S.}\ \bibnamefont {Buyskikh}}, \bibinfo
+  {author} {\bibfnamefont {E.~J.}\ \bibnamefont {Davis}}, \bibinfo {author}
+  {\bibfnamefont {A.~J.}\ \bibnamefont {Daley}}, \bibinfo {author}
+  {\bibfnamefont {S.~S.}\ \bibnamefont {Gubser}},\ and\ \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Schleier-Smith}},\ }\bibfield  {title}
+  {\bibinfo {title} {Treelike interactions and fast scrambling with cold
+  atoms},\ }\href {https://doi.org/10.1103/PhysRevLett.123.130601} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo
+  {volume} {123}},\ \bibinfo {pages} {130601} (\bibinfo {year}
+  {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Phillips}\ \emph {et~al.}(2020)\citenamefont
+  {Phillips}, \citenamefont {Yeo},\ and\ \citenamefont {Huang}}]{Phillips2020}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Phillips}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Yeo}},\ and\
+  \bibinfo {author} {\bibfnamefont {E.~W.}\ \bibnamefont {Huang}},\ }\bibfield
+  {title} {\bibinfo {title} {Exact theory for superconductivity in a doped mott
+  insulator},\ }\href {https://doi.org/10.1038/s41567-020-0988-4} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume}
+  {16}},\ \bibinfo {pages} {1175} (\bibinfo {year} {2020})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Vafek}\ and\ \citenamefont
+  {Vishwanath}(2014)}]{vafekvishwanath2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {O.}~\bibnamefont
+  {Vafek}}\ and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Vishwanath}},\ }\bibfield  {title} {\bibinfo {title} {Dirac fermions in
+  solids: From high-tc cuprates and graphene to topological insulators and weyl
+  semimetals},\ }\href
+  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-031113-133841}
+  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+  Physics}\ }\textbf {\bibinfo {volume} {5}},\ \bibinfo {pages} {83} (\bibinfo
+  {year} {2014})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Morimoto}\ and\ \citenamefont
+  {Nagaosa}(2016)}]{morimoto2016}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.}~\bibnamefont
+  {Morimoto}}\ and\ \bibinfo {author} {\bibfnamefont {N.}~\bibnamefont
+  {Nagaosa}},\ }\bibfield  {title} {\bibinfo {title} {Weyl mott insulator},\
+  }\href {https://doi.org/10.1038/srep19853} {\bibfield  {journal} {\bibinfo
+  {journal} {Sci. Rep.}\ }\textbf {\bibinfo {volume} {6}},\ \bibinfo {pages}
+  {19853} (\bibinfo {year} {2016})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Flores-Calder\'on}\ and\ \citenamefont
+  {Hooley}(2025)}]{calderon2025}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Flores-Calder\'on}}\ and\ \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont
+  {Hooley}},\ }\bibfield  {title} {\bibinfo {title} {Weyl-mott point:
+  Topological and non-fermi liquid behavior from an isolated green's function
+  zero},\ }\href {https://doi.org/10.1103/k4st-77ph} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume} {111}},\
+  \bibinfo {pages} {235139} (\bibinfo {year} {2025})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Georgi}(2007{\natexlab{a}})}]{Georgi2007PRL}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Georgi}},\ }\bibfield  {title} {\bibinfo {title} {Unparticle physics},\
+  }\href {https://doi.org/10.1103/PhysRevLett.98.221601} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {98}},\
+  \bibinfo {pages} {221601} (\bibinfo {year} {2007}{\natexlab{a}})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Georgi}(2007{\natexlab{b}})}]{Georgi2007}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Georgi}},\ }\bibfield  {title} {\bibinfo {title} {Another odd thing about
+  unparticle physics},\ }\href
+  {https://doi.org/https://doi.org/10.1016/j.physletb.2007.05.037} {\bibfield
+  {journal} {\bibinfo  {journal} {Physics Letters B}\ }\textbf {\bibinfo
+  {volume} {650}},\ \bibinfo {pages} {275} (\bibinfo {year}
+  {2007}{\natexlab{b}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Phillips}(2014)}]{PhillipsLectures2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~W.}\ \bibnamefont
+  {Phillips}},\ }\bibfield  {title} {\bibinfo {title} {Beyond particles:
+  Unparticles in strongly correlated electron matter},\ }in\ \href@noop {}
+  {\emph {\bibinfo {booktitle} {Quantum Criticality in Condensed Matter}}},\
+  \bibinfo {editor} {edited by\ \bibinfo {editor} {\bibfnamefont
+  {J.}~\bibnamefont {Jedrzejewski}}}\ (\bibinfo  {publisher} {World Scientific,
+  Singapore},\ \bibinfo {year} {2014})\ pp.\ \bibinfo {pages}
+  {133--158}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Zaanen}(2019)}]{zaanen2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Zaanen}},\ }\bibfield  {title} {\bibinfo {title} {Planckian dissipation,
+  minimal viscosity and the transport in cuprate strange metals},\ }\href
+  {https://doi.org/10.21468/SciPostPhys.6.5.061} {\bibfield  {journal}
+  {\bibinfo  {journal} {SciPost Phys.}\ }\textbf {\bibinfo {volume} {6}},\
+  \bibinfo {pages} {061} (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Legros}\ \emph {et~al.}(2019)\citenamefont {Legros},
+  \citenamefont {Benhabib}, \citenamefont {Tabis}, \citenamefont
+  {Lalibert{\'e}}, \citenamefont {Dion}, \citenamefont {Lizaire}, \citenamefont
+  {Vignolle}, \citenamefont {Vignolles}, \citenamefont {Raffy}, \citenamefont
+  {Li} \emph {et~al.}}]{legros2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Legros}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Benhabib}},
+  \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont {Tabis}}, \bibinfo
+  {author} {\bibfnamefont {F.}~\bibnamefont {Lalibert{\'e}}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Dion}}, \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Lizaire}}, \bibinfo {author} {\bibfnamefont
+  {B.}~\bibnamefont {Vignolle}}, \bibinfo {author} {\bibfnamefont
+  {D.}~\bibnamefont {Vignolles}}, \bibinfo {author} {\bibfnamefont
+  {H.}~\bibnamefont {Raffy}}, \bibinfo {author} {\bibfnamefont
+  {Z.}~\bibnamefont {Li}}, \emph {et~al.},\ }\bibfield  {title} {\bibinfo
+  {title} {Universal $ t $-linear resistivity and planckian dissipation in
+  overdoped cuprates},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {15}},\ \bibinfo
+  {pages} {142} (\bibinfo {year} {2019})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hartnoll}\ and\ \citenamefont
+  {Mackenzie}(2022)}]{hartnoll2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~A.}\ \bibnamefont
+  {Hartnoll}}\ and\ \bibinfo {author} {\bibfnamefont {A.~P.}\ \bibnamefont
+  {Mackenzie}},\ }\bibfield  {title} {\bibinfo {title} {Colloquium: Planckian
+  dissipation in metals},\ }\href
+  {https://doi.org/10.1103/RevModPhys.94.041002} {\bibfield  {journal}
+  {\bibinfo  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume} {94}},\
+  \bibinfo {pages} {041002} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {McGreevy}(2023)}]{McGreevy2023}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {McGreevy}},\ }\bibfield  {title} {\bibinfo {title} {Generalized symmetries
+  in condensed matter},\ }\href
+  {https://doi.org/https://doi.org/10.1146/annurev-conmatphys-040721-021029}
+  {\bibfield  {journal} {\bibinfo  {journal} {Annual Review of Condensed Matter
+  Physics}\ }\textbf {\bibinfo {volume} {14}},\ \bibinfo {pages} {57} (\bibinfo
+  {year} {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Luttinger}\ and\ \citenamefont
+  {Ward}(1960)}]{luttinger1960ground}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Luttinger}}\ and\ \bibinfo {author} {\bibfnamefont {J.~C.}\ \bibnamefont
+  {Ward}},\ }\bibfield  {title} {\bibinfo {title} {Ground-state energy of a
+  many-fermion system. ii},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review}\ }\textbf {\bibinfo {volume} {118}},\ \bibinfo
+  {pages} {1417} (\bibinfo {year} {1960})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Su}\ and\ \citenamefont
+  {Martin}(2025)}]{su2025anomalies}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Su}}\ and\ \bibinfo {author} {\bibfnamefont {I.}~\bibnamefont {Martin}},\
+  }\href {https://arxiv.org/abs/2405.08093} {} (\bibinfo {year} {2025}),\
+  \Eprint {https://arxiv.org/abs/2405.08093} {arXiv:2405.08093
+  [cond-mat.str-el]} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Adler}(1969)}]{adler1969axial}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.~L.}\ \bibnamefont
+  {Adler}},\ }\bibfield  {title} {\bibinfo {title} {Axial-vector vertex in
+  spinor electrodynamics},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Physical Review}\ }\textbf {\bibinfo {volume} {177}},\ \bibinfo
+  {pages} {2426} (\bibinfo {year} {1969})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bell}\ and\ \citenamefont
+  {Jackiw}(1969)}]{bell1969pcac}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~S.}\ \bibnamefont
+  {Bell}}\ and\ \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Jackiw}},\
+  }\bibfield  {title} {\bibinfo {title} {A pcac puzzle: $\pi$0→
+  $\gamma$$\gamma$ in the $\sigma$-model},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Il Nuovo Cimento A}\ }\textbf {\bibinfo
+  {volume} {60}},\ \bibinfo {pages} {47} (\bibinfo {year} {1969})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Casini}\ and\ \citenamefont
+  {Mag\'{a}n}(2021)}]{Casini2021Symmetries}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Casini}}\ and\ \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Mag\'{a}n}},\ }\bibfield  {title} {\bibinfo {title} {On completeness and
+  generalized symmetries in quantum field theory},\ }\href
+  {https://doi.org/10.1142/S0217732321300251} {\bibfield  {journal} {\bibinfo
+  {journal} {Modern Physics Letters A}\ }\textbf {\bibinfo {volume} {36}},\
+  \bibinfo {pages} {2130025} (\bibinfo {year} {2021})}\BibitemShut {NoStop}%
+\end{thebibliography}
+
+\vspace{0.25cm}
+\par\noindent\textbf{Acknowledgements.}
+We acknowledge National Supercomputing Mission (NSM) for providing computing resources of ‘PARAM RUDRA’ at Aruna Asaf Ali Marg, near Vasant Kunj, New Delhi, Delhi 110067, which is implemented by C-DAC and supported by the Ministry of Electronics and Information Technology (MeitY) and Department of Science and Technology (DST), Government of India. SL thanks Mayank Shreshtha for designing Fig.1.
+
+\vspace{0.25cm}
+\par\noindent\textbf{Funding.}
+SL thanks the SERB, Govt. of India for funding through MATRICS grant MTR/2021/000141 and Core Research Grant CRG/2021/000852. AM thanks IISER Kolkata for funding through a JRF and an SRF. AM would also like to acknowledge the SERB-MATRICS grant (Grant No. MTR/2022/000636) from the Science and Engineering Research Board (SERB) for funding.
+
+\vspace{0.25cm}
+\par\noindent\textbf{Author Contributions.}
+AM, SRH and SL conceived and designed the research. AM performed the calculations and analysis with support from all authors. AM, SRH, AM, NSV, AT and SL wrote the manuscript. All work was supervised by SL.
+
+\vspace{0.25cm}
+\par\noindent\textbf{Code Availability.}
+The underlying code for this study is not publicly available but may be made available to qualified researchers on reasonable request from the corresponding author.
+
+\vspace{0.25cm}
+\par\noindent\textbf{Competing Interest.}
+The authors declare no competing interests.
+
+\vspace*{0.5cm}
+\par\noindent\textbf{\large Models and Methods}\\
+\noindent\textbf{Lattice-embedded Impurity Model}\\
+We state the detailed Hamiltonian of the auxiliary model here: $\mathcal{H}_\text{aux} = H_\text{imp} + H_\text{coup} + H_\text{cbath}$,
+where the particle-hole symmetric impurity term is
+\begin{equation}
+H_\text{imp} = - \frac{U}{2} \left( \hat{n}_{d \uparrow} - \hat{n}_{d \downarrow} \right)^2,
+\end{equation}
+describing on-site Coulomb interactions at the impurity. Here, $c^\dagger_{d\sigma}$ creates an electron with spin $\sigma$ at the impurity site, and $\hat{n}_{d\sigma} = c^\dagger_{d\sigma} c_{d\sigma}$ denotes the corresponding number operator. The impurity couples to four nearest-neighbour bath sites $c_{Z\sigma}$ through both hybridization and Kondo exchange:
+\begin{equation}\begin{aligned}
+\hspace{-1cm} H_\text{coup} = \frac{J}{2} \hspace{-0.25cm}\sum_{\sigma_1,\sigma_2,Z} 
+%\sum_{Z} 
+{\bf S}_d \cdot c^\dagger_{Z\sigma_1} {\boldsymbol \tau}_{\sigma_1 \sigma_2} c_{Z\sigma_2} 
+- V \sum_{\sigma,Z} \left( c^\dagger_{Z\sigma} c_{d\sigma} + \text{h.c.} \right),    
+\end{aligned}\end{equation}
+where ${\boldsymbol \tau}$ are the Pauli matrices, and $Z$ indexes the four neighbouring bath sites. The half-filled bath includes nearest neighbour hopping and on-site correlations on the site neighbouring the impurity:
+\begin{equation}
+H_\text{cbath} = \sum_{\bf k} \epsilon_{\bf k} c^\dagger_{{\bf k},\sigma} c_{{\bf k},\sigma} - \frac{W}{2} \sum_{Z} \left( \hat{n}_{Z\uparrow} - \hat{n}_{Z\downarrow} \right)^2,
+\end{equation}
+where $\epsilon_{\bf k} = -2t(\cos k_x + \cos k_y)$, and $W$ parametrizes local repulsion in the bath. This frustrates Kondo screening and drives the system towards local-moment formation. A crucial feature of this construction is that the Kondo coupling acquires a momentum structure upon Fourier transforming:
+\begin{equation}
+J_{{\bf k}, {\bf k}^\prime} = \frac{J}{2} \left[ \cos(k_x - k^\prime_x) + \cos(k_y - k^\prime_y) \right],
+\end{equation}
+which respects the $C_4$ symmetry of the square lattice.
+\vspace{0.25cm}
+\par\noindent\textbf{Tiling the impurity model}\\
+\noindent
+We now provide details on how the effective lattice Hamiltonian is constructed from the underlying impurity model. As described in the main text, the auxiliary model consists of a single impurity embedded in a correlated bath:
+
+\begin{equation}
+H(\mathbf{r}_d) = H_{\text{imp}} + H_{\text{cbath}} + H_{\text{imp-cbath}},
+\end{equation}
+where the impurity Hamiltonian is
+\begin{equation}
+H_{\text{imp}} = -\frac{U}{2} \left( \hat{n}_{\mathbf{r}_d\uparrow} - \hat{n}_{\mathbf{r}_d\downarrow} \right)^2,
+\end{equation}
+and the conduction bath is described by
+\begin{equation}
+\begin{aligned}
+H_{\text{cbath}} = & -\frac{1}{\sqrt{\mathcal{Z}}} t \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle \ne \mathbf{r}_d; \sigma} \left( c^\dagger_{\mathbf{r}_i\sigma} c_{\mathbf{r}_j\sigma} + \text{h.c.} \right) \\
+& - \frac{1}{2\mathcal{Z}} W \sum_{\mathbf{z} \in \text{NN}(\mathbf{r}_d)} \left( \hat{n}_{\mathbf{z}\uparrow} - \hat{n}_{\mathbf{z}\downarrow} \right)^2 ,
+\end{aligned}
+\end{equation}
+and the impurity–bath hybridization term is
+\begin{equation}
+\begin{aligned}
+H_{\text{imp-cbath}} = & \frac{J}{\mathcal{Z}} \sum_{\sigma, \sigma'} \sum_{\mathbf{z} \in \text{NN}(\mathbf{r}_d)} \mathbf{S}_{\mathbf{r}_d} \cdot \boldsymbol{\tau}_{\sigma \sigma'} c^\dagger_{\mathbf{z}\sigma} c_{\mathbf{z}\sigma'} \\
+& - \frac{V}{\sqrt{\mathcal{Z}}} \sum_{\sigma} \sum_{\mathbf{z} \in \text{NN}(\mathbf{r}_d)} \left( c^\dagger_{\mathbf{r}_d\sigma} c_{\mathbf{z}\sigma} + \text{h.c.} \right),
+\end{aligned}
+\end{equation}
+where $\boldsymbol{\tau} = (\tau_x, \tau_y, \tau_z)$ are Pauli matrices, and ${\bf r}_d$ denotes the impurity position.
+
+\noindent
+The tiled lattice Hamiltonian is generated by symmetrically translating this impurity model:
+\begin{equation}
+\mathcal{H}_{\text{tiled}} = \mathcal{T}[H(\mathbf{r}_d)] = \sum_{\mathbf{r}} T^\dagger(\mathbf{r} - \mathbf{r}_d) H(\mathbf{r}_d) T(\mathbf{r} - \mathbf{r}_d),
+\end{equation}
+where $T(\mathbf{a})$ are many-body translation operators, defined by $T^\dagger(\mathbf{a}) \mathcal{O}(\{\mathbf{r}_i\}) T(\mathbf{a}) = \mathcal{O}(\{\mathbf{r}_i + \mathbf{a}\})$.
+Applying this to each term yields:
+\begin{equation}\hspace{-0.5cm}\begin{aligned}
+\mathcal{T}[H_{\text{cbath}}] &= -\frac{(N - 2)t}{\sqrt{\mathcal{Z}}} \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle; \sigma} \left( c^\dagger_{\mathbf{r}_i\sigma} c_{\mathbf{r}_j\sigma} + \text{h.c.} \right) \\
+&\quad - \frac{1}{2} W \sum_{\mathbf{r}} \left( \hat{n}_{\mathbf{r}\uparrow} - \hat{n}_{\mathbf{r}\downarrow} \right)^2, \\
+\mathcal{T}[H_{\text{imp}}] &= -\frac{U}{2} \sum_{\mathbf{r}} \left( \hat{n}_{\mathbf{r}\uparrow} - \hat{n}_{\mathbf{r}\downarrow} \right)^2, \\
+\mathcal{T}[H_{\text{imp-cbath}}] &= \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle} \left[ \frac{2J}{\mathcal{Z}} \mathbf{S}_{\mathbf{r}_i} \cdot \mathbf{S}_{\mathbf{r}_j} - \frac{2V}{\sqrt{\mathcal{Z}}} \sum_\sigma \left( c^\dagger_{\mathbf{r}_i\sigma} c_{\mathbf{r}_j\sigma} + \text{h.c.} \right) \right],
+\end{aligned}\end{equation}
+with local spin operators defined as $\mathbf{S}_{\mathbf{r}} = \sum_{\sigma, \sigma'} c^\dagger_{\mathbf{r}\sigma} \boldsymbol{\tau}_{\sigma \sigma'} c_{\mathbf{r}\sigma'}$.
+
+\noindent
+To avoid overcounting of the non-interacting bath terms, we subtract extra copies of of the kinetic energy term. The final reconstructed extended Hubbard model then reads:
+\begin{equation}
+\begin{aligned}
+\mathcal{H}_{\text{tiled}} = & -\frac{1}{\sqrt{\mathcal{Z}}} \tilde{t} \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle; \sigma} \left( c^\dagger_{\mathbf{r}_i\sigma} c_{\mathbf{r}_j\sigma} + \text{h.c.} \right) \\
+& + \frac{\tilde{J}}{\mathcal{Z}} \sum_{\langle \mathbf{r}_i, \mathbf{r}_j \rangle} \mathbf{S}_{\mathbf{r}_i} \cdot \mathbf{S}_{\mathbf{r}_j} - \frac{1}{2} \tilde{U} \sum_{\mathbf{r}} \left( \hat{n}_{\mathbf{r}\uparrow} - \hat{n}_{\mathbf{r}\downarrow} \right)^2,
+\end{aligned}
+\end{equation}
+where the effective lattice couplings are given by:
+\begin{equation}
+\tilde{t} = t + 2V,\quad \tilde{U} = U + W,\quad \tilde{J} = 2J.
+\end{equation}
+\end{document}

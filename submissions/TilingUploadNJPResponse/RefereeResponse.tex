@@ -5,7 +5,8 @@
 \usepackage{xcolor}
 % \usepackage[margin=1.5cm,bottom=1.5cm]{geometry}
 \newcommand{\shat}{\hat{\mathbf{s}}}
-\newcommand{\response}[1]{{\bf Response. }{\color{blue}{#1}}}
+\newcommand{\question}[1]{\par \noindent {\bf Question.\quad}{#1}\\}
+\newcommand{\response}[1]{\par \noindent {\bf Response.\quad}{\color{blue}{#1}}\\[1em]}
 
 \begin{document}
 
@@ -21,48 +22,52 @@
 \hrulefill
 \vspace{10pt}
 
-We thank the Editorial Board Member and all referees for their careful reading of our manuscript and for their constructive comments and questions. We are encouraged by the overall positive reception of our work, including the acknowledgement of its relevance, technical soundness, and suitability for publication in New Journal of Physics.
-
-Below, we present our responses (in blue) to the points raised by the referees.
+We thank the Editorial Board Member and all referees for their careful reading of our manuscript and for their constructive comments and questions. We are encouraged by the overall positive reception of our work, including the acknowledgement of its relevance, technical soundness, and suitability for publication in New Journal of Physics. Below, we present our responses ({\color{blue}in blue}) to the points raised by the referees.
 
 \section*{Response to Referee 1}
-The authors proposed the possibility that the pseudogap phase is a distinct quantum phase characterized by the so-called Mott metal. I recommend sending the manuscript to reviewers.
+\question{The authors proposed the possibility that the pseudogap phase is a distinct quantum phase characterized by the so-called Mott metal. I recommend sending the manuscript to reviewers.}
 
 \section*{Response to Referee 2}
-The impurity-to-lattice tiling procedure and unitary renormalization group (URG) methods, while carefully implemented, appear to extend prior impurity-based constructions rather than introduce a fundamentally new paradigm. The claimed "controlled route to Mott criticality" should be more clearly distinguished from existing dynamical mean-field theory (DMFT) and functional renormalization group (fRG) approaches, particularly in terms of predictive power or access to uncharted regimes.
+\question{The impurity-to-lattice tiling procedure and unitary renormalization group (URG) methods, while carefully implemented, appear to extend prior impurity-based constructions rather than introduce a fundamentally new paradigm. The claimed "controlled route to Mott criticality" should be more clearly distinguished from existing dynamical mean-field theory (DMFT) and functional renormalization group (fRG) approaches, particularly in terms of predictive power or access to uncharted regimes.}
 
-\response{}
+\response{We thank the referee for their query about the novelty of the present method. The functional renormalisation group (FRG) approach is somewhat distict from the tiling method, since it works directly on a lattice model and is therefore not an impurity-based construction. For comparisons of the unitary renormalisation group approach to FRG, please see \cite{anirbanurg1,anirbanurg2}.
 
-The identification of the pseudogap as a "Mott metal" with deconfined holon-doublon excitations is intriguing but lacks direct experimental or numerical validation beyond the model itself. Comparisons with established benchmarks from quantum Monte Carlo, ARPES, or optical conductivity experiments on cuprates would help ground these claims and clarify the added value beyond prior theoretical proposals.
+	In comparison to DMFT and its cluster variants, our impurity-based tiling approach derives lattice Hamiltonians directly from renormalized local dynamics - without relying on mean-field approximations - this method preserves nonlocal correlations and enhances momentum-space resolution. It is also straightforward to incorporate multi-orbital degrees of freedom, frustrated geometries, and nontrivial band topology -- one simply needs to solve an impurity model with a suitable impurity-cluster or conduction bath. Moreover, coupled with the unitary renormalisation group (URG) method as the impurity solver, this approach provides access to one-particle as well as two-particle correlations, entanglement measures and several dynamical quantities, making the method very versatile. The URG does not suffer from the fermion sign problem, allowing it to access zero temperature, and it is computationally less intensive than other zero temperature methods such as the numerical renormalisation group.
 
-\response{hi}
+We hope that this is convincing evidence that the present approach is fundamentally different from existing auxiliary model approaches, and comes with several advantages over such methods. We have now improved the introduction to reflect this.}
 
-The restriction to a single-band extended Hubbard model on a square lattice limits the generality of the conclusions. Demonstrating the framework's applicability to at least one additional model or geometry would strengthen its broad relevance to correlated systems.
+\question{The identification of the pseudogap as a "Mott metal" with deconfined holon-doublon excitations is intriguing but lacks direct experimental or numerical validation beyond the model itself. Comparisons with established benchmarks from quantum Monte Carlo, ARPES, or optical conductivity experiments on cuprates would help ground these claims and clarify the added value beyond prior theoretical proposals.}
 
-\response{}
+\response{We appreciate the concern raised by the referee. We would like to point out that the manuscript already contains a comparison of our results to optical conductivity experiments on the cuprates (see the last two paragraphs of Sec V.B). As per the referee's suggestion, we have now also added a comparison of our results with quantum Monte Carlo calculations and ARPES experiments (see Secs. VI and VII), and they provide further support for our characterisation of the Mott metal.}
 
-Critical experimental realities such as disorder, doping inhomogeneity, or phonon coupling are not addressed. A discussion of how such effects could be incorporated or might alter the conclusions is necessary to assess the experimental relevance of the proposed mechanism.
+\question{The restriction to a single-band extended Hubbard model on a square lattice limits the generality of the conclusions. Demonstrating the framework's applicability to at least one additional model or geometry would strengthen its broad relevance to correlated systems.}
 
-\response{hi}
+\response{We thank the referee for pointing this out. Our goal with the present work has been to provide a concrete demonstration of a new auxiliary mode approach through a very comprehensive and detailed exploration of a paradigmatic model. We therefore humbly submit that the extension of our approach to other models be left for future works. Indeed, in an ongoing work, we have applied the tiling method to a bilayer extended Hubbard model and are studying its various properties in order to tackle the phenomenology of heavy fermion materials.}
 
-The connection to the Hatsugai-Kohmoto model at criticality, while mathematically interesting, risks being viewed as a special case. The authors should clarify whether this connection holds for generic models or relies on fine-tuned symmetries or fillings.
+\question{Critical experimental realities such as disorder, doping inhomogeneity, or phonon coupling are not addressed. A discussion of how such effects could be incorporated or might alter the conclusions is necessary to assess the experimental relevance of the proposed mechanism.}
 
-\response{hi}
+\response{We thank the referee for this question. We would like to humbly submit that introducing disorder, doping inhomogeneity, or phonon coupling into our model is beyond the scope of the present work, and so we defer such treatments to a later work. We have however updated the conclusions section with a discussion of how one might treat these aspects within our approach.}
+
+\question{The connection to the Hatsugai-Kohmoto model at criticality, while mathematically interesting, risks being viewed as a special case. The authors should clarify whether this connection holds for generic models or relies on fine-tuned symmetries or fillings.}
+
+\response{We appreciate this technical point raised by the referee. Indeed, the present work demonstrates that the Hatsugai-Kohmoto (HK) model arises at criticality for this particular model. Nevertheless, the (i) simplicity of our lattice model, and (ii) the universality of our Mott metal phase (in terms of various exponents) is strong evidence that the HK model is likely to be found whenever a "coexistence" phase of Luttinger and Fermi surfaces undergoes a transition into a Mott insulator.}
 
 \section*{Response to Referee 3}
-In the present manuscript the authors have studied the interplay between the spin exchange and local Coulomb interaction in a two-dimensional model by employing a unitary renormalization group (URG). This work can be considered as a continuation of the author's previous published works. While I found that the URG is acceptable for treating electron correlation problems, the principal model studied in this manuscript (Eq. (15)) looks like an artefact, because the spin exchange  (the second term in Eq. (15)) is actually can be generated by the hopping and local interaction terms. In general, the spin exchange is roughly proportional to $t^2/U$ (t, U here correspond to the ones with tilde symbol in Eq. (15)). Therefore, the studied model already double-counts the spin exchange. In addition, it is not clear what real materials or systems can be described by the studied model. The authors have to clarify these points before the manuscript can be acceptable for publication.    
+\question{While I found that the URG is acceptable for treating electron correlation problems, the principal model studied in this manuscript (Eq. (15)) looks like an artefact, because the spin exchange  (the second term in Eq. (15)) is actually can be generated by the hopping and local interaction terms. In general, the spin exchange is roughly proportional to $t^2/U$ (t, U here correspond to the ones with tilde symbol in Eq. (15)). Therefore, the studied model already double-counts the spin exchange.}
+\response{We appreciate this technical point raised by the referee. Indeed, the present work demonstrates that the Hatsugai-Kohmoto (HK) model arises at criticality for this particular model. Nevertheless, the (i) simplicity of our lattice model, and (ii) the universality of our Mott metal phase (in terms of various exponents) is strong evidence that the HK model is likely to be found whenever a "coexistence" phase of Luttinger and Fermi surfaces undergoes a transition into a Mott insulator.}
+\question{In addition, it is not clear what real materials or systems can be described by the studied model. The authors have to clarify these points before the manuscript can be acceptable for publication.}
+\response{We appreciate this technical point raised by the referee. Indeed, the present work demonstrates that the Hatsugai-Kohmoto (HK) model arises at criticality for this particular model. Nevertheless, the (i) simplicity of our lattice model, and (ii) the universality of our Mott metal phase (in terms of various exponents) is strong evidence that the HK model is likely to be found whenever a "coexistence" phase of Luttinger and Fermi surfaces undergoes a transition into a Mott insulator.}
 
 \section*{Response to Referee 4}
-The manuscript addresses metal-to-insulator transition in strongly correlated lattice models applicable to materials such as layered copper oxides, with particular focus on intermediate pseudogap (PG) state. First, a lattice impurity model is formulated, and subsequently mapped to a lattice t-J-U model via tiling procedure. The Authors subsequently map the Green's functions from the auxiliary impurity model to the target t-J-U model, and analyze its dynamical phase diagram as a function of microscopic parameters. The employed methodology is based on solving normalization group equations for the auxiliary model and translating the results into the of target lattice model language via derived mapping. The Authors link the PG state to the to the breakdown of the Kondo screening within the underlying auxiliary model, and provide a comprehensive theoretical analysis of thereof.
 
-I have looked through it with interest, and I have several comments and queries:
+\question{The Authors consider the model with nearest-neighbor hopping (t') integrals only, which is also reflected in the target lattice model. It is well known that t' is highly relevant to the physics of systems exhibiting pseudogap (such as high-Tc cuprates). Is it possible to incorporate those terms within the present method and is there any qualitative change expected?}
 
-1. The Authors consider the model with nearest-neighbor hopping (t') integrals only, which is also reflected in the target lattice model. It is well known that t' is highly relevant to the physics of systems exhibiting pseudogap (such as high-Tc cuprates). Is it possible to incorporate those terms within the present method and is there any qualitative change expected?
-2. The Hamiltonian term $H_coup$ [Eq. (3)] incorporates both hybridization and Kondo-type exchange. Within an impurity model, the former Kondo term is typically derived by canonical perturbation expansion from he model containing V-term, so (technically) including both may be regarded as double-counting. Can, for instance, either V or J term be neglected in the analysis? What would be the consequences for PG state?
-3. Technical remarks: In Eq. (3), J should be probably a function of Z to reproduce k-dependen form of J in Eq. (5). Apparently in Eq. (A1) of the first Appendix this is the case. Also, it is not immediately clear to me why the impurity creation and annihilation operators disappear from the impurity model (1) following tiling procedure in Sec. III, resulting in single-band Hamiltonian (15). This could be explained in grater detail in the manuscript.
-4. The lattice model of Eq. (15), referred to by the Authors as extended-Hubbard, has been extensively studied in literature in the context of high-Tc superconductors as the t-J-U model. See, e.g., https://doi.org/10.1103/PhysRevB.95.024506 or a review https://doi.org/10.1016/j.physrep.2022.02.003 and references therein. Comparison with previous work on t-J-U model would benefit the manuscript.
-5. Whereas the Authors work is clearly relevant to specific materials, such and layered copper oxides, nickelates, and possibly several other systems, the discussion of specific experimental consequences is limited. The manuscript would benefit from more direct and detailed relation to specific materials in the introduction and/or summary section.
+\question{The Hamiltonian term $H_coup$ [Eq. (3)] incorporates both hybridization and Kondo-type exchange. Within an impurity model, the former Kondo term is typically derived by canonical perturbation expansion from he model containing V-term, so (technically) including both may be regarded as double-counting. Can, for instance, either V or J term be neglected in the analysis? What would be the consequences for PG state?}
+\question{Technical remarks: In Eq. (3), J should be probably a function of Z to reproduce k-dependen form of J in Eq. (5). Apparently in Eq. (A1) of the first Appendix this is the case.}
+\question{Also, it is not immediately clear to me why the impurity creation and annihilation operators disappear from the impurity model (1) following tiling procedure in Sec. III, resulting in single-band Hamiltonian (15). This could be explained in grater detail in the manuscript.}
+\question{The lattice model of Eq. (15), referred to by the Authors as extended-Hubbard, has been extensively studied in literature in the context of high-Tc superconductors as the t-J-U model. See, e.g., https://doi.org/10.1103/PhysRevB.95.024506 or a review https://doi.org/10.1016/j.physrep.2022.02.003 and references therein. Comparison with previous work on t-J-U model would benefit the manuscript.}
+\question{Whereas the Authors work is clearly relevant to specific materials, such and layered copper oxides, nickelates, and possibly several other systems, the discussion of specific experimental consequences is limited. The manuscript would benefit from more direct and detailed relation to specific materials in the introduction and/or summary section.}
 
-The manuscript is well written and organized. The methodology appears sound and the mapping of the auxiliary to physical model is of interest. I believe that the manuscript could be suitable for publication in NJP, following clarification of the above points.
-
+\bibliography{tilingProject.bib}
+\bibliographystyle{apsrev}
 \end{document}
